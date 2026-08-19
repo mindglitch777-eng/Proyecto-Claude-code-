@@ -176,3 +176,27 @@ simple con hooks bien ejecutados retiene mejor que produccion cara con
 hooks debiles. Nuestro pipeline de video ya es mas que suficiente --
 el cuello de botella real esta en la escritura, y por eso el guion
 sigue siendo trabajo de Claude Code, no de un script.
+
+## Vocabulario: clinico vs. lo que la gente dice (2026-08-19)
+Hallazgo del operador: "rumiar" no lo dice nadie fuera de un consultorio
+o un paper de psicologia. Usarlo en un hook suena a que alguien te esta
+diagnosticando, no a que alguien te entiende -- y cruza la linea etica
+del proyecto (MARCA.md: "sin promesas de curacion, si promesas de accion
+concreta"; no vendemos un diagnostico).
+
+Busqueda real en TikTok hispanohablante (ver `hooks.py`, listas
+`VOCABULARIO_CLINICO` / `VOCABULARIO_FUERTE`): lo que se usa de verdad
+es "me como la cabeza", "le doy mil vueltas", "no lo puedo soltar". Nada
+de eso es jerga clinica, y es MAS fuerte, no menos -- especificidad de
+lenguaje de calle, no de manual.
+
+Regla operativa: `hooks.py --auditar "texto"` y `validar_hook.py
+guion.json` ahora rechazan vocabulario clinico automaticamente (lista
+compartida entre los dos, para que no se desincronicen) y sugieren un
+reemplazo. Nuevo patron de hook, `accion_real`: nombra la situacion con
+vocabulario de calle y la resuelve con una accion concreta y contable
+en la app (ej. "{t} toques y sabes que hacer") -- nunca con un
+diagnostico. Coincide con lo que confirma la investigacion 2026: los
+hooks de "autorreconocimiento" (¿esto me pasa a mi?) rinden 2x mejor
+que los de posicionamiento de experto, sin necesidad de nombrar un
+diagnostico.

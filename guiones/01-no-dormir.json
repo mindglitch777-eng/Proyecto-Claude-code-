@@ -26,7 +26,7 @@
   "segmentos": [
     {
       "formato": "declaracion",
-      "texto": "Discutiste. Son las 2 AM.",
+      "texto": "Discutiste. Son las 2 AM y te comes la cabeza.",
       "duracion": 1.9,
       "hook": "flash",
       "karaoke": true
@@ -42,12 +42,12 @@
       "formato": "division",
       "texto": "",
       "izquierda": {
-        "titulo": "RUMIAR",
-        "texto": "Repetis lo mismo",
+        "titulo": "EL BUCLE",
+        "texto": "Le das mil vueltas",
         "valor": "0"
       },
       "derecha": {
-        "titulo": "CORTAR",
+        "titulo": "EL CORTE",
         "texto": "Un paso, ahora",
         "valor": "1"
       },

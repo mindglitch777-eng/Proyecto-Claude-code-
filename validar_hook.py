@@ -25,6 +25,13 @@ GENERICOS = [
     "lo que paso despues", "atencion", "mira hasta el final",
 ]
 
+try:
+    # Misma lista que hooks.py --auditar, para que las dos herramientas
+    # nunca se desincronicen sobre que palabra esta prohibida.
+    from hooks import VOCABULARIO_CLINICO, VOCABULARIO_FUERTE
+except ImportError:
+    VOCABULARIO_CLINICO, VOCABULARIO_FUERTE = [], []
+
 
 def revisar(path):
     p = Path(path)
@@ -107,6 +114,31 @@ def revisar(path):
     if not any(s.get("texto") for s in segs):
         problemas.append("Hay segmentos sin texto en pantalla. El video "
                          "tiene que entenderse con el sonido apagado.")
+
+    # --- Vocabulario clinico en CUALQUIER texto visible del video ---
+    # No es solo problema del hook: si aparece a mitad de video igual
+    # rompe el tono ("herramienta, no consultorio") y la linea etica
+    # de no vender un diagnostico.
+    def _textos_visibles(s):
+        out = [s.get("texto", ""), s.get("pregunta", ""), s.get("respuesta", "")]
+        for lado in ("izquierda", "derecha"):
+            b = s.get(lado) or {}
+            out += [b.get("titulo", ""), b.get("texto", "")]
+        for k in ("items", "pasos", "hitos"):
+            out += [str(x) for x in s.get(k, [])]
+        return " ".join(out).lower()
+
+    for i, s in enumerate(segs):
+        bloque = _textos_visibles(s)
+        for c in VOCABULARIO_CLINICO:
+            if c in bloque:
+                sug = (VOCABULARIO_FUERTE[hash(c) % len(VOCABULARIO_FUERTE)]
+                       if VOCABULARIO_FUERTE else "vocabulario coloquial")
+                problemas.append(
+                    f"Segmento {i+1}: '{c}' es vocabulario clinico "
+                    f"(nadie lo dice en la calle, y vende diagnostico en "
+                    f"vez de herramienta). Probar '{sug}'.")
+                break
 
     # --- CTA al final ---
     ultimo = segs[-1].get("texto", "").lower()
