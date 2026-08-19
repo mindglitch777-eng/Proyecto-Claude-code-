@@ -1,0 +1,1517 @@
+#!/usr/bin/env python3
+"""
+Animador v9 — FORMATOS (arquetipos de video). Cero tokens.
+
+El salto respecto de v8: v8 variaba color, layout y transicion, pero
+todos los videos eran el MISMO arquetipo (texto sobre fondo + elemento).
+v9 introduce FORMATOS estructuralmente distintos entre si. Dos videos
+con formatos distintos no se parecen en nada, aunque compartan paleta.
+
+FORMATOS (campo "formato" por segmento):
+
+  declaracion   Tipografia enorme a sangre, sin adornos. Silencio visual.
+                Para frases que pegan solas.
+  dato_duro     Jerarquia tipografica extrema: numero gigante + linea
+                fina de contexto. Estilo reporte editorial.
+  division      Pantalla partida REAL en dos mitades con colores y
+                contenidos opuestos. Para comparaciones.
+  revelacion    Estado A que se transforma en estado B con mascara
+                animada. Para antes/despues.
+  cronologia    Linea de tiempo horizontal con hitos que se encienden.
+  conteo        Cuenta regresiva 5..1 con item destacado por vez.
+  pregunta      Pregunta arriba, pausa deliberada, respuesta que entra
+                de golpe. Usa el silencio como recurso.
+  editorial     Composicion tipo revista: grilla asimetrica, numero de
+                pagina, kicker, mucho espacio negativo.
+
+Uso:
+    python3 animador_v9.py guion.json
+    python3 animador_v9.py --demo        # muestra los 8 formatos
+    python3 animador_v9.py --catalogo    # 1 frame de cada formato
+"""
+
+import json
+import math
+import random
+import shutil
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+try:
+    from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageChops
+except ImportError:
+    print("ERROR: falta Pillow.")
+    sys.exit(1)
+
+W, H = 1080, 1920
+
+
+def eo_cubic(t): return 1 - pow(1 - t, 3)
+def eo_expo(t): return 1 if t >= 1 else 1 - pow(2, -10 * t)
+def eio(t): return 0.5 * (1 - math.cos(math.pi * max(0.0, min(1.0, t))))
+def eo_back(t, f=2.0):
+    c3 = f + 1
+    return 1 + c3 * pow(t - 1, 3) + f * pow(t - 1, 2)
+
+
+def fnt(t, ligera=False, serif=False):
+    if serif:
+        for c in ["/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf",
+                  "/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"]:
+            if Path(c).exists():
+                try:
+                    return ImageFont.truetype(c, max(8, int(t)))
+                except Exception:
+                    pass
+    cands = ([ "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+               "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf"]
+             if ligera else
+             ["/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+              "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"])
+    for c in cands:
+        if Path(c).exists():
+            try:
+                return ImageFont.truetype(c, max(8, int(t)))
+            except Exception:
+                pass
+    return ImageFont.load_default(size=max(8, int(t)))
+
+
+def envolver(d, txt, f, ancho):
+    ps, ls, act = txt.split(), [], []
+    for p in ps:
+        if d.textbbox((0, 0), " ".join(act + [p]), font=f)[2] <= ancho or not act:
+            act.append(p)
+        else:
+            ls.append(" ".join(act)); act = [p]
+    if act:
+        ls.append(" ".join(act))
+    return ls
+
+
+def auto_tam(d, txt, ancho, alto, tam_max, ligera=False):
+    """Ajusta el cuerpo tipografico para llenar la caja sin desbordar.
+    Verifica ALTO y ANCHO: una palabra sola mas ancha que la caja
+    tambien fuerza a bajar el tamaño."""
+    t = tam_max
+    while t > 22:
+        f = fnt(t, ligera)
+        ls = envolver(d, txt, f, ancho)
+        alto_ok = len(ls) * (f.size + t * 0.18) <= alto
+        ancho_ok = all(d.textbbox((0, 0), l, font=f)[2] <= ancho for l in ls)
+        if alto_ok and ancho_ok:
+            return f, ls
+        t -= 4
+    f = fnt(t, ligera)
+    return f, envolver(d, txt, f, ancho)
+
+
+def sombra_t(d, xy, txt, f, col, off=5):
+    d.text((xy[0] + off, xy[1] + off), txt, font=f, fill=(0, 0, 0))
+    d.text(xy, txt, font=f, fill=col)
+
+
+def base_fondo(pal, t, seg):
+    img = Image.new("RGB", (W, H), tuple(pal["fondo"]))
+    d = ImageDraw.Draw(img)
+    grano = seg.get("textura", "suave")
+    if grano == "grilla":
+        paso = 74
+        off = int((t * 20) % paso)
+        col = tuple(min(255, c + 12) for c in pal["fondo"])
+        for x in range(-paso, W + paso, paso):
+            d.line([(x + off, 0), (x + off, H)], fill=col, width=1)
+        for y in range(-paso, H + paso, paso):
+            d.line([(0, y + off), (W, y + off)], fill=col, width=1)
+    else:
+        for i in range(0, H, 6):
+            f = i / H
+            d.rectangle([0, i, W, i + 6],
+                        fill=tuple(min(255, c + int(14 * (1 - f)))
+                                   for c in pal["fondo"]))
+    return img
+
+
+# ==================== FORMATOS ====================
+
+
+def karaoke(d, texto, f, caja, pal, t, align="centro"):
+    """Resaltado palabra por palabra sincronizado con la narracion.
+    Es la tecnica que mas sube retencion: el ojo vuelve a la pantalla
+    cada vez que una palabra cambia de color.
+
+    t = 0..1 dentro del segmento. Como la duracion del segmento ya se
+    ajusto a la voz, el resaltado queda cuadrado con lo que se escucha.
+    """
+    x0, y0, x1, y1 = caja
+    lineas = envolver(d, texto, f, x1 - x0)
+    total = sum(len(l.split()) for l in lineas)
+    if total == 0:
+        return y0
+    # La narracion ocupa ~88% del segmento (el resto es el respiro)
+    avance = min(1.0, t / 0.88)
+    actual = avance * total
+    alto_l = f.size + 22
+    y = y0 + max(0, ((y1 - y0) - len(lineas) * alto_l) / 2)
+    idx = 0
+    for ln in lineas:
+        w = d.textbbox((0, 0), ln, font=f)[2]
+        x = x0 if align == "izq" else x0 + ((x1 - x0) - w) / 2
+        for pw in ln.split():
+            idx += 1
+            ancho = d.textbbox((0, 0), pw + " ", font=f)[2]
+            if idx <= actual - 0.5:
+                col = tuple(pal["texto"])            # ya dicha
+            elif idx <= actual + 0.5:
+                col = tuple(pal["destacado"])        # se esta diciendo
+                # micro-escala en la palabra activa
+                fu = fnt(int(f.size * 1.06))
+                d.text((x + 4, y + 4), pw, font=fu, fill=(0, 0, 0))
+                d.text((x, y), pw, font=fu, fill=col)
+                x += ancho
+                continue
+            else:
+                col = tuple(int(fo + (c - fo) * 0.28)
+                            for fo, c in zip(pal["fondo"], pal["texto"]))
+            d.text((x + 4, y + 4), pw, font=f, fill=(0, 0, 0))
+            d.text((x, y), pw, font=f, fill=col)
+            x += ancho
+        y += alto_l
+    return y
+
+
+def f_declaracion(img, d, seg, t, pal):
+    """Tipografia a sangre. El texto ES la composicion."""
+    txt = seg["texto"].upper() if seg.get("mayus", True) else seg["texto"]
+    if seg.get("karaoke"):
+        f, ls = auto_tam(d, txt, W - 120, H * 0.62, 150)
+        karaoke(d, txt, f, (60, H * 0.18, W - 60, H * 0.82), pal, t)
+        e = eo_expo(min(1.0, t / 0.4))
+        d.rectangle([80, 80, 80 + int(120 * e), 88],
+                    fill=tuple(pal["destacado"]))
+        return
+    f, ls = auto_tam(d, txt, W - 120, H * 0.62, 200)
+    alto_l = f.size + f.size * 0.14
+    y = (H - len(ls) * alto_l) / 2
+    n = sum(len(l.split()) for l in ls)
+    idx = 0
+    for ln in ls:
+        wl = d.textbbox((0, 0), ln, font=f)[2]
+        x = (W - wl) / 2
+        for p in ln.split():
+            idx += 1
+            d0 = (idx - 1) / max(1, n) * 0.34
+            lt = max(0.0, min(1.0, (t - d0) / 0.26))
+            if lt <= 0:
+                x += d.textbbox((0, 0), p + " ", font=f)[2]
+                continue
+            esc = 0.82 + 0.18 * eo_back(lt)
+            fu = fnt(int(f.size * esc))
+            sombra_t(d, (x, y + (f.size - fu.size) / 2), p, fu,
+                   tuple(pal["texto"]), 6)
+            x += d.textbbox((0, 0), p + " ", font=f)[2]
+        y += alto_l
+    # Marca de esquina minima
+    e = eo_expo(min(1.0, t / 0.4))
+    d.rectangle([80, 80, 80 + int(120 * e), 88], fill=tuple(pal["destacado"]))
+
+
+def f_dato_duro(img, d, seg, t, pal):
+    """Jerarquia extrema: numero gigante, contexto en cuerpo fino."""
+    num = str(seg.get("numero", 47)) + seg.get("sufijo", "")
+    e = eo_expo(min(1.0, t / 0.55))
+    try:
+        val = int(float(seg.get("numero", 47)) * e)
+        num_anim = f"{val:,}".replace(",", ".") + seg.get("sufijo", "")
+    except (TypeError, ValueError):
+        num_anim = num
+    fn = fnt(340)
+    wn = d.textbbox((0, 0), num_anim, font=fn)[2]
+    while wn > W - 140:
+        fn = fnt(int(fn.size * 0.9))
+        wn = d.textbbox((0, 0), num_anim, font=fn)[2]
+    y = H * 0.30
+    sombra_t(d, ((W - wn) / 2, y), num_anim, fn, tuple(pal["destacado"]), 8)
+    # Regla fina
+    er = eo_expo(max(0.0, min(1.0, (t - 0.3) / 0.4)))
+    ry = y + fn.size * 1.12
+    d.rectangle([(W - 420 * er) / 2, ry, (W + 420 * er) / 2, ry + 4],
+                fill=tuple(pal["texto"]))
+    # Contexto en tipografia ligera (contraste de peso = elegancia)
+    fc, lc = auto_tam(d, seg["texto"], W - 260, 300, 54, ligera=True)
+    yc = ry + 60
+    ac = eo_cubic(max(0.0, min(1.0, (t - 0.42) / 0.4)))
+    for ln in lc:
+        wl = d.textbbox((0, 0), ln, font=fc)[2]
+        col = tuple(int(f + (c - f) * ac)
+                    for f, c in zip(pal["fondo"], (185, 185, 200)))
+        d.text(((W - wl) / 2, yc), ln, font=fc, fill=col)
+        yc += fc.size + 16
+
+
+def f_division(img, d, seg, t, pal):
+    """Pantalla partida real: dos mitades opuestas."""
+    izq = seg.get("izquierda", {"titulo": "ANTES", "texto": "Publicar y esperar",
+                                "valor": "12"})
+    der = seg.get("derecha", {"titulo": "DESPUES", "texto": "Un canal, 30 dias",
+                              "valor": "340"})
+    e = eio(min(1.0, t / 0.45))
+    corte = int(H * 0.5)
+    # Mitad superior: apagada. Inferior: acento.
+    d.rectangle([0, 0, W, corte], fill=tuple(min(255, c + 10)
+                                             for c in pal["fondo"]))
+    d.rectangle([0, corte, W, H], fill=tuple(pal["destacado"]))
+    # Linea divisoria que se dibuja
+    d.rectangle([0, corte - 4, int(W * e), corte + 4], fill=(255, 255, 255))
+    for i, (blq, col_t, col_s, y0) in enumerate([
+            (izq, (170, 170, 188), tuple(pal["texto"]), 0),
+            (der, (30, 22, 20), (14, 14, 18), corte)]):
+        dy = int(70 * (1 - eo_expo(max(0.0, min(1.0, (t - i * 0.14) / 0.5)))))
+        ft = fnt(40)
+        d.text((90, y0 + 120 + dy), blq.get("titulo", "").upper(), font=ft,
+               fill=col_t)
+        fv = fnt(170)
+        val = blq.get("valor", "")
+        d.text((90, y0 + 190 + dy), val, font=fv, fill=col_s)
+        fx, lx = auto_tam(d, blq.get("texto", ""), W - 400, 200, 52)
+        yy = y0 + 240 + dy
+        for ln in lx:
+            wl = d.textbbox((0, 0), ln, font=fx)[2]
+            d.text((W - 90 - wl, yy), ln, font=fx, fill=col_s)
+            yy += fx.size + 12
+
+
+def f_revelacion(img, d, seg, t, pal):
+    """Estado A -> mascara animada -> estado B."""
+    a = seg.get("antes", "Sin plan")
+    b = seg.get("despues", "Con plan")
+    capa = Image.new("RGB", (W, H), tuple(pal["destacado"]))
+    dc = ImageDraw.Draw(capa)
+    fb, lb = auto_tam(dc, b, W - 200, H * 0.4, 130)
+    yb = (H - len(lb) * (fb.size + 18)) / 2
+    for ln in lb:
+        wl = dc.textbbox((0, 0), ln, font=fb)[2]
+        dc.text(((W - wl) / 2, yb), ln, font=fb, fill=(14, 14, 18))
+        yb += fb.size + 18
+    fa, la = auto_tam(d, a, W - 200, H * 0.4, 130)
+    ya = (H - len(la) * (fa.size + 18)) / 2
+    for ln in la:
+        wl = d.textbbox((0, 0), ln, font=fa)[2]
+        sombra_t(d, ((W - wl) / 2, ya), ln, fa, tuple(pal["texto"]), 5)
+        ya += fa.size + 18
+    e = eio(max(0.0, min(1.0, (t - 0.28) / 0.44)))
+    if e > 0:
+        m = Image.new("L", (W, H), 0)
+        dm = ImageDraw.Draw(m)
+        # Barrido diagonal
+        x = int(-W * 0.3 + e * W * 1.4)
+        dm.polygon([(0, H), (x, H), (x + 280, 0), (0, 0)], fill=255)
+        img.paste(capa, (0, 0), m)
+        d2 = ImageDraw.Draw(img)
+        if 0 < e < 1:
+            d2.line([(x, H), (x + 280, 0)], fill=(255, 255, 255), width=6)
+
+
+def f_cronologia(img, d, seg, t, pal):
+    """Linea de tiempo con hitos que se encienden en secuencia."""
+    hitos = seg.get("hitos", ["Dia 1", "Dia 7", "Dia 14", "Dia 30"])
+    vals = seg.get("valores", ["0", "3", "11", "61"])
+    ft, lt = auto_tam(d, seg["texto"], W - 180, 260, 76)
+    y = 240
+    for ln in lt:
+        wl = d.textbbox((0, 0), ln, font=ft)[2]
+        sombra_t(d, ((W - wl) / 2, y), ln, ft, tuple(pal["texto"]))
+        y += ft.size + 14
+    ly = H * 0.60
+    x0, x1 = 130, W - 130
+    e = eo_cubic(min(1.0, t / 0.7))
+    d.line([(x0, ly), (x1, ly)], fill=(56, 56, 72), width=6)
+    d.line([(x0, ly), (x0 + (x1 - x0) * e, ly)],
+           fill=tuple(pal["destacado"]), width=6)
+    n = len(hitos)
+    fh, fv = fnt(36), fnt(58)
+    for i, h in enumerate(hitos):
+        px = x0 + (x1 - x0) * i / max(1, n - 1)
+        ap = (i / max(1, n - 1))
+        on = e >= ap - 0.02
+        r = 20 if on else 13
+        col = tuple(pal["destacado"]) if on else (60, 60, 78)
+        if on:
+            halo = 34 + 6 * math.sin(t * 10 + i)
+            d.ellipse([px - halo, ly - halo, px + halo, ly + halo],
+                      outline=tuple(pal["destacado"]), width=2)
+        d.ellipse([px - r, ly - r, px + r, ly + r], fill=col)
+        wh = d.textbbox((0, 0), h, font=fh)[2]
+        d.text((px - wh / 2, ly + 52), h, font=fh,
+               fill=(165, 165, 182) if on else (80, 80, 96))
+        if on and i < len(vals):
+            wv = d.textbbox((0, 0), vals[i], font=fv)[2]
+            sombra_t(d, (px - wv / 2, ly - 120), vals[i], fv,
+                   tuple(pal["texto"]), 4)
+
+
+def f_conteo(img, d, seg, t, pal):
+    """Cuenta regresiva: un item por vez, grande."""
+    items = seg.get("items", ["Sin nicho", "Sin canal", "Sin medicion"])
+    n = len(items)
+    seg_dur = 1.0 / n
+    i = min(n - 1, int(t / seg_dur))
+    lt = (t - i * seg_dur) / seg_dur
+    num = str(n - i)
+    fn = fnt(420)
+    wn = d.textbbox((0, 0), num, font=fn)[2]
+    e = eo_back(min(1.0, lt / 0.3))
+    fu = fnt(max(20, int(fn.size * (0.6 + 0.4 * e))))
+    wu = d.textbbox((0, 0), num, font=fu)[2]
+    col = tuple(int(f + (c - f) * 0.22)
+                for f, c in zip(pal["fondo"], pal["destacado"]))
+    d.text(((W - wu) / 2, H * 0.18), num, font=fu, fill=col)
+    ft, lts = auto_tam(d, items[i], W - 200, 340, 96)
+    y = H * 0.56
+    for ln in lts:
+        wl = d.textbbox((0, 0), ln, font=ft)[2]
+        dy = int(50 * (1 - eo_expo(min(1.0, lt / 0.28))))
+        sombra_t(d, ((W - wl) / 2, y + dy), ln, ft, tuple(pal["texto"]))
+        y += ft.size + 16
+    # Puntos de progreso
+    for k in range(n):
+        cx = W / 2 - (n - 1) * 22 + k * 44
+        r = 9 if k == i else 6
+        d.ellipse([cx - r, H - 130 - r, cx + r, H - 130 + r],
+                  fill=tuple(pal["destacado"]) if k <= i else (62, 62, 78))
+
+
+def f_pregunta(img, d, seg, t, pal):
+    """Pregunta, pausa deliberada, respuesta de golpe."""
+    q = seg.get("pregunta", seg["texto"])
+    a = seg.get("respuesta", "")
+    fq, lq = auto_tam(d, q, W - 180, 380, 78)
+    y = H * 0.24
+    aq = eo_cubic(min(1.0, t / 0.3))
+    for ln in lq:
+        wl = d.textbbox((0, 0), ln, font=fq)[2]
+        col = tuple(int(f + (c - f) * aq)
+                    for f, c in zip(pal["fondo"], (175, 175, 192)))
+        d.text(((W - wl) / 2, y), ln, font=fq, fill=col)
+        y += fq.size + 14
+    # Pausa: nada pasa entre 0.30 y 0.55 -> el silencio genera tension
+    if t < 0.55:
+        pulso = abs(math.sin(t * 6))
+        r = 7 + 3 * pulso
+        for k in range(3):
+            cx = W / 2 - 44 + k * 44
+            d.ellipse([cx - r, H * 0.52 - r, cx + r, H * 0.52 + r],
+                      fill=tuple(int(f + (c - f) * (0.3 + 0.7 * pulso))
+                                 for f, c in zip(pal["fondo"], pal["destacado"])))
+        return
+    lt = (t - 0.55) / 0.45
+    fa, la = auto_tam(d, a, W - 160, 520, 130)
+    ya = H * 0.52
+    e = eo_back(min(1.0, lt / 0.3))
+    for ln in la:
+        fu = fnt(max(20, int(fa.size * (0.7 + 0.3 * e))))
+        wl = d.textbbox((0, 0), ln, font=fu)[2]
+        sombra_t(d, ((W - wl) / 2, ya), ln, fu, tuple(pal["destacado"]), 7)
+        ya += fa.size + 16
+
+
+def f_editorial(img, d, seg, t, pal):
+    """Composicion de revista: grilla asimetrica, espacio negativo."""
+    e = eo_expo(min(1.0, t / 0.4))
+    # Numero de seccion arriba a la derecha
+    fnum = fnt(150)
+    nn = seg.get("indice", "01")
+    wn = d.textbbox((0, 0), nn, font=fnum)[2]
+    col_tenue = tuple(min(255, c + 26) for c in pal["fondo"])
+    d.text((W - 90 - wn, 130), nn, font=fnum, fill=col_tenue)
+    # Kicker + regla
+    if seg.get("kicker"):
+        d.text((90, 150), seg["kicker"].upper(), font=fnt(34),
+               fill=tuple(pal["destacado"]))
+    d.rectangle([90, 205, 90 + int((W - 400) * e), 209],
+                fill=tuple(pal["destacado"]))
+    # Titular alineado a izquierda, mucho aire abajo
+    ft, lt = auto_tam(d, seg["texto"], W - 260, 560, 104)
+    y = 300
+    n = sum(len(l.split()) for l in lt)
+    idx = 0
+    for ln in lt:
+        x = 90
+        for p in ln.split():
+            idx += 1
+            d0 = (idx - 1) / max(1, n) * 0.3
+            a_ = max(0.0, min(1.0, (t - d0) / 0.25))
+            if a_ <= 0:
+                x += d.textbbox((0, 0), p + " ", font=ft)[2]
+                continue
+            dy = int(28 * (1 - eo_expo(a_)))
+            sombra_t(d, (x, y + dy), p, ft, tuple(pal["texto"]))
+            x += d.textbbox((0, 0), p + " ", font=ft)[2]
+        y += ft.size + 16
+    # Pie: linea fina + texto secundario
+    if seg.get("pie"):
+        py = H - 320
+        d.rectangle([90, py, 90 + int(180 * e), py + 3],
+                    fill=tuple(pal["destacado"]))
+        fp, lp = auto_tam(d, seg["pie"], W - 260, 220, 44, ligera=True)
+        yy = py + 34
+        for ln in lp:
+            d.text((90, yy), ln, font=fp, fill=(160, 160, 178))
+            yy += fp.size + 10
+
+
+
+def f_cita(img, d, seg, t, pal):
+    """Cita destacada: comillas gigantes, atribucion. Autoridad social."""
+    e = eo_expo(min(1.0, t / 0.4))
+    fq = fnt(340)
+    d.text((70, 180), '"', font=fq,
+           fill=tuple(min(255, c + 30) for c in pal["fondo"]))
+    ft, lt = auto_tam(d, seg["texto"], W - 260, 620, 86)
+    y = H * 0.34
+    n = sum(len(l.split()) for l in lt); idx = 0
+    for ln in lt:
+        x = 130
+        for pw_ in ln.split():
+            idx += 1
+            a_ = max(0.0, min(1.0, (t - (idx - 1) / max(1, n) * 0.34) / 0.26))
+            if a_ <= 0:
+                x += d.textbbox((0, 0), pw_ + " ", font=ft)[2]; continue
+            dy = int(24 * (1 - eo_expo(a_)))
+            sombra_t(d, (x, y + dy), pw_, ft, tuple(pal["texto"]))
+            x += d.textbbox((0, 0), pw_ + " ", font=ft)[2]
+        y += ft.size + 16
+    if seg.get("autor"):
+        ay = y + 60
+        d.rectangle([130, ay, 130 + int(90 * e), ay + 4],
+                    fill=tuple(pal["destacado"]))
+        d.text((130, ay + 26), seg["autor"], font=fnt(42, True),
+               fill=(170, 170, 188))
+
+
+def f_pasos(img, d, seg, t, pal):
+    """Proceso paso a paso: cada paso se ilumina en secuencia."""
+    pasos = seg.get("pasos", ["Investigar", "Crear", "Publicar", "Medir"])
+    ft, lt = auto_tam(d, seg.get("texto", ""), W - 200, 200, 64)
+    y = 220
+    for ln in lt:
+        wl = d.textbbox((0, 0), ln, font=ft)[2]
+        sombra_t(d, ((W - wl) / 2, y), ln, ft, tuple(pal["texto"]))
+        y += ft.size + 12
+    n = len(pasos)
+    top = H * 0.34
+    alto = (H * 0.52) / n
+    fp = fnt(52); fnm = fnt(38)
+    for i, ps in enumerate(pasos):
+        ap = i / max(1, n)
+        act = t >= ap
+        e = eo_back(max(0.0, min(1.0, (t - ap) / 0.2)))
+        yy = top + i * alto
+        dx = int(70 * (1 - max(0, e)))
+        col = tuple(pal["destacado"]) if act else (52, 52, 66)
+        d.rounded_rectangle([120 - dx, yy, W - 120 - dx, yy + alto - 26],
+                            radius=18,
+                            fill=tuple(min(255, c + 10) for c in pal["fondo"]),
+                            outline=col, width=4)
+        cy = yy + (alto - 26) / 2
+        d.ellipse([160 - dx, cy - 30, 220 - dx, cy + 30], fill=col)
+        bb = d.textbbox((0, 0), str(i + 1), font=fnm)
+        d.text((190 - dx - (bb[2] - bb[0]) / 2 - bb[0],
+                cy - (bb[3] - bb[1]) / 2 - bb[1]), str(i + 1), font=fnm,
+               fill=(14, 14, 18) if act else (120, 120, 140))
+        d.text((260 - dx, cy - fp.size * 0.55), ps, font=fp,
+               fill=tuple(pal["texto"]) if act else (110, 110, 130))
+        if i < n - 1 and act:
+            d.polygon([(W / 2 - 12, yy + alto - 24), (W / 2 + 12, yy + alto - 24),
+                       (W / 2, yy + alto - 6)], fill=col)
+
+
+def f_ranking(img, d, seg, t, pal):
+    """Top N con barras horizontales que crecen en carrera."""
+    items = seg.get("items", [["Pinterest", 61], ["SEO", 34],
+                              ["Reddit", 18], ["Ads", 9]])
+    ft, lt = auto_tam(d, seg.get("texto", ""), W - 200, 180, 66)
+    y = 230
+    for ln in lt:
+        wl = d.textbbox((0, 0), ln, font=ft)[2]
+        sombra_t(d, ((W - wl) / 2, y), ln, ft, tuple(pal["texto"]))
+        y += ft.size + 12
+    mx = max(v for _, v in items) or 1
+    n = len(items)
+    top = H * 0.36; alto = (H * 0.46) / n
+    fl, fv = fnt(46), fnt(52)
+    for i, (nom, val) in enumerate(items):
+        e = eo_expo(max(0.0, min(1.0, (t - i * 0.10) / 0.6)))
+        yy = top + i * alto
+        w = (W - 420) * (val / mx) * e
+        col = tuple(pal["destacado"]) if i == 0 else (64, 64, 82)
+        d.text((90, yy + 6), f"{i+1}", font=fl, fill=(120, 120, 142))
+        d.rounded_rectangle([160, yy, 160 + max(8, w), yy + alto * 0.56],
+                            radius=12, fill=col)
+        d.text((178, yy + 8), nom, font=fl,
+               fill=(14, 14, 18) if i == 0 else tuple(pal["texto"]))
+        d.text((160 + max(8, w) + 22, yy + 6), f"{int(val * e)}", font=fv,
+               fill=tuple(pal["texto"]))
+
+
+def f_alerta(img, d, seg, t, pal):
+    """Advertencia: franjas diagonales, simbolo, pulso. Alta urgencia."""
+    pulso = 0.5 + 0.5 * math.sin(t * 7)
+    for x in range(-H, W + H, 90):
+        d.polygon([(x, 0), (x + 44, 0), (x + 44 - H, H), (x - H, H)],
+                  fill=tuple(min(255, c + int(14 + 8 * pulso))
+                             for c in pal["fondo"]))
+    e = eo_back(min(1.0, t / 0.32))
+    r = int(120 * max(0.05, e))
+    cx, cy = W / 2, H * 0.30
+    d.ellipse([cx - r, cy - r, cx + r, cy + r],
+              outline=tuple(pal["destacado"]), width=int(10 * max(0.1, e)))
+    fs = fnt(int(150 * max(0.05, e)))
+    bb = d.textbbox((0, 0), "!", font=fs)
+    d.text((cx - (bb[2] - bb[0]) / 2 - bb[0], cy - (bb[3] - bb[1]) / 2 - bb[1]),
+           "!", font=fs, fill=tuple(pal["destacado"]))
+    ft, lt = auto_tam(d, seg["texto"], W - 180, 520, 92)
+    y = H * 0.52
+    a_ = eo_expo(max(0.0, min(1.0, (t - 0.2) / 0.35)))
+    for ln in lt:
+        wl = d.textbbox((0, 0), ln, font=ft)[2]
+        dy = int(40 * (1 - a_))
+        if a_ > 0:
+            sombra_t(d, ((W - wl) / 2, y + dy), ln, ft, tuple(pal["texto"]))
+        y += ft.size + 14
+
+
+def f_panel(img, d, seg, t, pal):
+    """Panel de 3-4 metricas: sensacion de reporte / dashboard."""
+    datos = seg.get("datos", [["Vistas", "12.4k"], ["Clics", "890"],
+                              ["Ventas", "47"], ["Conv.", "5.3%"]])
+    ft, lt = auto_tam(d, seg.get("texto", ""), W - 200, 170, 62)
+    y = 210
+    for ln in lt:
+        wl = d.textbbox((0, 0), ln, font=ft)[2]
+        sombra_t(d, ((W - wl) / 2, y), ln, ft, tuple(pal["texto"]))
+        y += ft.size + 10
+    cols, top = 2, H * 0.34
+    cw, ch_ = (W - 240) / cols, 300
+    fv, fl = fnt(84), fnt(38)
+    for i, (lab, val) in enumerate(datos[:4]):
+        e = eo_back(max(0.0, min(1.0, (t - i * 0.09) / 0.34)))
+        cx = 120 + (i % cols) * cw
+        cy = top + (i // cols) * (ch_ + 30)
+        dy = int(40 * (1 - max(0, e)))
+        d.rounded_rectangle([cx, cy + dy, cx + cw - 30, cy + ch_ + dy],
+                            radius=22,
+                            fill=tuple(min(255, c + 14) for c in pal["fondo"]),
+                            outline=(58, 58, 74), width=3)
+        d.text((cx + 34, cy + 44 + dy), lab.upper(), font=fl,
+               fill=(150, 150, 170))
+        col = tuple(pal["destacado"]) if i == 0 else tuple(pal["texto"])
+        d.text((cx + 34, cy + 116 + dy), val, font=fv, fill=col)
+
+
+def f_terminal(img, d, seg, t, pal):
+    """Estetica de terminal: monoespaciado, cursor, tipeo real."""
+    d.rounded_rectangle([70, H * 0.24, W - 70, H * 0.70], radius=18,
+                        fill=(8, 10, 14), outline=(52, 56, 70), width=3)
+    d.rectangle([70, H * 0.24, W - 70, H * 0.24 + 62], fill=(24, 26, 34))
+    for i, c in enumerate([(255, 95, 86), (255, 189, 46), (39, 201, 63)]):
+        d.ellipse([104 + i * 38, H * 0.24 + 22, 122 + i * 38, H * 0.24 + 40],
+                  fill=c)
+    lineas = seg.get("lineas", ["$ analizar --nicho", "> 47 productos",
+                                "> 3 con ventas", "> causa: sin trafico"])
+    f = fnt(44)
+    y = H * 0.24 + 110
+    total = sum(len(l) for l in lineas)
+    escritos = int(total * min(1.0, t / 0.8))
+    acc = 0
+    for ln in lineas:
+        if acc >= escritos:
+            break
+        vis = ln[:max(0, escritos - acc)]
+        col = tuple(pal["destacado"]) if ln.startswith("$") else (200, 230, 210)
+        d.text((116, y), vis, font=f, fill=col)
+        if acc + len(ln) > escritos and int(t * 6) % 2 == 0:
+            wv = d.textbbox((0, 0), vis, font=f)[2]
+            d.rectangle([116 + wv + 4, y + 6, 116 + wv + 24, y + f.size],
+                        fill=tuple(pal["destacado"]))
+        acc += len(ln)
+        y += f.size + 22
+    if seg.get("texto"):
+        ft, lt = auto_tam(d, seg["texto"], W - 200, 220, 62)
+        yy = H * 0.76
+        for ln in lt:
+            wl = d.textbbox((0, 0), ln, font=ft)[2]
+            sombra_t(d, ((W - wl) / 2, yy), ln, ft, tuple(pal["texto"]))
+            yy += ft.size + 12
+
+
+
+# ============ EFECTOS DE HOOK (primeros frames) ============
+# Se aplican SOBRE el frame ya compuesto. El objetivo es romper el
+# patron del scroll en el primer frame, no decorar.
+
+def hk_flash(img, t, pal):
+    """Destello blanco que se apaga rapido. Rompe el scroll."""
+    if t > 0.09:
+        return img
+    a = 1 - t / 0.09
+    return Image.blend(img, Image.new("RGB", (W, H), (255, 255, 255)), a * 0.85)
+
+
+def hk_zoom_golpe(img, t, pal):
+    """Entra sobredimensionado y se asienta: sensacion de impacto."""
+    if t > 0.30:
+        return img
+    e = eo_expo(t / 0.30)
+    z = 1.5 - 0.5 * e
+    nw, nh = int(W * z), int(H * z)
+    zz = img.resize((nw, nh), Image.LANCZOS)
+    return zz.crop(((nw - W) // 2, (nh - H) // 2,
+                    (nw - W) // 2 + W, (nh - H) // 2 + H))
+
+
+def hk_glitch(img, t, pal):
+    """Separacion RGB + bandas desplazadas: error digital."""
+    if t > 0.26:
+        return img
+    f = 14 * (1 - t / 0.26)
+    r, g, b = img.split()
+    out = Image.merge("RGB", (ImageChops.offset(r, int(f), 0), g,
+                              ImageChops.offset(b, -int(f), 0)))
+    rnd = random.Random(int(t * 90))
+    for _ in range(4):
+        y0 = rnd.randint(0, H - 60)
+        alto = rnd.randint(14, 54)
+        banda = out.crop((0, y0, W, y0 + alto))
+        out.paste(banda, (rnd.randint(-30, 30), y0))
+    return out
+
+
+def hk_sacudida(img, t, pal):
+    """Shake de camara amortiguado."""
+    if t > 0.24:
+        return img
+    a = (1 - t / 0.24) * 26
+    dx = int(math.sin(t * 70) * a)
+    dy = int(math.cos(t * 58) * a * 0.6)
+    z = 1.06
+    nw, nh = int(W * z), int(H * z)
+    zz = img.resize((nw, nh), Image.LANCZOS)
+    cx = max(0, min((nw - W) / 2 + dx, nw - W))
+    cy = max(0, min((nh - H) / 2 + dy, nh - H))
+    return zz.crop((int(cx), int(cy), int(cx) + W, int(cy) + H))
+
+
+def hk_barras(img, t, pal):
+    """Barras horizontales que se abren revelando el contenido."""
+    if t > 0.34:
+        return img
+    e = eio(t / 0.34)
+    out = img.copy()
+    d = ImageDraw.Draw(out)
+    n = 7
+    alto = H / n
+    for i in range(n):
+        y0 = i * alto
+        h = alto * (1 - e) / 2
+        if h > 1:
+            d.rectangle([0, y0, W, y0 + h], fill=tuple(pal["fondo"]))
+            d.rectangle([0, y0 + alto - h, W, y0 + alto], fill=tuple(pal["fondo"]))
+    return out
+
+
+def hk_persiana(img, t, pal):
+    """Bloques verticales que caen revelando. Estilo motion graphics."""
+    if t > 0.38:
+        return img
+    out = img.copy()
+    d = ImageDraw.Draw(out)
+    n = 6
+    an = W / n
+    rnd = random.Random(3)
+    for i in range(n):
+        d0 = rnd.uniform(0, 0.14)
+        e = eo_expo(max(0.0, min(1.0, (t - d0) / 0.24))) if t > d0 else 0.0
+        h = H * (1 - e)
+        if h > 1:
+            d.rectangle([i * an, 0, (i + 1) * an, h],
+                        fill=tuple(min(255, c + 8) for c in pal["fondo"]))
+            d.rectangle([i * an, h - 5, (i + 1) * an, h],
+                        fill=tuple(pal["destacado"]))
+    return out
+
+
+HOOKS = {"flash": hk_flash, "zoom_golpe": hk_zoom_golpe, "glitch": hk_glitch,
+         "sacudida": hk_sacudida, "barras": hk_barras, "persiana": hk_persiana}
+
+
+
+# ============ TRATAMIENTO DE IMAGEN (elegancia) ============
+# El secreto de que una foto se vea "disenada" y no "pegada":
+# duotono a la paleta + vineta + encuadre inteligente + marco.
+
+def duotono(img, sombra, luz):
+    """Mapea la imagen a dos colores de la paleta. Unifica cualquier
+    foto con la identidad visual, sin importar de donde venga."""
+    g = img.convert("L")
+    paleta = []
+    for i in range(256):
+        f = i / 255
+        paleta += [int(sombra[c] + (luz[c] - sombra[c]) * f) for c in range(3)]
+    salida = Image.new("P", g.size)
+    salida.putpalette(paleta)
+    salida.paste(g, (0, 0))
+    return salida.convert("RGB")
+
+
+def vineta(img, fuerza=0.75):
+    """Oscurece los bordes: enfoca la mirada al centro."""
+    w, h = img.size
+    m = Image.new("L", (w, h), 0)
+    d = ImageDraw.Draw(m)
+    for i in range(60):
+        f = i / 60
+        r = int(255 * (1 - f * fuerza))
+        pad = int(min(w, h) * 0.5 * f)
+        d.ellipse([pad - w * 0.15, pad - h * 0.12,
+                   w - pad + w * 0.15, h - pad + h * 0.12], fill=r)
+    m = m.filter(ImageFilter.GaussianBlur(40))
+    negro = Image.new("RGB", (w, h), (0, 0, 0))
+    return Image.composite(img, negro, m)
+
+
+def encuadrar(img, w, h):
+    """Recorta al centro conservando proporcion. Nunca deforma."""
+    iw, ih = img.size
+    if iw / ih > w / h:
+        nh = h; nw = int(h * iw / ih)
+    else:
+        nw = w; nh = int(w * ih / iw)
+    img = img.resize((nw, nh), Image.LANCZOS)
+    return img.crop(((nw - w) // 2, (nh - h) // 2,
+                     (nw - w) // 2 + w, (nh - h) // 2 + h))
+
+
+def preparar_retrato(path, w, h, pal, cache):
+    """Carga + encuadra + duotono + vineta. Devuelve None si falla."""
+    if path in cache:
+        base = cache[path]
+    else:
+        pth = Path(path)
+        if not pth.exists():
+            print(f"AVISO: no existe la imagen '{path}'.")
+            cache[path] = None
+            return None
+        try:
+            cache[path] = Image.open(pth).convert("RGB")
+        except Exception as e:
+            print(f"AVISO: no se pudo abrir '{path}' ({e}).")
+            cache[path] = None
+            return None
+        base = cache[path]
+    if base is None:
+        return None
+    img = encuadrar(base, w, h)
+    sombra = tuple(min(255, int(c * 0.75 + 30)) for c in pal["fondo"])
+    luz = tuple(min(255, int(c * 0.35 + 255 * 0.72)) for c in pal["destacado"])
+    img = duotono(img, sombra, luz)
+    return vineta(img, 0.32)
+
+
+def f_retrato(img, d, seg, t, pal):
+    """Retrato de un pensador: marco en arco clasico, nombre, fechas,
+    cita. Es el formato para cuando la figura historica ES el tema."""
+    cache = seg.setdefault("_cache", {})
+    aw, ah = int(W * 0.62), int(W * 0.62 * 1.28)
+    ax = (W - aw) // 2
+    ay = int(H * 0.16)
+    e = eo_expo(min(1.0, t / 0.5))
+
+    ret = preparar_retrato(seg.get("imagen", ""), aw, ah, pal, cache) \
+        if seg.get("imagen") else None
+
+    # Marco en arco (medio punto arriba): lenguaje visual clasico
+    marco = Image.new("L", (aw, ah), 0)
+    dm = ImageDraw.Draw(marco)
+    r = aw // 2
+    dm.pieslice([0, 0, aw, aw], 180, 360, fill=255)
+    dm.rectangle([0, r, aw, ah], fill=255)
+
+    if ret is not None:
+        # Ken Burns muy lento (el nicho pide ritmo meditativo)
+        z = 1.0 + 0.05 * eio(t)
+        zw, zh = int(aw * z), int(ah * z)
+        zi = ret.resize((zw, zh), Image.LANCZOS).crop(
+            ((zw - aw) // 2, (zh - ah) // 2,
+             (zw - aw) // 2 + aw, (zh - ah) // 2 + ah))
+        img.paste(zi, (ax, ay), marco)
+    else:
+        # Sin imagen: silueta de placeholder, no un hueco feo
+        ph = Image.new("RGB", (aw, ah), tuple(min(255, c + 12)
+                                              for c in pal["fondo"]))
+        dp = ImageDraw.Draw(ph)
+        dp.ellipse([aw * 0.28, ah * 0.16, aw * 0.72, ah * 0.60],
+                   fill=tuple(min(255, c + 26) for c in pal["fondo"]))
+        dp.ellipse([aw * 0.14, ah * 0.56, aw * 0.86, ah * 1.30],
+                   fill=tuple(min(255, c + 26) for c in pal["fondo"]))
+        img.paste(ph, (ax, ay), marco)
+
+    # Contorno dorado del arco
+    d.arc([ax, ay, ax + aw, ay + aw], 180, 360,
+          fill=tuple(pal["destacado"]), width=4)
+    d.line([(ax, ay + r), (ax, ay + ah)], fill=tuple(pal["destacado"]), width=4)
+    d.line([(ax + aw, ay + r), (ax + aw, ay + ah)],
+           fill=tuple(pal["destacado"]), width=4)
+    d.line([(ax, ay + ah), (ax + aw, ay + ah)],
+           fill=tuple(pal["destacado"]), width=4)
+
+    # Nombre + fechas
+    y = ay + ah + 46
+    nombre = seg.get("nombre", "")
+    if nombre:
+        fn = fnt(66, serif=True)
+        wn = d.textbbox((0, 0), nombre, font=fn)[2]
+        sombra_t(d, ((W - wn) / 2, y), nombre, fn, tuple(pal["texto"]))
+        y += fn.size + 10
+    if seg.get("fechas"):
+        ff = fnt(34, ligera=True)
+        wf = d.textbbox((0, 0), seg["fechas"], font=ff)[2]
+        d.text(((W - wf) / 2, y), seg["fechas"], font=ff,
+               fill=tuple(pal["destacado"]))
+        y += ff.size + 26
+
+    # Regla dorada que se dibuja
+    d.rectangle([(W - 260 * e) / 2, y, (W + 260 * e) / 2, y + 3],
+                fill=tuple(pal["destacado"]))
+    y += 34
+
+    # Cita en serif
+    if seg.get("texto"):
+        fc, lc = auto_tam(d, seg["texto"], W - 200, H - y - 120, 56)
+        fc = fnt(fc.size, serif=True)
+        lc = envolver(d, seg["texto"], fc, W - 200)
+        a_ = eo_cubic(max(0.0, min(1.0, (t - 0.35) / 0.4)))
+        for ln in lc:
+            wl = d.textbbox((0, 0), ln, font=fc)[2]
+            col = tuple(int(f + (c - f) * a_)
+                        for f, c in zip(pal["fondo"], pal["texto"]))
+            d.text(((W - wl) / 2, y), ln, font=fc, fill=col)
+            y += fc.size + 12
+
+
+def f_galeria(img, d, seg, t, pal):
+    """Varias figuras en fila que se encienden en secuencia.
+    Para 'los 3 estoicos', comparaciones entre pensadores, etc."""
+    figs = seg.get("figuras", [])
+    cache = seg.setdefault("_cache", {})
+    ft, lt = auto_tam(d, seg.get("texto", ""), W - 180, 220, 72)
+    y = 230
+    for ln in lt:
+        wl = d.textbbox((0, 0), ln, font=ft)[2]
+        sombra_t(d, ((W - wl) / 2, y), ln, ft, tuple(pal["texto"]))
+        y += ft.size + 12
+
+    n = max(1, len(figs))
+    cw = int((W - 160) / n) - 20
+    ch = int(cw * 1.25)
+    top = int(H * 0.40)
+    for i, f_ in enumerate(figs):
+        ap = i / n * 0.6
+        e = eo_expo(max(0.0, min(1.0, (t - ap) / 0.3)))
+        if e <= 0:
+            continue
+        x = 80 + i * (cw + 20)
+        dy = int(40 * (1 - e))
+        ret = preparar_retrato(f_.get("imagen", ""), cw, ch, pal, cache) \
+            if f_.get("imagen") else None
+        if ret is None:
+            ret = Image.new("RGB", (cw, ch),
+                            tuple(min(255, c + 14) for c in pal["fondo"]))
+            dp = ImageDraw.Draw(ret)
+            dp.ellipse([cw * 0.26, ch * 0.14, cw * 0.74, ch * 0.58],
+                       fill=tuple(min(255, c + 30) for c in pal["fondo"]))
+        img.paste(ret, (x, top + dy))
+        d.rectangle([x, top + dy, x + cw, top + ch + dy],
+                    outline=tuple(pal["destacado"]), width=3)
+        fn2 = fnt(int(cw * 0.16), serif=True)
+        nom = f_.get("nombre", "")
+        wn = d.textbbox((0, 0), nom, font=fn2)[2]
+        d.text((x + (cw - wn) / 2, top + ch + dy + 18), nom, font=fn2,
+               fill=tuple(pal["texto"]))
+        if f_.get("nota"):
+            fnn = fnt(int(cw * 0.12), ligera=True)
+            wnn = d.textbbox((0, 0), f_["nota"], font=fnn)[2]
+            d.text((x + (cw - wnn) / 2, top + ch + dy + 18 + fn2.size + 8),
+                   f_["nota"], font=fnn, fill=tuple(pal["destacado"]))
+
+
+FORMATOS = {
+    "declaracion": f_declaracion, "dato_duro": f_dato_duro,
+    "division": f_division, "revelacion": f_revelacion,
+    "cronologia": f_cronologia, "conteo": f_conteo,
+    "pregunta": f_pregunta, "editorial": f_editorial,
+    "retrato": f_retrato, "galeria": f_galeria,
+    "cita": f_cita, "pasos": f_pasos, "ranking": f_ranking,
+    "alerta": f_alerta, "panel": f_panel, "terminal": f_terminal,
+}
+
+PALETAS = [
+    # --- MARCA EL CORTE: editorial, verde señal (ver MARCA.md) ---
+    {"fondo": [15, 15, 16], "texto": [242, 239, 233], "destacado": [74, 222, 128]},
+    # --- Nicho filosofia: piedra, hueso, dorado apagado ---
+    {"fondo": [24, 22, 20], "texto": [238, 232, 220], "destacado": [198, 160, 92]},
+    {"fondo": [18, 18, 17], "texto": [232, 228, 218], "destacado": [176, 148, 108]},
+    {"fondo": [12, 12, 18], "texto": [245, 245, 250], "destacado": [255, 84, 48]},
+    {"fondo": [8, 14, 26], "texto": [238, 246, 255], "destacado": [82, 190, 255]},
+    {"fondo": [10, 22, 17], "texto": [235, 250, 242], "destacado": [62, 222, 140]},
+    {"fondo": [20, 11, 26], "texto": [246, 240, 252], "destacado": [200, 110, 255]},
+    {"fondo": [6, 6, 6], "texto": [255, 255, 255], "destacado": [250, 208, 40]},
+    {"fondo": [242, 239, 233], "texto": [20, 20, 26], "destacado": [228, 60, 32]},
+]
+
+
+def render(seg, t, prog, cfg):
+    pal = cfg["paleta"]
+    img = base_fondo(pal, t, seg)
+    # Imagen de fondo: encuadrada, duotono a la paleta y oscurecida para
+    # que el texto siempre se lea. Ken Burns muy lento (ritmo del nicho).
+    if seg.get("imagen") and seg.get("formato") != "retrato":
+        listo = seg.get("_fondo")
+        if listo is None:
+            cache = {}
+            listo = preparar_retrato(seg["imagen"], int(W*1.10), int(H*1.10),
+                                     pal, cache)
+            seg["_fondo"] = listo if listo is not None else False
+        base = seg["_fondo"] or None
+        if base is not None:
+            dx = int((base.width - W) * (0.5 + 0.12*math.sin(t*math.pi)))
+            dy = int((base.height - H) * 0.5)
+            dx = max(0, min(dx, base.width - W)); dy = max(0, min(dy, base.height - H))
+            base = base.crop((dx, dy, dx + W, dy + H))
+            vel = seg.get("vel_imagen", 0.62)
+            img = Image.blend(base, img, vel)
+    d = ImageDraw.Draw(img)
+    fmt = seg.get("formato", "declaracion")
+    FORMATOS.get(fmt, f_declaracion)(img, d, seg, t, pal)
+    # Efecto de hook (solo primeros frames del segmento)
+    hk = seg.get("hook")
+    if hk:
+        for nombre in ([hk] if isinstance(hk, str) else hk):
+            if nombre in HOOKS:
+                img = HOOKS[nombre](img, t, pal)
+        d = ImageDraw.Draw(img)
+
+    # Camara: leve deriva, distinta por formato
+    amp = cfg.get("camara", 1.0)
+    if amp > 0 and fmt not in ("division",):
+        z = 1.0 + 0.028 * amp * eio(t)
+        nw, nh = int(W * z), int(H * z)
+        img = img.resize((nw, nh), Image.LANCZOS)
+        cx = (nw - W) / 2 + math.sin(t * 2.2) * 9 * amp
+        cy = (nh - H) / 2 + math.cos(t * 1.7) * 7 * amp
+        cx = max(0, min(cx, nw - W)); cy = max(0, min(cy, nh - H))
+        img = img.crop((int(cx), int(cy), int(cx) + W, int(cy) + H))
+    d = ImageDraw.Draw(img)
+    d.rectangle([0, H - 9, int(W * prog), H], fill=tuple(pal["destacado"]))
+    return img
+
+
+
+def _zoom_radial(img, fuerza):
+    """Desenfoque radial: simula un zoom rapido de camara.
+    Se logra apilando copias escaladas. Muy cinematografico."""
+    if fuerza < 0.02:
+        return img
+    acum = img.convert("RGB")
+    pasos = 5
+    for i in range(1, pasos + 1):
+        z = 1 + fuerza * (i / pasos) * 0.16
+        nw, nh = int(W * z), int(H * z)
+        capa = img.resize((nw, nh), Image.BILINEAR).crop(
+            ((nw - W) // 2, (nh - H) // 2,
+             (nw - W) // 2 + W, (nh - H) // 2 + H))
+        acum = Image.blend(acum, capa, 1.0 / (i + 1))
+    return acum
+
+
+def _polvo(a, b, t, semilla=9):
+    """Disolucion en particulas: A se deshace en polvo y aparece B.
+    Encaja con la estetica de marmol/piedra del nicho."""
+    e = eio(t)
+    m = Image.new("L", (W, H), 0)
+    d = ImageDraw.Draw(m)
+    rnd = random.Random(semilla)
+    # Bloques que se revelan en orden pseudo-aleatorio segun avance
+    cel = 26
+    for y in range(0, H, cel):
+        for x in range(0, W, cel):
+            umbral = rnd.random() * 0.75 + (x / W) * 0.25
+            if e > umbral:
+                r = min(cel, int(cel * (e - umbral) * 6))
+                d.rectangle([x, y, x + r, y + r], fill=255)
+    m = m.filter(ImageFilter.GaussianBlur(7))
+    return Image.composite(b, a, m)
+
+
+def _iris(a, b, t):
+    """Apertura circular desde el centro, con borde luminoso."""
+    e = eio(t)
+    r = int(math.hypot(W, H) * 0.55 * e)
+    m = Image.new("L", (W, H), 0)
+    d = ImageDraw.Draw(m)
+    d.ellipse([W / 2 - r, H / 2 - r, W / 2 + r, H / 2 + r], fill=255)
+    m = m.filter(ImageFilter.GaussianBlur(18))
+    out = Image.composite(b, a, m)
+    if 0.04 < e < 0.97:
+        do = ImageDraw.Draw(out)
+        do.ellipse([W / 2 - r, H / 2 - r, W / 2 + r, H / 2 + r],
+                   outline=(255, 245, 220), width=5)
+    return out
+
+
+def _rotacion(a, b, t):
+    """Giro leve con escala: entrada elegante, no mareadora."""
+    e = eio(t)
+    ang = 7 * (1 - e)
+    z = 1 + 0.13 * (1 - e)
+    nw, nh = int(W * z), int(H * z)
+    capa = b.resize((nw, nh), Image.BICUBIC).rotate(
+        ang, resample=Image.BICUBIC, center=(nw / 2, nh / 2))
+    capa = capa.crop(((nw - W) // 2, (nh - H) // 2,
+                      (nw - W) // 2 + W, (nh - H) // 2 + H))
+    return Image.blend(a, capa, min(1.0, e * 1.2))
+
+
+def _linea_dorada(a, b, t, pal=None):
+    """Barrido vertical con una linea luminosa que corta la pantalla."""
+    e = eio(t)
+    y = int(H * e)
+    out = a.copy()
+    out.paste(b.crop((0, 0, W, y)), (0, 0))
+    if 0 < y < H:
+        d = ImageDraw.Draw(out)
+        col = tuple(pal["destacado"]) if pal else (230, 200, 130)
+        for k, gr in enumerate([10, 6, 3]):
+            alfa = [70, 140, 255][k]
+            capa = Image.new("RGB", (W, H), col)
+            mm = Image.new("L", (W, H), 0)
+            ImageDraw.Draw(mm).rectangle([0, y - gr, W, y + gr], fill=alfa)
+            out = Image.composite(capa, out, mm)
+        d = ImageDraw.Draw(out)
+        d.rectangle([0, y - 2, W, y + 2], fill=(255, 250, 235))
+    return out
+
+
+def transicion(a, b, t, tipo, pal=None):
+    e = eio(t)
+    if tipo == "fade":
+        des = math.sin(t * math.pi) * 2.4
+        aa = a.filter(ImageFilter.GaussianBlur(des)) if des > .4 else a
+        bb = b.filter(ImageFilter.GaussianBlur(des)) if des > .4 else b
+        return Image.blend(aa, bb, e)
+    if tipo == "corte_duro":
+        return b if t > 0.5 else a
+    if tipo == "barrido":
+        o = a.copy(); x = int(W * e)
+        o.paste(b.crop((0, 0, x, H)), (0, 0))
+        if 0 < x < W:
+            ImageDraw.Draw(o).rectangle([x - 8, 0, x, H], fill=(255, 255, 255))
+        return o
+    if tipo == "slide":
+        off = int(H * e); o = Image.new("RGB", (W, H))
+        o.paste(a, (0, -off)); o.paste(b, (0, H - off)); return o
+    if tipo == "punch":
+        z = 1 + .2 * (1 - e); nw, nh = int(W * z), int(H * z)
+        zz = b.resize((nw, nh), Image.LANCZOS).crop(
+            ((nw - W) // 2, (nh - H) // 2, (nw - W) // 2 + W, (nh - H) // 2 + H))
+        return Image.blend(a, zz, min(1.0, e * 1.3))
+    if tipo == "dip":
+        n = Image.new("RGB", (W, H), (0, 0, 0))
+        return Image.blend(a, n, eio(t * 2)) if t < .5 \
+            else Image.blend(n, b, eio((t - .5) * 2))
+    if tipo == "whip":
+        fz = math.sin(t * math.pi)
+        aa = a.filter(ImageFilter.GaussianBlur(fz * 15))
+        bb = b.filter(ImageFilter.GaussianBlur(fz * 15))
+        ca = Image.new("RGB", (W, H)); ca.paste(aa, (-int(W * .4 * e), 0))
+        cb = Image.new("RGB", (W, H)); cb.paste(bb, (int(W * .4 * (1 - e)), 0))
+        return Image.blend(ca, cb, e)
+    if tipo == "polvo":
+        return _polvo(a, b, t)
+    if tipo == "iris":
+        return _iris(a, b, t)
+    if tipo == "rotacion":
+        return _rotacion(a, b, t)
+    if tipo == "linea":
+        return _linea_dorada(a, b, t, pal)
+    if tipo == "zoom_radial":
+        f = math.sin(t * math.pi)
+        return Image.blend(_zoom_radial(a, f), _zoom_radial(b, f), e)
+    return b
+
+
+
+
+# ============ SINCRONIZACION: LINEA DE TIEMPO CALCULADA ============
+# El problema que resuelve: si la duracion de cada segmento se escribe
+# a mano, la voz se corta o sobra silencio. Aca la VOZ manda: se genera
+# primero, se mide su duracion real, y el video se ajusta a ella.
+#
+# Orden de calculo:
+#   1. Generar voz de cada segmento -> duracion real medida con ffprobe
+#   2. duracion_segmento = voz + respiro (pausa entre frases)
+#   3. Los SFX se anclan al inicio EXACTO de cada transicion
+#   4. La musica baja de volumen (ducking) donde hay voz
+#   5. El total del video = suma exacta de la linea de tiempo
+
+RESPIRO = 0.45          # silencio despues de cada frase, en segundos
+DUCK_CON_VOZ = 0.10     # volumen de musica cuando hay voz
+DUCK_SIN_VOZ = 0.26     # volumen de musica cuando no hay voz
+
+
+def duracion_audio(path):
+    """Mide la duracion real de un archivo con ffprobe."""
+    r = subprocess.run(
+        ["ffprobe", "-v", "error", "-show_entries", "format=duration",
+         "-of", "csv=p=0", str(path)], capture_output=True, text=True)
+    try:
+        return float(r.stdout.strip())
+    except (ValueError, AttributeError):
+        return None
+
+
+def generar_voz(texto, modelo, destino):
+    """Genera voz con Piper (open source). Devuelve duracion o None."""
+    if not texto or not texto.strip():
+        return None
+    try:
+        r = subprocess.run(
+            [sys.executable, "-m", "piper", "-m", modelo, "-f", str(destino)],
+            input=texto, capture_output=True, text=True, timeout=180)
+        if r.returncode != 0 or not Path(destino).exists():
+            print(f"AVISO: piper fallo -> {r.stderr[:160]}")
+            return None
+        return duracion_audio(destino)
+    except FileNotFoundError:
+        print("AVISO: piper no instalado (pip install piper-tts). "
+              "Se usan las duraciones del guion.")
+        return None
+    except Exception as e:
+        print(f"AVISO: error de voz ({e}).")
+        return None
+
+
+def texto_hablado(seg):
+    """Extrae lo que se debe narrar de cada formato."""
+    partes = []
+    if seg.get("narracion"):
+        return seg["narracion"]
+    if seg.get("texto"):
+        partes.append(seg["texto"])
+    if seg.get("pregunta"):
+        partes.append(seg["pregunta"])
+    if seg.get("respuesta"):
+        partes.append(seg["respuesta"])
+    if seg.get("nombre"):
+        partes.insert(0, seg["nombre"])
+    for k in ("pasos", "items"):
+        if seg.get(k):
+            partes += list(seg[k])
+    if seg.get("izquierda") and seg.get("derecha"):
+        partes.append(seg["izquierda"].get("texto", ""))
+        partes.append(seg["derecha"].get("texto", ""))
+    return ". ".join([p for p in partes if p])
+
+
+def construir_linea_tiempo(cfg, segs, tmp):
+    """Calcula la linea de tiempo completa ANTES de renderizar.
+    Devuelve (voces, marcas) donde marcas[i] = segundo de inicio del
+    segmento i. Si hay voz, reescribe seg['duracion']."""
+    voces = {}
+    if cfg.get("tts"):
+        modelo = cfg.get("voz_modelo", "es_AR-daniela-high")
+        respiro = cfg.get("respiro", RESPIRO)
+        print("Generando voz y midiendo duraciones...")
+        for i, seg in enumerate(segs):
+            txt = texto_hablado(seg)
+            if not txt:
+                continue
+            wav = tmp / f"voz{i:03d}.wav"
+            d = generar_voz(txt, modelo, wav)
+            if d:
+                voces[i] = wav
+                # LA VOZ MANDA: la duracion del segmento se ajusta a ella
+                seg["duracion"] = round(d + respiro, 2)
+        if voces:
+            print(f"Voz generada: {len(voces)}/{len(segs)} segmentos. "
+                  "Duraciones ajustadas a la narracion.")
+        else:
+            print("Sin voz generada: se usan las duraciones del guion.")
+
+    marcas, acc = [], 0.0
+    for seg in segs:
+        marcas.append(acc)
+        acc += seg["duracion"]
+    return voces, marcas
+
+
+# ============ AUDIO: SFX AUTOMATICO POR TRANSICION ============
+# Cada transicion tiene un sonido que le corresponde. Se aplica solo,
+# sin que el guion tenga que declararlo. Se puede sobreescribir con
+# "sfx" en el segmento, o desactivar con "sfx_auto": false.
+
+SFX_POR_TRANSICION = {
+    "punch": "impacto", "whip": "whoosh", "slide": "whoosh",
+    "barrido": "whoosh", "dip": "sub", "corte_duro": "impacto",
+    "fade": None, "corte": None,
+}
+
+SFX_POR_FORMATO = {
+    "dato_duro": "campana", "conteo": "tick", "revelacion": "riser",
+    "pasos": "tick", "alerta": "impacto",
+}
+
+
+def construir_audio(cfg, segs, dur_total, tmp, voces=None, marcas=None):
+    """Mezcla sincronizada: voz + SFX anclados a las transiciones +
+    musica con ducking automatico donde hay voz.
+
+    Todo se posiciona con adelay en milisegundos calculados desde la
+    linea de tiempo, no estimados. Por eso queda cuadrado."""
+    voces = voces or {}
+    marcas = marcas or []
+    dir_sfx = Path(cfg.get("dir_sfx", "assets/sfx"))
+    entradas, filtros, etiquetas = [], [], []
+    n = 0
+
+    # --- 1. VOZ (la capa principal, va primero) ---
+    for i, seg in enumerate(segs):
+        if i in voces and Path(voces[i]).exists():
+            t0 = marcas[i] if i < len(marcas) else 0.0
+            delay = int(t0 * 1000)
+            entradas += ["-i", str(voces[i])]
+            filtros.append(f"[{n}:a]adelay={delay}|{delay},"
+                           f"volume={cfg.get('vol_voz', 1.0)}[a{n}]")
+            etiquetas.append(f"[a{n}]")
+            n += 1
+
+    # --- 2. SFX anclados al INICIO EXACTO de cada transicion ---
+    for i, seg in enumerate(segs):
+        if not seg.get("sfx_auto", True):
+            continue
+        nombre = seg.get("sfx") or SFX_POR_FORMATO.get(seg.get("formato"))
+        if not nombre and i > 0:
+            nombre = SFX_POR_TRANSICION.get(seg.get("transicion", "fade"))
+        if not nombre:
+            continue
+        ruta = dir_sfx / f"{nombre}.wav"
+        if not ruta.exists():
+            continue
+        t0 = marcas[i] if i < len(marcas) else 0.0
+        # El SFX suena cuando ARRANCA la transicion, no despues
+        delay = int(max(0.0, t0 + seg.get("sfx_en", 0.0)) * 1000)
+        vol = seg.get("sfx_vol", 0.45 if voces else 0.55)
+        entradas += ["-i", str(ruta)]
+        filtros.append(f"[{n}:a]adelay={delay}|{delay},volume={vol}[a{n}]")
+        etiquetas.append(f"[a{n}]")
+        n += 1
+
+    # --- 3. MUSICA con ducking donde hay voz ---
+    musica = cfg.get("musica")
+    if musica and Path(musica).exists():
+        base = cfg.get("vol_musica",
+                       DUCK_CON_VOZ if voces else DUCK_SIN_VOZ)
+        cadena = (f"[{n}:a]aloop=loop=-1:size=2e9,atrim=0:{dur_total},"
+                  f"volume={base},afade=t=in:st=0:d=1.2,"
+                  f"afade=t=out:st={max(0, dur_total-2.0)}:d=2.0")
+        # Sube el volumen en los tramos SIN voz (respira entre frases)
+        if voces:
+            huecos = []
+            for i, seg in enumerate(segs):
+                if i not in voces:
+                    t0 = marcas[i] if i < len(marcas) else 0
+                    huecos.append((t0, t0 + seg["duracion"]))
+            for (a, b) in huecos[:6]:   # limite para no romper el filtro
+                cadena += (f",volume=enable='between(t,{a:.2f},{b:.2f})':"
+                           f"volume={DUCK_SIN_VOZ / max(base, 0.01):.2f}")
+        entradas += ["-i", musica]
+        filtros.append(cadena + f"[a{n}]")
+        etiquetas.append(f"[a{n}]")
+        n += 1
+    elif musica:
+        print(f"AVISO: no existe la musica '{musica}'.")
+
+    if not etiquetas:
+        return None
+
+    out = tmp / "audio.m4a"
+    mix = "".join(etiquetas) + (
+        f"amix=inputs={len(etiquetas)}:duration=longest:normalize=0,"
+        f"alimiter=limit=0.95,"
+        f"aresample=44100[o]")
+    cmd = ["ffmpeg", "-y", "-loglevel", "error"] + entradas + [
+        "-filter_complex", ";".join(filtros + [mix]),
+        "-map", "[o]", "-t", f"{dur_total:.3f}",
+        "-c:a", "aac", "-b:a", "192k", str(out)]
+    r = subprocess.run(cmd, capture_output=True, text=True)
+    if r.returncode != 0:
+        print(f"AVISO: fallo la mezcla de audio.\n{r.stderr[:400]}")
+        return None
+    return out
+
+
+DEMO = {
+    "salida": "demo-v9.mp4", "fps": 30, "camara": 1.0,
+    "paleta": PALETAS[0],
+    "segmentos": [
+        {"formato": "declaracion", "texto": "Publique 47 productos",
+         "duracion": 1.8, "transicion": "corte_duro"},
+        {"formato": "dato_duro", "numero": 3, "texto": "productos vendidos en cuatro meses",
+         "duracion": 2.2, "transicion": "punch"},
+        {"formato": "division", "texto": "", "duracion": 2.4,
+         "izquierda": {"titulo": "Sin canal", "texto": "Publicar y esperar",
+                       "valor": "12"},
+         "derecha": {"titulo": "Con canal", "texto": "Un canal, 30 dias",
+                     "valor": "340"}, "transicion": "barrido"},
+        {"formato": "pregunta", "pregunta": "Cual fue el error?",
+         "respuesta": "Nadie los vio", "texto": "", "duracion": 2.8,
+         "transicion": "dip"},
+        {"formato": "cronologia", "texto": "Asi crece si sostenes",
+         "hitos": ["Dia 1", "Dia 7", "Dia 14", "Dia 30"],
+         "valores": ["0", "3", "11", "61"], "duracion": 2.6,
+         "transicion": "slide"},
+        {"formato": "conteo", "texto": "",
+         "items": ["Sin nicho", "Sin canal", "Sin medicion"],
+         "duracion": 3.0, "transicion": "whip"},
+        {"formato": "revelacion", "antes": "Publicar y esperar",
+         "despues": "Un canal. 30 dias.", "texto": "", "duracion": 2.4,
+         "transicion": "punch"},
+        {"formato": "editorial", "kicker": "conclusion", "indice": "05",
+         "texto": "Publicar no es distribuir",
+         "pie": "El producto no era el problema. La distribucion si.",
+         "duracion": 2.6, "transicion": "fade"},
+    ],
+}
+
+
+def catalogo():
+    """Genera una tira con 1 frame de cada formato, para comparar."""
+    cfg = {"paleta": PALETAS[0], "camara": 0}
+    muestras = [
+        {"formato": "declaracion", "texto": "Publique 47 productos"},
+        {"formato": "dato_duro", "numero": 3, "texto": "productos vendidos"},
+        {"formato": "division", "texto": "",
+         "izquierda": {"titulo": "Sin canal", "texto": "Esperar", "valor": "12"},
+         "derecha": {"titulo": "Con canal", "texto": "30 dias", "valor": "340"}},
+        {"formato": "revelacion", "antes": "Sin plan", "despues": "Con plan",
+         "texto": ""},
+        {"formato": "cronologia", "texto": "Asi crece",
+         "hitos": ["D1", "D7", "D14", "D30"], "valores": ["0", "3", "11", "61"]},
+        {"formato": "conteo", "texto": "",
+         "items": ["Sin nicho", "Sin canal", "Sin medicion"]},
+        {"formato": "pregunta", "pregunta": "Cual fue el error?",
+         "respuesta": "Nadie los vio", "texto": ""},
+        {"formato": "editorial", "kicker": "conclusion", "indice": "05",
+         "texto": "Publicar no es distribuir", "pie": "La distribucion si."},
+    ]
+    ts = [0.9, 0.9, 0.9, 0.95, 0.9, 0.2, 0.95, 0.9]
+    ims = [render(m, ts[i], 0.5, cfg).resize((190, 338))
+           for i, m in enumerate(muestras)]
+    out = Image.new("RGB", (190 * 4 + 30, 338 * 2 + 10), (12, 12, 16))
+    for i, im in enumerate(ims):
+        out.paste(im, ((i % 4) * 198, (i // 4) * 348))
+    out.save("catalogo-formatos.png")
+    print("OK: catalogo-formatos.png")
+    return 0
+
+
+def generar(path):
+    p = Path(path)
+    if not p.exists():
+        print(f"ERROR: no existe '{path}'.")
+        return 1
+    try:
+        cfg = json.loads(p.read_text())
+    except json.JSONDecodeError as e:
+        print(f"ERROR: JSON invalido -> {e}")
+        return 1
+    segs = cfg.get("segmentos")
+    if not segs:
+        print("ERROR: falta 'segmentos'.")
+        return 1
+    for i, s in enumerate(segs):
+        fm = s.get("formato", "declaracion")
+        if fm not in FORMATOS:
+            print(f"ERROR: segmento {i+1}: formato '{fm}' no existe.")
+            print(f"Validos: {', '.join(FORMATOS)}")
+            return 1
+    if not shutil.which("ffmpeg"):
+        print("ERROR: falta ffmpeg.")
+        return 1
+    cfg.setdefault("fps", 30)
+    cfg.setdefault("camara", 1.0)
+    cfg.setdefault("paleta", PALETAS[0])
+    fps = cfg["fps"]
+    tmp = Path(tempfile.mkdtemp(prefix="v9_"))
+    # LINEA DE TIEMPO: la voz define las duraciones antes de renderizar
+    voces, marcas = construir_linea_tiempo(cfg, segs, tmp)
+    dur = sum(s["duracion"] for s in segs)
+    ft = int(0.42 * fps); n = 0; acc = 0.0; ult = None
+    print(f"Renderizando {dur:.1f}s a {fps}fps ({len(segs)} formatos)...")
+    for si, seg in enumerate(segs):
+        nf = int(seg["duracion"] * fps)
+        tipo = seg.get("transicion", "fade")
+        for f in range(nf):
+            t = f / max(1, nf - 1)
+            fr = render(seg, t, (acc + f / fps) / dur, cfg)
+            if si > 0 and f < ft and ult is not None and tipo != "corte":
+                fr = transicion(ult, fr, f / ft, tipo, cfg["paleta"])
+            fr.save(tmp / f"f{n:06d}.png"); n += 1
+        ult = render(seg, 1.0, (acc + seg["duracion"]) / dur, cfg)
+        acc += seg["duracion"]
+    if cfg.get("loop"):
+        pri = render(segs[0], 0.0, 0.0, cfg); nl = int(0.5 * fps)
+        for i in range(nl):
+            idx = n - nl + i
+            if idx < 0:
+                continue
+            fp = tmp / f"f{idx:06d}.png"
+            if fp.exists():
+                Image.blend(Image.open(fp).convert("RGB"), pri,
+                            eio((i + 1) / nl)).save(fp)
+    salida = cfg.get("salida", "video-v9.mp4")
+    audio = construir_audio(cfg, segs, dur, tmp, voces, marcas)
+    cmd = ["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(fps),
+           "-i", str(tmp / "f%06d.png")]
+    if audio:
+        cmd += ["-i", str(audio), "-c:a", "aac", "-shortest"]
+    cmd += ["-c:v", "libx264", "-pix_fmt", "yuv420p", "-preset", "medium",
+            "-crf", "19", salida]
+    r = subprocess.run(cmd, capture_output=True, text=True)
+    shutil.rmtree(tmp, ignore_errors=True)
+    if r.returncode != 0:
+        print(f"ERROR ffmpeg: {r.stderr[:300]}")
+        return 1
+    print(f"LISTO: {salida} ({Path(salida).stat().st_size/1024:.0f} KB, {dur:.1f}s)")
+    return 0
+
+
+def main():
+    a = sys.argv[1:]
+    if not a:
+        print(__doc__)
+        return
+    if a[0] == "--catalogo":
+        sys.exit(catalogo())
+    if a[0] == "--demo":
+        Path("guion-v9-demo.json").write_text(
+            json.dumps(DEMO, indent=2, ensure_ascii=False))
+        print("Creado guion-v9-demo.json")
+        sys.exit(generar("guion-v9-demo.json"))
+    sys.exit(generar(a[0]))
+
+
+if __name__ == "__main__":
+    main()

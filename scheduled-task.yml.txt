@@ -1,0 +1,66 @@
+name: orquestador-diario
+
+# Se dispara solo todos los dias a las 09:00 UTC, y tambien lo puedes
+# lanzar manualmente desde la app de GitHub en el celular (boton "Run workflow").
+on:
+  schedule:
+    - cron: "0 9 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  correr-orquestador:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Instalar Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Correr tarea headless
+        env:
+          # Usa el token ligado a tu suscripcion Pro/Max (generado con
+          # 'claude setup-token' desde una sesion interactiva normal),
+          # NO una API key de pago por separado. Guardalo como secret
+          # con el nombre CLAUDE_CODE_OAUTH_TOKEN.
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          claude -p "Lee CLAUDE.md. Corre 'python3 orchestrator.py status'. \
+          Segun la fase actual del proyecto, decide UNA sola siguiente tarea \
+          concreta y agregala con 'python3 orchestrator.py add \"...\"'. \
+          Si la tarea es un gate real (gastar, publicar, contactar), usa \
+          'python3 orchestrator.py request-approval \"...\"' en vez de add. \
+          NO ejecutes nada que gaste dinero real, envie mensajes a terceros, \
+          o publique algo publicamente. Registra tu decision y el motivo con \
+          'python3 orchestrator.py log \"...\"'." \
+          --allowedTools "Bash,Read,Write,Edit" \
+          --output-format json > run-output.json
+
+      - name: Guardar resultado en el repo
+        run: |
+          git config user.name "orquestador-bot"
+          git config user.email "actions@github.com"
+          git add state/ run-output.json
+          git diff --cached --quiet || git commit -m "Actualizacion automatica diaria"
+          git push
+
+      - name: Notificar resultado (siempre, incluso si algo fallo)
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            python3 orchestrator.py notify "Corrida diaria OK. Revisa 'status' para ver si hay algo pendiente de aprobar."
+          else
+            python3 orchestrator.py notify "⚠️ La corrida diaria de hoy fallo. Revisa GitHub Actions."
+          fi
