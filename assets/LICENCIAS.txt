@@ -1,0 +1,14 @@
+Registro de licencias de assets — cada archivo descargado se anota aca
+antes de usarse en un video (ver ASSETS.md).
+
+## Fuentes
+
+assets/fuentes/SpaceGrotesk-Variable.ttf
+  Fuente: Google Fonts (repo google/fonts en GitHub)
+  URL: https://github.com/google/fonts/tree/main/ofl/spacegrotesk
+  Licencia: SIL Open Font License 1.1 (OFL) — uso comercial permitido,
+  no requiere atribucion visible en el producto final.
+  Instancias con nombre: Light, Regular, Medium, Bold (variable font,
+  se selecciona por set_variation_by_name en animador_v9.py).
+  Agregada: 2026-08-19, para reemplazar DejaVu Sans Bold (se veia
+  generica/vieja) en el texto principal de los videos.

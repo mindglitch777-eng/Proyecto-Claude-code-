@@ -32,26 +32,33 @@
       "karaoke": true
     },
     {
-      "formato": "dato_duro",
-      "numero": 40,
-      "texto": "vueltas y cero cambios reales",
+      "formato": "cronologia",
+      "texto": "Así escala si no lo cortás",
+      "hitos": [
+        "2 AM",
+        "2:15",
+        "2:30",
+        "2:45"
+      ],
+      "valores": [
+        "1",
+        "8",
+        "19",
+        "40"
+      ],
       "duracion": 2.5,
       "transicion": "punch"
     },
     {
-      "formato": "division",
+      "formato": "terminal",
+      "lineas": [
+        "$ diagnosticar --bucle",
+        "> 40 vueltas, 2 AM",
+        "> causa: sin corte",
+        "> solucion: 1 accion"
+      ],
       "texto": "",
-      "izquierda": {
-        "titulo": "EL BUCLE",
-        "texto": "Le das mil vueltas",
-        "valor": "0"
-      },
-      "derecha": {
-        "titulo": "EL CORTE",
-        "texto": "Un paso, ahora",
-        "valor": "1"
-      },
-      "duracion": 3.6,
+      "duracion": 4.2,
       "transicion": "barrido"
     },
     {

@@ -94,16 +94,62 @@ escrito sin acentos por error ("Manana" en vez de "Mañana", "dias" en
 vez de "días", etc.) -- visible en los frames renderizados. Corregido
 en los 5 archivos de `guiones/`.
 
-**Estado actual: los 5 videos completos están renderizados** en
-`videos/` (hook + mecanismo + producto real enmarcado + loop, con
-transiciones xfade y audio sincronizado) y fueron enviados al operador
-para revisión. Pendiente su aprobación final antes de publicar nada.
+**Feedback del operador sobre el lote de 5**: correctos, pero pidió (1)
+mas variedad de formatos, (2) tipografia mas moderna, (3) imagenes
+representativas, (4) frases mas fuertes con algun tema de relaciones/
+amor, (5) definir el "foco que genere dinero". Sobre (5) -- todavia no
+hay backend/paywall en `producto/el-corte-v7.html` (es 100% gratis,
+sin cuenta) -- se le dio la recomendacion de vender el HTML completo
+como descarga unica en Gumroad (cero desarrollo nuevo, cumple el
+objetivo original de `PROJECT_PLAN.md`) pero el operador no lo cerro
+todavia; sigue abierto.
+
+**Decisión 12 — tipografia propia (Space Grotesk, OFL).** DejaVu Sans
+Bold se leia generica. Se descargo Space Grotesk (variable font) desde
+el repo github.com/google/fonts (raw.githubusercontent.com es de los
+pocos hosts con red abierta en este sandbox), instanciada a Bold/
+Regular estaticos con fonttools para que ffmpeg drawtext tambien la
+use (drawtext no soporta ejes de variacion). Registrada en
+`assets/LICENCIAS.txt`. `animador_v9.py` la usa por defecto vía
+`fnt()`, con fallback a DejaVu si no esta presente.
+
+**Decisión 13 — mas variedad de formatos.** Los 5 guiones originales
+solo usaban 4 de los 16 formatos de `animador_v9.py`. Se reescribieron
+los actos de MECANISMO (y algun ERROR/LOOP) para usar cronologia,
+terminal, conteo, alerta, pasos, panel y ranking -- 11 de 16 formatos
+ahora en uso. De paso se corrigio un bug real y preexistente en
+`f_ranking()`: el numero final se dibujaba pisando la etiqueta cuando
+la barra era mas angosta que el texto del label a mitad de animacion
+(pasaba con etiquetas largas como "Ya no le gustás"). Ahora el numero
+respeta el ancho real del label, no solo el de la barra.
+
+**Decisión 14 — guion 6, tema de relaciones ("Te dejaron en visto",
+topico 5 de MARCA.md).** Reusa la captura de 'persona' (tema
+emocionalmente adyacente) con nuevos captions. Usa el formato
+'ranking' (primera vez en el proyecto) para las excusas inventadas.
+
+**Imagenes representativas — todavia sin resolver.** No se agrego
+ninguna porque las dos vias reales requieren algo que el operador
+tiene que decidir: (a) `descargar_imagenes.py` vía el workflow manual
+ya creado (Wikimedia/Openverse, gratis, pero son fotos de bancos, no
+necesariamente "representativas" al pixel), o (b) `imagen_ia.py`
+(Cloudflare Workers AI, generacion a medida) que necesita
+CF_ACCOUNT_ID/CF_API_TOKEN -- una cuenta que el operador tiene que
+crear y autorizar (regla de CLAUDE.md: ninguna integracion de API
+externa sin confirmar cuenta/credenciales). Pendiente su decision.
+
+**Estado actual: los 6 videos completos (5 revisados + 1 nuevo) estan
+renderizados** en `videos/`, con la tipografia y formatos nuevos.
+Enviados al operador para revision. Nada se publico en ninguna
+plataforma.
 
 **Pendiente / próxima sesión:**
-- Feedback del operador sobre los 5 videos finales.
+- Feedback del operador sobre el lote 2.
+- Cerrar el modelo de monetizacion (Gumroad venta unica vs. freemium
+  vs. otra cosa) -- bloquea que el CTA de los videos tenga destino real.
+- Decidir de donde salen las imagenes representativas (banco gratis vs.
+  Cloudflare AI con cuenta propia).
 - Decidir si la serie suma narración por voz (Kokoro/Fish TTS +
   Whisper para subtítulos sincronizados) o se mantiene mute-first.
 - Correr manualmente el workflow de descarga de imágenes cuando el
   operador lo apruebe.
-- Nada de esto se publicó en ninguna plataforma -- sigue pendiente la
-  cuenta/verificación de identidad que hace el operador (CLAUDE.md).

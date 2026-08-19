@@ -144,7 +144,10 @@ def revisar(path):
                 break
 
     # --- CTA al final ---
-    ultimo = segs[-1].get("texto", "").lower()
+    # 'pie' es donde vive el cierre en el formato 'editorial'; 'texto'
+    # en todos los demas.
+    ultimo_seg = segs[-1]
+    ultimo = (ultimo_seg.get("texto", "") + " " + ultimo_seg.get("pie", "")).lower()
     if not any(k in ultimo for k in
                ["segui", "sigue", "guarda", "comenta", "link", "mira", "proba"]):
         avisos.append("El ultimo segmento no tiene llamada a la accion.")

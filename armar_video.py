@@ -29,7 +29,9 @@ from PIL import Image, ImageDraw, ImageFilter
 
 W, H = 1080, 1920
 ANIMADOR = Path(__file__).parent / "animador_v9.py"
-FONT_BOLD = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+_FUENTE_PROPIA = Path(__file__).parent / "assets/fuentes/SpaceGrotesk-Bold.ttf"
+FONT_BOLD = str(_FUENTE_PROPIA) if _FUENTE_PROPIA.exists() else \
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 
 # Mapeo de las 12 transiciones de animador_v9.py a xfade nativo de ffmpeg.
 # corte_duro se resuelve como un fade casi instantaneo (0.12s): visualmente

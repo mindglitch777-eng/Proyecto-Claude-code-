@@ -39,10 +39,8 @@
       "transicion": "punch"
     },
     {
-      "formato": "pregunta",
-      "pregunta": "¿Te falta un dato o te falta decidir?",
-      "respuesta": "Si no falta un dato, no falta pensar más.",
-      "texto": "",
+      "formato": "alerta",
+      "texto": "7 días sin decidir es una decisión también",
       "duracion": 4.2,
       "transicion": "dip"
     },
@@ -67,8 +65,11 @@
       "transicion": "punch"
     },
     {
-      "formato": "declaracion",
-      "texto": "7 días menos. Decidí hoy. Seguime.",
+      "formato": "editorial",
+      "kicker": "el corte",
+      "indice": "03",
+      "texto": "7 días menos. Decidí hoy.",
+      "pie": "Seguime.",
       "duracion": 2.2,
       "transicion": "fade",
       "hook": "flash"

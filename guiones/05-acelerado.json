@@ -39,10 +39,26 @@
       "transicion": "punch"
     },
     {
-      "formato": "pregunta",
-      "pregunta": "¿Necesitás más café o menos activación?",
-      "respuesta": "El cuerpo se calma antes que la cabeza.",
-      "texto": "",
+      "formato": "panel",
+      "texto": "La proporción que baja la activación",
+      "datos": [
+        [
+          "Inhalá",
+          "4s"
+        ],
+        [
+          "Exhalá",
+          "6s"
+        ],
+        [
+          "Ciclos",
+          "6"
+        ],
+        [
+          "Minutos",
+          "2"
+        ]
+      ],
       "duracion": 3.6,
       "transicion": "slide"
     },

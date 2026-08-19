@@ -56,6 +56,13 @@ def eo_back(t, f=2.0):
     return 1 + c3 * pow(t - 1, 3) + f * pow(t - 1, 2)
 
 
+# Variable font propia (ver assets/LICENCIAS.txt): reemplaza a DejaVu
+# Sans Bold, que se lee generica/vieja en pantallas de telefono. Una
+# sola fuente cubre Light/Regular/Bold via ejes de variacion, en vez
+# de necesitar un .ttf por peso.
+FUENTE_MODERNA = Path(__file__).parent / "assets/fuentes/SpaceGrotesk-Variable.ttf"
+
+
 def fnt(t, ligera=False, serif=False):
     if serif:
         for c in ["/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf",
@@ -65,6 +72,13 @@ def fnt(t, ligera=False, serif=False):
                     return ImageFont.truetype(c, max(8, int(t)))
                 except Exception:
                     pass
+    if FUENTE_MODERNA.exists():
+        try:
+            f = ImageFont.truetype(str(FUENTE_MODERNA), max(8, int(t)))
+            f.set_variation_by_name("Regular" if ligera else "Bold")
+            return f
+        except Exception:
+            pass
     cands = ([ "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
                "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf"]
              if ligera else
@@ -552,7 +566,12 @@ def f_ranking(img, d, seg, t, pal):
                             radius=12, fill=col)
         d.text((178, yy + 8), nom, font=fl,
                fill=(14, 14, 18) if i == 0 else tuple(pal["texto"]))
-        d.text((160 + max(8, w) + 22, yy + 6), f"{int(val * e)}", font=fv,
+        # El numero va DESPUES de la barra Y de la etiqueta: si el label
+        # es mas ancho que la barra a mitad de animacion (comun con
+        # texto largo), el numero no puede quedar pisandolo.
+        wl_nom = d.textbbox((0, 0), nom, font=fl)[2]
+        x_num = max(160 + max(8, w) + 22, 178 + wl_nom + 22)
+        d.text((x_num, yy + 6), f"{int(val * e)}", font=fv,
                fill=tuple(pal["texto"]))
 
 

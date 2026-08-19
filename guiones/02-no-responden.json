@@ -40,20 +40,16 @@
       "transicion": "whip"
     },
     {
-      "formato": "division",
+      "formato": "conteo",
+      "items": [
+        "Está ocupado",
+        "No vio el mensaje",
+        "Lo está pensando",
+        "Ya no le importa"
+      ],
       "texto": "",
-      "izquierda": {
-        "titulo": "LO QUE SABES",
-        "texto": "No respondió todavía",
-        "valor": "1"
-      },
-      "derecha": {
-        "titulo": "LO QUE INVENTASTE",
-        "texto": "Cuatro finales distintos",
-        "valor": "4"
-      },
       "duracion": 4.0,
-      "transicion": "slide"
+      "transicion": "whip"
     },
     {
       "captura": "capturas/captura-persona.mp4",

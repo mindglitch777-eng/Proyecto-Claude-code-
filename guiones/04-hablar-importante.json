@@ -40,19 +40,15 @@
       "transicion": "punch"
     },
     {
-      "formato": "division",
-      "texto": "",
-      "izquierda": {
-        "titulo": "ENSAYAR",
-        "texto": "Desgasta, no prepara",
-        "valor": "12"
-      },
-      "derecha": {
-        "titulo": "4 PREGUNTAS",
-        "texto": "Preparan de verdad",
-        "valor": "4"
-      },
-      "duracion": 3.8,
+      "formato": "pasos",
+      "texto": "4 preguntas, no un ensayo",
+      "pasos": [
+        "Qué querés lograr",
+        "Qué depende de vos",
+        "Lo peor que puede pasar",
+        "Qué hacés si pasa"
+      ],
+      "duracion": 4.2,
       "transicion": "whip"
     },
     {
