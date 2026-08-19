@@ -1,0 +1,98 @@
+{
+  "tema": "Pensas la respuesta perfecta tarde",
+  "topico_marca": 8,
+  "captura_fuente": "capturas/captura-antes.mp4",
+  "flujo_real": "ver('expresar') -> 4 preguntas -> arma el mensaje real.",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Pensaste la respuesta perfecta 6 horas tarde. Siempre pasa igual.",
+      "duracion": 2.0,
+      "hook": "glitch",
+      "karaoke": true,
+      "narracion": "Pensaste la respuesta perfecta 6 horas tarde. Siempre pasa igual."
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 6,
+      "texto": "horas tarde, la respuesta perfecta",
+      "duracion": 2.3,
+      "transicion": "punch",
+      "narracion": "horas tarde, la respuesta perfecta"
+    },
+    {
+      "formato": "division",
+      "texto": "",
+      "izquierda": {
+        "titulo": "EN LA CABEZA",
+        "texto": "Se arma sola, tarde",
+        "valor": "6h"
+      },
+      "derecha": {
+        "titulo": "EN PAPEL",
+        "texto": "4 preguntas, ahora",
+        "valor": "2min"
+      },
+      "duracion": 3.8,
+      "transicion": "barrido",
+      "narracion": ""
+    },
+    {
+      "captura": "capturas/captura-antes.mp4",
+      "recorte": [
+        0.0,
+        2.6
+      ],
+      "texto": "4 preguntas concretas.",
+      "duracion": 2.6,
+      "transicion": "corte_duro"
+    },
+    {
+      "captura": "capturas/captura-antes.mp4",
+      "recorte": [
+        2.6,
+        4.8
+      ],
+      "texto": "El mensaje sale ahora, no a las 3 AM.",
+      "duracion": 2.2,
+      "transicion": "punch"
+    },
+    {
+      "formato": "declaracion",
+      "texto": "La respuesta perfecta, a tiempo. Seguime.",
+      "duracion": 2.3,
+      "transicion": "fade",
+      "hook": "flash",
+      "narracion": "La respuesta perfecta, a tiempo. Seguime."
+    }
+  ],
+  "elevenlabs": {
+    "instrucciones": "4 lineas de narracion por video (hook, error, mecanismo, loop -- los 2 segmentos de captura real van sin voz, el producto se muestra sin explicarse encima). Generar 4 audios separados en ElevenLabs con estas lineas, en este orden, y guardarlos como 09-respuesta-perfecta-tarde-voz0.mp3 (hook), -voz1.mp3 (error), -voz2.mp3 (mecanismo), -voz5.mp3 (loop) en capturas_voz/. Correr sincronizar_voz.py despues.",
+    "lineas": [
+      "Pensaste la respuesta perfecta 6 horas tarde. Siempre pasa igual.",
+      "horas tarde, la respuesta perfecta",
+      "",
+      "La respuesta perfecta, a tiempo. Seguime."
+    ]
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "tema": "Alguien no te agradecio algo que hiciste",
+  "topico_marca": 12,
+  "captura_fuente": "capturas/captura-persona.mp4",
+  "flujo_real": "dx('persona') -> 'Si, en algun momento' -> sesion 'accion'.",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Ayudaste 3 veces. Cero gracias. Todavía te quema.",
+      "duracion": 2.0,
+      "hook": "flash",
+      "karaoke": true,
+      "narracion": "Ayudaste 3 veces. Cero gracias. Todavía te quema."
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 0,
+      "texto": "gracias recibidas por 3 favores reales",
+      "duracion": 2.3,
+      "transicion": "whip",
+      "narracion": "gracias recibidas por 3 favores reales"
+    },
+    {
+      "formato": "ranking",
+      "texto": "En qué gastaste esos 3 favores",
+      "items": [
+        [
+          "Ayudarlo de verdad",
+          10
+        ],
+        [
+          "Esperar que note",
+          6
+        ],
+        [
+          "Enojo por dentro",
+          4
+        ],
+        [
+          "Gracias recibidas",
+          0
+        ]
+      ],
+      "duracion": 4.2,
+      "transicion": "whip",
+      "narracion": "En qué gastaste esos 3 favores"
+    },
+    {
+      "captura": "capturas/captura-persona.mp4",
+      "recorte": [
+        0.0,
+        3.0
+      ],
+      "texto": "No dependía de que agradeciera.",
+      "duracion": 3.0,
+      "transicion": "corte_duro"
+    },
+    {
+      "captura": "capturas/captura-persona.mp4",
+      "recorte": [
+        3.0,
+        6.0
+      ],
+      "texto": "Dependía de vos ayudar o no. Ya lo hiciste.",
+      "duracion": 3.0,
+      "transicion": "punch"
+    },
+    {
+      "formato": "declaracion",
+      "texto": "Ayudaste 3 veces. Eso ya es tuyo. Seguime.",
+      "duracion": 2.3,
+      "transicion": "fade",
+      "hook": "zoom_golpe",
+      "narracion": "Ayudaste 3 veces. Eso ya es tuyo. Seguime."
+    }
+  ],
+  "elevenlabs": {
+    "instrucciones": "4 lineas de narracion por video (hook, error, mecanismo, loop -- los 2 segmentos de captura real van sin voz, el producto se muestra sin explicarse encima). Generar 4 audios separados en ElevenLabs con estas lineas, en este orden, y guardarlos como 12-nadie-agradecio-voz0.mp3 (hook), -voz1.mp3 (error), -voz2.mp3 (mecanismo), -voz5.mp3 (loop) en capturas_voz/. Correr sincronizar_voz.py despues.",
+    "lineas": [
+      "Ayudaste 3 veces. Cero gracias. Todavía te quema.",
+      "gracias recibidas por 3 favores reales",
+      "En qué gastaste esos 3 favores",
+      "Ayudaste 3 veces. Eso ya es tuyo. Seguime."
+    ]
+  }
+}

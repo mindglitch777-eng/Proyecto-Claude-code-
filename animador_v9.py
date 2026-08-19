@@ -1249,11 +1249,30 @@ def construir_linea_tiempo(cfg, segs, tmp):
     Devuelve (voces, marcas) donde marcas[i] = segundo de inicio del
     segmento i. Si hay voz, reescribe seg['duracion']."""
     voces = {}
+    respiro = cfg.get("respiro", RESPIRO)
+
+    # Voz externa (ej. grabada en ElevenLabs por el operador, no
+    # generada por Piper): si el segmento trae 'voz_archivo', se usa
+    # tal cual. La duracion real del audio manda igual que con Piper,
+    # y reusa toda la mezcla/ducking de construir_audio() sin cambios.
+    for i, seg in enumerate(segs):
+        va = seg.get("voz_archivo")
+        if not va:
+            continue
+        if not Path(va).exists():
+            print(f"AVISO: no existe voz_archivo '{va}' (segmento {i+1}).")
+            continue
+        d = duracion_audio(va)
+        if d:
+            voces[i] = Path(va)
+            seg["duracion"] = round(d + respiro, 2)
+
     if cfg.get("tts"):
         modelo = cfg.get("voz_modelo", "es_AR-daniela-high")
-        respiro = cfg.get("respiro", RESPIRO)
         print("Generando voz y midiendo duraciones...")
         for i, seg in enumerate(segs):
+            if i in voces:
+                continue  # ya tiene voz externa (voz_archivo)
             txt = texto_hablado(seg)
             if not txt:
                 continue

@@ -1,0 +1,90 @@
+{
+  "tema": "No sabes si mandar ese mensaje",
+  "topico_marca": 10,
+  "captura_fuente": "capturas/captura-antes.mp4",
+  "flujo_real": "ver('antes') -> 4 preguntas -> prepararCharla().",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Escribiste el mensaje. Lo borraste 5 veces.",
+      "duracion": 2.0,
+      "hook": "sacudida",
+      "karaoke": true,
+      "narracion": "Escribiste el mensaje. Lo borraste 5 veces."
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 5,
+      "texto": "veces que lo escribiste y borraste",
+      "duracion": 2.2,
+      "transicion": "whip",
+      "narracion": "veces que lo escribiste y borraste"
+    },
+    {
+      "formato": "pregunta",
+      "pregunta": "Te falta decidir que decir o animarte a mandarlo?",
+      "respuesta": "Son dos problemas distintos. Uno a la vez.",
+      "texto": "",
+      "duracion": 4.0,
+      "transicion": "dip",
+      "narracion": "Te falta decidir que decir o animarte a mandarlo? ... Son dos problemas distintos. Uno a la vez."
+    },
+    {
+      "captura": "capturas/captura-antes.mp4",
+      "recorte": [
+        0.0,
+        2.6
+      ],
+      "texto": "Qué querés lograr. Qué depende de vos.",
+      "duracion": 2.6,
+      "transicion": "corte_duro"
+    },
+    {
+      "captura": "capturas/captura-antes.mp4",
+      "recorte": [
+        2.6,
+        4.8
+      ],
+      "texto": "El plan queda escrito. Ya podés mandarlo.",
+      "duracion": 2.2,
+      "transicion": "punch"
+    },
+    {
+      "formato": "declaracion",
+      "texto": "El mensaje, mandado. No 5 borradores más. Seguime.",
+      "duracion": 2.3,
+      "transicion": "fade",
+      "hook": "zoom_golpe",
+      "narracion": "El mensaje, mandado. No 5 borradores más. Seguime."
+    }
+  ],
+  "elevenlabs": {
+    "instrucciones": "4 lineas de narracion por video (hook, error, mecanismo, loop -- los 2 segmentos de captura real van sin voz, el producto se muestra sin explicarse encima). Generar 4 audios separados en ElevenLabs con estas lineas, en este orden, y guardarlos como 10-no-sabes-si-mandar-voz0.mp3 (hook), -voz1.mp3 (error), -voz2.mp3 (mecanismo), -voz5.mp3 (loop) en capturas_voz/. Correr sincronizar_voz.py despues.",
+    "lineas": [
+      "Escribiste el mensaje. Lo borraste 5 veces.",
+      "veces que lo escribiste y borraste",
+      "Te falta decidir que decir o animarte a mandarlo? ... Son dos problemas distintos. Uno a la vez.",
+      "El mensaje, mandado. No 5 borradores más. Seguime."
+    ]
+  }
+}
