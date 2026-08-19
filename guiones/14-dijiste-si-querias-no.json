@@ -1,0 +1,90 @@
+{
+  "tema": "Dijiste que si y querias decir que no",
+  "topico_marca": 14,
+  "captura_fuente": "capturas/captura-decidir.mp4",
+  "flujo_real": "ver('decidir') -> escribís la decisión -> 'decido ahora'.",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Dijiste que sí. Querías decir que no. Ya pasaron 2 días.",
+      "duracion": 2.0,
+      "hook": "sacudida",
+      "karaoke": true,
+      "narracion": "Dijiste que sí. Querías decir que no. Ya pasaron 2 días."
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 2,
+      "texto": "días de sí, cuando era no",
+      "duracion": 2.3,
+      "transicion": "whip",
+      "narracion": "días de sí, cuando era no"
+    },
+    {
+      "formato": "pregunta",
+      "pregunta": "Te falta un dato para volver atras o te falta animarte?",
+      "respuesta": "Si no falta un dato, ya podes decirlo.",
+      "texto": "",
+      "duracion": 4.2,
+      "transicion": "dip",
+      "narracion": "Te falta un dato para volver atras o te falta animarte? ... Si no falta un dato, ya podes decirlo."
+    },
+    {
+      "captura": "capturas/captura-decidir.mp4",
+      "recorte": [
+        0.0,
+        2.6
+      ],
+      "texto": "Escribís lo que pasó. Un toque.",
+      "duracion": 2.6,
+      "transicion": "corte_duro"
+    },
+    {
+      "captura": "capturas/captura-decidir.mp4",
+      "recorte": [
+        2.6,
+        5.3
+      ],
+      "texto": "Otro toque. Queda cerrado, sin reabrirlo.",
+      "duracion": 2.7,
+      "transicion": "punch"
+    },
+    {
+      "formato": "declaracion",
+      "texto": "Dijiste que sí. Ahora decís lo que es. Seguime.",
+      "duracion": 2.3,
+      "transicion": "fade",
+      "hook": "flash",
+      "narracion": "Dijiste que sí. Ahora decís lo que es. Seguime."
+    }
+  ],
+  "elevenlabs": {
+    "instrucciones": "4 lineas de narracion por video (hook, error, mecanismo, loop -- los 2 segmentos de captura real van sin voz, el producto se muestra sin explicarse encima). Generar 4 audios separados en ElevenLabs con estas lineas, en este orden, y guardarlos como 14-dijiste-si-querias-no-voz0.mp3 (hook), -voz1.mp3 (error), -voz2.mp3 (mecanismo), -voz5.mp3 (loop) en capturas_voz/. Correr sincronizar_voz.py despues.",
+    "lineas": [
+      "Dijiste que sí. Querías decir que no. Ya pasaron 2 días.",
+      "días de sí, cuando era no",
+      "Te falta un dato para volver atras o te falta animarte? ... Si no falta un dato, ya podes decirlo.",
+      "Dijiste que sí. Ahora decís lo que es. Seguime."
+    ]
+  }
+}

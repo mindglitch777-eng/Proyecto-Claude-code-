@@ -1,9 +1,7 @@
 {
   "salida": "assets/imagenes",
   "buscar": [
-    {"fuente": "openverse", "q": "smartphone hand texting",
-     "nombre": "en-visto"},
-    {"fuente": "openverse", "q": "man stressed head hands",
+    {"fuente": "openverse", "q": "hands covering face stressed",
      "nombre": "acelerado"}
   ]
 }
