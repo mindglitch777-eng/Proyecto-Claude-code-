@@ -1,0 +1,82 @@
+{
+  "tema": "Manana tenes algo importante",
+  "topico_marca": 6,
+  "captura_fuente": "capturas/captura-antes.mp4",
+  "flujo_real": "En la app: 'Antes de hablar' -> 4 preguntas concretas -> 'Preparar' arma el plan.",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Mañana hablás. Ya lo ensayaste 12 veces.",
+      "duracion": 2.1,
+      "hook": "sacudida",
+      "karaoke": true
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 12,
+      "sufijo": "x",
+      "texto": "veces ensayado, cero veces mejorado",
+      "duracion": 2.4,
+      "transicion": "punch"
+    },
+    {
+      "formato": "pasos",
+      "texto": "4 preguntas, no un ensayo",
+      "pasos": [
+        "Qué querés lograr",
+        "Qué depende de vos",
+        "Lo peor que puede pasar",
+        "Qué hacés si pasa"
+      ],
+      "duracion": 4.2,
+      "transicion": "whip"
+    },
+    {
+      "captura": "capturas/captura-antes.mp4",
+      "recorte": [
+        0.0,
+        2.6
+      ],
+      "texto": "4 preguntas concretas, no un ensayo.",
+      "duracion": 2.6,
+      "transicion": "corte_duro"
+    },
+    {
+      "captura": "capturas/captura-antes.mp4",
+      "recorte": [
+        2.6,
+        4.8
+      ],
+      "texto": "El plan queda escrito, no en la cabeza.",
+      "duracion": 2.2,
+      "transicion": "punch"
+    },
+    {
+      "formato": "declaracion",
+      "texto": "Mañana hablás, ya preparado. Seguime.",
+      "duracion": 2.2,
+      "transicion": "fade",
+      "hook": "zoom_golpe"
+    }
+  ]
+}

@@ -25,6 +25,16 @@ GENERICOS = [
     "lo que paso despues", "atencion", "mira hasta el final",
 ]
 
+try:
+    # Misma lista (y misma normalizacion de tildes) que hooks.py
+    # --auditar, para que las dos herramientas nunca se desincronicen
+    # sobre que palabra esta prohibida.
+    from hooks import VOCABULARIO_CLINICO, VOCABULARIO_FUERTE, normalizar
+except ImportError:
+    VOCABULARIO_CLINICO, VOCABULARIO_FUERTE = [], []
+    def normalizar(s):
+        return s
+
 
 def revisar(path):
     p = Path(path)
@@ -44,7 +54,9 @@ def revisar(path):
 
     problemas, avisos = [], []
     primero = segs[0]
-    texto1 = primero.get("texto", "")
+    # El texto visible del hook puede vivir en 'texto' o, en formatos
+    # como 'pregunta', en 'pregunta' (lo que se lee primero en pantalla).
+    texto1 = primero.get("texto") or primero.get("pregunta", "")
     palabras1 = len(texto1.split())
 
     # --- Reglas del hook (primer segmento) ---
@@ -64,9 +76,9 @@ def revisar(path):
             f"El hook dura {primero['duracion']}s. En TikTok el enganche "
             "se decide en 1.3s -- considera acortarlo.")
 
-    bajo = texto1.lower()
+    bajo = normalizar(texto1.lower())
     for g in GENERICOS:
-        if g in bajo:
+        if normalizar(g) in bajo:
             problemas.append(
                 f"Hook generico detectado: '{g}'. La curiosidad generica se "
                 "lee como clickbait; usa curiosidad ESPECIFICA (numeros, "
@@ -106,8 +118,36 @@ def revisar(path):
         problemas.append("Hay segmentos sin texto en pantalla. El video "
                          "tiene que entenderse con el sonido apagado.")
 
+    # --- Vocabulario clinico en CUALQUIER texto visible del video ---
+    # No es solo problema del hook: si aparece a mitad de video igual
+    # rompe el tono ("herramienta, no consultorio") y la linea etica
+    # de no vender un diagnostico.
+    def _textos_visibles(s):
+        out = [s.get("texto", ""), s.get("pregunta", ""), s.get("respuesta", "")]
+        for lado in ("izquierda", "derecha"):
+            b = s.get(lado) or {}
+            out += [b.get("titulo", ""), b.get("texto", "")]
+        for k in ("items", "pasos", "hitos"):
+            out += [str(x) for x in s.get(k, [])]
+        return normalizar(" ".join(out).lower())
+
+    for i, s in enumerate(segs):
+        bloque = _textos_visibles(s)
+        for c in VOCABULARIO_CLINICO:
+            if normalizar(c) in bloque:
+                sug = (VOCABULARIO_FUERTE[hash(c) % len(VOCABULARIO_FUERTE)]
+                       if VOCABULARIO_FUERTE else "vocabulario coloquial")
+                problemas.append(
+                    f"Segmento {i+1}: '{c}' es vocabulario clinico "
+                    f"(nadie lo dice en la calle, y vende diagnostico en "
+                    f"vez de herramienta). Probar '{sug}'.")
+                break
+
     # --- CTA al final ---
-    ultimo = segs[-1].get("texto", "").lower()
+    # 'pie' es donde vive el cierre en el formato 'editorial'; 'texto'
+    # en todos los demas.
+    ultimo_seg = segs[-1]
+    ultimo = (ultimo_seg.get("texto", "") + " " + ultimo_seg.get("pie", "")).lower()
     if not any(k in ultimo for k in
                ["segui", "sigue", "guarda", "comenta", "link", "mira", "proba"]):
         avisos.append("El ultimo segmento no tiene llamada a la accion.")

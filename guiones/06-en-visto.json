@@ -1,0 +1,93 @@
+{
+  "tema": "Te dejaron en visto",
+  "topico_marca": 5,
+  "captura_fuente": "capturas/captura-persona.mp4",
+  "flujo_real": "En la app: 'Alguien en particular' -> 'Si, en algun momento' -> sesion 'No estas rumiando. Estas postergando.' (2 pasos reales). Se reusa la captura de 'persona', tema emocionalmente adyacente.",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Te dejó en visto hace 3 horas.",
+      "duracion": 1.9,
+      "hook": "glitch",
+      "karaoke": true
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 12,
+      "texto": "veces que revisaste el chat",
+      "duracion": 2.3,
+      "transicion": "punch"
+    },
+    {
+      "formato": "ranking",
+      "texto": "Las excusas que te inventaste",
+      "items": [
+        [
+          "Está ocupado",
+          8
+        ],
+        [
+          "Se enojó",
+          5
+        ],
+        [
+          "Ya no le gustás",
+          3
+        ],
+        [
+          "Perdió el celular",
+          1
+        ]
+      ],
+      "duracion": 4.2,
+      "transicion": "whip"
+    },
+    {
+      "captura": "capturas/captura-persona.mp4",
+      "recorte": [
+        0.0,
+        3.0
+      ],
+      "texto": "No es que no le importe.",
+      "duracion": 3.0,
+      "transicion": "corte_duro"
+    },
+    {
+      "captura": "capturas/captura-persona.mp4",
+      "recorte": [
+        3.0,
+        6.0
+      ],
+      "texto": "Es que vos no diste el primer paso.",
+      "duracion": 3.0,
+      "transicion": "punch"
+    },
+    {
+      "formato": "declaracion",
+      "texto": "Te dejó en visto. Vos das el primer paso. Seguime.",
+      "duracion": 2.3,
+      "transicion": "fade",
+      "hook": "zoom_golpe"
+    }
+  ]
+}

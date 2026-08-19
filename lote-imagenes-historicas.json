@@ -1,0 +1,10 @@
+{
+  "salida": "assets/imagenes",
+  "buscar": [
+    {"fuente": "commons", "q": "Seneca bust", "nombre": "seneca"},
+    {"fuente": "commons", "q": "Epictetus", "nombre": "epicteto"},
+    {"fuente": "commons", "q": "Zeno of Citium", "nombre": "zenon"},
+    {"fuente": "commons", "q": "Socrates bust", "nombre": "socrates"},
+    {"fuente": "commons", "q": "Aristotle bust", "nombre": "aristoteles"}
+  ]
+}
