@@ -31,6 +31,7 @@ jobs:
         run: python3 descargar_imagenes.py --lote "${{ inputs.lote }}"
 
       - name: Commitear imagenes y licencias
+        if: always()
         run: |
           git config user.name "descargador-bot"
           git config user.email "actions@github.com"
