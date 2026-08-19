@@ -38,15 +38,25 @@ tiene sentido construir el negocio sobre una cadena sin probar.
 ## Fase 1 — Productos Digitales (primera fase a ejecutar)
 Objetivo: 1 producto digital vendible en 7-14 dias.
 
-- **1.1 Investigacion de nicho**: identificar 3-5 subnichos rentables
-  en una categoria de Gumroad. Investigar demanda real (busquedas,
+- **1.1 Investigacion de nicho + canal de distribucion**: identificar
+  3-5 subnichos rentables. Investigar demanda real (busquedas,
   productos existentes y sus resenas/ventas visibles, precio promedio,
-  quejas comunes de compradores sobre productos similares).
+  quejas comunes de compradores sobre productos similares). ADEMAS,
+  para cada subnicho: donde esta esa gente y como llega a comprar.
+  Un subnicho rentable sin canal de acceso claro NO se elige.
+  Salida esperada: subnicho recomendado + canal principal de trafico
+  elegido y por que.
 - **1.2 Diseno del producto**: definir y construir el contenido/codigo
   real del producto para el subnicho elegido.
-- **1.3 Empaquetado y ficha de venta**: archivo final, descripcion,
-  keywords, precio con justificacion.
-  *Gate: cuenta y verificacion de identidad en Gumroad las hago yo.*
+- **1.3 Empaquetado, ficha de venta y lanzamiento**: archivo final,
+  descripcion, keywords, precio con justificacion. Preparar la ficha
+  para DOS plataformas (Etsy para descubrimiento, Gumroad para venta
+  directa y captura de email) -- misma construccion, dos listados.
+  Preparar tambien los primeros 30 dias de contenido del canal de
+  trafico elegido en 1.1 (ej. 30 pines de Pinterest), porque publicar
+  el producto sin plan de trafico es garantia de cero ventas.
+  *Gate: cuentas y verificacion de identidad en Etsy/Gumroad las hago
+  yo.*
 - **1.4 Revision de resultado real**: tras 1-2 semanas, registrar
   ventas reales en state/costs.json. Decidir: iterar o pasar a Fase 2.
 
@@ -302,6 +312,123 @@ cada uno -- ni Claude ni Claude Code son asesores fiscales. Practica
 minima: mantener el registro de ingresos reales por fase (ya lo hace
 `state/costs.json`) y consultar a un contador local antes de que el
 volumen crezca -- mas facil prevenir esto temprano que resolverlo tarde.
+
+## Sistema de distribucion (el agujero mas grande de cualquier plan asi)
+Regla central: ninguna fase se considera "lista para lanzar" sin un plan
+de distribucion escrito. Un producto excelente sin trafico vende cero.
+La mayoria de proyectos como este no fracasan por mal producto --
+fracasan porque nadie se entero de que existia.
+
+**Correccion importante a la Fase 1**: Gumroad NO trae compradores. Es
+un escaparate propio, no un marketplace con busqueda. Publicar ahi y
+esperar es garantia de cero ventas. La estrategia correcta es doble
+canal con UNA sola construccion:
+- **Etsy** (u otro marketplace con buscador real): para trafico de
+  descubrimiento -- gente que ya esta buscando lo que vendes.
+- **Gumroad**: como destino de tu propia audiencia. Su ventaja real es
+  que te entrega el email de cada comprador (Etsy no); Gumroad cobra
+  menos comision en venta directa.
+Mismo producto, dos listados, dos fuentes de ingreso.
+
+**Canales de trafico gratuitos a investigar en el bloque 1.1** (elegir
+1-2 y ser constante, no estar en todos a medias):
+- Pinterest: historicamente el mejor fit para productos digitales
+  visuales (plantillas, planners).
+- Contenido/SEO (blog, Medium): trafico lento pero acumulativo -- un
+  articulo que rankea sigue trayendo gente meses despues.
+- Reddit/foros del nicho: solo aportando valor real, no spameando
+  links -- el spam se banea rapido y quema el nicho.
+- TikTok/Shorts: ya cubierto para Fase 6, aplicable a otras.
+
+**Regla anti-dispersion**: elegir UN canal principal por activo y
+sostenerlo minimo 30 dias antes de juzgarlo. Rotar de canal cada
+semana es la forma mas comun de no construir traccion en ninguno.
+
+## Definicion de fracaso a nivel proyecto (no solo por activo)
+Los umbrales por activo ya existen. Falta el del proyecto entero, para
+no seguir por inercia:
+- **Checkpoint a los 3 meses**: si no hubo NINGUNA venta/ingreso real
+  en ninguna fase, no se agrega una fase nueva -- se para y se revisa
+  que esta fallando (producto, distribucion, o eleccion de nicho).
+  Casi siempre es distribucion.
+- **Checkpoint a los 6 meses**: si el ingreso total sigue siendo
+  cercano a cero, se replantea el enfoque completo -- no se sigue
+  ejecutando el mismo plan esperando un resultado distinto.
+- Estos checkpoints se anotan en `state/log.md` con la fecha de inicio
+  real del proyecto, para que no se difuminen.
+- Fracasar rapido y barato es un exito del sistema, no una derrota:
+  el costo real aca es tiempo, y detectarlo a los 3 meses en vez de a
+  los 18 es lo que permite intentar otra cosa con lo aprendido.
+
+## Presupuesto de tiempo real del operador
+Disponibilidad declarada: mayormente libre durante el dia, con gym y
+futbol como actividades fijas. Eso es una ventaja real -- el cuello de
+botella de este proyecto NO va a ser tiempo, va a ser constancia.
+Implicancia practica: el limite de 3 activos simultaneos se mantiene
+igual (la atencion de calidad para los gates sigue siendo limitada),
+pero SI hay margen para sostener un canal de distribucion diario
+(publicar en Pinterest/TikTok, responder comentarios), que es
+justamente el trabajo que mas se abandona y mas rinde a largo plazo.
+Regla: 1 bloque de trabajo profundo por dia + 20-30 min de
+distribucion constante, todos los dias, incluso cuando no hay nada
+nuevo que lanzar.
+
+## Capa de subagentes (automatizacion real, con limites reales)
+Dos subagentes definidos en `.claude/agents/`, ambos de SOLO LECTURA:
+- **investigador-mercado**: hace el bloque 1 (investigacion) de
+  cualquier fase, en su propio contexto. Devuelve un reporte corto y
+  estructurado en vez de volcar 50 paginas leidas en la sesion
+  principal.
+- **revisor-calidad**: revisa cada entregable contra las reglas del
+  proyecto ANTES de que llegue a mi. Atrapa errores obvios para que mi
+  atencion se gaste en decisiones, no en correcciones.
+
+Beneficio real: aislamiento de contexto. La sesion principal se
+mantiene limpia y enfocada mientras el trabajo pesado de lectura
+ocurre aparte.
+
+Costos y limites que NO se ignoran:
+- Los flujos multi-agente consumen aproximadamente 4-7x los tokens de
+  una sesion simple. En plan Pro/Max, generar muchos agentes en
+  paralelo es la via mas rapida a chocar con el limite de uso.
+- Por eso: NO se agregan mas agentes hasta que estos dos demuestren
+  que se ganaron su lugar en uso real.
+- Ambos son de solo lectura a proposito. Ningun subagente escribe
+  archivos, gasta dinero, ni publica nada -- los gates humanos siguen
+  intactos y no se delegan a un agente.
+- Para tareas chicas o secuenciales, la sesion principal directa es
+  mas rapida: delegar tiene costo de latencia. No usar subagentes por
+  usarlos.
+
+## Capa de automatizacion SIN tokens (logica determinista)
+Principio: todo lo que se pueda resolver con un script, NO lo hace un
+LLM. Un script que cuenta, compara fechas y aplica reglas fijas cuesta
+cero tokens, corre gratis en GitHub Actions, y es MAS confiable que un
+modelo para eso (no alucina un numero). Cada cosa que se mueve de
+"Claude piensa" a "un script calcula" libera limite de uso para las
+decisiones que si requieren criterio.
+
+`guardian.py` -- ya implementado, cero costo:
+- Verifica el techo de 3 activos simultaneos.
+- Avisa si un gate lleva 3+ dias sin atender.
+- Dispara los checkpoints de fracaso de 3 y 6 meses automaticamente.
+
+Candidatos futuros para mover a script (sin IA):
+- Consolidar ingresos/costos por activo y ordenarlos por rendimiento.
+- Recordatorio de publicacion diaria del canal de distribucion.
+- Detectar activos sin actividad hace X dias.
+
+## Nota honesta sobre agentes locales (Ollama y similares)
+Se evaluaron y NO aplican a este proyecto por una razon concreta:
+son gratis en inferencia pero corren en hardware propio, y requieren
+GPU para ser practicos. Este proyecto opera desde un celular, sin
+computadora -- ese es su punto de partida. En GitHub Actions tampoco
+sirven: sin GPU y con minutos limitados. Ademas, los modelos locales
+chicos (7-8B) sirven para automatizaciones de 1-3 pasos, no para
+trabajo abierto de investigacion y estrategia.
+Si en el futuro hay una computadora con GPU disponible, se puede
+reevaluar -- pero hoy la via real de "cero costo" es logica
+determinista (guardian.py), no un modelo local.
 
 ## Capacidad transversal — Investigacion de productos/formatos ganadores
 Aplica al bloque de diseno/construccion de CUALQUIER fase, no solo
