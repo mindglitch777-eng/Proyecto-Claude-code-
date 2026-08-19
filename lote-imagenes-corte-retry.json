@@ -1,7 +1,7 @@
 {
   "salida": "assets/imagenes",
   "buscar": [
-    {"fuente": "openverse", "q": "woman texting smartphone worried",
+    {"fuente": "openverse", "q": "smartphone hand texting",
      "nombre": "en-visto"},
     {"fuente": "openverse", "q": "man stressed head hands",
      "nombre": "acelerado"}
