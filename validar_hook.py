@@ -26,11 +26,14 @@ GENERICOS = [
 ]
 
 try:
-    # Misma lista que hooks.py --auditar, para que las dos herramientas
-    # nunca se desincronicen sobre que palabra esta prohibida.
-    from hooks import VOCABULARIO_CLINICO, VOCABULARIO_FUERTE
+    # Misma lista (y misma normalizacion de tildes) que hooks.py
+    # --auditar, para que las dos herramientas nunca se desincronicen
+    # sobre que palabra esta prohibida.
+    from hooks import VOCABULARIO_CLINICO, VOCABULARIO_FUERTE, normalizar
 except ImportError:
     VOCABULARIO_CLINICO, VOCABULARIO_FUERTE = [], []
+    def normalizar(s):
+        return s
 
 
 def revisar(path):
@@ -73,9 +76,9 @@ def revisar(path):
             f"El hook dura {primero['duracion']}s. En TikTok el enganche "
             "se decide en 1.3s -- considera acortarlo.")
 
-    bajo = texto1.lower()
+    bajo = normalizar(texto1.lower())
     for g in GENERICOS:
-        if g in bajo:
+        if normalizar(g) in bajo:
             problemas.append(
                 f"Hook generico detectado: '{g}'. La curiosidad generica se "
                 "lee como clickbait; usa curiosidad ESPECIFICA (numeros, "
@@ -126,12 +129,12 @@ def revisar(path):
             out += [b.get("titulo", ""), b.get("texto", "")]
         for k in ("items", "pasos", "hitos"):
             out += [str(x) for x in s.get(k, [])]
-        return " ".join(out).lower()
+        return normalizar(" ".join(out).lower())
 
     for i, s in enumerate(segs):
         bloque = _textos_visibles(s)
         for c in VOCABULARIO_CLINICO:
-            if c in bloque:
+            if normalizar(c) in bloque:
                 sug = (VOCABULARIO_FUERTE[hash(c) % len(VOCABULARIO_FUERTE)]
                        if VOCABULARIO_FUERTE else "vocabulario coloquial")
                 problemas.append(

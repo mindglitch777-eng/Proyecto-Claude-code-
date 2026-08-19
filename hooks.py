@@ -25,6 +25,14 @@ Uso:
 import random
 import re
 import sys
+import unicodedata
+
+
+def normalizar(s):
+    """Saca tildes/dieresis para comparar texto sin que un acento
+    faltante o de mas rompa la deteccion de una frase prohibida."""
+    s = unicodedata.normalize("NFKD", s)
+    return "".join(c for c in s if not unicodedata.combining(c))
 
 # Cada patron: (nombre, por que funciona, plantillas)
 PATRONES = {
@@ -101,8 +109,8 @@ PATRONES = {
         "la resuelve con una accion concreta y contable. No diagnostica, "
         "muestra. Es el unico patron que ancla al producto real.",
         [
-            "Te comes la cabeza por un mensaje que no responden. {t} toques y sabes que hacer",
-            "Son las 3 AM y no lo podes soltar. {t} toques, listo",
+            "Te comés la cabeza por un mensaje que no responden. {t} toques y sabes que hacer",
+            "Son las 3 AM y no lo podés soltar. {t} toques, listo",
             "Le das mil vueltas a la misma decision hace {d} dias. Se corta en {t} toques",
             "Se te queda pegado lo que dijiste hace {a} anios. {t} toques lo bajan",
         ]),
@@ -138,16 +146,16 @@ PROHIBIDAS = [
 VOCABULARIO_CLINICO = [
     "rumiar", "rumiacion", "rumiando", "trastorno", "patologia",
     "sintoma", "diagnostico", "terapia", "paciente", "cuadro clinico",
-    "tenes ansiedad", "sufris de", "padeces", "padecés",
+    "tenes ansiedad", "sufris de", "padeces",
 ]
 
 # Lo que la gente realmente escribe (validado 2026: busqueda en TikTok
 # hispanohablante de contenido de "overthinking" real). "Rumiar" es
 # termino de paper de psicologia; esto es como se dice en la calle.
 VOCABULARIO_FUERTE = [
-    "te comes la cabeza", "le das mil vueltas", "no lo podes soltar",
+    "te comés la cabeza", "le das mil vueltas", "no lo podés soltar",
     "se te queda pegado", "no parás de darle vueltas", "el bucle",
-    "te vuela la cabeza", "no lo podes cortar",
+    "te vuela la cabeza", "no lo podés cortar",
 ]
 
 
@@ -176,7 +184,7 @@ def auditar(texto):
     """Chequea el hook contra las reglas duras de 2026."""
     problemas, avisos = [], []
     palabras = len(texto.split())
-    bajo = texto.lower()
+    bajo = normalizar(texto.lower())
 
     if palabras > 15:
         problemas.append(f"{palabras} palabras (max 15). No entra en 3s.")
@@ -184,13 +192,13 @@ def auditar(texto):
         avisos.append(f"{palabras} palabras. Muy corto puede quedar vacio.")
 
     for f in PROHIBIDAS:
-        if f in bajo:
+        if normalizar(f) in bajo:
             problemas.append(f"Frase de calentamiento: '{f}'. "
                              "El algoritmo la trata como relleno.")
             break
 
     for c in VOCABULARIO_CLINICO:
-        if c in bajo:
+        if normalizar(c) in bajo:
             sugerido = VOCABULARIO_FUERTE[hash(c) % len(VOCABULARIO_FUERTE)]
             problemas.append(
                 f"'{c}' es vocabulario clinico: nadie lo dice en la calle "

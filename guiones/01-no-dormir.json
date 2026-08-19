@@ -26,7 +26,7 @@
   "segmentos": [
     {
       "formato": "declaracion",
-      "texto": "Discutiste. Son las 2 AM y te comes la cabeza.",
+      "texto": "Discutiste. Son las 2 AM y te comés la cabeza.",
       "duracion": 1.9,
       "hook": "flash",
       "karaoke": true
@@ -60,7 +60,7 @@
         0.0,
         3.0
       ],
-      "texto": "Dos toques. Asi se corta a las 2 AM.",
+      "texto": "Dos toques. Así se corta a las 2 AM.",
       "duracion": 3.0,
       "transicion": "corte_duro"
     },

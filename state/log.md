@@ -53,12 +53,57 @@ manual (nunca por cron) — no descarga nada hasta que alguien lo dispare
 a mano desde GitHub. Lote pendiente en `lote-imagenes-historicas.json`
 (Séneca, Epicteto, Zenón, Sócrates, Aristóteles).
 
+**Decisión 8 — sistema de vocabulario clínico (pedido del operador).**
+"Rumiar" es jerga de paper de psicología, nadie la usa hablando y
+además cruza la línea ética del proyecto (MARCA.md: no vendemos
+diagnóstico). Investigación real (WebSearch) confirmó qué se usa en
+la calle: "te comés la cabeza", "le das mil vueltas". Se agregaron
+`VOCABULARIO_CLINICO` / `VOCABULARIO_FUERTE` a `hooks.py`, compartidas
+con `validar_hook.py` (antes tenían lógica separada = riesgo de
+desincronizarse). Nuevo patrón de hook `accion_real`: nombra la
+situación en lenguaje de calle y la resuelve con una acción contable
+en la app, nunca con un diagnóstico. Bug de paso: la comparación no
+ignoraba tildes (`normalizar()` con NFKD agregado a ambos scripts).
+
+**Decisión 9 — investigación de herramientas de edición IA (agente en
+background).** Prioridad: todo tiene que correr por CLI/API, nada de
+GUI manual (el operador solo tiene celular). Recomendación adoptada
+parcialmente: usar el filtro nativo `xfade` de ffmpeg (58 transiciones,
+sin GPU) en vez de gl-transitions (necesita compilar shaders + GPU,
+y este entorno no tiene `/dev/dri`). Whisper+libass (subtítulos) y
+Kokoro/Fish TTS quedan pendientes: dependen de si el operador quiere
+narración por voz (la serie está diseñada mute-first, texto en
+pantalla siempre — MARCA.md).
+
+**Decisión 10 — compositor `armar_video.py` construido y probado.**
+Une los actos animados con las capturas reales, transiciones via
+`xfade` (mapeadas desde el vocabulario de transiciones ya existente
+en `animador_v9.py`: punch→zoomin, whip→hlwind, etc.), marco de
+teléfono con esquinas redondeadas + sombra + borde verde de marca
+(PIL), caption quemado con ffmpeg drawtext. Bug real encontrado y
+corregido en `animador_v9.py` (no en el compositor): cuando el audio
+de un clip es solo SFX puntuales sin música/voz, `amix duration=longest`
+termina cuando termina el ÚLTIMO sfx, no cuando termina el video
+declarado -- el `-shortest` del ensamblado final recortaba el video en
+silencio (se perdían ~2.4s sin ningún error visible). Se agregó `apad`
+al filtro de mezcla. Esto afecta a cualquier guion futuro con SFX pero
+sin música/voz, no solo a estos 5.
+
+**Decisión 11 — correcciones de tildes/ñ en los 5 guiones.** Se habían
+escrito sin acentos por error ("Manana" en vez de "Mañana", "dias" en
+vez de "días", etc.) -- visible en los frames renderizados. Corregido
+en los 5 archivos de `guiones/`.
+
+**Estado actual: los 5 videos completos están renderizados** en
+`videos/` (hook + mecanismo + producto real enmarcado + loop, con
+transiciones xfade y audio sincronizado) y fueron enviados al operador
+para revisión. Pendiente su aprobación final antes de publicar nada.
+
 **Pendiente / próxima sesión:**
-- Aprobación del operador sobre los 5 guiones (ver mensaje de chat).
-- Si aprueba: construir el compositor que arma el video final (acts
-  animados de `animador_v9.py` + clips reales con marco de teléfono +
-  caption quemado, unidos por ffmpeg) y renderizar recién ahí.
-- Investigar herramientas de edición IA adicionales (pedido explícito
-  del operador, después del prototipo de captura).
+- Feedback del operador sobre los 5 videos finales.
+- Decidir si la serie suma narración por voz (Kokoro/Fish TTS +
+  Whisper para subtítulos sincronizados) o se mantiene mute-first.
 - Correr manualmente el workflow de descarga de imágenes cuando el
   operador lo apruebe.
+- Nada de esto se publicó en ninguna plataforma -- sigue pendiente la
+  cuenta/verificación de identidad que hace el operador (CLAUDE.md).

@@ -44,7 +44,7 @@
       "texto": "",
       "izquierda": {
         "titulo": "LO QUE SABES",
-        "texto": "No respondio todavia",
+        "texto": "No respondió todavía",
         "valor": "1"
       },
       "derecha": {
@@ -77,7 +77,7 @@
     },
     {
       "formato": "declaracion",
-      "texto": "Mandaste el mensaje. Corta la espera. Seguime.",
+      "texto": "Mandaste el mensaje. Cortá la espera. Seguime.",
       "duracion": 2.3,
       "transicion": "dip",
       "hook": "zoom_golpe"

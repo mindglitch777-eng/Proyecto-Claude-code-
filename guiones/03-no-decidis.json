@@ -26,7 +26,7 @@
   "segmentos": [
     {
       "formato": "declaracion",
-      "texto": "7 dias dandole vueltas al mismo si o no.",
+      "texto": "7 días dándole vueltas al mismo sí o no.",
       "duracion": 2.0,
       "hook": "persiana",
       "karaoke": true
@@ -34,14 +34,14 @@
     {
       "formato": "dato_duro",
       "numero": 0,
-      "texto": "datos nuevos en esos 7 dias",
+      "texto": "datos nuevos en esos 7 días",
       "duracion": 2.3,
       "transicion": "punch"
     },
     {
       "formato": "pregunta",
-      "pregunta": "Te falta un dato o te falta decidir?",
-      "respuesta": "Si no falta un dato, no falta pensar mas.",
+      "pregunta": "¿Te falta un dato o te falta decidir?",
+      "respuesta": "Si no falta un dato, no falta pensar más.",
       "texto": "",
       "duracion": 4.2,
       "transicion": "dip"
@@ -52,7 +52,7 @@
         0.0,
         2.6
       ],
-      "texto": "Escribis la decision. Un toque.",
+      "texto": "Escribís la decisión. Un toque.",
       "duracion": 2.6,
       "transicion": "corte_duro"
     },
@@ -62,13 +62,13 @@
         2.6,
         5.3
       ],
-      "texto": "Otro toque. Quedo cerrado, sin reabrirlo.",
+      "texto": "Otro toque. Quedó cerrado, sin reabrirlo.",
       "duracion": 2.7,
       "transicion": "punch"
     },
     {
       "formato": "declaracion",
-      "texto": "7 dias menos. Decidi hoy. Seguime.",
+      "texto": "7 días menos. Decidí hoy. Seguime.",
       "duracion": 2.2,
       "transicion": "fade",
       "hook": "flash"

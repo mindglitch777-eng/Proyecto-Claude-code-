@@ -1347,9 +1347,15 @@ def construir_audio(cfg, segs, dur_total, tmp, voces=None, marcas=None):
         return None
 
     out = tmp / "audio.m4a"
+    # apad + -t: si el audio es solo SFX puntuales (sin musica ni voz),
+    # 'amix duration=longest' termina cuando termina el ULTIMO sfx, no
+    # cuando termina el video. Sin este padding, el '-shortest' del
+    # ensamblado final en generar() recorta el video en silencio para
+    # que coincida con un audio mas corto -- se pierden segundos de
+    # imagen sin ningun error visible.
     mix = "".join(etiquetas) + (
         f"amix=inputs={len(etiquetas)}:duration=longest:normalize=0,"
-        f"alimiter=limit=0.95,"
+        f"apad,alimiter=limit=0.95,"
         f"aresample=44100[o]")
     cmd = ["ffmpeg", "-y", "-loglevel", "error"] + entradas + [
         "-filter_complex", ";".join(filtros + [mix]),
