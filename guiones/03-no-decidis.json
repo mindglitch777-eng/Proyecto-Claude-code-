@@ -1,0 +1,77 @@
+{
+  "tema": "Tenes que decidir y no podes",
+  "topico_marca": 4,
+  "captura_fuente": "capturas/captura-decidir.mp4",
+  "flujo_real": "En la app: 'Decision pendiente' -> escribe la decision -> 'No, ya se lo que hay que saber' -> 'Decido ahora' -> queda cerrado.",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "7 dias pensando el mismo si o no.",
+      "duracion": 2.0,
+      "hook": "persiana",
+      "karaoke": true
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 0,
+      "texto": "datos nuevos en esos 7 dias",
+      "duracion": 2.3,
+      "transicion": "punch"
+    },
+    {
+      "formato": "pregunta",
+      "pregunta": "Te falta un dato o te falta decidir?",
+      "respuesta": "Si no falta un dato, no falta pensar mas.",
+      "texto": "",
+      "duracion": 4.2,
+      "transicion": "dip"
+    },
+    {
+      "captura": "capturas/captura-decidir.mp4",
+      "recorte": [
+        0.0,
+        2.6
+      ],
+      "texto": "Escribis la decision. Un toque.",
+      "duracion": 2.6,
+      "transicion": "corte_duro"
+    },
+    {
+      "captura": "capturas/captura-decidir.mp4",
+      "recorte": [
+        2.6,
+        5.3
+      ],
+      "texto": "Otro toque. Quedo cerrado, sin reabrirlo.",
+      "duracion": 2.7,
+      "transicion": "punch"
+    },
+    {
+      "formato": "declaracion",
+      "texto": "7 dias menos. Decidi hoy. Seguime.",
+      "duracion": 2.2,
+      "transicion": "fade",
+      "hook": "flash"
+    }
+  ]
+}

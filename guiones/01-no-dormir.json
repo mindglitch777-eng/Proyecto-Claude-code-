@@ -1,0 +1,85 @@
+{
+  "tema": "Discutiste y no podes dormir",
+  "topico_marca": 1,
+  "captura_fuente": "capturas/captura-noche.mp4",
+  "flujo_real": "En la app: 'No puedo dormir' -> 'Algo puntual que no me suelta' -> sesion 'A esta hora no se decide nada' (2 pasos reales).",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Discutiste. Son las 2 AM.",
+      "duracion": 1.9,
+      "hook": "flash",
+      "karaoke": true
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 40,
+      "texto": "vueltas y cero cambios reales",
+      "duracion": 2.5,
+      "transicion": "punch"
+    },
+    {
+      "formato": "division",
+      "texto": "",
+      "izquierda": {
+        "titulo": "RUMIAR",
+        "texto": "Repetis lo mismo",
+        "valor": "0"
+      },
+      "derecha": {
+        "titulo": "CORTAR",
+        "texto": "Un paso, ahora",
+        "valor": "1"
+      },
+      "duracion": 3.6,
+      "transicion": "barrido"
+    },
+    {
+      "captura": "capturas/captura-noche.mp4",
+      "recorte": [
+        0.0,
+        3.0
+      ],
+      "texto": "Dos toques. Asi se corta a las 2 AM.",
+      "duracion": 3.0,
+      "transicion": "corte_duro"
+    },
+    {
+      "captura": "capturas/captura-noche.mp4",
+      "recorte": [
+        3.0,
+        6.0
+      ],
+      "texto": "El paso siguiente, ya en pantalla.",
+      "duracion": 3.0,
+      "transicion": "punch"
+    },
+    {
+      "formato": "declaracion",
+      "texto": "Discutiste. Esta vez lo cortas antes. Seguime.",
+      "duracion": 2.3,
+      "transicion": "fade",
+      "hook": "sacudida"
+    }
+  ]
+}

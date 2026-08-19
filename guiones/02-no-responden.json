@@ -1,0 +1,86 @@
+{
+  "tema": "Mandaste un mensaje y no responden",
+  "topico_marca": 2,
+  "captura_fuente": "capturas/captura-persona.mp4",
+  "flujo_real": "En la app: 'Alguien en particular' -> 'Si, en algun momento' -> sesion 'No estas rumiando. Estas postergando.' (2 pasos reales).",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "pregunta",
+      "pregunta": "Mandaste 1 mensaje hace 3 horas.",
+      "respuesta": "Ya inventaste 4 explicaciones.",
+      "texto": "",
+      "duracion": 2.4,
+      "hook": "glitch"
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 4,
+      "texto": "explicaciones que te inventaste solo",
+      "duracion": 2.2,
+      "transicion": "whip"
+    },
+    {
+      "formato": "division",
+      "texto": "",
+      "izquierda": {
+        "titulo": "LO QUE SABES",
+        "texto": "No respondio todavia",
+        "valor": "1"
+      },
+      "derecha": {
+        "titulo": "LO QUE INVENTASTE",
+        "texto": "Cuatro finales distintos",
+        "valor": "4"
+      },
+      "duracion": 4.0,
+      "transicion": "slide"
+    },
+    {
+      "captura": "capturas/captura-persona.mp4",
+      "recorte": [
+        0.0,
+        3.0
+      ],
+      "texto": "No es postergar. Es no saber el primer paso.",
+      "duracion": 3.0,
+      "transicion": "corte_duro"
+    },
+    {
+      "captura": "capturas/captura-persona.mp4",
+      "recorte": [
+        3.0,
+        6.0
+      ],
+      "texto": "Un verbo. Un cuando. Listo.",
+      "duracion": 3.0,
+      "transicion": "punch"
+    },
+    {
+      "formato": "declaracion",
+      "texto": "Mandaste el mensaje. Corta la espera. Seguime.",
+      "duracion": 2.3,
+      "transicion": "dip",
+      "hook": "zoom_golpe"
+    }
+  ]
+}

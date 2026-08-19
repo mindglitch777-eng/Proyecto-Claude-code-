@@ -44,7 +44,9 @@ def revisar(path):
 
     problemas, avisos = [], []
     primero = segs[0]
-    texto1 = primero.get("texto", "")
+    # El texto visible del hook puede vivir en 'texto' o, en formatos
+    # como 'pregunta', en 'pregunta' (lo que se lee primero en pantalla).
+    texto1 = primero.get("texto") or primero.get("pregunta", "")
     palabras1 = len(texto1.split())
 
     # --- Reglas del hook (primer segmento) ---

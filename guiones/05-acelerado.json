@@ -1,0 +1,77 @@
+{
+  "tema": "Te despertas ya acelerado",
+  "topico_marca": 9,
+  "captura_fuente": "capturas/captura-respirar.mp4",
+  "flujo_real": "En la app: 'Necesito bajar un cambio' -> modo 'Calmar' -> respiracion guiada real (exhalacion mas larga), cita de Seneca.",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Te despertaste a las 4 AM, acelerado.",
+      "duracion": 1.9,
+      "hook": "flash",
+      "karaoke": true
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 6,
+      "texto": "segundos de exhalacion bajan la activacion",
+      "duracion": 2.3,
+      "transicion": "punch"
+    },
+    {
+      "formato": "pregunta",
+      "pregunta": "Necesitas mas cafe o menos activacion?",
+      "respuesta": "El cuerpo se calma antes que la cabeza.",
+      "texto": "",
+      "duracion": 3.6,
+      "transicion": "slide"
+    },
+    {
+      "captura": "capturas/captura-respirar.mp4",
+      "recorte": [
+        0.0,
+        2.0
+      ],
+      "texto": "Un modo. Un toque.",
+      "duracion": 2.0,
+      "transicion": "corte_duro"
+    },
+    {
+      "captura": "capturas/captura-respirar.mp4",
+      "recorte": [
+        2.0,
+        5.0
+      ],
+      "texto": "Exhala mas largo que inhalas. Un ciclo real.",
+      "duracion": 3.0,
+      "transicion": "punch"
+    },
+    {
+      "formato": "declaracion",
+      "texto": "Te despertas acelerado. Cortalo en un ciclo. Seguime.",
+      "duracion": 2.5,
+      "transicion": "fade",
+      "hook": "persiana"
+    }
+  ]
+}
