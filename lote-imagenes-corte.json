@@ -1,19 +1,19 @@
 {
   "salida": "assets/imagenes",
   "buscar": [
-    {"fuente": "openverse", "q": "woman awake bed night phone glow",
+    {"fuente": "openverse", "q": "woman awake night bed",
      "nombre": "no-dormir"},
-    {"fuente": "openverse", "q": "person checking phone anxious texting",
+    {"fuente": "openverse", "q": "person phone anxious",
      "nombre": "en-visto"},
-    {"fuente": "openverse", "q": "person thinking decision crossroads",
+    {"fuente": "openverse", "q": "person thinking decision",
      "nombre": "decidir"},
-    {"fuente": "openverse", "q": "two people serious conversation talking",
+    {"fuente": "openverse", "q": "couple talking serious",
      "nombre": "hablar-dificil"},
-    {"fuente": "openverse", "q": "person breathing meditation calm eyes closed",
+    {"fuente": "openverse", "q": "person meditation calm",
      "nombre": "respirar"},
-    {"fuente": "openverse", "q": "person stressed overwhelmed morning coffee",
+    {"fuente": "openverse", "q": "person stressed morning",
      "nombre": "acelerado"},
-    {"fuente": "openverse", "q": "person walking alone thinking street night",
+    {"fuente": "openverse", "q": "person walking alone night",
      "nombre": "pensando"}
   ]
 }

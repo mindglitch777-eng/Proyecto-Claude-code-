@@ -111,33 +111,48 @@ def commons(q, nombre, salida="assets/imagenes"):
     return 1
 
 
+ANCHO_MIN_OPENVERSE = 640  # 900 descartaba casi todo: la mayoria de fotos
+                            # "de situacion" en Openverse (blogs, redes)
+                            # vienen mas chicas. El pipeline igual reencuadra.
+
+
 def openverse(q, nombre, salida="assets/imagenes"):
     """Openverse: fotos modernas con licencia CC. Para situaciones."""
     url = ("https://api.openverse.org/v1/images/?q=" + urllib.parse.quote(q) +
-           "&license_type=commercial,modification&page_size=8")
+           "&license_type=commercial,modification&page_size=20")
     try:
         d = pedir(url)
     except Exception as e:
         print(f"  ERROR de red: {e}")
         return 1
-    for r in d.get("results", []):
+    resultados = d.get("results", [])
+    sin_url, chicas, sin_descargar = 0, 0, 0
+    for r in resultados:
         u = r.get("url")
         if not u:
+            sin_url += 1
             continue
-        if (r.get("width") or 0) < 900:
+        ancho = r.get("width") or 0
+        if 0 < ancho < ANCHO_MIN_OPENVERSE:
+            chicas += 1
             continue
         ext = Path(urllib.parse.urlparse(u).path).suffix or ".jpg"
         dest = Path(salida) / f"{nombre}{ext}"
         try:
             kb = bajar(u, dest) / 1024
         except Exception:
+            sin_descargar += 1
             continue
         registrar(dest.name, "openverse", r.get("foreign_landing_url", u),
                   r.get("license", "?") + " " + str(r.get("license_version", "")),
                   salida)
-        print(f"  OK: {dest} ({kb:.0f} KB) · {r.get('license')}")
+        print(f"  OK: {dest} ({kb:.0f} KB, {ancho}px) · {r.get('license')}")
         return 0
-    print(f"  Sin resultados usables para '{q}'.")
+    # Diagnostico: por que no salio nada, sin tener que ir a buscar logs.
+    print(f"  Sin resultados usables para '{q}' -- {len(resultados)} "
+          f"resultados totales de la API ({sin_url} sin url, {chicas} "
+          f"debajo de {ANCHO_MIN_OPENVERSE}px, {sin_descargar} fallo la "
+          f"descarga). Probar una busqueda mas generica.")
     return 1
 
 
