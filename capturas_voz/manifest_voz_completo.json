@@ -1,0 +1,527 @@
+[
+  {
+    "stem": "01-no-dormir",
+    "index": 0,
+    "texto": "Discutiste. Son las 2 AM y te comés la cabeza."
+  },
+  {
+    "stem": "01-no-dormir",
+    "index": 1,
+    "texto": "Así escala si no lo cortás: a las 2 fue una vuelta, a las 2:15 ocho, a las 2:30 diecinueve, a las 2:45 cuarenta."
+  },
+  {
+    "stem": "01-no-dormir",
+    "index": 2,
+    "texto": "Cuarenta vueltas a las 2 AM. La causa: no cortaste a tiempo. La solución: una sola acción."
+  },
+  {
+    "stem": "01-no-dormir",
+    "index": 5,
+    "texto": "Discutiste. Esta vez lo cortás antes. Seguime."
+  },
+  {
+    "stem": "02-no-responden",
+    "index": 0,
+    "texto": "Mandaste un mensaje hace 3 horas. Ya inventaste cuatro explicaciones."
+  },
+  {
+    "stem": "02-no-responden",
+    "index": 1,
+    "texto": "Cuatro explicaciones que te inventaste solo."
+  },
+  {
+    "stem": "02-no-responden",
+    "index": 2,
+    "texto": "Está ocupado. No vio el mensaje. Lo está pensando. Ya no le importa."
+  },
+  {
+    "stem": "02-no-responden",
+    "index": 5,
+    "texto": "Mandaste el mensaje. Cortá la espera. Seguime."
+  },
+  {
+    "stem": "03-no-decidis",
+    "index": 0,
+    "texto": "7 días dándole vueltas al mismo sí o no."
+  },
+  {
+    "stem": "03-no-decidis",
+    "index": 1,
+    "texto": "Cero datos nuevos en esos 7 días."
+  },
+  {
+    "stem": "03-no-decidis",
+    "index": 2,
+    "texto": "7 días sin decidir es una decisión también."
+  },
+  {
+    "stem": "03-no-decidis",
+    "index": 5,
+    "texto": "7 días menos. Decidí hoy. Seguime."
+  },
+  {
+    "stem": "04-hablar-importante",
+    "index": 0,
+    "texto": "Mañana hablás. Ya lo ensayaste 12 veces."
+  },
+  {
+    "stem": "04-hablar-importante",
+    "index": 1,
+    "texto": "Doce veces ensayado, cero veces mejorado."
+  },
+  {
+    "stem": "04-hablar-importante",
+    "index": 2,
+    "texto": "Cuatro preguntas, no un ensayo: qué querés lograr, qué depende de vos, lo peor que puede pasar, qué hacés si pasa."
+  },
+  {
+    "stem": "04-hablar-importante",
+    "index": 5,
+    "texto": "Mañana hablás, ya preparado. Seguime."
+  },
+  {
+    "stem": "05-acelerado",
+    "index": 0,
+    "texto": "Te despertaste a las 4 AM, acelerado."
+  },
+  {
+    "stem": "05-acelerado",
+    "index": 1,
+    "texto": "Seis segundos de exhalación bajan la activación."
+  },
+  {
+    "stem": "05-acelerado",
+    "index": 2,
+    "texto": "La proporción que baja la activación: cuatro segundos inhalando, seis exhalando, seis ciclos, dos minutos."
+  },
+  {
+    "stem": "05-acelerado",
+    "index": 5,
+    "texto": "Te despertás acelerado. Cortalo en un ciclo. Seguime."
+  },
+  {
+    "stem": "06-en-visto",
+    "index": 0,
+    "texto": "Te dejó en visto hace 3 horas."
+  },
+  {
+    "stem": "06-en-visto",
+    "index": 1,
+    "texto": "Doce veces que revisaste el chat."
+  },
+  {
+    "stem": "06-en-visto",
+    "index": 2,
+    "texto": "Las excusas que te inventaste: está ocupado, se enojó, ya no le gustás, perdió el celular."
+  },
+  {
+    "stem": "06-en-visto",
+    "index": 5,
+    "texto": "Te dejó en visto. Vos das el primer paso. Seguime."
+  },
+  {
+    "stem": "07-acordas-hace-anios",
+    "index": 0,
+    "texto": "Hace 3 años dijiste algo raro. Todavía te perseguís por eso."
+  },
+  {
+    "stem": "07-acordas-hace-anios",
+    "index": 1,
+    "texto": "años y todavía te lo repetís"
+  },
+  {
+    "stem": "07-acordas-hace-anios",
+    "index": 2,
+    "texto": "Así se guarda un recuerdo incómodo"
+  },
+  {
+    "stem": "07-acordas-hace-anios",
+    "index": 5,
+    "texto": "Hace 3 años. Hoy lo etiquetás y sigue. Seguime."
+  },
+  {
+    "stem": "08-alguien-dijo-hace-dias",
+    "index": 0,
+    "texto": "Te dijo algo hace 4 días y no lo soltás."
+  },
+  {
+    "stem": "08-alguien-dijo-hace-dias",
+    "index": 1,
+    "texto": "días repitiendo la misma frase"
+  },
+  {
+    "stem": "08-alguien-dijo-hace-dias",
+    "index": 2,
+    "texto": "No es la frase. Es el horario libre que le diste"
+  },
+  {
+    "stem": "08-alguien-dijo-hace-dias",
+    "index": 5,
+    "texto": "4 días dándole vueltas. Le pusiste horario. Seguime."
+  },
+  {
+    "stem": "09-celular-pareja",
+    "index": 0,
+    "texto": "Le revisaste el celular a las 3 AM. Otra vez."
+  },
+  {
+    "stem": "09-celular-pareja",
+    "index": 1,
+    "texto": "AM. La tercera vez esta semana"
+  },
+  {
+    "stem": "09-celular-pareja",
+    "index": 2,
+    "texto": "LO QUE VISTE: Nada raro, en realidad. LO QUE ARMASTE: Una historia completa."
+  },
+  {
+    "stem": "09-celular-pareja",
+    "index": 5,
+    "texto": "El celular, guardado. Vos, tranquilo. Seguime."
+  },
+  {
+    "stem": "10-carga-para-otros",
+    "index": 0,
+    "texto": "Cancelaste un plan. Pensaste: se van a cansar de mí."
+  },
+  {
+    "stem": "10-carga-para-otros",
+    "index": 1,
+    "texto": "plan cancelado no es una carga. Es un dato"
+  },
+  {
+    "stem": "10-carga-para-otros",
+    "index": 2,
+    "texto": "Eso lo penso la otra persona o lo pensas vos por ella? ... Nunca lo preguntaste. Solo lo diste por hecho."
+  },
+  {
+    "stem": "10-carga-para-otros",
+    "index": 5,
+    "texto": "Cancelaste un plan. Eso es todo. Seguime."
+  },
+  {
+    "stem": "11-obsesion-error-trabajo",
+    "index": 0,
+    "texto": "Un error del laburo, hace 2 semanas. Seguís ahí."
+  },
+  {
+    "stem": "11-obsesion-error-trabajo",
+    "index": 1,
+    "texto": "semanas por un error que ya pasó"
+  },
+  {
+    "stem": "11-obsesion-error-trabajo",
+    "index": 2,
+    "texto": "Repasarlo mil veces no lo corrige. Solo lo revive"
+  },
+  {
+    "stem": "11-obsesion-error-trabajo",
+    "index": 5,
+    "texto": "El error, 2 semanas atrás. Vos, hoy. Seguime."
+  },
+  {
+    "stem": "12-no-dijiste-antes",
+    "index": 0,
+    "texto": "No se lo dijiste. Y ya no está para escucharlo."
+  },
+  {
+    "stem": "12-no-dijiste-antes",
+    "index": 1,
+    "texto": "cosa que no dijiste. La única que importaba"
+  },
+  {
+    "stem": "12-no-dijiste-antes",
+    "index": 2,
+    "texto": "Sufrimos mas en la imaginacion que en la realidad"
+  },
+  {
+    "stem": "12-no-dijiste-antes",
+    "index": 5,
+    "texto": "No se lo dijiste. Ahora sí, aunque sea acá. Seguime."
+  },
+  {
+    "stem": "13-te-comparas",
+    "index": 0,
+    "texto": "Mirás su perfil y te comparás. Van 20 minutos."
+  },
+  {
+    "stem": "13-te-comparas",
+    "index": 1,
+    "texto": "minutos mirando una vida editada"
+  },
+  {
+    "stem": "13-te-comparas",
+    "index": 2,
+    "texto": "SU PERFIL: Lo que elige mostrar. SU VIDA: Lo que no ves nunca."
+  },
+  {
+    "stem": "13-te-comparas",
+    "index": 5,
+    "texto": "20 minutos comparando. Ya los cortaste. Seguime."
+  },
+  {
+    "stem": "14-dijiste-si-querias-no",
+    "index": 0,
+    "texto": "Dijiste que sí. Querías decir que no. Ya pasaron 2 días."
+  },
+  {
+    "stem": "14-dijiste-si-querias-no",
+    "index": 1,
+    "texto": "días de sí, cuando era no"
+  },
+  {
+    "stem": "14-dijiste-si-querias-no",
+    "index": 2,
+    "texto": "Te falta un dato para volver atras o te falta animarte? ... Si no falta un dato, ya podes decirlo."
+  },
+  {
+    "stem": "14-dijiste-si-querias-no",
+    "index": 5,
+    "texto": "Dijiste que sí. Ahora decís lo que es. Seguime."
+  },
+  {
+    "stem": "15-enteraste-por-terceros",
+    "index": 0,
+    "texto": "Te enteraste por otra persona, no por él. Van 3 días dándole vueltas."
+  },
+  {
+    "stem": "15-enteraste-por-terceros",
+    "index": 1,
+    "texto": "días dándole vueltas a algo que no viste"
+  },
+  {
+    "stem": "15-enteraste-por-terceros",
+    "index": 2,
+    "texto": "Lo que sabés vs. lo que armaste solo"
+  },
+  {
+    "stem": "15-enteraste-por-terceros",
+    "index": 5,
+    "texto": "Te enteraste por un tercero. Mañana hablás vos. Seguime."
+  },
+  {
+    "stem": "16-ego-perdon",
+    "index": 0,
+    "texto": "Sabés que la cagaste hace 4 días. Tu ego no te deja pedir perdón."
+  },
+  {
+    "stem": "16-ego-perdon",
+    "index": 1,
+    "texto": "Cuatro días. Sin un solo mensaje. Ninguno de los dos."
+  },
+  {
+    "stem": "16-ego-perdon",
+    "index": 2,
+    "texto": "Primero: que hable primero el otro. Después: total, no fue tan grave. Ya pasaron cuatro días y ninguno cede."
+  },
+  {
+    "stem": "16-ego-perdon",
+    "index": 7,
+    "texto": "Sabés lo que gana tu ego. Vos, no. Seguime para cortar el bucle."
+  },
+  {
+    "stem": "17-discutiste-pareja",
+    "index": 0,
+    "texto": "Discutiste con tu pareja hace 3 horas. Ya no sabés por qué."
+  },
+  {
+    "stem": "17-discutiste-pareja",
+    "index": 1,
+    "texto": "3 horas. Dándole vueltas a quién tenía razón."
+  },
+  {
+    "stem": "17-discutiste-pareja",
+    "index": 2,
+    "texto": "Primero: yo tenía razón Después: bueno, un poco los dos Ahora ni sabés por qué empezó"
+  },
+  {
+    "stem": "17-discutiste-pareja",
+    "index": 7,
+    "texto": "Discutiste por el punto. No importa quién ganó. Seguime."
+  },
+  {
+    "stem": "18-pareja-frase-rara",
+    "index": 0,
+    "texto": "Te dijo una frase rara hace 2 días y la seguís repitiendo."
+  },
+  {
+    "stem": "18-pareja-frase-rara",
+    "index": 1,
+    "texto": "Después hablamos, ahora no puedo No es nada, dejalo ¿Por qué le das tantas vueltas?"
+  },
+  {
+    "stem": "18-pareja-frase-rara",
+    "index": 2,
+    "texto": "Primero pensás: raro que diga eso Después: seguro me está ocultando algo Ya armaste toda una novela en tu cabeza"
+  },
+  {
+    "stem": "18-pareja-frase-rara",
+    "index": 7,
+    "texto": "La frase no cambió. La historia la armaste vos. Seguime."
+  },
+  {
+    "stem": "19-discutiste-padre",
+    "index": 0,
+    "texto": "Le colgaste el teléfono a tu viejo. Van 6 horas de silencio."
+  },
+  {
+    "stem": "19-discutiste-padre",
+    "index": 1,
+    "texto": "6 horas. Y los dos esperando que llame el otro."
+  },
+  {
+    "stem": "19-discutiste-padre",
+    "index": 2,
+    "texto": "Primero: que llame él Después: yo tampoco tengo por qué ceder Ya pasaron horas y ninguno afloja"
+  },
+  {
+    "stem": "19-discutiste-padre",
+    "index": 7,
+    "texto": "Un llamado no te hace perder. Te devuelve a tu viejo. Seguime."
+  },
+  {
+    "stem": "20-nota-mala",
+    "index": 0,
+    "texto": "Te sacaste un 4 y ya sentís que fallaste en todo."
+  },
+  {
+    "stem": "20-nota-mala",
+    "index": 1,
+    "texto": "4. Un número. No un veredicto sobre vos."
+  },
+  {
+    "stem": "20-nota-mala",
+    "index": 2,
+    "texto": "Primero: me fue mal en un examen Después: soy malo para esto Ya decidiste que sos un fracaso"
+  },
+  {
+    "stem": "20-nota-mala",
+    "index": 7,
+    "texto": "Un 4 se corrige. No te define. Seguime."
+  },
+  {
+    "stem": "21-jefe-reunion",
+    "index": 0,
+    "texto": "Tu jefe dijo una frase hace 2 horas y la seguís repasando."
+  },
+  {
+    "stem": "21-jefe-reunion",
+    "index": 1,
+    "texto": "Dijo algo ambiguo Vos lo interpretaste como crítica Lo repasaste toda la tarde Nunca preguntaste qué quiso decir"
+  },
+  {
+    "stem": "21-jefe-reunion",
+    "index": 6,
+    "texto": "Una frase ambigua no es un veredicto. Preguntá. Seguime."
+  },
+  {
+    "stem": "22-cancelaron-plan",
+    "index": 0,
+    "texto": "Te cancelaron el plan hace 10 minutos y ya te lo tomaste personal."
+  },
+  {
+    "stem": "22-cancelaron-plan",
+    "index": 1,
+    "texto": "Che, al final no puedo hoy Surgió algo, perdón En serio, no es por vos"
+  },
+  {
+    "stem": "22-cancelaron-plan",
+    "index": 2,
+    "texto": "Primero: bueno, tendrá algo Después: seguro no le importa verme Ya decidiste que te está evitando"
+  },
+  {
+    "stem": "22-cancelaron-plan",
+    "index": 7,
+    "texto": "Un plan cancelado no es un rechazo. Es un plan cancelado. Seguime."
+  },
+  {
+    "stem": "23-cancelaste-ansiedad",
+    "index": 0,
+    "texto": "Cancelaste el plan por ansiedad. Es la 2da vez esta semana."
+  },
+  {
+    "stem": "23-cancelaste-ansiedad",
+    "index": 1,
+    "texto": "2da vez. Esta semana que cancelás algo así."
+  },
+  {
+    "stem": "23-cancelaste-ansiedad",
+    "index": 2,
+    "texto": "Primero: hoy no tengo ganas Después: mejor cancelo, así no arriesgo Ya cancelaste dos planes esta semana"
+  },
+  {
+    "stem": "23-cancelaste-ansiedad",
+    "index": 7,
+    "texto": "Cancelaste hoy. Te alivia ahora, te achica la semana. Seguime."
+  },
+  {
+    "stem": "24-mentira-boludez",
+    "index": 0,
+    "texto": "Le mentiste por una boludez hace 3 días y no lo podés soltar."
+  },
+  {
+    "stem": "24-mentira-boludez",
+    "index": 1,
+    "texto": "Estaba en el gimnasio jaja Sí sí, todo bien Nada raro, ¿por?"
+  },
+  {
+    "stem": "24-mentira-boludez",
+    "index": 2,
+    "texto": "Primero: fue una boludez, no importa Después: ¿y si se entera y piensa que soy un mentiroso? Ya armaste un escándalo por una frase de nada"
+  },
+  {
+    "stem": "24-mentira-boludez",
+    "index": 7,
+    "texto": "Una mentira chica no te hace mentiroso. Cortala en la cabeza. Seguime."
+  },
+  {
+    "stem": "25-confianza-amigo",
+    "index": 0,
+    "texto": "Un amigo te falló 1 vez. Y ya no le creés nada."
+  },
+  {
+    "stem": "25-confianza-amigo",
+    "index": 1,
+    "texto": "Te falló una vez Vos generalizaste: es así siempre Empezaste a esperar que falle de nuevo Ahora desconfiás hasta de lo que no pasó"
+  },
+  {
+    "stem": "25-confianza-amigo",
+    "index": 6,
+    "texto": "Una falla no es un patrón. Hablalo antes de decidir. Seguime."
+  },
+  {
+    "stem": "26-celos-sin-motivo",
+    "index": 0,
+    "texto": "Te pusiste celoso por algo que no pasó. Van 3 veces este mes."
+  },
+  {
+    "stem": "26-celos-sin-motivo",
+    "index": 1,
+    "texto": "0. Pruebas reales que tenés. Cero."
+  },
+  {
+    "stem": "26-celos-sin-motivo",
+    "index": 2,
+    "texto": "Primero: tardó en contestar Después: seguro está con alguien Ya armaste una escena que no pasó"
+  },
+  {
+    "stem": "26-celos-sin-motivo",
+    "index": 7,
+    "texto": "Sin pruebas, es tu cabeza. Nombralo y soltalo. Seguime."
+  },
+  {
+    "stem": "27-oportunidad-miedo",
+    "index": 0,
+    "texto": "Dejaste pasar la oportunidad hace 1 semana y seguís pensando en eso."
+  },
+  {
+    "stem": "27-oportunidad-miedo",
+    "index": 1,
+    "texto": "Apareció la chance Pensaste en todo lo que podía salir mal No hiciste nada hasta que se cerró Ahora la repasás como si volviera"
+  },
+  {
+    "stem": "27-oportunidad-miedo",
+    "index": 6,
+    "texto": "Dejaste pasar esa. La próxima no tiene por qué. Seguime."
+  }
+]
