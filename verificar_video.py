@@ -118,10 +118,10 @@ def datos_video(path):
 
 def tramos_quietos(path, alto_muestra):
     """Devuelve los tramos (inicio, fin) donde la imagen no cambio mas
-    que UMBRAL_CAMBIO durante mas de MAX_QUIETO segundos."""
-    from PIL import Image
-    import io
+    que UMBRAL_CAMBIO durante mas de MAX_QUIETO segundos.
 
+    Trabaja sobre bytes crudos en escala de grises que entrega ffmpeg
+    (sin Pillow): asi el chequeo corre igual en un runner pelado."""
     cmd = ["ffmpeg", "-v", "error", "-i", str(path),
            "-vf", f"fps={FPS_MUESTREO},scale={ANCHO_MUESTRA}:{alto_muestra}",
            "-f", "image2pipe", "-pix_fmt", "gray", "-vcodec", "rawvideo", "-"]

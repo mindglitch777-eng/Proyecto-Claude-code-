@@ -109,6 +109,23 @@ def eo_back(t, f=2.0):
     return 1 + c3 * pow(t - 1, 3) + f * pow(t - 1, 2)
 
 
+def _factor_estiro(seg, referencia, techo=2.6):
+    """Cuanto se alargo este segmento respecto a su duracion tipica de
+    diseno (>=1.0, nunca reduce nada). La voz real puede estirar un
+    segmento bastante mas de lo que el formato asumia (ej. un
+    'cronologia' pensado para 2.5s que termina durando 7s porque la
+    frase es larga) -- sin esto, el contenido termina de revelarse
+    temprano (ej. al 70% del segmento) y el resto queda quieto en
+    pantalla. Multiplicando las ventanas de revelado por este factor,
+    el contenido sigue apareciendo hasta mas tarde en vez de congelarse.
+    'techo' evita que un segmento extremadamente largo estire el
+    revelado a un ritmo demasiado lento."""
+    d = seg.get("duracion", referencia)
+    if not referencia:
+        return 1.0
+    return max(1.0, min(techo, d / referencia))
+
+
 # Variable font propia (ver assets/LICENCIAS.txt): reemplaza a DejaVu
 # Sans Bold, que se lee generica/vieja en pantallas de telefono. Una
 # sola fuente cubre Light/Regular/Bold via ejes de variacion, en vez
@@ -477,7 +494,8 @@ def f_cronologia(img, d, seg, t, pal):
         y += ft.size + 14
     ly = H * 0.60
     x0, x1 = 130, W - 130
-    e = eo_cubic(min(1.0, t / 0.7))
+    ventana = min(0.94, 0.7 * _factor_estiro(seg, 2.5))
+    e = eo_cubic(min(1.0, t / ventana))
     d.line([(x0, ly), (x1, ly)], fill=(56, 56, 72), width=6)
     d.line([(x0, ly), (x0 + (x1 - x0) * e, ly)],
            fill=tuple(pal["destacado"]), width=6)
@@ -752,8 +770,9 @@ def f_panel(img, d, seg, t, pal):
     cols, top = 2, H * 0.34
     cw, ch_ = (W - 240) / cols, 300
     fv, fl = fnt(84), fnt(38)
+    factor = _factor_estiro(seg, 3.6)
     for i, (lab, val) in enumerate(datos[:4]):
-        e = eo_back(max(0.0, min(1.0, (t - i * 0.09) / 0.34)))
+        e = eo_back(max(0.0, min(1.0, (t - i * 0.09 * factor) / (0.34 * factor))))
         cx = 120 + (i % cols) * cw
         cy = top + (i // cols) * (ch_ + 30)
         dy = int(40 * (1 - max(0, e)))
@@ -1758,10 +1777,43 @@ def dibujar_ambiente(img, d, t_abs, pal):
     # grandes y sin relacion simple hacen que la ventana recortada
     # cambie de golpe cuadro a cuadro, como el parpadeo real del grano
     # de pelicula -- no como un patron que se desliza por la pantalla.
+    # La mezcla se mantiene CONSTANTE (ver nota 2 del latido abajo:
+    # modularla multiplica por 13 el peso del archivo).
     ox = int((t_abs * 971) % (gw - W))
     oy = int((t_abs * 613) % (gh - H))
     ventana = grano.crop((ox, oy, ox + W, oy + H))
     img.paste(Image.blend(img, ventana, 0.028), (0, 0))
+
+    # Latido: pulso con periodo FIJO en tiempo absoluto (no normalizado
+    # por segmento). Es el seguro final contra pantalla muerta -- los
+    # formatos individuales revelan su contenido segun una curva que
+    # satura rapido (eo_cubic/eo_back llegan a ~99% bien antes de t=1
+    # sin importar cuanto se agrande la ventana), asi que estirar esas
+    # ventanas no alcanza por si solo cuando la voz real deja un
+    # segmento mucho mas largo de lo que el formato asumia.
+    #
+    # Implementado como un marco de acento que respira en los bordes.
+    #
+    # DOS INTENTOS DESCARTADOS, medidos sobre el archivo final (no a
+    # ojo sobre los PNG):
+    #  1. Marco finito (2-7px) con alpha 0.14: la compresion lo borra
+    #     -- diferencia medida entre pico y valle del pulso: 0.09/255,
+    #     o sea invisible.
+    #  2. Modular la mezcla del GRANO (0.028 -> 0.103): se ve perfecto
+    #     (diferencia 5.4/255) pero el grano es ruido de alta entropia
+    #     y x264 le gasta bits a lo loco: el mismo video paso de 11 MB
+    #     a 145 MB. Inservible para subir a TikTok.
+    # La version que queda usa un marco ANCHO (hasta 46px) y de mayor
+    # contraste: area grande y de baja frecuencia = sobrevive la
+    # compresion sin costarle bits al codec.
+    periodo = 1.4
+    pulso_latido = math.sin((t_abs % periodo) / periodo * math.pi)
+    if pulso_latido > 0.03:
+        grosor = int(10 + 36 * pulso_latido)
+        alpha_l = 0.06 + pulso_latido * 0.26
+        col = tuple(int(f + (c - f) * alpha_l)
+                    for f, c in zip(pal["fondo"], pal["destacado"]))
+        d.rectangle([0, 0, W - 1, H - 1], outline=col, width=grosor)
 
 
 FORMATOS = {
