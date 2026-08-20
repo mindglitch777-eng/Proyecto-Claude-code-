@@ -12,17 +12,9 @@ tiene cuenta ahí y no puede hacerlo.
 
 **Qué falta para que esto funcione (pendiente, en orden):**
 
-1. `el-corte-v7.html` todavía tiene que estar en ALGUNA URL para que
-   el Área de Membros la enlace/embeba (Hotmart no aloja el archivo
-   HTML en sí, aloja la clase/lección que apunta a él). GitHub Pages
-   quedó descartado — la integración de Claude Code con GitHub no
-   tiene permiso para activarlo ni crear repos nuevos (confirmado,
-   error "Resource not accessible by integration" en ambos intentos).
-   **Reemplazo: Netlify**, conectado directo al repo privado (su plan
-   free sí permite repos privados). Falta que el operador lo conecte
-   (Sign up with GitHub → Import from GitHub → elegir el repo →
-   Base/Publish directory `producto`, sin build command) y avise la
-   URL `.netlify.app` resultante.
+1. ~~`el-corte-v7.html` todavía tiene que estar en ALGUNA URL~~ — **HECHO.**
+   La app ya está viva en Netlify:
+   **`https://glistening-eclair-5d6628.netlify.app`**
 2. Al crear la cuenta de Hotmart, elegir tipo de producto **"Área de
    Membros"** (no "producto con entrega por link" simple) al cargar
    El Corte.
@@ -46,8 +38,8 @@ tiene cuenta ahí y no puede hacerlo.
   >
   > Guardátelo en la pantalla de inicio de tu celular para tenerlo a
   > mano cuando lo necesites de verdad.
-- **Botón**: "Entrar a El Corte" → URL de Netlify (punto 1, todavía
-  pendiente).
+- **Botón**: "Entrar a El Corte" →
+  `https://glistening-eclair-5d6628.netlify.app`
 
 ---
 
