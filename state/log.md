@@ -320,3 +320,24 @@ introducido esta sesión).
 - Que el operador conecte Netlify y confirme la URL.
 - Seguir pensando más funcionalidades de hábito/profundidad con el
   operador (mencionó que quiere seguir iterando esta lista).
+
+## 2026-08-20 (continuación — declaración de arranque, Riesgo 3 de ANTI-FRACASO.md)
+
+**Fecha de arranque del canal TikTok: antes del 22 de agosto de 2026.**
+Por `ANTI-FRACASO.md` Riesgo 3: compromiso mínimo de 30 días desde esa
+fecha antes de evaluar o cambiar de canal/estrategia. No se pivotea
+por falta de resultados antes de esa ventana.
+
+Blueprint del Área de Membros de Hotmart definido y escrito en
+`marca/ficha-venta.md` (nombre "Comunidad El Corte", módulo único
+"Acceso a la app", copy de bienvenida, botón a la URL de Netlify).
+Sigue pendiente que el operador conecte Netlify — es el único paso
+técnico que falta para que ese blueprint sea ejecutable.
+
+Aclarado con el operador: la limitación de link en la bio de TikTok
+no bloquea nada — el plan siempre fue CTA en texto/voz ("entrá a mi
+área de miembros"), no un link clickeable desde el video. El "link
+distinto por video" que propuse no era sobre esto: era tracking de
+qué video convierte mejor, para alimentar después el sistema de
+auto-actualización de contenido. Queda como mejora de fase 1.4, no
+bloqueante para lanzar.

@@ -14,17 +14,40 @@ tiene cuenta ahí y no puede hacerlo.
 
 1. `el-corte-v7.html` todavía tiene que estar en ALGUNA URL para que
    el Área de Membros la enlace/embeba (Hotmart no aloja el archivo
-   HTML en sí, aloja la clase/lección que apunta a él). La opción
-   gratuita más simple sigue siendo **GitHub Pages** — pero como es
-   publicar algo en internet, necesito tu ok explícito antes de
-   activarlo (regla de oro de `CLAUDE.md`). La diferencia ahora es
-   que esa URL no se va a repartir directamente: solo va a estar
-   enlazada DENTRO del Área de Membros, detrás del login de Hotmart.
+   HTML en sí, aloja la clase/lección que apunta a él). GitHub Pages
+   quedó descartado — la integración de Claude Code con GitHub no
+   tiene permiso para activarlo ni crear repos nuevos (confirmado,
+   error "Resource not accessible by integration" en ambos intentos).
+   **Reemplazo: Netlify**, conectado directo al repo privado (su plan
+   free sí permite repos privados). Falta que el operador lo conecte
+   (Sign up with GitHub → Import from GitHub → elegir el repo →
+   Base/Publish directory `producto`, sin build command) y avise la
+   URL `.netlify.app` resultante.
 2. Al crear la cuenta de Hotmart, elegir tipo de producto **"Área de
    Membros"** (no "producto con entrega por link" simple) al cargar
    El Corte.
 3. Adentro del Área de Membros, crear un módulo/clase único con un
-   botón o iframe que apunte a la URL de GitHub Pages del punto 1.
+   botón que apunte a la URL de Netlify del punto 1 (mejor botón que
+   iframe: más confiable en el editor de Hotmart y evita problemas de
+   apps que bloquean cargar otro sitio adentro de un iframe).
+
+### Blueprint del módulo (copiar tal cual al crear la clase)
+
+- **Nombre del Área de Membros**: Comunidad El Corte *(la idea de
+  "comunidad" en vez de solo "acceso al producto" — genera más
+  exclusividad y baja el impulso de compartir el link)*.
+- **Nombre del módulo/clase única**: Acceso a la app
+- **Texto de bienvenida**:
+  > Gracias por confiar en El Corte.
+  >
+  > Tu herramienta ya está lista. Tocá el botón de abajo para entrar —
+  > funciona en cualquier navegador, del celu o la compu, no hay que
+  > instalar nada.
+  >
+  > Guardátelo en la pantalla de inicio de tu celular para tenerlo a
+  > mano cuando lo necesites de verdad.
+- **Botón**: "Entrar a El Corte" → URL de Netlify (punto 1, todavía
+  pendiente).
 
 ---
 
