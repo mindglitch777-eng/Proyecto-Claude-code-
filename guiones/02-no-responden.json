@@ -2,7 +2,7 @@
   "tema": "Mandaste un mensaje y no responden",
   "topico_marca": 2,
   "captura_fuente": "capturas/captura-persona.mp4",
-  "flujo_real": "En la app: 'Alguien en particular' -> 'Si, en algun momento' -> sesion 'No estas rumiando. Estas postergando.' (2 pasos reales).",
+  "flujo_real": "En la app: 'Alguien en particular' -> 'Si, en algun momento' -> sesion 'No estas dandole vueltas. Estas postergando.' (2 pasos reales).",
   "fps": 30,
   "camara": 1.0,
   "loop": true,
