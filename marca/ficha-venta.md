@@ -70,7 +70,7 @@ tiene cuenta ahí y no puede hacerlo.
 | Nombre | El Corte |
 | Tipo de producto | **Área de Membros** (no "producto con entrega por link" simple) |
 | Categoría | Desarrollo Personal *(alternativa: Salud y Bienestar)* |
-| Precio | USD $15 (ajustable — Hotmart muestra el equivalente en moneda local) |
+| Precio | USD $25 (subido de $15 por decisión del operador: la app + Área de Membros/comunidad exclusiva ya justifican el valor. Hotmart muestra el equivalente en moneda local) |
 | Garantía | 7 días (estándar del nicho, baja fricción de compra) |
 | Entrega | Login propio por comprador → Área de Membros → acceso a la app (ver sección de exclusividad arriba) |
 | Idioma | Español |
