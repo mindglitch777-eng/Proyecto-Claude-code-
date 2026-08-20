@@ -1557,6 +1557,79 @@ def f_escalada(img, d, seg, t, pal):
         d.rectangle([0, H - borde, W, H], fill=tuple(pal["destacado"]))
 
 
+_LOGO_CACHE = {}
+
+
+def _logo_icono():
+    """Icono de marca (marca/icono.png) para el CTA final, cacheado una
+    sola vez por proceso. None si el archivo no esta (no rompe nada,
+    el CTA se dibuja igual sin logo)."""
+    if "icono" not in _LOGO_CACHE:
+        p = Path(__file__).parent / "marca" / "icono.png"
+        try:
+            _LOGO_CACHE["icono"] = Image.open(p).convert("RGBA") if p.exists() else False
+        except Exception:
+            _LOGO_CACHE["icono"] = False
+    return _LOGO_CACHE["icono"] or None
+
+
+def f_cta(img, d, seg, t, pal):
+    """CTA final de marca/venta: la frase de cierre (rima visual con el
+    hook, mismo golpe si el segmento trae 'hook':'impacto') + una tarjeta
+    de marca abajo (logo, nombre de la comunidad, 'disponible en Hotmart')
+    que entra un instante despues para no competir con el golpe del texto.
+
+    Pedido explicito del operador: TODOS los videos tienen que cerrar
+    mostrando la app como la solucion, con una promocion clara del
+    producto -- no alcanza con el CTA hablado ('seguime'), hace falta
+    la tarjeta visual.
+
+    JSON: {"formato": "cta", "texto": "...", "mayus": bool (default true),
+           "cta_marca": "Comunidad El Corte" (default),
+           "cta_sub": "Disponible en Hotmart" (default)}
+    """
+    txt = seg.get("texto", "")
+    txt = txt.upper() if seg.get("mayus", True) else txt
+    if txt:
+        f, ls = auto_tam(d, txt, W - 140, H * 0.46, 130)
+        alto_l = f.size + f.size * 0.14
+        y = H * 0.16
+        for ln in ls:
+            wl = d.textbbox((0, 0), ln, font=f)[2]
+            sombra_t(d, ((W - wl) / 2, y), ln, f, tuple(pal["texto"]), 6)
+            y += alto_l
+
+    # Tarjeta de marca: entra despues del golpe del texto (arranca en
+    # t=0.30) asi el ojo primero lee el cierre y despues ve la promo.
+    ap = max(0.0, min(1.0, (t - 0.30) / 0.35))
+    e = eo_back(ap)
+    if e <= 0.01:
+        return
+    cw, ch = 780, 260
+    cx0, cy0 = (W - cw) / 2, H * 0.60
+    dy = int(40 * (1 - max(0.0, min(1.0, e))))
+    panel = tuple(max(0, c - 4) for c in pal["fondo"])
+    d.rounded_rectangle([cx0, cy0 + dy, cx0 + cw, cy0 + ch + dy], radius=28,
+                        fill=panel, outline=tuple(pal["destacado"]), width=2)
+
+    logo = _logo_icono()
+    tx = cx0 + 44
+    if logo is not None:
+        lw = 84
+        lh = int(logo.height * lw / logo.width)
+        lg = logo.resize((lw, lh), Image.LANCZOS)
+        img.paste(lg, (int(tx), int(cy0 + dy + (ch - lh) / 2)), lg)
+        tx += lw + 30
+
+    marca = seg.get("cta_marca", "Comunidad El Corte")
+    sub = seg.get("cta_sub", "Disponible en Hotmart")
+    fm = fnt(46)
+    fs = fnt(30, ligera=True)
+    ty = cy0 + dy + ch / 2 - (fm.size + fs.size) / 2
+    d.text((tx, ty), marca, font=fm, fill=tuple(pal["texto"]))
+    d.text((tx, ty + fm.size + 10), sub, font=fs, fill=tuple(pal["destacado"]))
+
+
 # --- Vida ambiental (universal, todos los formatos) -------------------
 #
 # Feedback del operador sobre el demo de "collage": queda "un espacio
@@ -1700,7 +1773,7 @@ FORMATOS = {
     "cita": f_cita, "pasos": f_pasos, "ranking": f_ranking,
     "alerta": f_alerta, "panel": f_panel, "terminal": f_terminal,
     "camino": f_camino, "collage": f_collage,
-    "mensajes": f_mensajes, "escalada": f_escalada,
+    "mensajes": f_mensajes, "escalada": f_escalada, "cta": f_cta,
 }
 
 PALETAS = [

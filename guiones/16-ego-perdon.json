@@ -15,67 +15,82 @@
     {
       "formato": "declaracion",
       "texto": "Sabés que la cagaste hace 4 días. Tu ego no te deja pedir perdón.",
-      "duracion": 2.4,
-      "hook": "glitch",
-      "karaoke": true,
-      "narracion": "Sabés que la cagaste hace 4 días. Tu ego no te deja pedir perdón.",
-      "imagen": "assets/imagenes/hablar-dificil.jpg"
+      "duracion": 1.8,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "narracion": "Sabés que la cagaste hace 4 días. Tu ego no te deja pedir perdón."
     },
     {
       "formato": "dato_duro",
       "numero": 4,
       "sufijo": " días",
-      "texto": "sin un solo mensaje. Ninguno de los dos",
-      "duracion": 2.3,
+      "texto": "Sin un solo mensaje. Ninguno de los dos.",
+      "duracion": 1.6,
       "transicion": "punch",
       "narracion": "Cuatro días. Sin un solo mensaje. Ninguno de los dos."
     },
     {
-      "formato": "camino",
-      "texto": "Así se arma el silencio",
+      "formato": "escalada",
+      "texto": "Así piensa tu ego",
       "pasos": [
-        "Pasó algo",
-        "Tu ego dice: que hable el otro",
-        "Pasan los días",
-        "El silencio ya pesa más que el error"
+        "Primero: que hable primero el otro",
+        "Después: total, no fue tan grave",
+        "Ya pasaron 4 días y ninguno cede"
       ],
-      "duracion": 3.6,
-      "transicion": "barrido",
-      "narracion": "Pasó algo. Tu ego dice: que hable el otro. Pasan los días. El silencio ya pesa más que el error."
-    },
-    {
-      "captura": "capturas/captura-persona.mp4",
-      "recorte": [0.0, 3.0],
-      "texto": "Le escribís vos primero.",
-      "duracion": 3.0,
-      "transicion": "corte_duro"
-    },
-    {
-      "captura": "capturas/captura-persona.mp4",
-      "recorte": [3.0, 5.5],
-      "texto": "Dos líneas. Nada más.",
-      "duracion": 2.5,
-      "transicion": "punch"
+      "duracion": 3.1,
+      "transicion": "whip",
+      "narracion": "Primero: que hable primero el otro. Después: total, no fue tan grave. Ya pasaron cuatro días y ninguno cede."
     },
     {
       "formato": "declaracion",
-      "texto": "Sabés lo que gana tu ego. Vos, no. Seguime para cortar el bucle antes de que sea tarde.",
-      "duracion": 2.6,
+      "texto": "Así se corta",
       "mayus": false,
-      "captions_palabra_por_palabra": true,
-      "captions_texto": "Tu ego *gana*. Vos, no.",
-      "transicion": "fade",
-      "hook": "sacudida",
-      "narracion": "Sabés lo que gana tu ego. Vos, no. Seguime para cortar el bucle antes de que sea tarde."
+      "duracion": 1.5,
+      "quiebre_capitulo": true,
+      "transicion": "quiebre"
+    },
+    {
+      "captura": "capturas/captura-persona.mp4",
+      "recorte": [0.0, 1.6],
+      "texto": "Nombrás lo que armó tu ego",
+      "duracion": 1.6,
+      "transicion": "corte_duro",
+      "sfx": "tick"
+    },
+    {
+      "captura": "capturas/captura-persona.mp4",
+      "recorte": [1.6, 3.1],
+      "texto": "Lo separás del error real",
+      "duracion": 1.5,
+      "transicion": "corte_duro",
+      "sfx": "tick"
+    },
+    {
+      "captura": "capturas/captura-persona.mp4",
+      "recorte": [3.1, 4.8],
+      "texto": "Escribís vos primero",
+      "duracion": 1.7,
+      "transicion": "corte_duro",
+      "sfx": "tick"
+    },
+    {
+      "formato": "cta",
+      "texto": "Sabés lo que gana tu ego. Vos, no. Seguime.",
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
+      "narracion": "Sabés lo que gana tu ego. Vos, no. Seguime para cortar el bucle."
     }
   ],
   "elevenlabs": {
-    "instrucciones": "4 lineas de narracion por video (hook, error, mecanismo, loop -- los 2 segmentos de captura real van sin voz, el producto se muestra sin explicarse encima). Generar 4 audios separados en ElevenLabs con estas lineas, en este orden, y guardarlos como 16-ego-perdon-voz0.mp3 (hook), -voz1.mp3 (error), -voz2.mp3 (mecanismo), -voz5.mp3 (loop) en capturas_voz/. Correr sincronizar_voz.py despues.",
+    "instrucciones": "5 lineas de narracion por video (hook, dato, escalada, capturas sin voz, cierre). Generar 5 audios en ElevenLabs y guardarlos como 16-ego-perdon-voz0.mp3 (hook), -voz1.mp3 (dato), -voz2.mp3 (escalada), -voz7.mp3 (cierre) en capturas_voz/. Correr sincronizar_voz.py despues.",
     "lineas": [
       "Sabés que la cagaste hace 4 días. Tu ego no te deja pedir perdón.",
       "Cuatro días. Sin un solo mensaje. Ninguno de los dos.",
-      "Pasó algo. Tu ego dice: que hable el otro. Pasan los días. El silencio ya pesa más que el error.",
-      "Sabés lo que gana tu ego. Vos, no. Seguime para cortar el bucle antes de que sea tarde."
+      "Primero: que hable primero el otro. Después: total, no fue tan grave. Ya pasaron cuatro días y ninguno cede.",
+      "Sabés lo que gana tu ego. Vos, no. Seguime para cortar el bucle."
     ]
   }
 }
