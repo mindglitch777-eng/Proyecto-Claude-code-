@@ -134,6 +134,6 @@ rápido — no un curso, no una comunidad, no una suscripción.
 
 ## 7. Imagen de portada
 
-Falta — Hotmart pide una imagen de portada (formato apaisado, típico
-1280×720). Puedo generarla por código en la paleta de marca (`marca/`)
-cuando quieras, o decime si preferís usar una captura real de la app.
+Lista: `marca/portada-hotmart.png` (1280×720, generada por código con
+`marca/generar_portada.py`, paleta oficial). Subila tal cual al crear
+la ficha del producto en Hotmart.
