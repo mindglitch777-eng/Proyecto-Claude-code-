@@ -77,7 +77,18 @@ def producir_uno(guion_path, solo_nuevos):
     if r.returncode != 0:
         print(f"  ERROR: {r.stderr[-500:]}")
         return False
-    return True
+
+    # Control de calidad sobre el .mp4 real (no sobre el guion): sincronia
+    # audio/video, voz que no entra en su segmento, pantalla muerta y peso
+    # del archivo. Ver verificar_video.py. No frena la produccion del
+    # lote -- informa, y el resumen final lista que videos salieron con
+    # problemas para revisarlos antes de publicar.
+    v = subprocess.run(
+        [sys.executable, str(RAIZ / "verificar_video.py"), str(salida),
+         str(fuente)],
+        capture_output=True, text=True)
+    print(v.stdout.strip())
+    return True if v.returncode == 0 else "con_problemas"
 
 
 def main():
@@ -94,12 +105,23 @@ def main():
         return 1
 
     print(f"=== Produciendo {len(candidatos)} video(s) ===\n")
-    ok, fallidos = 0, []
+    ok, fallidos, con_problemas = 0, [], []
     for g in candidatos:
-        if producir_uno(g, solo_nuevos):
+        res = producir_uno(g, solo_nuevos)
+        if res == "con_problemas":
+            ok += 1
+            con_problemas.append(g.stem)
+        elif res:
             ok += 1
         else:
             fallidos.append(g.stem)
+        print()
+
+    if con_problemas:
+        print(f"!!! {len(con_problemas)} video(s) pasaron el render pero NO el "
+              f"control de calidad (revisar antes de publicar):")
+        for c in con_problemas:
+            print(f"    - {c}")
         print()
 
     print(f"=== {ok}/{len(candidatos)} producidos ===")
