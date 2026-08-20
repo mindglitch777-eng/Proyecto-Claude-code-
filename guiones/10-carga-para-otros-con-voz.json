@@ -32,7 +32,7 @@
       "karaoke": true,
       "narracion": "Cancelaste un plan. Pensaste: se van a cansar de mí.",
       "imagen": "assets/imagenes/pensando.jpg",
-      "voz_archivo": "capturas_voz/10-carga-para-otros-voz0.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/10-carga-para-otros-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -41,7 +41,7 @@
       "duracion": 2.6,
       "transicion": "whip",
       "narracion": "Un plan cancelado no es una carga. Es un dato",
-      "voz_archivo": "capturas_voz/10-carga-para-otros-voz1.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/10-carga-para-otros-voz1.mp3"
     },
     {
       "formato": "pregunta",
@@ -51,7 +51,7 @@
       "duracion": 4.2,
       "transicion": "dip",
       "narracion": "Eso lo penso la otra persona o lo pensas vos por ella? ... Nunca lo preguntaste. Solo lo diste por hecho.",
-      "voz_archivo": "capturas_voz/10-carga-para-otros-voz2.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/10-carga-para-otros-voz2.mp3"
     },
     {
       "captura": "capturas/captura-respirar.mp4",
@@ -82,7 +82,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de sentir que sos una carga.",
-      "voz_archivo": "capturas_voz/10-carga-para-otros-voz5.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/10-carga-para-otros-voz5.mp3"
     }
   ],
   "elevenlabs": {
