@@ -113,8 +113,8 @@ jobs:
           shopt -s nullglob
           mkdir -p videos guiones
           for d in /tmp/salidas/salida-*/; do
-            [ -d "${d}videos" ] && cp -n "${d}"videos/*.mp4 videos/ 2>/dev/null || true
-            [ -d "${d}guiones" ] && cp -n "${d}"guiones/*-con-voz.json guiones/ 2>/dev/null || true
+            [ -d "${d}videos" ] && cp -f "${d}"videos/*.mp4 videos/ 2>/dev/null || true
+            [ -d "${d}guiones" ] && cp -f "${d}"guiones/*-con-voz.json guiones/ 2>/dev/null || true
           done
           git config user.name "productor-bot"
           git config user.email "actions@github.com"
