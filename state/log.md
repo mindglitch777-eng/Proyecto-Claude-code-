@@ -685,3 +685,4 @@ gramática en la próxima sesión, usando los nombres exactos de arriba.
   fallback mínimo (`"quiebre"` mapea a `fadeblack` con 0.9s en
   `XFADE`/`DUR_TRANS`) pero NO tiene el freeze+silencio real — quedaría
   como mejora si se necesita.
+2026-08-20 — Hotmart + Netlify completados: hosting resuelto (netlify.toml con redirect a el-corte-v7.html), Área de Membros configurada por el operador con el blueprint de ficha-venta.md, programa de afiliados (50%) con descripción entregada. Producto 'El Corte' publicado en Hotmart.
