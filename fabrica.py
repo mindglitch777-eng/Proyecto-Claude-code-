@@ -228,7 +228,13 @@ def etapa_reporte(t0, hechos, salteados, fallidos, con_problemas, malos):
     print(f"  LISTOS PARA PUBLICAR: {len(listos) + len(salteados)}")
     if hechos:
         print(f"  Promedio por video: {total/max(1,len(hechos)):.0f}s")
-    return 1 if (fallidos or con_problemas) else 0
+    # Solo un render FALLIDO es un error de la corrida. Un aviso del
+    # control de calidad (ej. una captura de la app que queda quieta) no
+    # invalida el video: queda renderizado, se reporta y se revisa. Antes
+    # devolvia 1 tambien en ese caso, y como el workflow corta el job con
+    # el primer exit distinto de cero, el video se perdia sin llegar a
+    # guardarse -- 12 de 27 videos correctos se tiraron por esto.
+    return 1 if fallidos else 0
 
 
 def main():

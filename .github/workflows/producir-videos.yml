@@ -91,7 +91,11 @@ jobs:
       # incluia los 26 videos VIEJOS que vienen del checkout, y al
       # juntar los artifacts esas copias viejas se pisaban unas a otras:
       # el lote entero terminaba guardando un solo video nuevo.
+      # if: always() -- si el paso anterior falla a mitad de camino pero
+      # el .mp4 alcanzo a escribirse, igual se guarda. Perder un render
+      # ya hecho por un error posterior nos costo dos lotes enteros.
       - name: Subir resultado como artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: salida-${{ strategy.job-index }}
