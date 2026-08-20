@@ -23,6 +23,13 @@ FORMATOS (campo "formato" por segmento):
                 de golpe. Usa el silencio como recurso.
   editorial     Composicion tipo revista: grilla asimetrica, numero de
                 pagina, kicker, mucho espacio negativo.
+  camino        Ruta tipo mapa: curva sinuosa con 3-5 paradas numeradas
+                que se van revelando una por una (json: "pasos": [str,...]).
+
+Captions kinetic opcionales (cualquier formato, cualquier segmento
+narrado): agregar "captions_palabra_por_palabra": true al segmento
+muestra el texto narrado UNA PALABRA A LA VEZ, grande y centrada, con
+pop de entrada y la palabra clave de cada frase en el verde de acento.
 
 Uso:
     python3 animador_v9.py guion.json
@@ -196,6 +203,85 @@ def karaoke(d, texto, f, caja, pal, t, align="centro"):
     return y
 
 
+# ============ CAPTIONS KINETIC "PALABRA POR PALABRA" ============
+# Overlay OPCIONAL, independiente del formato del segmento. Distinto
+# de karaoke(): karaoke() ya muestra todo el texto y solo recolorea
+# lo dicho; esto muestra UNA palabra a la vez, grande y centrada,
+# apareciendo con un "pop" -- la tecnica de retencion 2026 que pidio
+# el operador (kinetic typography). No requiere Whisper: reparte el
+# tiempo del segmento en partes iguales entre palabras, igual que
+# karaoke() reparte el 88% del segmento (el resto es el respiro).
+# Se activa por segmento con "captions_palabra_por_palabra": true.
+
+def _palabras_captions(texto):
+    """Separa el texto narrado en palabras para el caption kinetic,
+    marcando cuales son 'palabra clave' (se resaltan en el acento).
+
+    Dos formas de marcar una clave:
+      - explicita: envolver la palabra en asteriscos en el guion,
+        ej. "Se te *complica* dormir." (los asteriscos no se dibujan).
+      - automatica (si no hay ninguna marca explicita en el segmento):
+        se resalta la ultima palabra de cada frase, antes de . ! ?
+    """
+    crudo = texto.split()
+    hay_marca = any('*' in p for p in crudo)
+    palabras = []
+    for p in crudo:
+        clave = '*' in p
+        limpio = p.replace('*', '')
+        if limpio:
+            palabras.append([limpio, clave])
+    if not hay_marca:
+        for i, (w, _) in enumerate(palabras):
+            if w and w[-1] in '.!?':
+                palabras[i][1] = True
+        if palabras and not any(c for _, c in palabras):
+            palabras[-1][1] = True  # sin puntuacion: al menos la ultima
+    return [(w, c) for w, c in palabras]
+
+
+def dibujar_captions_kinetic(img, d, seg, t, pal):
+    """Dibuja la palabra activa del segmento, grande y centrada, con
+    'pop' de entrada. t = 0..1 dentro del segmento (mismo contrato que
+    el resto del renderizador). Campo opcional 'captions_texto' para
+    usar un texto distinto al narrado por defecto (texto_hablado)."""
+    texto = seg.get("captions_texto") or texto_hablado(seg)
+    if not texto or not texto.strip():
+        return
+    palabras = _palabras_captions(texto)
+    n = len(palabras)
+    if n == 0:
+        return
+    avance = min(1.0, t / 0.88)  # el ultimo 12% del segmento es respiro
+    idx = min(n - 1, int(avance * n))
+    lt = max(0.0, min(1.0, avance * n - idx))
+    palabra, clave = palabras[idx]
+    if not palabra:
+        return
+    tam = 128
+    f = fnt(tam)
+    while d.textbbox((0, 0), palabra, font=f)[2] > W - 140 and tam > 40:
+        tam -= 8
+        f = fnt(tam)
+    e = eo_back(min(1.0, lt / 0.34))
+    esc = 0.72 + 0.28 * e
+    fu = fnt(max(24, int(f.size * esc)))
+    wb = d.textbbox((0, 0), palabra, font=fu)[2]
+    dy = int(16 * (1 - max(0.0, min(1.0, e))))
+    y = H * 0.78 - fu.size / 2 + dy
+    x = (W - wb) / 2
+    # Scrim: oscurece una franja detras del texto para que se lea
+    # sin importar que haya debajo (foto, otro formato, lo que sea).
+    pad = 30
+    y0, y1 = max(0, int(y - pad)), min(H, int(y + fu.size + pad))
+    if y1 > y0:
+        franja = img.crop((0, y0, W, y1))
+        oscuro = Image.new("RGB", franja.size, tuple(pal["fondo"]))
+        img.paste(Image.blend(franja, oscuro, 0.72), (0, y0))
+    col = tuple(pal["destacado"]) if clave else tuple(pal["texto"])
+    sombra_t(d, (x, y), palabra, fu, col, 6)
+
+
 def f_declaracion(img, d, seg, t, pal):
     """Tipografia a sangre. El texto ES la composicion."""
     txt = seg["texto"].upper() if seg.get("mayus", True) else seg["texto"]
@@ -206,27 +292,32 @@ def f_declaracion(img, d, seg, t, pal):
         d.rectangle([80, 80, 80 + int(120 * e), 88],
                     fill=tuple(pal["destacado"]))
         return
-    f, ls = auto_tam(d, txt, W - 120, H * 0.62, 200)
-    alto_l = f.size + f.size * 0.14
-    y = (H - len(ls) * alto_l) / 2
-    n = sum(len(l.split()) for l in ls)
-    idx = 0
-    for ln in ls:
-        wl = d.textbbox((0, 0), ln, font=f)[2]
-        x = (W - wl) / 2
-        for p in ln.split():
-            idx += 1
-            d0 = (idx - 1) / max(1, n) * 0.34
-            lt = max(0.0, min(1.0, (t - d0) / 0.26))
-            if lt <= 0:
+    # Si el segmento usa captions kinetic palabra por palabra, esas ya
+    # muestran el texto (una palabra grande a la vez, mas al estilo
+    # 2026) -- dibujar tambien el parrafo completo aca duplica el
+    # texto y lo satura. Se deja solo la marca de esquina.
+    if not seg.get("captions_palabra_por_palabra"):
+        f, ls = auto_tam(d, txt, W - 120, H * 0.62, 200)
+        alto_l = f.size + f.size * 0.14
+        y = (H - len(ls) * alto_l) / 2
+        n = sum(len(l.split()) for l in ls)
+        idx = 0
+        for ln in ls:
+            wl = d.textbbox((0, 0), ln, font=f)[2]
+            x = (W - wl) / 2
+            for p in ln.split():
+                idx += 1
+                d0 = (idx - 1) / max(1, n) * 0.34
+                lt = max(0.0, min(1.0, (t - d0) / 0.26))
+                if lt <= 0:
+                    x += d.textbbox((0, 0), p + " ", font=f)[2]
+                    continue
+                esc = 0.82 + 0.18 * eo_back(lt)
+                fu = fnt(int(f.size * esc))
+                sombra_t(d, (x, y + (f.size - fu.size) / 2), p, fu,
+                       tuple(pal["texto"]), 6)
                 x += d.textbbox((0, 0), p + " ", font=f)[2]
-                continue
-            esc = 0.82 + 0.18 * eo_back(lt)
-            fu = fnt(int(f.size * esc))
-            sombra_t(d, (x, y + (f.size - fu.size) / 2), p, fu,
-                   tuple(pal["texto"]), 6)
-            x += d.textbbox((0, 0), p + " ", font=f)[2]
-        y += alto_l
+            y += alto_l
     # Marca de esquina minima
     e = eo_expo(min(1.0, t / 0.4))
     d.rectangle([80, 80, 80 + int(120 * e), 88], fill=tuple(pal["destacado"]))
@@ -966,6 +1057,106 @@ def f_galeria(img, d, seg, t, pal):
                    f_["nota"], font=fnn, fill=tuple(pal["destacado"]))
 
 
+def _catmull_rom(pts, pasos=22):
+    """Suaviza una lista de puntos con un spline Catmull-Rom: da una
+    curva fluida entre nodos (look de ruta de mapa) en vez de tramos
+    rectos. Con 2 puntos o menos devuelve los puntos tal cual."""
+    if len(pts) < 3:
+        return list(pts)
+    ext = [pts[0]] + list(pts) + [pts[-1]]
+    out = []
+    for i in range(1, len(ext) - 2):
+        p0, p1, p2, p3 = ext[i - 1], ext[i], ext[i + 1], ext[i + 2]
+        for s in range(pasos):
+            u = s / pasos
+            u2, u3 = u * u, u * u * u
+            x = 0.5 * ((2 * p1[0]) + (-p0[0] + p2[0]) * u +
+                       (2 * p0[0] - 5 * p1[0] + 4 * p2[0] - p3[0]) * u2 +
+                       (-p0[0] + 3 * p1[0] - 3 * p2[0] + p3[0]) * u3)
+            y = 0.5 * ((2 * p1[1]) + (-p0[1] + p2[1]) * u +
+                       (2 * p0[1] - 5 * p1[1] + 4 * p2[1] - p3[1]) * u2 +
+                       (-p0[1] + 3 * p1[1] - 3 * p2[1] + p3[1]) * u3)
+            out.append((x, y))
+    out.append(pts[-1])
+    return out
+
+
+def f_camino(img, d, seg, t, pal):
+    """Ruta tipo mapa: curva sinuosa (no una linea recta) que atraviesa
+    el frame con 3-5 paradas numeradas. Las paradas aparecen una por
+    una con un 'pop', siguiendo el recorrido de la linea. Verde de
+    acento para lo ya recorrido/alcanzado, apagado para lo que falta.
+
+    JSON (mismo patron que 'pasos'/'ranking': lista simple + 'texto'
+    opcional como titulo arriba):
+      {"formato": "camino", "texto": "Asi se corta el bucle",
+       "pasos": ["Notas la rumia", "Nombras el bucle",
+                  "Cortas con una accion", "Volves al presente"]}
+    """
+    paradas = seg.get("pasos") or ["Notás la rumia", "Nombrás el bucle",
+                                    "Cortás con una acción",
+                                    "Volvés al presente"]
+    n = len(paradas)
+    if seg.get("texto"):
+        ft, lt = auto_tam(d, seg["texto"], W - 180, 200, 68)
+        y = 150
+        for ln in lt:
+            wl = d.textbbox((0, 0), ln, font=ft)[2]
+            sombra_t(d, ((W - wl) / 2, y), ln, ft, tuple(pal["texto"]))
+            y += ft.size + 12
+
+    top_y, bot_y = H * 0.36, H * 0.88
+    nodos = []
+    for i in range(n):
+        frac = i / max(1, n - 1)
+        nx = W / 2 + math.sin(i * 2.1 + 0.6) * W * 0.24
+        ny = top_y + (bot_y - top_y) * frac
+        nodos.append((nx, ny))
+    curva = _catmull_rom(nodos, 22)
+
+    # El recorrido completo avanza con t; cada parada se "enciende"
+    # cuando el avance de la linea la alcanza (mismo espiritu que la
+    # linea de tiempo de f_cronologia).
+    e = eo_cubic(min(1.0, t / 0.92))
+    hasta = int(len(curva) * e)
+
+    apagado = tuple(pal["apagado"]) if "apagado" in pal else (107, 107, 112)
+    if len(curva) > 1:
+        d.line(curva, fill=tuple(min(255, c + 12) for c in pal["fondo"]),
+               width=10, joint="curve")
+    if hasta > 1:
+        d.line(curva[:hasta], fill=tuple(pal["destacado"]), width=10,
+               joint="curve")
+
+    fn_num, fn_lab = fnt(40), fnt(38)
+    for i, (nx, ny) in enumerate(nodos):
+        ap = (i / max(1, n - 1)) if n > 1 else 0.0
+        alcanzada = e >= ap - 0.015
+        pop = eo_back(max(0.0, min(1.0, (t - ap * 0.92) / 0.22))) \
+            if alcanzada else 0.0
+        r = (30 if alcanzada else 20)
+        if alcanzada:
+            r = r * (0.55 + 0.45 * max(0.0, pop))
+        col = tuple(pal["destacado"]) if alcanzada else apagado
+        d.ellipse([nx - r, ny - r, nx + r, ny + r], fill=col,
+                  outline=tuple(pal["fondo"]), width=4)
+        bb = d.textbbox((0, 0), str(i + 1), font=fn_num)
+        d.text((nx - (bb[2] - bb[0]) / 2 - bb[0],
+                ny - (bb[3] - bb[1]) / 2 - bb[1]), str(i + 1), font=fn_num,
+               fill=(14, 14, 18) if alcanzada else (190, 190, 196))
+        etiqueta = paradas[i] if i < len(paradas) else ""
+        if etiqueta and alcanzada and pop > 0:
+            lado_izq = math.sin(i * 2.1 + 0.6) > 0
+            fw = d.textbbox((0, 0), etiqueta, font=fn_lab)[2]
+            tx = (nx - fw - 46) if lado_izq else (nx + 46)
+            tx = max(20, min(tx, W - fw - 20))
+            ty = ny - fn_lab.size / 2
+            ac = max(0.0, min(1.0, pop))
+            col_txt = tuple(int(fo + (c - fo) * ac)
+                            for fo, c in zip(pal["fondo"], pal["texto"]))
+            sombra_t(d, (tx, ty), etiqueta, fn_lab, col_txt, 4)
+
+
 FORMATOS = {
     "declaracion": f_declaracion, "dato_duro": f_dato_duro,
     "division": f_division, "revelacion": f_revelacion,
@@ -974,6 +1165,7 @@ FORMATOS = {
     "retrato": f_retrato, "galeria": f_galeria,
     "cita": f_cita, "pasos": f_pasos, "ranking": f_ranking,
     "alerta": f_alerta, "panel": f_panel, "terminal": f_terminal,
+    "camino": f_camino,
 }
 
 PALETAS = [
@@ -1021,6 +1213,12 @@ def render(seg, t, prog, cfg):
             if nombre in HOOKS:
                 img = HOOKS[nombre](img, t, pal)
         d = ImageDraw.Draw(img)
+
+    # Captions kinetic opcionales (palabra por palabra). Van despues
+    # del hook y antes de la camara para que floten con el resto del
+    # frame igual que cualquier otro elemento.
+    if seg.get("captions_palabra_por_palabra"):
+        dibujar_captions_kinetic(img, d, seg, t, pal)
 
     # Camara: leve deriva, distinta por formato
     amp = cfg.get("camara", 1.0)

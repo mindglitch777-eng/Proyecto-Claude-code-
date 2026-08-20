@@ -1,0 +1,44 @@
+{
+  "tema": "Demo: formato camino + captions kinetic palabra por palabra",
+  "fps": 30,
+  "camara": 1.0,
+  "salida": "videos/_demo_camino.mp4",
+  "paleta": {
+    "fondo": [15, 15, 16],
+    "texto": [242, 239, 233],
+    "destacado": [74, 222, 128]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Rumiás la misma escena otra vez.",
+      "duracion": 2.6,
+      "hook": "flash",
+      "captions_palabra_por_palabra": true,
+      "captions_texto": "Rumiás la misma escena *otra* vez.",
+      "transicion": "corte_duro"
+    },
+    {
+      "formato": "camino",
+      "texto": "Así se corta el bucle",
+      "pasos": [
+        "Notás la rumia",
+        "Nombrás el bucle",
+        "Cortás con una acción",
+        "Volvés al presente"
+      ],
+      "duracion": 4.0,
+      "transicion": "barrido"
+    },
+    {
+      "formato": "declaracion",
+      "texto": "Cuatro pasos. Cero magia. Volvés a probar.",
+      "duracion": 2.8,
+      "mayus": false,
+      "captions_palabra_por_palabra": true,
+      "captions_texto": "Cuatro pasos. Cero magia. Volvés a *probar*.",
+      "transicion": "fade",
+      "hook": "sacudida"
+    }
+  ]
+}
