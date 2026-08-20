@@ -119,6 +119,8 @@
     "instrucciones": "Lineas de narracion para 18-pareja-frase-rara (hook, dato/mensajes, mecanismo, cierre -- las capturas van sin voz). Generar audios en ElevenLabs, guardarlos como 18-pareja-frase-rara-vozN.mp3 en capturas_voz/ segun el indice del segmento, correr sincronizar_voz.py despues.",
     "lineas": [
       "Te dijo una frase rara hace 2 días y la seguís repitiendo.",
+      "Después hablamos, ahora no puedo No es nada, dejalo ¿Por qué le das tantas vueltas?",
+      "Primero pensás: raro que diga eso Después: seguro me está ocultando algo Ya armaste toda una novela en tu cabeza",
       "La frase no cambió. La historia la armaste vos. Seguime."
     ]
   }

@@ -90,5 +90,14 @@
       "transicion": "fade",
       "hook": "zoom_golpe"
     }
-  ]
+  ],
+  "elevenlabs": {
+    "instrucciones": "Lineas de narracion para 06-en-visto (indices de segmento [0, 1, 2, 5] -- las capturas van sin voz). Generar audios en ElevenLabs y guardarlos como 06-en-visto-vozN.mp3 (N = indice de la lista) en capturas_voz/. Correr sincronizar_voz.py despues.",
+    "lineas": [
+      "Te dejó en visto hace 3 horas.",
+      "Doce veces que revisaste el chat.",
+      "Las excusas que te inventaste: está ocupado, se enojó, ya no le gustás, perdió el celular.",
+      "Te dejó en visto. Vos das el primer paso. Seguime."
+    ]
+  }
 }

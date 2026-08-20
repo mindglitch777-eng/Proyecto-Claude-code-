@@ -32,6 +32,8 @@ def main():
     for i, seg in enumerate(cfg["segmentos"]):
         if "captura" in seg:
             continue  # el producto real se muestra sin voz encima
+        if seg.get("quiebre_capitulo"):
+            continue  # freeze + silencio total a proposito, sin voz
         candidato = carpeta / f"{stem}-voz{i}.mp3"
         if not candidato.exists():
             candidato = candidato.with_suffix(".wav")

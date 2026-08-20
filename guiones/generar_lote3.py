@@ -241,8 +241,9 @@ def armar(g):
     if "dato" in g:
         d = g["dato"]
         lineas.append(f"{d['numero']}{d['sufijo']}. {d['texto']}")
-    if "mensajes" not in g:
-        lineas.append(narracion_mecanismo(m))
+    if "mensajes" in g:
+        lineas.append(" ".join(g["mensajes"]["textos"]))
+    lineas.append(narracion_mecanismo(m))
     lineas.append(g["cierre"])
 
     cfg = {

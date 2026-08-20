@@ -41,7 +41,8 @@ def voces_completas(stem, n_segmentos):
 def indices_narrados(guion_path):
     import json
     cfg = json.loads(guion_path.read_text(encoding="utf-8"))
-    return [i for i, s in enumerate(cfg["segmentos"]) if "captura" not in s]
+    return [i for i, s in enumerate(cfg["segmentos"])
+            if "captura" not in s and not s.get("quiebre_capitulo")]
 
 
 def producir_uno(guion_path, solo_nuevos):

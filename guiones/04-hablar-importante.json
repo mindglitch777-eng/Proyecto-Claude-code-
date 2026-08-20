@@ -79,5 +79,14 @@
       "transicion": "fade",
       "hook": "zoom_golpe"
     }
-  ]
+  ],
+  "elevenlabs": {
+    "instrucciones": "Lineas de narracion para 04-hablar-importante (indices de segmento [0, 1, 2, 5] -- las capturas van sin voz). Generar audios en ElevenLabs y guardarlos como 04-hablar-importante-vozN.mp3 (N = indice de la lista) en capturas_voz/. Correr sincronizar_voz.py despues.",
+    "lineas": [
+      "Mañana hablás. Ya lo ensayaste 12 veces.",
+      "Doce veces ensayado, cero veces mejorado.",
+      "Cuatro preguntas, no un ensayo: qué querés lograr, qué depende de vos, lo peor que puede pasar, qué hacés si pasa.",
+      "Mañana hablás, ya preparado. Seguime."
+    ]
+  }
 }

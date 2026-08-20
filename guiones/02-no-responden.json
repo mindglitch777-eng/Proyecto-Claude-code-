@@ -79,5 +79,14 @@
       "transicion": "dip",
       "hook": "zoom_golpe"
     }
-  ]
+  ],
+  "elevenlabs": {
+    "instrucciones": "Lineas de narracion para 02-no-responden (indices de segmento [0, 1, 2, 5] -- las capturas van sin voz). Generar audios en ElevenLabs y guardarlos como 02-no-responden-vozN.mp3 (N = indice de la lista) en capturas_voz/. Correr sincronizar_voz.py despues.",
+    "lineas": [
+      "Mandaste un mensaje hace 3 horas. Ya inventaste cuatro explicaciones.",
+      "Cuatro explicaciones que te inventaste solo.",
+      "Está ocupado. No vio el mensaje. Lo está pensando. Ya no le importa.",
+      "Mandaste el mensaje. Cortá la espera. Seguime."
+    ]
+  }
 }

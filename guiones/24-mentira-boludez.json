@@ -119,6 +119,8 @@
     "instrucciones": "Lineas de narracion para 24-mentira-boludez (hook, dato/mensajes, mecanismo, cierre -- las capturas van sin voz). Generar audios en ElevenLabs, guardarlos como 24-mentira-boludez-vozN.mp3 en capturas_voz/ segun el indice del segmento, correr sincronizar_voz.py despues.",
     "lineas": [
       "Le mentiste por una boludez hace 3 días y no lo podés soltar.",
+      "Estaba en el gimnasio jaja Sí sí, todo bien Nada raro, ¿por?",
+      "Primero: fue una boludez, no importa Después: ¿y si se entera y piensa que soy un mentiroso? Ya armaste un escándalo por una frase de nada",
       "Una mentira chica no te hace mentiroso. Cortala en la cabeza. Seguime."
     ]
   }

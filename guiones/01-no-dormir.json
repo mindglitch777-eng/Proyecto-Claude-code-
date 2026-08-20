@@ -89,5 +89,14 @@
       "transicion": "fade",
       "hook": "sacudida"
     }
-  ]
+  ],
+  "elevenlabs": {
+    "instrucciones": "Lineas de narracion para 01-no-dormir (indices de segmento [0, 1, 2, 5] -- las capturas van sin voz). Generar audios en ElevenLabs y guardarlos como 01-no-dormir-vozN.mp3 (N = indice de la lista) en capturas_voz/. Correr sincronizar_voz.py despues.",
+    "lineas": [
+      "Discutiste. Son las 2 AM y te comés la cabeza.",
+      "Así escala si no lo cortás: a las 2 fue una vuelta, a las 2:15 ocho, a las 2:30 diecinueve, a las 2:45 cuarenta.",
+      "Cuarenta vueltas a las 2 AM. La causa: no cortaste a tiempo. La solución: una sola acción.",
+      "Discutiste. Esta vez lo cortás antes. Seguime."
+    ]
+  }
 }

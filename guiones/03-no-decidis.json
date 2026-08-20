@@ -75,5 +75,14 @@
       "transicion": "fade",
       "hook": "flash"
     }
-  ]
+  ],
+  "elevenlabs": {
+    "instrucciones": "Lineas de narracion para 03-no-decidis (indices de segmento [0, 1, 2, 5] -- las capturas van sin voz). Generar audios en ElevenLabs y guardarlos como 03-no-decidis-vozN.mp3 (N = indice de la lista) en capturas_voz/. Correr sincronizar_voz.py despues.",
+    "lineas": [
+      "7 días dándole vueltas al mismo sí o no.",
+      "Cero datos nuevos en esos 7 días.",
+      "7 días sin decidir es una decisión también.",
+      "7 días menos. Decidí hoy. Seguime."
+    ]
+  }
 }
