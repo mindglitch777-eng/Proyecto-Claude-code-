@@ -1,0 +1,81 @@
+{
+  "tema": "Tu ego no te deja pedir perdón",
+  "topico_marca": "nuevo-B",
+  "captura_fuente": "capturas/captura-persona.mp4",
+  "flujo_real": "En la app: 'Alguien en particular' -> 'Si, en algun momento' -> sesion 'accion' (Escribi la accion en un verbo / Decidi cuando).",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [15, 15, 16],
+    "texto": [242, 239, 233],
+    "destacado": [74, 222, 128]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Sabés que la cagaste hace 4 días. Tu ego no te deja pedir perdón.",
+      "duracion": 2.4,
+      "hook": "glitch",
+      "karaoke": true,
+      "narracion": "Sabés que la cagaste hace 4 días. Tu ego no te deja pedir perdón.",
+      "imagen": "assets/imagenes/hablar-dificil.jpg"
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 4,
+      "sufijo": " días",
+      "texto": "sin un solo mensaje. Ninguno de los dos",
+      "duracion": 2.3,
+      "transicion": "punch",
+      "narracion": "Cuatro días. Sin un solo mensaje. Ninguno de los dos."
+    },
+    {
+      "formato": "camino",
+      "texto": "Así se arma el silencio",
+      "pasos": [
+        "Pasó algo",
+        "Tu ego dice: que hable el otro",
+        "Pasan los días",
+        "El silencio ya pesa más que el error"
+      ],
+      "duracion": 3.6,
+      "transicion": "barrido",
+      "narracion": "Pasó algo. Tu ego dice: que hable el otro. Pasan los días. El silencio ya pesa más que el error."
+    },
+    {
+      "captura": "capturas/captura-persona.mp4",
+      "recorte": [0.0, 3.0],
+      "texto": "Le escribís vos primero.",
+      "duracion": 3.0,
+      "transicion": "corte_duro"
+    },
+    {
+      "captura": "capturas/captura-persona.mp4",
+      "recorte": [3.0, 5.5],
+      "texto": "Dos líneas. Nada más.",
+      "duracion": 2.5,
+      "transicion": "punch"
+    },
+    {
+      "formato": "declaracion",
+      "texto": "Sabés lo que gana tu ego. Vos, no. Seguime para cortar el bucle antes de que sea tarde.",
+      "duracion": 2.6,
+      "mayus": false,
+      "captions_palabra_por_palabra": true,
+      "captions_texto": "Tu ego *gana*. Vos, no.",
+      "transicion": "fade",
+      "hook": "sacudida",
+      "narracion": "Sabés lo que gana tu ego. Vos, no. Seguime para cortar el bucle antes de que sea tarde."
+    }
+  ],
+  "elevenlabs": {
+    "instrucciones": "4 lineas de narracion por video (hook, error, mecanismo, loop -- los 2 segmentos de captura real van sin voz, el producto se muestra sin explicarse encima). Generar 4 audios separados en ElevenLabs con estas lineas, en este orden, y guardarlos como 16-ego-perdon-voz0.mp3 (hook), -voz1.mp3 (error), -voz2.mp3 (mecanismo), -voz5.mp3 (loop) en capturas_voz/. Correr sincronizar_voz.py despues.",
+    "lineas": [
+      "Sabés que la cagaste hace 4 días. Tu ego no te deja pedir perdón.",
+      "Cuatro días. Sin un solo mensaje. Ninguno de los dos.",
+      "Pasó algo. Tu ego dice: que hable el otro. Pasan los días. El silencio ya pesa más que el error.",
+      "Sabés lo que gana tu ego. Vos, no. Seguime para cortar el bucle antes de que sea tarde."
+    ]
+  }
+}
