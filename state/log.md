@@ -1,5 +1,87 @@
 # Log de decisiones
 
+## 2026-08-20 (continuación — vida ambiental en animador_v9.py, ronda 3)
+
+**Contexto:** feedback del operador sobre el demo de "collage": "espacio
+libre tremendo" (zonas del cuadro 1080x1920 sin textura/movimiento) y
+tramos donde no pasa nada por más de un par de segundos. Investigación
+2026 confirmó el diagnóstico (regla dura: nada estático >~3s) pero
+también la advertencia de no pasar al extremo contrario ("cafeína
+visual" sin momentos de claridad).
+
+**Decisión 19 — capa de "vida ambiental" centralizada en `render()`.**
+`dibujar_ambiente(img, d, t_abs, pal)` (una función, un solo punto de
+llamada en `render()`, antes de la cámara) aplica DOS técnicas baratas
+a los 18 formatos por igual, sin tocar cada `f_*`:
+1. `_ambiente_particulas()` + `_punto_suave()`: ~13 motas de luz que
+   flotan lento por todo el cuadro con parpadeo propio (alpha real,
+   máx. ~22/255), compuestas solo sobre la caja mínima que cada punto
+   toca (nunca una capa RGBA del tamaño completo del frame — el costo
+   es proporcional a la cantidad de puntos, no al video).
+2. `_grano_fuente()`: grano/ruido animado — un lienzo de ruido
+   generado una sola vez por proceso (`random.Random(...).randbytes`,
+   sin loop por píxel, sin numpy) del que se recorta una ventana
+   distinta cada cuadro (offset "saltarín", no deriva suave, para que
+   parpadee como grano real) y se mezcla con `Image.blend` al 2.8%.
+`t_abs` es tiempo absoluto y continuo a lo largo de TODO el video
+(`cfg["_dur_total"]`, seteado en `generar()`), no se reinicia en cada
+segmento, para que ninguna de las dos capas salte de fase en los
+cortes. Costo medido: ~13ms/frame extra sobre una base de ~82ms/frame
+(declaracion, cámara+resize incluidos) — bien por debajo del costo de
+un `GaussianBlur` de cuadro completo que el propio `collage` ya hace.
+
+**Decisión 20 — micro-eventos en camino/collage (pulido, no rediseño).**
+- `f_camino`: anillo que late viaja en la punta del trazo mientras la
+  ruta se sigue dibujando (la línea ya crece cuadro a cuadro, esto lo
+  hace más evidente); halo tenue que respira detrás de la última
+  parada durante la cola del segmento, por si el guion deja tiempo de
+  sobra después de revelar todos los nodos.
+- `f_collage`: micro-respiración continua superpuesta al paneo de Ken
+  Burns (el ease in-out del zoom se aplana cerca del final de cada
+  slot — sin esto podía sentirse quieto un instante en slots largos);
+  el punto de progreso activo late de escala.
+Ninguno de los dos cambia duración/timing de segmentos ni agrega
+cortes de contenido — solo textura/movimiento en huecos existentes.
+Análisis de timing real: con la cadencia actual de nodos/fotos en los
+15+1 guiones de producción, ninguno llegaba a superar 3s sin evento
+propio (la línea de `camino` y el Ken Burns de `collage` ya son
+continuos) — los micro-eventos son refuerzo/robustez para guiones
+futuros con menos nodos o slots más largos, no un parche a un bug
+visto hoy.
+
+**Investigación 2026 (WebSearch, 2 búsquedas) — nada nuevo que sumar
+como formato.** Confirma lo ya implementado: revival de grano/textura
+analógica como recurso deliberado contra planos "muertos" (mismo
+diagnóstico que hizo el operador a ojo), y advertencia real de no
+convertir el video en "cafeína visual" sin ningún instante de claridad
+(por eso los micro-eventos son sutiles y puntuales, no un rediseño).
+El otro hallazgo (chapter cards cada 5-8s para simular una serie
+dentro de un solo video) se descartó para esta ronda: es una decisión
+de estructura de contenido, no de pulido visual, y el pedido explícito
+era no tocar timing/estructura de segmentos.
+
+**Regresión:** los 18 formatos renderizan cuadro a cuadro sin error
+(smoke test directo). Los 16 guiones de `guiones/*.json` (no 15 — hay
+uno nuevo, `16-ego-perdon.json`, no roto por esta ronda) pasan
+renderizado completo de cada segmento/formato sin excepciones; 2 de
+ellos (`01-no-dormir`, `16-ego-perdon`) se corrieron de punta a punta
+por `generar()` con `ffmpeg` real, video+audio válidos. Los dos demos
+(`demos/_demo_camino.mp4`, `demos/_demo_collage.mp4`) se
+re-renderizaron y sobrescribieron con la mejora aplicada (mismo
+nombre de archivo). Nota menor: `demos/_demo-camino-captions.json`
+tenía `"salida": "videos/_demo_camino.mp4"` (no coincidía con el
+nombre real del demo en `demos/`) — corregido a
+`"salida": "demos/_demo_camino.mp4"` para que coincida con su par
+`_demo_collage.json` y con lo que el operador va a revisar.
+
+**Pendiente / próxima sesión:**
+- Que el operador vea los dos demos re-renderizados y confirme si la
+  vida ambiental resuelve el feedback de "espacio libre" o si hace
+  falta subir/bajar la intensidad (parámetros centralizados en
+  `dibujar_ambiente()`, un solo lugar para ajustar).
+- Todo lo demás pendiente de rondas anteriores (Netlify, audio real de
+  ElevenLabs, música de fondo) sigue igual, no tocado esta ronda.
+
 ## 2026-08-20
 
 **Contexto:** el operador aprobó precio ($15, descarga única en

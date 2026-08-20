@@ -1124,6 +1124,7 @@ def f_camino(img, d, seg, t, pal):
     # linea de tiempo de f_cronologia).
     e = eo_cubic(min(1.0, t / 0.92))
     hasta = int(len(curva) * e)
+    dur_seg = seg.get("duracion", 3.6)
 
     apagado = tuple(pal["apagado"]) if "apagado" in pal else (107, 107, 112)
     if len(curva) > 1:
@@ -1132,6 +1133,29 @@ def f_camino(img, d, seg, t, pal):
     if hasta > 1:
         d.line(curva[:hasta], fill=tuple(pal["destacado"]), width=10,
                joint="curve")
+
+    # Micro-evento en la punta del trazo mientras la ruta se sigue
+    # dibujando: un anillo que late (late de escala, no de contenido)
+    # viajando en la punta de la linea. La linea ya crece cuadro a
+    # cuadro (nunca esta quieta durante el 92% del segmento), esto
+    # solo lo hace mas evidente/vivo -- pedido explicito del operador
+    # de "que pase algo" con un latido, no un cambio de contenido.
+    if 1 < hasta < len(curva):
+        tx_p, ty_p = curva[hasta - 1]
+        pulso = 0.55 + 0.45 * math.sin(t * dur_seg * 7.4)
+        rp = 9 + 5 * pulso
+        d.ellipse([tx_p - rp, ty_p - rp, tx_p + rp, ty_p + rp],
+                  outline=tuple(pal["destacado"]), width=3)
+    elif hasta >= len(curva) and nodos:
+        # Cola del segmento (ruta ya completa, faltan cuadros hasta
+        # que termine): halo tenue que respira detras de la ultima
+        # parada, para que ese resto nunca quede totalmente quieto.
+        fx, fy = nodos[-1]
+        resp = 0.5 + 0.5 * math.sin(t * dur_seg * 2.1)
+        rh = 36 + 9 * resp
+        halo = tuple(int(fo + (c - fo) * 0.30)
+                     for fo, c in zip(pal["fondo"], pal["destacado"]))
+        d.ellipse([fx - rh, fy - rh, fx + rh, fy + rh], outline=halo, width=2)
 
     fn_num, fn_lab = fnt(40), fnt(38)
     for i, (nx, ny) in enumerate(nodos):
@@ -1219,8 +1243,15 @@ def f_collage(img, d, seg, t, pal):
         z = 1.16 - 0.16 * e
         cw, ch = min(base.width, int(W * z)), min(base.height, int(H * z))
         max_dx, max_dy = base.width - cw, base.height - ch
-        cx = max_dx * (0.5 + signo * 0.20 * e)
-        cy = max_dy * 0.5
+        # Micro-respiracion continua encima del Ken Burns: el ease
+        # in-out del zoom se aplana cerca del final de cada slot (la
+        # derivada tiende a 0), lo que puede sentirse "quieto" un
+        # instante si el slot es largo. Esta deriva chica en base a t
+        # (continua entre fotos, no se reinicia por slot) asegura que
+        # SIEMPRE haya algun movimiento de camara, sin cambiar encuadre
+        # final ni el timing del corte entre fotos.
+        cx = max_dx * (0.5 + signo * 0.20 * e) + math.sin(t * 5.4) * 3.0
+        cy = max_dy * 0.5 + math.cos(t * 4.1) * 2.2
         cx = max(0, min(cx, max_dx)); cy = max(0, min(cy, max_dy))
         cuadro = base.crop((int(cx), int(cy), int(cx) + cw, int(cy) + ch))
         if (cw, ch) != (W, H):
@@ -1245,10 +1276,15 @@ def f_collage(img, d, seg, t, pal):
     d2 = ImageDraw.Draw(img)
 
     # Puntos de progreso arriba: cual foto del collage estamos viendo.
+    # El punto activo late suave (latido de escala): otro pequeno
+    # recordatorio constante de que el reloj sigue corriendo, incluso
+    # en el instante en que la foto de fondo esta casi quieta.
     apagado = tuple(pal["apagado"]) if "apagado" in pal else (107, 107, 112)
     for k in range(n):
         cxp = W / 2 - (n - 1) * 24 + k * 48
         r = 8 if k == idx else 5
+        if k == idx:
+            r += 1.3 * math.sin(t * 42.0)
         d2.ellipse([cxp - r, 70 - r, cxp + r, 70 + r],
                    fill=tuple(pal["destacado"]) if k <= idx else apagado)
 
@@ -1279,6 +1315,140 @@ def f_collage(img, d, seg, t, pal):
             wl = d2.textbbox((0, 0), ln, font=ft)[2]
             sombra_t(d2, ((W - wl) / 2, y), ln, ft, tuple(pal["texto"]), 4)
             y += ft.size + 8
+
+
+# --- Vida ambiental (universal, todos los formatos) -------------------
+#
+# Feedback del operador sobre el demo de "collage": queda "un espacio
+# libre tremendo" -- zonas grandes del cuadro de 1080x1920 sin ninguna
+# textura ni movimiento -- y algunos tramos donde "no pasa nada" por
+# mas de un par de segundos. La investigacion de edicion corta 2026
+# coincide en el diagnostico (regla dura: ningun plano completamente
+# estatico por mas de ~3s) pero tambien advierte del extremo contrario:
+# convertir el video en "cafeina visual" sin ningun instante de
+# claridad. La solucion no es agregar mas cortes de contenido -- es
+# una capa de textura viva, muy sutil, que nunca compite con el texto.
+#
+# Diseño elegido: un puñado de motas de luz (particulas) que flotan
+# lento por TODO el cuadro (no solo en los margenes), con parpadeo
+# propio, en los dos tonos de marca (verde de acento / apagado). Se
+# genera una sola vez por proceso (identidad estable: misma mota, misma
+# fase, en todo el video) y se compone con alpha real pero SOLO sobre
+# la region minima que cada punto toca -- nunca se crea una capa RGBA
+# del tamaño completo del cuadro, asi el costo es proporcional a la
+# cantidad de puntos (unos pocos px cada uno), no al tamaño del video.
+# Barato de sobra para CPU frame a frame sin GPU.
+#
+# Se llama UNA sola vez desde render(), centralizado, para que aplique
+# a los 18 formatos por igual sin duplicar codigo adentro de cada f_*.
+
+_AMBIENTE_CACHE = {}
+
+
+def _ambiente_particulas(n=13):
+    """Parametros fijos de cada particula (posicion base, fase,
+    velocidad). Se sortean una sola vez (semilla fija) para que cada
+    mota tenga identidad estable a lo largo de todo el video -- no se
+    re-sortean cuadro a cuadro ni video a video."""
+    parts = _AMBIENTE_CACHE.get(n)
+    if parts is None:
+        rr = random.Random(7919)
+        parts = []
+        for i in range(n):
+            parts.append({
+                "bx": rr.uniform(0.08, 0.92), "by": rr.uniform(0.10, 0.90),
+                "fase": rr.uniform(0, 6.2832),
+                "vx": rr.uniform(0.026, 0.07), "vy": rr.uniform(0.020, 0.055),
+                "vp": rr.uniform(0.10, 0.20),
+                "r": rr.uniform(2.0, 4.6),
+                "acento": (i % 4 == 0),
+            })
+        _AMBIENTE_CACHE[n] = parts
+    return parts
+
+
+def _punto_suave(img, x, y, r, color, alpha):
+    """Dibuja un punto translucido sin crear una capa del tamaño del
+    cuadro completo: recorta solo la caja minima que el punto toca,
+    compone ahi con alpha real, y pega de vuelta. Barato incluso con
+    varias docenas de puntos por cuadro."""
+    if alpha <= 1:
+        return
+    r = max(1.2, r)
+    x0, y0 = int(x - r - 1), int(y - r - 1)
+    x1, y1 = int(x + r + 2), int(y + r + 2)
+    x0c, y0c = max(0, x0), max(0, y0)
+    x1c, y1c = min(W, x1), min(H, y1)
+    if x1c <= x0c or y1c <= y0c:
+        return
+    region = img.crop((x0c, y0c, x1c, y1c)).convert("RGBA")
+    capa = Image.new("RGBA", region.size, (0, 0, 0, 0))
+    ImageDraw.Draw(capa).ellipse(
+        [x - x0c - r, y - y0c - r, x - x0c + r, y - y0c + r],
+        fill=tuple(color) + (int(alpha),))
+    img.paste(Image.alpha_composite(region, capa).convert("RGB"), (x0c, y0c))
+
+
+def _grano_fuente():
+    """Lienzo de ruido (grano) generado UNA sola vez por proceso, mas
+    grande que el cuadro para poder recortar una ventana distinta cada
+    llamada. random.Random(...).randbytes es un solo call en C (no un
+    loop en Python), asi que generarlo es practicamente gratis; el
+    costo real de por-cuadro es solo el crop + blend de mas abajo.
+
+    Investigacion de tendencias 2026 (ver nota en dibujar_ambiente):
+    el grano/textura analogica vuelve como recurso deliberado para que
+    un plano quieto no se sienta "muerto" -- exactamente el mismo
+    diagnostico que el operador hizo a ojo. Un grano animado (que
+    parpadea cuadro a cuadro, no una textura fija pegada a la pantalla)
+    es barato en Pillow puro sin numpy: PIL.Image.frombytes sobre
+    bytes aleatorios, sin ningun loop por pixel."""
+    gw, gh = W + 360, H + 420
+    if "grano" not in _AMBIENTE_CACHE:
+        datos = random.Random(31337).randbytes(gw * gh)
+        _AMBIENTE_CACHE["grano"] = (Image.frombytes("L", (gw, gh), datos)
+                                     .convert("RGB"), gw, gh)
+    return _AMBIENTE_CACHE["grano"]
+
+
+def dibujar_ambiente(img, d, t_abs, pal):
+    """Vida ambiental universal: dos capas baratas que se llaman una
+    sola vez desde render() para TODOS los formatos (no duplicar en
+    cada f_*), deliberadamente tenues para que se sientan textura de
+    fondo viva y nunca un elemento que le saca atencion al texto:
+
+    1. Motas de luz que flotan lento por todo el cuadro con parpadeo
+       propio (particula + "pulso de brillo" en una sola tecnica,
+       alpha maximo ~22/255).
+    2. Grano animado tenuisimo (blend ~3% contra ruido, alpha maximo
+       equivalente) que parpadea cuadro a cuadro -- textura analogica
+       que evita que CUALQUIER zona del cuadro (no solo donde caen las
+       motas) se sienta plana. Confirmado como tendencia de edicion
+       2026 real, no solo intuicion (ver investigacion en el reporte
+       de esta ronda).
+
+    t_abs: tiempo absoluto en segundos, continuo a lo largo de TODO el
+    video (no se reinicia en cada segmento), para que ninguna de las
+    dos capas salte de fase en los cortes entre segmentos.
+    """
+    ac = tuple(pal["destacado"])
+    ap = tuple(pal.get("apagado", (107, 107, 112)))
+    for p in _ambiente_particulas():
+        x = p["bx"] * W + math.sin(t_abs * p["vx"] * 6.2832 + p["fase"]) * W * 0.045
+        y = p["by"] * H + math.cos(t_abs * p["vy"] * 6.2832 + p["fase"] * 1.3) * H * 0.035
+        pulso = 0.5 + 0.5 * math.sin(t_abs * p["vp"] * 6.2832 + p["fase"] * 2.1)
+        alpha = 7 + 15 * pulso
+        _punto_suave(img, x, y, p["r"], ac if p["acento"] else ap, alpha)
+
+    grano, gw, gh = _grano_fuente()
+    # Offset "saltarin" (no una deriva suave): dos multiplicadores
+    # grandes y sin relacion simple hacen que la ventana recortada
+    # cambie de golpe cuadro a cuadro, como el parpadeo real del grano
+    # de pelicula -- no como un patron que se desliza por la pantalla.
+    ox = int((t_abs * 971) % (gw - W))
+    oy = int((t_abs * 613) % (gh - H))
+    ventana = grano.crop((ox, oy, ox + W, oy + H))
+    img.paste(Image.blend(img, ventana, 0.028), (0, 0))
 
 
 FORMATOS = {
@@ -1343,6 +1513,19 @@ def render(seg, t, prog, cfg):
     # frame igual que cualquier otro elemento.
     if seg.get("captions_palabra_por_palabra"):
         dibujar_captions_kinetic(img, d, seg, t, pal)
+
+    # Vida ambiental (ver definicion arriba de FORMATOS): universal,
+    # va antes de la camara para que las motas floten integradas al
+    # resto del cuadro (reciben el mismo leve zoom/paneo que todo lo
+    # demas, en vez de sentirse pegadas encima). t_abs es tiempo
+    # absoluto y continuo a lo largo de TODO el video -- generar()
+    # guarda la duracion total en cfg["_dur_total"] para esto; sin esa
+    # clave (p.ej. catalogo(), que solo pide un cuadro suelto) se cae
+    # a tiempo local del segmento, que alcanza para un cuadro fijo.
+    dur_total = cfg.get("_dur_total")
+    t_abs = prog * dur_total if dur_total else t * seg.get("duracion", 3.0)
+    dibujar_ambiente(img, d, t_abs, pal)
+    d = ImageDraw.Draw(img)
 
     # Camara: leve deriva, distinta por formato
     amp = cfg.get("camara", 1.0)
@@ -1857,6 +2040,10 @@ def generar(path):
     # LINEA DE TIEMPO: la voz define las duraciones antes de renderizar
     voces, marcas = construir_linea_tiempo(cfg, segs, tmp)
     dur = sum(s["duracion"] for s in segs)
+    # Tiempo total, para que la vida ambiental (render() -> t_abs) sea
+    # un reloj continuo a lo largo de TODO el video, no algo que
+    # reinicia fase en cada corte de segmento.
+    cfg["_dur_total"] = dur
     ft = int(0.42 * fps); n = 0; acc = 0.0; ult = None
     print(f"Renderizando {dur:.1f}s a {fps}fps ({len(segs)} formatos)...")
     for si, seg in enumerate(segs):
