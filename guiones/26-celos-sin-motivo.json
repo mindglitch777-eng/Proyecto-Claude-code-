@@ -95,13 +95,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Sin pruebas, es tu cabeza. Nombralo y soltalo. Seguime.",
+      "texto": "Seguime y vas a dejar de desconfiar de tu pareja sin motivo.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Sin pruebas, es tu cabeza. Nombralo y soltalo. Seguime."
+      "narracion": "Seguime y vas a dejar de desconfiar de tu pareja sin motivo."
     }
   ],
   "elevenlabs": {
@@ -110,7 +110,7 @@
       "Te pusiste celoso por algo que no pasó. Van 3 veces este mes.",
       "0. Pruebas reales que tenés. Cero.",
       "Primero: tardó en contestar Después: seguro está con alguien Ya armaste una escena que no pasó",
-      "Sin pruebas, es tu cabeza. Nombralo y soltalo. Seguime."
+      "Seguime y vas a dejar de desconfiar de tu pareja sin motivo."
     ]
   }
 }

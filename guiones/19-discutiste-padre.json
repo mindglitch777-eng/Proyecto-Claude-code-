@@ -95,13 +95,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Un llamado no te hace perder. Te devuelve a tu viejo. Seguime.",
+      "texto": "Seguime y vas a dejar de esperar a que el otro llame primero.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Un llamado no te hace perder. Te devuelve a tu viejo. Seguime."
+      "narracion": "Seguime y vas a dejar de esperar a que el otro llame primero."
     }
   ],
   "elevenlabs": {
@@ -110,7 +110,7 @@
       "Le colgaste el teléfono a tu viejo. Van 6 horas de silencio.",
       "6 horas. Y los dos esperando que llame el otro.",
       "Primero: que llame él Después: yo tampoco tengo por qué ceder Ya pasaron horas y ninguno afloja",
-      "Un llamado no te hace perder. Te devuelve a tu viejo. Seguime."
+      "Seguime y vas a dejar de esperar a que el otro llame primero."
     ]
   }
 }

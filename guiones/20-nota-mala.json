@@ -95,13 +95,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Un 4 se corrige. No te define. Seguime.",
+      "texto": "Seguime y vas a dejar de sentir que un número te define.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Un 4 se corrige. No te define. Seguime."
+      "narracion": "Seguime y vas a dejar de sentir que un número te define."
     }
   ],
   "elevenlabs": {
@@ -110,7 +110,7 @@
       "Te sacaste un 4 y ya sentís que fallaste en todo.",
       "4. Un número. No un veredicto sobre vos.",
       "Primero: me fue mal en un examen Después: soy malo para esto Ya decidiste que sos un fracaso",
-      "Un 4 se corrige. No te define. Seguime."
+      "Seguime y vas a dejar de sentir que un número te define."
     ]
   }
 }

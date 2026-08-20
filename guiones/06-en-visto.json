@@ -85,13 +85,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Te dejó en visto. Vos das el primer paso. Seguime.",
+      "texto": "Seguime y vas a dejar de revisar el chat cada 5 minutos.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Te dejó en visto. Vos das el primer paso. Seguime."
+      "narracion": "Seguime y vas a dejar de revisar el chat cada 5 minutos."
     }
   ],
   "elevenlabs": {
@@ -100,7 +100,7 @@
       "Te dejó en visto hace 3 horas.",
       "Doce veces que revisaste el chat.",
       "Las excusas que te inventaste: está ocupado, se enojó, ya no le gustás, perdió el celular.",
-      "Te dejó en visto. Vos das el primer paso. Seguime."
+      "Seguime y vas a dejar de revisar el chat cada 5 minutos."
     ]
   }
 }

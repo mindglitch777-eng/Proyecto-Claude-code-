@@ -87,13 +87,13 @@
     },
     {
       "formato": "cta",
-      "texto": "4 días dándole vueltas. Le pusiste horario. Seguime.",
+      "texto": "Seguime y vas a dejar de repetir en tu cabeza la misma frase.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "4 días dándole vueltas. Le pusiste horario. Seguime."
+      "narracion": "Seguime y vas a dejar de repetir en tu cabeza la misma frase."
     }
   ],
   "elevenlabs": {
@@ -102,7 +102,7 @@
       "Te dijo algo hace 4 días y no lo soltás.",
       "Cuatro días repitiendo la misma frase",
       "No es la frase. Es el horario libre que le diste",
-      "4 días dándole vueltas. Le pusiste horario. Seguime."
+      "Seguime y vas a dejar de repetir en tu cabeza la misma frase."
     ]
   }
 }

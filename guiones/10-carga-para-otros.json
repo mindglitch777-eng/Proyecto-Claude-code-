@@ -72,13 +72,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Cancelaste un plan. Eso es todo. Seguime.",
+      "texto": "Seguime y vas a dejar de sentir que sos una carga.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Cancelaste un plan. Eso es todo. Seguime."
+      "narracion": "Seguime y vas a dejar de sentir que sos una carga."
     }
   ],
   "elevenlabs": {
@@ -87,7 +87,7 @@
       "Cancelaste un plan. Pensaste: se van a cansar de mí.",
       "Un plan cancelado no es una carga. Es un dato",
       "Eso lo penso la otra persona o lo pensas vos por ella? ... Nunca lo preguntaste. Solo lo diste por hecho.",
-      "Cancelaste un plan. Eso es todo. Seguime."
+      "Seguime y vas a dejar de sentir que sos una carga."
     ]
   }
 }

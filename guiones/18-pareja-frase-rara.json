@@ -106,13 +106,13 @@
     },
     {
       "formato": "cta",
-      "texto": "La frase no cambió. La historia la armaste vos. Seguime.",
+      "texto": "Seguime y vas a dejar de armar novelas por una frase.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "La frase no cambió. La historia la armaste vos. Seguime."
+      "narracion": "Seguime y vas a dejar de armar novelas por una frase."
     }
   ],
   "elevenlabs": {
@@ -121,7 +121,7 @@
       "Te dijo una frase rara hace 2 días y la seguís repitiendo.",
       "Después hablamos, ahora no puedo No es nada, dejalo ¿Por qué le das tantas vueltas?",
       "Primero pensás: raro que diga eso Después: seguro me está ocultando algo Ya armaste toda una novela en tu cabeza",
-      "La frase no cambió. La historia la armaste vos. Seguime."
+      "Seguime y vas a dejar de armar novelas por una frase."
     ]
   }
 }

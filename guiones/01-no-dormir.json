@@ -84,13 +84,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Discutiste. Esta vez lo cortás antes. Seguime.",
+      "texto": "Seguime y la próxima vez cortás el bucle antes de que te robe el sueño.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Discutiste. Esta vez lo cortás antes. Seguime."
+      "narracion": "Seguime y la próxima vez cortás el bucle antes de que te robe el sueño."
     }
   ],
   "elevenlabs": {
@@ -99,7 +99,7 @@
       "Discutiste. Son las 2 AM y te comés la cabeza.",
       "Así escala si no lo cortás: a las 2 fue una vuelta, a las 2:15 ocho, a las 2:30 diecinueve, a las 2:45 cuarenta.",
       "Cuarenta vueltas a las 2 AM. La causa: no cortaste a tiempo. La solución: una sola acción.",
-      "Discutiste. Esta vez lo cortás antes. Seguime."
+      "Seguime y la próxima vez cortás el bucle antes de que te robe el sueño."
     ]
   }
 }

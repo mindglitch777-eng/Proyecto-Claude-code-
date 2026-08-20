@@ -106,13 +106,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Un plan cancelado no es un rechazo. Es un plan cancelado. Seguime.",
+      "texto": "Seguime y vas a dejar de tomarte todo personal.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Un plan cancelado no es un rechazo. Es un plan cancelado. Seguime."
+      "narracion": "Seguime y vas a dejar de tomarte todo personal."
     }
   ],
   "elevenlabs": {
@@ -121,7 +121,7 @@
       "Te cancelaron el plan hace 10 minutos y ya te lo tomaste personal.",
       "Che, al final no puedo hoy Surgió algo, perdón En serio, no es por vos",
       "Primero: bueno, tendrá algo Después: seguro no le importa verme Ya decidiste que te está evitando",
-      "Un plan cancelado no es un rechazo. Es un plan cancelado. Seguime."
+      "Seguime y vas a dejar de tomarte todo personal."
     ]
   }
 }

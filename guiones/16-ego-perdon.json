@@ -7,9 +7,21 @@
   "camara": 1.0,
   "loop": true,
   "paleta": {
-    "fondo": [15, 15, 16],
-    "texto": [242, 239, 233],
-    "destacado": [74, 222, 128]
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
   },
   "segmentos": [
     {
@@ -51,7 +63,10 @@
     },
     {
       "captura": "capturas/captura-persona.mp4",
-      "recorte": [0.0, 1.6],
+      "recorte": [
+        0.0,
+        1.6
+      ],
       "texto": "Nombrás lo que armó tu ego",
       "duracion": 1.6,
       "transicion": "corte_duro",
@@ -59,7 +74,10 @@
     },
     {
       "captura": "capturas/captura-persona.mp4",
-      "recorte": [1.6, 3.1],
+      "recorte": [
+        1.6,
+        3.1
+      ],
       "texto": "Lo separás del error real",
       "duracion": 1.5,
       "transicion": "corte_duro",
@@ -67,7 +85,10 @@
     },
     {
       "captura": "capturas/captura-persona.mp4",
-      "recorte": [3.1, 4.8],
+      "recorte": [
+        3.1,
+        4.8
+      ],
       "texto": "Escribís vos primero",
       "duracion": 1.7,
       "transicion": "corte_duro",
@@ -75,13 +96,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Sabés lo que gana tu ego. Vos, no. Seguime.",
+      "texto": "Seguime y la próxima vez le ganás vos a tu ego, no al revés.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Sabés lo que gana tu ego. Vos, no. Seguime para cortar el bucle."
+      "narracion": "Seguime y la próxima vez le ganás vos a tu ego, no al revés."
     }
   ],
   "elevenlabs": {
@@ -90,7 +111,7 @@
       "Sabés que la cagaste hace 4 días. Tu ego no te deja pedir perdón.",
       "Cuatro días. Sin un solo mensaje. Ninguno de los dos.",
       "Primero: que hable primero el otro. Después: total, no fue tan grave. Ya pasaron cuatro días y ninguno cede.",
-      "Sabés lo que gana tu ego. Vos, no. Seguime para cortar el bucle."
+      "Seguime y la próxima vez le ganás vos a tu ego, no al revés."
     ]
   }
 }

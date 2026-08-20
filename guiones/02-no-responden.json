@@ -74,13 +74,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Mandaste el mensaje. Cortá la espera. Seguime.",
+      "texto": "Seguime y vas a dejar de inventarte explicaciones que nadie te dijo.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Mandaste el mensaje. Cortá la espera. Seguime."
+      "narracion": "Seguime y vas a dejar de inventarte explicaciones que nadie te dijo."
     }
   ],
   "elevenlabs": {
@@ -89,7 +89,7 @@
       "Mandaste un mensaje hace 3 horas. Ya inventaste cuatro explicaciones.",
       "Cuatro explicaciones que te inventaste solo.",
       "Está ocupado. No vio el mensaje. Lo está pensando. Ya no le importa.",
-      "Mandaste el mensaje. Cortá la espera. Seguime."
+      "Seguime y vas a dejar de inventarte explicaciones que nadie te dijo."
     ]
   }
 }

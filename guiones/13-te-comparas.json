@@ -79,13 +79,13 @@
     },
     {
       "formato": "cta",
-      "texto": "20 minutos comparando. Ya los cortaste. Seguime.",
+      "texto": "Seguime y vas a dejar de compararte con una vida editada.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "20 minutos comparando. Ya los cortaste. Seguime."
+      "narracion": "Seguime y vas a dejar de compararte con una vida editada."
     }
   ],
   "elevenlabs": {
@@ -94,7 +94,7 @@
       "Mirás su perfil y te comparás. Van 20 minutos.",
       "Veinte minutos mirando una vida editada",
       "SU PERFIL: Lo que elige mostrar. SU VIDA: Lo que no ves nunca.",
-      "20 minutos comparando. Ya los cortaste. Seguime."
+      "Seguime y vas a dejar de compararte con una vida editada."
     ]
   }
 }

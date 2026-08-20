@@ -69,13 +69,13 @@
     },
     {
       "formato": "cta",
-      "texto": "El error, 2 semanas atrás. Vos, hoy. Seguime.",
+      "texto": "Seguime y vas a dejar de repasar mil veces el mismo error.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "El error, 2 semanas atrás. Vos, hoy. Seguime."
+      "narracion": "Seguime y vas a dejar de repasar mil veces el mismo error."
     }
   ],
   "elevenlabs": {
@@ -84,7 +84,7 @@
       "Un error del laburo, hace 2 semanas. Seguís ahí.",
       "Dos semanas por un error que ya pasó",
       "Repasarlo mil veces no lo corrige. Solo lo revive",
-      "El error, 2 semanas atrás. Vos, hoy. Seguime."
+      "Seguime y vas a dejar de repasar mil veces el mismo error."
     ]
   }
 }

@@ -85,13 +85,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Te despertás acelerado. Cortalo en un ciclo. Seguime.",
+      "texto": "Seguime y la próxima vez bajás la activación en minutos, no en horas.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Te despertás acelerado. Cortalo en un ciclo. Seguime."
+      "narracion": "Seguime y la próxima vez bajás la activación en minutos, no en horas."
     }
   ],
   "elevenlabs": {
@@ -100,7 +100,7 @@
       "Te despertaste a las 4 AM, acelerado.",
       "Seis segundos de exhalación bajan la activación.",
       "La proporción que baja la activación: cuatro segundos inhalando, seis exhalando, seis ciclos, dos minutos.",
-      "Te despertás acelerado. Cortalo en un ciclo. Seguime."
+      "Seguime y la próxima vez bajás la activación en minutos, no en horas."
     ]
   }
 }

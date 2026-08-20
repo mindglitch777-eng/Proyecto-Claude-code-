@@ -71,13 +71,13 @@
     },
     {
       "formato": "cta",
-      "texto": "No se lo dijiste. Ahora sí, aunque sea acá. Seguime.",
+      "texto": "Seguime y vas a decir las cosas a tiempo, no después.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "No se lo dijiste. Ahora sí, aunque sea acá. Seguime."
+      "narracion": "Seguime y vas a decir las cosas a tiempo, no después."
     }
   ],
   "elevenlabs": {
@@ -86,7 +86,7 @@
       "No se lo dijiste. Y ya no está para escucharlo.",
       "Una cosa que no dijiste. La única que importaba",
       "Sufrimos mas en la imaginacion que en la realidad",
-      "No se lo dijiste. Ahora sí, aunque sea acá. Seguime."
+      "Seguime y vas a decir las cosas a tiempo, no después."
     ]
   }
 }

@@ -80,13 +80,13 @@
     },
     {
       "formato": "cta",
-      "texto": "El celular, guardado. Vos, tranquilo. Seguime.",
+      "texto": "Seguime y vas a dejar de revisarle el celular a tu pareja.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "El celular, guardado. Vos, tranquilo. Seguime."
+      "narracion": "Seguime y vas a dejar de revisarle el celular a tu pareja."
     }
   ],
   "elevenlabs": {
@@ -95,7 +95,7 @@
       "Le revisaste el celular a las 3 AM. Otra vez.",
       "Tres AM. La tercera vez esta semana",
       "LO QUE VISTE: Nada raro, en realidad. LO QUE ARMASTE: Una historia completa.",
-      "El celular, guardado. Vos, tranquilo. Seguime."
+      "Seguime y vas a dejar de revisarle el celular a tu pareja."
     ]
   }
 }

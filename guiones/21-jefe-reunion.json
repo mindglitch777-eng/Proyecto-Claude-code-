@@ -87,13 +87,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Una frase ambigua no es un veredicto. Preguntá. Seguime.",
+      "texto": "Seguime y vas a dejar de repasar cada frase de tu jefe.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Una frase ambigua no es un veredicto. Preguntá. Seguime."
+      "narracion": "Seguime y vas a dejar de repasar cada frase de tu jefe."
     }
   ],
   "elevenlabs": {
@@ -101,7 +101,7 @@
     "lineas": [
       "Tu jefe dijo una frase hace 2 horas y la seguís repasando.",
       "Dijo algo ambiguo Vos lo interpretaste como crítica Lo repasaste toda la tarde Nunca preguntaste qué quiso decir",
-      "Una frase ambigua no es un veredicto. Preguntá. Seguime."
+      "Seguime y vas a dejar de repasar cada frase de tu jefe."
     ]
   }
 }

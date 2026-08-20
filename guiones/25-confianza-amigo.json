@@ -87,13 +87,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Una falla no es un patrón. Hablalo antes de decidir. Seguime.",
+      "texto": "Seguime y vas a dejar de desconfiar de todos por una sola cagada.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Una falla no es un patrón. Hablalo antes de decidir. Seguime."
+      "narracion": "Seguime y vas a dejar de desconfiar de todos por una sola cagada."
     }
   ],
   "elevenlabs": {
@@ -101,7 +101,7 @@
     "lineas": [
       "Un amigo te falló 1 vez. Y ya no le creés nada.",
       "Te falló una vez Vos generalizaste: es así siempre Empezaste a esperar que falle de nuevo Ahora desconfiás hasta de lo que no pasó",
-      "Una falla no es un patrón. Hablalo antes de decidir. Seguime."
+      "Seguime y vas a dejar de desconfiar de todos por una sola cagada."
     ]
   }
 }

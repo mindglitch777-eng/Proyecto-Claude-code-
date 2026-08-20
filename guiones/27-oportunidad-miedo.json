@@ -87,13 +87,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Dejaste pasar esa. La próxima no tiene por qué. Seguime.",
+      "texto": "Seguime y no vas a dejar que el miedo te haga perder la próxima.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Dejaste pasar esa. La próxima no tiene por qué. Seguime."
+      "narracion": "Seguime y no vas a dejar que el miedo te haga perder la próxima."
     }
   ],
   "elevenlabs": {
@@ -101,7 +101,7 @@
     "lineas": [
       "Dejaste pasar la oportunidad hace 1 semana y seguís pensando en eso.",
       "Apareció la chance Pensaste en todo lo que podía salir mal No hiciste nada hasta que se cerró Ahora la repasás como si volviera",
-      "Dejaste pasar esa. La próxima no tiene por qué. Seguime."
+      "Seguime y no vas a dejar que el miedo te haga perder la próxima."
     ]
   }
 }

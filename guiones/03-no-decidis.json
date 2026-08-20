@@ -67,13 +67,13 @@
     },
     {
       "formato": "cta",
-      "texto": "7 días menos. Decidí hoy. Seguime.",
+      "texto": "Seguime y vas a dejar de trabarte 7 días por una decisión chica.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "7 días menos. Decidí hoy. Seguime."
+      "narracion": "Seguime y vas a dejar de trabarte 7 días por una decisión chica."
     }
   ],
   "elevenlabs": {
@@ -82,7 +82,7 @@
       "7 días dándole vueltas al mismo sí o no.",
       "Cero datos nuevos en esos 7 días.",
       "7 días sin decidir es una decisión también.",
-      "7 días menos. Decidí hoy. Seguime."
+      "Seguime y vas a dejar de trabarte 7 días por una decisión chica."
     ]
   }
 }

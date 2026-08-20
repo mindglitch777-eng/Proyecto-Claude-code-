@@ -74,13 +74,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Mañana hablás, ya preparado. Seguime.",
+      "texto": "Seguime y vas a dejar de ensayar la misma charla doce veces.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Mañana hablás, ya preparado. Seguime."
+      "narracion": "Seguime y vas a dejar de ensayar la misma charla doce veces."
     }
   ],
   "elevenlabs": {
@@ -89,7 +89,7 @@
       "Mañana hablás. Ya lo ensayaste 12 veces.",
       "Doce veces ensayado, cero veces mejorado.",
       "Cuatro preguntas, no un ensayo: qué querés lograr, qué depende de vos, lo peor que puede pasar, qué hacés si pasa.",
-      "Mañana hablás, ya preparado. Seguime."
+      "Seguime y vas a dejar de ensayar la misma charla doce veces."
     ]
   }
 }

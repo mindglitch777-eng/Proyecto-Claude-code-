@@ -81,13 +81,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Te enteraste por un tercero. Mañana hablás vos. Seguime.",
+      "texto": "Seguime y vas a dejar de enterarte todo por terceros.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Te enteraste por un tercero. Mañana hablás vos. Seguime."
+      "narracion": "Seguime y vas a dejar de enterarte todo por terceros."
     }
   ],
   "elevenlabs": {
@@ -96,7 +96,7 @@
       "Te enteraste por otra persona, no por él. Van 3 días dándole vueltas.",
       "Tres días dándole vueltas a algo que no viste",
       "Lo que sabés vs. lo que armaste solo",
-      "Te enteraste por un tercero. Mañana hablás vos. Seguime."
+      "Seguime y vas a dejar de enterarte todo por terceros."
     ]
   }
 }

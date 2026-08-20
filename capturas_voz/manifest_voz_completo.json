@@ -17,7 +17,7 @@
   {
     "stem": "01-no-dormir",
     "index": 5,
-    "texto": "Discutiste. Esta vez lo cortás antes. Seguime."
+    "texto": "Seguime y la próxima vez cortás el bucle antes de que te robe el sueño."
   },
   {
     "stem": "02-no-responden",
@@ -37,7 +37,7 @@
   {
     "stem": "02-no-responden",
     "index": 5,
-    "texto": "Mandaste el mensaje. Cortá la espera. Seguime."
+    "texto": "Seguime y vas a dejar de inventarte explicaciones que nadie te dijo."
   },
   {
     "stem": "03-no-decidis",
@@ -57,7 +57,7 @@
   {
     "stem": "03-no-decidis",
     "index": 5,
-    "texto": "7 días menos. Decidí hoy. Seguime."
+    "texto": "Seguime y vas a dejar de trabarte 7 días por una decisión chica."
   },
   {
     "stem": "04-hablar-importante",
@@ -77,7 +77,7 @@
   {
     "stem": "04-hablar-importante",
     "index": 5,
-    "texto": "Mañana hablás, ya preparado. Seguime."
+    "texto": "Seguime y vas a dejar de ensayar la misma charla doce veces."
   },
   {
     "stem": "05-acelerado",
@@ -97,7 +97,7 @@
   {
     "stem": "05-acelerado",
     "index": 5,
-    "texto": "Te despertás acelerado. Cortalo en un ciclo. Seguime."
+    "texto": "Seguime y la próxima vez bajás la activación en minutos, no en horas."
   },
   {
     "stem": "06-en-visto",
@@ -117,7 +117,7 @@
   {
     "stem": "06-en-visto",
     "index": 5,
-    "texto": "Te dejó en visto. Vos das el primer paso. Seguime."
+    "texto": "Seguime y vas a dejar de revisar el chat cada 5 minutos."
   },
   {
     "stem": "07-acordas-hace-anios",
@@ -137,7 +137,7 @@
   {
     "stem": "07-acordas-hace-anios",
     "index": 5,
-    "texto": "Hace 3 años. Hoy lo etiquetás y sigue. Seguime."
+    "texto": "Seguime y vas a dejar de perseguirte por algo de hace años."
   },
   {
     "stem": "08-alguien-dijo-hace-dias",
@@ -157,7 +157,7 @@
   {
     "stem": "08-alguien-dijo-hace-dias",
     "index": 5,
-    "texto": "4 días dándole vueltas. Le pusiste horario. Seguime."
+    "texto": "Seguime y vas a dejar de repetir en tu cabeza la misma frase."
   },
   {
     "stem": "09-celular-pareja",
@@ -177,7 +177,7 @@
   {
     "stem": "09-celular-pareja",
     "index": 5,
-    "texto": "El celular, guardado. Vos, tranquilo. Seguime."
+    "texto": "Seguime y vas a dejar de revisarle el celular a tu pareja."
   },
   {
     "stem": "10-carga-para-otros",
@@ -197,7 +197,7 @@
   {
     "stem": "10-carga-para-otros",
     "index": 5,
-    "texto": "Cancelaste un plan. Eso es todo. Seguime."
+    "texto": "Seguime y vas a dejar de sentir que sos una carga."
   },
   {
     "stem": "11-obsesion-error-trabajo",
@@ -217,7 +217,7 @@
   {
     "stem": "11-obsesion-error-trabajo",
     "index": 5,
-    "texto": "El error, 2 semanas atrás. Vos, hoy. Seguime."
+    "texto": "Seguime y vas a dejar de repasar mil veces el mismo error."
   },
   {
     "stem": "12-no-dijiste-antes",
@@ -237,7 +237,7 @@
   {
     "stem": "12-no-dijiste-antes",
     "index": 5,
-    "texto": "No se lo dijiste. Ahora sí, aunque sea acá. Seguime."
+    "texto": "Seguime y vas a decir las cosas a tiempo, no después."
   },
   {
     "stem": "13-te-comparas",
@@ -257,7 +257,7 @@
   {
     "stem": "13-te-comparas",
     "index": 5,
-    "texto": "20 minutos comparando. Ya los cortaste. Seguime."
+    "texto": "Seguime y vas a dejar de compararte con una vida editada."
   },
   {
     "stem": "14-dijiste-si-querias-no",
@@ -277,7 +277,7 @@
   {
     "stem": "14-dijiste-si-querias-no",
     "index": 5,
-    "texto": "Dijiste que sí. Ahora decís lo que es. Seguime."
+    "texto": "Seguime y vas a decir que no cuando es que no."
   },
   {
     "stem": "15-enteraste-por-terceros",
@@ -297,7 +297,7 @@
   {
     "stem": "15-enteraste-por-terceros",
     "index": 5,
-    "texto": "Te enteraste por un tercero. Mañana hablás vos. Seguime."
+    "texto": "Seguime y vas a dejar de enterarte todo por terceros."
   },
   {
     "stem": "16-ego-perdon",
@@ -317,7 +317,7 @@
   {
     "stem": "16-ego-perdon",
     "index": 7,
-    "texto": "Sabés lo que gana tu ego. Vos, no. Seguime para cortar el bucle."
+    "texto": "Seguime y la próxima vez le ganás vos a tu ego, no al revés."
   },
   {
     "stem": "17-discutiste-pareja",
@@ -337,7 +337,7 @@
   {
     "stem": "17-discutiste-pareja",
     "index": 7,
-    "texto": "Discutiste por el punto. No importa quién ganó. Seguime."
+    "texto": "Seguime y vas a dejar de darle vueltas a quién tenía razón."
   },
   {
     "stem": "18-pareja-frase-rara",
@@ -357,7 +357,7 @@
   {
     "stem": "18-pareja-frase-rara",
     "index": 7,
-    "texto": "La frase no cambió. La historia la armaste vos. Seguime."
+    "texto": "Seguime y vas a dejar de armar novelas por una frase."
   },
   {
     "stem": "19-discutiste-padre",
@@ -377,7 +377,7 @@
   {
     "stem": "19-discutiste-padre",
     "index": 7,
-    "texto": "Un llamado no te hace perder. Te devuelve a tu viejo. Seguime."
+    "texto": "Seguime y vas a dejar de esperar a que el otro llame primero."
   },
   {
     "stem": "20-nota-mala",
@@ -397,7 +397,7 @@
   {
     "stem": "20-nota-mala",
     "index": 7,
-    "texto": "Un 4 se corrige. No te define. Seguime."
+    "texto": "Seguime y vas a dejar de sentir que un número te define."
   },
   {
     "stem": "21-jefe-reunion",
@@ -412,7 +412,7 @@
   {
     "stem": "21-jefe-reunion",
     "index": 6,
-    "texto": "Una frase ambigua no es un veredicto. Preguntá. Seguime."
+    "texto": "Seguime y vas a dejar de repasar cada frase de tu jefe."
   },
   {
     "stem": "22-cancelaron-plan",
@@ -432,7 +432,7 @@
   {
     "stem": "22-cancelaron-plan",
     "index": 7,
-    "texto": "Un plan cancelado no es un rechazo. Es un plan cancelado. Seguime."
+    "texto": "Seguime y vas a dejar de tomarte todo personal."
   },
   {
     "stem": "23-cancelaste-ansiedad",
@@ -452,7 +452,7 @@
   {
     "stem": "23-cancelaste-ansiedad",
     "index": 7,
-    "texto": "Cancelaste hoy. Te alivia ahora, te achica la semana. Seguime."
+    "texto": "Seguime y vas a dejar de cancelar planes por miedo."
   },
   {
     "stem": "24-mentira-boludez",
@@ -472,7 +472,7 @@
   {
     "stem": "24-mentira-boludez",
     "index": 7,
-    "texto": "Una mentira chica no te hace mentiroso. Cortala en la cabeza. Seguime."
+    "texto": "Seguime y vas a dejar de armar quilombo por una mentira boluda."
   },
   {
     "stem": "25-confianza-amigo",
@@ -487,7 +487,7 @@
   {
     "stem": "25-confianza-amigo",
     "index": 6,
-    "texto": "Una falla no es un patrón. Hablalo antes de decidir. Seguime."
+    "texto": "Seguime y vas a dejar de desconfiar de todos por una sola cagada."
   },
   {
     "stem": "26-celos-sin-motivo",
@@ -507,7 +507,7 @@
   {
     "stem": "26-celos-sin-motivo",
     "index": 7,
-    "texto": "Sin pruebas, es tu cabeza. Nombralo y soltalo. Seguime."
+    "texto": "Seguime y vas a dejar de desconfiar de tu pareja sin motivo."
   },
   {
     "stem": "27-oportunidad-miedo",
@@ -522,6 +522,6 @@
   {
     "stem": "27-oportunidad-miedo",
     "index": 6,
-    "texto": "Dejaste pasar esa. La próxima no tiene por qué. Seguime."
+    "texto": "Seguime y no vas a dejar que el miedo te haga perder la próxima."
   }
 ]

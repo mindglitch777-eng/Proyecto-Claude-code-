@@ -71,13 +71,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Dijiste que sí. Ahora decís lo que es. Seguime.",
+      "texto": "Seguime y vas a decir que no cuando es que no.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Dijiste que sí. Ahora decís lo que es. Seguime."
+      "narracion": "Seguime y vas a decir que no cuando es que no."
     }
   ],
   "elevenlabs": {
@@ -86,7 +86,7 @@
       "Dijiste que sí. Querías decir que no. Ya pasaron 2 días.",
       "Dos días de sí, cuando era no",
       "Te falta un dato para volver atras o te falta animarte? ... Si no falta un dato, ya podes decirlo.",
-      "Dijiste que sí. Ahora decís lo que es. Seguime."
+      "Seguime y vas a decir que no cuando es que no."
     ]
   }
 }

@@ -95,13 +95,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Cancelaste hoy. Te alivia ahora, te achica la semana. Seguime.",
+      "texto": "Seguime y vas a dejar de cancelar planes por miedo.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Cancelaste hoy. Te alivia ahora, te achica la semana. Seguime."
+      "narracion": "Seguime y vas a dejar de cancelar planes por miedo."
     }
   ],
   "elevenlabs": {
@@ -110,7 +110,7 @@
       "Cancelaste el plan por ansiedad. Es la 2da vez esta semana.",
       "2da vez. Esta semana que cancelás algo así.",
       "Primero: hoy no tengo ganas Después: mejor cancelo, así no arriesgo Ya cancelaste dos planes esta semana",
-      "Cancelaste hoy. Te alivia ahora, te achica la semana. Seguime."
+      "Seguime y vas a dejar de cancelar planes por miedo."
     ]
   }
 }

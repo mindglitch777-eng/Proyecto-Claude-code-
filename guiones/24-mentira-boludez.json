@@ -106,13 +106,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Una mentira chica no te hace mentiroso. Cortala en la cabeza. Seguime.",
+      "texto": "Seguime y vas a dejar de armar quilombo por una mentira boluda.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Una mentira chica no te hace mentiroso. Cortala en la cabeza. Seguime."
+      "narracion": "Seguime y vas a dejar de armar quilombo por una mentira boluda."
     }
   ],
   "elevenlabs": {
@@ -121,7 +121,7 @@
       "Le mentiste por una boludez hace 3 días y no lo podés soltar.",
       "Estaba en el gimnasio jaja Sí sí, todo bien Nada raro, ¿por?",
       "Primero: fue una boludez, no importa Después: ¿y si se entera y piensa que soy un mentiroso? Ya armaste un escándalo por una frase de nada",
-      "Una mentira chica no te hace mentiroso. Cortala en la cabeza. Seguime."
+      "Seguime y vas a dejar de armar quilombo por una mentira boluda."
     ]
   }
 }

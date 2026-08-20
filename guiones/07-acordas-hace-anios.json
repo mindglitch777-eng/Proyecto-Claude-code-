@@ -81,13 +81,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Hace 3 años. Hoy lo etiquetás y sigue. Seguime.",
+      "texto": "Seguime y vas a dejar de perseguirte por algo de hace años.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Hace 3 años. Hoy lo etiquetás y sigue. Seguime."
+      "narracion": "Seguime y vas a dejar de perseguirte por algo de hace años."
     }
   ],
   "elevenlabs": {
@@ -96,7 +96,7 @@
       "Hace 3 años dijiste algo raro. Todavía te perseguís por eso.",
       "Tres años y todavía te lo repetís",
       "Así se guarda un recuerdo incómodo",
-      "Hace 3 años. Hoy lo etiquetás y sigue. Seguime."
+      "Seguime y vas a dejar de perseguirte por algo de hace años."
     ]
   }
 }

@@ -95,13 +95,13 @@
     },
     {
       "formato": "cta",
-      "texto": "Discutiste por el punto. No importa quién ganó. Seguime.",
+      "texto": "Seguime y vas a dejar de darle vueltas a quién tenía razón.",
       "mayus": true,
       "duracion": 2.4,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
-      "narracion": "Discutiste por el punto. No importa quién ganó. Seguime."
+      "narracion": "Seguime y vas a dejar de darle vueltas a quién tenía razón."
     }
   ],
   "elevenlabs": {
@@ -110,7 +110,7 @@
       "Discutiste con tu pareja hace 3 horas. Ya no sabés por qué.",
       "3 horas. Dándole vueltas a quién tenía razón.",
       "Primero: yo tenía razón Después: bueno, un poco los dos Ahora ni sabés por qué empezó",
-      "Discutiste por el punto. No importa quién ganó. Seguime."
+      "Seguime y vas a dejar de darle vueltas a quién tenía razón."
     ]
   }
 }
