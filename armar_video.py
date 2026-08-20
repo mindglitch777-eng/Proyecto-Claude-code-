@@ -146,10 +146,25 @@ def render_captura(seg, cfg_base, tmp, idx, marco_path):
     # el quiebre de capitulo, sin tocar el marco/paleta del resto del
     # video. Desactivable por segmento con "captura_vineta": false.
     vineta = ",vignette=PI/3.4" if seg.get("captura_vineta", True) else ""
+    # Acercamiento lento sobre la captura. Una grabacion de pantalla real
+    # tiene tramos donde nada se mueve (un cronometro quieto, una lista
+    # sin scroll) y ahi el cuadro queda congelado varios segundos -- el
+    # detector de pantalla muerta lo venia marcando. El zoom garantiza
+    # movimiento continuo sin tocar el contenido. Desactivable por
+    # segmento con "captura_zoom": false.
+    z = seg.get("captura_zoom", True)
+    zoom = ""
+    if z:
+        # Se agranda ~9% a lo largo del clip, centrado. El escalado
+        # previo x2 evita el temblor tipico de zoompan al redondear.
+        zoom = (f",scale={hole_w*2}:{hole_h*2},"
+                f"zoompan=z='min(1+0.09*on/({int(dur*30)}),1.09)':d=1:"
+                f"x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':"
+                f"s={hole_w}x{hole_h}:fps=30")
     filtro = (
         f"[0:v]trim=start={t0}:end={t1},setpts=PTS-STARTPTS,"
         f"scale={hole_w}:{hole_h}:force_original_aspect_ratio=increase,"
-        f"crop={hole_w}:{hole_h}{vineta},fps=30[cap];"
+        f"crop={hole_w}:{hole_h}{vineta}{zoom},fps=30[cap];"
         f"[1:v][cap]overlay=x={hole_x}:y={hole_y}:shortest=1[bg1];"
         f"[bg1][2:v]overlay=0:0[bg2];"
         f"[bg2]drawtext=textfile={cap_txt}:fontfile={FONT_BOLD}:"
