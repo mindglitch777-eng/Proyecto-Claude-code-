@@ -1,5 +1,121 @@
 # Log de decisiones
 
+## 2026-08-20 (continuación — sesión nocturna autónoma: gramática v2 + lote 3 + portada)
+
+**Contexto:** el operador aprobó la demo de la gramática de 6 beats
+("nos vamos entendiendo a dónde quiero llegar"), pidió: más movimiento
+(cambio visual cada ~1.5s), hooks más agresivos con identificación
+real y cero tecnicismos ("nunca más rumiar"), no abandonar los formatos
+anteriores (camino/collage), CTA de venta visible al final de cada
+video ("comunidad... en hotmart"), y una lista de qué falta antes del
+22/08. Dejó dicho "te voy a dejar a vos codeando" y se fue a dormir —
+el resto de este bloque se hizo de forma autónoma, sin supervisión en
+vivo, verificando cada pieza antes de commitear (mismo criterio que
+el resto de la sesión: nunca confiar ciegamente en el reporte de un
+agente, correr y mirar el resultado real antes de dar por bueno algo).
+
+**Decisión 22 — formato "cta" (tarjeta de venta al cierre).**
+`f_cta` en `animador_v9.py`: la frase de cierre pega con el mismo golpe
+que el hook (rima visual), y medio segundo después entra una tarjeta
+con el ícono de marca + "Comunidad El Corte" + "Disponible en Hotmart"
+en el verde de acento. Ahora es el cierre estándar de todo guion nuevo
+— antes el CTA solo vivía en el texto hablado ("seguime"), lo cual el
+operador señaló como insuficiente.
+
+**Decisión 23 — guion 16 reescrito con la gramática de 6 beats.**
+Hook de impacto → dato duro → escalada (contenido real de la excusa
+del ego, no nodos abstractos) → quiebre de capítulo (freeze + silencio
++ glitch) → 3 capturas reales de la app cortadas <1.7s cada una → cta.
+Renderizado end-to-end, verificado frame por frame.
+
+**Decisión 24 — lote 3: los 11 guiones que faltaban de la lista
+aprobada** (`guiones/17-*.json` a `27-*.json`, generados con
+`guiones/generar_lote3.py`, mismo patrón data-driven que el lote 2).
+Variedad real de mecanismo para que ningún video se sienta igual:
+escalada (5 guiones), mensajes/mockup de chat (3), camino (3) — nunca
+el mismo formato dos veces seguidas en la serie. Vocabulario 100% de
+calle: "ansiedad", "celos", "ego", "frustración" se usan como se dicen
+en la calle (nunca como diagnóstico — "tenés ansiedad" sigue
+prohibido), cero "rumiar" en ningún lado. Los 15 guiones originales +
+estos 12 nuevos (16 al 27) sí usan la lista de situaciones ampliada
+que el operador pidió (pareja, familia, escuela, trabajo, amistad,
+celos, oportunidad perdida) en vez de limitarse solo a rumiación
+nocturna.
+
+Bug encontrado y corregido de paso: el check de "payoff visual
+adelantado" de `validar_hook.py` no conocía los formatos nuevos
+(mensajes/camino/escalada/collage) y los marcaba como si no tuvieran
+ningún elemento visual fuerte en la primera mitad — falso negativo,
+corregido.
+
+Los 12 guiones (16 al 27) pasan `validar_hook.py` sin ningún problema
+bloqueante (solo avisos menores, mayormente sobre conexión de loop en
+palabras muy genéricas — no vale la pena forzar la redacción por eso).
+Verificado con 3 renders reales completos (16, 18 con mensajes, 21 con
+camino) antes de dar el lote por bueno, no solo confiar en el
+validador.
+
+**Decisión 25 — imagen de portada para Hotmart, generada por código**
+(`marca/generar_portada.py` → `marca/portada-hotmart.png`, 1280×720,
+misma identidad de marca, cero derechos de terceros). Pendiente
+histórica, resuelta.
+
+**Producción en lote disparada:** workflow `producir-videos.yml`
+corriendo en GitHub Actions (cero tokens de esta sesión) para
+renderizar los 9 guiones del lote 3 que todavía no tenían video local
+(17, 19, 20, 22-27). Confirmar el resultado en la pestaña Actions del
+repo o en la próxima sesión.
+
+**Punto abierto, no resuelto esta sesión:** el operador pidió
+"segundo y medio" de cambio visual constante — la estructura actual
+(escalada con cortes acelerados, mensajes con entrada rápida, captura
+<1.7s) ya apunta ahí, pero no se cronometró plano por plano cada
+guion nuevo contra esa regla exacta. Si al ver los renders algo se
+siente lento, el lugar para ajustar es `_tiempos_escalada()` /
+duración de cada `mensaje` en `animador_v9.py`, no hace falta
+rediseñar de nuevo.
+
+---
+
+## Lo que falta antes del lanzamiento (22 de agosto) — checklist
+
+**Del lado del operador (nadie más puede hacer esto):**
+1. **Netlify**: conectar el repo (Sign up with GitHub → Import → repo
+   privado → Base/Publish directory `producto`) y avisar la URL
+   `.netlify.app`. Sin esto no hay dónde apuntar el botón del Área de
+   Membros. Es lo único que bloquea TODO lo demás del lado de Hotmart.
+2. **Cuenta de Hotmart**: alta como Productor, tipo de producto "Área
+   de Membros" (no "link directo"), usando `marca/ficha-venta.md`
+   (precio ya actualizado a USD $25, descripción y portada listas).
+3. **Área de Membros**: crear el módulo único "Acceso a la app" con
+   el copy que ya está escrito en `marca/ficha-venta.md`, botón a la
+   URL de Netlify del punto 1.
+4. **Voz de ElevenLabs**: quedan 27 guiones sin voz real (los videos
+   de hoy se generaron con duraciones de guion, sin audio hablado).
+   No hace falta grabar los 27 para lanzar — con 3 a 5 alcanza para
+   arrancar. Prioridad sugerida: 16 (ego), 18 (mensajes/pareja), 21
+   (camino/jefe) — ya están renderizados sin voz, son los que más se
+   revisaron.
+5. **Música de fondo**: bajar 3-5 temas de Pixabay Music (sin cuenta,
+   botón de descarga directa) y pasarlos — mi sandbox no tiene salida
+   de red a esos sitios, no lo puedo hacer solo.
+6. **Cuenta de TikTok**: crear como cuenta de Negocio, handle
+   `@elcorte.app`, subir `marca/icono.png` como foto de perfil, bio
+   ya elegida en turnos anteriores.
+7. **Revisar y confirmar** los 12 guiones nuevos (16 al 27) antes de
+   que se suban con voz — mostrados en el chat, pendiente de tu ok
+   final sobre contenido (no solo sobre el formato).
+
+**De mi lado, sin bloquear el lanzamiento:**
+- Sincronizar voz apenas lleguen los audios (`sincronizar_voz.py`, ya
+  probado).
+- Ajustar ritmo/duración si algo se siente lento al verlo en el
+  celular (ver "punto abierto" arriba).
+- Seguir la producción en lote de GitHub Actions y confirmar que los
+  9 videos pendientes terminaron bien.
+- Imagen representativa para "acelerado" (tema viejo, no bloquea nada
+  nuevo, sigue pausado).
+
 ## 2026-08-20 (continuación — vida ambiental en animador_v9.py, ronda 3)
 
 **Contexto:** feedback del operador sobre el demo de "collage": "espacio
