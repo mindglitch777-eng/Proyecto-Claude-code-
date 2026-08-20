@@ -68,11 +68,13 @@
       "transicion": "punch"
     },
     {
-      "formato": "declaracion",
+      "formato": "cta",
       "texto": "El error, 2 semanas atrás. Vos, hoy. Seguime.",
-      "duracion": 2.3,
-      "transicion": "fade",
-      "hook": "sacudida",
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
       "narracion": "El error, 2 semanas atrás. Vos, hoy. Seguime."
     }
   ],

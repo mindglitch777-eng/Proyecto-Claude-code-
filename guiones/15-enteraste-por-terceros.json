@@ -80,11 +80,13 @@
       "transicion": "punch"
     },
     {
-      "formato": "declaracion",
+      "formato": "cta",
       "texto": "Te enteraste por un tercero. Mañana hablás vos. Seguime.",
-      "duracion": 2.3,
-      "transicion": "fade",
-      "hook": "sacudida",
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
       "narracion": "Te enteraste por un tercero. Mañana hablás vos. Seguime."
     }
   ],

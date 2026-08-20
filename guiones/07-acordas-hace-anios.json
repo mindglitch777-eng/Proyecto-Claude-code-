@@ -80,11 +80,13 @@
       "transicion": "punch"
     },
     {
-      "formato": "declaracion",
+      "formato": "cta",
       "texto": "Hace 3 años. Hoy lo etiquetás y sigue. Seguime.",
-      "duracion": 2.3,
-      "transicion": "fade",
-      "hook": "zoom_golpe",
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
       "narracion": "Hace 3 años. Hoy lo etiquetás y sigue. Seguime."
     }
   ],

@@ -66,14 +66,14 @@
       "transicion": "punch"
     },
     {
-      "formato": "editorial",
-      "kicker": "el corte",
-      "indice": "03",
-      "texto": "7 días menos. Decidí hoy.",
-      "pie": "Seguime.",
-      "duracion": 2.2,
-      "transicion": "fade",
-      "hook": "flash"
+      "formato": "cta",
+      "texto": "7 días menos. Decidí hoy. Seguime.",
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
+      "narracion": "7 días menos. Decidí hoy. Seguime."
     }
   ],
   "elevenlabs": {

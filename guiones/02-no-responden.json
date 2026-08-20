@@ -73,11 +73,14 @@
       "transicion": "punch"
     },
     {
-      "formato": "declaracion",
+      "formato": "cta",
       "texto": "Mandaste el mensaje. Cortá la espera. Seguime.",
-      "duracion": 2.3,
-      "transicion": "dip",
-      "hook": "zoom_golpe"
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
+      "narracion": "Mandaste el mensaje. Cortá la espera. Seguime."
     }
   ],
   "elevenlabs": {

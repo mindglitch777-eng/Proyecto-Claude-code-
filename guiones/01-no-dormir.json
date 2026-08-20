@@ -83,11 +83,14 @@
       "transicion": "punch"
     },
     {
-      "formato": "declaracion",
-      "texto": "Discutiste. Esta vez lo cortas antes. Seguime.",
-      "duracion": 2.3,
-      "transicion": "fade",
-      "hook": "sacudida"
+      "formato": "cta",
+      "texto": "Discutiste. Esta vez lo cortás antes. Seguime.",
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
+      "narracion": "Discutiste. Esta vez lo cortás antes. Seguime."
     }
   ],
   "elevenlabs": {

@@ -84,11 +84,14 @@
       "transicion": "punch"
     },
     {
-      "formato": "declaracion",
+      "formato": "cta",
       "texto": "Te dejó en visto. Vos das el primer paso. Seguime.",
-      "duracion": 2.3,
-      "transicion": "fade",
-      "hook": "zoom_golpe"
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
+      "narracion": "Te dejó en visto. Vos das el primer paso. Seguime."
     }
   ],
   "elevenlabs": {

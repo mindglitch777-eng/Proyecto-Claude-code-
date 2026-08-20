@@ -70,11 +70,13 @@
       "transicion": "punch"
     },
     {
-      "formato": "declaracion",
+      "formato": "cta",
       "texto": "Dijiste que sí. Ahora decís lo que es. Seguime.",
-      "duracion": 2.3,
-      "transicion": "fade",
-      "hook": "flash",
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
       "narracion": "Dijiste que sí. Ahora decís lo que es. Seguime."
     }
   ],
