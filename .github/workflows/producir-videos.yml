@@ -51,8 +51,12 @@ jobs:
       - name: Commitear videos
         if: always()
         run: |
+          shopt -s nullglob
           git config user.name "productor-bot"
           git config user.email "actions@github.com"
-          git add videos/ guiones/*-con-voz.json
+          git add videos/
+          CON_VOZ=(guiones/*-con-voz.json)
+          if [ ${#CON_VOZ[@]} -gt 0 ]; then git add "${CON_VOZ[@]}"; fi
           git diff --cached --quiet || git commit -m "Produccion automatica de videos"
+          git pull --rebase --autostash
           git push
