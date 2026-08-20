@@ -1,0 +1,7 @@
+[build]
+  publish = "producto"
+
+[[redirects]]
+  from = "/*"
+  to = "/el-corte-v7.html"
+  status = 200
