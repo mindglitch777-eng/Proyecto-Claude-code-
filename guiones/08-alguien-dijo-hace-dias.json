@@ -30,8 +30,7 @@
       "duracion": 2.0,
       "hook": "flash",
       "karaoke": true,
-      "narracion": "Te dijo algo hace 4 días y no lo soltás.",
-      "imagen": "assets/imagenes/pensando.jpg"
+      "narracion": "Te dijo algo hace 4 días y no lo soltás."
     },
     {
       "formato": "dato_duro",

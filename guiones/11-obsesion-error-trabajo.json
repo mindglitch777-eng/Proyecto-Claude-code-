@@ -30,8 +30,7 @@
       "duracion": 2.0,
       "hook": "glitch",
       "karaoke": true,
-      "narracion": "Un error del laburo, hace 2 semanas. Seguís ahí.",
-      "imagen": "assets/imagenes/pensando.jpg"
+      "narracion": "Un error del laburo, hace 2 semanas. Seguís ahí."
     },
     {
       "formato": "dato_duro",

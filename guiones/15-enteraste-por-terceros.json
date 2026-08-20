@@ -30,8 +30,7 @@
       "duracion": 2.0,
       "hook": "glitch",
       "karaoke": true,
-      "narracion": "Te enteraste por otra persona, no por él. Van 3 días dándole vueltas.",
-      "imagen": "assets/imagenes/no-dormir.jpg"
+      "narracion": "Te enteraste por otra persona, no por él. Van 3 días dándole vueltas."
     },
     {
       "formato": "dato_duro",

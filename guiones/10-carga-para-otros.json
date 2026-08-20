@@ -1,0 +1,91 @@
+{
+  "tema": "Sentis que sos una carga para la gente que queres",
+  "topico_marca": "nuevo-B",
+  "captura_fuente": "capturas/captura-respirar.mp4",
+  "flujo_real": "ver('meditar') -> observar el pensamiento sin perseguirlo, sin pelearlo.",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Cancelaste un plan. Pensaste: se van a cansar de mí.",
+      "duracion": 2.0,
+      "hook": "flash",
+      "karaoke": true,
+      "narracion": "Cancelaste un plan. Pensaste: se van a cansar de mí.",
+      "imagen": "assets/imagenes/pensando.jpg"
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 1,
+      "texto": "plan cancelado no es una carga. Es un dato",
+      "duracion": 2.6,
+      "transicion": "whip",
+      "narracion": "plan cancelado no es una carga. Es un dato"
+    },
+    {
+      "formato": "pregunta",
+      "pregunta": "Eso lo penso la otra persona o lo pensas vos por ella?",
+      "respuesta": "Nunca lo preguntaste. Solo lo diste por hecho.",
+      "texto": "",
+      "duracion": 4.2,
+      "transicion": "dip",
+      "narracion": "Eso lo penso la otra persona o lo pensas vos por ella? ... Nunca lo preguntaste. Solo lo diste por hecho."
+    },
+    {
+      "captura": "capturas/captura-respirar.mp4",
+      "recorte": [
+        0.0,
+        2.2
+      ],
+      "texto": "No se trata de pelear el pensamiento.",
+      "duracion": 2.2,
+      "transicion": "corte_duro"
+    },
+    {
+      "captura": "capturas/captura-respirar.mp4",
+      "recorte": [
+        2.2,
+        5.0
+      ],
+      "texto": "Se trata de mirarlo pasar, sin subirte.",
+      "duracion": 2.8,
+      "transicion": "punch"
+    },
+    {
+      "formato": "declaracion",
+      "texto": "Cancelaste un plan. Eso es todo. Seguime.",
+      "duracion": 2.3,
+      "transicion": "fade",
+      "hook": "persiana",
+      "narracion": "Cancelaste un plan. Eso es todo. Seguime."
+    }
+  ],
+  "elevenlabs": {
+    "instrucciones": "4 lineas de narracion por video (hook, error, mecanismo, loop -- los 2 segmentos de captura real van sin voz, el producto se muestra sin explicarse encima). Generar 4 audios separados en ElevenLabs con estas lineas, en este orden, y guardarlos como 10-carga-para-otros-voz0.mp3 (hook), -voz1.mp3 (error), -voz2.mp3 (mecanismo), -voz5.mp3 (loop) en capturas_voz/. Correr sincronizar_voz.py despues.",
+    "lineas": [
+      "Cancelaste un plan. Pensaste: se van a cansar de mí.",
+      "plan cancelado no es una carga. Es un dato",
+      "Eso lo penso la otra persona o lo pensas vos por ella? ... Nunca lo preguntaste. Solo lo diste por hecho.",
+      "Cancelaste un plan. Eso es todo. Seguime."
+    ]
+  }
+}

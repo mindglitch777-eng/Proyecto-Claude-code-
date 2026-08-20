@@ -30,8 +30,7 @@
       "duracion": 2.0,
       "hook": "glitch",
       "karaoke": true,
-      "narracion": "Hace 3 años dijiste algo raro. Todavía te perseguís por eso.",
-      "imagen": "assets/imagenes/pensando.jpg"
+      "narracion": "Hace 3 años dijiste algo raro. Todavía te perseguís por eso."
     },
     {
       "formato": "dato_duro",
