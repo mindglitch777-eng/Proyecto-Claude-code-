@@ -30,7 +30,7 @@
       "hook": "impacto",
       "sfx": "impacto",
       "narracion": "Dejaste pasar la oportunidad hace 1 semana y seguís pensando en eso.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/27-oportunidad-miedo-voz0.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/27-oportunidad-miedo-voz0.mp3"
     },
     {
       "formato": "camino",
@@ -44,7 +44,7 @@
       "duracion": 3.3,
       "transicion": "whip",
       "narracion": "Apareció la chance Pensaste en todo lo que podía salir mal No hiciste nada hasta que se cerró Ahora la repasás como si volviera",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/27-oportunidad-miedo-voz1.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/27-oportunidad-miedo-voz1.mp3"
     },
     {
       "formato": "declaracion",
@@ -96,7 +96,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y no vas a dejar que el miedo te haga perder la próxima.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/27-oportunidad-miedo-voz6.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/27-oportunidad-miedo-voz6.mp3"
     }
   ],
   "elevenlabs": {

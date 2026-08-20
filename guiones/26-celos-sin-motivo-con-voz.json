@@ -30,7 +30,7 @@
       "hook": "impacto",
       "sfx": "impacto",
       "narracion": "Te pusiste celoso por algo que no pasó. Van 3 veces este mes.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/26-celos-sin-motivo-voz0.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/26-celos-sin-motivo-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -40,7 +40,7 @@
       "duracion": 1.6,
       "transicion": "punch",
       "narracion": "0. Pruebas reales que tenés. Cero.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/26-celos-sin-motivo-voz1.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/26-celos-sin-motivo-voz1.mp3"
     },
     {
       "formato": "escalada",
@@ -53,7 +53,7 @@
       "duracion": 3.1,
       "transicion": "whip",
       "narracion": "Primero: tardó en contestar Después: seguro está con alguien Ya armaste una escena que no pasó",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/26-celos-sin-motivo-voz2.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/26-celos-sin-motivo-voz2.mp3"
     },
     {
       "formato": "declaracion",
@@ -105,7 +105,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de desconfiar de tu pareja sin motivo.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/26-celos-sin-motivo-voz7.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/26-celos-sin-motivo-voz7.mp3"
     }
   ],
   "elevenlabs": {

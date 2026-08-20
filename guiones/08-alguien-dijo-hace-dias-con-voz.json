@@ -31,7 +31,7 @@
       "hook": "flash",
       "karaoke": true,
       "narracion": "Te dijo algo hace 4 días y no lo soltás.",
-      "voz_archivo": "capturas_voz/08-alguien-dijo-hace-dias-voz0.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/08-alguien-dijo-hace-dias-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -40,7 +40,7 @@
       "duracion": 2.3,
       "transicion": "whip",
       "narracion": "Cuatro días repitiendo la misma frase",
-      "voz_archivo": "capturas_voz/08-alguien-dijo-hace-dias-voz1.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/08-alguien-dijo-hace-dias-voz1.mp3"
     },
     {
       "formato": "panel",
@@ -66,7 +66,7 @@
       "duracion": 4.0,
       "transicion": "slide",
       "narracion": "No es la frase. Es el horario libre que le diste",
-      "voz_archivo": "capturas_voz/08-alguien-dijo-hace-dias-voz2.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/08-alguien-dijo-hace-dias-voz2.mp3"
     },
     {
       "captura": "capturas/captura-respirar.mp4",
@@ -97,7 +97,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de repetir en tu cabeza la misma frase.",
-      "voz_archivo": "capturas_voz/08-alguien-dijo-hace-dias-voz5.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/08-alguien-dijo-hace-dias-voz5.mp3"
     }
   ],
   "elevenlabs": {

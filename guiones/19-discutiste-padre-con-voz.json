@@ -30,7 +30,7 @@
       "hook": "impacto",
       "sfx": "impacto",
       "narracion": "Le colgaste el teléfono a tu viejo. Van 6 horas de silencio.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/19-discutiste-padre-voz0.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/19-discutiste-padre-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -40,7 +40,7 @@
       "duracion": 1.6,
       "transicion": "punch",
       "narracion": "6 horas. Y los dos esperando que llame el otro.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/19-discutiste-padre-voz1.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/19-discutiste-padre-voz1.mp3"
     },
     {
       "formato": "escalada",
@@ -53,7 +53,7 @@
       "duracion": 3.1,
       "transicion": "whip",
       "narracion": "Primero: que llame él Después: yo tampoco tengo por qué ceder Ya pasaron horas y ninguno afloja",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/19-discutiste-padre-voz2.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/19-discutiste-padre-voz2.mp3"
     },
     {
       "formato": "declaracion",
@@ -105,7 +105,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de esperar a que el otro llame primero.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/19-discutiste-padre-voz7.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/19-discutiste-padre-voz7.mp3"
     }
   ],
   "elevenlabs": {

@@ -31,7 +31,7 @@
       "hook": "glitch",
       "karaoke": true,
       "narracion": "Un error del laburo, hace 2 semanas. Seguís ahí.",
-      "voz_archivo": "capturas_voz/11-obsesion-error-trabajo-voz0.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/11-obsesion-error-trabajo-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -40,7 +40,7 @@
       "duracion": 2.3,
       "transicion": "punch",
       "narracion": "Dos semanas por un error que ya pasó",
-      "voz_archivo": "capturas_voz/11-obsesion-error-trabajo-voz1.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/11-obsesion-error-trabajo-voz1.mp3"
     },
     {
       "formato": "alerta",
@@ -48,7 +48,7 @@
       "duracion": 3.8,
       "transicion": "dip",
       "narracion": "Repasarlo mil veces no lo corrige. Solo lo revive",
-      "voz_archivo": "capturas_voz/11-obsesion-error-trabajo-voz2.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/11-obsesion-error-trabajo-voz2.mp3"
     },
     {
       "captura": "capturas/captura-persona.mp4",
@@ -79,7 +79,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de repasar mil veces el mismo error.",
-      "voz_archivo": "capturas_voz/11-obsesion-error-trabajo-voz5.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/11-obsesion-error-trabajo-voz5.mp3"
     }
   ],
   "elevenlabs": {

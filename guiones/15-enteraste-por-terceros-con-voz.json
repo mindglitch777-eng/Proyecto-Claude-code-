@@ -31,7 +31,7 @@
       "hook": "glitch",
       "karaoke": true,
       "narracion": "Te enteraste por otra persona, no por él. Van 3 días dándole vueltas.",
-      "voz_archivo": "capturas_voz/15-enteraste-por-terceros-voz0.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/15-enteraste-por-terceros-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -40,7 +40,7 @@
       "duracion": 2.4,
       "transicion": "punch",
       "narracion": "Tres días dándole vueltas a algo que no viste",
-      "voz_archivo": "capturas_voz/15-enteraste-por-terceros-voz1.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/15-enteraste-por-terceros-voz1.mp3"
     },
     {
       "formato": "cronologia",
@@ -60,7 +60,7 @@
       "duracion": 4.2,
       "transicion": "barrido",
       "narracion": "Lo que sabés vs. lo que armaste solo",
-      "voz_archivo": "capturas_voz/15-enteraste-por-terceros-voz2.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/15-enteraste-por-terceros-voz2.mp3"
     },
     {
       "captura": "capturas/captura-noche.mp4",
@@ -91,7 +91,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de enterarte todo por terceros.",
-      "voz_archivo": "capturas_voz/15-enteraste-por-terceros-voz5.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/15-enteraste-por-terceros-voz5.mp3"
     }
   ],
   "elevenlabs": {

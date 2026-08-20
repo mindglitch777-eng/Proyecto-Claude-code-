@@ -32,7 +32,7 @@
       "karaoke": true,
       "narracion": "No se lo dijiste. Y ya no está para escucharlo.",
       "imagen": "assets/imagenes/pensando.jpg",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/12-no-dijiste-antes-voz0.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/12-no-dijiste-antes-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -41,7 +41,7 @@
       "duracion": 2.6,
       "transicion": "dip",
       "narracion": "Una cosa que no dijiste. La única que importaba",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/12-no-dijiste-antes-voz1.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/12-no-dijiste-antes-voz1.mp3"
     },
     {
       "formato": "cita",
@@ -50,7 +50,7 @@
       "duracion": 3.6,
       "transicion": "fade",
       "narracion": "Sufrimos mas en la imaginacion que en la realidad",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/12-no-dijiste-antes-voz2.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/12-no-dijiste-antes-voz2.mp3"
     },
     {
       "captura": "capturas/captura-antes.mp4",
@@ -81,7 +81,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a decir las cosas a tiempo, no después.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/12-no-dijiste-antes-voz5.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/12-no-dijiste-antes-voz5.mp3"
     }
   ],
   "elevenlabs": {

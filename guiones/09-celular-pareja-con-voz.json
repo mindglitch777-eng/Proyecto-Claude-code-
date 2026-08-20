@@ -32,7 +32,7 @@
       "karaoke": true,
       "narracion": "Le revisaste el celular a las 3 AM. Otra vez.",
       "imagen": "assets/imagenes/en-visto.jpg",
-      "voz_archivo": "capturas_voz/09-celular-pareja-voz0.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/09-celular-pareja-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -41,7 +41,7 @@
       "duracion": 2.3,
       "transicion": "punch",
       "narracion": "Tres AM. La tercera vez esta semana",
-      "voz_archivo": "capturas_voz/09-celular-pareja-voz1.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/09-celular-pareja-voz1.mp3"
     },
     {
       "formato": "division",
@@ -59,7 +59,7 @@
       "duracion": 4.0,
       "transicion": "barrido",
       "narracion": "LO QUE VISTE: Nada raro, en realidad. LO QUE ARMASTE: Una historia completa.",
-      "voz_archivo": "capturas_voz/09-celular-pareja-voz2.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/09-celular-pareja-voz2.mp3"
     },
     {
       "captura": "capturas/captura-noche.mp4",
@@ -90,7 +90,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de revisarle el celular a tu pareja.",
-      "voz_archivo": "capturas_voz/09-celular-pareja-voz5.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/09-celular-pareja-voz5.mp3"
     }
   ],
   "elevenlabs": {

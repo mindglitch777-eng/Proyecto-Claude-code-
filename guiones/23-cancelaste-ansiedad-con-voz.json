@@ -30,7 +30,7 @@
       "hook": "impacto",
       "sfx": "impacto",
       "narracion": "Cancelaste el plan por ansiedad. Es la 2da vez esta semana.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/23-cancelaste-ansiedad-voz0.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/23-cancelaste-ansiedad-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -40,7 +40,7 @@
       "duracion": 1.6,
       "transicion": "punch",
       "narracion": "2da vez. Esta semana que cancelás algo así.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/23-cancelaste-ansiedad-voz1.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/23-cancelaste-ansiedad-voz1.mp3"
     },
     {
       "formato": "escalada",
@@ -53,7 +53,7 @@
       "duracion": 3.1,
       "transicion": "whip",
       "narracion": "Primero: hoy no tengo ganas Después: mejor cancelo, así no arriesgo Ya cancelaste dos planes esta semana",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/23-cancelaste-ansiedad-voz2.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/23-cancelaste-ansiedad-voz2.mp3"
     },
     {
       "formato": "declaracion",
@@ -105,7 +105,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de cancelar planes por miedo.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/23-cancelaste-ansiedad-voz7.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/23-cancelaste-ansiedad-voz7.mp3"
     }
   ],
   "elevenlabs": {

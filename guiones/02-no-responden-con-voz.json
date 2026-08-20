@@ -32,7 +32,7 @@
       "duracion": 2.4,
       "hook": "glitch",
       "imagen": "assets/imagenes/en-visto.jpg",
-      "voz_archivo": "capturas_voz/02-no-responden-voz0.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/02-no-responden-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -40,7 +40,7 @@
       "texto": "explicaciones que te inventaste solo",
       "duracion": 2.2,
       "transicion": "whip",
-      "voz_archivo": "capturas_voz/02-no-responden-voz1.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/02-no-responden-voz1.mp3"
     },
     {
       "formato": "conteo",
@@ -53,7 +53,7 @@
       "texto": "",
       "duracion": 4.0,
       "transicion": "whip",
-      "voz_archivo": "capturas_voz/02-no-responden-voz2.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/02-no-responden-voz2.mp3"
     },
     {
       "captura": "capturas/captura-persona.mp4",
@@ -84,7 +84,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de inventarte explicaciones que nadie te dijo.",
-      "voz_archivo": "capturas_voz/02-no-responden-voz5.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/02-no-responden-voz5.mp3"
     }
   ],
   "elevenlabs": {

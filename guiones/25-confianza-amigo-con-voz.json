@@ -30,7 +30,7 @@
       "hook": "impacto",
       "sfx": "impacto",
       "narracion": "Un amigo te falló 1 vez. Y ya no le creés nada.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/25-confianza-amigo-voz0.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/25-confianza-amigo-voz0.mp3"
     },
     {
       "formato": "camino",
@@ -44,7 +44,7 @@
       "duracion": 3.3,
       "transicion": "whip",
       "narracion": "Te falló una vez Vos generalizaste: es así siempre Empezaste a esperar que falle de nuevo Ahora desconfiás hasta de lo que no pasó",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/25-confianza-amigo-voz1.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/25-confianza-amigo-voz1.mp3"
     },
     {
       "formato": "declaracion",
@@ -96,7 +96,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de desconfiar de todos por una sola cagada.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/25-confianza-amigo-voz6.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/25-confianza-amigo-voz6.mp3"
     }
   ],
   "elevenlabs": {

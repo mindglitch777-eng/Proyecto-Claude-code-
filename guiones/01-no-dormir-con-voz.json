@@ -31,7 +31,7 @@
       "hook": "flash",
       "karaoke": true,
       "imagen": "assets/imagenes/no-dormir.jpg",
-      "voz_archivo": "capturas_voz/01-no-dormir-voz0.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/01-no-dormir-voz0.mp3"
     },
     {
       "formato": "cronologia",
@@ -50,7 +50,7 @@
       ],
       "duracion": 2.5,
       "transicion": "punch",
-      "voz_archivo": "capturas_voz/01-no-dormir-voz1.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/01-no-dormir-voz1.mp3"
     },
     {
       "formato": "terminal",
@@ -63,7 +63,7 @@
       "texto": "",
       "duracion": 4.2,
       "transicion": "barrido",
-      "voz_archivo": "capturas_voz/01-no-dormir-voz2.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/01-no-dormir-voz2.mp3"
     },
     {
       "captura": "capturas/captura-noche.mp4",
@@ -94,7 +94,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y la próxima vez cortás el bucle antes de que te robe el sueño.",
-      "voz_archivo": "capturas_voz/01-no-dormir-voz5.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/01-no-dormir-voz5.mp3"
     }
   ],
   "elevenlabs": {

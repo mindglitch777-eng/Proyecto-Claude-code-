@@ -31,7 +31,7 @@
       "hook": "glitch",
       "karaoke": true,
       "imagen": "assets/imagenes/en-visto.jpg",
-      "voz_archivo": "capturas_voz/06-en-visto-voz0.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/06-en-visto-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -39,7 +39,7 @@
       "texto": "veces que revisaste el chat",
       "duracion": 2.3,
       "transicion": "punch",
-      "voz_archivo": "capturas_voz/06-en-visto-voz1.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/06-en-visto-voz1.mp3"
     },
     {
       "formato": "ranking",
@@ -64,7 +64,7 @@
       ],
       "duracion": 4.2,
       "transicion": "whip",
-      "voz_archivo": "capturas_voz/06-en-visto-voz2.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/06-en-visto-voz2.mp3"
     },
     {
       "captura": "capturas/captura-persona.mp4",
@@ -95,7 +95,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de revisar el chat cada 5 minutos.",
-      "voz_archivo": "capturas_voz/06-en-visto-voz5.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/06-en-visto-voz5.mp3"
     }
   ],
   "elevenlabs": {

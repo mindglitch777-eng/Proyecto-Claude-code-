@@ -31,7 +31,7 @@
       "hook": "glitch",
       "karaoke": true,
       "narracion": "Hace 3 años dijiste algo raro. Todavía te perseguís por eso.",
-      "voz_archivo": "capturas_voz/07-acordas-hace-anios-voz0.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/07-acordas-hace-anios-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -40,7 +40,7 @@
       "duracion": 2.3,
       "transicion": "punch",
       "narracion": "Tres años y todavía te lo repetís",
-      "voz_archivo": "capturas_voz/07-acordas-hace-anios-voz1.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/07-acordas-hace-anios-voz1.mp3"
     },
     {
       "formato": "cronologia",
@@ -60,7 +60,7 @@
       "duracion": 3.8,
       "transicion": "barrido",
       "narracion": "Así se guarda un recuerdo incómodo",
-      "voz_archivo": "capturas_voz/07-acordas-hace-anios-voz2.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/07-acordas-hace-anios-voz2.mp3"
     },
     {
       "captura": "capturas/captura-persona.mp4",
@@ -91,7 +91,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de perseguirte por algo de hace años.",
-      "voz_archivo": "capturas_voz/07-acordas-hace-anios-voz5.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/07-acordas-hace-anios-voz5.mp3"
     }
   ],
   "elevenlabs": {

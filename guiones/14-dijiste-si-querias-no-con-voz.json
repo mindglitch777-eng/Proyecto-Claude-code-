@@ -31,7 +31,7 @@
       "hook": "sacudida",
       "karaoke": true,
       "narracion": "Dijiste que sí. Querías decir que no. Ya pasaron 2 días.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/14-dijiste-si-querias-no-voz0.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/14-dijiste-si-querias-no-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -40,7 +40,7 @@
       "duracion": 2.3,
       "transicion": "whip",
       "narracion": "Dos días de sí, cuando era no",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/14-dijiste-si-querias-no-voz1.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/14-dijiste-si-querias-no-voz1.mp3"
     },
     {
       "formato": "pregunta",
@@ -50,7 +50,7 @@
       "duracion": 4.2,
       "transicion": "dip",
       "narracion": "Te falta un dato para volver atras o te falta animarte? ... Si no falta un dato, ya podes decirlo.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/14-dijiste-si-querias-no-voz2.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/14-dijiste-si-querias-no-voz2.mp3"
     },
     {
       "captura": "capturas/captura-decidir.mp4",
@@ -81,7 +81,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a decir que no cuando es que no.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/14-dijiste-si-querias-no-voz5.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/14-dijiste-si-querias-no-voz5.mp3"
     }
   ],
   "elevenlabs": {

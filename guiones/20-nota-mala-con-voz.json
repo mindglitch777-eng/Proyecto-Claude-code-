@@ -30,7 +30,7 @@
       "hook": "impacto",
       "sfx": "impacto",
       "narracion": "Te sacaste un 4 y ya sentís que fallaste en todo.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/20-nota-mala-voz0.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/20-nota-mala-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -40,7 +40,7 @@
       "duracion": 1.6,
       "transicion": "punch",
       "narracion": "4. Un número. No un veredicto sobre vos.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/20-nota-mala-voz1.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/20-nota-mala-voz1.mp3"
     },
     {
       "formato": "escalada",
@@ -53,7 +53,7 @@
       "duracion": 3.1,
       "transicion": "whip",
       "narracion": "Primero: me fue mal en un examen Después: soy malo para esto Ya decidiste que sos un fracaso",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/20-nota-mala-voz2.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/20-nota-mala-voz2.mp3"
     },
     {
       "formato": "declaracion",
@@ -105,7 +105,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de sentir que un número te define.",
-      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/20-nota-mala-voz7.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/20-nota-mala-voz7.mp3"
     }
   ],
   "elevenlabs": {
