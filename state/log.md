@@ -1,5 +1,68 @@
 # Log de decisiones
 
+## 2026-08-20
+
+**Contexto:** el operador aprobó precio ($15, descarga única en
+Gumroad — pendiente que él arme la cuenta), pidió que las imágenes
+reales fueran obligatorias ("no importa el proceso"), pidió sincronizar
+videos con voz que va a grabar en ElevenLabs + música de fondo, pidió
+logo/bio de marca, y 9 hooks más agresivos para los tópicos de
+MARCA.md que faltaban.
+
+**Decisión 15 — voz externa (ElevenLabs), no generación local.**
+`animador_v9.py::construir_linea_tiempo()` ahora acepta un campo
+`voz_archivo` por segmento (audio ya grabado). Reusa el 100% de la
+mezcla/ducking/música que ya existía para Piper — cero código nuevo
+de audio, solo una fuente de duración distinta. Probado de punta a
+punta con audio sintético (duración real del wav = duración del
+segmento en el video final, exacto salvo redondeo de frame).
+`sincronizar_voz.py` engancha los .mp3 que el operador exporte de
+ElevenLabs (convención `<guion>-vozN.mp3`) a un guion.
+
+**Decisión 16 — logo generado por código, no encargado a nadie.**
+`marca/generar_logo.py`: un círculo (el bucle) cortado por una barra
+verde (el corte) — la marca ES el concepto del producto. Sin
+derechos de terceros, coherente con la paleta de `MARCA.md`.
+`brand.md` completado (tono, público, 3 variantes de bio).
+**Encontrado**: `producto/el-corte-v7.html` todavía usa su propia
+paleta dorada/serif interna, distinta de la decidida para marketing.
+No se tocó (cambiar el producto es una decisión más grande) pero
+queda documentado.
+
+**Decisión 17 — 9 guiones nuevos (topicos 3,7,8,10-15 de MARCA.md).**
+Generados por `guiones/generar_lote2.py` (data + template, no a mano
+uno por uno) para poder iterar rápido. Reusan las 5 capturas reales
+ya grabadas, mapeadas al flujo de la app más cercano temáticamente
+(no se grabó nada nuevo con Playwright). Cada uno trae un campo
+`elevenlabs.lineas` con el guion de voz listo para pegar. Bug real
+encontrado y corregido: el formato `division` no tiene campo `texto`
+(usa izquierda/derecha), así que la narración de esos mecanismos
+salía vacía — `narracion_de()` no lo contemplaba.
+
+**Decisión 18 — imágenes: 8/9 buenas, una se abandona.**
+Revisadas una por una (no se aceptó nada a ciegas). Encontrado y
+corregido OTRO bug de infraestructura: si un ítem del lote fallaba,
+el step de commit se saltaba entero y se perdían descargas buenas de
+la misma corrida (`if: always()` agregado). "acelerado" falló 4
+búsquedas distintas en Openverse (cupcake de Halloween, autos de
+juguete, screenshot de blog de 2008, gente en un barco) — se
+abandona esa vía para ese tópico puntual en vez de seguir gastando
+corridas; queda pendiente resolverlo con Cloudflare AI o código
+propio.
+
+**Pendiente / próxima sesión:**
+- Las imágenes descargadas todavía NO están conectadas a ningún
+  guion/formato de video (se bajaron y revisaron, falta el paso de
+  usarlas realmente en `animador_v9.py`). Es la Tarea 16 pendiente.
+- El operador todavía no generó audio real en ElevenLabs -- cuando
+  lo tenga, correr `sincronizar_voz.py` + `armar_video.py` por cada
+  uno de los 9 guiones nuevos.
+- Conseguir música de fondo libre de derechos (Pixabay/Uppbeat/Mixkit
+  por `ASSETS.md`) -- no se resolvió esta sesión, sigue bloqueado por
+  la misma restricción de red que las imágenes (necesitaría su propio
+  workflow de descarga, o que el operador la suba manualmente).
+- Cuenta de Gumroad + publicar a $15 sigue siendo gate del operador.
+
 ## 2026-08-19
 
 **Contexto:** el operador subió el producto real ("El Corte", PWA en
