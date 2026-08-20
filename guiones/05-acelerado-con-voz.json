@@ -1,0 +1,110 @@
+{
+  "tema": "Te despertas ya acelerado",
+  "topico_marca": 9,
+  "captura_fuente": "capturas/captura-respirar.mp4",
+  "flujo_real": "En la app: 'Necesito bajar un cambio' -> modo 'Calmar' -> respiracion guiada real (exhalacion mas larga), cita de Seneca.",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Te despertaste a las 4 AM, acelerado.",
+      "duracion": 1.9,
+      "hook": "flash",
+      "karaoke": true,
+      "imagen": "assets/imagenes/respirar.jpg",
+      "voz_archivo": "capturas_voz/05-acelerado-voz0.mp3"
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 6,
+      "texto": "segundos de exhalación bajan la activación",
+      "duracion": 2.3,
+      "transicion": "punch",
+      "voz_archivo": "capturas_voz/05-acelerado-voz1.mp3"
+    },
+    {
+      "formato": "panel",
+      "texto": "La proporción que baja la activación",
+      "datos": [
+        [
+          "Inhalá",
+          "4s"
+        ],
+        [
+          "Exhalá",
+          "6s"
+        ],
+        [
+          "Ciclos",
+          "6"
+        ],
+        [
+          "Minutos",
+          "2"
+        ]
+      ],
+      "duracion": 3.6,
+      "transicion": "slide",
+      "voz_archivo": "capturas_voz/05-acelerado-voz2.mp3"
+    },
+    {
+      "captura": "capturas/captura-respirar.mp4",
+      "recorte": [
+        0.0,
+        2.0
+      ],
+      "texto": "Un modo. Un toque.",
+      "duracion": 2.0,
+      "transicion": "corte_duro"
+    },
+    {
+      "captura": "capturas/captura-respirar.mp4",
+      "recorte": [
+        2.0,
+        5.0
+      ],
+      "texto": "Exhalá más largo que inhalás. Un ciclo real.",
+      "duracion": 3.0,
+      "transicion": "punch"
+    },
+    {
+      "formato": "cta",
+      "texto": "Seguime y la próxima vez bajás la activación en minutos, no en horas.",
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
+      "narracion": "Seguime y la próxima vez bajás la activación en minutos, no en horas.",
+      "voz_archivo": "capturas_voz/05-acelerado-voz5.mp3"
+    }
+  ],
+  "elevenlabs": {
+    "instrucciones": "Lineas de narracion para 05-acelerado (indices de segmento [0, 1, 2, 5] -- las capturas van sin voz). Generar audios en ElevenLabs y guardarlos como 05-acelerado-vozN.mp3 (N = indice de la lista) en capturas_voz/. Correr sincronizar_voz.py despues.",
+    "lineas": [
+      "Te despertaste a las 4 AM, acelerado.",
+      "Seis segundos de exhalación bajan la activación.",
+      "La proporción que baja la activación: cuatro segundos inhalando, seis exhalando, seis ciclos, dos minutos.",
+      "Seguime y la próxima vez bajás la activación en minutos, no en horas."
+    ]
+  }
+}

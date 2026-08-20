@@ -1,0 +1,92 @@
+{
+  "tema": "Tenes que decidir y no podes",
+  "topico_marca": 4,
+  "captura_fuente": "capturas/captura-decidir.mp4",
+  "flujo_real": "En la app: 'Decision pendiente' -> escribe la decision -> 'No, ya se lo que hay que saber' -> 'Decido ahora' -> queda cerrado.",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "7 días dándole vueltas al mismo sí o no.",
+      "duracion": 2.0,
+      "hook": "persiana",
+      "karaoke": true,
+      "imagen": "assets/imagenes/decidir.jpg",
+      "voz_archivo": "capturas_voz/03-no-decidis-voz0.mp3"
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 0,
+      "texto": "datos nuevos en esos 7 días",
+      "duracion": 2.3,
+      "transicion": "punch",
+      "voz_archivo": "capturas_voz/03-no-decidis-voz1.mp3"
+    },
+    {
+      "formato": "alerta",
+      "texto": "7 días sin decidir es una decisión también",
+      "duracion": 4.2,
+      "transicion": "dip",
+      "voz_archivo": "capturas_voz/03-no-decidis-voz2.mp3"
+    },
+    {
+      "captura": "capturas/captura-decidir.mp4",
+      "recorte": [
+        0.0,
+        2.6
+      ],
+      "texto": "Escribís la decisión. Un toque.",
+      "duracion": 2.6,
+      "transicion": "corte_duro"
+    },
+    {
+      "captura": "capturas/captura-decidir.mp4",
+      "recorte": [
+        2.6,
+        5.3
+      ],
+      "texto": "Otro toque. Quedó cerrado, sin reabrirlo.",
+      "duracion": 2.7,
+      "transicion": "punch"
+    },
+    {
+      "formato": "cta",
+      "texto": "Seguime y vas a dejar de trabarte 7 días por una decisión chica.",
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
+      "narracion": "Seguime y vas a dejar de trabarte 7 días por una decisión chica.",
+      "voz_archivo": "capturas_voz/03-no-decidis-voz5.mp3"
+    }
+  ],
+  "elevenlabs": {
+    "instrucciones": "Lineas de narracion para 03-no-decidis (indices de segmento [0, 1, 2, 5] -- las capturas van sin voz). Generar audios en ElevenLabs y guardarlos como 03-no-decidis-vozN.mp3 (N = indice de la lista) en capturas_voz/. Correr sincronizar_voz.py despues.",
+    "lineas": [
+      "7 días dándole vueltas al mismo sí o no.",
+      "Cero datos nuevos en esos 7 días.",
+      "7 días sin decidir es una decisión también.",
+      "Seguime y vas a dejar de trabarte 7 días por una decisión chica."
+    ]
+  }
+}

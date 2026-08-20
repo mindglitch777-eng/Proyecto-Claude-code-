@@ -686,3 +686,36 @@ gramática en la próxima sesión, usando los nombres exactos de arriba.
   `XFADE`/`DUR_TRANS`) pero NO tiene el freeze+silencio real — quedaría
   como mejora si se necesita.
 2026-08-20 — Hotmart + Netlify completados: hosting resuelto (netlify.toml con redirect a el-corte-v7.html), Área de Membros configurada por el operador con el blueprint de ficha-venta.md, programa de afiliados (50%) con descripción entregada. Producto 'El Corte' publicado en Hotmart.
+
+## 2026-08-20 — Voz real de ElevenLabs integrada (105 lineas, 27 videos)
+
+El operador genero TODA la narracion en un solo archivo de ElevenLabs
+(voz "Jaider", multilingual v2, 474.6s) a partir de
+`capturas_voz/texto_voz_completo.txt`. Eso baja de ~105 descargas
+manuales a 1.
+
+**Problema encontrado:** el corte por deteccion de silencio simple no
+sirve con habla real. Detecto 300 silencios para 105 lineas (hacen
+falta 104 cortes) y NO hay umbral que los separe: 0.50s deja 81,
+0.45s deja 124. Las comas y los puntos internos de cada linea generan
+pausas iguales de largas que las de separacion.
+
+**Solucion:** alineacion optima por programacion dinamica en
+`dividir_voz_completo.py`. Elige los 104 cortes minimizando
+`suma[(dur_real - dur_esperada)^2] - BONUS*largo_silencio`, donde la
+duracion esperada sale de la proporcion de caracteres de cada linea.
+Garantiza orden estricto (una busqueda voraz no) y optimo global.
+
+`BONUS=2.0` salio de un barrido medido, no de intuicion: con 4.0-6.0
+el corte caia en la pausa del punto interno ("Una cosa que no dijiste.
+| La unica que importaba") en vez del final de linea; con 0.0-1.0
+ignoraba las pausas reales. 2.0-3.0 fue el unico rango con CERO lineas
+fuera de ritmo.
+
+**Verificacion:** ritmo de habla 13.9 chars/seg (min 10.7 / max 20.5),
+cero lineas sospechosas, dispersion 1.93. Los 105 cortes caen siempre
+dentro de un silencio detectado, asi que nunca se parte una palabra.
+El script ahora autoverifica esto en cada corrida.
+
+105/105 segmentos narrados quedaron con `voz_archivo` enganchado en los
+27 guiones.

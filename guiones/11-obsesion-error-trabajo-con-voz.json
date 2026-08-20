@@ -1,0 +1,94 @@
+{
+  "tema": "Te obsesionaste con un error del trabajo",
+  "topico_marca": 11,
+  "captura_fuente": "capturas/captura-persona.mp4",
+  "flujo_real": "dx('pasado') -> 'Si, hay algo concreto' -> sesion 'accion'.",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Un error del laburo, hace 2 semanas. Seguís ahí.",
+      "duracion": 2.0,
+      "hook": "glitch",
+      "karaoke": true,
+      "narracion": "Un error del laburo, hace 2 semanas. Seguís ahí.",
+      "voz_archivo": "capturas_voz/11-obsesion-error-trabajo-voz0.mp3"
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 2,
+      "texto": "semanas por un error que ya pasó",
+      "duracion": 2.3,
+      "transicion": "punch",
+      "narracion": "Dos semanas por un error que ya pasó",
+      "voz_archivo": "capturas_voz/11-obsesion-error-trabajo-voz1.mp3"
+    },
+    {
+      "formato": "alerta",
+      "texto": "Repasarlo mil veces no lo corrige. Solo lo revive",
+      "duracion": 3.8,
+      "transicion": "dip",
+      "narracion": "Repasarlo mil veces no lo corrige. Solo lo revive",
+      "voz_archivo": "capturas_voz/11-obsesion-error-trabajo-voz2.mp3"
+    },
+    {
+      "captura": "capturas/captura-persona.mp4",
+      "recorte": [
+        0.0,
+        3.0
+      ],
+      "texto": "Un verbo. Un cuando.",
+      "duracion": 3.0,
+      "transicion": "corte_duro"
+    },
+    {
+      "captura": "capturas/captura-persona.mp4",
+      "recorte": [
+        3.0,
+        6.0
+      ],
+      "texto": "Si toma menos de 10 minutos, se hace ya.",
+      "duracion": 3.0,
+      "transicion": "punch"
+    },
+    {
+      "formato": "cta",
+      "texto": "Seguime y vas a dejar de repasar mil veces el mismo error.",
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
+      "narracion": "Seguime y vas a dejar de repasar mil veces el mismo error.",
+      "voz_archivo": "capturas_voz/11-obsesion-error-trabajo-voz5.mp3"
+    }
+  ],
+  "elevenlabs": {
+    "instrucciones": "4 lineas de narracion por video (hook, error, mecanismo, loop -- los 2 segmentos de captura real van sin voz, el producto se muestra sin explicarse encima). Generar 4 audios separados en ElevenLabs con estas lineas, en este orden, y guardarlos como 11-obsesion-error-trabajo-voz0.mp3 (hook), -voz1.mp3 (error), -voz2.mp3 (mecanismo), -voz5.mp3 (loop) en capturas_voz/. Correr sincronizar_voz.py despues.",
+    "lineas": [
+      "Un error del laburo, hace 2 semanas. Seguís ahí.",
+      "Dos semanas por un error que ya pasó",
+      "Repasarlo mil veces no lo corrige. Solo lo revive",
+      "Seguime y vas a dejar de repasar mil veces el mismo error."
+    ]
+  }
+}

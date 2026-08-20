@@ -1,0 +1,109 @@
+{
+  "tema": "Discutiste y no podes dormir",
+  "topico_marca": 1,
+  "captura_fuente": "capturas/captura-noche.mp4",
+  "flujo_real": "En la app: 'No puedo dormir' -> 'Algo puntual que no me suelta' -> sesion 'A esta hora no se decide nada' (2 pasos reales).",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Discutiste. Son las 2 AM y te comés la cabeza.",
+      "duracion": 1.9,
+      "hook": "flash",
+      "karaoke": true,
+      "imagen": "assets/imagenes/no-dormir.jpg",
+      "voz_archivo": "capturas_voz/01-no-dormir-voz0.mp3"
+    },
+    {
+      "formato": "cronologia",
+      "texto": "Así escala si no lo cortás",
+      "hitos": [
+        "2 AM",
+        "2:15",
+        "2:30",
+        "2:45"
+      ],
+      "valores": [
+        "1",
+        "8",
+        "19",
+        "40"
+      ],
+      "duracion": 2.5,
+      "transicion": "punch",
+      "voz_archivo": "capturas_voz/01-no-dormir-voz1.mp3"
+    },
+    {
+      "formato": "terminal",
+      "lineas": [
+        "$ diagnosticar --bucle",
+        "> 40 vueltas, 2 AM",
+        "> causa: sin corte",
+        "> solucion: 1 accion"
+      ],
+      "texto": "",
+      "duracion": 4.2,
+      "transicion": "barrido",
+      "voz_archivo": "capturas_voz/01-no-dormir-voz2.mp3"
+    },
+    {
+      "captura": "capturas/captura-noche.mp4",
+      "recorte": [
+        0.0,
+        3.0
+      ],
+      "texto": "Dos toques. Así se corta a las 2 AM.",
+      "duracion": 3.0,
+      "transicion": "corte_duro"
+    },
+    {
+      "captura": "capturas/captura-noche.mp4",
+      "recorte": [
+        3.0,
+        6.0
+      ],
+      "texto": "El paso siguiente, ya en pantalla.",
+      "duracion": 3.0,
+      "transicion": "punch"
+    },
+    {
+      "formato": "cta",
+      "texto": "Seguime y la próxima vez cortás el bucle antes de que te robe el sueño.",
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
+      "narracion": "Seguime y la próxima vez cortás el bucle antes de que te robe el sueño.",
+      "voz_archivo": "capturas_voz/01-no-dormir-voz5.mp3"
+    }
+  ],
+  "elevenlabs": {
+    "instrucciones": "Lineas de narracion para 01-no-dormir (indices de segmento [0, 1, 2, 5] -- las capturas van sin voz). Generar audios en ElevenLabs y guardarlos como 01-no-dormir-vozN.mp3 (N = indice de la lista) en capturas_voz/. Correr sincronizar_voz.py despues.",
+    "lineas": [
+      "Discutiste. Son las 2 AM y te comés la cabeza.",
+      "Así escala si no lo cortás: a las 2 fue una vuelta, a las 2:15 ocho, a las 2:30 diecinueve, a las 2:45 cuarenta.",
+      "Cuarenta vueltas a las 2 AM. La causa: no cortaste a tiempo. La solución: una sola acción.",
+      "Seguime y la próxima vez cortás el bucle antes de que te robe el sueño."
+    ]
+  }
+}

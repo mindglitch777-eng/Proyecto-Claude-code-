@@ -1,0 +1,96 @@
+{
+  "tema": "No le dijiste algo antes de que se fuera de tu vida",
+  "topico_marca": "nuevo-C",
+  "captura_fuente": "capturas/captura-antes.mp4",
+  "flujo_real": "ver('expresar') -> 4 preguntas -> arma el mensaje real (aunque no se pueda mandar).",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "No se lo dijiste. Y ya no está para escucharlo.",
+      "duracion": 2.0,
+      "hook": "flash",
+      "karaoke": true,
+      "narracion": "No se lo dijiste. Y ya no está para escucharlo.",
+      "imagen": "assets/imagenes/pensando.jpg",
+      "voz_archivo": "capturas_voz/12-no-dijiste-antes-voz0.mp3"
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 1,
+      "texto": "cosa que no dijiste. La única que importaba",
+      "duracion": 2.6,
+      "transicion": "dip",
+      "narracion": "Una cosa que no dijiste. La única que importaba",
+      "voz_archivo": "capturas_voz/12-no-dijiste-antes-voz1.mp3"
+    },
+    {
+      "formato": "cita",
+      "texto": "Sufrimos mas en la imaginacion que en la realidad",
+      "autor": "Seneca",
+      "duracion": 3.6,
+      "transicion": "fade",
+      "narracion": "Sufrimos mas en la imaginacion que en la realidad",
+      "voz_archivo": "capturas_voz/12-no-dijiste-antes-voz2.mp3"
+    },
+    {
+      "captura": "capturas/captura-antes.mp4",
+      "recorte": [
+        0.0,
+        2.6
+      ],
+      "texto": "Se escribe igual. No para mandarlo.",
+      "duracion": 2.6,
+      "transicion": "corte_duro"
+    },
+    {
+      "captura": "capturas/captura-antes.mp4",
+      "recorte": [
+        2.6,
+        4.8
+      ],
+      "texto": "Para que quede dicho en algún lado, no solo en tu cabeza.",
+      "duracion": 2.2,
+      "transicion": "punch"
+    },
+    {
+      "formato": "cta",
+      "texto": "Seguime y vas a decir las cosas a tiempo, no después.",
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
+      "narracion": "Seguime y vas a decir las cosas a tiempo, no después.",
+      "voz_archivo": "capturas_voz/12-no-dijiste-antes-voz5.mp3"
+    }
+  ],
+  "elevenlabs": {
+    "instrucciones": "4 lineas de narracion por video (hook, error, mecanismo, loop -- los 2 segmentos de captura real van sin voz, el producto se muestra sin explicarse encima). Generar 4 audios separados en ElevenLabs con estas lineas, en este orden, y guardarlos como 11b-no-dijiste-antes-voz0.mp3 (hook), -voz1.mp3 (error), -voz2.mp3 (mecanismo), -voz5.mp3 (loop) en capturas_voz/. Correr sincronizar_voz.py despues.",
+    "lineas": [
+      "No se lo dijiste. Y ya no está para escucharlo.",
+      "Una cosa que no dijiste. La única que importaba",
+      "Sufrimos mas en la imaginacion que en la realidad",
+      "Seguime y vas a decir las cosas a tiempo, no después."
+    ]
+  }
+}
