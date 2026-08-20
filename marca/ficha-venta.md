@@ -1,14 +1,30 @@
 # Ficha de venta — El Corte (Hotmart)
 
-## ⚠️ Antes de cargar el producto: falta el hosting
+## Exclusividad: decidido — Área de Membros de Hotmart
 
-`producto/el-corte-v7.html` hoy es un archivo local. Para que alguien
-lo COMPRE y lo USE, tiene que estar en una URL pública (es una app
-web, no un PDF que se descarga y listo). La opción más simple y
-gratuita es **GitHub Pages** (activarlo sobre este mismo repo, o uno
-aparte solo para el producto) — puedo hacerlo, pero es publicar algo
-públicamente en internet, así que necesito tu ok explícito antes de
-tocarlo. Avisame y lo dejo andando en minutos.
+Para que un comprador no pueda pasar el link y que cualquiera use el
+producto gratis, la entrega NO va a ser "un link suelto a una URL
+pública". Va a ser vía **Área de Membros de Hotmart**: cada
+comprador tiene login propio (usuario/contraseña) que gestiona
+Hotmart, y adentro accede a `el-corte-v7.html`. Esto lo configurás
+vos en el panel de Hotmart al crear el producto — Claude Code no
+tiene cuenta ahí y no puede hacerlo.
+
+**Qué falta para que esto funcione (pendiente, en orden):**
+
+1. `el-corte-v7.html` todavía tiene que estar en ALGUNA URL para que
+   el Área de Membros la enlace/embeba (Hotmart no aloja el archivo
+   HTML en sí, aloja la clase/lección que apunta a él). La opción
+   gratuita más simple sigue siendo **GitHub Pages** — pero como es
+   publicar algo en internet, necesito tu ok explícito antes de
+   activarlo (regla de oro de `CLAUDE.md`). La diferencia ahora es
+   que esa URL no se va a repartir directamente: solo va a estar
+   enlazada DENTRO del Área de Membros, detrás del login de Hotmart.
+2. Al crear la cuenta de Hotmart, elegir tipo de producto **"Área de
+   Membros"** (no "producto con entrega por link" simple) al cargar
+   El Corte.
+3. Adentro del Área de Membros, crear un módulo/clase único con un
+   botón o iframe que apunte a la URL de GitHub Pages del punto 1.
 
 ---
 
@@ -29,11 +45,11 @@ tocarlo. Avisame y lo dejo andando en minutos.
 | Campo | Valor sugerido |
 |---|---|
 | Nombre | El Corte |
-| Tipo de producto | Software / Producto digital con acceso por link (no ebook — es una app) |
+| Tipo de producto | **Área de Membros** (no "producto con entrega por link" simple) |
 | Categoría | Desarrollo Personal *(alternativa: Salud y Bienestar)* |
 | Precio | USD $15 (ajustable — Hotmart muestra el equivalente en moneda local) |
 | Garantía | 7 días (estándar del nicho, baja fricción de compra) |
-| Entrega | Link a la app hosteada (ver punto ⚠️ arriba) |
+| Entrega | Login propio por comprador → Área de Membros → acceso a la app (ver sección de exclusividad arriba) |
 | Idioma | Español |
 
 ## 3. Descripción corta (para el listado, ~200 caracteres)

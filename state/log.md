@@ -216,3 +216,51 @@ plataforma.
   Whisper para subtítulos sincronizados) o se mantiene mute-first.
 - Correr manualmente el workflow de descarga de imágenes cuando el
   operador lo apruebe.
+
+## 2026-08-20 (continuación — Hotmart y exclusividad)
+
+**Contexto:** se descartó Gumroad por Hotmart (mejor fit LatAm/español).
+Se armó el pipeline de producción de video sin tokens (GitHub Actions +
+`producir_lote.py`), 15 guiones finales pasan `validar_hook.py`, se
+armó `marca/ficha-venta.md` con todo lo necesario para dar de alta el
+producto en Hotmart.
+
+**Problema planteado por el operador:** un link público plano a
+`el-corte-v7.html` permite que un solo comprador lo reparta y cualquiera
+lo use gratis — rompe el modelo de pago único. Se propusieron 3 niveles
+(A: código de acceso en la app: B: Área de Membros nativa de Hotmart;
+C: cuentas reales vía Supabase Auth + webhook).
+
+**Decisión 16 — exclusividad: Área de Membros de Hotmart (opción B),
+sin gate de código en el HTML.** El operador eligió NO tocar
+`el-corte-v7.html` con un código de acceso; la exclusividad la va a
+resolver 100% del lado de Hotmart, dando de alta el producto como
+"Área de Membros" (login propio por comprador, gestionado por Hotmart)
+en vez de "producto con entrega por link". `marca/ficha-venta.md`
+actualizado con esta decisión y los 3 pasos pendientes para que
+funcione (host de `el-corte-v7.html`, tipo de producto en el alta,
+módulo/clase con el link/iframe adentro del Área de Membros).
+
+**Importante — sigue pendiente el hosting.** El Área de Membros de
+Hotmart no aloja el archivo HTML en sí, solo enlaza/embebe una URL.
+`el-corte-v7.html` sigue sin estar publicado en ninguna URL. La
+diferencia con la propuesta anterior es que esa URL ya NO se reparte
+directamente al comprador — queda enlazada adentro del Área de Membros,
+detrás del login de Hotmart. Sigue siendo "publicar algo públicamente"
+según la regla de oro de `CLAUDE.md`, así que activar GitHub Pages
+sigue requiriendo confirmación explícita del operador antes de tocarlo.
+
+**Pendiente / próxima sesión:**
+- Confirmación del operador para activar GitHub Pages (hosting de
+  `el-corte-v7.html`, ahora como paso interno del Área de Membros).
+- El operador da de alta la cuenta de Hotmart con `marca/ficha-venta.md`
+  como tipo "Área de Membros".
+- Recibir los audios de ElevenLabs para los 15 guiones y correr
+  `sincronizar_voz.py` / el workflow `producir-videos.yml`.
+- Música de fondo: sigue bloqueada por las mismas restricciones de red
+  que las imágenes; no hay workflow armado todavía (a diferencia de
+  imágenes).
+- Imagen de portada para la ficha de Hotmart (1280×720) — ofrecida,
+  no generada aún.
+- Tema "acelerado" sigue sin imagen representativa (4 intentos fallidos
+  en Openverse, búsqueda pausada deliberadamente).
