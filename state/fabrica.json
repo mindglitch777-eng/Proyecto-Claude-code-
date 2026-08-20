@@ -1,0 +1,14 @@
+{
+  "videos": {
+    "04-hablar-importante": {
+      "huella": "f15842767d7ebccc",
+      "estado": "listo",
+      "segundos": 68.5
+    },
+    "05-acelerado": {
+      "huella": "ab4eb9f52ac32bee",
+      "estado": "con_problemas",
+      "segundos": 67.3
+    }
+  }
+}

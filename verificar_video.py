@@ -182,24 +182,32 @@ def revisar(video_path, guion_path=None):
                 f"audio {dur_a:.2f}s (desfase {desfase:.2f}s, maximo "
                 f"{MAX_DESFASE_AV}s). Se corta la voz o queda pantalla muda.")
 
-    # 2. Cada voz entra en su segmento
+    # 2. Toda la voz entra en el video.
+    # OJO: no se compara voz contra seg["duracion"] del JSON. Esa cifra
+    # es la duracion ADIVINADA al escribir el guion; al renderizar,
+    # construir_linea_tiempo() la reescribe con la duracion real del
+    # audio. Compararlas marcaba como "voz cortada" todos los videos
+    # correctos. Lo que si tiene que cumplirse es el total: el video no
+    # puede durar menos que la suma de las voces mas las capturas.
     if guion_path and Path(guion_path).exists():
         cfg = json.loads(Path(guion_path).read_text(encoding="utf-8"))
-        for i, seg in enumerate(cfg.get("segmentos", [])):
+        suma_min = 0.0
+        for seg in cfg.get("segmentos", []):
             va = seg.get("voz_archivo")
-            if not va or not Path(va).exists():
-                continue
-            d_voz = ffprobe(["-show_entries", "format=duration", "-of",
+            if va and Path(va).exists():
+                d = ffprobe(["-show_entries", "format=duration", "-of",
                              "csv=p=0", va])
-            try:
-                d_voz = float(d_voz)
-            except ValueError:
-                continue
-            d_seg = seg.get("duracion", 0)
-            if d_voz > d_seg + 0.05:
-                problemas.append(
-                    f"Segmento {i}: la voz dura {d_voz:.2f}s pero el segmento "
-                    f"{d_seg:.2f}s -- la frase se escucha cortada.")
+                try:
+                    suma_min += float(d)
+                    continue
+                except ValueError:
+                    pass
+            if "captura" in seg:
+                suma_min += seg.get("duracion", 0)
+        if suma_min and dur_v + 0.5 < suma_min:
+            problemas.append(
+                f"El video dura {dur_v:.2f}s pero la voz y las capturas suman "
+                f"{suma_min:.2f}s -- se esta cortando contenido.")
 
     # 3. Pantalla muerta
     alto_muestra = int(ANCHO_MUESTRA * (alto / ancho)) if ancho else 160

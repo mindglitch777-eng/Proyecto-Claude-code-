@@ -19,10 +19,12 @@ Uso:
 """
 
 import json
+import os
 import subprocess
 import sys
 import tempfile
 import textwrap
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFilter
@@ -162,8 +164,8 @@ def render_captura(seg, cfg_base, tmp, idx, marco_path):
         "-loop", "1", "-t", str(dur), "-i", str(marco_path),
         "-filter_complex", filtro, "-map", "[out]",
         "-t", str(dur), "-r", "30",
-        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-preset", "medium",
-        "-crf", "19", str(salida),
+        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-preset", "veryfast",
+        "-crf", "20", str(salida),
     ]
     run(cmd)
     # SFX de entrada: por defecto el mismo mapeo que animador_v9.py
@@ -216,18 +218,28 @@ def armar(guion_path, salida_final):
         tmp = Path(tmpd)
         marco_path = marco_telefono(cfg["paleta"], (194, 150, 693, 1500, 48), tmp)
 
-        clips, sfx_entrada = [], [None]  # el primer clip nunca tiene "entrada"
-        for i, (tipo, bloque) in enumerate(grupos):
+        # Cada grupo se arma en su propio proceso (animador_v9 o ffmpeg) y
+        # escribe archivos distintos dentro de tmp, asi que son totalmente
+        # independientes entre si: se lanzan EN PARALELO en vez de uno
+        # detras del otro. El runner tiene varios nucleos y el render de
+        # cuadros es de un solo hilo, asi que esta era la parte que dejaba
+        # la maquina al 25% de uso. Se usan hilos (no procesos) porque
+        # cada tarea solo espera a un subproceso -- el GIL no molesta.
+        def armar_grupo(par):
+            i, (tipo, bloque) = par
             if tipo == "render":
-                clips.append(render_run(bloque, cfg_base, tmp, i))
-                if i > 0:
-                    sfx_entrada.append(SFX_POR_TRANSICION.get(
-                        bloque[0].get("transicion", "fade")))
-            else:
-                clip, sfx = render_captura(bloque[0], cfg_base, tmp, i, marco_path)
-                clips.append(clip)
-                if i > 0:
-                    sfx_entrada.append(sfx)
+                return i, render_run(bloque, cfg_base, tmp, i), SFX_POR_TRANSICION.get(
+                    bloque[0].get("transicion", "fade"))
+            clip, sfx = render_captura(bloque[0], cfg_base, tmp, i, marco_path)
+            return i, clip, sfx
+
+        n_hilos = min(len(grupos), max(1, (os.cpu_count() or 2)))
+        with ThreadPoolExecutor(max_workers=n_hilos) as pool:
+            resultados = sorted(pool.map(armar_grupo, enumerate(grupos)))
+
+        clips = [r[1] for r in resultados]
+        # el primer clip nunca tiene sonido de "entrada"
+        sfx_entrada = [None] + [r[2] for r in resultados[1:]]
 
         # Transicion de entrada de cada grupo (salvo el primero)
         transiciones = ["fade"] + [g[1][0].get("transicion", "fade")
@@ -287,8 +299,8 @@ def armar(guion_path, salida_final):
         filtro_completo = ";".join(filtro_v + filtro_a) + ";" + mix
         cmd += ["-filter_complex", filtro_completo,
                 "-map", f"[{etiqueta_prev}]", "-map", "[aout]",
-                "-c:v", "libx264", "-pix_fmt", "yuv420p", "-preset", "medium",
-                "-crf", "19", "-c:a", "aac", "-b:a", "192k", str(salida_final)]
+                "-c:v", "libx264", "-pix_fmt", "yuv420p", "-preset", "veryfast",
+                "-crf", "20", "-c:a", "aac", "-b:a", "192k", str(salida_final)]
         run(cmd)
 
     print(f"LISTO: {salida_final} ({Path(salida_final).stat().st_size/1024:.0f} KB, "

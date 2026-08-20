@@ -719,3 +719,47 @@ El script ahora autoverifica esto en cada corrida.
 
 105/105 segmentos narrados quedaron con `voz_archivo` enganchado en los
 27 guiones.
+
+## 2026-08-20 — Fabrica de contenido v2: 5.6x mas rapida + pipeline unico
+
+**Problema:** cada video tardaba ~10 min en GitHub Actions. El render
+usaba UN solo nucleo de 4 (dibujar un cuadro cuesta 55-120ms y hay ~800
+por video), y el compositor armaba los 4 clips uno detras del otro
+aunque son subprocesos independientes.
+
+**Medicion real (mismo guion, misma maquina):**
+  antes: 6m26s  (user 9m10s -> ~1.4 nucleos de 4 en uso)
+  ahora: 1m09s  (user 4m07s -> los 4 nucleos)
+  = 5.6x mas rapido, con salida IDENTICA cuadro a cuadro (diff 0.0000)
+
+**Que se cambio:**
+1. animador_v9.py arma primero el PLAN completo de cuadros y despues
+   los reparte en un Pool de procesos ('fork' comparte los caches sin
+   serializar). Las transiciones necesitan el ultimo cuadro del
+   segmento anterior: se calcula bajo demanda y se cachea por proceso.
+2. armar_video.py lanza los clips en paralelo (ThreadPoolExecutor: cada
+   tarea solo espera un subproceso, el GIL no molesta).
+3. PNG temporal con compress_level=1 (25ms en vez de 37ms por cuadro).
+4. x264 preset medium -> veryfast, crf 19 -> 20. Mismo peso de archivo.
+
+**BUG CRITICO encontrado en el lote anterior:** de 27 videos
+renderizados se guardo UNO SOLO. Cada job subia `videos/*.mp4` entero,
+que tras el checkout incluye los 26 videos VIEJOS del repo; al juntar
+los artifacts, esas copias viejas se pisaban entre si. Ahora cada job
+sube unicamente el video que produjo.
+
+**fabrica.py (nuevo):** un comando corre las 5 etapas en orden
+(validar -> voz -> render -> verificar -> reporte). Lo importante no es
+juntar scripts, es lo que evita:
+ - Huella (hash) de guion + voz + codigo de render: lo que no cambio no
+   se vuelve a renderizar. Segunda corrida del mismo lote: 0 segundos.
+ - `--solo-fallidos` rehace unicamente lo que fallo, leyendo el reporte
+   de la corrida anterior, en vez de repetir el lote entero.
+ - La validacion corre ANTES del render: un guion roto se ve en
+   segundos, no despues de gastar minutos.
+
+**Falso positivo corregido en verificar_video.py:** comparaba la
+duracion de la voz contra seg["duracion"] del JSON, pero esa cifra es
+la ADIVINADA al escribir el guion -- al renderizar,
+construir_linea_tiempo() la reescribe con la duracion real del audio.
+Marcaba como "voz cortada" a videos correctos. Ahora verifica el total.

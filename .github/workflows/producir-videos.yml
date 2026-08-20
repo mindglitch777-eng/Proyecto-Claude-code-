@@ -76,18 +76,26 @@ jobs:
           pip install --quiet pillow
 
       - name: Producir este guion
+        id: producir
         run: |
           FLAG=""
-          if [ "${{ inputs.solo_nuevos }}" = "true" ]; then FLAG="--solo-nuevos"; fi
-          python3 producir_lote.py "${{ matrix.guion }}" $FLAG
+          if [ "${{ inputs.solo_nuevos }}" != "true" ]; then FLAG="--forzar"; fi
+          python3 fabrica.py "${{ matrix.guion }}" $FLAG
+          STEM=$(basename "${{ matrix.guion }}" .json)
+          echo "stem=$STEM" >> "$GITHUB_OUTPUT"
+          mkdir -p /tmp/salida/videos /tmp/salida/guiones
+          cp "videos/$STEM.mp4" /tmp/salida/videos/ 2>/dev/null || true
+          cp "guiones/$STEM-con-voz.json" /tmp/salida/guiones/ 2>/dev/null || true
 
+      # Se sube SOLO lo que produjo este job. Subir videos/*.mp4 entero
+      # incluia los 26 videos VIEJOS que vienen del checkout, y al
+      # juntar los artifacts esas copias viejas se pisaban unas a otras:
+      # el lote entero terminaba guardando un solo video nuevo.
       - name: Subir resultado como artifact
         uses: actions/upload-artifact@v4
         with:
           name: salida-${{ strategy.job-index }}
-          path: |
-            videos/*.mp4
-            guiones/*-con-voz.json
+          path: /tmp/salida
           if-no-files-found: ignore
           retention-days: 1
 

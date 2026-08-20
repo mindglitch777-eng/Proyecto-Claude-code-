@@ -31,7 +31,7 @@
       "hook": "flash",
       "karaoke": true,
       "imagen": "assets/imagenes/respirar.jpg",
-      "voz_archivo": "capturas_voz/05-acelerado-voz0.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/05-acelerado-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -39,7 +39,7 @@
       "texto": "segundos de exhalación bajan la activación",
       "duracion": 2.3,
       "transicion": "punch",
-      "voz_archivo": "capturas_voz/05-acelerado-voz1.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/05-acelerado-voz1.mp3"
     },
     {
       "formato": "panel",
@@ -64,7 +64,7 @@
       ],
       "duracion": 3.6,
       "transicion": "slide",
-      "voz_archivo": "capturas_voz/05-acelerado-voz2.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/05-acelerado-voz2.mp3"
     },
     {
       "captura": "capturas/captura-respirar.mp4",
@@ -95,7 +95,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y la próxima vez bajás la activación en minutos, no en horas.",
-      "voz_archivo": "capturas_voz/05-acelerado-voz5.mp3"
+      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/05-acelerado-voz5.mp3"
     }
   ],
   "elevenlabs": {

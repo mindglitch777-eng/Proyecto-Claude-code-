@@ -85,6 +85,8 @@ Uso:
 
 import json
 import math
+import multiprocessing
+import os
 import random
 import shutil
 import subprocess
@@ -1843,6 +1845,44 @@ PALETAS = [
 ]
 
 
+# Contexto compartido con los procesos que dibujan cuadros en paralelo.
+# Se llena una sola vez antes de abrir el pool; con 'fork' cada hijo lo
+# hereda tal cual, sin serializar nada.
+_CTX = {}
+_ULT_CACHE = {}
+
+
+def _ultimo_cuadro(si):
+    """Ultimo cuadro del segmento anterior, necesario para las
+    transiciones. Se calcula bajo demanda y se cachea POR PROCESO."""
+    if si in _ULT_CACHE:
+        return _ULT_CACHE[si]
+    segs, cfg, fps = _CTX["segs"], _CTX["cfg"], _CTX["fps"]
+    acc = sum(s["duracion"] for s in segs[:si + 1])
+    img = render(segs[si], 1.0, acc / _CTX["dur"], cfg)
+    _ULT_CACHE[si] = img
+    return img
+
+
+def _dibujar_cuadro(tarea):
+    """Dibuja y guarda UN cuadro. Se ejecuta en el proceso principal o
+    en un trabajador del pool, sin diferencia."""
+    n, si, f, nf, tipo, ft_local, freeze_frac, acc = tarea
+    cfg, segs, fps = _CTX["cfg"], _CTX["segs"], _CTX["fps"]
+    seg = segs[si]
+    t = f / max(1, nf - 1)
+    fr = render(seg, t, (acc + f / fps) / _CTX["dur"], cfg)
+    if si > 0 and f < ft_local and tipo != "corte":
+        prev = _ultimo_cuadro(si - 1)
+        if prev is not None:
+            fr = transicion(prev, fr, f / ft_local, tipo, cfg["paleta"],
+                            freeze_frac)
+    # compress_level=1 en vez del 6 por defecto: 25ms en vez de 37ms por
+    # cuadro. El PNG pesa mas pero es temporal, ffmpeg lo lee igual y se
+    # borra al terminar.
+    fr.save(_CTX["tmp"] / f"f{n:06d}.png", compress_level=1)
+
+
 def render(seg, t, prog, cfg):
     pal = cfg["paleta"]
     img = base_fondo(pal, t, seg)
@@ -2590,8 +2630,16 @@ def generar(path):
     # un reloj continuo a lo largo de TODO el video, no algo que
     # reinicia fase en cada corte de segmento.
     cfg["_dur_total"] = dur
-    ft = int(0.42 * fps); n = 0; acc = 0.0; ult = None
+    ft = int(0.42 * fps); n = 0; acc = 0.0
     print(f"Renderizando {dur:.1f}s a {fps}fps ({len(segs)} formatos)...")
+
+    # --- Plan de cuadros ---
+    # Se arma primero la lista COMPLETA de cuadros a dibujar (sin
+    # dibujar ninguno todavia) para poder repartirlos entre varios
+    # nucleos. Antes esto era un bucle secuencial de un solo hilo, que
+    # dejaba la maquina al 25% de uso: dibujar un cuadro cuesta 55-120ms
+    # y hay ~800 por video.
+    plan = []
     for si, seg in enumerate(segs):
         nf = int(seg["duracion"] * fps)
         tipo = seg.get("transicion", "fade")
@@ -2609,14 +2657,28 @@ def generar(path):
             freeze_frac = freeze_s / max(0.001, freeze_s + glitch_s)
             tipo = "quiebre"
         for f in range(nf):
-            t = f / max(1, nf - 1)
-            fr = render(seg, t, (acc + f / fps) / dur, cfg)
-            if si > 0 and f < ft_local and ult is not None and tipo != "corte":
-                fr = transicion(ult, fr, f / ft_local, tipo, cfg["paleta"],
-                                freeze_frac)
-            fr.save(tmp / f"f{n:06d}.png"); n += 1
-        ult = render(seg, 1.0, (acc + seg["duracion"]) / dur, cfg)
+            plan.append((n, si, f, nf, tipo, ft_local, freeze_frac, acc))
+            n += 1
         acc += seg["duracion"]
+
+    _CTX["cfg"] = cfg
+    _CTX["segs"] = segs
+    _CTX["fps"] = fps
+    _CTX["dur"] = dur
+    _CTX["tmp"] = tmp
+
+    nucleos = max(1, min(os.cpu_count() or 1, 8))
+    if nucleos > 1 and len(plan) > 60:
+        # 'fork' comparte los caches ya calculados (fuentes, grano,
+        # particulas) sin volver a serializarlos, y cada trabajador
+        # escribe su propio archivo -> no hay estado compartido que
+        # coordinar.
+        ctx = multiprocessing.get_context("fork")
+        with ctx.Pool(nucleos) as pool:
+            pool.map(_dibujar_cuadro, plan, chunksize=8)
+    else:
+        for tarea in plan:
+            _dibujar_cuadro(tarea)
     if cfg.get("loop"):
         pri = render(segs[0], 0.0, 0.0, cfg); nl = int(0.5 * fps)
         for i in range(nl):
@@ -2633,8 +2695,8 @@ def generar(path):
            "-i", str(tmp / "f%06d.png")]
     if audio:
         cmd += ["-i", str(audio), "-c:a", "aac", "-shortest"]
-    cmd += ["-c:v", "libx264", "-pix_fmt", "yuv420p", "-preset", "medium",
-            "-crf", "19", salida]
+    cmd += ["-c:v", "libx264", "-pix_fmt", "yuv420p", "-preset", "veryfast",
+            "-crf", "20", salida]
     r = subprocess.run(cmd, capture_output=True, text=True)
     shutil.rmtree(tmp, ignore_errors=True)
     if r.returncode != 0:
