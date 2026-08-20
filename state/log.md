@@ -1,5 +1,53 @@
 # Log de decisiones
 
+## 2026-08-20 (continuación — checklist interactivo + 2 bugs reales de voz corregidos)
+
+**Producción en lote: éxito en el segundo intento.** El primer intento
+(ronda anterior) renderizó los 27 videos bien pero perdió el resultado
+por el bug de `git add` con glob vacío. El segundo intento, ya con el
+fix, terminó bien: los 18 videos que faltaban (07-15 y el resto del
+lote 3) quedaron commiteados. **Los 27 guiones ya tienen video en
+`videos/`** (sin voz real todavía, con las duraciones del guion).
+
+**Dos bugs reales encontrados antes de mandarle instrucciones al
+operador para ElevenLabs** (mejor encontrarlos ahora que después de
+que grabe 100 audios mal indexados):
+1. Los guiones 01 al 06 nunca tuvieron bloque `elevenlabs.lineas`
+   (se crearon antes de esa convención) — completados con narración
+   natural de cada segmento, adaptando formatos que no tienen un
+   campo `texto` directo (terminal, conteo, ranking, panel,
+   cronología) a texto hablado real, no leído literal.
+2. `generar_lote3.py` tenía una condición invertida: cuando un guion
+   usaba `mensajes`, saltaba la línea de narración del mecanismo en
+   vez de sumar una línea más — 3 guiones (18, 22, 24) iban a quedar
+   con la mitad de la voz sin grabar sin que nadie lo notara hasta
+   escuchar el video armado. Corregido y verificado índice por índice
+   contra los segmentos reales de cada guion (no solo contra el
+   conteo de líneas).
+
+También: `sincronizar_voz.py` y `producir_lote.py` iban a pedir un
+audio para el segmento del "quiebre" (freeze + silencio total a
+propósito) en los 12 guiones nuevos — corregido, ese segmento nunca
+necesita voz.
+
+**Checklist interactivo publicado como Artifact**
+(https://claude.ai/code/artifact/1cf0efb4-deb2-4dc9-bd1c-2ecf1e4b8931):
+pensado para uso en celular durante los 2 días que quedan. Cubre, en
+orden: Netlify → Hotmart (cuenta + Área de Membros, todo el copy ya
+armado) → TikTok (cuenta + bio) → los 27 guiones con su narración
+exacta lista para pegar en ElevenLabs (nombre de archivo correcto por
+segmento, botón de copiar) + su caption de TikTok con hashtags →
+música → checklist final de revisión. Los checks quedan guardados en
+localStorage del navegador del operador (no en el repo). 3 guiones
+marcados "prioridad" (16, 18, 21) porque son los más revisados hasta
+ahora.
+
+**Pendiente real de este bloque**: el operador todavía no mandó la
+URL de Netlify, así que las descripciones de TikTok en
+`guiones/descripciones-tiktok.md` (y en el checklist) siguen con
+`[LINK PENDIENTE]` como placeholder -- hay que volver a generarlas
+(o hacer un find-replace) apenas exista esa URL.
+
 ## 2026-08-20 (continuación — sesión nocturna autónoma: gramática v2 + lote 3 + portada)
 
 **Contexto:** el operador aprobó la demo de la gramática de 6 beats
