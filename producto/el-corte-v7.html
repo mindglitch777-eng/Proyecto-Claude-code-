@@ -155,7 +155,7 @@ padding-top:14px;margin-top:28px;line-height:1.5}
     <button class="op" onclick="dx('difuso')">No hay tema claro<small>La cabeza no para y no sé por qué</small></button>
     <button class="op" onclick="dx('noche')">No puedo dormir<small>Son las tantas y sigo despierto</small></button>
     <h3>También</h3>
-    <button class="op" onclick="ver('test')">¿Esto es rumiar o estoy pensando?<small>Test de 5 segundos</small></button>
+    <button class="op" onclick="ver('test')">¿Esto es un bucle o estoy pensando?<small>Test de 5 segundos</small></button>
     <button class="op" onclick="ver('expresar')">Ayudame a decirlo<small>Poner en palabras algo difícil</small></button>
     <button class="op" onclick="ver('decidir')">Tengo una decisión pendiente<small>Decidir o cerrar el tema hoy</small></button>
     <button class="op" onclick="ver('meditar')">Meditar<small>Observar los pensamientos sin perseguirlos</small></button>
@@ -190,7 +190,7 @@ padding-top:14px;margin-top:28px;line-height:1.5}
     <p class="mini" id="cMsg"></p>
     <div class="card oro" style="margin-top:14px">
       <div class="big" id="cTiempo">—</div>
-      <div class="lbl">de rumiación que no perdiste esta semana</div>
+      <div class="lbl">de vueltas que no perdiste esta semana</div>
     </div>
     <p class="mini">Estimado conservador: cada bucle cortado a tiempo evita
        unos 25 minutos de vueltas.</p>
@@ -295,10 +295,10 @@ padding-top:14px;margin-top:28px;line-height:1.5}
     <button class="txtb" onclick="volverInicio()">Volver</button>
   </div>
 
-  <!-- Test: ¿es rumiar? -->
+  <!-- Test: ¿es bucle? -->
   <div id="test" style="display:none">
-    <h2>¿Es rumiar o estoy pensando?</h2>
-    <p class="mini">Lo más difícil es darte cuenta: rumiar se siente igual
+    <h2>¿Es un bucle o estoy pensando?</h2>
+    <p class="mini">Lo más difícil es darte cuenta: el bucle se siente igual
        que pensar. Tres preguntas lo separan.</p>
     <div id="tPreg"></div>
     <div id="tRes" style="display:none"></div>
@@ -308,7 +308,7 @@ padding-top:14px;margin-top:28px;line-height:1.5}
   <!-- Decisión forzada -->
   <div id="decidir" style="display:none">
     <h2>Decisión pendiente</h2>
-    <p class="mini">Una decisión sin tomar es motor de rumiación: la cabeza
+    <p class="mini">Una decisión sin tomar es motor del bucle: la cabeza
        la reabre cada rato. Se cierra decidiendo, o decidiendo cuándo.</p>
     <h3>¿Qué tenés que decidir?</h3>
     <textarea id="dQue" placeholder="En una línea."></textarea>
@@ -714,7 +714,7 @@ var CORTE_YA=[
  {t:'Cambiá de lugar. Literal, ahora.',
   s:'El cuerpo en movimiento corta lo que la voluntad sola no corta.'},
  {t:'Elegí una acción de diez minutos y hacela ya.',
-  s:'Rumiar se siente como avanzar, pero no avanza. Una acción chica sí.'},
+  s:'El bucle se siente como avanzar, pero no avanza. Una acción chica sí.'},
  {t:'Si es sobre alguien más: ¿le vas a hablar o no?',
   s:'Sin esa respuesta, la cabeza sigue reabriendo el tema sola.'},
  {t:'Ponele nombre a lo peor que puede pasar, en una frase.',
@@ -738,12 +738,12 @@ function marcarCorteYaHecho(){
 }
 
 var PR={
- accion:{t:'No estás rumiando. Estás postergando.',c:'Si algo está en tu poder, ¿por qué te inquietas?|Epicteto',
+ accion:{t:'No estás dándole vueltas. Estás postergando.',c:'Si algo está en tu poder, ¿por qué te inquietas?|Epicteto',
   p:[{t:'Escribí la acción en un verbo.',s:'"Mandarle un mensaje", no "arreglar las cosas".'},
      {t:'Decidí cuándo. Día y hora.',s:'Si es hoy, mejor ahora.'},
      {t:'¿Toma menos de 10 minutos?',s:'Hacelo antes de seguir. En serio.'},
      {t:'Si no podés hoy, anotalo donde lo veas.',s:'La cabeza suelta cuando confía en que está guardado.'}]},
- cerrado:{t:'Esto sí es rumiar. Tiene salida.',c:'No es lo que te pasa, sino cómo reaccionas.|Epicteto',
+ cerrado:{t:'Esto sí es un bucle. Tiene salida.',c:'No es lo que te pasa, sino cómo reaccionas.|Epicteto',
   p:[{t:'No intentes dejar de pensarlo.',s:'Empujar un pensamiento lo trae más fuerte. Está medido.'},
      {t:'Decí: "estoy teniendo el pensamiento de que..."',s:'Tal cual, con esa fórmula.'},
      {t:'No lo discutas ni busques la frase perfecta.',s:'Solo etiquetalo.'},
@@ -776,7 +776,7 @@ var PR={
   p:[{t:'Nada de lo que pensás ahora es confiable.',s:'De noche el cerebro exagera.'},
      {t:'Anotalo y dejá el papel lejos de la cama.',s:'No lo resolvés ahora. Lo guardás.'},
      {t:'Respirá: 4 adentro, 6 afuera.',s:'La exhalación larga baja la activación.',r:60},
-     {t:'Si en 15 min no dormís, levantate.',s:'Quedarte asocia la cama con rumiar.'},
+     {t:'Si en 15 min no dormís, levantate.',s:'Quedarte asocia la cama con el bucle.'},
      {t:'Volvé cuando tengas sueño.',s:'No antes.'}]}};
 
 var S=null,i=0,t=null;
@@ -813,7 +813,7 @@ function fin(){if(t){clearInterval(t);t=null}
   ver('cierre')}
 
 
-/* ═══════ 1. TEST: ¿es rumiar? ═══════ */
+/* ═══════ 1. TEST: ¿es bucle? ═══════ */
 var TEST=[
  {q:'En los últimos 10 minutos, ¿avanzaste algo?',a:'Sí, llegué a algo nuevo',b:'No, sigo en lo mismo'},
  {q:'¿Es una pregunta que tiene respuesta?',a:'Sí, se puede responder',b:'No, o no la sé y no puedo saberla'},
@@ -834,13 +834,13 @@ function respTest(v){tPts+=v;tIdx++;
   document.getElementById('tPreg').style.display='none';
   var r=document.getElementById('tRes');r.style.display='block';
   if(tPts>=2){
-    r.innerHTML='<h2 style="margin-top:18px">Eso no es pensar. Es rumiar.</h2>'+
-      '<p class="mini">Pensar avanza y termina. Rumiar gira: se siente '+
+    r.innerHTML='<h2 style="margin-top:18px">Eso no es pensar. Es un bucle.</h2>'+
+      '<p class="mini">Pensar avanza y termina. El bucle gira: se siente '+
       'productivo pero no llega a ningún lado. Por eso cuesta soltarlo.</p>'+
       '<div class="cita">La mente que gira sobre lo mismo no trabaja: se desgasta.</div>'+
       '<button class="pri" onclick="ver(\'inicio\')">Cortarlo ahora</button>';
   }else{
-    r.innerHTML='<h2 style="margin-top:18px">Estás pensando, no rumiando.</h2>'+
+    r.innerHTML='<h2 style="margin-top:18px">Estás pensando, no dándole vueltas.</h2>'+
       '<p class="mini">Hay avance y hay una pregunta con respuesta. '+
       'Seguí, pero ponele un límite de tiempo: cuando deje de avanzar, '+
       'se convierte en bucle.</p>'+
@@ -1409,7 +1409,7 @@ var AM=[
   s:'Cuatro adentro, siete sostenido, ocho afuera. La exhalación larga activa el sistema que te calma. Seguí el círculo.',
   resp:1,b:'Listo'},
  {t:'Si en 15 minutos no dormís, levantate.',
-  s:'Quedarte dando vueltas en la cama le enseña al cerebro que la cama es el lugar donde se rumia. Salí, luz baja, algo aburrido. Volvé recién con sueño. Cuesta una noche y arregla muchas.',
+  s:'Quedarte dando vueltas en la cama le enseña al cerebro que ahí es donde arranca el bucle. Salí, luz baja, algo aburrido. Volvé recién con sueño. Cuesta una noche y arregla muchas.',
   b:'Anotado'},
  {t:'Cerrá los ojos. Ya hiciste lo que había que hacer.',
   s:'Mañana lo mirás con la cabeza descansada. Está guardado, no se pierde.',
@@ -1474,7 +1474,7 @@ function finAM(){
     '<div class="lbl">'+(n===1?'primera noche que cortás el bucle':
       'noches que cortaste el bucle')+'</div></div>'+
     (n>=3?'<p class="mini">Tres noches seguidas es cuando se empieza a notar. '+
-      'El cerebro aprende que la cama no es el lugar donde se rumia.</p>':'')+
+      'El cerebro aprende que la cama no es el lugar del bucle.</p>':'')+
     '<button class="txtb" onclick="location.reload()">Cerrar</button>';
 }
 
@@ -1535,7 +1535,7 @@ var RITUALES=[
   p:'Si el día se va al carajo, ¿qué es lo único que igual querés haber hecho? Decidirlo temprano evita que el día lo decida por vos.',
   campos:['La única cosa que importa hoy']},
  {t:'Lo que depende de vos',
-  p:'La dicotomía del control aplicada al día. Separar temprano lo tuyo de lo ajeno es lo que evita rumiar después.',
+  p:'La dicotomía del control aplicada al día. Separar temprano lo tuyo de lo ajeno es lo que evita el bucle después.',
   campos:['Algo de hoy que depende de vos','Algo de hoy que no depende de vos']}];
 
 function chequearRitual(){
@@ -1681,7 +1681,7 @@ function pintarPatron(){
   h+='<div class="fila"><div class="card"><div class="big">'+reg.length+
     '</div><div class="lbl">bucles cortados</div></div>'+
     '<div class="card"><div class="big">'+(min>=60?(min/60).toFixed(1)+'h':min+'m')+
-    '</div><div class="lbl">rumiación evitada</div></div></div>';
+    '</div><div class="lbl">bucle evitado</div></div></div>';
 
   if(picos.length){
     var pr=(picos.reduce(function(a,p){return a+p.n},0)/picos.length).toFixed(1);
