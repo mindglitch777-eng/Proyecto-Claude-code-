@@ -25,6 +25,11 @@ FORMATOS (campo "formato" por segmento):
                 pagina, kicker, mucho espacio negativo.
   camino        Ruta tipo mapa: curva sinuosa con 3-5 paradas numeradas
                 que se van revelando una por una (json: "pasos": [str,...]).
+  collage       2-4 fotos que entran una tras otra en rapida sucesion,
+                cada una con su propio leve zoom/parallax y un corte
+                tipo whip al entrar (json: "imagenes": [{"ruta":...,
+                "texto": "..."}, ...]). "Pattern interrupt" barato:
+                stills reales cortados adentro del video.
 
 Captions kinetic opcionales (cualquier formato, cualquier segmento
 narrado): agregar "captions_palabra_por_palabra": true al segmento
@@ -1157,6 +1162,125 @@ def f_camino(img, d, seg, t, pal):
             sombra_t(d, (tx, ty), etiqueta, fn_lab, col_txt, 4)
 
 
+def f_collage(img, d, seg, t, pal):
+    """2 a 4 fotos que entran una tras otra en rapida sucesion (no
+    todas juntas), cada una con su propio leve zoom/parallax (Ken
+    Burns) y un corte tipo whip al entrar. Es el "pattern interrupt"
+    barato de las tendencias 2026: stills reales cortados adentro del
+    video, no un slideshow estatico.
+
+    JSON (mismo patron que 'pasos'/'ranking': lista de objetos; cada
+    uno con 'ruta' y 'texto' opcional como etiqueta corta sobre la
+    foto; 'texto' a nivel de segmento es un titulo general arriba,
+    opcional):
+      {"formato": "collage",
+       "texto": "Asi se ve el patron",
+       "imagenes": [{"ruta": "assets/imagenes/x.jpg", "texto": "Lunes"},
+                     {"ruta": "assets/imagenes/y.jpg", "texto": "Jueves"}]}
+
+    El audio (construir_audio) sincroniza un whoosh por cada entrada
+    de imagen usando la MISMA division en partes iguales (1/n) que se
+    usa aca para decidir que imagen esta activa -- ver SFX_POR_FORMATO
+    ("collage" -> primera imagen) y el bloque de SFX extra mas abajo
+    (imagenes 2 en adelante). Si se toca el reparto de tiempo aca,
+    hay que tocarlo tambien alla para que no se desincronicen.
+    """
+    imagenes = (seg.get("imagenes") or [])[:4]
+    if not imagenes:
+        f = fnt(42, ligera=True)
+        txt = "Sin imagenes en el guion"
+        w = d.textbbox((0, 0), txt, font=f)[2]
+        d.text(((W - w) / 2, H / 2 - f.size / 2), txt, font=f,
+               fill=(120, 120, 130))
+        return
+    n = len(imagenes)
+    slot = 1.0 / n
+    idx = min(n - 1, int(t / slot))
+    local_t = max(0.0, min(1.0, (t - idx * slot) / slot))
+    it = imagenes[idx]
+    ruta = it.get("ruta", "")
+
+    cache = seg.setdefault("_cache", {})
+    base = cache.get(ruta, "PENDIENTE")
+    if base == "PENDIENTE":
+        sub_cache = {}
+        base = preparar_retrato(ruta, int(W * 1.32), int(H * 1.32), pal,
+                                sub_cache) if ruta else None
+        cache[ruta] = base
+
+    signo = 1 if idx % 2 == 0 else -1
+    if base is not None:
+        # Ken Burns propio por imagen: arranca zoomeada afuera (se ve
+        # mas escena) y cierra sobre el encuadre final, con una
+        # deriva horizontal leve (parallax) que alterna de lado segun
+        # el indice, para que ninguna foto se sienta igual a la
+        # anterior.
+        e = eio(local_t)
+        z = 1.16 - 0.16 * e
+        cw, ch = min(base.width, int(W * z)), min(base.height, int(H * z))
+        max_dx, max_dy = base.width - cw, base.height - ch
+        cx = max_dx * (0.5 + signo * 0.20 * e)
+        cy = max_dy * 0.5
+        cx = max(0, min(cx, max_dx)); cy = max(0, min(cy, max_dy))
+        cuadro = base.crop((int(cx), int(cy), int(cx) + cw, int(cy) + ch))
+        if (cw, ch) != (W, H):
+            cuadro = cuadro.resize((W, H), Image.LANCZOS)
+        img.paste(cuadro, (0, 0))
+    else:
+        d.rectangle([0, 0, W, H], fill=tuple(min(255, c + 10)
+                                             for c in pal["fondo"]))
+
+    # Whip de entrada: blur + corrimiento horizontal que se disuelve
+    # rapido en los primeros frames del slot. El contenido ya corto
+    # en duro (la imagen ya cambio); esto solo agrega la sensacion de
+    # barrido en vez de aparicion estatica -- el look "collage
+    # caotico controlado" pedido, no un slideshow aburrido.
+    if idx > 0 and local_t < 0.16:
+        fz = 1 - local_t / 0.16
+        borroneado = img.filter(ImageFilter.GaussianBlur(fz * 10))
+        capa = Image.new("RGB", (W, H), tuple(pal["fondo"]))
+        capa.paste(borroneado, (int(signo * -46 * fz), 0))
+        img.paste(capa, (0, 0))
+
+    d2 = ImageDraw.Draw(img)
+
+    # Puntos de progreso arriba: cual foto del collage estamos viendo.
+    apagado = tuple(pal["apagado"]) if "apagado" in pal else (107, 107, 112)
+    for k in range(n):
+        cxp = W / 2 - (n - 1) * 24 + k * 48
+        r = 8 if k == idx else 5
+        d2.ellipse([cxp - r, 70 - r, cxp + r, 70 + r],
+                   fill=tuple(pal["destacado"]) if k <= idx else apagado)
+
+    # Titulo general opcional del segmento, chico, arriba (no compite
+    # con las etiquetas por imagen que van abajo).
+    if seg.get("texto"):
+        ft2, lt2 = auto_tam(d2, seg["texto"], W - 200, 140, 46, ligera=True)
+        y2 = 120
+        for ln in lt2:
+            wl = d2.textbbox((0, 0), ln, font=ft2)[2]
+            sombra_t(d2, ((W - wl) / 2, y2), ln, ft2, tuple(pal["texto"]), 4)
+            y2 += ft2.size + 8
+
+    # Etiqueta corta opcional por imagen, abajo. Si el segmento ademas
+    # usa captions kinetic, esas ya ocupan esa franja con la palabra
+    # narrada -- no dibujar la etiqueta encima para no duplicar texto
+    # en el mismo frame (mismo criterio que f_declaracion).
+    if it.get("texto") and not seg.get("captions_palabra_por_palabra"):
+        franja = img.crop((0, int(H * 0.80), W, H))
+        oscuro = Image.new("RGB", franja.size, tuple(pal["fondo"]))
+        img.paste(Image.blend(franja, oscuro, 0.60), (0, int(H * 0.80)))
+        d2 = ImageDraw.Draw(img)
+        eb = eo_back(min(1.0, local_t / 0.3))
+        dy = int(22 * (1 - max(0.0, eb)))
+        ft, lt = auto_tam(d2, it["texto"], W - 140, 150, 50)
+        y = H * 0.845 + dy
+        for ln in lt:
+            wl = d2.textbbox((0, 0), ln, font=ft)[2]
+            sombra_t(d2, ((W - wl) / 2, y), ln, ft, tuple(pal["texto"]), 4)
+            y += ft.size + 8
+
+
 FORMATOS = {
     "declaracion": f_declaracion, "dato_duro": f_dato_duro,
     "division": f_division, "revelacion": f_revelacion,
@@ -1165,7 +1289,7 @@ FORMATOS = {
     "retrato": f_retrato, "galeria": f_galeria,
     "cita": f_cita, "pasos": f_pasos, "ranking": f_ranking,
     "alerta": f_alerta, "panel": f_panel, "terminal": f_terminal,
-    "camino": f_camino,
+    "camino": f_camino, "collage": f_collage,
 }
 
 PALETAS = [
@@ -1436,6 +1560,10 @@ def texto_hablado(seg):
     for k in ("pasos", "items"):
         if seg.get(k):
             partes += list(seg[k])
+    if seg.get("imagenes"):
+        for im in seg["imagenes"]:
+            if isinstance(im, dict) and im.get("texto"):
+                partes.append(im["texto"])
     if seg.get("izquierda") and seg.get("derecha"):
         partes.append(seg["izquierda"].get("texto", ""))
         partes.append(seg["derecha"].get("texto", ""))
@@ -1506,7 +1634,7 @@ SFX_POR_TRANSICION = {
 
 SFX_POR_FORMATO = {
     "dato_duro": "campana", "conteo": "tick", "revelacion": "riser",
-    "pasos": "tick", "alerta": "impacto",
+    "pasos": "tick", "alerta": "impacto", "collage": "whoosh",
 }
 
 
@@ -1553,6 +1681,35 @@ def construir_audio(cfg, segs, dur_total, tmp, voces=None, marcas=None):
         filtros.append(f"[{n}:a]adelay={delay}|{delay},volume={vol}[a{n}]")
         etiquetas.append(f"[a{n}]")
         n += 1
+
+    # --- 2b. SFX extra por imagen en 'collage' ---
+    # El bloque de arriba ya puso UN whoosh por segmento (imagen 0,
+    # via SFX_POR_FORMATO["collage"], anclado al inicio del segmento
+    # igual que cualquier otro formato). Un collage tiene ademas 1-3
+    # cortes internos (imagen 1, 2, 3) que no son segmentos propios,
+    # asi que reusan el MISMO mecanismo (adelay+volume) pero calculan
+    # su propio momento con la misma division en partes iguales
+    # (k / n_img) que usa f_collage() para decidir que foto esta
+    # activa -- si un valor cambia, el otro tiene que cambiar igual.
+    for i, seg in enumerate(segs):
+        if seg.get("formato") != "collage" or not seg.get("sfx_auto", True):
+            continue
+        n_img = max(1, min(4, len(seg.get("imagenes") or [])))
+        if n_img < 2:
+            continue
+        nombre = seg.get("collage_sfx", "whoosh")
+        ruta = dir_sfx / f"{nombre}.wav" if nombre else None
+        if not ruta or not ruta.exists():
+            continue
+        t0 = marcas[i] if i < len(marcas) else 0.0
+        dur_seg = seg["duracion"]
+        vol = seg.get("sfx_vol", 0.4 if voces else 0.5)
+        for k in range(1, n_img):
+            delay = int(max(0.0, t0 + (k / n_img) * dur_seg) * 1000)
+            entradas += ["-i", str(ruta)]
+            filtros.append(f"[{n}:a]adelay={delay}|{delay},volume={vol}[a{n}]")
+            etiquetas.append(f"[a{n}]")
+            n += 1
 
     # --- 3. MUSICA con ducking donde hay voz ---
     musica = cfg.get("musica")
