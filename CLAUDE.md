@@ -13,7 +13,8 @@ del operador en esa sesión. Nada corre "solo" sin que un cron/GitHub Action
 lo dispare — no existe un proceso en segundo plano indefinido.
 
 ## Prioridad actual: Fase 1 — Productos Digitales
-Objetivo: 1 producto digital vendible en Gumroad en los primeros 7 días.
+Objetivo: 1 producto digital vendible en Hotmart en los primeros 7 días
+(se eligió Hotmart sobre Gumroad: mejor fit para pago en español/LatAm).
 No empezar YouTube, ropa, ni agencia hasta que Fase 1 tenga al menos
 una venta real o 30 días de intento documentado.
 
@@ -33,7 +34,7 @@ Claude Code debe leer ese archivo antes de proponer next steps.
 ## Cómo debe comportarse Claude Code en este proyecto
 1. Al iniciar sesión: correr `python orchestrator.py status` primero.
 2. Proponer un solo siguiente paso concreto, no un rediseño completo.
-3. Antes de cualquier integración con API externa (Gumroad, YouTube, etc.),
+3. Antes de cualquier integración con API externa (Hotmart, YouTube, etc.),
    confirmar con el operador qué cuenta/credenciales usar.
 4. Documentar en `state/log.md` cada decisión importante y su resultado
    (esto reemplaza la idea de "motor de metacognición": es simplemente

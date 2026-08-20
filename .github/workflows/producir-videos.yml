@@ -1,0 +1,58 @@
+name: producir-videos
+
+# Renderiza el lote completo (o el patron indicado) en el runner de
+# GitHub -- cero tokens de Claude Code por render. Todo el trabajo es
+# Python + Pillow + ffmpeg deterministico (animador_v9.py, armar_video.py,
+# sincronizar_voz.py), sin ningun modelo de IA de por medio.
+#
+# Manual siempre (workflow_dispatch): nunca corre solo. Si hay audios
+# de voz completos en capturas_voz/ para un guion, los usa; si no,
+# renderiza igual con las duraciones del guion (sin voz real todavia).
+
+on:
+  workflow_dispatch:
+    inputs:
+      patron:
+        description: "Patron glob de guiones a producir"
+        required: false
+        default: "guiones/*.json"
+      solo_nuevos:
+        description: "Saltear los que ya tienen video actualizado"
+        required: false
+        default: "false"
+        type: boolean
+
+jobs:
+  producir:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar ffmpeg y Pillow
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          pip install --quiet pillow
+
+      - name: Producir el lote
+        run: |
+          FLAG=""
+          if [ "${{ inputs.solo_nuevos }}" = "true" ]; then FLAG="--solo-nuevos"; fi
+          python3 producir_lote.py "${{ inputs.patron }}" $FLAG
+
+      - name: Commitear videos
+        if: always()
+        run: |
+          git config user.name "productor-bot"
+          git config user.email "actions@github.com"
+          git add videos/ guiones/*-con-voz.json
+          git diff --cached --quiet || git commit -m "Produccion automatica de videos"
+          git push

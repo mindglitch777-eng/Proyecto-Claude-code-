@@ -7,14 +7,14 @@ crea Claude Code solo -- esto es un registro, no un creador automatico.
 | Cuenta | Plataforma | Fase que la usa | Estado | Notas |
 |---|---|---|---|---|
 | (ejemplo) | GitHub | Fase 0 | activa | repo del proyecto |
-| | Gumroad | Fase 1 | | |
+| | Hotmart | Fase 1 | | venta del producto (El Corte), pago único |
+| | TikTok | Fase 1 | | canal de distribución real, no Fase 6 (ver MARCA.md) |
 | | Stripe | Fase 2 | | |
 | | YouTube | Fase 3 | | |
 | | (afiliados) | Fase 4 | | |
 | | (cobro freelance) | Fase 5 | | |
 | | Shopify/Etsy | Fase 6 | | |
 | | Printful/Printify | Fase 6 | | |
-| | TikTok | Fase 6 | | |
 | | Telegram Bot | Fase 0 (notificaciones) | | token en secrets del repo |
 
 Estados posibles: `activa`, `pausada`, `archivada`.

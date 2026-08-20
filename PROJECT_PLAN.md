@@ -49,14 +49,13 @@ Objetivo: 1 producto digital vendible en 7-14 dias.
 - **1.2 Diseno del producto**: definir y construir el contenido/codigo
   real del producto para el subnicho elegido.
 - **1.3 Empaquetado, ficha de venta y lanzamiento**: archivo final,
-  descripcion, keywords, precio con justificacion. Preparar la ficha
-  para DOS plataformas (Etsy para descubrimiento, Gumroad para venta
-  directa y captura de email) -- misma construccion, dos listados.
-  Preparar tambien los primeros 30 dias de contenido del canal de
-  trafico elegido en 1.1 (ej. 30 pines de Pinterest), porque publicar
-  el producto sin plan de trafico es garantia de cero ventas.
-  *Gate: cuentas y verificacion de identidad en Etsy/Gumroad las hago
-  yo.*
+  descripcion, keywords, precio con justificacion. Ficha de venta en
+  **Hotmart** (elegido sobre Gumroad/Etsy por el foco en publico
+  hispanohablante/LatAm: metodos de pago locales, sin friccion de
+  tarjeta internacional). El trafico lo trae el canal de contenido
+  (TikTok, ver MARCA.md) -- publicar el producto sin plan de trafico
+  es garantia de cero ventas.
+  *Gate: cuenta y verificacion de identidad en Hotmart las hago yo.*
 - **1.4 Revision de resultado real**: tras 1-2 semanas, registrar
   ventas reales en state/costs.json. Decidir: iterar o pasar a Fase 2.
 
@@ -287,7 +286,7 @@ QUE, y sin el "por que" el Sistema de replicacion tiende a copiar la
 superficie en vez de la razon real del exito.
 
 ## Audiencia propia (mitigar depender de una sola plataforma)
-Riesgo real de largo plazo: una cuenta de YouTube/TikTok/Gumroad puede
+Riesgo real de largo plazo: una cuenta de YouTube/TikTok/Hotmart puede
 suspenderse, o una plataforma puede cambiar su algoritmo de un dia
 para el otro -- eso esta fuera de nuestro control. La mitigacion real
 es un canal que no depende de ninguna plataforma: una lista de email.
@@ -319,16 +318,16 @@ de distribucion escrito. Un producto excelente sin trafico vende cero.
 La mayoria de proyectos como este no fracasan por mal producto --
 fracasan porque nadie se entero de que existia.
 
-**Correccion importante a la Fase 1**: Gumroad NO trae compradores. Es
-un escaparate propio, no un marketplace con busqueda. Publicar ahi y
-esperar es garantia de cero ventas. La estrategia correcta es doble
-canal con UNA sola construccion:
-- **Etsy** (u otro marketplace con buscador real): para trafico de
-  descubrimiento -- gente que ya esta buscando lo que vendes.
-- **Gumroad**: como destino de tu propia audiencia. Su ventaja real es
-  que te entrega el email de cada comprador (Etsy no); Gumroad cobra
-  menos comision en venta directa.
-Mismo producto, dos listados, dos fuentes de ingreso.
+**Correccion importante a la Fase 1**: Hotmart NO trae compradores por
+si solo para un producto nuevo sin afiliados. Es un checkout/entrega
+propio, no un marketplace con busqueda activa. Publicar ahi y esperar
+es garantia de cero ventas -- el trafico lo trae TikTok (ver MARCA.md).
+Ventaja real de Hotmart sobre otras pasarelas para este publico:
+metodos de pago locales de LatAm (PIX, boleto, tarjetas locales),
+entrega automatica del producto, y te da el email de cada comprador.
+Tambien tiene su propio programa de afiliados -- una vez que el
+producto tenga ventas propias probadas, sumar afiliados hispanohablantes
+es un canal de distribucion adicional a considerar (no para el dia 1).
 
 **Canales de trafico gratuitos a investigar en el bloque 1.1** (elegir
 1-2 y ser constante, no estar en todos a medias):
