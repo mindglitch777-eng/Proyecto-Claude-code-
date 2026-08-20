@@ -67,6 +67,13 @@ VENTANA_CAMBIO = 1.0      # contra cuanto tiempo atras se compara cada cuadro.
                            # entre cuadros vecinos pero el ojo igual lo ve.
 FPS_MUESTREO = 5          # cuadros por segundo que se analizan
 ANCHO_MUESTRA = 90        # se achica el cuadro para comparar rapido
+MAX_SILENCIO = 2.5        # segundos maximos de audio mudo seguidos.
+                           # Las capturas de la app se disenaron sin voz
+                           # ("que el producto se muestre solo") y dos
+                           # seguidas dejan 6s sin que nadie hable: el
+                           # video parece cortado. 2.5s es el limite en
+                           # que todavia se lee como pausa y no como
+                           # error.
 MAX_MB = 60               # tope de peso razonable para subir a TikTok
 MAX_DURACION = 60         # segundos
 MIN_DURACION = 5
@@ -163,6 +170,20 @@ def tramos_quietos(path, alto_muestra):
     return quietos, n
 
 
+def tramos_mudos(path):
+    """Tramos de audio sin voz mas largos que MAX_SILENCIO. Detecta el
+    'hueco' que dejan las capturas de la app, que se renderizan sin
+    narracion: en pantalla pasa algo pero nadie habla, y el espectador
+    lo lee como que el video se corto."""
+    r = subprocess.run(
+        ["ffmpeg", "-i", str(path), "-af",
+         f"silencedetect=noise=-50dB:d={MAX_SILENCIO}", "-f", "null",
+         "/dev/null"], capture_output=True, text=True)
+    ini = [float(x) for x in re.findall(r"silence_start: (-?[\d.]+)", r.stderr)]
+    fin = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", r.stderr)]
+    return [(a, b) for a, b in zip(ini, fin) if b - a > MAX_SILENCIO]
+
+
 def revisar(video_path, guion_path=None):
     video_path = Path(video_path)
     problemas, avisos = [], []
@@ -226,6 +247,12 @@ def revisar(video_path, guion_path=None):
                 problemas.append(
                     f"El video esta MUDO (volumen medio {vol:.1f} dB). El "
                     f"guion tiene voz asignada pero no se escucha.")
+            else:
+                for ini, fin in tramos_mudos(video_path):
+                    problemas.append(
+                        f"Silencio de {fin - ini:.1f}s (de {ini:.1f}s a "
+                        f"{fin:.1f}s). Mas de {MAX_SILENCIO}s sin que nadie "
+                        f"hable se siente como que el video se corto.")
 
     # 3. Pantalla muerta
     alto_muestra = int(ANCHO_MUESTRA * (alto / ancho)) if ancho else 160
