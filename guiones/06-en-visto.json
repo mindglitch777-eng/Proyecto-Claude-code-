@@ -29,7 +29,8 @@
       "texto": "Te dejó en visto hace 3 horas.",
       "duracion": 1.9,
       "hook": "glitch",
-      "karaoke": true
+      "karaoke": true,
+      "imagen": "assets/imagenes/en-visto.jpg"
     },
     {
       "formato": "dato_duro",

@@ -30,7 +30,8 @@
       "duracion": 2.0,
       "hook": "sacudida",
       "karaoke": true,
-      "narracion": "Dijiste que sí. Querías decir que no. Ya pasaron 2 días."
+      "narracion": "Dijiste que sí. Querías decir que no. Ya pasaron 2 días.",
+      "imagen": "assets/imagenes/decidir.jpg"
     },
     {
       "formato": "dato_duro",

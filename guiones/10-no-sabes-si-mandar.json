@@ -30,7 +30,8 @@
       "duracion": 2.0,
       "hook": "sacudida",
       "karaoke": true,
-      "narracion": "Escribiste el mensaje. Lo borraste 5 veces."
+      "narracion": "Escribiste el mensaje. Lo borraste 5 veces.",
+      "imagen": "assets/imagenes/en-visto.jpg"
     },
     {
       "formato": "dato_duro",

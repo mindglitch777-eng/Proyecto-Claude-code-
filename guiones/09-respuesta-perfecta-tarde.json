@@ -30,7 +30,8 @@
       "duracion": 2.0,
       "hook": "glitch",
       "karaoke": true,
-      "narracion": "Pensaste la respuesta perfecta 6 horas tarde. Siempre pasa igual."
+      "narracion": "Pensaste la respuesta perfecta 6 horas tarde. Siempre pasa igual.",
+      "imagen": "assets/imagenes/hablar-dificil.jpg"
     },
     {
       "formato": "dato_duro",

@@ -29,7 +29,8 @@
       "texto": "Discutiste. Son las 2 AM y te comés la cabeza.",
       "duracion": 1.9,
       "hook": "flash",
-      "karaoke": true
+      "karaoke": true,
+      "imagen": "assets/imagenes/no-dormir.jpg"
     },
     {
       "formato": "cronologia",

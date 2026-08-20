@@ -30,7 +30,8 @@
       "respuesta": "Ya inventaste 4 explicaciones.",
       "texto": "",
       "duracion": 2.4,
-      "hook": "glitch"
+      "hook": "glitch",
+      "imagen": "assets/imagenes/en-visto.jpg"
     },
     {
       "formato": "dato_duro",

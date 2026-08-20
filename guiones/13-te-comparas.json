@@ -30,7 +30,8 @@
       "duracion": 2.0,
       "hook": "glitch",
       "karaoke": true,
-      "narracion": "Mirás su perfil y te comparás. Van 20 minutos."
+      "narracion": "Mirás su perfil y te comparás. Van 20 minutos.",
+      "imagen": "assets/imagenes/respirar.jpg"
     },
     {
       "formato": "dato_duro",

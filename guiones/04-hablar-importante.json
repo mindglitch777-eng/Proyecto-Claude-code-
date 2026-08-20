@@ -29,7 +29,8 @@
       "texto": "Mañana hablás. Ya lo ensayaste 12 veces.",
       "duracion": 2.1,
       "hook": "sacudida",
-      "karaoke": true
+      "karaoke": true,
+      "imagen": "assets/imagenes/hablar-dificil.jpg"
     },
     {
       "formato": "dato_duro",

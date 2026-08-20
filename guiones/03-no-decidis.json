@@ -29,7 +29,8 @@
       "texto": "7 días dándole vueltas al mismo sí o no.",
       "duracion": 2.0,
       "hook": "persiana",
-      "karaoke": true
+      "karaoke": true,
+      "imagen": "assets/imagenes/decidir.jpg"
     },
     {
       "formato": "dato_duro",

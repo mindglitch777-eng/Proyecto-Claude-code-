@@ -29,7 +29,8 @@
       "texto": "Te despertaste a las 4 AM, acelerado.",
       "duracion": 1.9,
       "hook": "flash",
-      "karaoke": true
+      "karaoke": true,
+      "imagen": "assets/imagenes/respirar.jpg"
     },
     {
       "formato": "dato_duro",
