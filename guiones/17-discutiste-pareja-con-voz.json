@@ -30,7 +30,7 @@
       "hook": "impacto",
       "sfx": "impacto",
       "narracion": "Discutiste con tu pareja hace 3 horas. Ya no sabés por qué.",
-      "voz_archivo": "capturas_voz/17-discutiste-pareja-voz0.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/17-discutiste-pareja-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -40,7 +40,7 @@
       "duracion": 1.6,
       "transicion": "punch",
       "narracion": "3 horas. Dándole vueltas a quién tenía razón.",
-      "voz_archivo": "capturas_voz/17-discutiste-pareja-voz1.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/17-discutiste-pareja-voz1.mp3"
     },
     {
       "formato": "escalada",
@@ -53,7 +53,7 @@
       "duracion": 3.1,
       "transicion": "whip",
       "narracion": "Primero: yo tenía razón Después: bueno, un poco los dos Ahora ni sabés por qué empezó",
-      "voz_archivo": "capturas_voz/17-discutiste-pareja-voz2.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/17-discutiste-pareja-voz2.mp3"
     },
     {
       "formato": "declaracion",
@@ -105,7 +105,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de darle vueltas a quién tenía razón.",
-      "voz_archivo": "capturas_voz/17-discutiste-pareja-voz7.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/17-discutiste-pareja-voz7.mp3"
     }
   ],
   "elevenlabs": {

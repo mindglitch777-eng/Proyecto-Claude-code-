@@ -30,7 +30,7 @@
       "hook": "impacto",
       "sfx": "impacto",
       "narracion": "Te cancelaron el plan hace 10 minutos y ya te lo tomaste personal.",
-      "voz_archivo": "capturas_voz/22-cancelaron-plan-voz0.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/22-cancelaron-plan-voz0.mp3"
     },
     {
       "formato": "mensajes",
@@ -51,7 +51,7 @@
       ],
       "duracion": 3.0,
       "transicion": "corte_duro",
-      "voz_archivo": "capturas_voz/22-cancelaron-plan-voz1.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/22-cancelaron-plan-voz1.mp3"
     },
     {
       "formato": "escalada",
@@ -64,7 +64,7 @@
       "duracion": 3.1,
       "transicion": "whip",
       "narracion": "Primero: bueno, tendrá algo Después: seguro no le importa verme Ya decidiste que te está evitando",
-      "voz_archivo": "capturas_voz/22-cancelaron-plan-voz2.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/22-cancelaron-plan-voz2.mp3"
     },
     {
       "formato": "declaracion",
@@ -116,7 +116,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de tomarte todo personal.",
-      "voz_archivo": "capturas_voz/22-cancelaron-plan-voz7.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/22-cancelaron-plan-voz7.mp3"
     }
   ],
   "elevenlabs": {

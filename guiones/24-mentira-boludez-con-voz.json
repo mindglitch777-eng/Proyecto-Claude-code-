@@ -30,7 +30,7 @@
       "hook": "impacto",
       "sfx": "impacto",
       "narracion": "Le mentiste por una boludez hace 3 días y no lo podés soltar.",
-      "voz_archivo": "capturas_voz/24-mentira-boludez-voz0.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/24-mentira-boludez-voz0.mp3"
     },
     {
       "formato": "mensajes",
@@ -51,7 +51,7 @@
       ],
       "duracion": 3.0,
       "transicion": "corte_duro",
-      "voz_archivo": "capturas_voz/24-mentira-boludez-voz1.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/24-mentira-boludez-voz1.mp3"
     },
     {
       "formato": "escalada",
@@ -64,7 +64,7 @@
       "duracion": 3.1,
       "transicion": "whip",
       "narracion": "Primero: fue una boludez, no importa Después: ¿y si se entera y piensa que soy un mentiroso? Ya armaste un escándalo por una frase de nada",
-      "voz_archivo": "capturas_voz/24-mentira-boludez-voz2.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/24-mentira-boludez-voz2.mp3"
     },
     {
       "formato": "declaracion",
@@ -116,7 +116,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de armar quilombo por una mentira boluda.",
-      "voz_archivo": "capturas_voz/24-mentira-boludez-voz7.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/24-mentira-boludez-voz7.mp3"
     }
   ],
   "elevenlabs": {

@@ -30,7 +30,7 @@
       "hook": "impacto",
       "sfx": "impacto",
       "narracion": "Tu jefe dijo una frase hace 2 horas y la seguís repasando.",
-      "voz_archivo": "capturas_voz/21-jefe-reunion-voz0.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/21-jefe-reunion-voz0.mp3"
     },
     {
       "formato": "camino",
@@ -44,7 +44,7 @@
       "duracion": 3.3,
       "transicion": "whip",
       "narracion": "Dijo algo ambiguo Vos lo interpretaste como crítica Lo repasaste toda la tarde Nunca preguntaste qué quiso decir",
-      "voz_archivo": "capturas_voz/21-jefe-reunion-voz1.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/21-jefe-reunion-voz1.mp3"
     },
     {
       "formato": "declaracion",
@@ -96,7 +96,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de repasar cada frase de tu jefe.",
-      "voz_archivo": "capturas_voz/21-jefe-reunion-voz6.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/21-jefe-reunion-voz6.mp3"
     }
   ],
   "elevenlabs": {

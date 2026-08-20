@@ -31,7 +31,7 @@
       "hook": "sacudida",
       "karaoke": true,
       "imagen": "assets/imagenes/hablar-dificil.jpg",
-      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/04-hablar-importante-voz0.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/04-hablar-importante-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -40,7 +40,7 @@
       "texto": "veces ensayado, cero veces mejorado",
       "duracion": 2.4,
       "transicion": "punch",
-      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/04-hablar-importante-voz1.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/04-hablar-importante-voz1.mp3"
     },
     {
       "formato": "pasos",
@@ -53,7 +53,7 @@
       ],
       "duracion": 4.2,
       "transicion": "whip",
-      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/04-hablar-importante-voz2.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/04-hablar-importante-voz2.mp3"
     },
     {
       "captura": "capturas/captura-antes.mp4",
@@ -84,7 +84,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y vas a dejar de ensayar la misma charla doce veces.",
-      "voz_archivo": "/home/user/Proyecto-Claude-code-/capturas_voz/04-hablar-importante-voz5.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/04-hablar-importante-voz5.mp3"
     }
   ],
   "elevenlabs": {

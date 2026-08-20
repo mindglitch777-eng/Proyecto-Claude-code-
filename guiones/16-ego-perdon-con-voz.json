@@ -31,7 +31,7 @@
       "hook": "impacto",
       "sfx": "impacto",
       "narracion": "Sabés que la cagaste hace 4 días. Tu ego no te deja pedir perdón.",
-      "voz_archivo": "capturas_voz/16-ego-perdon-voz0.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/16-ego-perdon-voz0.mp3"
     },
     {
       "formato": "dato_duro",
@@ -41,7 +41,7 @@
       "duracion": 1.6,
       "transicion": "punch",
       "narracion": "Cuatro días. Sin un solo mensaje. Ninguno de los dos.",
-      "voz_archivo": "capturas_voz/16-ego-perdon-voz1.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/16-ego-perdon-voz1.mp3"
     },
     {
       "formato": "escalada",
@@ -54,7 +54,7 @@
       "duracion": 3.1,
       "transicion": "whip",
       "narracion": "Primero: que hable primero el otro. Después: total, no fue tan grave. Ya pasaron cuatro días y ninguno cede.",
-      "voz_archivo": "capturas_voz/16-ego-perdon-voz2.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/16-ego-perdon-voz2.mp3"
     },
     {
       "formato": "declaracion",
@@ -106,7 +106,7 @@
       "sfx": "impacto",
       "transicion": "corte_duro",
       "narracion": "Seguime y la próxima vez le ganás vos a tu ego, no al revés.",
-      "voz_archivo": "capturas_voz/16-ego-perdon-voz7.mp3"
+      "voz_archivo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/capturas_voz/16-ego-perdon-voz7.mp3"
     }
   ],
   "elevenlabs": {
