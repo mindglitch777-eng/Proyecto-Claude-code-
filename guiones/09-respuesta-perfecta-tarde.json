@@ -55,7 +55,7 @@
       },
       "duracion": 3.8,
       "transicion": "barrido",
-      "narracion": ""
+      "narracion": "EN LA CABEZA: Se arma sola, tarde. EN PAPEL: 4 preguntas, ahora."
     },
     {
       "captura": "capturas/captura-antes.mp4",
@@ -91,7 +91,7 @@
     "lineas": [
       "Pensaste la respuesta perfecta 6 horas tarde. Siempre pasa igual.",
       "horas tarde, la respuesta perfecta",
-      "",
+      "EN LA CABEZA: Se arma sola, tarde. EN PAPEL: 4 preguntas, ahora.",
       "La respuesta perfecta, a tiempo. Seguime."
     ]
   }

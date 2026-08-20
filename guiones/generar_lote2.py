@@ -187,9 +187,14 @@ VIDEOS = [
 
 def narracion_de(seg):
     """Lo que se dice en voz alta -- por defecto el texto visible, salvo
-    en formatos donde el texto vive en otro campo (pregunta)."""
-    if seg.get("formato") == "pregunta":
+    en formatos donde el texto vive en otro campo (pregunta, division)."""
+    fmt = seg.get("formato")
+    if fmt == "pregunta":
         return (seg.get("pregunta", "") + " ... " + seg.get("respuesta", "")).strip()
+    if fmt == "division":
+        izq, der = seg.get("izquierda", {}), seg.get("derecha", {})
+        return (f"{izq.get('titulo', '')}: {izq.get('texto', '')}. "
+                f"{der.get('titulo', '')}: {der.get('texto', '')}.").strip()
     return seg.get("texto", "")
 
 
