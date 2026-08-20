@@ -1,9 +1,17 @@
 name: producir-videos
 
-# Renderiza el lote completo (o el patron indicado) en el runner de
+# Renderiza el lote completo (o el patron indicado) en runners de
 # GitHub -- cero tokens de Claude Code por render. Todo el trabajo es
 # Python + Pillow + ffmpeg deterministico (animador_v9.py, armar_video.py,
 # sincronizar_voz.py), sin ningun modelo de IA de por medio.
+#
+# Paraleliza con una matrix: cada guion se renderiza en su propio
+# runner al mismo tiempo (en vez de uno detras del otro en un solo
+# runner), asi 27 videos tardan lo que tarda EL MAS LENTO de ellos, no
+# la suma de los 27. Cada job sube su video como artifact (no pushea
+# directo -- 20 jobs empujando al mismo tiempo generarian conflictos
+# de git); un ultimo job junta todos los artifacts y hace un solo
+# commit.
 #
 # Manual siempre (workflow_dispatch): nunca corre solo. Si hay audios
 # de voz completos en capturas_voz/ para un guion, los usa; si no,
@@ -23,14 +31,39 @@ on:
         type: boolean
 
 jobs:
-  producir:
+  listar:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    outputs:
+      matriz: ${{ steps.listar.outputs.matriz }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: true
+
+      - id: listar
+        run: |
+          python3 -c "
+          import glob, json, os
+          patron = os.environ['PATRON']
+          archivos = sorted(
+              f for f in glob.glob(patron)
+              if not f.endswith('-con-voz.json')
+          )
+          print(json.dumps(archivos))
+          " > /tmp/matriz.json
+          echo "matriz=$(cat /tmp/matriz.json)" >> "$GITHUB_OUTPUT"
+          echo "Guiones a producir: $(cat /tmp/matriz.json)"
+        env:
+          PATRON: ${{ inputs.patron }}
+
+  producir:
+    needs: listar
+    if: needs.listar.outputs.matriz != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        guion: ${{ fromJson(needs.listar.outputs.matriz) }}
+    steps:
+      - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
         with:
@@ -42,21 +75,52 @@ jobs:
           sudo apt-get install -y -qq ffmpeg
           pip install --quiet pillow
 
-      - name: Producir el lote
+      - name: Producir este guion
         run: |
           FLAG=""
           if [ "${{ inputs.solo_nuevos }}" = "true" ]; then FLAG="--solo-nuevos"; fi
-          python3 producir_lote.py "${{ inputs.patron }}" $FLAG
+          python3 producir_lote.py "${{ matrix.guion }}" $FLAG
 
-      - name: Commitear videos
-        if: always()
+      - name: Subir resultado como artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: salida-${{ strategy.job-index }}
+          path: |
+            videos/*.mp4
+            guiones/*-con-voz.json
+          if-no-files-found: ignore
+          retention-days: 1
+
+  commitear:
+    needs: producir
+    if: always() && needs.listar.outputs.matriz != '[]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Descargar todos los resultados
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/salidas
+          pattern: salida-*
+
+      - name: Acomodar y commitear
         run: |
           shopt -s nullglob
+          mkdir -p videos guiones
+          for d in /tmp/salidas/salida-*/; do
+            [ -d "${d}videos" ] && cp -n "${d}"videos/*.mp4 videos/ 2>/dev/null || true
+            [ -d "${d}guiones" ] && cp -n "${d}"guiones/*-con-voz.json guiones/ 2>/dev/null || true
+          done
           git config user.name "productor-bot"
           git config user.email "actions@github.com"
           git add videos/
           CON_VOZ=(guiones/*-con-voz.json)
           if [ ${#CON_VOZ[@]} -gt 0 ]; then git add "${CON_VOZ[@]}"; fi
-          git diff --cached --quiet || git commit -m "Produccion automatica de videos"
+          git diff --cached --quiet || git commit -m "Produccion automatica de videos (paralela)"
           git pull --rebase --autostash
           git push
