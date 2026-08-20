@@ -23,15 +23,20 @@ h3{font-size:13px;letter-spacing:.08em;text-transform:uppercase;
 color:var(--oro);margin:24px 0 10px;font-weight:600}
 p{margin-bottom:12px}
 .mini{font-size:13px;color:var(--tenue);line-height:1.45}
-.v{display:none}.v.on{display:block;animation:e .28s ease}
-@keyframes e{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-button{font-family:inherit;font-size:16px;cursor:pointer;border:none;color:var(--txt)}
+.v{display:none}.v.on{display:block;animation:e .32s cubic-bezier(.2,.8,.2,1)}
+.entra{animation:e .32s cubic-bezier(.2,.8,.2,1)}
+@keyframes e{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(1)}45%{transform:scale(1.22)}100%{transform:scale(1)}}
+.pop{animation:pop .38s cubic-bezier(.3,1.4,.4,1)}
+button{font-family:inherit;font-size:16px;cursor:pointer;border:none;color:var(--txt);
+transition:transform .12s ease,background .15s ease,color .15s ease,border-color .15s ease}
 .op{display:block;width:100%;text-align:left;background:var(--card);
 border:1px solid var(--linea);border-radius:var(--r);padding:15px 16px;margin-bottom:9px}
-.op:active{background:var(--card2)}
+.op:active{background:var(--card2);transform:scale(.975)}
 .op small{display:block;color:var(--tenue);font-size:13px;margin-top:2px}
 .pri{display:block;width:100%;background:var(--oro);color:#171310;
 border-radius:var(--r);padding:15px;text-align:center;font-weight:600;margin-top:6px}
+.pri:active,.gh:active{transform:scale(.975)}
 .gh{display:block;width:100%;background:var(--card);border:1px solid var(--linea);
 border-radius:var(--r);padding:14px;text-align:center;margin-top:9px}
 .txtb{background:none;color:var(--tenue);font-size:14px;text-decoration:underline;
@@ -48,6 +53,7 @@ padding:16px;margin-bottom:10px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
 .chip{background:var(--card);border:1px solid var(--linea);border-radius:20px;
 padding:9px 15px;font-size:14px}
+.chip:active{transform:scale(.94)}
 .chip.sel{background:var(--oro);color:#171310;border-color:var(--oro)}
 .esc{display:flex;gap:6px;margin:12px 0}
 .esc button{flex:1;background:var(--card);border:1px solid var(--linea);
@@ -72,7 +78,9 @@ max-width:560px;margin:0 auto}
 nav button{flex:1;background:none;font-size:11px;color:var(--tenue);
 padding:5px 0;display:flex;flex-direction:column;align-items:center;gap:4px}
 nav button.on{color:var(--oro)}
-nav .ic{font-size:19px;line-height:1}
+nav .ic{font-size:19px;line-height:1;transition:transform .2s cubic-bezier(.3,1.4,.4,1)}
+nav button.on .ic{transform:translateY(-2px)}
+.racha{font-size:12.5px;color:var(--oro);display:flex;align-items:center;gap:4px}
 body.noche{background:#050505}
 body.noche .card{background:#0d0c0b;border-color:#1e1c19}
 body.noche nav{background:#030303;border-color:#1a1815}
@@ -126,7 +134,10 @@ padding-top:14px;margin-top:28px;line-height:1.5}
 
 <header>
   <div class="marca">El Corte</div>
-  <div class="fecha" id="hoy"></div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="racha" id="rachaBadge" style="display:none"></div>
+    <div class="fecha" id="hoy"></div>
+  </div>
 </header>
 
 <main>
@@ -137,6 +148,7 @@ padding-top:14px;margin-top:28px;line-height:1.5}
     <h1>¿Qué te está dando vueltas?</h1>
     <p class="mini" style="margin-bottom:18px">Dos toques y tenés qué hacer.</p>
     <div id="estrella"></div>
+    <button class="op" style="border-color:var(--oro2)" onclick="corteYa()">⚡ Corte ya<small>Un toque, una acción. Sin preguntas.</small></button>
     <button class="op" onclick="dx('pasado')">Algo que <b>ya pasó</b><small>Una discusión, algo que dije, un error</small></button>
     <button class="op" onclick="dx('futuro')">Algo que <b>puede pasar</b><small>Una reunión, una decisión, el futuro</small></button>
     <button class="op" onclick="dx('persona')">Alguien en particular<small>Lo que hizo, lo que dijo, lo que no respondió</small></button>
@@ -312,6 +324,13 @@ padding-top:14px;margin-top:28px;line-height:1.5}
     <h2>Cierre del día</h2>
     <p class="mini">Séneca lo hacía cada noche: repasar el día, sin castigarse.
        Tres preguntas y listo.</p>
+    <div class="mini" style="margin-bottom:14px">Recordame todos los días a las
+      <input type="time" id="recHoraInput" style="width:auto;display:inline-block;
+        padding:6px 10px;margin:0 6px">
+      <button class="gh" style="display:inline-block;width:auto;padding:8px 14px;
+        margin:0" onclick="guardarHoraRecordatorio()">Guardar</button>
+      <div class="mini" id="recEstado" style="margin-top:6px"></div>
+    </div>
     <div id="cdResumen"></div>
     <h3>1. ¿Qué te sacó de eje hoy?</h3>
     <div id="cdSug" class="chips"></div>
@@ -358,6 +377,19 @@ padding-top:14px;margin-top:28px;line-height:1.5}
       <p class="mini" style="margin-top:12px">Releelo mañana antes de mandarlo.
          Lo que se escribe caliente casi nunca se manda igual en frío.</p>
     </div>
+    <button class="txtb" onclick="volverInicio()">Volver</button>
+  </div>
+
+  <!-- Corte ya: una accion, sin preguntas -->
+  <div id="corteYaVista" style="display:none">
+    <h2>Corte ya</h2>
+    <div class="paso">
+      <div class="n" id="cyNum">Sin preguntas</div>
+      <div class="t" id="cyTxt"></div>
+      <div class="mini" id="cySub" style="margin-top:10px"></div>
+    </div>
+    <button class="pri" onclick="marcarCorteYaHecho()">Hecho</button>
+    <button class="gh" onclick="corteYa()">Dame otra</button>
     <button class="txtb" onclick="volverInicio()">Volver</button>
   </div>
 </div>
@@ -469,10 +501,38 @@ var mem={};
 function leer(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}
   catch(e){return mem[k]!==undefined?mem[k]:d}}
 function esc_(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){mem[k]=v}}
-var reg=leer('ec_reg',[]), notas=leer('ec_not',[]), picos=leer('ec_pic',[]), cierres=leer('ec_cie',[]), foco=leer('ec_foc',[]), tareas=leer('ec_tar',[]), resp=leer('ec_res',[]), rituales=leer('ec_rit',[]), meds=leer('ec_med',[]), noches=leer('ec_noc',[]);
+var reg=leer('ec_reg',[]), notas=leer('ec_not',[]), picos=leer('ec_pic',[]), cierres=leer('ec_cie',[]), foco=leer('ec_foc',[]), tareas=leer('ec_tar',[]), resp=leer('ec_res',[]), rituales=leer('ec_rit',[]), meds=leer('ec_med',[]), noches=leer('ec_noc',[]), diasActividad=leer('ec_racha',[]), recHora=leer('ec_recHora','');
 
 document.getElementById('hoy').textContent=
   new Date().toLocaleDateString('es',{weekday:'long',day:'numeric',month:'long'});
+
+/* ═══ Racha ═══ */
+function marcarActividad(){
+  var hoy=new Date().toDateString();
+  if(diasActividad.indexOf(hoy)===-1){
+    diasActividad.unshift(hoy);
+    esc_('ec_racha',diasActividad);
+  }
+}
+function calcularRacha(){
+  if(!diasActividad.length) return 0;
+  var dias=diasActividad.map(function(d){var x=new Date(d);x.setHours(0,0,0,0);return x})
+    .sort(function(a,b){return b-a});
+  var hoy=new Date();hoy.setHours(0,0,0,0);
+  var diffReciente=Math.round((hoy-dias[0])/864e5);
+  if(diffReciente>1) return 0;
+  var set={};dias.forEach(function(d){set[d.toDateString()]=1});
+  var racha=0,c=new Date(dias[0]);
+  while(set[c.toDateString()]){racha++;c.setDate(c.getDate()-1)}
+  return racha;
+}
+function pintarRacha(pulso){
+  var b=document.getElementById('rachaBadge');if(!b)return;
+  var n=calcularRacha();
+  if(n>=1){b.style.display='flex';b.textContent='🔥 '+n+(n===1?' día':' días')}
+  else b.style.display='none';
+  if(pulso){b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')}
+}
 
 /* ═══ Navegación ═══ */
 function tab(id){
@@ -489,9 +549,12 @@ function tab(id){
   if(t){clearInterval(t);t=null}
   window.scrollTo(0,0);
 }
+function anim(el){if(!el)return;el.classList.remove('entra');void el.offsetWidth;el.classList.add('entra')}
+
 function ver(sub){
-  ['inicio','control','sesion','cierre','expresar','test','decidir','cierreDia','revision','antes','respirar','meditar','ritual','tresAM'].forEach(function(s){
+  ['inicio','control','sesion','cierre','expresar','test','decidir','cierreDia','revision','antes','respirar','meditar','ritual','tresAM','corteYaVista'].forEach(function(s){
     document.getElementById(s).style.display=s===sub?'block':'none'});
+  anim(document.getElementById(sub));
   window.scrollTo({top:0,behavior:'smooth'});
   if(sub==='test') iniciarTest();
   if(sub==='cierreDia') abrirCierreDia();
@@ -500,7 +563,7 @@ function ver(sub){
   if(sub==='meditar') prepararMed();
   if(sub!=='meditar') pararMed();
   if(sub!=='respirar') pararResp();
-  if(sub==='inicio'){chequearRecurrente();pintarEstrella()}
+  if(sub==='inicio'){chequearRecurrente();pintarEstrella();chequearInsightSemanal();chequearNudgeCierre();pintarRacha()}
   if(sub!=='tresAM') pararAM();
 }
 function volverInicio(){if(t){clearInterval(t);t=null} ver('inicio')}
@@ -634,6 +697,46 @@ function dx(t_){tipoAct=t_;var p=P[t_];
   ver('control')}
 function rutear(si){var p=P[tipoAct];abrir(si?p.rs:p.rn)}
 
+/* ═══ Corte ya: una accion random, sin diagnostico previo ═══ */
+var CORTE_YA=[
+ {t:'Nombrá el pensamiento: "estoy teniendo el pensamiento de que…"',
+  s:'No lo discutas ni lo completes. Solo etiquetalo así, tal cual, y seguí con lo que estabas haciendo.'},
+ {t:'Escribilo en cualquier lado y soltá el papel.',
+  s:'La cabeza repite lo que teme olvidar. Anotado, no hace falta seguir sosteniéndolo despierto.'},
+ {t:'Nombrá cuatro cosas que ves ahora mismo.',
+  s:'En voz baja si podés. Corta el piloto automático del bucle en el momento, no después.'},
+ {t:'Preguntate: ¿esto depende de mí?',
+  s:'Si la respuesta es no, no hay nada más que pensar — solo queda aceptarlo.'},
+ {t:'Ponele una fecha. No lo resuelvas ahora, decidí cuándo.',
+  s:'Un bucle sin fecha se repite solo. Con fecha, queda cerrado hasta entonces.'},
+ {t:'Cuatro segundos inhalando, seis exhalando. Repetilo tres veces.',
+  s:'La exhalación larga le baja el volumen a la alarma del cuerpo.'},
+ {t:'Cambiá de lugar. Literal, ahora.',
+  s:'El cuerpo en movimiento corta lo que la voluntad sola no corta.'},
+ {t:'Elegí una acción de diez minutos y hacela ya.',
+  s:'Rumiar se siente como avanzar, pero no avanza. Una acción chica sí.'},
+ {t:'Si es sobre alguien más: ¿le vas a hablar o no?',
+  s:'Sin esa respuesta, la cabeza sigue reabriendo el tema sola.'},
+ {t:'Ponele nombre a lo peor que puede pasar, en una frase.',
+  s:'Lo que se nombra pesa menos que lo que da vueltas sin forma.'}];
+var cyIdx=-1;
+function corteYa(){
+  var idx;
+  do{idx=Math.floor(Math.random()*CORTE_YA.length)}while(idx===cyIdx&&CORTE_YA.length>1);
+  cyIdx=idx;
+  var a=CORTE_YA[idx];
+  document.getElementById('cyTxt').textContent=a.t;
+  document.getElementById('cySub').textContent=a.s;
+  ver('corteYaVista');
+}
+function marcarCorteYaHecho(){
+  reg.push({tipo:'corteYa',hora:new Date().getHours(),fecha:new Date().toISOString()});
+  esc_('ec_reg',reg);
+  marcarActividad();
+  volverInicio();
+  pintarRacha(true);
+}
+
 var PR={
  accion:{t:'No estás rumiando. Estás postergando.',c:'Si algo está en tu poder, ¿por qué te inquietas?|Epicteto',
   p:[{t:'Escribí la acción en un verbo.',s:'"Mandarle un mensaje", no "arreglar las cosas".'},
@@ -701,6 +804,7 @@ function fin(){if(t){clearInterval(t);t=null}
   var h=new Date();
   reg.push({tipo:tipoAct,hora:h.getHours(),fecha:h.toISOString()});
   esc_('ec_reg',reg);
+  marcarActividad();pintarRacha(true);
   var sem=reg.filter(function(r){return(Date.now()-new Date(r.fecha))<7*864e5}).length;
   var m=sem*25;
   document.getElementById('cTiempo').textContent=m>=60?(m/60).toFixed(1)+' h':m+' min';
@@ -811,6 +915,10 @@ function abrirCierreDia(){
       d.querySelectorAll('.chip').forEach(function(y){y.classList.remove('sel')});
       b.classList.add('sel')};
     d.appendChild(b)});
+  var ri=document.getElementById('recHoraInput');
+  if(ri){ri.value=recHora||'';
+    document.getElementById('recEstado').textContent=
+      recHora?'Recordatorio activado a las '+recHora+'.':''}
 }
 function guardarCierre(){
   var a=document.getElementById('cd1').value.trim();
@@ -818,6 +926,7 @@ function guardarCierre(){
   if(!a&&!c){alert('Completá al menos una.');return}
   cierres.unshift({q:a,dep:cdDepSel||'',m:c,f:new Date().toISOString()});
   esc_('ec_cie',cierres);
+  marcarActividad();pintarRacha(true);
   document.getElementById('cd1').value='';document.getElementById('cd3').value='';
   cdDepSel=null;
   var noDep=cierres.filter(function(x){return x.dep==='No dependía de mí'}).length;
@@ -828,6 +937,52 @@ function guardarCierre(){
     '<div class="card oro"><b>Día cerrado.</b><p class="mini" style="margin:8px 0 0">'+
     'Lo de hoy ya está revisado. No hace falta repasarlo en la cama.</p></div>'+msg;
   window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ═══════ Recordatorio del cierre del día ═══════ */
+/* Best-effort: sin servidor no hay push real, asi que esto combina un
+   aviso local mientras la pestaña sigue abierta (Notification API) con
+   un recordatorio confiable dentro de la app cuando se abre despues de
+   la hora elegida y todavia no se cerro el dia. */
+var _recT=null;
+function programarRecordatorio(){
+  if(!recHora)return;
+  if('Notification' in window && Notification.permission==='default'){
+    Notification.requestPermission();
+  }
+  var partes=recHora.split(':');
+  var ahora=new Date(),obj=new Date();
+  obj.setHours(+partes[0],+partes[1],0,0);
+  if(obj<=ahora) obj.setDate(obj.getDate()+1);
+  if(_recT) clearTimeout(_recT);
+  _recT=setTimeout(function(){
+    var hoy=new Date().toDateString();
+    var yaCerrado=cierres.some(function(c){return new Date(c.f).toDateString()===hoy});
+    if(!yaCerrado && 'Notification' in window && Notification.permission==='granted'){
+      try{new Notification('El Corte',
+        {body:'¿Cerramos el día? Tres preguntas, dos minutos.'})}catch(e){}
+    }
+    programarRecordatorio();
+  },obj-ahora);
+}
+function guardarHoraRecordatorio(){
+  var v=document.getElementById('recHoraInput').value;
+  if(!v)return;
+  recHora=v;esc_('ec_recHora',v);
+  programarRecordatorio();
+  document.getElementById('recEstado').textContent='Recordatorio activado a las '+v+'.';
+}
+function chequearNudgeCierre(){
+  var c=document.getElementById('avisoRec');if(!c||!recHora)return;
+  var ahora=new Date(),partes=recHora.split(':');
+  var objetivo=new Date();objetivo.setHours(+partes[0],+partes[1],0,0);
+  if(ahora<objetivo)return;
+  var hoy=ahora.toDateString();
+  if(cierres.some(function(x){return new Date(x.f).toDateString()===hoy}))return;
+  var prev=c.innerHTML;
+  c.innerHTML='<div class="card" style="margin-top:14px"><b>Todavía no cerraste el día</b>'+
+    '<p class="mini" style="margin:8px 0 10px">Tres preguntas, dos minutos.</p>'+
+    '<button class="gh" style="margin:0" onclick="ver(\'cierreDia\')">Cerrar ahora</button></div>'+prev;
 }
 
 /* ═══════ 4. "ESTO NO PASÓ": revisión de notas viejas ═══════ */
@@ -906,7 +1061,8 @@ var fMinSel=25,fT=null,fSeg=0,fTotal=0,fCaps=[],fInicio=null;
     c.appendChild(b)})})();
 
 function vistaFoco(v){['fSetup','fCorriendo','fFin'].forEach(function(x){
-  document.getElementById(x).style.display=x===v?'block':'none'})}
+  document.getElementById(x).style.display=x===v?'block':'none'});
+  anim(document.getElementById(v))}
 
 function iniciarFoco(){
   fCaps=[];fTotal=fMinSel*60;fSeg=fTotal;fInicio=Date.now();
@@ -1050,6 +1206,23 @@ function revisionSemanal(){
     obs.join('</p><p class="mini" style="margin:10px 0 0">')+'</p></div>';
   return h;
 }
+function claveSemana(d){
+  d=new Date(d);var dia=(d.getDay()+6)%7;
+  d.setDate(d.getDate()-dia);d.setHours(0,0,0,0);
+  return d.toDateString();
+}
+function chequearInsightSemanal(){
+  var c=document.getElementById('avisoRec');if(!c)return;
+  var clave=claveSemana(new Date());
+  if(leer('ec_insSemana','')===clave)return;
+  var cuerpo=revisionSemanal();
+  if(!cuerpo)return;
+  esc_('ec_insSemana',clave);
+  var prev=c.innerHTML;
+  c.innerHTML='<div style="margin-top:14px">'+cuerpo+
+    '<button class="txtb" style="margin-top:2px" onclick="this.parentElement.remove()">'+
+    'Ocultar</button></div>'+prev;
+}
 
 
 /* ═══════ RESPIRACIÓN GUIADA ═══════ */
@@ -1133,6 +1306,7 @@ function finResp(){
   document.getElementById('rCiclos').textContent='Terminaste.';
   resp.unshift({modo:rModoSel,f:new Date().toISOString()});
   esc_('ec_res',resp);
+  marcarActividad();pintarRacha(true);
 }
 
 /* ═══════ TAREAS ═══════ */
@@ -1291,6 +1465,7 @@ function finAM(){
   noches.unshift({f:new Date().toISOString()});esc_('ec_noc',noches);
   reg.push({tipo:'noche',hora:new Date().getHours(),fecha:new Date().toISOString()});
   esc_('ec_reg',reg);
+  marcarActividad();pintarRacha(true);
   var n=noches.length;
   document.getElementById('tresAM').innerHTML=
     '<h2 style="margin-top:30px">Listo.</h2>'+
@@ -1339,7 +1514,8 @@ function pintarEstrella(){
     l.appendChild(an);g.appendChild(l)}
   setTimeout(function(){
     var sp=document.getElementById('splash');
-    if(sp){sp.classList.add('ir');setTimeout(function(){sp.remove();chequearRitual();pintarEstrella()},700)}
+    if(sp){sp.classList.add('ir');setTimeout(function(){sp.remove();chequearRitual();pintarEstrella();
+      chequearInsightSemanal();chequearNudgeCierre();pintarRacha();programarRecordatorio()},700)}
   },2700);
 })();
 
@@ -1387,6 +1563,7 @@ function guardarRitual(){
   if(!vals.length){alert('Completá al menos uno.');return}
   rituales.unshift({tipo:RITUALES[ritIdx].t,v:vals,f:new Date().toISOString()});
   esc_('ec_rit',rituales);
+  marcarActividad();pintarRacha(true);
   var racha=rituales.length;
   document.getElementById('ritCuerpo').innerHTML=
     '<div class="card oro"><b>Listo.</b><p class="mini" style="margin:8px 0 0">'+
@@ -1486,11 +1663,13 @@ function finMed(){
     'Si te distrajiste muchas veces, la práctica salió bien igual. Volver es la práctica.';
   document.getElementById('mTiempo').textContent='';
   meds.unshift({min:medDur,f:new Date().toISOString()});esc_('ec_med',meds);
+  marcarActividad();pintarRacha(true);
 }
 
 /* ═══ Patrón unificado ═══ */
 var NOM={pasado:'Cosas que ya pasaron',futuro:'Cosas que pueden pasar',
-  persona:'Alguien en particular',difuso:'Sin tema claro',noche:'De noche'};
+  persona:'Alguien en particular',difuso:'Sin tema claro',noche:'De noche',
+  corteYa:'Corte ya (acción rápida)'};
 function pintarPatron(){
   var c=document.getElementById('pBox');
   if(reg.length+picos.length<3){

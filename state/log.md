@@ -264,3 +264,59 @@ sigue requiriendo confirmación explícita del operador antes de tocarlo.
   no generada aún.
 - Tema "acelerado" sigue sin imagen representativa (4 intentos fallidos
   en Openverse, búsqueda pausada deliberadamente).
+
+## 2026-08-20 (continuación — hosting bloqueado, 4 funcionalidades nuevas en la app)
+
+**Hosting: GitHub Pages bloqueado por permisos de la integración.**
+`configure-pages@v5` falló dos veces: primero porque el sitio de Pages
+no existía (`enablement:false` por defecto), y con `enablement:true`
+falló con "Resource not accessible by integration" — el token de la
+app de GitHub conectada a Claude Code no tiene permiso de
+administración de repo. Confirmado que tampoco puede crear un repo
+nuevo (mismo error 403 en `create_repository`). Este no es un
+problema de plan/repo privado, es un límite de la integración misma.
+**Decisión: hosting vía Netlify**, conectado directo al repo privado
+de GitHub (su plan free sí permite repos privados, a diferencia de
+Pages) — evita hacer público nada del negocio. El operador tiene que
+hacer el alta una vez (Sign up with GitHub → Import from GitHub →
+elegir el repo → Base/Publish directory `producto`) — 3-4 toques,
+después queda auto-deploy en cada push a `main`. Pendiente que el
+operador lo conecte y avise el dominio `.netlify.app` resultante.
+
+**Decisión 17 — 4 funcionalidades nuevas en `producto/el-corte-v7.html`,
+aprobadas por el operador, más pulido visual.**
+1. **Racha** (`ec_racha`): contador de días consecutivos con alguna
+   actividad completada (sesión de bucle, 3AM, meditación, respiración,
+   cierre del día, ritual, o "Corte ya"). Badge 🔥 en el header, con
+   animación de "pop" al incrementar.
+2. **"Corte ya"**: botón de un toque en la pantalla de inicio que da
+   una acción concreta al azar (pool de 10, sin repetir la última)
+   sin pasar por el diagnóstico de 2 preguntas — pensado para el
+   momento de máxima fricción (3 AM, no ganas de pensar).
+3. **Insight semanal proactivo**: reusa `revisionSemanal()` (ya
+   existía pero estaba escondida en la pestaña Patrón) y la muestra
+   como card en la pantalla de inicio una vez por semana calendario
+   (clave `ec_insSemana`), sin esperar a que el usuario la busque.
+4. **Recordatorio de cierre del día**: el usuario elige una hora en
+   la vista de Cierre del día. Combina best-effort Notification API
+   (mientras la pestaña sigue abierta) con un nudge confiable dentro
+   de la app: si se abre después de la hora elegida y no cerró el
+   día, aparece una card para hacerlo. Documentado en el código que
+   sin servidor no hay push real — es la limitación honesta de
+   "sin infraestructura propia" de `CLAUDE.md`.
+
+**Pulido visual:** animación de entrada unificada (fade + slide + scale
+sutil) aplicada a TODAS las subvistas de la app (antes solo las pestañas
+principales la tenían), feedback táctil en botones/chips (`scale(.97)`
+al tocar), transición del ícono activo en la barra de navegación.
+
+Probado end-to-end con Playwright headless (Chromium): flujo completo
+de "Corte ya" → racha se incrementa → recordatorio se guarda →
+Patrón refleja el bucle cortado. Sin errores de consola propios (un
+warning preexistente de un `<animate>` del splash, no tocado, no
+introducido esta sesión).
+
+**Pendiente / próxima sesión:**
+- Que el operador conecte Netlify y confirme la URL.
+- Seguir pensando más funcionalidades de hábito/profundidad con el
+  operador (mencionó que quiere seguir iterando esta lista).
