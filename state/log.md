@@ -423,3 +423,101 @@ distinto por video" que propuse no era sobre esto: era tracking de
 qué video convierte mejor, para alimentar después el sistema de
 auto-actualización de contenido. Queda como mejora de fase 1.4, no
 bloqueante para lanzar.
+
+## 2026-08-20 (continuación — gramática visual de 6 beats, ronda 4)
+
+**Contexto:** el operador vio los resultados de las 3 rondas anteriores
+(camino, collage, vida ambiental) y dijo, textual, que no ayudaban al
+"desarrollo del video en sí" — el problema no era que los frames se
+sintieran vacíos (ya resuelto), es que la HISTORIA no tenía desarrollo
+visual propio: cada beat necesita su propio tratamiento ligado al
+contenido de ESE momento, no decoración pareja para todo el video. Tras
+una conversación de calibración con el operador (qué mecanismo visual,
+cómo se siente el reveal de la app, qué motor de energía, qué
+referencias — sin limitarse al nicho de autoayuda), se aprobó una
+gramática de 6 beats concreta, usando "no le tenés confianza a tu
+pareja" como caso de estudio.
+
+**Decisión 21 — 6 piezas técnicas nuevas en `animador_v9.py`/
+`armar_video.py` para la gramática de 6 beats (hook → situación real →
+escalada → quiebre → app → cierre).**
+
+- **`f_mensajes`** (formato nuevo): mockup de chat oscuro estilo
+  iMessage/WhatsApp en la paleta de marca. 2-4 mensajes que se
+  ACUMULAN (no se reemplazan) en sucesión rápida, cada uno con su
+  propio pop + microshake de cámara + SFX. JSON: `{"formato":
+  "mensajes", "contacto": "..." (opcional), "mensajes": [{"texto":
+  "...", "emisor": "otro"|"yo"}, ...]}`. Muestra literalmente lo que
+  dijo la otra persona en vez de íconos/nodos abstractos.
+- **`f_escalada`** (formato nuevo): la escalada del pensamiento como
+  CONTENIDO REAL — frases que se apilan con cortes cada vez MÁS
+  rápidos (pesos decrecientes reales vía `_tiempos_escalada()`, no
+  cortes parejos). JSON: `{"formato": "escalada", "pasos": [str,...]}`.
+  El último paso es la idea completa ("ya armaste toda una historia"),
+  no un contador numérico abstracto.
+- **`"quiebre_capitulo": true`** (campo de segmento): freeze frame del
+  último frame del segmento anterior + silencio TOTAL de audio ~0.5s
+  (el "aire muerto" antes del golpe, técnica confirmada por
+  investigación) + glitch/VHS fuerte (separación RGB, scanlines,
+  bandas, dip a negro, light-leak en el verde de marca) hacia el
+  segmento nuevo — con chapter-card opcional durante el quiebre.
+  `"quiebre_freeze"`/`"quiebre_glitch"` (segundos) ajustan cada mitad;
+  la `"duracion"` del segmento tiene que alcanzar la suma. El silencio
+  se fuerza con `volume=enable='between(t,x,y)':volume=0` DESPUES del
+  mix (mismo patrón que ya usaba el ducking de música), así gana sobre
+  voz+música+SFX sin importar qué haya debajo.
+- **Hook `"impacto"`**: los hooks existentes (`zoom_golpe` sin shake,
+  `sacudida` sin zoom) no alcanzaban para "el texto pega con un golpe"
+  — se agregó uno que junta flash + punch-zoom + shake en ~0.26s, para
+  que el SFX de impacto caiga exactamente cuando el texto aparece.
+  Se usa en el hook y en el cierre (misma técnica = rima visual).
+- **Cámara más agresiva por segmento**: `"camara_intensidad"` (escala
+  la deriva base), `"camara_shake"` (shake continuo con ruido real, no
+  solo seno) y `"camara_golpes"` (picos puntuales en fracciones 0..1
+  del segmento) — `mensajes`/`escalada` generan sus propios golpes
+  automáticamente si el guion no los declara a mano.
+- **Capturas más rápidas + click**: confirmado que el segmento
+  `"captura"` soporta duraciones <2s sin romperse (probado con clips
+  de 1.5/1.5/1.7s en el demo). `render_captura()` en `armar_video.py`
+  ahora respeta un `"sfx"` explícito por segmento (mismo campo que ya
+  usan los segmentos `"formato"`) para poner un click/tick en cada
+  corte en vez de depender del tipo de transición. Se agregó además
+  una viñeta sutil opcional (`"captura_vineta"`, default true) sobre
+  la captura para reforzar la sensación de "adentro de la herramienta"
+  tras el quiebre — punto opcional del brief, barato via
+  `ffmpeg vignette`.
+
+SFX nuevo por beat (mismo mecanismo puntual que ya usaba el whoosh del
+collage — no se generó ningún archivo de audio nuevo, se reusan
+tick/riser/impacto ya existentes en `assets/sfx/`): tick en cada
+mensaje desde el 2do, riser de fondo + tick en cada corte de escalada,
+impacto al terminar el silencio de un quiebre.
+
+**Demo:** `demos/_demo_gramatica_v2.json` → `demos/_demo_gramatica_v2.mp4`
+(16.7s), gramática completa de 6 beats con el caso de estudio "no le
+tenés confianza a tu pareja", armado con `armar_video.py` (mezcla
+segmentos `"formato"` con 3 clips `"captura"` reales de
+`capturas/captura-decidir.mp4`). Verificado con capturas de frame de
+las 6 etapas (hook, mensajes acumulando, escalada acumulando con
+cortes acelerando, freeze+glitch+chapter-card, captura real con
+viñeta, cierre) y con `silencedetect` de ffmpeg confirmando la ventana
+muda en el quiebre (t≈9.0-9.5s).
+
+**Regresión:** `guiones/03-no-decidis.json` y `guiones/16-ego-perdon.json`
+se re-renderizaron completos vía `armar_video.py` sin ningún error
+(ninguno usa los formatos/campos nuevos, así que el comportamiento es
+pixel-idéntico al de antes de esta ronda). No se tocó el contenido de
+`guiones/16-ego-perdon.json` — eso lo reescribe el operador con esta
+gramática en la próxima sesión, usando los nombres exactos de arriba.
+
+**Pendiente / próxima sesión:**
+- Que el operador reescriba `guiones/16-ego-perdon.json` (u otro
+  guion) con la gramática de 6 beats real.
+- El quiebre solo se probó DENTRO de un mismo grupo `"formato"` (beat
+  3→4 del demo, ambos renderizados por `animador_v9.py`). Si algún día
+  se necesita un quiebre justo en el borde entre un grupo `"formato"`
+  y un grupo `"captura"` (que `armar_video.py` compone con xfade, no
+  con el `transicion()` de `animador_v9.py`), ese caso tiene un
+  fallback mínimo (`"quiebre"` mapea a `fadeblack` con 0.9s en
+  `XFADE`/`DUR_TRANS`) pero NO tiene el freeze+silencio real — quedaría
+  como mejora si se necesita.
