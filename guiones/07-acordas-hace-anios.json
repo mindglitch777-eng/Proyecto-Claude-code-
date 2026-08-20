@@ -38,7 +38,7 @@
       "texto": "años y todavía te lo repetís",
       "duracion": 2.3,
       "transicion": "punch",
-      "narracion": "años y todavía te lo repetís"
+      "narracion": "Tres años y todavía te lo repetís"
     },
     {
       "formato": "cronologia",
@@ -92,7 +92,7 @@
     "instrucciones": "4 lineas de narracion por video (hook, error, mecanismo, loop -- los 2 segmentos de captura real van sin voz, el producto se muestra sin explicarse encima). Generar 4 audios separados en ElevenLabs con estas lineas, en este orden, y guardarlos como 07-acordas-hace-anios-voz0.mp3 (hook), -voz1.mp3 (error), -voz2.mp3 (mecanismo), -voz5.mp3 (loop) en capturas_voz/. Correr sincronizar_voz.py despues.",
     "lineas": [
       "Hace 3 años dijiste algo raro. Todavía te perseguís por eso.",
-      "años y todavía te lo repetís",
+      "Tres años y todavía te lo repetís",
       "Así se guarda un recuerdo incómodo",
       "Hace 3 años. Hoy lo etiquetás y sigue. Seguime."
     ]

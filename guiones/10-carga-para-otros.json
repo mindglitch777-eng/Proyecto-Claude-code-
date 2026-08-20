@@ -39,7 +39,7 @@
       "texto": "plan cancelado no es una carga. Es un dato",
       "duracion": 2.6,
       "transicion": "whip",
-      "narracion": "plan cancelado no es una carga. Es un dato"
+      "narracion": "Un plan cancelado no es una carga. Es un dato"
     },
     {
       "formato": "pregunta",
@@ -83,7 +83,7 @@
     "instrucciones": "4 lineas de narracion por video (hook, error, mecanismo, loop -- los 2 segmentos de captura real van sin voz, el producto se muestra sin explicarse encima). Generar 4 audios separados en ElevenLabs con estas lineas, en este orden, y guardarlos como 10-carga-para-otros-voz0.mp3 (hook), -voz1.mp3 (error), -voz2.mp3 (mecanismo), -voz5.mp3 (loop) en capturas_voz/. Correr sincronizar_voz.py despues.",
     "lineas": [
       "Cancelaste un plan. Pensaste: se van a cansar de mí.",
-      "plan cancelado no es una carga. Es un dato",
+      "Un plan cancelado no es una carga. Es un dato",
       "Eso lo penso la otra persona o lo pensas vos por ella? ... Nunca lo preguntaste. Solo lo diste por hecho.",
       "Cancelaste un plan. Eso es todo. Seguime."
     ]

@@ -38,7 +38,7 @@
       "texto": "días dándole vueltas a algo que no viste",
       "duracion": 2.4,
       "transicion": "punch",
-      "narracion": "días dándole vueltas a algo que no viste"
+      "narracion": "Tres días dándole vueltas a algo que no viste"
     },
     {
       "formato": "cronologia",
@@ -92,7 +92,7 @@
     "instrucciones": "4 lineas de narracion por video (hook, error, mecanismo, loop -- los 2 segmentos de captura real van sin voz, el producto se muestra sin explicarse encima). Generar 4 audios separados en ElevenLabs con estas lineas, en este orden, y guardarlos como 15-enteraste-por-terceros-voz0.mp3 (hook), -voz1.mp3 (error), -voz2.mp3 (mecanismo), -voz5.mp3 (loop) en capturas_voz/. Correr sincronizar_voz.py despues.",
     "lineas": [
       "Te enteraste por otra persona, no por él. Van 3 días dándole vueltas.",
-      "días dándole vueltas a algo que no viste",
+      "Tres días dándole vueltas a algo que no viste",
       "Lo que sabés vs. lo que armaste solo",
       "Te enteraste por un tercero. Mañana hablás vos. Seguime."
     ]

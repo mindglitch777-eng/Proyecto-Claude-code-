@@ -39,7 +39,7 @@
       "texto": "AM. La tercera vez esta semana",
       "duracion": 2.3,
       "transicion": "punch",
-      "narracion": "AM. La tercera vez esta semana"
+      "narracion": "Tres AM. La tercera vez esta semana"
     },
     {
       "formato": "division",
@@ -91,7 +91,7 @@
     "instrucciones": "4 lineas de narracion por video (hook, error, mecanismo, loop -- los 2 segmentos de captura real van sin voz, el producto se muestra sin explicarse encima). Generar 4 audios separados en ElevenLabs con estas lineas, en este orden, y guardarlos como 09-celular-pareja-voz0.mp3 (hook), -voz1.mp3 (error), -voz2.mp3 (mecanismo), -voz5.mp3 (loop) en capturas_voz/. Correr sincronizar_voz.py despues.",
     "lineas": [
       "Le revisaste el celular a las 3 AM. Otra vez.",
-      "AM. La tercera vez esta semana",
+      "Tres AM. La tercera vez esta semana",
       "LO QUE VISTE: Nada raro, en realidad. LO QUE ARMASTE: Una historia completa.",
       "El celular, guardado. Vos, tranquilo. Seguime."
     ]

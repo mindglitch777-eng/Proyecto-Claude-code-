@@ -39,7 +39,7 @@
       "texto": "cosa que no dijiste. La única que importaba",
       "duracion": 2.6,
       "transicion": "dip",
-      "narracion": "cosa que no dijiste. La única que importaba"
+      "narracion": "Una cosa que no dijiste. La única que importaba"
     },
     {
       "formato": "cita",
@@ -82,7 +82,7 @@
     "instrucciones": "4 lineas de narracion por video (hook, error, mecanismo, loop -- los 2 segmentos de captura real van sin voz, el producto se muestra sin explicarse encima). Generar 4 audios separados en ElevenLabs con estas lineas, en este orden, y guardarlos como 11b-no-dijiste-antes-voz0.mp3 (hook), -voz1.mp3 (error), -voz2.mp3 (mecanismo), -voz5.mp3 (loop) en capturas_voz/. Correr sincronizar_voz.py despues.",
     "lineas": [
       "No se lo dijiste. Y ya no está para escucharlo.",
-      "cosa que no dijiste. La única que importaba",
+      "Una cosa que no dijiste. La única que importaba",
       "Sufrimos mas en la imaginacion que en la realidad",
       "No se lo dijiste. Ahora sí, aunque sea acá. Seguime."
     ]

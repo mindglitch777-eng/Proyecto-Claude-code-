@@ -38,7 +38,7 @@
       "texto": "semanas por un error que ya pasó",
       "duracion": 2.3,
       "transicion": "punch",
-      "narracion": "semanas por un error que ya pasó"
+      "narracion": "Dos semanas por un error que ya pasó"
     },
     {
       "formato": "alerta",
@@ -80,7 +80,7 @@
     "instrucciones": "4 lineas de narracion por video (hook, error, mecanismo, loop -- los 2 segmentos de captura real van sin voz, el producto se muestra sin explicarse encima). Generar 4 audios separados en ElevenLabs con estas lineas, en este orden, y guardarlos como 11-obsesion-error-trabajo-voz0.mp3 (hook), -voz1.mp3 (error), -voz2.mp3 (mecanismo), -voz5.mp3 (loop) en capturas_voz/. Correr sincronizar_voz.py despues.",
     "lineas": [
       "Un error del laburo, hace 2 semanas. Seguís ahí.",
-      "semanas por un error que ya pasó",
+      "Dos semanas por un error que ya pasó",
       "Repasarlo mil veces no lo corrige. Solo lo revive",
       "El error, 2 semanas atrás. Vos, hoy. Seguime."
     ]
