@@ -42,8 +42,9 @@ XFADE = {
     "whip": "hlwind", "slide": "slideup", "barrido": "wipeleft",
     "dip": "fadeblack", "polvo": "dissolve", "iris": "circleopen",
     "rotacion": "squeezeh", "linea": "wipeup", "zoom_radial": "radial",
+    "quiebre": "fadeblack",
 }
-DUR_TRANS = {"corte_duro": 0.12}
+DUR_TRANS = {"corte_duro": 0.12, "quiebre": 0.9}
 DUR_DEFAULT = 0.4
 
 # Igual que SFX_POR_TRANSICION en animador_v9.py, para que el corte
@@ -51,7 +52,7 @@ DUR_DEFAULT = 0.4
 SFX_POR_TRANSICION = {
     "punch": "impacto", "whip": "whoosh", "slide": "whoosh",
     "barrido": "whoosh", "dip": "sub", "corte_duro": "impacto",
-    "fade": None,
+    "fade": None, "quiebre": "impacto",
 }
 
 
@@ -137,10 +138,16 @@ def render_captura(seg, cfg_base, tmp, idx, marco_path):
     texto_hex = "0x%02x%02x%02x" % tuple(paleta["texto"])
     salida = tmp / f"clip{idx:02d}_captura.mp4"
 
+    # Vineta sutil sobre la captura (no sobre todo el frame): refuerza
+    # la sensacion de "estar adentro de la herramienta" -- el
+    # tratamiento levemente distinto que pide el beat de la app tras
+    # el quiebre de capitulo, sin tocar el marco/paleta del resto del
+    # video. Desactivable por segmento con "captura_vineta": false.
+    vineta = ",vignette=PI/3.4" if seg.get("captura_vineta", True) else ""
     filtro = (
         f"[0:v]trim=start={t0}:end={t1},setpts=PTS-STARTPTS,"
         f"scale={hole_w}:{hole_h}:force_original_aspect_ratio=increase,"
-        f"crop={hole_w}:{hole_h},fps=30[cap];"
+        f"crop={hole_w}:{hole_h}{vineta},fps=30[cap];"
         f"[1:v][cap]overlay=x={hole_x}:y={hole_y}:shortest=1[bg1];"
         f"[bg1][2:v]overlay=0:0[bg2];"
         f"[bg2]drawtext=textfile={cap_txt}:fontfile={FONT_BOLD}:"
@@ -159,9 +166,14 @@ def render_captura(seg, cfg_base, tmp, idx, marco_path):
         "-crf", "19", str(salida),
     ]
     run(cmd)
-    # SFX de entrada (mismo mapeo que animador_v9.py) para que el corte
-    # hacia el metraje real suene igual que un corte entre actos.
-    nombre_sfx = SFX_POR_TRANSICION.get(seg.get("transicion", "fade"))
+    # SFX de entrada: por defecto el mismo mapeo que animador_v9.py
+    # (para que el corte hacia el metraje real suene igual que un
+    # corte entre actos), pero un "sfx" explicito en el segmento
+    # manda -- asi un beat de "capturas rapidas" puede pedir un
+    # click/tick en cada corte sin depender del tipo de transicion
+    # (mismo campo "sfx" que ya usan los segmentos 'formato').
+    nombre_sfx = seg.get("sfx") or SFX_POR_TRANSICION.get(
+        seg.get("transicion", "fade"))
     return salida, nombre_sfx
 
 

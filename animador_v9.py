@@ -30,6 +30,47 @@ FORMATOS (campo "formato" por segmento):
                 tipo whip al entrar (json: "imagenes": [{"ruta":...,
                 "texto": "..."}, ...]). "Pattern interrupt" barato:
                 stills reales cortados adentro del video.
+  mensajes      Mockup de chat oscuro (iMessage/WhatsApp) en la paleta
+                de marca: 2-4 mensajes que se acumulan en sucesion
+                rapida, cada uno con su propio golpe de sonido y
+                microshake de camara (json: "mensajes": [{"texto":...,
+                "emisor": "otro"|"yo"}, ...], "contacto" opcional).
+                Para mostrar LITERALMENTE lo que dijo/hizo la otra
+                persona, en vez de iconos abstractos.
+  escalada      La escalada del pensamiento como CONTENIDO REAL: una
+                lista de frases que se apilan con cortes cada vez MAS
+                rapidos (aceleracion real) y tension sonora que sube
+                (json: "pasos": [str,...]). No es un contador numerico
+                abstracto -- cada frase es la idea completa de ese
+                paso de la escalada.
+
+Gramatica de 6 beats (ver CLAUDE.md de esta ronda para el brief
+completo; demos/_demo_gramatica_v2.json es el caso de estudio armado
+con todo lo de abajo): hook de golpe -> "mensajes" -> "escalada" ->
+quiebre de capitulo -> capturas rapidas -> golpe de cierre.
+
+Quiebre de capitulo ("quiebre_capitulo": true en un segmento): freeze
+frame del ultimo frame del segmento anterior + silencio total de
+audio (~0.5s, el "aire muerto" antes del golpe) + glitch/VHS fuerte
+(separacion RGB, scanlines, bandas, dip a negro, light-leak en el
+verde de marca) hacia el segmento nuevo. "quiebre_freeze" y
+"quiebre_glitch" (segundos) ajustan la duracion de cada mitad; el
+segmento tiene que durar al menos esa suma. Pensado para marcar un
+cambio real de capitulo/tratamiento (ej. antes de mostrar la app),
+no una transicion mas.
+
+Camara mas agresiva por segmento (encima de la deriva sutil de
+"camara" en cfg, que sigue igual por defecto):
+  "camara_intensidad": multiplica la deriva base (>1 = mas paneo/zoom).
+  "camara_shake": 0..1+, shake continuo con ruido real (no solo seno).
+  "camara_golpes": lista de fracciones 0..1 del segmento donde cae un
+                   pico de shake puntual (mensajes/escalada lo generan
+                   solas si no se declara a mano).
+
+Hook "impacto" (HOOKS): punch-zoom + shake + flash, todo en ~0.26s,
+para que el golpe de sonido caiga exactamente cuando el texto pega en
+pantalla. Pensado para el hook (0-2s) y el cierre (misma tecnica,
+rima visual).
 
 Captions kinetic opcionales (cualquier formato, cualquier segmento
 narrado): agregar "captions_palabra_por_palabra": true al segmento
@@ -858,8 +899,34 @@ def hk_persiana(img, t, pal):
     return out
 
 
+def hk_impacto(img, t, pal):
+    """Golpe combinado: flash + punch-zoom + shake, todo en ~0.26s.
+    Ni zoom_golpe (sin shake) ni sacudida (sin zoom) alcanzaban para
+    el 'texto pega con un golpe' del hook/cierre de la gramatica de
+    6 beats -- esto junta los tres en la MISMA ventana corta para que
+    el SFX de impacto caiga exactamente cuando el texto aparece, no
+    en una entrada suave."""
+    dur = 0.26
+    if t > dur:
+        return img
+    e = eo_expo(t / dur)
+    if t < 0.05:
+        img = Image.blend(img, Image.new("RGB", (W, H), (255, 255, 255)),
+                          (1 - t / 0.05) * 0.55)
+    z = 1.42 - 0.42 * e
+    nw, nh = int(W * z), int(H * z)
+    a = 1 - t / dur
+    dx = int(math.sin(t * 80) * a * 22)
+    dy = int(math.cos(t * 64) * a * 15)
+    zz = img.resize((nw, nh), Image.LANCZOS)
+    cx = max(0, min((nw - W) / 2 + dx, nw - W))
+    cy = max(0, min((nh - H) / 2 + dy, nh - H))
+    return zz.crop((int(cx), int(cy), int(cx) + W, int(cy) + H))
+
+
 HOOKS = {"flash": hk_flash, "zoom_golpe": hk_zoom_golpe, "glitch": hk_glitch,
-         "sacudida": hk_sacudida, "barras": hk_barras, "persiana": hk_persiana}
+         "sacudida": hk_sacudida, "barras": hk_barras, "persiana": hk_persiana,
+         "impacto": hk_impacto}
 
 
 
@@ -1317,6 +1384,179 @@ def f_collage(img, d, seg, t, pal):
             y += ft.size + 8
 
 
+# ============ GRAMATICA DE 6 BEATS: "mensajes" y "escalada" ============
+# Los dos formatos que pidio el operador para que la HISTORIA tenga
+# desarrollo visual propio en vez de decoracion pareja: el beat de
+# "situacion real" necesita mostrar literalmente lo que dijo la otra
+# persona (mensajes), y el de "escalada" necesita que el pensamiento
+# que se arma en la cabeza sea contenido real, no un contador
+# abstracto. Ambos comparten el mismo reparto de tiempo con
+# construir_audio() (SFX por beat) y render() (microshake de camara
+# por beat) via las funciones _tiempos_* de aca abajo -- si se toca el
+# reparto en una, hay que tocarlo en las tres.
+
+def _tiempos_mensajes(seg):
+    """Momento (fraccion 0..1 del segmento) en que aparece cada
+    mensaje: division en partes iguales, mismo criterio que f_collage
+    (slot = 1/n). 'menos de 1.5s cada uno' es responsabilidad del
+    guion (duracion del segmento / n mensajes)."""
+    n = max(1, len(seg.get("mensajes") or []))
+    return [i / n for i in range(n)]
+
+
+def _tiempos_escalada(seg):
+    """Limites (fraccion 0..1 del segmento) de cada paso de la
+    escalada, con pesos DECRECIENTES: el primer paso es el mas largo,
+    el ultimo el mas corto -- asi los cortes se aceleran de verdad en
+    vez de quedar parejos. Devuelve n+1 valores (bordes), no n."""
+    n = max(1, len(seg.get("pasos") or []))
+    pesos = [n - i for i in range(n)]
+    tot = sum(pesos)
+    bordes, acc = [0.0], 0.0
+    for w in pesos:
+        acc += w / tot
+        bordes.append(acc)
+    return bordes
+
+
+def f_mensajes(img, d, seg, t, pal):
+    """Mockup de chat oscuro (iMessage/WhatsApp) en la paleta de marca:
+    2-4 mensajes que se van ACUMULANDO en sucesion rapida (no se
+    reemplazan uno al otro, se apilan como una conversacion real).
+    Pattern interrupt de storytime/drama commentary: la otra persona
+    dice/hace algo LITERAL en pantalla, no un icono o un nodo
+    abstracto.
+
+    JSON: {"formato": "mensajes", "contacto": "Ella" (opcional),
+           "mensajes": [{"texto": "...", "emisor": "otro"|"yo"}, ...]}
+    """
+    msjs = (seg.get("mensajes") or [])[:4]
+    if not msjs:
+        return
+    bordes = _tiempos_mensajes(seg)
+    apagado = tuple(pal.get("apagado", (107, 107, 112)))
+
+    px0, py0, px1, py1 = 60, int(H * 0.30), W - 60, int(H * 0.90)
+    panel = tuple(max(0, c - 6) for c in pal["fondo"])
+    d.rounded_rectangle([px0, py0, px1, py1], radius=34, fill=panel,
+                        outline=(52, 52, 60), width=2)
+
+    if seg.get("contacto"):
+        fh = fnt(38)
+        d.text((px0 + 40, py0 + 30), seg["contacto"], font=fh,
+               fill=tuple(pal["texto"]))
+        d.line([(px0 + 30, py0 + 92), (px1 - 30, py0 + 92)],
+               fill=(48, 48, 56), width=2)
+        y = py0 + 92 + 34
+    else:
+        y = py0 + 40
+
+    max_w = (px1 - px0) - 140
+    fb = fnt(44)
+    for i, m in enumerate(msjs):
+        ap = bordes[i]
+        if t < ap - 0.01 or y > py1 - 80:
+            break
+        lt = max(0.0, min(1.0, (t - ap) / 0.22))
+        e = eo_back(lt)
+        texto = m.get("texto", "")
+        lineas = envolver(d, texto, fb, max_w)
+        alto_burbuja = len(lineas) * (fb.size + 10) + 44
+        anchos = [d.textbbox((0, 0), ln, font=fb)[2] for ln in lineas]
+        w_burbuja = min(max_w, max(anchos, default=0)) + 64
+        dy_pop = int(20 * (1 - max(0.0, e)))
+        es_otro = m.get("emisor", "otro") != "yo"
+        if es_otro:
+            bx0 = px0 + 40
+            col_bg = tuple(min(255, c + 22) for c in pal["fondo"])
+            col_txt = tuple(pal["texto"])
+        else:
+            bx0 = px1 - 40 - w_burbuja
+            col_bg = tuple(pal["destacado"])
+            col_txt = (14, 14, 18)
+        d.rounded_rectangle(
+            [bx0, y + dy_pop, bx0 + w_burbuja, y + alto_burbuja + dy_pop],
+            radius=24, fill=col_bg)
+        ty = y + 22 + dy_pop
+        for ln in lineas:
+            d.text((bx0 + 32, ty), ln, font=fb, fill=col_txt)
+            ty += fb.size + 10
+        y += alto_burbuja + 26
+
+    if seg.get("texto"):
+        ft, lt = auto_tam(d, seg["texto"], W - 160, 140, 52, ligera=True)
+        yy = int(H * 0.19)
+        for ln in lt:
+            wl = d.textbbox((0, 0), ln, font=ft)[2]
+            sombra_t(d, ((W - wl) / 2, yy), ln, ft, apagado, 4)
+            yy += ft.size + 10
+
+
+def f_escalada(img, d, seg, t, pal):
+    """La escalada del pensamiento como CONTENIDO REAL: frases que se
+    apilan (no se reemplazan) con cortes cada vez MAS rapidos --
+    aceleracion real via _tiempos_escalada(), no un contador numerico
+    abstracto. La ultima frase ('ya armaste toda una historia') es
+    justamente eso: la idea completa, no un simbolo de que algo crecio.
+
+    JSON: {"formato": "escalada",
+           "pasos": ["primero pensaste esto", "despues esto",
+                      "ya armaste toda una historia"]}
+    """
+    pasos = seg.get("pasos") or ["Primero pensaste esto", "Despues esto",
+                                  "Ya armaste toda una historia"]
+    n = len(pasos)
+    bordes = _tiempos_escalada(seg)
+    idx = 0
+    for i in range(n):
+        if t >= bordes[i] - 0.004:
+            idx = i
+    dur_paso = max(0.02, bordes[idx + 1] - bordes[idx])
+    lt = max(0.0, min(1.0, (t - bordes[idx]) / (dur_paso * 0.6)))
+    e = eo_back(lt)
+    apagado = tuple(pal.get("apagado", (107, 107, 112)))
+
+    if seg.get("texto"):
+        ft, ltl = auto_tam(d, seg["texto"], W - 180, 160, 56, ligera=True)
+        y0 = 150
+        for ln in ltl:
+            wl = d.textbbox((0, 0), ln, font=ft)[2]
+            d.text(((W - wl) / 2, y0), ln, font=ft, fill=apagado)
+            y0 += ft.size + 10
+
+    y = H * 0.32
+    for i in range(idx + 1):
+        if y > H * 0.86:
+            break
+        activo = (i == idx)
+        f = fnt(96 if activo else 52)
+        ls = envolver(d, pasos[i], f, W - 160)
+        col = tuple(pal["destacado"]) if activo else apagado
+        for ln in ls:
+            if activo:
+                esc = 0.8 + 0.2 * max(0.0, e)
+                fu = fnt(int(f.size * esc))
+                wl = d.textbbox((0, 0), ln, font=fu)[2]
+                sombra_t(d, ((W - wl) / 2, y), ln, fu, col, 6)
+                y += fu.size + 14
+            else:
+                wl = d.textbbox((0, 0), ln, font=f)[2]
+                d.text(((W - wl) / 2, y), ln, font=f, fill=col)
+                y += f.size + 10
+        y += 20 if activo else 8
+
+    # Tension que SUBE con el avance real de la escalada (no con el
+    # reloj): el borde pulsa cada vez mas rapido a medida que idx
+    # crece, mismo lenguaje visual que f_alerta pero atado a la
+    # historia, no a un timer fijo.
+    urgencia = idx / max(1, n - 1)
+    pulso = 0.5 + 0.5 * math.sin(t * (5 + 9 * urgencia))
+    borde = int(6 + 10 * urgencia * pulso)
+    if borde > 2:
+        d.rectangle([0, 0, W, borde], fill=tuple(pal["destacado"]))
+        d.rectangle([0, H - borde, W, H], fill=tuple(pal["destacado"]))
+
+
 # --- Vida ambiental (universal, todos los formatos) -------------------
 #
 # Feedback del operador sobre el demo de "collage": queda "un espacio
@@ -1460,6 +1700,7 @@ FORMATOS = {
     "cita": f_cita, "pasos": f_pasos, "ranking": f_ranking,
     "alerta": f_alerta, "panel": f_panel, "terminal": f_terminal,
     "camino": f_camino, "collage": f_collage,
+    "mensajes": f_mensajes, "escalada": f_escalada,
 }
 
 PALETAS = [
@@ -1527,14 +1768,51 @@ def render(seg, t, prog, cfg):
     dibujar_ambiente(img, d, t_abs, pal)
     d = ImageDraw.Draw(img)
 
-    # Camara: leve deriva, distinta por formato
-    amp = cfg.get("camara", 1.0)
+    # Camara: leve deriva, distinta por formato, con opcion de shake
+    # real encima -- pedido explicito del operador de "camara mas
+    # agresiva" (no solo el paneo sutil que ya existia).
+    amp = cfg.get("camara", 1.0) * seg.get("camara_intensidad", 1.0)
     if amp > 0 and fmt not in ("division",):
         z = 1.0 + 0.028 * amp * eio(t)
+        dx = math.sin(t * 2.2) * 9 * amp
+        dy = math.cos(t * 1.7) * 7 * amp
+
+        # Shake continuo (ruido real, no seno): "camara_shake" 0..1+.
+        shake_cont = seg.get("camara_shake", 0.0)
+        if shake_cont > 0:
+            rc = random.Random(int(t * 5000))
+            dx += rc.uniform(-1, 1) * 16 * shake_cont
+            dy += rc.uniform(-1, 1) * 11 * shake_cont
+            z += 0.018 * shake_cont
+
+        # Picos puntuales de shake en momentos declarados del segmento
+        # ("camara_golpes": fracciones 0..1). 'mensajes'/'escalada'
+        # generan los suyos solos (uno por mensaje/corte) si el guion
+        # no los declara a mano -- mismo reparto de tiempo que usan
+        # sus propios formatos y el SFX correspondiente en
+        # construir_audio(), via las mismas funciones _tiempos_*.
+        golpes = seg.get("camara_golpes")
+        if golpes is None:
+            if fmt == "mensajes":
+                golpes = _tiempos_mensajes(seg)
+            elif fmt == "escalada":
+                golpes = _tiempos_escalada(seg)[1:-1]
+        if golpes:
+            pico = 0.0
+            for gt in golpes:
+                dtime = abs(t - gt)
+                if dtime < 0.16:
+                    pico = max(pico, 1 - dtime / 0.16)
+            if pico > 0:
+                rg = random.Random(int(t * 3000) + 7)
+                dx += rg.uniform(-1, 1) * 26 * pico
+                dy += rg.uniform(-1, 1) * 18 * pico
+                z += 0.05 * pico
+
         nw, nh = int(W * z), int(H * z)
         img = img.resize((nw, nh), Image.LANCZOS)
-        cx = (nw - W) / 2 + math.sin(t * 2.2) * 9 * amp
-        cy = (nh - H) / 2 + math.cos(t * 1.7) * 7 * amp
+        cx = (nw - W) / 2 + dx
+        cy = (nh - H) / 2 + dy
         cx = max(0, min(cx, nw - W)); cy = max(0, min(cy, nh - H))
         img = img.crop((int(cx), int(cy), int(cx) + W, int(cy) + H))
     d = ImageDraw.Draw(img)
@@ -1628,7 +1906,64 @@ def _linea_dorada(a, b, t, pal=None):
     return out
 
 
-def transicion(a, b, t, tipo, pal=None):
+_QUIEBRE_CACHE = {}
+
+
+def _scanlines_fuente():
+    """Lienzo de scanlines generado UNA sola vez (mismo criterio de
+    costo que _grano_fuente en la capa de vida ambiental): recortar +
+    multiplicar por cuadro es barato, dibujar ~480 lineas por cuadro
+    no lo es."""
+    if "scan" not in _QUIEBRE_CACHE:
+        im = Image.new("L", (W, H), 255)
+        dd = ImageDraw.Draw(im)
+        for y in range(0, H, 4):
+            dd.line([(0, y), (W, y)], fill=130)
+        _QUIEBRE_CACHE["scan"] = im
+    return _QUIEBRE_CACHE["scan"]
+
+
+def _quiebre_glitch(a, b, t, pal):
+    """VHS/glitch fuerte hacia el capitulo nuevo: separacion RGB,
+    scanlines, bandas desplazadas, dip a negro en el pico y un
+    light-leak en el verde de marca -- señal real de cambio de
+    capitulo (confirmado por la investigacion de esta ronda), no un
+    fade suave. t = 0..1 SOLO dentro de la porcion de glitch (la
+    porcion de freeze ya se resolvio antes, en transicion())."""
+    pico = 0.5
+    fuerza = max(0.0, 1 - abs(t - pico) / pico)
+    base = a if t < pico else b
+    if fuerza < 0.03:
+        return base
+    r, g, bl = base.split()
+    off = int(20 * fuerza)
+    out = Image.merge("RGB", (ImageChops.offset(r, off, 0), g,
+                              ImageChops.offset(bl, -off, 0)))
+    scan = _scanlines_fuente()
+    scan_rgb = Image.merge("RGB", (scan, scan, scan))
+    mezcla = ImageChops.multiply(out, scan_rgb)
+    out = Image.blend(out, mezcla, min(1.0, fuerza * 1.3))
+    rnd = random.Random(int(t * 977))
+    for _ in range(3):
+        y0 = rnd.randint(0, H - 50)
+        alto = rnd.randint(10, 46)
+        banda = out.crop((0, y0, W, y0 + alto))
+        out.paste(banda, (rnd.randint(-40, 40), y0))
+    if fuerza > 0.55:
+        k = (fuerza - 0.55) / 0.45
+        out = Image.blend(out, Image.new("RGB", (W, H), (0, 0, 0)), k * 0.85)
+    if fuerza > 0.6:
+        col = tuple(pal["destacado"]) if pal else (74, 222, 128)
+        m = Image.new("L", (W, H), 0)
+        dm = ImageDraw.Draw(m)
+        cx = int(W * t)
+        dm.polygon([(cx - 260, 0), (cx + 260, 0), (cx + 60, H), (cx - 460, H)],
+                   fill=int(85 * (fuerza - 0.6) / 0.4))
+        out = Image.composite(Image.new("RGB", (W, H), col), out, m)
+    return out
+
+
+def transicion(a, b, t, tipo, pal=None, freeze_frac=None):
     e = eio(t)
     if tipo == "fade":
         des = math.sin(t * math.pi) * 2.4
@@ -1673,6 +2008,17 @@ def transicion(a, b, t, tipo, pal=None):
     if tipo == "zoom_radial":
         f = math.sin(t * math.pi)
         return Image.blend(_zoom_radial(a, f), _zoom_radial(b, f), e)
+    if tipo == "quiebre":
+        # Quiebre de capitulo: freeze total del ultimo frame del
+        # segmento anterior (silencio de audio en esta misma ventana,
+        # ver QUIEBRE_FREEZE_S/construir_audio) y DESPUES glitch/VHS
+        # fuerte hacia el nuevo. freeze_frac lo calcula generar() a
+        # partir de "quiebre_freeze"/"quiebre_glitch" del segmento.
+        ff = freeze_frac if freeze_frac is not None else 0.55
+        if t < ff:
+            return a
+        tt = (t - ff) / max(0.001, 1 - ff)
+        return _quiebre_glitch(a, b, tt, pal)
     return b
 
 
@@ -1693,6 +2039,13 @@ def transicion(a, b, t, tipo, pal=None):
 RESPIRO = 0.45          # silencio despues de cada frase, en segundos
 DUCK_CON_VOZ = 0.10     # volumen de musica cuando hay voz
 DUCK_SIN_VOZ = 0.26     # volumen de musica cuando no hay voz
+
+# Quiebre de capitulo (freeze frame + silencio + glitch). Ver el
+# campo "quiebre_capitulo" en el docstring del modulo. Un segmento
+# puede sobreescribir cada mitad con "quiebre_freeze"/"quiebre_glitch"
+# (segundos); su "duracion" tiene que alcanzar al menos la suma.
+QUIEBRE_FREEZE_S = 0.5  # freeze + "aire muerto" (silencio total)
+QUIEBRE_GLITCH_S = 0.4  # VHS/glitch hacia el segmento nuevo
 
 
 def duracion_audio(path):
@@ -1812,13 +2165,31 @@ def construir_linea_tiempo(cfg, segs, tmp):
 SFX_POR_TRANSICION = {
     "punch": "impacto", "whip": "whoosh", "slide": "whoosh",
     "barrido": "whoosh", "dip": "sub", "corte_duro": "impacto",
-    "fade": None, "corte": None,
+    "fade": None, "corte": None, "quiebre": "impacto",
 }
 
 SFX_POR_FORMATO = {
     "dato_duro": "campana", "conteo": "tick", "revelacion": "riser",
     "pasos": "tick", "alerta": "impacto", "collage": "whoosh",
+    "mensajes": "tick", "escalada": "riser",
 }
+
+
+def _ventanas_quiebre(segs, marcas):
+    """Ventanas [inicio, fin] en segundos donde el audio va a silencio
+    TOTAL por el quiebre de capitulo -- el "aire muerto" antes del
+    golpe (freeze frame + corte de audio a silencio: tecnica dramatica
+    real, confirmada por la investigacion de esta ronda). Se aplica
+    DESPUES del mix (ver 'silencios' en construir_audio), asi gana
+    sobre voz + musica + sfx sin importar que haya debajo."""
+    out = []
+    for i, seg in enumerate(segs):
+        if not seg.get("quiebre_capitulo"):
+            continue
+        t0 = marcas[i] if i < len(marcas) else 0.0
+        fs = seg.get("quiebre_freeze", QUIEBRE_FREEZE_S)
+        out.append((t0, t0 + fs))
+    return out
 
 
 def construir_audio(cfg, segs, dur_total, tmp, voces=None, marcas=None):
@@ -1848,17 +2219,23 @@ def construir_audio(cfg, segs, dur_total, tmp, voces=None, marcas=None):
     for i, seg in enumerate(segs):
         if not seg.get("sfx_auto", True):
             continue
+        quiebre = bool(seg.get("quiebre_capitulo"))
         nombre = seg.get("sfx") or SFX_POR_FORMATO.get(seg.get("formato"))
         if not nombre and i > 0:
             nombre = SFX_POR_TRANSICION.get(seg.get("transicion", "fade"))
+        if not nombre and quiebre:
+            nombre = "impacto"  # el golpe que rompe el silencio del quiebre
         if not nombre:
             continue
         ruta = dir_sfx / f"{nombre}.wav"
         if not ruta.exists():
             continue
         t0 = marcas[i] if i < len(marcas) else 0.0
-        # El SFX suena cuando ARRANCA la transicion, no despues
-        delay = int(max(0.0, t0 + seg.get("sfx_en", 0.0)) * 1000)
+        # El SFX suena cuando ARRANCA la transicion, no despues -- salvo
+        # en un quiebre, donde el default es sonar justo al TERMINAR el
+        # freeze+silencio (no adentro de la ventana de silencio total).
+        en_default = seg.get("quiebre_freeze", QUIEBRE_FREEZE_S) if quiebre else 0.0
+        delay = int(max(0.0, t0 + seg.get("sfx_en", en_default)) * 1000)
         vol = seg.get("sfx_vol", 0.45 if voces else 0.55)
         entradas += ["-i", str(ruta)]
         filtros.append(f"[{n}:a]adelay={delay}|{delay},volume={vol}[a{n}]")
@@ -1889,6 +2266,42 @@ def construir_audio(cfg, segs, dur_total, tmp, voces=None, marcas=None):
         vol = seg.get("sfx_vol", 0.4 if voces else 0.5)
         for k in range(1, n_img):
             delay = int(max(0.0, t0 + (k / n_img) * dur_seg) * 1000)
+            entradas += ["-i", str(ruta)]
+            filtros.append(f"[{n}:a]adelay={delay}|{delay},volume={vol}[a{n}]")
+            etiquetas.append(f"[a{n}]")
+            n += 1
+
+    # --- 2c. SFX multi-beat generico: 'mensajes' (golpe por cada
+    # mensaje desde el 2do -- el 1ro ya sono en el bloque 2 via
+    # SFX_POR_FORMATO) y 'escalada' (tick en cada corte que acelera,
+    # ademas del riser de fondo que el bloque 2 ya puso para todo el
+    # segmento). Mismo mecanismo que 2b (collage): fracciones de
+    # tiempo 0..1 ancladas con adelay -- usa las MISMAS funciones
+    # _tiempos_mensajes/_tiempos_escalada que f_mensajes/f_escalada y
+    # el microshake de camara en render(), asi los tres nunca se
+    # desincronizan entre si.
+    for i, seg in enumerate(segs):
+        if not seg.get("sfx_auto", True):
+            continue
+        fmt = seg.get("formato")
+        if fmt == "mensajes":
+            beats = _tiempos_mensajes(seg)[1:]
+            nombre = seg.get("mensajes_sfx", "tick")
+        elif fmt == "escalada":
+            beats = _tiempos_escalada(seg)[1:-1]
+            nombre = seg.get("escalada_sfx", "tick")
+        else:
+            continue
+        if not beats:
+            continue
+        ruta = dir_sfx / f"{nombre}.wav" if nombre else None
+        if not ruta or not ruta.exists():
+            continue
+        t0 = marcas[i] if i < len(marcas) else 0.0
+        dur_seg = seg["duracion"]
+        vol = seg.get("sfx_vol_beats", 0.42 if voces else 0.5)
+        for frac in beats:
+            delay = int(max(0.0, t0 + frac * dur_seg) * 1000)
             entradas += ["-i", str(ruta)]
             filtros.append(f"[{n}:a]adelay={delay}|{delay},volume={vol}[a{n}]")
             etiquetas.append(f"[a{n}]")
@@ -1929,9 +2342,17 @@ def construir_audio(cfg, segs, dur_total, tmp, voces=None, marcas=None):
     # ensamblado final en generar() recorta el video en silencio para
     # que coincida con un audio mas corto -- se pierden segundos de
     # imagen sin ningun error visible.
+    # Silencio TOTAL en las ventanas de quiebre de capitulo: se aplica
+    # DESPUES del amix (mismo patron volume+enable='between(t,x,y)' ya
+    # usado arriba para el ducking de musica), asi gana sobre voz,
+    # musica y SFX por igual sin importar que haya debajo.
+    silencios = "".join(
+        f",volume=enable='between(t,{a:.3f},{b:.3f})':volume=0"
+        for a, b in _ventanas_quiebre(segs, marcas))
     mix = "".join(etiquetas) + (
-        f"amix=inputs={len(etiquetas)}:duration=longest:normalize=0,"
-        f"apad,alimiter=limit=0.95,"
+        f"amix=inputs={len(etiquetas)}:duration=longest:normalize=0"
+        + silencios +
+        f",apad,alimiter=limit=0.95,"
         f"aresample=44100[o]")
     cmd = ["ffmpeg", "-y", "-loglevel", "error"] + entradas + [
         "-filter_complex", ";".join(filtros + [mix]),
@@ -2049,11 +2470,25 @@ def generar(path):
     for si, seg in enumerate(segs):
         nf = int(seg["duracion"] * fps)
         tipo = seg.get("transicion", "fade")
+        freeze_frac = None
+        ft_local = ft
+        if seg.get("quiebre_capitulo"):
+            freeze_s = seg.get("quiebre_freeze", QUIEBRE_FREEZE_S)
+            glitch_s = seg.get("quiebre_glitch", QUIEBRE_GLITCH_S)
+            ft_local = max(1, int((freeze_s + glitch_s) * fps))
+            if ft_local > nf - 1:
+                print(f"AVISO: segmento {si+1} 'quiebre_capitulo' dura "
+                      f"menos que freeze+glitch ({freeze_s+glitch_s:.2f}s); "
+                      "se recorta.")
+                ft_local = max(1, nf - 1)
+            freeze_frac = freeze_s / max(0.001, freeze_s + glitch_s)
+            tipo = "quiebre"
         for f in range(nf):
             t = f / max(1, nf - 1)
             fr = render(seg, t, (acc + f / fps) / dur, cfg)
-            if si > 0 and f < ft and ult is not None and tipo != "corte":
-                fr = transicion(ult, fr, f / ft, tipo, cfg["paleta"])
+            if si > 0 and f < ft_local and ult is not None and tipo != "corte":
+                fr = transicion(ult, fr, f / ft_local, tipo, cfg["paleta"],
+                                freeze_frac)
             fr.save(tmp / f"f{n:06d}.png"); n += 1
         ult = render(seg, 1.0, (acc + seg["duracion"]) / dur, cfg)
         acc += seg["duracion"]
