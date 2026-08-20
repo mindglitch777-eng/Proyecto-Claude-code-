@@ -45,6 +45,7 @@ Uso:
 Devuelve 1 si algun video tiene PROBLEMAS bloqueantes, 0 si no.
 """
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -208,6 +209,23 @@ def revisar(video_path, guion_path=None):
             problemas.append(
                 f"El video dura {dur_v:.2f}s pero la voz y las capturas suman "
                 f"{suma_min:.2f}s -- se esta cortando contenido.")
+
+        # VIDEO MUDO. Un video con la voz puesta ronda -25 dB; si el
+        # guion tiene voz asignada y el audio final esta casi en
+        # silencio, la voz no entro. Este chequeo NO existia y por eso
+        # se llegaron a entregar 27 videos mudos: se verificaba la
+        # duracion (que un clip mudo cumple igual) pero nunca el sonido.
+        tiene_voz = any(s.get("voz_archivo") for s in cfg.get("segmentos", []))
+        if tiene_voz:
+            r = subprocess.run(
+                ["ffmpeg", "-i", str(video_path), "-af", "volumedetect",
+                 "-f", "null", "/dev/null"], capture_output=True, text=True)
+            m = re.search(r"mean_volume:\s*(-?[\d.]+) dB", r.stderr)
+            vol = float(m.group(1)) if m else -999.0
+            if vol < -55:
+                problemas.append(
+                    f"El video esta MUDO (volumen medio {vol:.1f} dB). El "
+                    f"guion tiene voz asignada pero no se escucha.")
 
     # 3. Pantalla muerta
     alto_muestra = int(ANCHO_MUESTRA * (alto / ancho)) if ancho else 160

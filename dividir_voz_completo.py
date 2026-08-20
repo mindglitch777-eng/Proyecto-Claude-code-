@@ -64,6 +64,21 @@ PADDING = 0.06        # margen que se deja pegado a cada lado del corte
 INF = float("inf")
 
 
+UMBRAL_MUDO = -60.0  # dB. Un clip con voz real ronda -20 dB; el
+                      # silencio digital da -91 dB.
+
+
+def volumen_medio(path):
+    """Volumen medio en dB del archivo. Sirve para detectar un clip que
+    salio MUDO: un corte mal hecho dura lo mismo que uno bueno, asi que
+    medir la duracion no alcanza -- hay que medir el sonido."""
+    r = subprocess.run(
+        ["ffmpeg", "-i", str(path), "-af", "volumedetect", "-f", "null",
+         "/dev/null"], capture_output=True, text=True)
+    m = re.search(r"mean_volume:\s*(-?[\d.]+) dB", r.stderr)
+    return float(m.group(1)) if m else -999.0
+
+
 def detectar_silencios(audio_path):
     cmd = [
         "ffmpeg", "-i", str(audio_path),
@@ -195,15 +210,23 @@ def main():
         print("OK: ninguna linea con ritmo sospechoso "
               "(todos los cortes caen donde corresponde).")
 
+    mudos = []
     for (ini, fin), m in zip(segmentos, manifest):
         ini_pad = max(0.0, ini - PADDING)
         fin_pad = min(duracion_total, fin + PADDING)
+        largo = fin_pad - ini_pad
         destino = carpeta_salida / f"{m['stem']}-voz{m['index']}.mp3"
-        salida_fade = f"{fin_pad - ini_pad - 0.03:.3f}"
+        # -ss ANTES de -i (busqueda de entrada): reinicia los tiempos a
+        # cero en el clip resultante. Con -ss DESPUES de -i los tiempos
+        # originales se conservan, y entonces 'afade=t=out:st=3' se
+        # disparaba de entrada en un clip que empieza en el segundo 190
+        # -> el clip entero salia EN SILENCIO. Solo el primer corte (que
+        # arranca en 0) sonaba. Este bug hizo que 27 videos se
+        # renderizaran mudos sin que nada avisara.
         cmd = [
-            "ffmpeg", "-y", "-i", str(audio_path),
-            "-ss", f"{ini_pad:.3f}", "-to", f"{fin_pad:.3f}",
-            "-af", f"afade=t=in:d=0.03,afade=t=out:st={salida_fade}:d=0.03",
+            "ffmpeg", "-y", "-ss", f"{ini_pad:.3f}", "-i", str(audio_path),
+            "-t", f"{largo:.3f}",
+            "-af", f"afade=t=in:d=0.03,afade=t=out:st={largo - 0.03:.3f}:d=0.03",
             "-ar", "44100", "-ac", "1", "-b:a", "128k",
             str(destino),
         ]
@@ -211,8 +234,18 @@ def main():
         if r.returncode != 0:
             print(f"ERROR cortando {destino}:\n{r.stderr[-800:]}")
             return 1
+        if volumen_medio(destino) < UMBRAL_MUDO:
+            mudos.append(destino.name)
+
+    if mudos:
+        print(f"\nERROR: {len(mudos)} de {len(manifest)} clips salieron MUDOS.")
+        for x in mudos[:8]:
+            print(f"  - {x}")
+        print("No uses estos audios: revisa el corte antes de renderizar.")
+        return 1
 
     print(f"\nOK: {len(manifest)} archivos escritos en {carpeta_salida}/")
+    print(f"Todos con sonido real (ninguno por debajo de {UMBRAL_MUDO} dB).")
     print("Ahora correr sincronizar_voz.py para cada guion.")
     return 0
 
