@@ -1,0 +1,116 @@
+{
+  "tema": "Te sacaste un 4 y ya sentís que fallaste en todo.",
+  "topico_marca": "nuevo-C",
+  "captura_fuente": "capturas/captura-decidir.mp4",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Te sacaste un 4 y ya sentís que fallaste en todo.",
+      "duracion": 1.8,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "narracion": "Te sacaste un 4 y ya sentís que fallaste en todo."
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 4,
+      "sufijo": "",
+      "texto": "Un número. No un veredicto sobre vos.",
+      "duracion": 1.6,
+      "transicion": "punch",
+      "narracion": "4. Un número. No un veredicto sobre vos."
+    },
+    {
+      "formato": "escalada",
+      "texto": "Así se infla un número",
+      "pasos": [
+        "Primero: me fue mal en un examen",
+        "Después: soy malo para esto",
+        "Ya decidiste que sos un fracaso"
+      ],
+      "duracion": 3.1,
+      "transicion": "whip",
+      "narracion": "Primero: me fue mal en un examen Después: soy malo para esto Ya decidiste que sos un fracaso"
+    },
+    {
+      "formato": "declaracion",
+      "texto": "Así se corta",
+      "mayus": false,
+      "duracion": 1.5,
+      "quiebre_capitulo": true,
+      "transicion": "quiebre"
+    },
+    {
+      "captura": "capturas/captura-decidir.mp4",
+      "recorte": [
+        0.0,
+        1.6
+      ],
+      "texto": "Nombrás qué salió mal, concreto",
+      "duracion": 1.6,
+      "transicion": "corte_duro",
+      "sfx": "tick"
+    },
+    {
+      "captura": "capturas/captura-decidir.mp4",
+      "recorte": [
+        1.6,
+        3.1
+      ],
+      "texto": "Lo separás de quién sos",
+      "duracion": 1.5,
+      "transicion": "corte_duro",
+      "sfx": "tick"
+    },
+    {
+      "captura": "capturas/captura-decidir.mp4",
+      "recorte": [
+        3.1,
+        4.8
+      ],
+      "texto": "Anotás qué hacer distinto",
+      "duracion": 1.7,
+      "transicion": "corte_duro",
+      "sfx": "tick"
+    },
+    {
+      "formato": "cta",
+      "texto": "Un 4 se corrige. No te define. Seguime.",
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
+      "narracion": "Un 4 se corrige. No te define. Seguime."
+    }
+  ],
+  "elevenlabs": {
+    "instrucciones": "Lineas de narracion para 20-nota-mala (hook, dato/mensajes, mecanismo, cierre -- las capturas van sin voz). Generar audios en ElevenLabs, guardarlos como 20-nota-mala-vozN.mp3 en capturas_voz/ segun el indice del segmento, correr sincronizar_voz.py despues.",
+    "lineas": [
+      "Te sacaste un 4 y ya sentís que fallaste en todo.",
+      "4. Un número. No un veredicto sobre vos.",
+      "Primero: me fue mal en un examen Después: soy malo para esto Ya decidiste que sos un fracaso",
+      "Un 4 se corrige. No te define. Seguime."
+    ]
+  }
+}

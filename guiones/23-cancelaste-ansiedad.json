@@ -1,0 +1,116 @@
+{
+  "tema": "Cancelaste el plan por ansiedad. Es la 2da vez esta semana.",
+  "topico_marca": "nuevo-C",
+  "captura_fuente": "capturas/captura-respirar.mp4",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Cancelaste el plan por ansiedad. Es la 2da vez esta semana.",
+      "duracion": 1.8,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "narracion": "Cancelaste el plan por ansiedad. Es la 2da vez esta semana."
+    },
+    {
+      "formato": "dato_duro",
+      "numero": 2,
+      "sufijo": "da vez",
+      "texto": "Esta semana que cancelás algo así.",
+      "duracion": 1.6,
+      "transicion": "punch",
+      "narracion": "2da vez. Esta semana que cancelás algo así."
+    },
+    {
+      "formato": "escalada",
+      "texto": "Así se achica tu semana",
+      "pasos": [
+        "Primero: hoy no tengo ganas",
+        "Después: mejor cancelo, así no arriesgo",
+        "Ya cancelaste dos planes esta semana"
+      ],
+      "duracion": 3.1,
+      "transicion": "whip",
+      "narracion": "Primero: hoy no tengo ganas Después: mejor cancelo, así no arriesgo Ya cancelaste dos planes esta semana"
+    },
+    {
+      "formato": "declaracion",
+      "texto": "Así se corta",
+      "mayus": false,
+      "duracion": 1.5,
+      "quiebre_capitulo": true,
+      "transicion": "quiebre"
+    },
+    {
+      "captura": "capturas/captura-respirar.mp4",
+      "recorte": [
+        0.0,
+        1.6
+      ],
+      "texto": "Nombrás qué te dio miedo, concreto",
+      "duracion": 1.6,
+      "transicion": "corte_duro",
+      "sfx": "tick"
+    },
+    {
+      "captura": "capturas/captura-respirar.mp4",
+      "recorte": [
+        1.6,
+        3.1
+      ],
+      "texto": "Bajás el cuerpo antes de decidir",
+      "duracion": 1.5,
+      "transicion": "corte_duro",
+      "sfx": "tick"
+    },
+    {
+      "captura": "capturas/captura-respirar.mp4",
+      "recorte": [
+        3.1,
+        4.8
+      ],
+      "texto": "Confirmás el próximo plan, aunque cueste",
+      "duracion": 1.7,
+      "transicion": "corte_duro",
+      "sfx": "tick"
+    },
+    {
+      "formato": "cta",
+      "texto": "Cancelaste hoy. Te alivia ahora, te achica la semana. Seguime.",
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
+      "narracion": "Cancelaste hoy. Te alivia ahora, te achica la semana. Seguime."
+    }
+  ],
+  "elevenlabs": {
+    "instrucciones": "Lineas de narracion para 23-cancelaste-ansiedad (hook, dato/mensajes, mecanismo, cierre -- las capturas van sin voz). Generar audios en ElevenLabs, guardarlos como 23-cancelaste-ansiedad-vozN.mp3 en capturas_voz/ segun el indice del segmento, correr sincronizar_voz.py despues.",
+    "lineas": [
+      "Cancelaste el plan por ansiedad. Es la 2da vez esta semana.",
+      "2da vez. Esta semana que cancelás algo así.",
+      "Primero: hoy no tengo ganas Después: mejor cancelo, así no arriesgo Ya cancelaste dos planes esta semana",
+      "Cancelaste hoy. Te alivia ahora, te achica la semana. Seguime."
+    ]
+  }
+}

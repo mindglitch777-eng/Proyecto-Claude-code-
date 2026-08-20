@@ -190,7 +190,8 @@ def revisar(path):
     # --- PAYOFF ADELANTADO ---
     mitad = len(segs) // 2
     payoff_v9 = ("dato_duro", "lista", "division", "ranking", "panel",
-                 "cronologia", "galeria", "comparar")
+                 "cronologia", "galeria", "comparar",
+                 "mensajes", "camino", "escalada", "collage")
     if not any(s.get("estilo") in ("contador", "lista") or s.get("grafico")
                or s.get("formato") in payoff_v9
                for s in segs[:max(1, mitad)]):

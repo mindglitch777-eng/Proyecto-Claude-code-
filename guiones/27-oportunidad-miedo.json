@@ -1,0 +1,107 @@
+{
+  "tema": "Dejaste pasar la oportunidad hace 1 semana y seguís pensando en eso.",
+  "topico_marca": "nuevo-C",
+  "captura_fuente": "capturas/captura-respirar.mp4",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Dejaste pasar la oportunidad hace 1 semana y seguís pensando en eso.",
+      "duracion": 1.8,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "narracion": "Dejaste pasar la oportunidad hace 1 semana y seguís pensando en eso."
+    },
+    {
+      "formato": "camino",
+      "texto": "Así se pierde una oportunidad",
+      "pasos": [
+        "Apareció la chance",
+        "Pensaste en todo lo que podía salir mal",
+        "No hiciste nada hasta que se cerró",
+        "Ahora la repasás como si volviera"
+      ],
+      "duracion": 3.3,
+      "transicion": "whip",
+      "narracion": "Apareció la chance Pensaste en todo lo que podía salir mal No hiciste nada hasta que se cerró Ahora la repasás como si volviera"
+    },
+    {
+      "formato": "declaracion",
+      "texto": "Así se corta",
+      "mayus": false,
+      "duracion": 1.5,
+      "quiebre_capitulo": true,
+      "transicion": "quiebre"
+    },
+    {
+      "captura": "capturas/captura-respirar.mp4",
+      "recorte": [
+        0.0,
+        1.6
+      ],
+      "texto": "Nombrás qué es lo que más temías",
+      "duracion": 1.6,
+      "transicion": "corte_duro",
+      "sfx": "tick"
+    },
+    {
+      "captura": "capturas/captura-respirar.mp4",
+      "recorte": [
+        1.6,
+        3.1
+      ],
+      "texto": "Lo separás de lo que realmente pasó",
+      "duracion": 1.5,
+      "transicion": "corte_duro",
+      "sfx": "tick"
+    },
+    {
+      "captura": "capturas/captura-respirar.mp4",
+      "recorte": [
+        3.1,
+        4.8
+      ],
+      "texto": "Preparás la próxima, no la que ya pasó",
+      "duracion": 1.7,
+      "transicion": "corte_duro",
+      "sfx": "tick"
+    },
+    {
+      "formato": "cta",
+      "texto": "Dejaste pasar esa. La próxima no tiene por qué. Seguime.",
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
+      "narracion": "Dejaste pasar esa. La próxima no tiene por qué. Seguime."
+    }
+  ],
+  "elevenlabs": {
+    "instrucciones": "Lineas de narracion para 27-oportunidad-miedo (hook, dato/mensajes, mecanismo, cierre -- las capturas van sin voz). Generar audios en ElevenLabs, guardarlos como 27-oportunidad-miedo-vozN.mp3 en capturas_voz/ segun el indice del segmento, correr sincronizar_voz.py despues.",
+    "lineas": [
+      "Dejaste pasar la oportunidad hace 1 semana y seguís pensando en eso.",
+      "Apareció la chance Pensaste en todo lo que podía salir mal No hiciste nada hasta que se cerró Ahora la repasás como si volviera",
+      "Dejaste pasar esa. La próxima no tiene por qué. Seguime."
+    ]
+  }
+}

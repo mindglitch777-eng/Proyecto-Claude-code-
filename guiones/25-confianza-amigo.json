@@ -1,0 +1,107 @@
+{
+  "tema": "Un amigo te falló 1 vez. Y ya no le creés nada.",
+  "topico_marca": "nuevo-C",
+  "captura_fuente": "capturas/captura-decidir.mp4",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": true,
+  "paleta": {
+    "fondo": [
+      15,
+      15,
+      16
+    ],
+    "texto": [
+      242,
+      239,
+      233
+    ],
+    "destacado": [
+      74,
+      222,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "declaracion",
+      "texto": "Un amigo te falló 1 vez. Y ya no le creés nada.",
+      "duracion": 1.8,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "narracion": "Un amigo te falló 1 vez. Y ya no le creés nada."
+    },
+    {
+      "formato": "camino",
+      "texto": "Así se cae la confianza",
+      "pasos": [
+        "Te falló una vez",
+        "Vos generalizaste: es así siempre",
+        "Empezaste a esperar que falle de nuevo",
+        "Ahora desconfiás hasta de lo que no pasó"
+      ],
+      "duracion": 3.3,
+      "transicion": "whip",
+      "narracion": "Te falló una vez Vos generalizaste: es así siempre Empezaste a esperar que falle de nuevo Ahora desconfiás hasta de lo que no pasó"
+    },
+    {
+      "formato": "declaracion",
+      "texto": "Así se corta",
+      "mayus": false,
+      "duracion": 1.5,
+      "quiebre_capitulo": true,
+      "transicion": "quiebre"
+    },
+    {
+      "captura": "capturas/captura-decidir.mp4",
+      "recorte": [
+        0.0,
+        1.6
+      ],
+      "texto": "Nombrás lo que pasó, un hecho",
+      "duracion": 1.6,
+      "transicion": "corte_duro",
+      "sfx": "tick"
+    },
+    {
+      "captura": "capturas/captura-decidir.mp4",
+      "recorte": [
+        1.6,
+        3.1
+      ],
+      "texto": "Lo separás de lo que temés que pase",
+      "duracion": 1.5,
+      "transicion": "corte_duro",
+      "sfx": "tick"
+    },
+    {
+      "captura": "capturas/captura-decidir.mp4",
+      "recorte": [
+        3.1,
+        4.8
+      ],
+      "texto": "Hablás con él, no con tu cabeza",
+      "duracion": 1.7,
+      "transicion": "corte_duro",
+      "sfx": "tick"
+    },
+    {
+      "formato": "cta",
+      "texto": "Una falla no es un patrón. Hablalo antes de decidir. Seguime.",
+      "mayus": true,
+      "duracion": 2.4,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
+      "narracion": "Una falla no es un patrón. Hablalo antes de decidir. Seguime."
+    }
+  ],
+  "elevenlabs": {
+    "instrucciones": "Lineas de narracion para 25-confianza-amigo (hook, dato/mensajes, mecanismo, cierre -- las capturas van sin voz). Generar audios en ElevenLabs, guardarlos como 25-confianza-amigo-vozN.mp3 en capturas_voz/ segun el indice del segmento, correr sincronizar_voz.py despues.",
+    "lineas": [
+      "Un amigo te falló 1 vez. Y ya no le creés nada.",
+      "Te falló una vez Vos generalizaste: es así siempre Empezaste a esperar que falle de nuevo Ahora desconfiás hasta de lo que no pasó",
+      "Una falla no es un patrón. Hablalo antes de decidir. Seguime."
+    ]
+  }
+}
