@@ -133,10 +133,28 @@ def _factor_estiro(seg, referencia, techo=2.6):
 # sola fuente cubre Light/Regular/Bold via ejes de variacion, en vez
 # de necesitar un .ttf por peso.
 FUENTE_MODERNA = Path(__file__).parent / "assets/fuentes/SpaceGrotesk-Variable.ttf"
+# Serif italica para la palabra suelta de las maquetas 'pleno'/'tarjeta'.
+# Si se agrega una fuente propia mas elegante a assets/fuentes/, se usa
+# esa; si no, Liberation Serif Italic, que viene con el sistema.
+FUENTE_SERIF_ITALICA = Path(__file__).parent / "assets/fuentes/SerifItalica.ttf"
+if not FUENTE_SERIF_ITALICA.exists():
+    FUENTE_SERIF_ITALICA = Path(
+        "/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf")
 
 
-def fnt(t, ligera=False, serif=False):
+def fnt(t, ligera=False, serif=False, italica=False):
     if serif:
+        cands = ([FUENTE_SERIF_ITALICA,
+                  "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf",
+                  "/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf"]
+                 if italica else [])
+        for c in cands:
+            c = str(c)
+            if Path(c).exists():
+                try:
+                    return ImageFont.truetype(c, max(8, int(t)))
+                except Exception:
+                    pass
         for c in ["/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf",
                   "/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"]:
             if Path(c).exists():
@@ -345,6 +363,129 @@ def dibujar_captions_kinetic(img, d, seg, t, pal):
         img.paste(Image.blend(franja, oscuro, 0.72), (0, y0))
     col = tuple(pal["destacado"]) if clave else tuple(pal["texto"])
     sombra_t(d, (x, y), palabra, fu, col, 6)
+
+
+def _palabra_activa(seg, t, campo="narracion"):
+    """(palabra, es_clave, avance_local) de la palabra que corresponde a
+    este instante. Reparte las palabras parejo a lo largo del segmento:
+    como la duracion del segmento la fija la voz real, el reparto queda
+    sincronizado con el habla sin necesidad de marcas de tiempo."""
+    texto = seg.get("captions_texto") or seg.get(campo) or texto_hablado(seg)
+    if not texto or not texto.strip():
+        return None, False, 0.0
+    palabras = _palabras_captions(texto)
+    if not palabras:
+        return None, False, 0.0
+    n = len(palabras)
+    avance = min(1.0, t / 0.94)
+    idx = min(n - 1, int(avance * n))
+    lt = max(0.0, min(1.0, avance * n - idx))
+    palabra, clave = palabras[idx]
+    return palabra, clave, lt
+
+
+def _cuadro_medio(img, seg, caja):
+    """Dibuja el metraje/imagen del segmento dentro de 'caja' (x0,y0,x1,y1),
+    recortando para llenar sin deformar. Si el segmento no trae imagen,
+    deja la caja vacia (el fondo de la maqueta se ve igual)."""
+    ruta = seg.get("imagen") or seg.get("foto")
+    if not ruta or not Path(ruta).exists():
+        return
+    try:
+        im = Image.open(ruta).convert("RGB")
+    except Exception:
+        return
+    x0, y0, x1, y1 = caja
+    cw, ch = x1 - x0, y1 - y0
+    esc = max(cw / im.width, ch / im.height)
+    im = im.resize((max(1, int(im.width * esc)), max(1, int(im.height * esc))),
+                   Image.LANCZOS)
+    ox = (im.width - cw) // 2
+    oy = (im.height - ch) // 2
+    img.paste(im.crop((ox, oy, ox + cw, oy + ch)), (x0, y0))
+
+
+def f_pleno(img, d, seg, t, pal):
+    """MAQUETA A -- metraje a sangre completa y UNA palabra en serif
+    italica encima, centrada.
+
+    Es la mitad del contraste que hace funcionar la referencia: cuadro
+    oscuro, tipografia elegante, una idea por vez. La otra mitad es
+    f_tarjeta (fondo blanco). Alternar las dos ES la transicion de
+    flash -- no hace falta un efecto aparte, el salto de un cuadro casi
+    negro a uno casi blanco ya lo produce.
+
+    JSON: {"formato": "pleno", "imagen": "...", "narracion": "..."}
+    """
+    _cuadro_medio(img, seg, (0, 0, W, H))
+    # Oscurecido general para que la palabra blanca siempre se lea
+    velo = Image.new("RGB", (W, H), (0, 0, 0))
+    img.paste(Image.blend(img, velo, seg.get("velo", 0.34)), (0, 0))
+
+    palabra, clave, lt = _palabra_activa(seg, t)
+    if not palabra:
+        return
+    tam = 104
+    f = fnt(tam, serif=True, italica=True)
+    while d.textbbox((0, 0), palabra, font=f)[2] > W - 180 and tam > 44:
+        tam -= 6
+        f = fnt(tam, serif=True, italica=True)
+    e = eo_back(min(1.0, lt / 0.30))
+    fu = fnt(max(28, int(f.size * (0.86 + 0.14 * e))), serif=True, italica=True)
+    wb = d.textbbox((0, 0), palabra, font=fu)[2]
+    y = H * 0.46 - fu.size / 2
+    col = tuple(pal["destacado"]) if clave else (255, 255, 255)
+    sombra_t(d, ((W - wb) / 2, y), palabra, fu, col, 7)
+
+
+def f_tarjeta(img, d, seg, t, pal):
+    """MAQUETA B -- fondo blanco liso, titulo en sans negra mayuscula
+    arriba, y el metraje metido en una tarjeta redondeada al medio.
+
+    Es el reverso exacto de f_pleno. Saltar de una a otra produce el
+    golpe de luz que en la referencia se lee como flash de foto.
+
+    JSON: {"formato": "tarjeta", "texto": "SALCHICHA", "imagen": "..."}
+    """
+    img.paste(Image.new("RGB", (W, H), seg.get("fondo_tarjeta", (247, 247, 245))),
+              (0, 0))
+
+    titulo = seg.get("texto", "")
+    y_card = 300
+    if titulo:
+        ft, lt_ = auto_tam(d, titulo.upper() if seg.get("mayus", True) else titulo,
+                           W - 160, 210, 96)
+        y = 150
+        for ln in lt_:
+            wl = d.textbbox((0, 0), ln, font=ft)[2]
+            d.text(((W - wl) / 2, y), ln, font=ft, fill=(16, 16, 18))
+            y += ft.size + 12
+        y_card = max(300, y + 60)
+
+    cx0, cx1 = 96, W - 96
+    alto = min(H - y_card - 190, int((cx1 - cx0) * 1.28))
+    if alto < 160:
+        return
+    caja = (cx0, int(y_card), cx1, int(y_card + alto))
+    # La tarjeta se arma aparte y se pega con una mascara de rectangulo
+    # redondeado. Antes intentaba redondear repintando las cuatro puntas
+    # con circulos y salia al reves: dejaba un circulo oscuro en cada
+    # esquina en vez de recortarla.
+    cw, ch = cx1 - cx0, alto
+    tarjeta = Image.new("RGB", (cw, ch), (232, 232, 230))
+    _cuadro_medio(tarjeta, seg, (0, 0, cw, ch))
+    mascara = Image.new("L", (cw, ch), 0)
+    ImageDraw.Draw(mascara).rounded_rectangle([0, 0, cw - 1, ch - 1],
+                                              radius=34, fill=255)
+    img.paste(tarjeta, (cx0, int(y_card)), mascara)
+
+    palabra, clave, lt2 = _palabra_activa(seg, t)
+    if palabra:
+        fu = fnt(58, serif=True, italica=True)
+        wb = d.textbbox((0, 0), palabra, font=fu)[2]
+        yy = caja[3] + 46
+        col = tuple(pal["destacado"]) if clave else (16, 16, 18)
+        d.text(((W - wb) / 2, yy), palabra, font=fu, fill=col)
 
 
 def f_declaracion(img, d, seg, t, pal):
@@ -1828,6 +1969,7 @@ FORMATOS = {
     "alerta": f_alerta, "panel": f_panel, "terminal": f_terminal,
     "camino": f_camino, "collage": f_collage,
     "mensajes": f_mensajes, "escalada": f_escalada, "cta": f_cta,
+    "pleno": f_pleno, "tarjeta": f_tarjeta,
 }
 
 PALETAS = [
@@ -1930,7 +2072,14 @@ def render(seg, t, prog, cfg):
     # a tiempo local del segmento, que alcanza para un cuadro fijo.
     dur_total = cfg.get("_dur_total")
     t_abs = prog * dur_total if dur_total else t * seg.get("duracion", 3.0)
-    dibujar_ambiente(img, d, t_abs, pal)
+    # La capa ambiental (particulas + grano + latido de borde) esta hecha
+    # para fondos oscuros. Sobre la maqueta clara 'tarjeta' pinta un
+    # marco de acento encima del blanco y ensucia lo que justamente tiene
+    # que verse limpio, asi que ahi no corre: en esa maqueta el
+    # movimiento ya lo da la palabra que cambia y el salto a la maqueta
+    # oscura.
+    if fmt != "tarjeta":
+        dibujar_ambiente(img, d, t_abs, pal)
     d = ImageDraw.Draw(img)
 
     # Camara: leve deriva, distinta por formato, con opcion de shake
