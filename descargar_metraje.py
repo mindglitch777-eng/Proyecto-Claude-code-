@@ -42,14 +42,30 @@ NICHOS = {
 }
 
 
+ARCHIVO_CLAVE = RAIZ / "pexels_key.txt"
+
+
 def clave():
+    """Clave de Pexels. Primero la variable de entorno (si algun dia se
+    carga como secreto del repo, manda esa); si no, el archivo
+    pexels_key.txt.
+
+    Decision del operador: la clave va en el archivo para que la
+    descarga funcione sin ningun paso manual. Es una clave de SOLO
+    LECTURA del banco de fotos gratuito -- no permite gastar dinero,
+    no da acceso a ninguna cuenta y su unico limite es 200 descargas
+    por hora. Si alguna vez se filtra, se regenera desde pexels.com/api
+    y se reemplaza este archivo."""
     k = os.environ.get("PEXELS_API_KEY", "").strip()
-    if not k:
-        print("ERROR: falta la variable de entorno PEXELS_API_KEY.\n"
-              "En GitHub: Settings -> Secrets and variables -> Actions ->\n"
-              "New repository secret, con el nombre PEXELS_API_KEY.")
-        sys.exit(1)
-    return k
+    if k:
+        return k
+    if ARCHIVO_CLAVE.exists():
+        k = ARCHIVO_CLAVE.read_text(encoding="utf-8").strip()
+        if k:
+            return k
+    print(f"ERROR: no hay clave. Escribila en {ARCHIVO_CLAVE.name} o "
+          f"cargala como variable PEXELS_API_KEY.")
+    sys.exit(1)
 
 
 def buscar(consulta, cantidad, k):

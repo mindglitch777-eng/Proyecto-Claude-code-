@@ -37,11 +37,6 @@ jobs:
           NICHO: ${{ inputs.nicho }}
           CANTIDAD: ${{ inputs.cantidad }}
         run: |
-          if [ -z "$PEXELS_API_KEY" ]; then
-            echo "Falta el secreto PEXELS_API_KEY."
-            echo "Cargalo en Settings -> Secrets and variables -> Actions."
-            exit 1
-          fi
           if [ "$NICHO" = "todos" ]; then
             python3 descargar_metraje.py --lote
           else
