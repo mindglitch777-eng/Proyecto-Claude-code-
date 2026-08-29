@@ -1,6 +1,6 @@
 {
-  "tema": "Demo Taller de Activos - barberia (v2: ritmo rapido + captions cineticos)",
-  "nota": "Gramatica copiada de la referencia: hook que NO cierra la frase, plano nuevo cada 1.2-1.8s, flash de corte, cada palabra entra por un lado distinto y con otra letra, marca solo al final. El producto se vende mostrando el mecanismo, nunca pidiendo la compra.",
+  "tema": "Demo Taller de Activos - barberia (v3: dolor + identificacion + comparacion grande)",
+  "nota": "Estructura: hook agresivo -> ruleta que amplia el publico -> dolor acumulado en lista -> giro -> comparacion lado a lado que explica el mecanismo -> ejemplo internacional -> mecanismo concreto -> escasez -> CTA. El producto se vende MOSTRANDO el mecanismo, nunca pidiendo la compra.",
   "fps": 30,
   "camara": 1.0,
   "loop": false,
@@ -29,127 +29,177 @@
   "segmentos": [
     {
       "formato": "pleno",
-      "narracion": "El barbero que más gana de tu barrio",
-      "duracion": 1.7,
+      "narracion": "El que más gana de tu barrio no laburó más que vos",
+      "duracion": 2.2,
       "hook": "impacto",
       "sfx": "impacto",
       "flash": true,
       "imagen": "assets/metraje/barberia/barberia-00.jpg",
-      "velo": 0.44
-    },
-    {
-      "formato": "tarjeta",
-      "texto": "No corta mejor",
-      "narracion": "no corta mejor que vos",
-      "duracion": 1.4,
-      "transicion": "corte_duro",
-      "sfx": "whoosh",
-      "flash": 0.08,
-      "imagen": "assets/metraje/barberia/barberia-01.jpg"
-    },
-    {
-      "formato": "pleno",
-      "narracion": "*cobra* distinto",
-      "duracion": 1.2,
-      "transicion": "corte_duro",
-      "sfx": "impacto",
-      "flash": true,
-      "imagen": "assets/metraje/barberia/barberia-02.jpg",
-      "velo": 0.4
-    },
-    {
-      "formato": "tarjeta",
-      "texto": "Vos cobrás el corte",
-      "narracion": "vos cobrás el corte",
-      "duracion": 1.5,
-      "transicion": "corte_duro",
-      "sfx": "tick",
-      "imagen": "assets/metraje/barberia/barberia-03.jpg"
-    },
-    {
-      "formato": "pleno",
-      "narracion": "él cobra el *lugar* en la agenda",
-      "duracion": 1.8,
-      "transicion": "corte_duro",
-      "sfx": "whoosh",
-      "flash": true,
-      "imagen": "assets/metraje/barberia/barberia-04.jpg",
       "velo": 0.46
     },
     {
-      "formato": "tarjeta",
-      "texto": "Seña de 3 mil",
-      "narracion": "seña de tres mil, se descuenta del corte",
+      "formato": "ruleta",
+      "fijo": "Pasa en",
+      "palabras": [
+        "barberías",
+        "peluquerías",
+        "talleres",
+        "gimnasios"
+      ],
+      "narracion": "Pasa en barberías, peluquerías, talleres, gimnasios.",
+      "duracion": 2.6,
+      "transicion": "corte_duro",
+      "sfx": "tick",
+      "flash": 0.08,
+      "imagen": "assets/metraje/barberia/barberia-01.jpg",
+      "velo": 0.56
+    },
+    {
+      "formato": "pleno",
+      "narracion": "Vos abriste a las nueve",
+      "duracion": 1.5,
+      "transicion": "corte_duro",
+      "sfx": "whoosh",
+      "flash": true,
+      "imagen": "assets/metraje/barberia/barberia-02.jpg",
+      "velo": 0.42
+    },
+    {
+      "formato": "lista",
+      "titulo": "Hoy perdiste",
+      "items": [
+        "el de las 11 que no vino",
+        "el de las 3 que llegó tarde",
+        "los dos huecos del martes"
+      ],
+      "narracion": "Y hoy perdiste el de las once que no vino, el de las tres que llegó tarde, y los dos huecos del martes.",
+      "duracion": 3.6,
+      "transicion": "corte_duro",
+      "sfx": "impacto",
+      "imagen": "assets/metraje/barberia/barberia-03.jpg",
+      "velo": 0.66
+    },
+    {
+      "formato": "pleno",
+      "narracion": "Nadie te avisó. Nadie te *pagó*.",
       "duracion": 1.9,
       "transicion": "corte_duro",
       "sfx": "impacto",
-      "flash": 0.09,
+      "flash": true,
+      "imagen": "assets/metraje/barberia/barberia-04.jpg",
+      "velo": 0.48
+    },
+    {
+      "formato": "tarjeta",
+      "texto": "La silla vacía",
+      "narracion": "estuviste igual, parado",
+      "duracion": 1.7,
+      "transicion": "corte_duro",
+      "sfx": "tick",
+      "flash": 0.08,
       "imagen": "assets/metraje/barberia/barberia-05.jpg"
     },
     {
       "formato": "pleno",
-      "narracion": "el que falta ya te *pagó*",
-      "duracion": 1.5,
+      "narracion": "y te fuiste pensando que fue un día flojo",
+      "duracion": 2.3,
       "transicion": "corte_duro",
-      "sfx": "impacto",
-      "flash": true,
+      "sfx": "whoosh",
       "imagen": "assets/metraje/barberia/barberia-06.jpg",
-      "velo": 0.42
+      "velo": 0.44
     },
     {
-      "formato": "tarjeta",
-      "texto": "Cero huecos",
-      "narracion": "y el que viene entra sin esperar",
-      "duracion": 1.6,
+      "formato": "pleno",
+      "narracion": "No fue flojo. Fue *gratis*.",
+      "duracion": 2.0,
       "transicion": "corte_duro",
-      "sfx": "tick",
-      "imagen": "assets/metraje/barberia/barberia-07.jpg"
+      "sfx": "impacto",
+      "flash": 0.14,
+      "imagen": "assets/metraje/barberia/barberia-07.jpg",
+      "velo": 0.52
+    },
+    {
+      "formato": "comparacion",
+      "izq_titulo": "Vos",
+      "der_titulo": "Él",
+      "izq": [
+        "cobrás el corte",
+        "cobrás si viene",
+        "el que falta no paga"
+      ],
+      "der": [
+        "cobra la agenda",
+        "cobra al reservar",
+        "el que falta ya pagó"
+      ],
+      "remate": "misma tijera",
+      "narracion": "Vos cobrás el corte. Él cobra la agenda. Misma tijera.",
+      "duracion": 4.4,
+      "transicion": "corte_duro",
+      "sfx": "impacto",
+      "flash": true
     },
     {
       "formato": "pleno",
       "narracion": "Netflix no te cobra por ver",
-      "duracion": 1.6,
+      "duracion": 1.7,
       "transicion": "corte_duro",
       "sfx": "whoosh",
       "flash": true,
-      "imagen": "assets/metraje/barberia/barberia-08.jpg",
-      "velo": 0.48
+      "imagen": "assets/metraje/dinero/dinero-00.jpg",
+      "velo": 0.5
     },
     {
       "formato": "tarjeta",
       "texto": "Te cobra el mes",
       "narracion": "te cobra el *mes* igual",
-      "duracion": 1.4,
+      "duracion": 1.5,
       "transicion": "corte_duro",
       "sfx": "impacto",
       "flash": 0.08,
-      "imagen": "assets/metraje/barberia/barberia-09.jpg"
+      "imagen": "assets/metraje/dinero/dinero-01.jpg"
     },
     {
       "formato": "pleno",
-      "narracion": "una barbería puede hacer exactamente lo mismo",
-      "duracion": 2.0,
+      "narracion": "Tu silla puede funcionar igual",
+      "duracion": 1.8,
       "transicion": "corte_duro",
       "sfx": "whoosh",
-      "imagen": "assets/metraje/barberia/barberia-10.jpg",
+      "imagen": "assets/metraje/barberia/barberia-08.jpg",
       "velo": 0.44
     },
     {
-      "formato": "tarjeta",
-      "texto": "Nadie lo hace",
-      "narracion": "en tu barrio no lo hace *nadie* todavía",
-      "duracion": 1.9,
+      "formato": "lista",
+      "titulo": "Lo único que cambia",
+      "items": [
+        "seña de 3 mil al reservar",
+        "se descuenta del corte",
+        "el que falta la pierde"
+      ],
+      "narracion": "Seña de tres mil al reservar. Se descuenta del corte. El que falta, la pierde.",
+      "duracion": 3.4,
+      "transicion": "corte_duro",
+      "sfx": "tick",
+      "flash": 0.08,
+      "imagen": "assets/metraje/barberia/barberia-09.jpg",
+      "velo": 0.64
+    },
+    {
+      "formato": "pleno",
+      "narracion": "En tu barrio no lo hace *nadie* todavía",
+      "duracion": 2.1,
       "transicion": "corte_duro",
       "sfx": "impacto",
       "flash": true,
-      "imagen": "assets/metraje/barberia/barberia-11.jpg"
+      "imagen": "assets/metraje/barberia/barberia-10.jpg",
+      "velo": 0.46
     },
     {
       "formato": "cta",
       "texto": "Taller de Activos",
       "narracion": "Seguime. Mañana te muestro el número.",
       "mayus": true,
-      "duracion": 2.1,
+      "duracion": 2.2,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
@@ -159,20 +209,22 @@
     }
   ],
   "elevenlabs": {
-    "instrucciones": "Voz seria y firme, empresario joven, sin exagerar. Ritmo continuo y rapido, sin pausas largas. Indices narrados [0..12]. Guardar como demo-taller-barberia-vozN.mp3 en capturas_voz/.",
+    "instrucciones": "Voz seria y firme, empresario joven, sin exagerar. Ritmo continuo. Bajar el tono en 'No fue flojo. Fue gratis.' Indices narrados [0..14]. Guardar como demo-taller-barberia-vozN.mp3 en capturas_voz/.",
     "lineas": [
-      "El barbero que más gana de tu barrio",
-      "no corta mejor que vos",
-      "cobra distinto",
-      "vos cobrás el corte",
-      "él cobra el lugar en la agenda",
-      "seña de tres mil, se descuenta del corte",
-      "el que falta ya te pagó",
-      "y el que viene entra sin esperar",
+      "El que más gana de tu barrio no laburó más que vos",
+      "Pasa en barberías, peluquerías, talleres, gimnasios.",
+      "Vos abriste a las nueve",
+      "Y hoy perdiste el de las once que no vino, el de las tres que llegó tarde, y los dos huecos del martes.",
+      "Nadie te avisó. Nadie te pagó.",
+      "estuviste igual, parado",
+      "y te fuiste pensando que fue un día flojo",
+      "No fue flojo. Fue gratis.",
+      "Vos cobrás el corte. Él cobra la agenda. Misma tijera.",
       "Netflix no te cobra por ver",
       "te cobra el mes igual",
-      "una barbería puede hacer exactamente lo mismo",
-      "en tu barrio no lo hace nadie todavía",
+      "Tu silla puede funcionar igual",
+      "Seña de tres mil al reservar. Se descuenta del corte. El que falta, la pierde.",
+      "En tu barrio no lo hace nadie todavía",
       "Seguime. Mañana te muestro el número."
     ]
   }
