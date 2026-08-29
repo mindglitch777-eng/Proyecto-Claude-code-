@@ -1,0 +1,92 @@
+{
+  "tema": "Demo Taller de Activos - barberia",
+  "nota": "Guion de referencia para la gramatica nueva. Copia la estructura medida sobre Venta Silenciosa: hook que NO cierra la frase, alternancia pleno/tarjeta cada 2-3s, una palabra por vez en serif italica, marca solo al final.",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": false,
+  "paleta": {
+    "fondo": [10, 10, 12],
+    "texto": [246, 246, 244],
+    "destacado": [255, 78, 36],
+    "apagado": [122, 122, 128]
+  },
+  "segmentos": [
+    {
+      "formato": "pleno",
+      "narracion": "Si yo tuviera una barbería hoy",
+      "duracion": 2.4,
+      "hook": "impacto",
+      "imagen": "assets/metraje/barberia/barberia-00.jpg",
+      "velo": 0.42
+    },
+    {
+      "formato": "tarjeta",
+      "texto": "El turno vacío",
+      "narracion": "no cobraría el corte",
+      "duracion": 2.1,
+      "transicion": "corte_duro",
+      "sfx": "impacto",
+      "imagen": "assets/metraje/barberia/barberia-01.jpg"
+    },
+    {
+      "formato": "pleno",
+      "narracion": "cobraría el lugar en la agenda",
+      "duracion": 2.6,
+      "transicion": "corte_duro",
+      "sfx": "whoosh",
+      "imagen": "assets/metraje/barberia/barberia-02.jpg",
+      "velo": 0.40
+    },
+    {
+      "formato": "tarjeta",
+      "texto": "Seña de 3 mil",
+      "narracion": "el que no viene ya pagó",
+      "duracion": 2.3,
+      "transicion": "corte_duro",
+      "sfx": "impacto",
+      "imagen": "assets/metraje/barberia/barberia-03.jpg"
+    },
+    {
+      "formato": "pleno",
+      "narracion": "y el que viene entra sin esperar",
+      "duracion": 2.5,
+      "transicion": "corte_duro",
+      "sfx": "whoosh",
+      "imagen": "assets/metraje/barberia/barberia-04.jpg",
+      "velo": 0.44
+    },
+    {
+      "formato": "tarjeta",
+      "texto": "Nadie lo hace",
+      "narracion": "en tu barrio no lo hace nadie todavía",
+      "duracion": 2.6,
+      "transicion": "corte_duro",
+      "sfx": "impacto",
+      "imagen": "assets/metraje/barberia/barberia-05.jpg"
+    },
+    {
+      "formato": "cta",
+      "texto": "Taller de Activos",
+      "narracion": "Seguime. Parte dos mañana.",
+      "mayus": true,
+      "duracion": 2.2,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
+      "cta_marca": "Taller de Activos",
+      "cta_sub": "Problemas reales. Productos que se mueven."
+    }
+  ],
+  "elevenlabs": {
+    "instrucciones": "Voz seria y firme, tipo empresario joven, sin exagerar. Ritmo continuo, sin pausas largas. Indices narrados [0,1,2,3,4,5,6]. Guardar como demo-taller-barberia-vozN.mp3 en capturas_voz/.",
+    "lineas": [
+      "Si yo tuviera una barbería hoy",
+      "no cobraría el corte",
+      "cobraría el lugar en la agenda",
+      "el que no viene ya pagó",
+      "y el que viene entra sin esperar",
+      "en tu barrio no lo hace nadie todavía",
+      "Seguime. Parte dos mañana."
+    ]
+  }
+}

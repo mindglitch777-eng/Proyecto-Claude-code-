@@ -107,8 +107,13 @@ def bajar_nicho(nicho, consulta, cantidad, k):
         # 'portrait' ya viene recortado 800x1200, buena base para 1080x1920
         src = f["src"].get("portrait") or f["src"].get("large")
         destino = carpeta / f"{nicho}-{i:02d}.jpg"
+        # El servidor de imagenes tambien rechaza el User-Agent por
+        # defecto de urllib: la busqueda respondia bien pero las 72
+        # descargas fallaban en silencio y quedaban las carpetas vacias.
+        pedido = urllib.request.Request(src, headers={
+            "User-Agent": "Mozilla/5.0 (compatible; FabricaContenido/1.0)"})
         try:
-            with urllib.request.urlopen(src, timeout=60) as r, open(destino, "wb") as out:
+            with urllib.request.urlopen(pedido, timeout=60) as r, open(destino, "wb") as out:
                 out.write(r.read())
         except Exception as e:
             print(f"  [{nicho}] fallo {i}: {e}")
