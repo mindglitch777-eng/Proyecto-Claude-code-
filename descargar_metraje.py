@@ -98,11 +98,12 @@ def main():
         total = sum(bajar_nicho(n, c, 12, k) for n, c in NICHOS.items())
         print(f"\nTotal: {total} fotos en {len(NICHOS)} nichos.")
         return 0
-    if len(a) < 2:
-        print(__doc__)
-        return 1
-    nicho, consulta = a[0], a[1]
-    cantidad = int(a[2]) if len(a) > 2 else 12
+    # Un solo nicho. Si el nombre esta en NICHOS se usa su consulta; si
+    # no, se toma el texto tal cual como busqueda. Asi el workflow solo
+    # necesita pasar el nombre y no tiene que resolver la consulta.
+    nicho = a[0]
+    consulta = NICHOS.get(nicho, a[1] if len(a) > 1 else nicho)
+    cantidad = int(a[-1]) if a[-1].isdigit() else 12
     bajar_nicho(nicho, consulta, cantidad, k)
     return 0
 

@@ -34,20 +34,18 @@ jobs:
       - name: Bajar metraje
         env:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          NICHO: ${{ inputs.nicho }}
+          CANTIDAD: ${{ inputs.cantidad }}
         run: |
           if [ -z "$PEXELS_API_KEY" ]; then
             echo "Falta el secreto PEXELS_API_KEY."
             echo "Cargalo en Settings -> Secrets and variables -> Actions."
             exit 1
           fi
-          if [ "${{ inputs.nicho }}" = "todos" ]; then
+          if [ "$NICHO" = "todos" ]; then
             python3 descargar_metraje.py --lote
           else
-            python3 descargar_metraje.py "${{ inputs.nicho }}" \
-              "$(python3 -c "
-import descargar_metraje as d
-print(d.NICHOS.get('${{ inputs.nicho }}', '${{ inputs.nicho }}'))
-")" "${{ inputs.cantidad }}"
+            python3 descargar_metraje.py "$NICHO" "$CANTIDAD"
           fi
 
       - name: Guardar en el repo
