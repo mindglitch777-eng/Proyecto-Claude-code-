@@ -70,9 +70,27 @@ def clave():
 
 def buscar(consulta, cantidad, k):
     url = (f"{API}?{urllib.parse.urlencode({'query': consulta, 'per_page': cantidad, 'orientation': 'portrait', 'size': 'large'})}")
-    pedido = urllib.request.Request(url, headers={"Authorization": k})
-    with urllib.request.urlopen(pedido, timeout=45) as r:
-        return json.loads(r.read().decode("utf-8"))
+    # User-Agent explicito: con el de urllib por defecto
+    # ("Python-urllib/3.11") la API responde 403. Pexels espera la clave
+    # cruda en Authorization, sin "Bearer".
+    pedido = urllib.request.Request(url, headers={
+        "Authorization": k,
+        "User-Agent": "Mozilla/5.0 (compatible; FabricaContenido/1.0)",
+        "Accept": "application/json",
+    })
+    try:
+        with urllib.request.urlopen(pedido, timeout=45) as r:
+            return json.loads(r.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        cuerpo = e.read().decode("utf-8", "ignore")[:300]
+        if e.code in (401, 403):
+            print(f"ERROR {e.code}: Pexels rechazo la clave.\n"
+                  f"Respuesta: {cuerpo}\n"
+                  f"Revisa que la clave este completa y activa en "
+                  f"pexels.com/api.")
+        else:
+            print(f"ERROR {e.code} al consultar Pexels: {cuerpo}")
+        raise
 
 
 def bajar_nicho(nicho, consulta, cantidad, k):
