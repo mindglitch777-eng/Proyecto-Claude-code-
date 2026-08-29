@@ -29,6 +29,11 @@ on:
         required: false
         default: "false"
         type: boolean
+      commit_directo:
+        description: "Commitear el video directo (sin artifacts). Usar en lotes CHICOS."
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   listar:
@@ -58,6 +63,8 @@ jobs:
     needs: listar
     if: needs.listar.outputs.matriz != '[]'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     strategy:
       fail-fast: false
       matrix:
@@ -94,8 +101,36 @@ jobs:
       # if: always() -- si el paso anterior falla a mitad de camino pero
       # el .mp4 alcanzo a escribirse, igual se guarda. Perder un render
       # ya hecho por un error posterior nos costo dos lotes enteros.
+      # Camino alternativo para lotes chicos: el job commitea su propio
+      # video en vez de pasar por artifacts. Existe porque la cuota de
+      # almacenamiento de artifacts se lleno y el upload empezo a fallar
+      # con "Artifact storage quota has been hit" -- el video se
+      # renderizaba bien y se perdia igual en el ultimo paso.
+      # Solo para pocos guiones: con 27 jobs en paralelo empujando a git
+      # el reintento no alcanza, y para eso siguen estando los artifacts.
+      - name: Commitear video directo
+        if: always() && inputs.commit_directo
+        run: |
+          shopt -s nullglob
+          STEM="${{ steps.producir.outputs.stem }}"
+          [ -z "$STEM" ] && STEM=$(basename "${{ matrix.guion }}" .json)
+          [ -f "videos/$STEM.mp4" ] || { echo "No hay video para $STEM."; exit 0; }
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add "videos/$STEM.mp4"
+          CON_VOZ=("guiones/$STEM-con-voz.json")
+          if [ ${#CON_VOZ[@]} -gt 0 ]; then git add "${CON_VOZ[@]}"; fi
+          git diff --cached --quiet && { echo "Sin cambios."; exit 0; }
+          git commit -m "Video: $STEM"
+          for intento in 1 2 3 4 5; do
+            git pull --rebase --autostash origin main && git push && exit 0
+            echo "Push fallido (intento $intento), reintento..."
+            sleep $((intento * 3))
+          done
+          echo "No se pudo pushear el video."; exit 1
+
       - name: Subir resultado como artifact
-        if: always()
+        if: always() && !inputs.commit_directo
         uses: actions/upload-artifact@v4
         with:
           name: salida-${{ strategy.job-index }}
@@ -105,7 +140,7 @@ jobs:
 
   commitear:
     needs: producir
-    if: always() && needs.listar.outputs.matriz != '[]'
+    if: always() && needs.listar.outputs.matriz != '[]' && !inputs.commit_directo
     runs-on: ubuntu-latest
     permissions:
       contents: write
