@@ -2066,6 +2066,225 @@ def dibujar_ambiente(img, d, t_abs, pal):
         d.rectangle([0, 0, W - 1, H - 1], outline=col, width=grosor)
 
 
+def f_ruleta(img, d, seg, t, pal):
+    """RULETA -- una frase fija y UNA sola palabra que se reemplaza
+    deslizando de abajo hacia arriba, como un contador que rota.
+
+    Sirve para el hook: deja claro en dos segundos que lo que vas a
+    decir aplica a un monton de rubros, sin gastar un plano por cada
+    uno. Solo se ve una palabra por vez.
+
+    JSON: {"formato": "ruleta", "fijo": "Tenés una",
+           "palabras": ["barbería", "peluquería", "taller"],
+           "imagen": "...", "velo": 0.5}
+    """
+    _cuadro_medio(img, seg, (0, 0, W, H))
+    velo = Image.new("RGB", (W, H), (0, 0, 0))
+    img.paste(Image.blend(img, velo, seg.get("velo", 0.52)), (0, 0))
+
+    palabras = seg.get("palabras") or []
+    if not palabras:
+        return
+    fijo = seg.get("fijo", "")
+    y_fijo = H * seg.get("y_ruleta", 0.40)
+
+    if fijo:
+        ff, lf = auto_tam(d, fijo, W - 200, 220, 74)
+        yy = y_fijo - (len(lf) * (ff.size + 10)) / 2
+        for ln in lf:
+            wl = d.textbbox((0, 0), ln, font=ff)[2]
+            sombra_t(d, ((W - wl) / 2, yy), ln, ff, (255, 255, 255), 5)
+            yy += ff.size + 10
+
+    # Cual palabra toca y cuanto lleva puesta
+    n = len(palabras)
+    avance = min(0.9999, t)
+    i = int(avance * n)
+    lt = avance * n - i
+    # 22% del turno rodando, el resto quieta: se lee, no marea
+    rod = min(1.0, lt / 0.22)
+    e = eo_expo(rod)
+
+    banda_y = int(y_fijo + 92)
+    banda_h = 150
+    banda = Image.new("RGB", (W, banda_h), (0, 0, 0))
+    # La banda copia el fondo ya dibujado para que el deslizamiento
+    # recorte contra la imagen y no contra un rectangulo negro.
+    banda.paste(img.crop((0, banda_y, W, banda_y + banda_h)), (0, 0))
+    db = ImageDraw.Draw(banda)
+
+    def poner(texto, dy, alpha=255):
+        if not texto:
+            return
+        tam = 108
+        f = fnt(tam, serif=True, italica=True)
+        while db.textbbox((0, 0), texto, font=f)[2] > W - 150 and tam > 40:
+            tam -= 6
+            f = fnt(tam, serif=True, italica=True)
+        wb = db.textbbox((0, 0), texto, font=f)[2]
+        x = (W - wb) / 2
+        y = (banda_h - f.size) / 2 + dy
+        capa = Image.new("RGBA", (W, banda_h), (0, 0, 0, 0))
+        dc = ImageDraw.Draw(capa)
+        dc.text((x + 5, y + 5), texto, font=f, fill=(0, 0, 0, int(alpha * 0.5)))
+        dc.text((x, y), texto, font=f, fill=tuple(pal["destacado"]) + (alpha,))
+        banda.paste(capa, (0, 0), capa)
+
+    # La saliente sube y se va; la entrante viene desde abajo.
+    if i > 0 and e < 1.0:
+        poner(palabras[i - 1], -e * banda_h, int(255 * (1 - e)))
+    poner(palabras[i], (1 - e) * banda_h, int(255 * min(1.0, rod / 0.5)))
+    img.paste(banda, (0, banda_y))
+
+
+def f_lista(img, d, seg, t, pal):
+    """LISTA QUE SE ACUMULA -- los renglones van APARECIENDO uno abajo
+    del otro y QUEDAN en pantalla. La columna crece.
+
+    Es el formato del dolor: cada renglon suma una perdida concreta y
+    al final se ven todas juntas, que es donde pega. Distinto de la
+    ruleta, donde solo se ve una por vez.
+
+    JSON: {"formato": "lista", "titulo": "Se te va en",
+           "items": ["el que no vino", "el hueco de las 3"],
+           "imagen": "...", "marcador": "—"}
+    """
+    _cuadro_medio(img, seg, (0, 0, W, H))
+    velo = Image.new("RGB", (W, H), (0, 0, 0))
+    img.paste(Image.blend(img, velo, seg.get("velo", 0.60)), (0, 0))
+
+    items = seg.get("items") or []
+    if not items:
+        return
+    titulo = seg.get("titulo", "")
+    marcador = seg.get("marcador", "—")
+
+    y = H * seg.get("y_lista", 0.26)
+    if titulo:
+        ft, lt_ = auto_tam(d, titulo.upper() if seg.get("mayus", True) else titulo,
+                           W - 180, 200, 78)
+        for ln in lt_:
+            wl = d.textbbox((0, 0), ln, font=ft)[2]
+            sombra_t(d, ((W - wl) / 2, y), ln, ft, (255, 255, 255), 5)
+            y += ft.size + 12
+        y += 44
+
+    n = len(items)
+    # Todos los renglones tienen que estar puestos antes del final del
+    # plano: se reparte el 82% del tiempo y el resto queda para leer la
+    # lista completa, que es el momento en que el dato pega.
+    paso = 0.82 / max(1, n)
+    tam_item = seg.get("tam_item", 62)
+    for k, it in enumerate(items):
+        arranque = k * paso
+        if t < arranque:
+            break
+        lt_i = min(1.0, (t - arranque) / max(0.001, paso * 0.55))
+        e = eo_back(lt_i)
+        alpha = int(255 * min(1.0, lt_i / 0.35))
+        # Entra desde la izquierda: es una lista, se lee como lista.
+        ox = (1.0 - e) * -120
+
+        f = fnt(tam_item, ligera=False)
+        txt = f"{marcador} {it}" if marcador else it
+        while d.textbbox((0, 0), txt, font=f)[2] > W - 170 and f.size > 30:
+            f = fnt(f.size - 4, ligera=False)
+        x0, y0, x1, y1 = d.textbbox((0, 0), txt, font=f)
+        tw, th = x1 - x0, y1 - y0
+        capa = Image.new("RGBA", (tw + 40, th + 40), (0, 0, 0, 0))
+        dc = ImageDraw.Draw(capa)
+        # El ultimo renglon puesto va en el acento: es el que se acaba
+        # de decir, y guia el ojo hacia abajo.
+        ultimo = (k == n - 1) or (t < arranque + paso)
+        col = tuple(pal["destacado"]) if ultimo else (238, 238, 236)
+        dc.text((20 - x0 + 4, 20 - y0 + 4), txt, font=f, fill=(0, 0, 0, int(alpha * 0.55)))
+        dc.text((20 - x0, 20 - y0), txt, font=f, fill=col + (alpha,))
+        img.paste(capa, (int(110 + ox), int(y)), capa)
+        y += th + 34
+
+
+def f_comparacion(img, d, seg, t, pal):
+    """COMPARACION GRANDE -- dos columnas enfrentadas, con encabezado
+    propio, y los renglones apareciendo alternados de un lado y del
+    otro. La izquierda es lo que hace el que pierde (gris), la derecha
+    lo que hace el que gana (acento).
+
+    Es el plano que explica el mecanismo entero de un vistazo: no lo
+    cuenta, lo MUESTRA lado a lado.
+
+    JSON: {"formato": "comparacion",
+           "izq_titulo": "VOS", "der_titulo": "ÉL",
+           "izq": ["cobrás el corte"], "der": ["cobrás la agenda"]}
+    """
+    img.paste(Image.new("RGB", (W, H), seg.get("fondo_comp", (12, 12, 14))), (0, 0))
+    izq = seg.get("izq") or []
+    der = seg.get("der") or []
+    n = max(len(izq), len(der))
+    if not n:
+        return
+
+    medio = W // 2
+    y_cab = int(H * 0.16)
+    # Encabezados
+    for lado, titulo, col in (
+            (0, seg.get("izq_titulo", "VOS"), (150, 150, 156)),
+            (1, seg.get("der_titulo", "ÉL"), tuple(pal["destacado"]))):
+        f = fnt(64)
+        txt = titulo.upper()
+        wb = d.textbbox((0, 0), txt, font=f)[2]
+        cx = medio / 2 if lado == 0 else medio + medio / 2
+        d.text((cx - wb / 2, y_cab), txt, font=f, fill=col)
+    # Linea divisoria que se dibuja sola de arriba hacia abajo
+    e_lin = eo_cubic(min(1.0, t / 0.30))
+    d.rectangle([medio - 2, y_cab - 24, medio + 2,
+                 int((y_cab - 24) + (H * 0.76 - y_cab) * e_lin)],
+                fill=(82, 82, 92))
+
+    y0_items = y_cab + 118
+    paso = 0.72 / max(1, n * 2)
+    alto_fila = int((H * 0.74 - y0_items) / max(1, n))
+    for k in range(n):
+        for lado, lista in ((0, izq), (1, der)):
+            if k >= len(lista):
+                continue
+            # Alternado: primero el lado que pierde, despues el que gana.
+            arranque = 0.06 + (k * 2 + lado) * paso
+            if t < arranque:
+                continue
+            lt_i = min(1.0, (t - arranque) / max(0.001, paso * 0.9))
+            e = eo_back(lt_i)
+            alpha = int(255 * min(1.0, lt_i / 0.4))
+            # Cada lado entra desde SU borde: refuerza el enfrentamiento.
+            ox = (1.0 - e) * (-150 if lado == 0 else 150)
+            col = (206, 206, 212) if lado == 0 else tuple(pal["destacado"])
+            ancho = medio - 66
+            f, lineas = auto_tam(d, lista[k], ancho, alto_fila - 24, 66)
+            cx = medio / 2 if lado == 0 else medio + medio / 2
+            yy = y0_items + k * alto_fila
+            for ln in lineas:
+                x0b, y0b, x1b, y1b = d.textbbox((0, 0), ln, font=f)
+                tw, th = x1b - x0b, y1b - y0b
+                capa = Image.new("RGBA", (tw + 30, th + 30), (0, 0, 0, 0))
+                dc = ImageDraw.Draw(capa)
+                dc.text((15 - x0b, 15 - y0b), ln, font=f, fill=col + (alpha,))
+                img.paste(capa, (int(cx - capa.width / 2 + ox), int(yy)), capa)
+                yy += f.size + 8
+
+    # Remate opcional abajo del todo, cuando ya estan las dos columnas
+    remate = seg.get("remate")
+    if remate and t > 0.80:
+        lt_r = min(1.0, (t - 0.80) / 0.14)
+        f, lr = auto_tam(d, remate.upper(), W - 160, 190, 62)
+        yy = H * 0.80
+        for ln in lr:
+            wl = d.textbbox((0, 0), ln, font=f)[2]
+            capa = Image.new("RGBA", (W, f.size + 30), (0, 0, 0, 0))
+            ImageDraw.Draw(capa).text(((W - wl) / 2, 0), ln, font=f,
+                                      fill=(255, 255, 255, int(255 * lt_r)))
+            img.paste(capa, (0, int(yy)), capa)
+            yy += f.size + 10
+
+
 FORMATOS = {
     "declaracion": f_declaracion, "dato_duro": f_dato_duro,
     "division": f_division, "revelacion": f_revelacion,
@@ -2077,6 +2296,7 @@ FORMATOS = {
     "camino": f_camino, "collage": f_collage,
     "mensajes": f_mensajes, "escalada": f_escalada, "cta": f_cta,
     "pleno": f_pleno, "tarjeta": f_tarjeta,
+    "ruleta": f_ruleta, "lista": f_lista, "comparacion": f_comparacion,
 }
 
 PALETAS = [
@@ -2191,7 +2411,7 @@ def render(seg, t, prog, cfg):
     # que verse limpio, asi que ahi no corre: en esa maqueta el
     # movimiento ya lo da la palabra que cambia y el salto a la maqueta
     # oscura.
-    if fmt != "tarjeta":
+    if fmt not in ("tarjeta", "comparacion"):
         dibujar_ambiente(img, d, t_abs, pal)
     d = ImageDraw.Draw(img)
 
