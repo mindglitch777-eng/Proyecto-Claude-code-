@@ -1,0 +1,64 @@
+name: descargar-metraje
+
+# Baja metraje de banco desde Pexels y lo commitea.
+# Corre aca y no en la sesion de Claude Code porque ese entorno tiene
+# bloqueado el acceso a pexels.com; el runner si tiene internet abierto.
+# La clave vive SOLO como secreto del repo (PEXELS_API_KEY), nunca en
+# un archivo.
+
+on:
+  workflow_dispatch:
+    inputs:
+      nicho:
+        description: "Nicho a bajar (barberia, unias, gimnasio, nutricion, veterinaria, dinero) o 'todos'"
+        required: true
+        default: "todos"
+      cantidad:
+        description: "Fotos por nicho"
+        required: false
+        default: "12"
+
+permissions:
+  contents: write
+
+jobs:
+  bajar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Bajar metraje
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        run: |
+          if [ -z "$PEXELS_API_KEY" ]; then
+            echo "Falta el secreto PEXELS_API_KEY."
+            echo "Cargalo en Settings -> Secrets and variables -> Actions."
+            exit 1
+          fi
+          if [ "${{ inputs.nicho }}" = "todos" ]; then
+            python3 descargar_metraje.py --lote
+          else
+            python3 descargar_metraje.py "${{ inputs.nicho }}" \
+              "$(python3 -c "
+import descargar_metraje as d
+print(d.NICHOS.get('${{ inputs.nicho }}', '${{ inputs.nicho }}'))
+")" "${{ inputs.cantidad }}"
+          fi
+
+      - name: Guardar en el repo
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain assets/metraje)" ]; then
+            git add assets/metraje
+            git commit -m "Metraje de banco: ${{ inputs.nicho }}"
+            git pull --rebase --autostash origin main || true
+            git push
+          else
+            echo "Sin cambios."
+          fi
