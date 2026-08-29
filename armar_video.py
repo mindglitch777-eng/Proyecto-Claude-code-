@@ -311,9 +311,17 @@ def armar(guion_path, salida_final):
             if nombre and (Path("assets/sfx") / f"{nombre}.wav").exists():
                 cmd += ["-i", str(Path("assets/sfx") / f"{nombre}.wav")]
 
+        # Con UN solo clip no se arma ninguna cadena de xfade, asi que
+        # 'etiqueta_prev' se queda valiendo "0:v". Eso NO es una etiqueta
+        # del filtro sino la entrada cruda 0 de ffmpeg, y "-map [0:v]"
+        # revienta con "Output with label '0:v' does not exist in any
+        # defined filter graph". Pasa cada vez que un guion no tiene ni
+        # un segmento 'captura': todo el video sale de un solo render.
+        mapa_v = f"[{etiqueta_prev}]" if len(clips) > 1 else "0:v"
+
         filtro_completo = ";".join(filtro_v + filtro_a) + ";" + mix
         cmd += ["-filter_complex", filtro_completo,
-                "-map", f"[{etiqueta_prev}]", "-map", "[aout]",
+                "-map", mapa_v, "-map", "[aout]",
                 "-c:v", "libx264", "-pix_fmt", "yuv420p", "-preset", "veryfast",
                 "-crf", "20", "-c:a", "aac", "-b:a", "192k", str(salida_final)]
         run(cmd)
