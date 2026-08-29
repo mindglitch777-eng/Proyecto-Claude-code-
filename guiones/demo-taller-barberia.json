@@ -1,6 +1,6 @@
 {
-  "tema": "Demo Taller de Activos - barberia",
-  "nota": "Guion de referencia para la gramatica nueva. Copia la estructura medida sobre Venta Silenciosa: hook que NO cierra la frase, alternancia pleno/tarjeta cada 2-3s, una palabra por vez en serif italica, marca solo al final.",
+  "tema": "Demo Taller de Activos - barberia (v2: ritmo rapido + captions cineticos)",
+  "nota": "Gramatica copiada de la referencia: hook que NO cierra la frase, plano nuevo cada 1.2-1.8s, flash de corte, cada palabra entra por un lado distinto y con otra letra, marca solo al final. El producto se vende mostrando el mecanismo, nunca pidiendo la compra.",
   "fps": 30,
   "camara": 1.0,
   "loop": false,
@@ -13,80 +13,151 @@
   "segmentos": [
     {
       "formato": "pleno",
-      "narracion": "Si yo tuviera una barbería hoy",
-      "duracion": 2.4,
+      "narracion": "El barbero que más gana de tu barrio",
+      "duracion": 1.7,
       "hook": "impacto",
+      "sfx": "impacto",
+      "flash": true,
       "imagen": "assets/metraje/barberia/barberia-00.jpg",
-      "velo": 0.42
+      "velo": 0.44
     },
     {
       "formato": "tarjeta",
-      "texto": "El turno vacío",
-      "narracion": "no cobraría el corte",
-      "duracion": 2.1,
+      "texto": "No corta mejor",
+      "narracion": "no corta mejor que vos",
+      "duracion": 1.4,
       "transicion": "corte_duro",
-      "sfx": "impacto",
+      "sfx": "whoosh",
+      "flash": 0.08,
       "imagen": "assets/metraje/barberia/barberia-01.jpg"
     },
     {
       "formato": "pleno",
-      "narracion": "cobraría el lugar en la agenda",
-      "duracion": 2.6,
+      "narracion": "*cobra* distinto",
+      "duracion": 1.2,
       "transicion": "corte_duro",
-      "sfx": "whoosh",
+      "sfx": "impacto",
+      "flash": true,
       "imagen": "assets/metraje/barberia/barberia-02.jpg",
       "velo": 0.40
     },
     {
       "formato": "tarjeta",
-      "texto": "Seña de 3 mil",
-      "narracion": "el que no viene ya pagó",
-      "duracion": 2.3,
+      "texto": "Vos cobrás el corte",
+      "narracion": "vos cobrás el corte",
+      "duracion": 1.5,
       "transicion": "corte_duro",
-      "sfx": "impacto",
+      "sfx": "tick",
       "imagen": "assets/metraje/barberia/barberia-03.jpg"
     },
     {
       "formato": "pleno",
-      "narracion": "y el que viene entra sin esperar",
-      "duracion": 2.5,
+      "narracion": "él cobra el *lugar* en la agenda",
+      "duracion": 1.8,
       "transicion": "corte_duro",
       "sfx": "whoosh",
+      "flash": true,
       "imagen": "assets/metraje/barberia/barberia-04.jpg",
+      "velo": 0.46
+    },
+    {
+      "formato": "tarjeta",
+      "texto": "Seña de 3 mil",
+      "narracion": "seña de tres mil, se descuenta del corte",
+      "duracion": 1.9,
+      "transicion": "corte_duro",
+      "sfx": "impacto",
+      "flash": 0.09,
+      "imagen": "assets/metraje/barberia/barberia-05.jpg"
+    },
+    {
+      "formato": "pleno",
+      "narracion": "el que falta ya te *pagó*",
+      "duracion": 1.5,
+      "transicion": "corte_duro",
+      "sfx": "impacto",
+      "flash": true,
+      "imagen": "assets/metraje/barberia/barberia-06.jpg",
+      "velo": 0.42
+    },
+    {
+      "formato": "tarjeta",
+      "texto": "Cero huecos",
+      "narracion": "y el que viene entra sin esperar",
+      "duracion": 1.6,
+      "transicion": "corte_duro",
+      "sfx": "tick",
+      "imagen": "assets/metraje/barberia/barberia-07.jpg"
+    },
+    {
+      "formato": "pleno",
+      "narracion": "Netflix no te cobra por ver",
+      "duracion": 1.6,
+      "transicion": "corte_duro",
+      "sfx": "whoosh",
+      "flash": true,
+      "imagen": "assets/metraje/barberia/barberia-08.jpg",
+      "velo": 0.48
+    },
+    {
+      "formato": "tarjeta",
+      "texto": "Te cobra el mes",
+      "narracion": "te cobra el *mes* igual",
+      "duracion": 1.4,
+      "transicion": "corte_duro",
+      "sfx": "impacto",
+      "flash": 0.08,
+      "imagen": "assets/metraje/barberia/barberia-09.jpg"
+    },
+    {
+      "formato": "pleno",
+      "narracion": "una barbería puede hacer exactamente lo mismo",
+      "duracion": 2.0,
+      "transicion": "corte_duro",
+      "sfx": "whoosh",
+      "imagen": "assets/metraje/barberia/barberia-10.jpg",
       "velo": 0.44
     },
     {
       "formato": "tarjeta",
       "texto": "Nadie lo hace",
-      "narracion": "en tu barrio no lo hace nadie todavía",
-      "duracion": 2.6,
+      "narracion": "en tu barrio no lo hace *nadie* todavía",
+      "duracion": 1.9,
       "transicion": "corte_duro",
       "sfx": "impacto",
-      "imagen": "assets/metraje/barberia/barberia-05.jpg"
+      "flash": true,
+      "imagen": "assets/metraje/barberia/barberia-11.jpg"
     },
     {
       "formato": "cta",
       "texto": "Taller de Activos",
-      "narracion": "Seguime. Parte dos mañana.",
+      "narracion": "Seguime. Mañana te muestro el número.",
       "mayus": true,
-      "duracion": 2.2,
+      "duracion": 2.1,
       "hook": "impacto",
       "sfx": "impacto",
       "transicion": "corte_duro",
+      "flash": true,
       "cta_marca": "Taller de Activos",
       "cta_sub": "Problemas reales. Productos que se mueven."
     }
   ],
   "elevenlabs": {
-    "instrucciones": "Voz seria y firme, tipo empresario joven, sin exagerar. Ritmo continuo, sin pausas largas. Indices narrados [0,1,2,3,4,5,6]. Guardar como demo-taller-barberia-vozN.mp3 en capturas_voz/.",
+    "instrucciones": "Voz seria y firme, empresario joven, sin exagerar. Ritmo continuo y rapido, sin pausas largas. Indices narrados [0..12]. Guardar como demo-taller-barberia-vozN.mp3 en capturas_voz/.",
     "lineas": [
-      "Si yo tuviera una barbería hoy",
-      "no cobraría el corte",
-      "cobraría el lugar en la agenda",
-      "el que no viene ya pagó",
+      "El barbero que más gana de tu barrio",
+      "no corta mejor que vos",
+      "cobra distinto",
+      "vos cobrás el corte",
+      "él cobra el lugar en la agenda",
+      "seña de tres mil, se descuenta del corte",
+      "el que falta ya te pagó",
       "y el que viene entra sin esperar",
+      "Netflix no te cobra por ver",
+      "te cobra el mes igual",
+      "una barbería puede hacer exactamente lo mismo",
       "en tu barrio no lo hace nadie todavía",
-      "Seguime. Parte dos mañana."
+      "Seguime. Mañana te muestro el número."
     ]
   }
 }

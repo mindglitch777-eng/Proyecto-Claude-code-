@@ -381,7 +381,122 @@ def _palabra_activa(seg, t, campo="narracion"):
     idx = min(n - 1, int(avance * n))
     lt = max(0.0, min(1.0, avance * n - idx))
     palabra, clave = palabras[idx]
-    return palabra, clave, lt
+    return palabra, clave, lt, idx
+
+
+def _semilla_seg(seg):
+    """Numero estable derivado del texto del segmento. Sirve para que el
+    ciclo de estilos/direcciones NO arranque igual en cada segmento (si
+    no, la primera palabra de todos los planos entra siempre desde
+    abajo y con la misma letra). Es deterministico a proposito: el
+    mismo guion rinde identico dos veces, que es de lo que depende el
+    cache de render."""
+    txt = seg.get("captions_texto") or seg.get("narracion") or seg.get("texto") or ""
+    return sum(ord(c) for c in txt[:24])
+
+
+# --- Caption cinetico: cada palabra entra por un lado distinto y con
+# --- un tratamiento tipografico distinto ---------------------------
+#
+# En la referencia las palabras no aparecen siempre en el mismo lugar
+# ni con la misma letra: cada una entra volando desde un borde o una
+# esquina y cambia de tratamiento (serif italica elegante / sans negra
+# en mayuscula / sans fina / palabra con caja de acento detras). Eso es
+# lo que da la sensacion de que nunca se queda quieto.
+#
+# Estilo y direccion se eligen por INDICE de palabra, nunca al azar: el
+# mismo guion tiene que rendir siempre igual.
+DIRECCIONES_PALABRA = [
+    (0.0, 1.0), (0.0, -1.0), (-1.0, 0.0), (1.0, 0.0),
+    (-1.0, -1.0), (1.0, 1.0), (1.0, -1.0), (-1.0, 1.0),
+]
+
+# esc = cuerpo relativo. La variedad de TAMAÑO es la mitad del efecto:
+# una palabra chiquita seguida de una enorme se lee como un golpe.
+ESTILOS_PALABRA = [
+    {"serif": True,  "italica": True,  "ligera": False, "mayus": False, "caja": False, "esc": 1.00},
+    {"serif": False, "italica": False, "ligera": False, "mayus": True,  "caja": False, "esc": 0.82},
+    {"serif": True,  "italica": True,  "ligera": False, "mayus": False, "caja": False, "esc": 1.20},
+    {"serif": False, "italica": False, "ligera": True,  "mayus": False, "caja": False, "esc": 0.90},
+    {"serif": False, "italica": False, "ligera": False, "mayus": True,  "caja": True,  "esc": 0.70},
+    {"serif": True,  "italica": True,  "ligera": False, "mayus": False, "caja": False, "esc": 0.92},
+]
+
+
+def aplicar_flash(img, seg, t):
+    """Lava los primeros cuadros del segmento hacia blanco (o el color
+    que pida el guion). Es lo que se lee como "aparecio de la nada": el
+    ojo pierde la escena anterior por dos o tres cuadros y cuando
+    vuelve la nueva ya esta puesta, sin ver el cambio.
+
+    JSON: "flash": true  (0.10s) o "flash": 0.16 para uno mas largo.
+          "flash_color": [255,255,255] por defecto.
+    """
+    fl = seg.get("flash")
+    if not fl:
+        return img
+    largo = 0.10 if fl is True else float(fl)
+    if largo <= 0:
+        return img
+    dur = float(seg.get("duracion", 2.0)) or 2.0
+    ts = t * dur
+    if ts >= largo:
+        return img
+    # Cae al cuadrado: golpea fuerte y se va rapido, en vez de dejar
+    # medio plano lavado.
+    k = (1.0 - ts / largo) ** 2
+    color = tuple(seg.get("flash_color", (255, 255, 255)))
+    return Image.blend(img, Image.new("RGB", img.size, color), min(0.94, k))
+
+
+def dibujar_palabra_cinetica(img, d, palabra, clave, lt, idx, pal, cy,
+                             tam_base=104, ancho_max=None,
+                             col_normal=(255, 255, 255), sombra=True):
+    """UNA palabra, centrada en 'cy', que ENTRA volando desde un borde o
+    esquina distinta cada vez y con un tratamiento tipografico distinto
+    cada vez. Reemplaza al texto quieto que se limitaba a aparecer."""
+    if not palabra:
+        return
+    est = ESTILOS_PALABRA[idx % len(ESTILOS_PALABRA)]
+    # Direccion desfasada respecto del estilo: 6 estilos y 8 direcciones
+    # avanzando de a 3 no vuelven a coincidir hasta la palabra 24, asi
+    # que no se percibe un patron.
+    dxu, dyu = DIRECCIONES_PALABRA[(idx * 3) % len(DIRECCIONES_PALABRA)]
+
+    txt = palabra.upper() if est["mayus"] else palabra
+    ancho_max = ancho_max or (W - 170)
+    tam = max(30, int(tam_base * est["esc"]))
+    f = fnt(tam, ligera=est["ligera"], serif=est["serif"], italica=est["italica"])
+    while d.textbbox((0, 0), txt, font=f)[2] > ancho_max and tam > 34:
+        tam -= 6
+        f = fnt(tam, ligera=est["ligera"], serif=est["serif"], italica=est["italica"])
+
+    # Entrada en el primer 26% de la palabra. eo_back se pasa un poco y
+    # vuelve: ese rebote es lo que hace que "aparezca de golpe" en vez
+    # de deslizarse suave.
+    e = eo_back(min(1.0, lt / 0.26))
+    desliz = (1.0 - e) * (150 if (dxu and dyu) else 215)
+    ox, oy = dxu * desliz, dyu * desliz
+    alpha = int(255 * min(1.0, lt / 0.14))
+
+    x0, y0, x1, y1 = d.textbbox((0, 0), txt, font=f)
+    tw, th = x1 - x0, y1 - y0
+    pad = 28
+    col = tuple(pal["destacado"]) if clave else tuple(col_normal)
+
+    capa = Image.new("RGBA", (tw + pad * 2 + 12, th + pad * 2 + 12), (0, 0, 0, 0))
+    dc = ImageDraw.Draw(capa)
+    px, py = pad - x0, pad - y0
+    if est["caja"]:
+        dc.rounded_rectangle([pad - 20, pad - 12, pad + tw + 20, pad + th + 18],
+                             radius=10, fill=tuple(pal["destacado"]) + (alpha,))
+        col = (12, 12, 14)
+    elif sombra:
+        dc.text((px + 6, py + 6), txt, font=f, fill=(0, 0, 0, int(alpha * 0.55)))
+    dc.text((px, py), txt, font=f, fill=tuple(col) + (alpha,))
+
+    img.paste(capa, (int((W - capa.width) / 2 + ox),
+                     int(cy - capa.height / 2 + oy)), capa)
 
 
 def _cuadro_medio(img, seg, caja):
@@ -422,20 +537,12 @@ def f_pleno(img, d, seg, t, pal):
     velo = Image.new("RGB", (W, H), (0, 0, 0))
     img.paste(Image.blend(img, velo, seg.get("velo", 0.34)), (0, 0))
 
-    palabra, clave, lt = _palabra_activa(seg, t)
+    palabra, clave, lt, idx = _palabra_activa(seg, t)
     if not palabra:
         return
-    tam = 104
-    f = fnt(tam, serif=True, italica=True)
-    while d.textbbox((0, 0), palabra, font=f)[2] > W - 180 and tam > 44:
-        tam -= 6
-        f = fnt(tam, serif=True, italica=True)
-    e = eo_back(min(1.0, lt / 0.30))
-    fu = fnt(max(28, int(f.size * (0.86 + 0.14 * e))), serif=True, italica=True)
-    wb = d.textbbox((0, 0), palabra, font=fu)[2]
-    y = H * 0.46 - fu.size / 2
-    col = tuple(pal["destacado"]) if clave else (255, 255, 255)
-    sombra_t(d, ((W - wb) / 2, y), palabra, fu, col, 7)
+    dibujar_palabra_cinetica(img, d, palabra, clave, lt,
+                             idx + _semilla_seg(seg), pal,
+                             H * seg.get("y_palabra", 0.46), tam_base=104)
 
 
 def f_tarjeta(img, d, seg, t, pal):
@@ -479,13 +586,13 @@ def f_tarjeta(img, d, seg, t, pal):
                                               radius=34, fill=255)
     img.paste(tarjeta, (cx0, int(y_card)), mascara)
 
-    palabra, clave, lt2 = _palabra_activa(seg, t)
+    palabra, clave, lt2, idx2 = _palabra_activa(seg, t)
     if palabra:
-        fu = fnt(58, serif=True, italica=True)
-        wb = d.textbbox((0, 0), palabra, font=fu)[2]
-        yy = caja[3] + 46
-        col = tuple(pal["destacado"]) if clave else (16, 16, 18)
-        d.text(((W - wb) / 2, yy), palabra, font=fu, fill=col)
+        dibujar_palabra_cinetica(img, d, palabra, clave, lt2,
+                                 idx2 + _semilla_seg(seg), pal,
+                                 caja[3] + 76, tam_base=64,
+                                 ancho_max=W - 200,
+                                 col_normal=(16, 16, 18), sombra=False)
 
 
 def f_declaracion(img, d, seg, t, pal):
@@ -2048,6 +2155,12 @@ def render(seg, t, prog, cfg):
     d = ImageDraw.Draw(img)
     fmt = seg.get("formato", "declaracion")
     FORMATOS.get(fmt, f_declaracion)(img, d, seg, t, pal)
+    # Flash de corte: va DESPUES de la maqueta (lava la escena ya
+    # dibujada) y antes del hook, para que el golpe de luz sea lo
+    # primero que se ve del plano nuevo.
+    if seg.get("flash"):
+        img = aplicar_flash(img, seg, t)
+        d = ImageDraw.Draw(img)
     # Efecto de hook (solo primeros frames del segmento)
     hk = seg.get("hook")
     if hk:
