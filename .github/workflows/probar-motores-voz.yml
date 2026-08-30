@@ -28,6 +28,18 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Liberar espacio en disco
+        run: |
+          # El runner trae preinstalado Android SDK, .NET, GHC, etc.
+          # que no usamos y ocupan ~25 GB. torch + chatterbox-tts
+          # (con sus dependencias) necesitan mas espacio del que queda
+          # libre por defecto: la instalacion murio con "No space left
+          # on device" a mitad de la corrida anterior.
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android \
+                      /opt/ghc /opt/hostedtoolcache/CodeQL \
+                      /usr/local/.ghcup /opt/az 2>/dev/null || true
+          df -h /
+
       - name: Instalar motores
         run: |
           sudo apt-get update -qq
@@ -39,8 +51,8 @@ jobs:
           # no instala, el banco igual prueba los otros dos.
           # torch en version CPU: la normal se trae ~2.5 GB de CUDA que
           # el runner no puede usar
-          pip install --quiet torch torchaudio --index-url https://download.pytorch.org/whl/cpu || echo "AVISO: torch no instalo"
-          pip install --quiet chatterbox-tts || echo "AVISO: chatterbox no instalo"
+          pip install --quiet --no-cache-dir torch torchaudio --index-url https://download.pytorch.org/whl/cpu || echo "AVISO: torch no instalo"
+          pip install --quiet --no-cache-dir chatterbox-tts || echo "AVISO: chatterbox no instalo"
           pip install --quiet "kokoro>=0.9" || echo "AVISO: kokoro no instalo"
           pip install --quiet pocket-tts    || echo "AVISO: pocket-tts no instalo"
           pip install --quiet piper-tts     || echo "AVISO: piper-tts no instalo"
