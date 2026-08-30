@@ -600,3 +600,174 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
+
+# ================= IDEAS: una idea, varios planos =================
+# §1 de la especificacion, y el error que no puede volver a aparecer.
+#
+#     IDEA
+#     ├── plano A
+#     ├── plano B
+#     └── plano C
+#
+# no
+#
+#     idea -> plano
+#     idea -> plano
+#
+# La narracion sigue hablando de LA MISMA idea mientras la imagen
+# corta. Lo que se movia antes era todo junto, y por eso nueve ideas
+# entraban en veinte segundos.
+
+# §10. Cuantos planos y como se mueven, segun la intensidad de ESA idea
+# (no del video entero: §10 pide que cambie a lo largo).
+#   (n_planos, movimientos, reparto)  -- reparto en fracciones de la idea
+INTENSIDAD = {
+    "LOW":    (1, ["STATIC"],                         [1.0]),
+    "MEDIUM": (2, ["SUBTLE", "STATIC"],               [0.55, 0.45]),
+    "HIGH":   (4, ["SUBTLE", "ACTIVE", "SUBTLE", "STATIC"],
+               [0.34, 0.22, 0.18, 0.26]),
+    # §14: la rafaga es corta y despues se vuelve a la calma. No es un
+    # estado sostenido.
+    "BURST":  (5, ["BURST", "BURST", "BURST", "BURST", "STATIC"],
+               [0.08, 0.07, 0.08, 0.07, 0.70]),
+}
+
+# §3. Los seis lenguajes de la especificacion. Cuatro ya existian con
+# otro nombre; DATA y CINEMATIC NO estan implementados todavia y no los
+# voy a mapear a otra cosa para que parezca que si.
+LENGUAJES = {
+    "EDITORIAL":     "VS",
+    "AGGRESSIVE":    "MONEY",
+    "DOCUMENTARY":   "DOC",
+    "INVESTIGATION": "INVEST",
+    # "DATA":      falta
+    # "CINEMATIC": falta
+}
+LENGUAJES_FALTAN = ("DATA", "CINEMATIC")
+
+# §2. Un plano solo existe si cumple una funcion. El guion la declara y
+# el compilador la conserva para que la auditoria de §21 pueda leerla.
+FUNCIONES_PLANO = (
+    "informacion", "evidencia", "contexto", "demostracion", "cifra",
+    "perspectiva", "contraste", "preparar_reveal", "refuerzo", "sostener",
+)
+
+
+def _planos_de(idea, dur, rnd):
+    """Los planos de esta idea. Si el guion los declara, manda el
+    guion. Si no, se derivan de la intensidad."""
+    dados = idea.get("planos")
+    if dados:
+        return [dict(p) for p in dados]
+    inten = str(idea.get("intensidad", "MEDIUM")).upper()
+    n, movs, reparto = INTENSIDAD.get(inten, INTENSIDAD["MEDIUM"])
+    # Las consultas de metraje que la idea traiga; si trae menos que
+    # planos, se repiten -- pero cada repeticion cambia de movimiento,
+    # asi que no se lee como el mismo plano dos veces (§23 de la
+    # biblia visual anterior).
+    consultas = idea.get("necesita")
+    if isinstance(consultas, str):
+        consultas = [consultas]
+    consultas = consultas or []
+    salida = []
+    for i in range(n):
+        p = {"dur": round(dur * reparto[i], 2), "mov": movs[i]}
+        if consultas:
+            p["necesita"] = consultas[i % len(consultas)]
+        salida.append(p)
+    return salida
+
+
+def aplicar_ideas(contenido, lenguaje=None, semilla=None):
+    """Compila un contenido escrito por IDEAS (no por golpes).
+
+    Cada idea se vuelve UN segmento 'escena': el bloque de texto se
+    sostiene toda la idea y los planos cortan debajo.
+
+    Formato del contenido:
+        {"tema": "...", "lenguaje": "EDITORIAL",
+         "ideas": [
+           {"rol": "hook", "duracion": 3.2, "intensidad": "BURST",
+            "lineas": ["Te escribieron", "a las diez"],
+            "narracion": "...",
+            "necesita": ["man reading phone at night", "old clock"],
+            "planos": [ ... ]        opcional, pisa la intensidad
+           }, ...]}
+    """
+    c = copy.deepcopy(contenido)
+    nombre = (lenguaje or c.get("lenguaje") or "EDITORIAL").upper()
+    if nombre in LENGUAJES_FALTAN:
+        raise ValueError(
+            f"el lenguaje {nombre} todavia no esta implementado. "
+            f"Hay: {', '.join(LENGUAJES)}")
+    eid = LENGUAJES.get(nombre, nombre)
+    if eid not in ESTILOS:
+        raise ValueError(f"lenguaje/estilo '{nombre}' no existe. Hay: "
+                         f"{', '.join(LENGUAJES)} (o los ids "
+                         f"{', '.join(ESTILOS)})")
+    est = ESTILOS[eid]
+    rnd = random.Random(semilla if semilla is not None
+                        else hash((c.get("tema", ""), eid)) & 0xFFFF)
+
+    ideas = c.get("ideas") or []
+    segs = []
+    for i, idea in enumerate(ideas):
+        dur = float(idea.get("duracion") or 6.0)
+        planos = _planos_de(idea, dur, rnd)
+        lineas = idea.get("lineas") or []
+        # §4: las lineas entran repartidas en el primer 55% de la idea;
+        # el resto es tiempo de leer el bloque entero.
+        entra = idea.get("entra") or [
+            round(dur * 0.55 * k / max(1, len(lineas)), 2)
+            for k in range(len(lineas))]
+
+        seg = {
+            "formato": "escena",
+            "_rol": idea.get("rol", "idea"),
+            "_intensidad": str(idea.get("intensidad", "MEDIUM")).upper(),
+            "duracion": round(dur, 2),
+            "lineas": lineas,
+            "entra": entra,
+            "planos": planos,
+            "velo": idea.get("velo", 0.44),
+        }
+        if idea.get("narracion"):
+            seg["narracion"] = idea["narracion"]
+        if idea.get("cascada_tam"):
+            seg["cascada_tam"] = idea["cascada_tam"]
+        if i:
+            seg["transicion"] = idea.get("transicion") or _transicion(est, i, rnd)
+        else:
+            seg["hook"] = "impacto"
+            seg["flash"] = True
+        for k, v in (idea.get("extra") or {}).items():
+            seg[k] = v
+        segs.append(seg)
+
+    n_planos = sum(len(s["planos"]) for s in segs)
+    dur_total = sum(s["duracion"] for s in segs)
+    guion = {
+        "tema": c.get("tema", ""),
+        "nota": f"Compilado por estilos.py (ideas) — lenguaje {nombre} "
+                f"({est['nombre']}). {len(segs)} ideas, {n_planos} planos. "
+                f"NO editar a mano: editar el contenido y recompilar.",
+        "_lenguaje": nombre, "_estilo": eid,
+        # §22: metadata para poder cruzar formato con resultado despues.
+        "_metadata": {
+            "lenguaje": nombre,
+            "ideas": len(segs),
+            "planos": n_planos,
+            "duracion": round(dur_total, 2),
+            "cambios_de_texto": sum(len(s["lineas"]) for s in segs),
+            "rafagas": sum(1 for s in segs if s["_intensidad"] == "BURST"),
+            "intensidades": [s["_intensidad"] for s in segs],
+            "seg_por_idea": round(dur_total / max(1, len(segs)), 2),
+        },
+        "fps": 30, "camara": est["camara"], "loop": c.get("loop", False),
+        "paleta": est["paleta"], "segmentos": segs,
+    }
+    if est.get("flash_ritmo"):
+        guion["flash_ritmo"] = est["flash_ritmo"]
+        guion["flash_ritmo_largo"] = 0.08
+    return guion

@@ -133,7 +133,19 @@ def abastecer(ruta, k, solo_listar=False):
     cfg = json.loads(p.read_text(encoding="utf-8"))
     usadas = {}       # consulta -> cuantas veces ya se uso en este guion
     resueltos, faltan = 0, []
+    # Un segmento puede pedir UNA foto (formatos normales) o varias, una
+    # por plano (formato 'escena', donde una idea lleva varios planos
+    # debajo). Se recorren los dos casos con el mismo codigo: cada
+    # 'pedido' es el diccionario donde hay que escribir la ruta.
+    pedidos = []
     for seg in cfg.get("segmentos", []):
+        if seg.get("necesita"):
+            pedidos.append(seg)
+        for plano in (seg.get("planos") or []):
+            if plano.get("necesita"):
+                pedidos.append(plano)
+
+    for seg in pedidos:
         consulta = seg.get("necesita")
         if not consulta:
             continue

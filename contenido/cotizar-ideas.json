@@ -1,0 +1,32 @@
+{
+  "tema": "Perdiste el laburo por lento, no por caro",
+  "lenguaje": "EDITORIAL",
+  "nota": "Escrito por IDEAS (§1 y §15): UNA idea central en cuatro tiempos, cada una sostenida 4-8s con varios planos debajo. Lineas de 6 a 17 caracteres, como la referencia.",
+  "ideas": [
+    {"rol": "hook", "duracion": 3.4, "intensidad": "BURST",
+     "lineas": ["El que ganó", "no cobra menos"],
+     "narracion": "El que te ganó el laburo no cobra menos.",
+     "necesita": ["serious tradesman portrait workshop",
+                  "man reading phone message at night",
+                  "old clock hands time close up"]},
+
+    {"rol": "contexto", "duracion": 7.2, "intensidad": "MEDIUM",
+     "lineas": ["Te escribieron", "a las diez", "Contestaste", "al otro día"],
+     "entra": [0.0, 0.9, 3.4, 4.3],
+     "narracion": "Te escribieron a las diez y contestaste al otro día.",
+     "necesita": ["man reading phone message at night",
+                  "closed shop metal shutter street"]},
+
+    {"rol": "evidencia", "duracion": 6.6, "intensidad": "HIGH",
+     "lineas": ["Él contesta", "en 2 minutos", "Ya tiene", "el número"],
+     "narracion": "Él contesta en dos minutos. Ya tiene el número hecho.",
+     "necesita": ["handwritten price list notebook",
+                  "notebook plan writing desk coffee",
+                  "construction worker hands tools closeup"]},
+
+    {"rol": "giro", "duracion": 5.8, "intensidad": "LOW",
+     "lineas": ["Vos lo tenés", "en la cabeza", "Por eso", "tardás"],
+     "narracion": "Vos lo tenés en la cabeza. Por eso tardás.",
+     "necesita": ["frustrated man thinking workshop"]}
+  ]
+}
