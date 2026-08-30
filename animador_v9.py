@@ -443,6 +443,179 @@ ESTILOS_PALABRA = [
 ]
 
 
+# ============ CAPTIONS EN CASCADA (arriba -> abajo) ============
+# Pedido explicito del operador, y distinto de todo lo que habia:
+# 'captions_palabra_por_palabra' muestra UNA palabra quieta a media
+# altura, y dibujar_palabra_cinetica() la hace entrar volando desde un
+# borde. Ninguno de los dos hace lo que se pidio: que la palabra
+# APAREZCA ARRIBA y VAYA BAJANDO hasta el fondo mientras la siguiente
+# entra atras, cada una con una tipografia distinta.
+#
+# El resultado se lee como una columna viva: lo ultimo que se dijo esta
+# arriba, grande y nitido; lo dicho hace un segundo va cayendo, se
+# achica y se apaga; lo de hace tres se va por abajo del cuadro. La
+# frase entera esta en pantalla todo el tiempo, pero la jerarquia dice
+# cual es el AHORA.
+#
+# Se activa por segmento con "captions_cascada": true.
+
+CASCADA_VENTANA = 5      # cuantas palabras conviven en pantalla
+CASCADA_Y0 = 0.135       # donde nace la palabra nueva (fraccion de H)
+CASCADA_Y1 = 0.865       # donde termina de irse (fraccion de H)
+
+
+def dibujar_captions_cascada(img, d, seg, t, pal):
+    """Columna de palabras que caen. La nueva nace arriba y empuja a
+    las anteriores hacia abajo; cada una con su propio tratamiento
+    tipografico. t = 0..1 dentro del segmento."""
+    texto = seg.get("captions_texto") or texto_hablado(seg)
+    if not texto or not texto.strip():
+        return
+    palabras = _palabras_captions(texto)
+    n = len(palabras)
+    if n == 0:
+        return
+
+    ventana = int(seg.get("cascada_ventana", CASCADA_VENTANA))
+    avance = min(1.0, t / 0.94)
+    idx = min(n - 1, int(avance * n))
+    lt = max(0.0, min(1.0, avance * n - idx))
+
+    y0 = H * float(seg.get("cascada_y0", CASCADA_Y0))
+    y1 = H * float(seg.get("cascada_y1", CASCADA_Y1))
+    paso = (y1 - y0) / ventana
+    base = int(seg.get("cascada_tam", 104))
+    col_txt = tuple(pal["texto"])
+    col_acc = tuple(pal["destacado"])
+
+    # De la mas vieja a la mas nueva, para que la nueva quede ENCIMA si
+    # dos se solapan: la que manda es siempre la de arriba.
+    for edad in range(ventana - 1, -1, -1):
+        i = idx - edad
+        if i < 0:
+            continue
+        palabra, clave = palabras[i]
+        if not palabra:
+            continue
+        # La columna entera baja de forma continua: sumarle 'lt' hace
+        # que el movimiento sea constante en vez de saltar un escalon
+        # cada vez que cambia la palabra.
+        y = y0 + (edad + lt) * paso
+        if y > H:
+            continue
+
+        est = ESTILOS_PALABRA[i % len(ESTILOS_PALABRA)]
+        # La que acaba de nacer entra con un golpe de escala; el resto
+        # ya esta asentada y solo cae.
+        if edad == 0:
+            golpe = 1.0 + (1.0 - eo_back(min(1.0, lt / 0.22))) * 0.30
+        else:
+            golpe = 1.0
+        # Cuanto mas vieja, mas chica y mas apagada: eso es lo que crea
+        # la profundidad y evita que cinco palabras compitan iguales.
+        merma = (1.22 if edad == 0 else 1.0) - 0.15 * edad
+        tam = max(30, int(base * est["esc"] * merma * golpe))
+        alpha = int(255 * max(0.0, (1.0 - edad / ventana)) ** 0.75)
+        if edad == 0:
+            alpha = int(255 * min(1.0, lt / 0.12))
+        if alpha <= 4:
+            continue
+
+        txt = palabra.upper() if est["mayus"] else palabra
+        f = fnt(tam, ligera=est["ligera"], serif=est["serif"],
+                italica=est["italica"])
+        ancho_max = W - 150
+        while d.textbbox((0, 0), txt, font=f)[2] > ancho_max and tam > 30:
+            tam -= 6
+            f = fnt(tam, ligera=est["ligera"], serif=est["serif"],
+                    italica=est["italica"])
+
+        # Desvio horizontal propio de cada palabra: una columna
+        # perfectamente centrada se lee como una lista, no como algo
+        # vivo. Es determinista (depende del indice), asi que el mismo
+        # guion da siempre el mismo video.
+        rj = random.Random(i * 7919 + 13)
+        jx = rj.uniform(-1, 1) * 34 * (0.35 if edad == 0 else 1.0)
+
+        x0b, y0b, x1b, y1b = d.textbbox((0, 0), txt, font=f)
+        tw, th = x1b - x0b, y1b - y0b
+        pad = 26
+        col = col_acc if clave else col_txt
+
+        capa = Image.new("RGBA", (tw + pad * 2, th + pad * 2), (0, 0, 0, 0))
+        dc = ImageDraw.Draw(capa)
+        px, py = pad - x0b, pad - y0b
+        if est["caja"]:
+            dc.rounded_rectangle([pad - 18, pad - 10, pad + tw + 18,
+                                  pad + th + 16], radius=10,
+                                 fill=col_acc + (alpha,))
+            col = (12, 12, 14)
+        else:
+            # Sombra dura: estas palabras van encima de fotos, y sin
+            # esto la mitad de los cuadros son ilegibles.
+            dc.text((px + 5, py + 5), txt, font=f,
+                    fill=(0, 0, 0, int(alpha * 0.6)))
+        dc.text((px, py), txt, font=f, fill=tuple(col) + (alpha,))
+        img.paste(capa, (int((W - capa.width) / 2 + jx),
+                         int(y - capa.height / 2)), capa)
+
+
+# ============ RITMO DE FLASHES ============
+# 'flash' es por segmento y solo lava la ENTRADA del plano. El operador
+# pidio otra cosa: un pulso de flashes que corre a lo largo de TODO el
+# video, cada 0.7 / 1.5 / 2.5 segundos, independiente de donde caigan
+# los cortes. Eso es lo que hace que el video respire a un ritmo propio
+# en vez de solo marcar los cambios de plano.
+#
+# En el guion (nivel raiz, no por segmento):
+#     "flash_ritmo": 1.5              -> uno cada 1.5s
+#     "flash_ritmo": [0.7, 2.5, 1.5]  -> cicla los intervalos
+#     "flash_ritmo_largo": 0.09       -> cuanto dura cada uno
+#     "flash_ritmo_color": [255,255,255]
+
+def _tiempos_flash_ritmo(cfg):
+    """Momentos absolutos (en segundos) donde cae un flash. Se calcula
+    una vez y se guarda en cfg; con 'fork' cada trabajador del pool
+    hereda el calculo hecho."""
+    if "_flash_tiempos" in cfg:
+        return cfg["_flash_tiempos"]
+    ritmo = cfg.get("flash_ritmo")
+    dur = cfg.get("_dur_total") or 0
+    tiempos = []
+    if ritmo and dur:
+        pasos = [float(x) for x in (ritmo if isinstance(ritmo, (list, tuple))
+                                    else [ritmo]) if float(x) > 0.05]
+        if pasos:
+            t, i = pasos[0], 0
+            # Arranca en el primer intervalo, no en 0: en 0 ya esta el
+            # flash de entrada del primer plano y se superpondrian.
+            while t < dur:
+                tiempos.append(round(t, 3))
+                i += 1
+                t += pasos[i % len(pasos)]
+    cfg["_flash_tiempos"] = tiempos
+    return tiempos
+
+
+def aplicar_flash_ritmo(img, t_abs, cfg):
+    """Lava el cuadro si 't_abs' cae dentro de un flash del pulso."""
+    tiempos = _tiempos_flash_ritmo(cfg)
+    if not tiempos:
+        return img
+    largo = float(cfg.get("flash_ritmo_largo", 0.09))
+    if largo <= 0:
+        return img
+    for ft in tiempos:
+        if ft <= t_abs < ft + largo:
+            k = (1.0 - (t_abs - ft) / largo) ** 2
+            color = tuple(cfg.get("flash_ritmo_color", (255, 255, 255)))
+            return Image.blend(img, Image.new("RGB", img.size, color),
+                               min(0.9, k))
+        if ft > t_abs:
+            break
+    return img
+
+
 def aplicar_flash(img, seg, t):
     """Lava los primeros cuadros del segmento hacia blanco (o el color
     que pida el guion). Es lo que se lee como "aparecio de la nada": el
@@ -639,6 +812,12 @@ def f_pleno(img, d, seg, t, pal):
     velo = Image.new("RGB", (W, H), (0, 0, 0))
     img.paste(Image.blend(img, velo, seg.get("velo", 0.34)), (0, 0))
 
+    # Con la cascada activa el plano aporta SOLO la foto y el velo: la
+    # columna de palabras la dibuja dibujar_captions_cascada() despues.
+    # Si no, se dibujaba la misma palabra dos veces, una encima de la
+    # otra y a distinta altura.
+    if seg.get("captions_cascada"):
+        return
     palabra, clave, lt, idx = _palabra_activa(seg, t)
     if not palabra:
         return
@@ -2832,6 +3011,11 @@ def render(seg, t, prog, cfg):
     # frame igual que cualquier otro elemento.
     if seg.get("captions_palabra_por_palabra"):
         dibujar_captions_kinetic(img, d, seg, t, pal)
+    # La cascada es el otro modo: en vez de una palabra quieta, una
+    # columna que cae. Van los dos por separado a proposito -- juntos
+    # se pisan.
+    if seg.get("captions_cascada"):
+        dibujar_captions_cascada(img, d, seg, t, pal)
 
     # Vida ambiental (ver definicion arriba de FORMATOS): universal,
     # va antes de la camara para que las motas floten integradas al
@@ -2900,6 +3084,12 @@ def render(seg, t, prog, cfg):
         cy = (nh - H) / 2 + dy
         cx = max(0, min(cx, nw - W)); cy = max(0, min(cy, nh - H))
         img = img.crop((int(cx), int(cy), int(cx) + W, int(cy) + H))
+    # Pulso de flashes a lo largo de todo el video (ver
+    # aplicar_flash_ritmo). Va al final, sobre el cuadro ya compuesto y
+    # ya movido por la camara: es un golpe de luz sobre la imagen
+    # final, no un elemento mas de la maqueta.
+    if cfg.get("flash_ritmo"):
+        img = aplicar_flash_ritmo(img, t_abs, cfg)
     d = ImageDraw.Draw(img)
     d.rectangle([0, H - 9, int(W * prog), H], fill=tuple(pal["destacado"]))
     return img
