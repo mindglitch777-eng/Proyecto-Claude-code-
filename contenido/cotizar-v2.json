@@ -1,0 +1,51 @@
+{
+  "tema": "Perdiste el laburo por lento, no por caro",
+  "lenguaje": "EDITORIAL",
+  "nota": "Cada plano declara su FUNCION (§12). La escalera de §13 decide con que se resuelve: B-roll es el ultimo recurso.",
+  "ideas": [
+    {"rol": "hook", "duracion": 4.0,
+     "lineas": ["El que ganó", "no cobra menos"],
+     "narracion": "El que te ganó el laburo no cobra menos.",
+     "figuras": ["persona", "flecha", "telefono"],
+     "planos": [
+       {"funcion": "contexto", "dur": 1.6, "mov": "SUBTLE",
+        "necesita": "serious tradesman portrait workshop"},
+       {"funcion": "relacion", "dur": 2.4, "texto": "Contestó primero",
+        "pie": "y se lo llevó"}
+     ]},
+
+    {"rol": "contexto", "duracion": 7.0,
+     "lineas": ["Te escribieron", "a las diez", "Contestaste", "al otro día"],
+     "entra": [0.0, 0.9, 3.3, 4.2],
+     "narracion": "Te escribieron a las diez y contestaste al otro día.",
+     "planos": [
+       {"funcion": "contexto", "dur": 3.6, "mov": "SUBTLE",
+        "necesita": "man reading phone message at night"},
+       {"funcion": "sostener", "dur": 3.4, "mov": "STATIC",
+        "necesita": "closed shop metal shutter street"}
+     ]},
+
+    {"rol": "evidencia", "duracion": 7.5,
+     "lineas": ["Nadie busca", "tu solución"],
+     "narracion": "Cuánto cobrar tiene sesenta y siete de demanda. Calcular rentabilidad, cero coma uno.",
+     "cifra": {"valor": "67", "etiqueta": "VERIFICADO",
+               "fuente": "Google Trends · Argentina · 12 meses · 28/08/2026"},
+     "planos": [
+       {"funcion": "contexto", "dur": 2.5, "mov": "SUBTLE",
+        "necesita": "frustrated man thinking workshop"},
+       {"funcion": "cifra", "dur": 5.0, "tipo": "barras",
+        "titulo": "Lo que la gente busca",
+        "datos": [{"etiqueta": "«cuánto cobrar»", "valor": 67.5},
+                  {"etiqueta": "«calcular precio»", "valor": 12.0},
+                  {"etiqueta": "«calcular rentabilidad»", "valor": 0.1}]}
+     ]},
+
+    {"rol": "giro", "duracion": 5.0,
+     "lineas": ["Lo tenés", "en la cabeza"],
+     "narracion": "Vos lo tenés en la cabeza. Por eso tardás.",
+     "planos": [
+       {"funcion": "refuerzo", "dur": 5.0, "mov": "STATIC",
+        "necesita": "frustrated man thinking workshop"}
+     ]}
+  ]
+}

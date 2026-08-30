@@ -206,3 +206,8 @@ narrativas, cinco perfiles de ritmo. Ver ESTILOS.md.
 Preview de estilos SIN renderizar: un cuadro de cada estilo lado a lado,
 combinaciones estilo x narrativa, tratamiento visual de un hook, y tira
 de contactos de un guion. Cero video, cero ffmpeg.
+
+## broll.py
+Reglas semanticas del B-roll (§12) y escalera de fallback (§13). Cada
+plano declara su funcion; la escalera decide con que se resuelve y deja
+el B-roll de ultimo recurso. Audita un guion compilado.

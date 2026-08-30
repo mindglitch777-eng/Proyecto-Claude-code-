@@ -654,6 +654,24 @@ FUNCIONES_PLANO = (
 )
 
 
+# §12 y §13. Solo el B-roll (y su variante con parallax) siguen siendo
+# fondo de una escena: para eso existe el fondo. Todo lo demas -- una
+# cifra, un grafico, una captura, una comparacion -- merece su propio
+# cuadro limpio, porque es informacion, no ambiente. Un numero que
+# aparece detras de un bloque de texto no se lee.
+FONDOS_DE_ESCENA = ("broll", "parallax")
+
+
+def _resolver_plano(plano, idea):
+    """Aplica la escalera de broll.py. Devuelve (recurso, maqueta)."""
+    try:
+        import broll
+    except ImportError:
+        return "broll", None
+    recurso, maqueta, _ = broll.resolver(plano, idea)
+    return recurso, maqueta
+
+
 def _planos_de(idea, dur, rnd):
     """Los planos de esta idea. Si el guion los declara, manda el
     guion. Si no, se derivan de la intensidad."""
@@ -722,11 +740,31 @@ def aplicar_ideas(contenido, lenguaje=None, semilla=None):
             round(dur * 0.55 * k / max(1, len(lineas)), 2)
             for k in range(len(lineas))]
 
+        # §13: los planos que NO son B-roll salen de la escena y se
+        # vuelven su propio cuadro. Un plano de funcion 'cifra' detras
+        # de un bloque de texto no se lee; adelante, si.
+        fondo, promovidos = [], []
+        for p in planos:
+            recurso, maqueta = _resolver_plano(p, idea)
+            p["_recurso"] = recurso
+            if recurso in FONDOS_DE_ESCENA or recurso is None:
+                fondo.append(p)
+            else:
+                promovidos.append((p, recurso, maqueta))
+        # Si no queda ningun fondo, la escena va sobre color plano.
+        dur_prom = sum(float(p.get("dur", 0)) for p, _, _ in promovidos)
+        dur_escena = max(1.0, dur - dur_prom)
+        if fondo:
+            k = dur_escena / max(1e-6, sum(float(p.get("dur", 0)) for p in fondo))
+            for p in fondo:
+                p["dur"] = round(float(p.get("dur", 0)) * k, 2)
+        planos = fondo
+
         seg = {
             "formato": "escena",
             "_rol": idea.get("rol", "idea"),
             "_intensidad": str(idea.get("intensidad", "MEDIUM")).upper(),
-            "duracion": round(dur, 2),
+            "duracion": round(dur_escena, 2),
             "lineas": lineas,
             "entra": entra,
             "planos": planos,
@@ -745,7 +783,50 @@ def aplicar_ideas(contenido, lenguaje=None, semilla=None):
             seg[k] = v
         segs.append(seg)
 
-    n_planos = sum(len(s["planos"]) for s in segs)
+        # Los promovidos van DESPUES de la escena, cada uno con su
+        # maqueta y su propia duracion.
+        for p, recurso, maqueta in promovidos:
+            sp = {"formato": maqueta, "_rol": idea.get("rol", "idea"),
+                  "_recurso": recurso, "_funcion": p.get("funcion"),
+                  "duracion": round(float(p.get("dur", 1.5)), 2),
+                  "transicion": est["transicion"]}
+            cifra = idea.get("cifra") or {}
+            ev = idea.get("evidencia") or {}
+            if maqueta == "dato_duro":
+                sp["numero"] = cifra.get("valor")
+                sp["sufijo"] = cifra.get("sufijo", "")
+                sp["texto"] = p.get("texto") or cifra.get("pie", "")
+            elif maqueta == "grafico":
+                sp.update({"tipo": p.get("tipo", "barras"),
+                           "titulo": p.get("titulo") or "",
+                           "datos": p.get("datos") or idea.get("datos") or [],
+                           "fuente": ev.get("fuente") or cifra.get("fuente", "")})
+            elif maqueta == "prueba":
+                sp.update({"imagen": ev.get("imagen"),
+                           "fuente": ev.get("fuente") or cifra.get("fuente", ""),
+                           "kicker": cifra.get("etiqueta", "PRUEBA"),
+                           "texto": p.get("texto") or " ".join(lineas[:1]),
+                           "resaltado": ev.get("resaltado")})
+            elif maqueta == "silueta":
+                sp.update({"figuras": p.get("figuras") or idea.get("figuras") or [],
+                           "texto": p.get("texto") or "",
+                           "pie": p.get("pie") or ""})
+            elif maqueta in ("flujo", "comparacion", "cascada"):
+                txt = p.get("texto") or lineas
+                if maqueta == "flujo":
+                    sp["nodos"] = txt
+                elif maqueta == "comparacion":
+                    mit = max(1, len(txt) // 2)
+                    sp["izq"], sp["der"] = txt[:mit], txt[mit:] or txt[:1]
+                else:
+                    sp["lineas"] = txt
+                    sp["encuadre"] = "plano"
+            sp = {k2: v2 for k2, v2 in sp.items() if v2 not in (None, "", [])}
+            segs.append(sp)
+
+    escenas = [s for s in segs if s["formato"] == "escena"]
+    promovidos = [s for s in segs if s["formato"] != "escena"]
+    n_planos = sum(len(s.get("planos") or []) for s in segs)
     dur_total = sum(s["duracion"] for s in segs)
     guion = {
         "tema": c.get("tema", ""),
@@ -756,13 +837,15 @@ def aplicar_ideas(contenido, lenguaje=None, semilla=None):
         # §22: metadata para poder cruzar formato con resultado despues.
         "_metadata": {
             "lenguaje": nombre,
-            "ideas": len(segs),
+            "ideas": len(escenas),
             "planos": n_planos,
             "duracion": round(dur_total, 2),
-            "cambios_de_texto": sum(len(s["lineas"]) for s in segs),
-            "rafagas": sum(1 for s in segs if s["_intensidad"] == "BURST"),
-            "intensidades": [s["_intensidad"] for s in segs],
-            "seg_por_idea": round(dur_total / max(1, len(segs)), 2),
+            "cambios_de_texto": sum(len(s.get("lineas") or []) for s in segs),
+            "promovidos": len(promovidos),
+            "recursos": [s.get("_recurso") for s in promovidos],
+            "rafagas": sum(1 for s in segs if s.get("_intensidad") == "BURST"),
+            "intensidades": [s["_intensidad"] for s in escenas],
+            "seg_por_idea": round(dur_total / max(1, len(escenas)), 2),
         },
         "fps": 30, "camara": est["camara"], "loop": c.get("loop", False),
         "paleta": est["paleta"], "segmentos": segs,
