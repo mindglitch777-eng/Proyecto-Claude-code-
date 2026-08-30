@@ -1,0 +1,260 @@
+{
+  "tema": "La misma herramienta tiene otro nombre en cada país",
+  "nota": "Compilado por estilos.py (ideas) — lenguaje EDITORIAL (Venta Silenciosa — editorial). 7 ideas, 7 planos. NO editar a mano: editar el contenido y recompilar.",
+  "_lenguaje": "EDITORIAL",
+  "_estilo": "VS",
+  "_metadata": {
+    "lenguaje": "EDITORIAL",
+    "ideas": 4,
+    "planos": 7,
+    "duracion": 26.8,
+    "cambios_de_texto": 10,
+    "promovidos": 3,
+    "recursos": [
+      "silueta",
+      "grafico",
+      "grafico"
+    ],
+    "rafagas": 0,
+    "intensidades": [
+      "MEDIUM",
+      "MEDIUM",
+      "MEDIUM",
+      "MEDIUM"
+    ],
+    "seg_por_idea": 6.7
+  },
+  "fps": 30,
+  "camara": 0.35,
+  "loop": false,
+  "paleta": {
+    "fondo": [
+      10,
+      10,
+      12
+    ],
+    "texto": [
+      246,
+      246,
+      244
+    ],
+    "destacado": [
+      255,
+      78,
+      36
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "escena",
+      "_rol": "hook",
+      "_intensidad": "MEDIUM",
+      "duracion": 3.6,
+      "lineas": [
+        "Tu producto",
+        "no vende"
+      ],
+      "entra": [
+        0.0,
+        0.99
+      ],
+      "planos": [
+        {
+          "funcion": "contexto",
+          "dur": 1.2,
+          "mov": "BURST",
+          "necesita": "person typing on laptop keyboard closeup",
+          "_recurso": "broll",
+          "imagen": "assets/biblioteca/person-typing-on-laptop-keyboard-closeup/00.jpg"
+        },
+        {
+          "funcion": "contexto",
+          "dur": 0.5,
+          "mov": "BURST",
+          "necesita": "google search bar screen",
+          "_recurso": "broll",
+          "imagen": "assets/biblioteca/google-search-bar-screen/00.jpg"
+        },
+        {
+          "funcion": "contexto",
+          "dur": 0.5,
+          "mov": "BURST",
+          "necesita": "empty shop counter waiting",
+          "_recurso": "broll",
+          "imagen": "assets/biblioteca/empty-shop-counter-waiting/00.jpg"
+        },
+        {
+          "funcion": "refuerzo",
+          "dur": 1.4,
+          "mov": "STATIC",
+          "necesita": "frustrated entrepreneur looking at laptop",
+          "_recurso": "broll",
+          "imagen": "assets/biblioteca/frustrated-entrepreneur-looking-at-laptop/00.jpg"
+        }
+      ],
+      "velo": 0.44,
+      "narracion": "Tu producto no vende.",
+      "captions_estilo": "chico",
+      "captions_y": 0.6,
+      "captions_palabra_por_palabra": true,
+      "hook": "impacto",
+      "flash": true
+    },
+    {
+      "formato": "silueta",
+      "_rol": "contradiccion",
+      "_recurso": "silueta",
+      "_funcion": "relacion",
+      "duracion": 4.4,
+      "transicion": "corte_duro",
+      "figuras": [
+        "etiqueta",
+        "flecha",
+        "mapa"
+      ],
+      "texto": "Mismo producto",
+      "pie": "otro nombre según dónde",
+      "narracion": "Le pusiste el nombre de otro país."
+    },
+    {
+      "formato": "escena",
+      "_rol": "evidencia",
+      "_intensidad": "MEDIUM",
+      "duracion": 1.6,
+      "lineas": [
+        "«Cotizador»"
+      ],
+      "entra": [
+        0.0
+      ],
+      "planos": [
+        {
+          "funcion": "contexto",
+          "dur": 1.6,
+          "mov": "SUBTLE",
+          "necesita": "buenos aires street shop sign",
+          "_recurso": "broll",
+          "imagen": "assets/biblioteca/buenos-aires-street-shop-sign/00.jpg"
+        }
+      ],
+      "velo": 0.44,
+      "narracion": "Cotizador tiene setenta de demanda en Argentina y setenta y ocho en México.",
+      "captions_estilo": "chico",
+      "captions_y": 0.6,
+      "captions_palabra_por_palabra": true,
+      "transicion": "corte_duro"
+    },
+    {
+      "formato": "grafico",
+      "_rol": "evidencia",
+      "_recurso": "grafico",
+      "_funcion": "cifra",
+      "duracion": 5.4,
+      "transicion": "corte_duro",
+      "tipo": "barras",
+      "titulo": "«cotizador»",
+      "datos": [
+        {
+          "etiqueta": "México",
+          "valor": 78.5
+        },
+        {
+          "etiqueta": "Argentina",
+          "valor": 70.7
+        },
+        {
+          "etiqueta": "España",
+          "valor": 1.0
+        }
+      ],
+      "fuente": "Google Trends · 12 meses · medido 28/08/2026 · MEDICION_NICHOS.md"
+    },
+    {
+      "formato": "escena",
+      "_rol": "giro",
+      "_intensidad": "MEDIUM",
+      "duracion": 1.6,
+      "lineas": [
+        "En España",
+        "esa palabra",
+        "no existe"
+      ],
+      "entra": [
+        0.0,
+        1.28,
+        2.57
+      ],
+      "planos": [
+        {
+          "funcion": "contexto",
+          "dur": 1.6,
+          "mov": "SUBTLE",
+          "necesita": "madrid spain street city",
+          "_recurso": "broll",
+          "imagen": "assets/biblioteca/madrid-spain-street-city/00.jpg"
+        }
+      ],
+      "velo": 0.44,
+      "narracion": "En España esa palabra no existe. Ahí buscan presupuesto online.",
+      "captions_estilo": "chico",
+      "captions_y": 0.6,
+      "captions_palabra_por_palabra": true,
+      "transicion": "punch"
+    },
+    {
+      "formato": "grafico",
+      "_rol": "giro",
+      "_recurso": "grafico",
+      "_funcion": "cifra",
+      "duracion": 5.4,
+      "transicion": "corte_duro",
+      "tipo": "barras",
+      "titulo": "Lo que busca España",
+      "datos": [
+        {
+          "etiqueta": "«presupuesto online»",
+          "valor": 53.9
+        },
+        {
+          "etiqueta": "«cotizador»",
+          "valor": 1.0
+        }
+      ],
+      "fuente": "Google Trends · España · 12 meses · 28/08/2026"
+    },
+    {
+      "formato": "escena",
+      "_rol": "conclusion",
+      "_intensidad": "MEDIUM",
+      "duracion": 4.8,
+      "lineas": [
+        "No cambies",
+        "el producto",
+        "Cambiá",
+        "el nombre"
+      ],
+      "entra": [
+        0.0,
+        0.66,
+        1.32,
+        1.98
+      ],
+      "planos": [
+        {
+          "funcion": "refuerzo",
+          "dur": 4.8,
+          "mov": "STATIC",
+          "necesita": "hands writing notebook plan desk",
+          "_recurso": "broll",
+          "imagen": "assets/biblioteca/hands-writing-notebook-plan-desk/00.jpg"
+        }
+      ],
+      "velo": 0.44,
+      "narracion": "No cambies el producto. Cambiá el nombre.",
+      "captions_estilo": "chico",
+      "captions_y": 0.6,
+      "captions_palabra_por_palabra": true,
+      "transicion": "corte_duro"
+    }
+  ]
+}
