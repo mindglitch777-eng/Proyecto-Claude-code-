@@ -186,3 +186,8 @@ no se acumulan herramientas muertas que confunden a la proxima sesion.
 Motor de contenido (ver MOTOR.md). Idea -> score -> hooks -> score ->
 estructura -> brief -> puerta de produccion -> esqueleto de guion ->
 resultado publicado -> aprendizaje. Determinista, sin LLM ni APIs pagas.
+
+## auditar.py
+Auditoria del repo (solo mira, no toca): referencias rotas en los
+guiones, fotos identicas guardadas dos veces, y formatos usados que el
+animador no conoce.
