@@ -1,0 +1,39 @@
+{
+  "tema": "Perdiste el laburo por lento, no por caro",
+  "nota": "Gramatica Venta Silenciosa: foto real con velo + corte duro cada 1.5-2.5s + narracion continua + palabra clave marcada con *asteriscos*. Da el DIAGNOSTICO y una distincion util. No nombra producto, ni curso, ni herramienta. Cierra con un seguime seco.",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": false,
+  "paleta": {"fondo": [10, 10, 12], "texto": [246, 246, 244], "destacado": [255, 78, 36], "apagado": [122, 122, 128]},
+  "segmentos": [
+    {"formato": "pleno", "narracion": "El que te ganó el laburo no cobra *menos*", "duracion": 1.9, "hook": "impacto", "sfx": "impacto", "flash": true, "imagen": "assets/biblioteca/serious-man-portrait-workshop-light/00.jpg", "velo": 0.46, "sfx_vol": 0.72},
+
+    {"formato": "pleno", "narracion": "Contestó *primero*", "duracion": 1.4, "transicion": "corte_duro", "sfx": "whoosh", "flash": true, "imagen": "assets/biblioteca/hands-using-phone-mobile-payment/00.jpg", "velo": 0.5, "sfx_vol": 0.6},
+
+    {"formato": "ruleta", "fijo": "Pasa en", "palabras": ["obras", "fletes", "mudanzas", "arreglos", "eventos"], "narracion": "Pasa en obras, fletes, mudanzas, arreglos, eventos.", "duracion": 2.5, "transicion": "corte_duro", "sfx": "tick", "flash": 0.08, "imagen": "assets/biblioteca/confident-craftsman-hands-working-workshop/00.jpg", "velo": 0.56, "sfx_vol": 0.55},
+
+    {"formato": "pleno", "narracion": "Te escribieron a las diez de la noche", "duracion": 1.7, "transicion": "corte_duro", "sfx": "whoosh", "imagen": "assets/biblioteca/tired-man-sitting-alone-night-window/00.jpg", "velo": 0.44, "sfx_vol": 0.58, "flash": 0.07},
+
+    {"formato": "lista", "titulo": "Y vos", "items": ["miraste las fotos", "sacaste la cuenta a ojo", "dijiste: mañana te confirmo"], "narracion": "Miraste las fotos, sacaste la cuenta a ojo, y dijiste: mañana te confirmo.", "duracion": 3.4, "transicion": "corte_duro", "sfx": "tick", "flash": 0.08, "imagen": "assets/biblioteca/laptop-notebook-writing-desk-night/00.jpg", "velo": 0.66, "sfx_vol": 0.55},
+
+    {"formato": "pleno", "narracion": "Mañana ya era *tarde*", "duracion": 1.8, "transicion": "corte_duro", "sfx": "impacto", "flash": 0.14, "imagen": "assets/biblioteca/old-clock-hands-time-close-up/00.jpg", "velo": 0.5, "sfx_vol": 0.72},
+
+    {"formato": "tarjeta", "texto": "Cuatro horas", "narracion": "Cuatro horas. Ese es todo el margen que tenés.", "duracion": 2.1, "transicion": "corte_duro", "sfx": "riser", "flash": 0.08, "imagen": "assets/biblioteca/old-clock-hands-time-close-up/01.jpg", "sfx_vol": 0.6},
+
+    {"formato": "pleno", "narracion": "No perdiste por *caro*. Perdiste por lento.", "duracion": 2.1, "transicion": "corte_duro", "sfx": "impacto", "flash": true, "imagen": "assets/biblioteca/closed-shop-metal-shutter-street/00.jpg", "velo": 0.48, "sfx_vol": 0.72},
+
+    {"formato": "comparacion", "izq_titulo": "Vos", "der_titulo": "Él", "izq": ["contestás cuando podés", "sacás el número a ojo", "1 de cada 5 te entra"], "der": ["contesta en 2 minutos", "el número ya está hecho", "4 de cada 5 le entran"], "remate": "mismo laburo", "narracion": "Vos contestás cuando podés. Él contesta en dos minutos. Mismo laburo.", "duracion": 4.8, "transicion": "corte_duro", "sfx": "impacto", "sfx_vol": 0.66},
+
+    {"formato": "pleno", "narracion": "Y no se levanta más temprano que vos", "duracion": 1.9, "transicion": "corte_duro", "sfx": "whoosh", "imagen": "assets/biblioteca/sunrise-light-hopeful-portrait-man/00.jpg", "velo": 0.46, "sfx_vol": 0.58, "flash": 0.07},
+
+    {"formato": "pleno", "narracion": "Tiene el número hecho *antes* de que le pregunten", "duracion": 2.2, "transicion": "corte_duro", "sfx": "riser", "imagen": "assets/biblioteca/notebook-plan-writing-desk-coffee/00.jpg", "velo": 0.5, "sfx_vol": 0.6, "flash": 0.07},
+
+    {"formato": "lista", "titulo": "Lo que él ya tiene cargado", "items": ["cuánto vale su hora", "cuánto le cuesta el material", "cuánto quiere ganar"], "narracion": "Cuánto vale su hora, cuánto le cuesta el material, cuánto quiere ganar.", "duracion": 3.3, "transicion": "corte_duro", "sfx": "tick", "flash": 0.08, "imagen": "assets/biblioteca/notebook-plan-writing-desk-coffee/01.jpg", "velo": 0.66, "sfx_vol": 0.55},
+
+    {"formato": "pleno", "narracion": "Vos lo tenés en la *cabeza*. Por eso tardás.", "duracion": 2.2, "transicion": "corte_duro", "sfx": "impacto", "flash": true, "imagen": "assets/biblioteca/serious-man-portrait-workshop-light/01.jpg", "velo": 0.48, "sfx_vol": 0.72},
+
+    {"formato": "pleno", "narracion": "Sacarlo de la cabeza es todo el truco", "duracion": 1.9, "transicion": "corte_duro", "sfx": "riser", "imagen": "assets/biblioteca/confident-craftsman-hands-working-workshop/01.jpg", "velo": 0.46, "sfx_vol": 0.6, "flash": 0.07},
+
+    {"formato": "cta", "texto": "Seguime.", "narracion": "Seguime. Mañana te muestro el mío.", "mayus": true, "duracion": 2.0, "hook": "impacto", "sfx": "impacto", "transicion": "corte_duro", "flash": true, "cta_handle": "@tallerdeactivos", "sfx_vol": 0.72}
+  ]
+}
