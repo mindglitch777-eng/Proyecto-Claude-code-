@@ -1,0 +1,44 @@
+name: benchmark-tts
+
+# BLOQUE 2. Prueba los tres motores de voz y deja el informe y los
+# audios en el repo. No integra nada: solo mide.
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "herramientas/benchmark_tts.py"
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Probar los tres motores
+        run: python3 herramientas/benchmark_tts.py
+        continue-on-error: true
+
+      - name: Guardar informe y audios
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add -A capturas_voz/benchmark || true
+          if git diff --cached --quiet; then echo "sin resultados"; exit 0; fi
+          git commit -m "Prueba de motores de voz: informe y muestras"
+          for i in 1 2 3 4; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && \
+            git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
+            sleep $((2 ** i))
+          done
+          exit 1
