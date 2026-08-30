@@ -47,7 +47,10 @@ def medir_audio(video):
     r = _correr(["ffmpeg", "-hide_banner", "-nostats", "-i", str(video),
                  "-af", "loudnorm=print_format=summary", "-f", "null", "-"])
     def cap(etiqueta):
-        m = re.search(etiqueta + r":\s*(-?[\d.]+|inf)", r.stderr)
+        # [-+] y no solo -: un pico real por ENCIMA del techo se
+        # imprime como "+0.7 dBTP", y ese es justo el numero que
+        # no se puede perder, porque es el que dice que clipea.
+        m = re.search(etiqueta + r":\s*([-+]?[\d.]+|inf)", r.stderr)
         return m.group(1) if m else "—"
     return {"lufs": cap("Input Integrated"), "tp": cap("Input True Peak"),
             "lra": cap("Input LRA")}

@@ -3026,9 +3026,18 @@ def f_menu(img, d, seg, t, pal):
     n = len(filas)
     reparto = 0.84 / n
     entrada = min(0.14, reparto * 0.7)
-    mini = int(W * 0.155)
-    alto_fila = int(mini * 1.72)
-    y = H * float(seg.get("menu_y0", 0.14))
+    # Medido sobre el render de prueba: con 0.155 de ancho la miniatura
+    # y el texto quedaban de tamaño de pie de foto, y dos filas dejaban
+    # dos tercios de pantalla vacios abajo. En la referencia la carta
+    # OCUPA el cuadro.
+    mini = int(W * float(seg.get("menu_mini", 0.225)))
+    alto_fila = int(mini * 1.55)
+    # Con pocas filas el bloque se centra en vez de quedar colgado
+    # arriba; con muchas arranca donde diga el guion.
+    alto_total = alto_fila * n
+    y0_pedido = seg.get("menu_y0")
+    y = (H * float(y0_pedido) if y0_pedido is not None
+         else max(H * 0.10, H * 0.52 - alto_total / 2))
     col = tuple(pal["texto"])
 
     for i, fila in enumerate(filas):
@@ -3041,15 +3050,18 @@ def f_menu(img, d, seg, t, pal):
         dy = int((1 - eo_expo(lt)) * 14)
         # Escalonado: las impares corridas a la derecha. Sin eso se
         # lee como una tabla y pierde el aire de la referencia.
-        sangria = W * (0.055 if i % 2 == 0 else 0.235)
-        ancho_txt = W - sangria - mini - W * 0.10
+        sangria = W * (0.055 if i % 2 == 0 else 0.185)
+        ancho_txt = W - sangria - mini - W * 0.085
 
         lineas = str(fila.get("texto", "")).split("\n")
-        f = fnt(max(26, int(W * 0.036)), ligera=True, serif=True)
+        cuerpo = max(30, int(W * float(seg.get("menu_tam", 0.050))))
         yy = y + dy
         for k, ln in enumerate(lineas):
-            ft = f if k else fnt(max(26, int(W * 0.036)), serif=True)
-            while d.textbbox((0, 0), ln, font=ft)[2] > ancho_txt and ft.size > 20:
+            # Primera linea en serif recta (el precio, lo que se lee de
+            # lejos); las de abajo en liviana y un punto mas chicas.
+            tam = cuerpo if k == 0 else int(cuerpo * 0.86)
+            ft = fnt(tam, ligera=bool(k), serif=True)
+            while d.textbbox((0, 0), ln, font=ft)[2] > ancho_txt and ft.size > 22:
                 ft = fnt(ft.size - 2, ligera=bool(k), serif=True)
             x0b, y0b, x1b, y1b = d.textbbox((0, 0), ln, font=ft)
             capa = Image.new("RGBA", (x1b - x0b + 40, y1b - y0b + 40),
@@ -3058,7 +3070,7 @@ def f_menu(img, d, seg, t, pal):
             ImageDraw.Draw(capa).text((20 - x0b, 20 - y0b), ln, font=ft,
                                       fill=col + (alpha,))
             img.paste(capa, (int(sangria - 20), int(yy - 20)), capa)
-            yy += ft.size * 1.28
+            yy += ft.size * 1.24
 
         ruta = fila.get("imagen") or fila.get("foto")
         if ruta and Path(ruta).exists() and lt > 0.25:
@@ -3067,8 +3079,8 @@ def f_menu(img, d, seg, t, pal):
             except Exception:
                 im = None
             if im is not None:
-                mx = int(sangria + ancho_txt + W * 0.035)
-                my = int(y + dy)
+                mx = int(sangria + ancho_txt + W * 0.030)
+                my = int(y + dy - mini * 0.10)
                 cuadro = Image.new("RGB", (mini, mini), tuple(pal["fondo"]))
                 _pegar_encuadrado(cuadro, im, (0, 0, mini, mini))
                 mascara = Image.new("L", (mini, mini), 0)
