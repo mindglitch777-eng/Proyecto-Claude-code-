@@ -4521,7 +4521,72 @@ SFX_POR_FORMATO = {
     "dato_duro": "campana", "conteo": "tick", "revelacion": "riser",
     "pasos": "tick", "alerta": "impacto", "collage": "whoosh",
     "mensajes": "tick", "escalada": "riser",
+    # Los formatos nuevos no estaban en este mapa, asi que un guion
+    # hecho solo con ellos salia practicamente MUDO: se midio -20.9
+    # LUFS contra los -13.4 de la referencia. En el feed eso es el
+    # video que suena mas bajo que el anterior y al que le suben el
+    # volumen o lo pasan.
+    "escena": "whoosh", "grafico": "tick", "silueta": "tick",
+    "cascada": "whoosh", "menu": "tick", "prueba": "impacto",
+    "flujo": "tick", "parallax": "riser",
 }
+
+
+# §32. SFX por EVENTO, no por corte. El bloque de arriba pone UN sonido
+# al empezar cada plano; esto agrega los golpes de lo que PASA adentro:
+# una linea que entra, una barra que termina de crecer, una figura que
+# aparece, un corte de rafaga.
+#
+# La regla del parrafo es no poner un sonido en cada corte. Por eso
+# cada evento trae su volumen: los internos suenan bastante mas bajo
+# que el del plano, y funcionan como textura, no como golpe.
+def _eventos_sfx(seg):
+    """[(segundo_dentro_del_plano, nombre_sfx, volumen_relativo)]"""
+    fmt = seg.get("formato")
+    dur = float(seg.get("duracion", 2.0)) or 2.0
+    ev = []
+    if fmt == "escena":
+        # un golpe por corte de plano, sin contar el primero (ya sono)
+        planos = seg.get("planos") or []
+        if planos:
+            t = 0.0
+            ventanas = _reparto_planos(planos, dur)
+            for k, (a, b) in enumerate(ventanas):
+                if k == 0:
+                    continue
+                # la rafaga suena mas seca y mas bajo que un corte normal
+                corto = (b - a) < 0.8
+                ev.append((a, "tick" if corto else "whoosh",
+                           0.30 if corto else 0.42))
+        # y una entrada suave por cada linea de texto
+        for t0 in (seg.get("entra") or []):
+            if t0 > 0.05:
+                ev.append((float(t0), "tick", 0.22))
+    elif fmt == "grafico":
+        datos = seg.get("datos") or []
+        n = len(datos)
+        if n:
+            reparto = 0.62 / n
+            for k in range(n):
+                # cuando la barra TERMINA de crecer, no cuando arranca
+                t0 = (0.14 + k * reparto + reparto * 0.7) * dur
+                ultimo = (k == n - 1)
+                ev.append((t0, "campana" if ultimo else "tick",
+                           0.44 if ultimo else 0.26))
+    elif fmt == "silueta":
+        figs = [f for f in (seg.get("figuras") or []) if f in FIGURAS]
+        n = len(figs) or 1
+        reparto = 0.72 / n
+        for k in range(n):
+            ev.append(((0.10 + k * reparto) * dur,
+                       "impacto" if figs and figs[k] == "flecha" else "tick",
+                       0.34 if figs and figs[k] == "flecha" else 0.24))
+    elif fmt == "menu":
+        filas = seg.get("filas") or []
+        n = len(filas) or 1
+        for k in range(1, n):
+            ev.append((k * (0.84 / n) * dur, "tick", 0.26))
+    return [(t, nombre, v) for t, nombre, v in ev if 0.0 <= t < dur]
 
 
 def _ventanas_quiebre(segs, marcas):
@@ -4590,6 +4655,25 @@ def construir_audio(cfg, segs, dur_total, tmp, voces=None, marcas=None):
         filtros.append(f"[{n}:a]adelay={delay}|{delay},volume={vol}[a{n}]")
         etiquetas.append(f"[a{n}]")
         n += 1
+
+    # --- 2a. SFX por EVENTO adentro del plano (§32) ---
+    # Ver _eventos_sfx(): un golpe cuando PASA algo -- entra una linea,
+    # termina de crecer una barra, aparece una figura -- y no en cada
+    # corte. Los internos van a volumen bajo: son textura, no golpe.
+    for i, seg in enumerate(segs):
+        if not seg.get("sfx_auto", True):
+            continue
+        base_t = marcas[i] if i < len(marcas) else 0.0
+        for dt, nombre, vrel in _eventos_sfx(seg):
+            ruta = dir_sfx / f"{nombre}.wav"
+            if not ruta.exists():
+                continue
+            delay = int(max(0.0, base_t + dt) * 1000)
+            vol = round(vrel * (0.8 if voces else 1.0), 3)
+            entradas += ["-i", str(ruta)]
+            filtros.append(f"[{n}:a]adelay={delay}|{delay},volume={vol}[a{n}]")
+            etiquetas.append(f"[a{n}]")
+            n += 1
 
     # --- 2b. SFX extra por imagen en 'collage' ---
     # El bloque de arriba ya puso UN whoosh por segmento (imagen 0,
