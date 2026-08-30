@@ -76,9 +76,17 @@ def revisar(path):
 
     problemas, avisos = [], []
     primero = segs[0]
-    # El texto visible del hook puede vivir en 'texto' o, en formatos
-    # como 'pregunta', en 'pregunta' (lo que se lee primero en pantalla).
-    texto1 = primero.get("texto") or primero.get("pregunta", "")
+    # El texto visible del hook puede vivir en 'texto', en 'pregunta'
+    # (formato 'pregunta') o en 'lineas' (formatos que arman un bloque
+    # escalonado: escena, cascada, menu...).
+    #
+    # 'lineas' faltaba, y como el hook de todos los guiones nuevos es
+    # una escena, texto1 quedaba en "" y TODAS las revisiones de hook de
+    # aca abajo pasaban en falso: longitud, especificidad, pregunta
+    # facil, formula gastada. Avisaba "el hook no tiene ningun numero"
+    # aunque lo tuviera, porque no estaba leyendo el hook.
+    texto1 = (primero.get("texto") or primero.get("pregunta")
+              or " ".join(primero.get("lineas") or []))
     palabras1 = len(texto1.split())
 
     # --- Reglas del hook (primer segmento) ---
