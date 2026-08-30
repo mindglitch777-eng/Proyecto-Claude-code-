@@ -1,0 +1,60 @@
+name: probar-motores-voz
+
+# Rinde la misma frase con Kokoro, Pocket TTS y Piper para elegir de
+# oido cual motor usamos. Corre aca porque el entorno de Claude Code
+# tiene bloqueado huggingface.co (donde viven los modelos) y porque
+# bajar varios cientos de MB de pesos no tiene sentido contra el
+# presupuesto de la sesion.
+
+on:
+  workflow_dispatch:
+    inputs:
+      frase:
+        description: "Frase a sintetizar"
+        required: false
+        default: "La mitad de lo que venden los latinos no se vende acá. Se cobra en dólares, afuera. El problema no es el mercado: es que no sabés qué vender."
+
+permissions:
+  contents: write
+
+jobs:
+  motores:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar motores
+        run: |
+          sudo apt-get update -qq
+          # espeak-ng lo necesita el conversor de texto a fonemas de
+          # kokoro; sin el, el pipeline levanta pero no fonemiza español
+          sudo apt-get install -y -qq ffmpeg espeak-ng
+          pip install --quiet soundfile numpy
+          # Cada uno por separado y sin cortar la corrida: si un motor
+          # no instala, el banco igual prueba los otros dos.
+          pip install --quiet "kokoro>=0.9" || echo "AVISO: kokoro no instalo"
+          pip install --quiet pocket-tts    || echo "AVISO: pocket-tts no instalo"
+          pip install --quiet piper-tts     || echo "AVISO: piper-tts no instalo"
+
+      - name: Rendir las muestras
+        env:
+          FRASE: ${{ inputs.frase }}
+        run: python3 probar_motores_voz.py "$FRASE"
+
+      - name: Guardar en el repo
+        if: always()
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain muestras_voz)" ]; then
+            git add muestras_voz
+            git commit -m "Muestras: comparacion de motores de voz"
+            git pull --rebase --autostash origin main || true
+            git push
+          else
+            echo "Sin cambios."
+          fi
