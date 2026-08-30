@@ -42,9 +42,12 @@ ESCALONES = ("viral", "problema", "oportunidad", "educacion", "evidencia",
 ETIQUETAS_CIFRA = ("VERIFICADO", "DECLARADO", "ESTIMADO", "RUMOR", "HIPOTESIS")
 
 # §9 -- las doce familias de hook
+# §9 del brief nombra dieciseis familias. 'shock' cubre "esto parece
+# imposible" y 'secreto' cubre "nadie te cuenta".
 CATEGORIAS_HOOK = ("dinero", "descubrimiento", "contradiccion", "curiosidad",
                    "shock", "oportunidad", "conflicto", "comparacion",
-                   "historia", "desafio", "fomo", "autoridad")
+                   "historia", "desafio", "fomo", "autoridad",
+                   "secreto", "error", "advertencia", "transformacion")
 
 # §22 -- que variable prueba esta pieza. 180 videos son 180 experimentos.
 VARIABLES = ("hook", "formato", "tema", "narrativa", "duracion", "cta",

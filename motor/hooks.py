@@ -254,6 +254,23 @@ PLANTILLAS = {
         "Medimos {mercado} y el numero fue {cifra}.",
         "{sujeto} afirma haber hecho {cifra}. Fuimos a ver si cerraba.",
     ],
+    "secreto": [
+        "{sujeto} no explica de donde saca los clientes. Lo miramos igual.",
+        "Lo que hace {sujeto} con {cosa} no esta en ningun curso.",
+    ],
+    "error": [
+        "Cotizar a ojo te esta costando mas que {precio} por mes.",
+        "El error no es {error}. Es lo que pasa despues.",
+        "{error} parece gratis. Tiene un precio y es {precio}.",
+    ],
+    "advertencia": [
+        "Si seguis con {error}, {mercado} te pasa por arriba este año.",
+        "{cosa} funciona hoy. Dentro de seis meses no.",
+    ],
+    "transformacion": [
+        "{sujeto} hacia {error}. Hoy cobra {precio} por lo mismo.",
+        "Mismo laburo, misma persona, {precio} de diferencia.",
+    ],
 }
 
 # §17: si el hook trae una cifra, la idea tiene que decir de donde sale.
