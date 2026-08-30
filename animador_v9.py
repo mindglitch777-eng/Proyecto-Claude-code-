@@ -459,15 +459,50 @@ ESTILOS_PALABRA = [
 #
 # Se activa por segmento con "captions_cascada": true.
 
-CASCADA_VENTANA = 5      # cuantas palabras conviven en pantalla
-CASCADA_Y0 = 0.135       # donde nace la palabra nueva (fraccion de H)
-CASCADA_Y1 = 0.865       # donde termina de irse (fraccion de H)
+# Tipografias SOLO para la cascada. ESTILOS_PALABRA no sirve aca: tiene
+# una caja rellena de color y mayusculas negras pesadas, que es
+# exactamente el look de plantilla de CapCut que el operador no quiere.
+# Estas son todas de la misma familia de gusto -- serif italica, serif
+# recta, y sans liviana en versalitas con aire entre letras -- para que
+# el cambio de tipografia se lea como criterio editorial y no como un
+# efecto. Ninguna lleva caja ni peso extra.
+#
+#   track = aire entre letras, en pixeles. Positivo solo en las
+#   mayusculas: una palabra en caja alta sin tracking se ve apretada y
+#   barata; con aire se ve cara. En minuscula va en 0.
+ESTILOS_CASCADA = [
+    {"serif": True,  "italica": True,  "ligera": False, "mayus": False, "esc": 1.00, "track": 0},
+    {"serif": True,  "italica": False, "ligera": False, "mayus": False, "esc": 0.90, "track": 0},
+    {"serif": False, "italica": False, "ligera": True,  "mayus": True,  "esc": 0.58, "track": 11},
+    {"serif": True,  "italica": True,  "ligera": False, "mayus": False, "esc": 1.14, "track": 0},
+    {"serif": False, "italica": False, "ligera": True,  "mayus": False, "esc": 0.86, "track": 0},
+    {"serif": True,  "italica": False, "ligera": False, "mayus": True,  "esc": 0.62, "track": 9},
+    {"serif": True,  "italica": True,  "ligera": False, "mayus": False, "esc": 0.82, "track": 0},
+]
+
+CASCADA_Y0 = 0.115       # donde nace la palabra nueva (fraccion de H)
+CASCADA_PASO = 152       # pixeles entre una palabra y la siguiente
+CASCADA_TAM = 92         # cuerpo base
+
+
+def _sombra_suave(capa, txt, f, px, py, alpha, track=0):
+    """Halo oscuro difuminado detras de la palabra. La sombra dura
+    desplazada es el tic de plantilla; esto es lo que hace que el texto
+    se lea sobre una foto sin parecer pegoteado encima."""
+    h = Image.new("L", capa.size, 0)
+    dh = ImageDraw.Draw(h)
+    if track:
+        _texto_espaciado(dh, (px, py), txt, f, int(alpha * 0.85), track)
+    else:
+        dh.text((px, py), txt, font=f, fill=int(alpha * 0.85))
+    h = h.filter(ImageFilter.GaussianBlur(9))
+    capa.paste(Image.new("RGBA", capa.size, (0, 0, 0, 255)), (0, 0), h)
 
 
 def dibujar_captions_cascada(img, d, seg, t, pal):
-    """Columna de palabras que caen. La nueva nace arriba y empuja a
-    las anteriores hacia abajo; cada una con su propio tratamiento
-    tipografico. t = 0..1 dentro del segmento."""
+    """Columna de palabras que caen juntas. La nueva nace arriba y
+    empuja a las anteriores hacia abajo; cada una con su propio
+    tratamiento tipografico. t = 0..1 dentro del segmento."""
     texto = seg.get("captions_texto") or texto_hablado(seg)
     if not texto or not texto.strip():
         return
@@ -476,20 +511,24 @@ def dibujar_captions_cascada(img, d, seg, t, pal):
     if n == 0:
         return
 
-    ventana = int(seg.get("cascada_ventana", CASCADA_VENTANA))
+    y0 = H * float(seg.get("cascada_y0", CASCADA_Y0))
+    paso = float(seg.get("cascada_paso", CASCADA_PASO))
+    base = int(seg.get("cascada_tam", CASCADA_TAM))
+    # Cuantas palabras entran desde y0 hasta que salen por abajo. Con el
+    # paso corto son muchas, y esa es la idea: una columna densa que
+    # baja entera, no cinco palabras sueltas muy separadas.
+    ventana = max(3, min(12, int((H * 0.97 - y0) / paso) + 1))
+    ventana = int(seg.get("cascada_ventana", ventana))
+
     avance = min(1.0, t / 0.94)
     idx = min(n - 1, int(avance * n))
     lt = max(0.0, min(1.0, avance * n - idx))
-
-    y0 = H * float(seg.get("cascada_y0", CASCADA_Y0))
-    y1 = H * float(seg.get("cascada_y1", CASCADA_Y1))
-    paso = (y1 - y0) / ventana
-    base = int(seg.get("cascada_tam", 104))
     col_txt = tuple(pal["texto"])
     col_acc = tuple(pal["destacado"])
+    jitter = float(seg.get("cascada_jitter", 0.0))
 
-    # De la mas vieja a la mas nueva, para que la nueva quede ENCIMA si
-    # dos se solapan: la que manda es siempre la de arriba.
+    # De la mas vieja a la mas nueva: si dos se solapan, la de arriba
+    # queda encima.
     for edad in range(ventana - 1, -1, -1):
         i = idx - edad
         if i < 0:
@@ -497,65 +536,63 @@ def dibujar_captions_cascada(img, d, seg, t, pal):
         palabra, clave = palabras[i]
         if not palabra:
             continue
-        # La columna entera baja de forma continua: sumarle 'lt' hace
-        # que el movimiento sea constante en vez de saltar un escalon
-        # cada vez que cambia la palabra.
+        # Sumarle 'lt' hace que la columna baje de forma continua, en
+        # vez de saltar un escalon cada vez que cambia la palabra.
         y = y0 + (edad + lt) * paso
-        if y > H:
+        if y > H * 1.02:
             continue
 
-        est = ESTILOS_PALABRA[i % len(ESTILOS_PALABRA)]
-        # La que acaba de nacer entra con un golpe de escala; el resto
+        est = ESTILOS_CASCADA[i % len(ESTILOS_CASCADA)]
+        # La recien nacida entra con un golpe corto de escala; el resto
         # ya esta asentada y solo cae.
-        if edad == 0:
-            golpe = 1.0 + (1.0 - eo_back(min(1.0, lt / 0.22))) * 0.30
-        else:
-            golpe = 1.0
-        # Cuanto mas vieja, mas chica y mas apagada: eso es lo que crea
-        # la profundidad y evita que cinco palabras compitan iguales.
-        merma = (1.22 if edad == 0 else 1.0) - 0.15 * edad
-        tam = max(30, int(base * est["esc"] * merma * golpe))
-        alpha = int(255 * max(0.0, (1.0 - edad / ventana)) ** 0.75)
+        golpe = (1.0 + (1.0 - eo_back(min(1.0, lt / 0.24))) * 0.22
+                 if edad == 0 else 1.0)
+        # Merma suave: lo justo para dar profundidad sin que la columna
+        # se telescopie y se separe.
+        merma = (1.16 if edad == 0 else 1.0) - 0.055 * edad
+        tam = max(26, int(base * est["esc"] * merma * golpe))
         if edad == 0:
             alpha = int(255 * min(1.0, lt / 0.12))
-        if alpha <= 4:
+        else:
+            alpha = int(255 * max(0.0, 1.0 - edad / ventana) ** 1.45)
+        if alpha <= 5:
             continue
 
         txt = palabra.upper() if est["mayus"] else palabra
-        f = fnt(tam, ligera=est["ligera"], serif=est["serif"],
-                italica=est["italica"])
+        track = est["track"]
+        def _f(tm):
+            return fnt(tm, ligera=est["ligera"], serif=est["serif"],
+                       italica=est["italica"])
+        f = _f(tam)
         ancho_max = W - 150
-        while d.textbbox((0, 0), txt, font=f)[2] > ancho_max and tam > 30:
-            tam -= 6
-            f = fnt(tam, ligera=est["ligera"], serif=est["serif"],
-                    italica=est["italica"])
-
-        # Desvio horizontal propio de cada palabra: una columna
-        # perfectamente centrada se lee como una lista, no como algo
-        # vivo. Es determinista (depende del indice), asi que el mismo
-        # guion da siempre el mismo video.
-        rj = random.Random(i * 7919 + 13)
-        jx = rj.uniform(-1, 1) * 34 * (0.35 if edad == 0 else 1.0)
+        ancho = (_ancho_espaciado(d, txt, f, track) if track
+                 else d.textbbox((0, 0), txt, font=f)[2])
+        while ancho > ancho_max and tam > 26:
+            tam -= 5
+            f = _f(tam)
+            ancho = (_ancho_espaciado(d, txt, f, track) if track
+                     else d.textbbox((0, 0), txt, font=f)[2])
 
         x0b, y0b, x1b, y1b = d.textbbox((0, 0), txt, font=f)
-        tw, th = x1b - x0b, y1b - y0b
-        pad = 26
+        tw = int(ancho) if track else (x1b - x0b)
+        th = y1b - y0b
+        pad = 30
         col = col_acc if clave else col_txt
 
         capa = Image.new("RGBA", (tw + pad * 2, th + pad * 2), (0, 0, 0, 0))
         dc = ImageDraw.Draw(capa)
-        px, py = pad - x0b, pad - y0b
-        if est["caja"]:
-            dc.rounded_rectangle([pad - 18, pad - 10, pad + tw + 18,
-                                  pad + th + 16], radius=10,
-                                 fill=col_acc + (alpha,))
-            col = (12, 12, 14)
+        px, py = pad - (0 if track else x0b), pad - y0b
+        _sombra_suave(capa, txt, f, px, py, alpha, track)
+        dc = ImageDraw.Draw(capa)
+        if track:
+            _texto_espaciado(dc, (px, py), txt, f, tuple(col) + (alpha,), track)
         else:
-            # Sombra dura: estas palabras van encima de fotos, y sin
-            # esto la mitad de los cuadros son ilegibles.
-            dc.text((px + 5, py + 5), txt, font=f,
-                    fill=(0, 0, 0, int(alpha * 0.6)))
-        dc.text((px, py), txt, font=f, fill=tuple(col) + (alpha,))
+            dc.text((px, py), txt, font=f, fill=tuple(col) + (alpha,))
+
+        jx = 0.0
+        if jitter:
+            rj = random.Random(i * 7919 + 13)
+            jx = rj.uniform(-1, 1) * jitter
         img.paste(capa, (int((W - capa.width) / 2 + jx),
                          int(y - capa.height / 2)), capa)
 
