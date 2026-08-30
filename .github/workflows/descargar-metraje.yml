@@ -35,6 +35,13 @@ jobs:
         with:
           python-version: "3.11"
 
+      # El modo video recorta y reencuadra cada clip con ffmpeg. Antes
+      # este workflow solo bajaba fotos y no lo necesitaba.
+      - name: Instalar ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+
       - name: Bajar metraje
         env:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
