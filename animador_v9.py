@@ -118,6 +118,25 @@ except ImportError:
 
 W, H = 1080, 1920
 
+# §1. ZONA SEGURA. TikTok y Shorts dibujan su propia interfaz encima
+# del video: arriba el buscador y la pestaña "Siguiendo/Para vos", y
+# abajo el usuario, la descripcion, los hashtags y la barra de sonido.
+# Un texto que cae ahi queda tapado en el telefono aunque en el archivo
+# se vea perfecto.
+#
+# Las fracciones son de la altura total. La banda de abajo es la mas
+# grande porque es donde mas interfaz hay.
+SEGURA_ARRIBA = 0.08
+SEGURA_ABAJO = 0.20
+
+
+def zona_segura(y, alto=0.0):
+    """Corrige una posicion vertical para que el bloque quede dentro de
+    la zona segura. Devuelve la 'y' ya movida."""
+    tope = H * SEGURA_ARRIBA
+    piso = H * (1.0 - SEGURA_ABAJO) - alto
+    return max(tope, min(y, max(tope, piso)))
+
 
 def eo_cubic(t): return 1 - pow(1 - t, 3)
 def eo_expo(t): return 1 if t >= 1 else 1 - pow(2, -10 * t)
@@ -2862,7 +2881,7 @@ def f_prueba(img, d, seg, t, pal):
     etiqueta = "FUENTE" if fuente else "SIN FUENTE"
     cuerpo = fuente or "este dato va sin respaldo"
     col_lab = acc if fuente else (206, 92, 78)
-    yf = H * 0.845
+    yf = zona_segura(H * 0.845, H * 0.10)
     semi = 300 * ef
     d.rectangle([W / 2 - semi, yf, W / 2 + semi, yf + 2], fill=(70, 70, 82))
 
@@ -3720,7 +3739,10 @@ def _g_fuente(img, d, seg, pal, t):
     txt = fuente or "sin fuente declarada"
     col = (168, 168, 180) if fuente else (206, 92, 78)
     f, lns = auto_tam(d, txt, W - 200, 120, 34, ligera=True)
-    y = H * 0.885
+    # zona_segura: en H*0.885 la fuente caia bajo la interfaz de TikTok
+    # y no se leia en el telefono. Es justo el elemento que sostiene la
+    # cifra: no puede quedar tapado.
+    y = zona_segura(H * 0.885, len(lns) * (f.size + 8))
     for ln in lns:
         wl = d.textbbox((0, 0), ln, font=f)[2]
         capa = Image.new("RGBA", (W, f.size + 22), (0, 0, 0, 0))
@@ -3753,7 +3775,9 @@ def f_grafico(img, d, seg, t, pal):
 
     # Cada barra entra en su turno; la ultima queda con tiempo de leerse.
     reparto = 0.62 / n
-    alto_zona = H * 0.86 - y
+    # El piso de los datos sube al limite de la zona segura: antes la
+    # ultima barra podia caer bajo la interfaz.
+    alto_zona = H * (1.0 - SEGURA_ABAJO) - H * 0.055 - y
     alto_fila = min(H * 0.15, alto_zona / n)
     # El bloque de datos se centra en el espacio que queda bajo el
     # titulo. Sin esto quedaba arriba y el 40% de abajo vacio.
