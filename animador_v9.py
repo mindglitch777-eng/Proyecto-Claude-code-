@@ -3813,8 +3813,22 @@ def construir_audio(cfg, segs, dur_total, tmp, voces=None, marcas=None):
     mix = "".join(etiquetas) + (
         f"amix=inputs={len(etiquetas)}:duration=longest:normalize=0"
         + silencios +
-        f",apad,alimiter=limit=0.95,"
-        f"loudnorm=I=-14:TP=-1.5:LRA=4,"
+        f",apad,"
+        # Compresor ANTES de normalizar. Medido: con voz real la mezcla
+        # daba 12.9 LU de rango dinamico contra los 1.5 a 5.7 de la
+        # referencia. Ese rango de mas es la frase floja que en el
+        # celular, con ruido alrededor, directamente no se escucha.
+        f"acompressor=threshold=-20dB:ratio=4:attack=5:release=150:makeup=2,"
+        f"loudnorm=I=-14:TP=-2:LRA=4,"
+        # El limitador mira el pico de MUESTRA. Entre dos muestras la
+        # onda real sube mas alto, y el AAC la reconstruye ahi arriba:
+        # por eso limitar a 0.95 sobre 44.1k daba +1.1 dBTP en el
+        # archivo final, y pedirle TP=-2 a loudnorm en una sola pasada
+        # tampoco alcanzo (+0.9). La solucion estandar es limitar a
+        # cuatro veces la frecuencia, donde esos picos SI son muestras,
+        # y recien despues volver a 44.1k.
+        f"aresample=176400,"
+        f"alimiter=limit=0.85,"
         f"aresample=44100[o]")
     cmd = ["ffmpeg", "-y", "-loglevel", "error"] + entradas + [
         "-filter_complex", ";".join(filtros + [mix]),
@@ -3991,7 +4005,13 @@ def generar(path):
     cmd = ["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(fps),
            "-i", str(tmp / "f%06d.png")]
     if audio:
-        cmd += ["-i", str(audio), "-c:a", "aac", "-shortest"]
+        # copy y no aac: construir_audio() ya entrego un AAC listo, con
+        # su compresion, su normalizacion y su limitador. Volver a
+        # codificarlo aca era una SEGUNDA pasada de AAC sobre el mismo
+        # material: pierde calidad y ademas cada pasada reconstruye los
+        # picos un poco mas arriba, que es de donde salia el clipping
+        # del archivo final aunque la mezcla estuviera bajo el techo.
+        cmd += ["-i", str(audio), "-c:a", "copy", "-shortest"]
     cmd += ["-c:v", "libx264", "-pix_fmt", "yuv420p", "-preset", "veryfast",
             "-crf", "20", salida]
     r = subprocess.run(cmd, capture_output=True, text=True)

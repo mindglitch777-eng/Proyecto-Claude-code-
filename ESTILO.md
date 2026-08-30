@@ -39,9 +39,27 @@ También: **los videos duran 38 a 79 segundos**, no 20. La regla de
 | 5 | −13,4 LUFS | −2,6 dBTP | 1,5 LU |
 
 Narración continua, muy comprimida. Un LRA de 1,5 a 5,7 es la voz
-"pegada al micrófono" que no baja nunca. Nuestra mezcla terminaba en
-`alimiter` sin normalizar; ahora cierra en
-`loudnorm=I=-14:TP=-1.5:LRA=4`.
+"pegada al micrófono" que no baja nunca.
+
+**Lo que encontré arreglando esto:** el audio se codificaba a AAC
+**dos veces** — `construir_audio()` entregaba un AAC ya listo y el
+armado final lo volvía a codificar. Además de perder calidad, cada
+pasada reconstruye los picos un poco más arriba, y de ahí salía el
+clipping del archivo final aunque la mezcla estuviera bajo el techo.
+
+Cadena nueva: compresor → `loudnorm=I=-14:TP=-2:LRA=4` → limitado a
+4× la frecuencia (donde los picos entre muestras SÍ son muestras) →
+vuelta a 44,1 kHz → y `-c:a copy` en el armado final.
+
+| | antes | ahora | referencia |
+|---|---|---|---|
+| con voz | −15,1 LUFS, **+0,7 dBTP** | **−13,0 LUFS, −0,5 dBTP** | −13,2 a −13,9, −2,5 |
+| solo SFX | −15,1 LUFS | **−14,7 LUFS, −0,5 dBTP** | — |
+
+Queda una diferencia real: nuestro rango dinámico con voz es de 10,2 LU
+contra 1,5–5,7 de la referencia. Eso ya no es la cadena, es el material
+— los MP3 de ElevenLabs vienen con esa dinámica. Comprimir más es una
+decisión de gusto y la dejo para hablarla.
 
 ---
 
