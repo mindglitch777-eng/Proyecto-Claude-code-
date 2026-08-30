@@ -1,0 +1,225 @@
+{
+  "tema": "Taller de Activos - el mercado (camino C)",
+  "nota": "Camino C: arranca con un dato verificado del mercado, baja a un oficio concreto, y cierra en metodo. El que es barbero compra la guia de barberia; el que quiere hacer plata ve un metodo repetible y compra el Taller. Un video, dos compradores. Cifras de Hotmart con fuente en FUENTES.md.",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": false,
+  "paleta": {
+    "fondo": [10, 10, 12],
+    "texto": [246, 246, 244],
+    "destacado": [255, 78, 36],
+    "apagado": [122, 122, 128]
+  },
+  "segmentos": [
+    {
+      "formato": "pleno",
+      "narracion": "La mitad de lo que venden los latinos",
+      "duracion": 1.9,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "sfx_vol": 0.72,
+      "flash": true,
+      "imagen": "assets/metraje/dinero/dinero-00.jpg",
+      "velo": 0.46
+    },
+    {
+      "formato": "pleno",
+      "narracion": "no se vende acá",
+      "duracion": 1.4,
+      "transicion": "corte_duro",
+      "sfx": "whoosh",
+      "sfx_vol": 0.60,
+      "flash": true,
+      "imagen": "assets/metraje/dinero/dinero-01.jpg",
+      "velo": 0.44
+    },
+    {
+      "formato": "tarjeta",
+      "texto": "Se cobra afuera",
+      "narracion": "se cobra en *dólares*",
+      "duracion": 1.7,
+      "transicion": "corte_duro",
+      "sfx": "impacto",
+      "sfx_vol": 0.72,
+      "flash": 0.09,
+      "imagen": "assets/metraje/dinero/dinero-02.jpg"
+    },
+    {
+      "formato": "lista",
+      "titulo": "Hotmart, LatAm hispana",
+      "items": [
+        "8,7 millones de compradores",
+        "17 millones de ventas",
+        "más de la mitad, al exterior"
+      ],
+      "narracion": "Ocho coma siete millones de compradores. Diecisiete millones de ventas. Más de la mitad, al exterior.",
+      "duracion": 4.0,
+      "transicion": "corte_duro",
+      "sfx": "tick",
+      "sfx_vol": 0.55,
+      "flash": 0.07,
+      "imagen": "assets/metraje/dinero/dinero-03.jpg",
+      "velo": 0.68
+    },
+    {
+      "formato": "pleno",
+      "narracion": "Y no lo venden gurús",
+      "duracion": 1.6,
+      "transicion": "corte_duro",
+      "sfx": "riser",
+      "sfx_vol": 0.62,
+      "flash": true,
+      "imagen": "assets/metraje/dinero/dinero-04.jpg",
+      "velo": 0.48
+    },
+    {
+      "formato": "ruleta",
+      "fijo": "Lo vende gente que sabe de",
+      "palabras": ["barberías", "uñas", "perros", "gimnasios"],
+      "narracion": "Lo vende gente que sabe de barberías, de uñas, de perros, de gimnasios.",
+      "duracion": 3.0,
+      "transicion": "corte_duro",
+      "sfx": "tick",
+      "sfx_vol": 0.55,
+      "flash": 0.08,
+      "imagen": "assets/metraje/barberia/barberia-02.jpg",
+      "velo": 0.56
+    },
+    {
+      "formato": "pleno",
+      "narracion": "Saben un oficio. Nada más.",
+      "duracion": 1.8,
+      "transicion": "corte_duro",
+      "sfx": "impacto",
+      "sfx_vol": 0.72,
+      "flash": 0.14,
+      "imagen": "assets/metraje/unias/unias-01.jpg",
+      "velo": 0.46
+    },
+    {
+      "formato": "comparacion",
+      "izq_titulo": "Vos",
+      "der_titulo": "Ellos",
+      "izq": ["vendés tu tiempo", "cobrás por hora", "si parás, no entra"],
+      "der": ["vendés lo que sabés", "cobrás por copia", "entra igual"],
+      "remate": "mismo oficio",
+      "narracion": "Vos vendés tu tiempo. Ellos venden lo que saben. Mismo oficio.",
+      "duracion": 5.0,
+      "transicion": "corte_duro",
+      "sfx": "impacto",
+      "sfx_vol": 0.72,
+      "flash": true
+    },
+    {
+      "formato": "pleno",
+      "narracion": "Vos también sabés algo que otro pagaría por saber",
+      "duracion": 2.4,
+      "transicion": "corte_duro",
+      "sfx": "whoosh",
+      "sfx_vol": 0.60,
+      "flash": true,
+      "imagen": "assets/metraje/gimnasio/gimnasio-02.jpg",
+      "velo": 0.46
+    },
+    {
+      "formato": "lista",
+      "titulo": "Lo escribís una vez",
+      "items": [
+        "no filmás",
+        "no atendés a nadie",
+        "se vende mientras dormís"
+      ],
+      "narracion": "Lo escribís una vez. No filmás. No atendés a nadie. Se vende mientras dormís.",
+      "duracion": 3.6,
+      "transicion": "corte_duro",
+      "sfx": "tick",
+      "sfx_vol": 0.55,
+      "flash": 0.07,
+      "imagen": "assets/metraje/dinero/dinero-05.jpg",
+      "velo": 0.66
+    },
+    {
+      "formato": "pleno",
+      "narracion": "El problema no es el mercado",
+      "duracion": 1.8,
+      "transicion": "corte_duro",
+      "sfx": "riser",
+      "sfx_vol": 0.58,
+      "flash": true,
+      "imagen": "assets/metraje/dinero/dinero-06.jpg",
+      "velo": 0.44
+    },
+    {
+      "formato": "tarjeta",
+      "texto": "Qué vender",
+      "narracion": "es que no sabés *qué* vender",
+      "duracion": 1.9,
+      "transicion": "corte_duro",
+      "sfx": "impacto",
+      "sfx_vol": 0.72,
+      "flash": 0.12,
+      "imagen": "assets/metraje/dinero/dinero-07.jpg"
+    },
+    {
+      "formato": "lista",
+      "titulo": "Eso es el Taller",
+      "items": [
+        "qué oficio no está explotado",
+        "cómo armar la guía en una semana",
+        "cómo subirla y cobrar"
+      ],
+      "narracion": "Qué oficio no está explotado. Cómo armar la guía en una semana. Cómo subirla y cobrar.",
+      "duracion": 4.0,
+      "transicion": "corte_duro",
+      "sfx": "tick",
+      "sfx_vol": 0.55,
+      "flash": 0.07,
+      "imagen": "assets/metraje/veterinaria/veterinaria-02.jpg",
+      "velo": 0.68
+    },
+    {
+      "formato": "pleno",
+      "narracion": "Empezá por el oficio que ya conocés",
+      "duracion": 2.1,
+      "transicion": "corte_duro",
+      "sfx": "impacto",
+      "sfx_vol": 0.72,
+      "flash": true,
+      "imagen": "assets/metraje/barberia/barberia-08.jpg",
+      "velo": 0.46
+    },
+    {
+      "formato": "cta",
+      "texto": "Seguime.",
+      "mayus": true,
+      "narracion": "Seguime. Mañana te muestro cuál nadie está vendiendo.",
+      "duracion": 2.4,
+      "sfx": "impacto",
+      "sfx_vol": 0.72,
+      "transicion": "corte_duro",
+      "cta_marca": "Taller de Activos",
+      "cta_sub": "Problemas reales. Productos que se mueven.",
+      "cta_handle": "@tallerdeactivos"
+    }
+  ],
+  "elevenlabs": {
+    "instrucciones": "Voz masculina grave, empresario joven, seria y firme. Ritmo continuo, pausas cortas. Bajar el tono en 'Saben un oficio. Nada más.' Indices narrados [0..14].",
+    "lineas": [
+      "La mitad de lo que venden los latinos",
+      "no se vende acá",
+      "se cobra en dólares",
+      "Ocho coma siete millones de compradores. Diecisiete millones de ventas. Más de la mitad, al exterior.",
+      "Y no lo venden gurús",
+      "Lo vende gente que sabe de barberías, de uñas, de perros, de gimnasios.",
+      "Saben un oficio. Nada más.",
+      "Vos vendés tu tiempo. Ellos venden lo que saben. Mismo oficio.",
+      "Vos también sabés algo que otro pagaría por saber",
+      "Lo escribís una vez. No filmás. No atendés a nadie. Se vende mientras dormís.",
+      "El problema no es el mercado",
+      "es que no sabés qué vender",
+      "Qué oficio no está explotado. Cómo armar la guía en una semana. Cómo subirla y cobrar.",
+      "Empezá por el oficio que ya conocés",
+      "Seguime. Mañana te muestro cuál nadie está vendiendo."
+    ]
+  }
+}
