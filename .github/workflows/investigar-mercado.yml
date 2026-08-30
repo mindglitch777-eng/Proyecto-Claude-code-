@@ -43,8 +43,8 @@ jobs:
           if [ -n "$(git status --porcelain ANALISIS_MERCADO.md)" ]; then
             git add ANALISIS_MERCADO.md
             git commit -m "Analisis de mercado: demanda y competencia real"
-            git pull --rebase --autostash origin main || true
-            git push
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
           else
             echo "Sin cambios."
           fi

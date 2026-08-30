@@ -61,8 +61,8 @@ jobs:
           if [ -n "$(git status --porcelain INVESTIGACION_VOZ.md)" ]; then
             git add INVESTIGACION_VOZ.md
             git commit -m "Investigacion + benchmark real de motores de voz"
-            git pull --rebase --autostash origin main || true
-            git push
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
           else
             echo "Sin cambios."
           fi

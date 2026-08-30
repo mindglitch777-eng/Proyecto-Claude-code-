@@ -68,8 +68,8 @@ jobs:
           if [ -n "$(git status --porcelain assets/)" ]; then
             git add assets/
             git commit -m "Metraje de banco: ${{ inputs.nicho }}"
-            git pull --rebase --autostash origin main || true
-            git push
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
           else
             echo "Sin cambios."
           fi

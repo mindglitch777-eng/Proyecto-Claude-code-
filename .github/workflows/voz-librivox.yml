@@ -62,8 +62,8 @@ jobs:
           if [ -n "$(git status --porcelain assets/voz_referencia muestras_voz)" ]; then
             git add assets/voz_referencia muestras_voz
             git commit -m "Candidatos de voz masculina desde LibriVox + clon con Chatterbox"
-            git pull --rebase --autostash origin main || true
-            git push
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
           else
             echo "Sin cambios."
           fi

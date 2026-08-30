@@ -70,8 +70,8 @@ jobs:
           if [ -n "$(git status --porcelain muestras_voz)" ]; then
             git add muestras_voz
             git commit -m "Muestras: comparacion de motores de voz"
-            git pull --rebase --autostash origin main || true
-            git push
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
           else
             echo "Sin cambios."
           fi

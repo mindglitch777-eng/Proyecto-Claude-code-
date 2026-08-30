@@ -123,7 +123,7 @@ jobs:
           git diff --cached --quiet && { echo "Sin cambios."; exit 0; }
           git commit -m "Video: $STEM"
           for intento in 1 2 3 4 5; do
-            git pull --rebase --autostash origin main && git push && exit 0
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
             echo "Push fallido (intento $intento), reintento..."
             sleep $((intento * 3))
           done

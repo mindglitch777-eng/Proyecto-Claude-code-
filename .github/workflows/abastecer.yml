@@ -45,8 +45,8 @@ jobs:
           if [ -n "$(git status --porcelain assets/biblioteca guiones)" ]; then
             git add assets/biblioteca guiones
             git commit -m "Abastecer guiones: imagenes que pide cada plano"
-            git pull --rebase --autostash origin main || true
-            git push
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
           else
             echo "Sin cambios."
           fi
