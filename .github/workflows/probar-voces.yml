@@ -1,0 +1,57 @@
+name: probar-voces
+
+# Rinde la misma frase con las tres voces masculinas de Piper, cruda y
+# realzada, y commitea los mp3 para escucharlos desde el celular.
+#
+# Corre aca y no en la sesion de Claude Code por dos motivos: el
+# entorno de Claude tiene bloqueado huggingface.co (donde viven los
+# modelos) y ademas cada modelo pesa ~60 MB, que no tiene sentido
+# bajar contra el presupuesto de la sesion.
+#
+# Los .onnx NO se commitean (el proyecto lo prohibe): se bajan en cada
+# corrida y se quedan en el runner, que se destruye al terminar.
+
+on:
+  workflow_dispatch:
+    inputs:
+      frase:
+        description: "Frase a sintetizar"
+        required: false
+        default: "El barbero que más gana de tu barrio no corta mejor que vos. Cobra distinto."
+
+permissions:
+  contents: write
+
+jobs:
+  voces:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar piper y ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          pip install --quiet piper-tts
+
+      - name: Rendir las muestras
+        env:
+          FRASE: ${{ inputs.frase }}
+        run: python3 voz_piper.py probar "$FRASE"
+
+      - name: Guardar en el repo
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain muestras_voz)" ]; then
+            git add muestras_voz
+            git commit -m "Muestras de voz masculina (Piper)"
+            git pull --rebase --autostash origin main || true
+            git push
+          else
+            echo "Sin cambios."
+          fi
