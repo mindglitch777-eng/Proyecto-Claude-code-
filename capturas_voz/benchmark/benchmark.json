@@ -1,0 +1,25 @@
+{
+ "guion": "Si cobrás por hora, tenés un problema y todavía no lo viste. La inteligencia artificial no te bajó el precio. Te bajó las horas. Lo que antes te llevaba una tarde, ahora sale en veinte minutos. Cobrás por hora: acabás de cobrar cuatro veces menos por el mismo trabajo. Al cliente no le importa cuánto tardaste. Le importa que esté resuelto. Dejá de vender tiempo. Vendé el problema resuelto.",
+ "palabras": 69,
+ "maquina": "GitHub Actions ubuntu-latest, CPU",
+ "resultados": [
+  {
+   "motor": "NeuTTS Nano",
+   "ok": false,
+   "error": "RuntimeError: no se pudo instalar neuttsair: ERROR: Could not find a version that satisfies the requirement neuttsair (from versions: none)\nERROR: No matching distribution found for neuttsair\n",
+   "detalle": "Traceback (most recent call last):\n  File \"/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/herramientas/benchmark_tts.py\", line 162, in main\n    wav, tardo = fn()\n                 ^^^^\n  File \"/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/herramientas/benchmark_tts.py\", line 136, in <lambda>\n    (\"NeuTTS Nano\", lambda: motor_neutts(\"nano\")),\n                            ^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/herramientas/benchmark_tts.py\", line 93, in motor_neutts\n    raise RuntimeError(f\"no se pudo instalar neuttsair: {err}\")\nRuntimeError: no se pudo instalar neuttsair: ERROR: Could not find a version that satisfies the requirement neuttsair (from versions: none)\nERROR: No matching distribution found for neuttsair\n\n"
+  },
+  {
+   "motor": "NeuTTS Air",
+   "ok": false,
+   "error": "RuntimeError: no se pudo instalar neuttsair: ERROR: Could not find a version that satisfies the requirement neuttsair (from versions: none)\nERROR: No matching distribution found for neuttsair\n",
+   "detalle": "Traceback (most recent call last):\n  File \"/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/herramientas/benchmark_tts.py\", line 162, in main\n    wav, tardo = fn()\n                 ^^^^\n  File \"/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/herramientas/benchmark_tts.py\", line 137, in <lambda>\n    (\"NeuTTS Air\", lambda: motor_neutts(\"air\")),\n                           ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/herramientas/benchmark_tts.py\", line 93, in motor_neutts\n    raise RuntimeError(f\"no se pudo instalar neuttsair: {err}\")\nRuntimeError: no se pudo instalar neuttsair: ERROR: Could not find a version that satisfies the requirement neuttsair (from versions: none)\nERROR: No matching distribution found for neuttsair\n\n"
+  },
+  {
+   "motor": "Qwen3-TTS 0.6B",
+   "ok": false,
+   "error": "OSError: Qwen/Qwen3-TTS-0.6B is not a local folder and is not a valid model identifier listed on 'https://huggingface.co/models'\nIf this is a private repository, make sure to pass a token having permission to this repo either by logging in with `hf auth login` or by passing `token=<your_token>`",
+   "detalle": "rue)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/transformers/models/auto/processing_auto.py\", line 227, in from_pretrained\n    processor_config_file = cached_file(pretrained_model_name_or_path, PROCESSOR_NAME, **cached_file_kwargs)\n                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/transformers/utils/hub.py\", line 294, in cached_file\n    file = cached_files(path_or_repo_id=path_or_repo_id, filenames=[filename], **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/transformers/utils/hub.py\", line 470, in cached_files\n    raise OSError(\nOSError: Qwen/Qwen3-TTS-0.6B is not a local folder and is not a valid model identifier listed on 'https://huggingface.co/models'\nIf this is a private repository, make sure to pass a token having permission to this repo either by logging in with `hf auth login` or by passing `token=<your_token>`\n"
+  }
+ ]
+}
