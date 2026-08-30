@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Arma remotion-spike/public/ con las fuentes, fotos y metraje que la
+# pieza pide. No se versiona: se regenera aca y en el runner.
+set -euo pipefail
+raiz="$(cd "$(dirname "$0")/.." && pwd)"
+dst="$raiz/remotion-spike/public"
+rm -rf "$dst"; mkdir -p "$dst/fuentes" "$dst/fotos" "$dst/video"
+
+cp "$raiz/assets/fuentes/PlayfairDisplay-Variable.ttf" "$dst/fuentes/"
+cp "$raiz/assets/fuentes/PlayfairDisplay-Italic.ttf"   "$dst/fuentes/"
+cp "$raiz/assets/fuentes/Archivo-Variable.ttf"         "$dst/fuentes/"
+
+# Fotos: las mismas que ya usa el guion en el motor actual.
+for d in "$raiz"/assets/biblioteca/*/; do
+  n="$(basename "$d")"
+  [ -f "$d/00.jpg" ] && cp "$d/00.jpg" "$dst/fotos/$n.jpg"
+done
+
+# Metraje en movimiento: lo que haya. La pieza elige por nombre y si
+# falta un clip cae a la foto equivalente.
+for f in "$raiz"/assets/metraje_video/*/*.mp4; do
+  [ -e "$f" ] || continue
+  cp "$f" "$dst/video/$(basename "$f")"
+done
+
+echo "public/ armado:"
+echo "  fuentes $(ls "$dst/fuentes" | wc -l)  fotos $(ls "$dst/fotos" | wc -l)  video $(ls "$dst/video" | wc -l)"

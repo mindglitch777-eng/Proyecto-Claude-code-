@@ -1,0 +1,20 @@
+{
+  "name": "remotion-spike",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Prueba aislada: el mismo guion que animador_v9.py, renderizado con Remotion. No forma parte del pipeline de produccion.",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.518",
+    "remotion": "4.0.518",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.0.0",
+    "typescript": "5.7.3"
+  }
+}
