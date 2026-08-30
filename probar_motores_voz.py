@@ -59,6 +59,46 @@ def _a_mp3(wav, nombre):
     return hechos
 
 
+def probar_chatterbox(texto):
+    """Chatterbox Multilingual de Resemble AI (MIT).
+
+    Es el candidato mas prometedor: en las evaluaciones lado a lado de
+    Resemble le gana a ElevenLabs por preferencia, y es el primer
+    modelo abierto con control de exageracion emocional -- util para
+    que el hook suene mas intenso que el dato.
+
+    Es de ~0.5B parametros y aca corre en CPU, asi que va a tardar. Se
+    mide y se informa: si tarda mucho igual sirve, porque en produccion
+    cada video narra en su propia maquina y van todas en paralelo.
+
+    'exaggeration' controla la intensidad; se prueban dos valores para
+    escuchar la diferencia.
+    """
+    import time
+    import torchaudio as ta
+    from chatterbox.mtl_tts import ChatterboxMultilingualTTS
+
+    hechos = []
+    t0 = time.time()
+    modelo = ChatterboxMultilingualTTS.from_pretrained(device="cpu")
+    print(f"  [chatterbox] modelo cargado en {time.time()-t0:.0f}s")
+    for etiqueta, exa in (("seco", 0.4), ("intenso", 0.8)):
+        try:
+            t1 = time.time()
+            wav = modelo.generate(texto, language_id="es", exaggeration=exa)
+            crudo = DESTINO / f"tmp-chatterbox-{etiqueta}.wav"
+            ta.save(str(crudo), wav, modelo.sr)
+            dur = ta.info(str(crudo)).num_frames / modelo.sr
+            print(f"  [chatterbox/{etiqueta}] {time.time()-t1:.0f}s "
+                  f"para {dur:.1f}s de audio "
+                  f"({(time.time()-t1)/max(dur,0.1):.1f}x tiempo real)")
+            hechos += _a_mp3(crudo, f"chatterbox-{etiqueta}")
+            crudo.unlink(missing_ok=True)
+        except Exception as e:
+            print(f"  [chatterbox/{etiqueta}] fallo: {e}")
+    return hechos
+
+
 def probar_kokoro(texto):
     """Kokoro-82M. lang_code 'e' es español; em_alex es la voz
     masculina. Devuelve 24 kHz."""
@@ -146,7 +186,8 @@ def main():
     texto = sys.argv[1] if len(sys.argv) > 1 else FRASE
     DESTINO.mkdir(exist_ok=True)
     todo = []
-    for nombre, fn in (("kokoro", probar_kokoro),
+    for nombre, fn in (("chatterbox", probar_chatterbox),
+                       ("kokoro", probar_kokoro),
                        ("pocket", probar_pocket),
                        ("piper", probar_piper)):
         print(f"\n=== {nombre} ===")
@@ -160,7 +201,7 @@ def main():
         "Frase:\n\n> " + texto + "\n\n## Archivos\n\n"
         + "\n".join(f"- `{h}`" for h in sorted(todo))
         + "\n\n## Licencias\n\n"
-        "- kokoro — Apache-2.0, uso comercial libre\n"
+        "- chatterbox (Resemble AI) — MIT, uso comercial libre, clona voz\n- kokoro — Apache-2.0, uso comercial libre\n"
         "- pocket-tts (Kyutai) — MIT, uso comercial libre, ademas clona voz\n"
         "- piper — MIT, uso comercial libre\n",
         encoding="utf-8")

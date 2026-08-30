@@ -20,6 +20,7 @@ permissions:
 jobs:
   motores:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
 
@@ -36,6 +37,10 @@ jobs:
           pip install --quiet soundfile numpy
           # Cada uno por separado y sin cortar la corrida: si un motor
           # no instala, el banco igual prueba los otros dos.
+          # torch en version CPU: la normal se trae ~2.5 GB de CUDA que
+          # el runner no puede usar
+          pip install --quiet torch torchaudio --index-url https://download.pytorch.org/whl/cpu || echo "AVISO: torch no instalo"
+          pip install --quiet chatterbox-tts || echo "AVISO: chatterbox no instalo"
           pip install --quiet "kokoro>=0.9" || echo "AVISO: kokoro no instalo"
           pip install --quiet pocket-tts    || echo "AVISO: pocket-tts no instalo"
           pip install --quiet piper-tts     || echo "AVISO: piper-tts no instalo"
