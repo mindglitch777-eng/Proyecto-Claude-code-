@@ -13,6 +13,11 @@ name: remotion-diez
 # tocando remotion-spike/RENDER y empujando. Asi no renderiza en cada
 # push mientras se escribe codigo.
 
+# El job commitea su resultado: sin esto el token es de solo
+# lectura y el push muere con 403 despues de hacer todo el trabajo.
+permissions:
+  contents: write
+
 on:
   workflow_dispatch:
     inputs:
