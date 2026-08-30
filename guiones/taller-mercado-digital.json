@@ -5,10 +5,26 @@
   "camara": 1.0,
   "loop": false,
   "paleta": {
-    "fondo": [10, 10, 12],
-    "texto": [246, 246, 244],
-    "destacado": [255, 78, 36],
-    "apagado": [122, 122, 128]
+    "fondo": [
+      10,
+      10,
+      12
+    ],
+    "texto": [
+      246,
+      246,
+      244
+    ],
+    "destacado": [
+      255,
+      78,
+      36
+    ],
+    "apagado": [
+      122,
+      122,
+      128
+    ]
   },
   "segmentos": [
     {
@@ -17,9 +33,11 @@
       "necesita": "us dollar bills cash close up",
       "duracion": 1.9,
       "hook": "impacto",
-      "sfx": "impacto", "sfx_vol": 0.72,
+      "sfx": "impacto",
+      "sfx_vol": 0.72,
       "flash": true,
-      "velo": 0.46
+      "velo": 0.46,
+      "imagen": "assets/biblioteca/us-dollar-bills-cash-close-up/00.jpg"
     },
     {
       "formato": "pleno",
@@ -27,9 +45,16 @@
       "necesita": "closed shop metal shutter street",
       "duracion": 1.4,
       "transicion": "corte_duro",
-      "sfx": "whoosh", "sfx_vol": 0.60,
-      "flash": 0.09, "flash_color": [10, 10, 12],
-      "velo": 0.44
+      "sfx": "whoosh",
+      "sfx_vol": 0.6,
+      "flash": 0.09,
+      "flash_color": [
+        10,
+        10,
+        12
+      ],
+      "velo": 0.44,
+      "imagen": "assets/biblioteca/closed-shop-metal-shutter-street/00.jpg"
     },
     {
       "formato": "tarjeta",
@@ -38,20 +63,28 @@
       "necesita": "new york city street skyline",
       "duracion": 1.7,
       "transicion": "corte_duro",
-      "sfx": "impacto", "sfx_vol": 0.72,
-      "flash": 0.09
+      "sfx": "impacto",
+      "sfx_vol": 0.72,
+      "flash": 0.09,
+      "imagen": "assets/biblioteca/new-york-city-street-skyline/00.jpg"
     },
     {
       "formato": "lista",
       "titulo": "Hotmart, LatAm hispana",
-      "items": ["8,7 millones de compradores", "17 millones de ventas", "más de la mitad, al exterior"],
+      "items": [
+        "8,7 millones de compradores",
+        "17 millones de ventas",
+        "más de la mitad, al exterior"
+      ],
       "narracion": "Ocho coma siete millones de compradores. Diecisiete millones de ventas. Más de la mitad, al exterior.",
       "necesita": "hands using phone mobile payment",
       "duracion": 4.0,
       "transicion": "corte_duro",
-      "sfx": "tick", "sfx_vol": 0.55,
+      "sfx": "tick",
+      "sfx_vol": 0.55,
       "flash": 0.07,
-      "velo": 0.68
+      "velo": 0.68,
+      "imagen": "assets/biblioteca/hands-using-phone-mobile-payment/00.jpg"
     },
     {
       "formato": "pleno",
@@ -59,21 +92,34 @@
       "necesita": "tired man sitting alone night window",
       "duracion": 1.7,
       "transicion": "corte_duro",
-      "sfx": "riser", "sfx_vol": 0.62,
-      "flash": true, "flash_color": [255, 78, 36],
-      "velo": 0.50
+      "sfx": "riser",
+      "sfx_vol": 0.62,
+      "flash": true,
+      "flash_color": [
+        255,
+        78,
+        36
+      ],
+      "velo": 0.5,
+      "imagen": "assets/biblioteca/tired-man-sitting-alone-night-window/00.jpg"
     },
     {
       "formato": "lista",
       "titulo": "Ya probaste",
-      "items": ["el sueldo que no alcanza", "el segundo laburo", "vender cosas que no usás"],
+      "items": [
+        "el sueldo que no alcanza",
+        "el segundo laburo",
+        "vender cosas que no usás"
+      ],
       "narracion": "El sueldo que no alcanza. El segundo laburo. Vender cosas que no usás.",
       "necesita": "exhausted worker night shift city",
       "duracion": 3.6,
       "transicion": "corte_duro",
-      "sfx": "tick", "sfx_vol": 0.55,
+      "sfx": "tick",
+      "sfx_vol": 0.55,
       "flash": 0.07,
-      "velo": 0.70
+      "velo": 0.7,
+      "imagen": "assets/biblioteca/exhausted-worker-night-shift-city/00.jpg"
     },
     {
       "formato": "tarjeta",
@@ -82,8 +128,10 @@
       "necesita": "empty wallet hands close up",
       "duracion": 1.8,
       "transicion": "corte_duro",
-      "sfx": "impacto", "sfx_vol": 0.75,
-      "flash": 0.14
+      "sfx": "impacto",
+      "sfx_vol": 0.75,
+      "flash": 0.14,
+      "imagen": "assets/biblioteca/empty-wallet-hands-close-up/00.jpg"
     },
     {
       "formato": "pleno",
@@ -91,9 +139,11 @@
       "necesita": "serious man portrait workshop light",
       "duracion": 1.8,
       "transicion": "corte_duro",
-      "sfx": "whoosh", "sfx_vol": 0.60,
+      "sfx": "whoosh",
+      "sfx_vol": 0.6,
       "flash": true,
-      "velo": 0.42
+      "velo": 0.42,
+      "imagen": "assets/biblioteca/serious-man-portrait-workshop-light/00.jpg"
     },
     {
       "formato": "pleno",
@@ -101,34 +151,57 @@
       "necesita": "old clock hands time close up",
       "duracion": 2.4,
       "transicion": "corte_duro",
-      "sfx": "impacto", "sfx_vol": 0.75,
-      "flash": 0.16, "flash_color": [255, 78, 36],
-      "velo": 0.48
+      "sfx": "impacto",
+      "sfx_vol": 0.75,
+      "flash": 0.16,
+      "flash_color": [
+        255,
+        78,
+        36
+      ],
+      "velo": 0.48,
+      "imagen": "assets/biblioteca/old-clock-hands-time-close-up/00.jpg"
     },
     {
       "formato": "comparacion",
       "izq_titulo": "Tu tiempo",
       "der_titulo": "Lo que sabés",
-      "izq": ["se cobra una vez", "si parás, no entra", "se termina"],
-      "der": ["se cobra por copia", "entra igual", "no se gasta"],
+      "izq": [
+        "se cobra una vez",
+        "si parás, no entra",
+        "se termina"
+      ],
+      "der": [
+        "se cobra por copia",
+        "entra igual",
+        "no se gasta"
+      ],
       "remate": "mismo oficio",
       "narracion": "Tu tiempo se cobra una vez. Lo que sabés se cobra por copia. Mismo oficio.",
       "duracion": 5.0,
       "transicion": "corte_duro",
-      "sfx": "impacto", "sfx_vol": 0.72,
+      "sfx": "impacto",
+      "sfx_vol": 0.72,
       "flash": true
     },
     {
       "formato": "ruleta",
       "fijo": "Y lo venden tipos que saben de",
-      "palabras": ["barberías", "uñas", "perros", "gimnasios"],
+      "palabras": [
+        "barberías",
+        "uñas",
+        "perros",
+        "gimnasios"
+      ],
       "narracion": "Y lo venden tipos que saben de barberías, de uñas, de perros, de gimnasios.",
       "necesita": "barber shop haircut man working",
       "duracion": 3.0,
       "transicion": "corte_duro",
-      "sfx": "tick", "sfx_vol": 0.55,
+      "sfx": "tick",
+      "sfx_vol": 0.55,
       "flash": 0.08,
-      "velo": 0.56
+      "velo": 0.56,
+      "imagen": "assets/biblioteca/barber-shop-haircut-man-working/00.jpg"
     },
     {
       "formato": "pleno",
@@ -136,9 +209,11 @@
       "necesita": "manicure nail salon hands working",
       "duracion": 1.7,
       "transicion": "corte_duro",
-      "sfx": "impacto", "sfx_vol": 0.72,
+      "sfx": "impacto",
+      "sfx_vol": 0.72,
       "flash": 0.14,
-      "velo": 0.46
+      "velo": 0.46,
+      "imagen": "assets/biblioteca/manicure-nail-salon-hands-working/00.jpg"
     },
     {
       "formato": "pleno",
@@ -146,33 +221,52 @@
       "necesita": "confident craftsman hands working workshop",
       "duracion": 2.5,
       "transicion": "corte_duro",
-      "sfx": "riser", "sfx_vol": 0.62,
-      "flash": true, "flash_color": [255, 78, 36],
-      "velo": 0.44
+      "sfx": "riser",
+      "sfx_vol": 0.62,
+      "flash": true,
+      "flash_color": [
+        255,
+        78,
+        36
+      ],
+      "velo": 0.44,
+      "imagen": "assets/biblioteca/confident-craftsman-hands-working-workshop/00.jpg"
     },
     {
       "formato": "lista",
       "titulo": "Lo escribís una vez",
-      "items": ["no filmás", "no atendés a nadie", "se vende mientras dormís"],
+      "items": [
+        "no filmás",
+        "no atendés a nadie",
+        "se vende mientras dormís"
+      ],
       "narracion": "Lo escribís una vez. No filmás. No atendés a nadie. Se vende mientras dormís.",
       "necesita": "laptop notebook writing desk night",
       "duracion": 3.6,
       "transicion": "corte_duro",
-      "sfx": "tick", "sfx_vol": 0.55,
+      "sfx": "tick",
+      "sfx_vol": 0.55,
       "flash": 0.07,
-      "velo": 0.66
+      "velo": 0.66,
+      "imagen": "assets/biblioteca/laptop-notebook-writing-desk-night/00.jpg"
     },
     {
       "formato": "lista",
       "titulo": "Eso es el Taller",
-      "items": ["qué oficio no está explotado", "cómo armar la guía en una semana", "cómo subirla y cobrar"],
+      "items": [
+        "qué oficio no está explotado",
+        "cómo armar la guía en una semana",
+        "cómo subirla y cobrar"
+      ],
       "narracion": "Qué oficio no está explotado. Cómo armar la guía en una semana. Cómo subirla y cobrar.",
       "necesita": "notebook plan writing desk coffee",
       "duracion": 4.0,
       "transicion": "corte_duro",
-      "sfx": "tick", "sfx_vol": 0.55,
+      "sfx": "tick",
+      "sfx_vol": 0.55,
       "flash": 0.07,
-      "velo": 0.68
+      "velo": 0.68,
+      "imagen": "assets/biblioteca/notebook-plan-writing-desk-coffee/00.jpg"
     },
     {
       "formato": "pleno",
@@ -180,9 +274,11 @@
       "necesita": "man walking sunrise city street",
       "duracion": 1.9,
       "transicion": "corte_duro",
-      "sfx": "whoosh", "sfx_vol": 0.60,
+      "sfx": "whoosh",
+      "sfx_vol": 0.6,
       "flash": true,
-      "velo": 0.42
+      "velo": 0.42,
+      "imagen": "assets/biblioteca/man-walking-sunrise-city-street/00.jpg"
     },
     {
       "formato": "pleno",
@@ -190,9 +286,16 @@
       "necesita": "sunrise light hopeful portrait man",
       "duracion": 2.4,
       "transicion": "corte_duro",
-      "sfx": "impacto", "sfx_vol": 0.75,
-      "flash": 0.16, "flash_color": [255, 255, 255],
-      "velo": 0.40
+      "sfx": "impacto",
+      "sfx_vol": 0.75,
+      "flash": 0.16,
+      "flash_color": [
+        255,
+        255,
+        255
+      ],
+      "velo": 0.4,
+      "imagen": "assets/biblioteca/sunrise-light-hopeful-portrait-man/00.jpg"
     },
     {
       "formato": "cta",
@@ -200,7 +303,8 @@
       "mayus": true,
       "narracion": "Seguime. Mañana te muestro cuál nadie está vendiendo.",
       "duracion": 2.4,
-      "sfx": "impacto", "sfx_vol": 0.72,
+      "sfx": "impacto",
+      "sfx_vol": 0.72,
       "transicion": "corte_duro",
       "cta_marca": "Taller de Activos",
       "cta_sub": "Problemas reales. Productos que se mueven.",
