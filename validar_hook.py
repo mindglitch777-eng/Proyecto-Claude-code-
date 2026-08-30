@@ -34,6 +34,12 @@ FORMATOS_QUE_CONSTRUYEN = {
     "cascada", "menu", "lista", "escalada", "conteo", "cronologia",
     "collage", "mensajes", "ranking", "pasos", "camino", "comparacion",
     "flujo", "prueba", "ruleta", "galeria", "terminal",
+    # Los tres que se agregaron despues y quedaron fuera de la lista,
+    # asi que el validador bloqueaba graficos de 5.4s como si fueran
+    # pantalla muerta: 'escena' acumula lineas de texto, 'grafico'
+    # construye barra por barra y 'silueta' mete las figuras de a una.
+    # 'parallax' NO va: se mueve, pero no aparece informacion nueva.
+    "escena", "grafico", "silueta",
 }
 MAX_SEG_HOOK = 2.5            # el hook tiene que resolverse rapido
 MAX_PALABRAS_HOOK = 14        # ~3 segundos hablados

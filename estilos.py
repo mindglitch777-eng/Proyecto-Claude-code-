@@ -395,7 +395,7 @@ FALLBACK = ("cascada", {"encuadre": "plano"})
 CONSTRUYEN = {"cascada", "menu", "lista", "escalada", "conteo", "cronologia",
               "collage", "mensajes", "ranking", "pasos", "camino",
               "comparacion", "flujo", "prueba", "ruleta", "galeria",
-              "terminal"}
+              "terminal", "escena", "grafico", "silueta"}
 TECHO_ESTATICO = 4.8
 TECHO_QUE_CONSTRUYE = 8.5
 
