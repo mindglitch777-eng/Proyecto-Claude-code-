@@ -127,6 +127,9 @@ ESTILOS = {
         "ritmo": "irregular_a", "alterna_claro": 3,
         "densidad": {"hook": "HIGH", "evidencia": "HIGH",
                      "conclusion": "LOW", "cta": "MEDIUM"},
+        "preferencias": {"relacion": "silueta", "contexto": "broll",
+                        "proceso": "flujo"},
+        "prohibidos": (),
         "maquetas": {
             "hook":        [("cascada", {"encuadre": "plano"})],
             "afirmacion":  [("cascada", {"encuadre": "sangre", "velo": 0.36}),
@@ -157,6 +160,10 @@ ESTILOS = {
         "ritmo": "creciente", "alterna_claro": 5,
         "densidad": {"hook": "EXTREME", "resultado": "HIGH",
                      "prueba": "HIGH", "conclusion": "LOW", "cta": "MEDIUM"},
+        "preferencias": {"cifra": "numero", "resultado": "numero",
+                        "comparacion": "comparacion",
+                        "refuerzo": "broll"},
+        "prohibidos": (),
         "maquetas": {
             "hook":        [("dato_duro", {}), ("pleno", {"velo": 0.5})],
             "resultado":   [("dato_duro", {}), ("comparacion", {})],
@@ -183,6 +190,9 @@ ESTILOS = {
         "ritmo": "decreciente", "alterna_claro": 0,
         "densidad": {"hook": "HIGH", "evidencia": "HIGH", "duda": "LOW",
                      "conclusion": "LOW", "cta": "LOW"},
+        "preferencias": {"evidencia": "captura", "contexto": "captura",
+                        "cifra": "grafico"},
+        "prohibidos": (),
         "maquetas": {
             "hook":        [("cascada", {"encuadre": "plano"})],
             "afirmacion":  [("cascada", {"encuadre": "sangre", "velo": 0.44})],
@@ -207,6 +217,9 @@ ESTILOS = {
         "ritmo": "irregular_b", "alterna_claro": 0,
         "densidad": {"hook": "MEDIUM", "evidencia": "EXTREME",
                      "prueba": "EXTREME", "cta": "LOW"},
+        "preferencias": {"contexto": "captura", "evidencia": "captura",
+                        "refuerzo": "tipografia"},
+        "prohibidos": (),
         "maquetas": {
             "hook":        [("prueba", {}), ("cascada", {"encuadre": "plano"})],
             "afirmacion":  [("cascada", {"encuadre": "tarjeta", "velo": 0.12})],
@@ -232,6 +245,10 @@ ESTILOS = {
         "ritmo": "irregular_a", "alterna_claro": 2,
         "densidad": {"hook": "EXTREME", "conclusion": "LOW", "cta": "LOW"},
         "sin_metraje": True,
+        "preferencias": {"contexto": "tipografia", "refuerzo": "tipografia",
+                        "sostener": "tipografia",
+                        "relacion": "silueta"},
+        "prohibidos": ("broll", "parallax"),
         "maquetas": {
             "hook":        [("cascada", {"encuadre": "plano"})],
             "afirmacion":  [("cascada", {"encuadre": "plano"}),
@@ -243,6 +260,73 @@ ESTILOS = {
             "resultado":   [("dato_duro", {})],
             "conclusion":  [("declaracion", {})],
             "cta":         [("cta", {"mayus": True})],
+        },
+    },
+    # ---------------------------------------------------------------
+    "DATA": {
+        "nombre": "Data — el dato es el protagonista",
+        "descripcion": "§7. Numeros grandes, barras, comparaciones y "
+                       "embudos construidos al ritmo de la voz. Fondo "
+                       "sobrio para que el color quede reservado al dato. "
+                       "Sin metraje salvo que aporte contexto.",
+        "paleta": {"fondo": [13, 15, 18], "texto": [242, 244, 246],
+                   "destacado": ACENTO},
+        "camara": 0.0, "transicion": "corte_duro",
+        "acentos": ["punch", "corte_duro"], "flash_ritmo": None,
+        "captions": {"captions_estilo": "chico", "captions_y": 0.90},
+        "ritmo": "decreciente", "alterna_claro": 0,
+        "densidad": {"hook": "HIGH", "resultado": "EXTREME",
+                     "evidencia": "EXTREME", "conclusion": "LOW"},
+        "preferencias": {"cifra": "grafico", "evidencia": "grafico",
+                        "comparacion": "grafico",
+                        "contexto": "tipografia",
+                        "refuerzo": "tipografia"},
+        "prohibidos": (),
+        "maquetas": {
+            "hook":        [("cascada", {"encuadre": "plano"})],
+            "afirmacion":  [("cascada", {"encuadre": "plano"})],
+            "resultado":   [("grafico", {}), ("dato_duro", {})],
+            "evidencia":   [("grafico", {}), ("prueba", {})],
+            "prueba":      [("grafico", {}), ("prueba", {})],
+            "comparacion": [("comparacion", {}), ("grafico", {})],
+            "contradiccion": [("grafico", {}), ("comparacion", {})],
+            "metodo":      [("flujo", {}), ("silueta", {})],
+            "descubrimiento": [("grafico", {}), ("dato_duro", {})],
+            "conclusion":  [("cascada", {"encuadre": "plano"})],
+            "cta":         [("cta", {})],
+        },
+    },
+    # ---------------------------------------------------------------
+    "CINEMATIC": {
+        "nombre": "Cinematic — respira",
+        "descripcion": "§8. Planos largos, metraje lento, movimiento "
+                       "suave, texto minimo y espacio negativo. Existe "
+                       "para hacer CONTRASTE: si todos los videos son "
+                       "agresivos, ninguno se siente agresivo.",
+        "paleta": {"fondo": [12, 12, 14], "texto": [238, 236, 231],
+                   "destacado": ACENTO},
+        "camara": 1.5, "transicion": "fade",
+        "acentos": ["corte_duro", "dip"], "flash_ritmo": None,
+        "captions": {"captions_estilo": "chico", "captions_y": 0.86},
+        "ritmo": "decreciente", "alterna_claro": 0,
+        "densidad": {"hook": "MEDIUM", "afirmacion": "LOW",
+                     "conclusion": "LOW", "cta": "LOW"},
+        "preferencias": {"sostener": "parallax", "contexto": "broll",
+                        "refuerzo": "broll",
+                        "relacion": "silueta"},
+        "prohibidos": (),
+        "maquetas": {
+            "hook":        [("pleno", {"velo": 0.42})],
+            "afirmacion":  [("parallax", {"velo": 0.46, "vineta": True}),
+                            ("pleno", {"velo": 0.44})],
+            "descubrimiento": [("parallax", {"velo": 0.44, "vineta": True})],
+            "evidencia":   [("prueba", {})],
+            "prueba":      [("prueba", {})],
+            "metodo":      [("flujo", {})],
+            "resultado":   [("pleno", {"velo": 0.5}), ("dato_duro", {})],
+            "giro":        [("pleno", {"velo": 0.54})],
+            "conclusion":  [("pleno", {"velo": 0.40})],
+            "cta":         [("cta", {})],
         },
     },
     # ---------------------------------------------------------------
@@ -258,6 +342,9 @@ ESTILOS = {
         "captions": {"captions_estilo": "chico", "captions_y": 0.84},
         "ritmo": "decreciente", "alterna_claro": 0,
         "densidad": {"hook": "MEDIUM", "conclusion": "LOW", "cta": "LOW"},
+        "preferencias": {"contexto": "broll", "sostener": "broll",
+                        "refuerzo": "broll"},
+        "prohibidos": (),
         "maquetas": {
             "hook":        [("pleno", {"velo": 0.46})],
             "afirmacion":  [("pleno", {"velo": 0.44}),
@@ -641,10 +728,10 @@ LENGUAJES = {
     "AGGRESSIVE":    "MONEY",
     "DOCUMENTARY":   "DOC",
     "INVESTIGATION": "INVEST",
-    # "DATA":      falta
-    # "CINEMATIC": falta
+    "DATA":          "DATA",
+    "CINEMATIC":     "CINEMATIC",
 }
-LENGUAJES_FALTAN = ("DATA", "CINEMATIC")
+LENGUAJES_FALTAN = ()
 
 # §2. Un plano solo existe si cumple una funcion. El guion la declara y
 # el compilador la conserva para que la auditoria de §21 pueda leerla.
@@ -662,13 +749,15 @@ FUNCIONES_PLANO = (
 FONDOS_DE_ESCENA = ("broll", "parallax")
 
 
-def _resolver_plano(plano, idea):
-    """Aplica la escalera de broll.py. Devuelve (recurso, maqueta)."""
+def _resolver_plano(plano, idea, estilo=None):
+    """Aplica la escalera de broll.py con las preferencias del lenguaje."""
     try:
         import broll
     except ImportError:
         return "broll", None
-    recurso, maqueta, _ = broll.resolver(plano, idea)
+    est = estilo or {}
+    recurso, maqueta, _ = broll.resolver(
+        plano, idea, est.get("preferencias"), est.get("prohibidos", ()))
     return recurso, maqueta
 
 
@@ -745,7 +834,7 @@ def aplicar_ideas(contenido, lenguaje=None, semilla=None):
         # de un bloque de texto no se lee; adelante, si.
         fondo, promovidos = [], []
         for p in planos:
-            recurso, maqueta = _resolver_plano(p, idea)
+            recurso, maqueta = _resolver_plano(p, idea, est)
             p["_recurso"] = recurso
             if recurso in FONDOS_DE_ESCENA or recurso is None:
                 fondo.append(p)
@@ -772,6 +861,14 @@ def aplicar_ideas(contenido, lenguaje=None, semilla=None):
         }
         if idea.get("narracion"):
             seg["narracion"] = idea["narracion"]
+            # El subtitulo suelto solo va cuando hay metraje debajo. Sobre
+            # color plano el bloque escalonado YA es el texto, y dos
+            # textos de la misma frase se pisan. (El camino por ideas se
+            # habia olvidado de aplicar el estilo de captions: los seis
+            # lenguajes salian sin subtitulo.)
+            if est.get("captions") and fondo:
+                seg.update(est["captions"])
+                seg["captions_palabra_por_palabra"] = True
         if idea.get("cascada_tam"):
             seg["cascada_tam"] = idea["cascada_tam"]
         if i:
@@ -854,3 +951,52 @@ def aplicar_ideas(contenido, lenguaje=None, semilla=None):
         guion["flash_ritmo"] = est["flash_ritmo"]
         guion["flash_ritmo_largo"] = 0.08
     return guion
+
+
+# ---------------------------------------------------------------- §18
+# Combinaciones permitidas. Maximo UN lenguaje principal + UNO
+# secundario. La mezcla libre de cinco lenguajes es justo lo que §18
+# prohibe: deja de haber identidad.
+#
+# El secundario no reemplaza al principal: le PRESTA maquetas para los
+# roles donde el principal no tiene una buena respuesta.
+COMBINACIONES = {
+    ("EDITORIAL", "DATA"):          "el bloque editorial, y el dato con su grafico",
+    ("EDITORIAL", "INVESTIGATION"): "editorial con la evidencia siempre a la vista",
+    ("EDITORIAL", "AGGRESSIVE"):    "editorial con la cifra golpeando",
+    ("DOCUMENTARY", "DATA"):        "metraje a sangre con graficos",
+    ("DOCUMENTARY", "INVESTIGATION"): "documental con documentos y capturas",
+    ("CINEMATIC", "INVESTIGATION"): "planos largos que respiran, con pruebas",
+    ("AGGRESSIVE", "DATA"):         "cifras grandes y comparaciones duras",
+}
+
+
+def combinar(principal, secundario):
+    """Devuelve un estilo derivado: el principal, con las maquetas del
+    secundario para los roles donde el principal no declara nada mejor.
+
+    §18: no se permite mas de un secundario. Y solo las parejas de
+    COMBINACIONES, para que la variedad no se vuelva ruido."""
+    pri = (principal or "").upper()
+    sec = (secundario or "").upper()
+    if (pri, sec) not in COMBINACIONES:
+        raise ValueError(
+            f"combinacion {pri}+{sec} no permitida (§18). Las validas son:\n  "
+            + "\n  ".join(f"{a}+{b}: {d}" for (a, b), d in COMBINACIONES.items()))
+    base = copy.deepcopy(ESTILOS[LENGUAJES[pri]])
+    otro = ESTILOS[LENGUAJES[sec]]
+    # Roles donde el secundario aporta: los que el principal no tiene,
+    # y los que el secundario resuelve con una maqueta de informacion
+    # (grafico, prueba, comparacion, flujo) que el principal no usa.
+    informativas = {"grafico", "prueba", "comparacion", "flujo", "dato_duro"}
+    for rol, cands in otro["maquetas"].items():
+        if rol not in base["maquetas"]:
+            base["maquetas"][rol] = cands
+            continue
+        propias = {f for f, _ in base["maquetas"][rol]}
+        suma = [c for c in cands if c[0] in informativas and c[0] not in propias]
+        if suma:
+            base["maquetas"][rol] = base["maquetas"][rol] + suma
+    base["nombre"] = f"{pri} + {sec}"
+    base["descripcion"] = COMBINACIONES[(pri, sec)]
+    return base

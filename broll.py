@@ -93,12 +93,21 @@ NECESITA_MATERIAL = {
 }
 
 
-def resolver(plano, idea):
+def resolver(plano, idea, preferencias=None, prohibidos=()):
     """(recurso, maqueta, motivo). Baja la escalera de la funcion del
     plano hasta encontrar un recurso que el material declarado permita.
 
     'idea' es el golpe/idea al que pertenece el plano: de ahi salen la
-    cifra, la evidencia, las figuras y las consultas de metraje."""
+    cifra, la evidencia, las figuras y las consultas de metraje.
+
+    'preferencias' es {funcion: recurso} del LENGUAJE visual: DATA
+    prefiere resolver un contexto con tipografia antes que con una
+    foto; CINEMATIC prefiere sostener con parallax. Sin esto los seis
+    lenguajes producian exactamente el mismo guion, porque la escalera
+    sola no sabe nada de estilo.
+
+    'prohibidos' son recursos que ese lenguaje no usa nunca -- BRUTAL
+    no lleva fotos, asi que 'broll' no entra en su escalera."""
     funcion = plano.get("funcion")
     if not funcion:
         return None, None, ("§2: el plano no declara funcion. Un plano que "
@@ -108,16 +117,22 @@ def resolver(plano, idea):
                             f"{', '.join(FUNCIONES)}")
     fuente = dict(idea or {})
     fuente.update({k: v for k, v in plano.items() if v is not None})
-    for recurso in ESCALERA[funcion]:
+    orden = [r for r in ESCALERA[funcion] if r not in prohibidos]
+    # La preferencia del lenguaje se pone PRIMERA, no reemplaza la
+    # escalera: si el material no la permite, se sigue bajando igual.
+    pref = (preferencias or {}).get(funcion)
+    if pref and pref in orden:
+        orden = [pref] + [r for r in orden if r != pref]
+    for recurso in orden:
         prueba = NECESITA_MATERIAL.get(recurso)
         if prueba and prueba(fuente):
             return recurso, MAQUETA[recurso], (
                 f"funcion '{funcion}' -> {recurso}"
                 + (" (ultimo recurso de la escalera)"
-                   if recurso == ESCALERA[funcion][-1] else ""))
+                   if recurso == orden[-1] else ""))
     return None, None, (
         f"funcion '{funcion}': ningun recurso de la escalera "
-        f"({' -> '.join(ESCALERA[funcion])}) tiene material declarado. "
+        f"({' -> '.join(orden)}) tiene material declarado. "
         f"Falta cifra, datos, captura, figuras o texto.")
 
 

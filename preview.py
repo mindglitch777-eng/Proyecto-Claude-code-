@@ -155,17 +155,93 @@ def cmd_guion(a):
     print(f"Escrito {out}  ({len(imgs)} planos)")
 
 
+def cmd_lenguajes(a):
+    """§8 y §9: el MISMO contenido por ideas, en los seis lenguajes.
+    Un cuadro de la idea que se pida. Sin renderizar ningun video."""
+    import json as _json
+    ruta = Path(a.contenido or (RAIZ / "contenido" / "cotizar-v2.json"))
+    contenido = _json.loads(ruta.read_text(encoding="utf-8"))
+    imgs = []
+    for nombre in E.LENGUAJES:
+        # Si el guion ya esta compilado Y abastecido en guiones/, se usa
+        # ESE. Recompilar desde el contenido pierde las rutas de las
+        # fotos que engancho abastecer, y el preview mostraba cuadros
+        # negros: un defecto de la herramienta, no del motor.
+        ya = RAIZ / "guiones" / f"{ruta.stem}-{nombre.lower()}.json"
+        if ya.exists():
+            g = _json.loads(ya.read_text(encoding="utf-8"))
+        else:
+            try:
+                g = E.aplicar_ideas(contenido, nombre)
+            except ValueError as e:
+                print(f"  {nombre}: {e}")
+                continue
+        i = min(a.idea, len(g["segmentos"]) - 1)
+        seg = g["segmentos"][i]
+        cfg = {"paleta": g["paleta"], "camara": g.get("camara", 0),
+               "fps": 30, "flash_ritmo": g.get("flash_ritmo")}
+        m = g["_metadata"]
+        imgs.append(_rotular(
+            _cuadro(seg, cfg), f"{nombre}  ·  {seg['formato']}",
+            f"{m['ideas']} ideas · {m['duracion']}s · "
+            f"{m['promovidos']} promovidos · {seg['duracion']}s este plano"))
+    SALIDA.mkdir(exist_ok=True)
+    out = SALIDA / f"lenguajes-idea{a.idea}.jpg"
+    _grilla(imgs, cols=3).save(out, quality=88)
+    print(f"Escrito {out}  ({len(imgs)} lenguajes, idea {a.idea})")
+
+
+def cmd_comparar(a):
+    """§9. Tabla de que produce cada lenguaje con el mismo contenido:
+    cuantas ideas, cuantos planos, que maquetas, cuanto B-roll."""
+    import json as _json
+    import broll as _broll
+    ruta = Path(a.contenido or (RAIZ / "contenido" / "cotizar-v2.json"))
+    contenido = _json.loads(ruta.read_text(encoding="utf-8"))
+    # La tabla anterior solo miraba maquetas y decia que los seis
+    # lenguajes eran iguales. Mentia por omision: difieren en camara,
+    # paleta, transiciones y en que recurso elige la escalera.
+    print(f"{'lenguaje':14} {'dur':>6} {'seg':>4} {'cam':>5} {'fondo':>6} "
+          f"{'prom':>5} {'broll':>6} {'info':>5}  {'transiciones':22} recursos")
+    print("-" * 122)
+    for nombre in E.LENGUAJES:
+        try:
+            g = E.aplicar_ideas(contenido, nombre)
+        except ValueError as e:
+            print(f"{nombre:14} {e}")
+            continue
+        m = g["_metadata"]
+        _, _, r = _broll.auditar(g)
+        rec = []
+        for sg in g["segmentos"]:
+            rec += [p.get("_recurso", "-") for p in (sg.get("planos") or [])] \
+                   or [sg.get("_recurso", "plano")]
+        tr = sorted({sg.get("transicion") for sg in g["segmentos"][1:]} - {None})
+        print(f"{nombre:14} {m['duracion']:6.1f} {len(g['segmentos']):4} "
+              f"{g['camara']:5} {g['paleta']['fondo'][2]:6} "
+              f"{m['promovidos']:5} {r['broll']:6} "
+              f"{r.get('aportan_informacion', 0):5}  {','.join(tr):22} "
+              f"{' '.join(rec)}")
+
+
 def main():
     ap = argparse.ArgumentParser(description="Preview de estilos sin renderizar")
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("estilos"); p.add_argument("--golpe", type=int, default=0)
     sub.add_parser("combinaciones")
     p = sub.add_parser("hooks"); p.add_argument("--texto", nargs="+")
+    p = sub.add_parser("lenguajes", help="un cuadro de cada lenguaje (§8)")
+    p.add_argument("--contenido"); p.add_argument("--idea", type=int, default=0)
+
+    p = sub.add_parser("comparar", help="tabla de los seis lenguajes (§9)")
+    p.add_argument("--contenido")
+
     p = sub.add_parser("guion"); p.add_argument("guion")
     p.add_argument("--cols", type=int, default=5)
     a = ap.parse_args()
     return {"estilos": cmd_estilos, "combinaciones": cmd_combinaciones,
-            "hooks": cmd_hooks, "guion": cmd_guion}[a.cmd](a) or 0
+            "hooks": cmd_hooks, "guion": cmd_guion,
+            "lenguajes": cmd_lenguajes, "comparar": cmd_comparar}[a.cmd](a) or 0
 
 
 if __name__ == "__main__":

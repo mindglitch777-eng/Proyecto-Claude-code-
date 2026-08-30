@@ -1,10 +1,10 @@
 {
   "tema": "Perdiste el laburo por lento, no por caro",
-  "nota": "Compilado por estilos.py (ideas) — lenguaje EDITORIAL (Venta Silenciosa — editorial). 6 ideas, 5 planos. NO editar a mano: editar el contenido y recompilar.",
-  "_lenguaje": "EDITORIAL",
-  "_estilo": "VS",
+  "nota": "Compilado por estilos.py (ideas) — lenguaje CINEMATIC (Cinematic — respira). 6 ideas, 5 planos. NO editar a mano: editar el contenido y recompilar.",
+  "_lenguaje": "CINEMATIC",
+  "_estilo": "CINEMATIC",
   "_metadata": {
-    "lenguaje": "EDITORIAL",
+    "lenguaje": "CINEMATIC",
     "ideas": 4,
     "planos": 5,
     "duracion": 23.5,
@@ -24,18 +24,18 @@
     "seg_por_idea": 5.88
   },
   "fps": 30,
-  "camara": 0.35,
+  "camara": 1.5,
   "loop": false,
   "paleta": {
     "fondo": [
-      10,
-      10,
-      12
+      12,
+      12,
+      14
     ],
     "texto": [
-      246,
-      246,
-      244
+      238,
+      236,
+      231
     ],
     "destacado": [
       255,
@@ -70,7 +70,7 @@
       "velo": 0.44,
       "narracion": "El que te ganó el laburo no cobra menos.",
       "captions_estilo": "chico",
-      "captions_y": 0.6,
+      "captions_y": 0.86,
       "captions_palabra_por_palabra": true,
       "hook": "impacto",
       "flash": true
@@ -81,7 +81,7 @@
       "_recurso": "silueta",
       "_funcion": "relacion",
       "duracion": 2.4,
-      "transicion": "corte_duro",
+      "transicion": "fade",
       "figuras": [
         "persona",
         "flecha",
@@ -121,16 +121,16 @@
           "dur": 3.4,
           "mov": "STATIC",
           "necesita": "closed shop metal shutter street",
-          "_recurso": "broll",
+          "_recurso": "parallax",
           "imagen": "assets/biblioteca/closed-shop-metal-shutter-street/00.jpg"
         }
       ],
       "velo": 0.44,
       "narracion": "Te escribieron a las diez y contestaste al otro día.",
       "captions_estilo": "chico",
-      "captions_y": 0.6,
+      "captions_y": 0.86,
       "captions_palabra_por_palabra": true,
-      "transicion": "corte_duro"
+      "transicion": "fade"
     },
     {
       "formato": "escena",
@@ -158,9 +158,9 @@
       "velo": 0.44,
       "narracion": "Cuánto cobrar tiene sesenta y siete de demanda. Calcular rentabilidad, cero coma uno.",
       "captions_estilo": "chico",
-      "captions_y": 0.6,
+      "captions_y": 0.86,
       "captions_palabra_por_palabra": true,
-      "transicion": "corte_duro"
+      "transicion": "fade"
     },
     {
       "formato": "grafico",
@@ -168,7 +168,7 @@
       "_recurso": "grafico",
       "_funcion": "cifra",
       "duracion": 5.0,
-      "transicion": "corte_duro",
+      "transicion": "fade",
       "tipo": "barras",
       "titulo": "Lo que la gente busca",
       "datos": [
@@ -213,9 +213,9 @@
       "velo": 0.44,
       "narracion": "Vos lo tenés en la cabeza. Por eso tardás.",
       "captions_estilo": "chico",
-      "captions_y": 0.6,
+      "captions_y": 0.86,
       "captions_palabra_por_palabra": true,
-      "transicion": "punch"
+      "transicion": "corte_duro"
     }
   ]
 }

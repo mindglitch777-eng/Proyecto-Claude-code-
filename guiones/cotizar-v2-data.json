@@ -1,18 +1,22 @@
 {
   "tema": "Perdiste el laburo por lento, no por caro",
-  "nota": "Compilado por estilos.py (ideas) — lenguaje EDITORIAL (Venta Silenciosa — editorial). 6 ideas, 5 planos. NO editar a mano: editar el contenido y recompilar.",
-  "_lenguaje": "EDITORIAL",
-  "_estilo": "VS",
+  "nota": "Compilado por estilos.py (ideas) — lenguaje DATA (Data — el dato es el protagonista). 10 ideas, 1 planos. NO editar a mano: editar el contenido y recompilar.",
+  "_lenguaje": "DATA",
+  "_estilo": "DATA",
   "_metadata": {
-    "lenguaje": "EDITORIAL",
+    "lenguaje": "DATA",
     "ideas": 4,
-    "planos": 5,
-    "duracion": 23.5,
-    "cambios_de_texto": 10,
-    "promovidos": 2,
+    "planos": 1,
+    "duracion": 26.5,
+    "cambios_de_texto": 20,
+    "promovidos": 6,
     "recursos": [
+      "tipografia",
       "silueta",
-      "grafico"
+      "tipografia",
+      "tipografia",
+      "grafico",
+      "tipografia"
     ],
     "rafagas": 0,
     "intensidades": [
@@ -21,21 +25,21 @@
       "MEDIUM",
       "MEDIUM"
     ],
-    "seg_por_idea": 5.88
+    "seg_por_idea": 6.62
   },
   "fps": 30,
-  "camara": 0.35,
+  "camara": 0.0,
   "loop": false,
   "paleta": {
     "fondo": [
-      10,
-      10,
-      12
+      13,
+      15,
+      18
     ],
     "texto": [
-      246,
-      246,
-      244
+      242,
+      244,
+      246
     ],
     "destacado": [
       255,
@@ -48,7 +52,7 @@
       "formato": "escena",
       "_rol": "hook",
       "_intensidad": "MEDIUM",
-      "duracion": 1.6,
+      "duracion": 1.0,
       "lineas": [
         "El que ganó",
         "no cobra menos"
@@ -57,23 +61,24 @@
         0.0,
         1.1
       ],
-      "planos": [
-        {
-          "funcion": "contexto",
-          "dur": 1.6,
-          "mov": "SUBTLE",
-          "necesita": "serious tradesman portrait workshop",
-          "_recurso": "broll",
-          "imagen": "assets/biblioteca/serious-tradesman-portrait-workshop/00.jpg"
-        }
-      ],
+      "planos": [],
       "velo": 0.44,
       "narracion": "El que te ganó el laburo no cobra menos.",
-      "captions_estilo": "chico",
-      "captions_y": 0.6,
-      "captions_palabra_por_palabra": true,
       "hook": "impacto",
       "flash": true
+    },
+    {
+      "formato": "cascada",
+      "_rol": "hook",
+      "_recurso": "tipografia",
+      "_funcion": "contexto",
+      "duracion": 1.6,
+      "transicion": "corte_duro",
+      "lineas": [
+        "El que ganó",
+        "no cobra menos"
+      ],
+      "encuadre": "plano"
     },
     {
       "formato": "silueta",
@@ -94,7 +99,7 @@
       "formato": "escena",
       "_rol": "contexto",
       "_intensidad": "MEDIUM",
-      "duracion": 7.0,
+      "duracion": 3.4,
       "lineas": [
         "Te escribieron",
         "a las diez",
@@ -109,14 +114,6 @@
       ],
       "planos": [
         {
-          "funcion": "contexto",
-          "dur": 3.6,
-          "mov": "SUBTLE",
-          "necesita": "man reading phone message at night",
-          "_recurso": "broll",
-          "imagen": "assets/biblioteca/man-reading-phone-message-at-night/00.jpg"
-        },
-        {
           "funcion": "sostener",
           "dur": 3.4,
           "mov": "STATIC",
@@ -128,15 +125,30 @@
       "velo": 0.44,
       "narracion": "Te escribieron a las diez y contestaste al otro día.",
       "captions_estilo": "chico",
-      "captions_y": 0.6,
+      "captions_y": 0.9,
       "captions_palabra_por_palabra": true,
       "transicion": "corte_duro"
+    },
+    {
+      "formato": "cascada",
+      "_rol": "contexto",
+      "_recurso": "tipografia",
+      "_funcion": "contexto",
+      "duracion": 3.6,
+      "transicion": "corte_duro",
+      "lineas": [
+        "Te escribieron",
+        "a las diez",
+        "Contestaste",
+        "al otro día"
+      ],
+      "encuadre": "plano"
     },
     {
       "formato": "escena",
       "_rol": "evidencia",
       "_intensidad": "MEDIUM",
-      "duracion": 2.5,
+      "duracion": 1.0,
       "lineas": [
         "Nadie busca",
         "tu solución"
@@ -145,22 +157,23 @@
         0.0,
         2.06
       ],
-      "planos": [
-        {
-          "funcion": "contexto",
-          "dur": 2.5,
-          "mov": "SUBTLE",
-          "necesita": "frustrated man thinking workshop",
-          "_recurso": "broll",
-          "imagen": "assets/biblioteca/frustrated-man-thinking-workshop/00.jpg"
-        }
-      ],
+      "planos": [],
       "velo": 0.44,
       "narracion": "Cuánto cobrar tiene sesenta y siete de demanda. Calcular rentabilidad, cero coma uno.",
-      "captions_estilo": "chico",
-      "captions_y": 0.6,
-      "captions_palabra_por_palabra": true,
       "transicion": "corte_duro"
+    },
+    {
+      "formato": "cascada",
+      "_rol": "evidencia",
+      "_recurso": "tipografia",
+      "_funcion": "contexto",
+      "duracion": 2.5,
+      "transicion": "corte_duro",
+      "lineas": [
+        "Nadie busca",
+        "tu solución"
+      ],
+      "encuadre": "plano"
     },
     {
       "formato": "grafico",
@@ -191,7 +204,7 @@
       "formato": "escena",
       "_rol": "giro",
       "_intensidad": "MEDIUM",
-      "duracion": 5.0,
+      "duracion": 1.0,
       "lineas": [
         "Lo tenés",
         "en la cabeza"
@@ -200,22 +213,23 @@
         0.0,
         1.38
       ],
-      "planos": [
-        {
-          "funcion": "refuerzo",
-          "dur": 5.0,
-          "mov": "STATIC",
-          "necesita": "frustrated man thinking workshop",
-          "_recurso": "broll",
-          "imagen": "assets/biblioteca/frustrated-man-thinking-workshop/01.jpg"
-        }
-      ],
+      "planos": [],
       "velo": 0.44,
       "narracion": "Vos lo tenés en la cabeza. Por eso tardás.",
-      "captions_estilo": "chico",
-      "captions_y": 0.6,
-      "captions_palabra_por_palabra": true,
       "transicion": "punch"
+    },
+    {
+      "formato": "cascada",
+      "_rol": "giro",
+      "_recurso": "tipografia",
+      "_funcion": "refuerzo",
+      "duracion": 5.0,
+      "transicion": "corte_duro",
+      "lineas": [
+        "Lo tenés",
+        "en la cabeza"
+      ],
+      "encuadre": "plano"
     }
   ]
 }
