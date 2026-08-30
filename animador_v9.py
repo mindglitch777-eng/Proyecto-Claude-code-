@@ -3601,6 +3601,117 @@ def f_grafico(img, d, seg, t, pal):
                    txt, font=fn_cifra, fill=col)
     _g_fuente(img, d, seg, pal, t)
 
+# ============ MODULE_PARALLAX ============
+# LO QUE ESTE MODULO NO HACE, Y POR QUE
+#     §13 de la biblia pide separar la imagen en BACKGROUND / MIDGROUND
+#     / FOREGROUND. Eso es separacion por PROFUNDIDAD, y de una foto
+#     plana la profundidad hay que estimarla con un modelo (MiDaS,
+#     Depth Anything). Este entorno no tiene numpy, torch ni OpenCV: el
+#     motor es Pillow puro a proposito, para que un render cueste cero
+#     y corra en cualquier runner.
+#
+#     Que costaria: ~350 MB de dependencias, un modelo de ~100 MB, y
+#     entre 2 y 6 segundos de CPU POR FOTO. Con 12 planos por video y
+#     180 videos son entre 2 y 6 horas solo de estimar profundidad.
+#     Se puede, pero es otra decision.
+#
+# LO QUE SI HACE, Y TAMBIEN ES PARALLAX
+#     Separa el PLANO DE LA IMAGEN del PLANO DEL TEXTO y los mueve a
+#     velocidades distintas. Esa diferencia entre dos planos es lo que
+#     el ojo lee como profundidad, y es la que usa la mayoria del
+#     motion editorial: la foto deriva lento, lo que va encima deriva
+#     mas rapido y en contra.
+#
+#     Ademas puede meter una VIÑETA de primer plano que se mueve mas
+#     que todo lo demas, que da el tercer plano sin necesidad de saber
+#     que hay en la foto.
+#
+# JSON:
+#   {"formato": "parallax", "imagen": "...",
+#    "texto": "lo que va encima",
+#    "direccion": "izq"|"der", "fuerza": 1.0,
+#    "vineta": true, "velo": 0.44}
+
+def f_parallax(img, d, seg, t, pal):
+    """Dos planos a distinta velocidad: foto lenta, texto rapido."""
+    fuerza = float(seg.get("fuerza", 1.0))
+    signo = -1.0 if str(seg.get("direccion", "der")).startswith("i") else 1.0
+    e = t - 0.5                       # -0.5 .. +0.5, centrado
+
+    # --- Plano de fondo: la foto. Deriva LENTA y un zoom minimo. ---
+    ruta = seg.get("imagen") or seg.get("foto")
+    cache = seg.setdefault("_cache_px", {})
+    puesto = False
+    if ruta and Path(ruta).exists():
+        base = cache.get(ruta, "PENDIENTE")
+        if base == "PENDIENTE":
+            try:
+                base = Image.open(ruta).convert("RGB")
+            except Exception:
+                base = None
+            cache[ruta] = base
+        if base is not None:
+            # 1.10 de margen para poder mover el recorte sin bordes.
+            esc = max(W / base.width, H / base.height) * 1.10
+            nw, nh = int(base.width * esc), int(base.height * esc)
+            im = base.resize((max(W, nw), max(H, nh)), Image.LANCZOS)
+            margen_x, margen_y = im.width - W, im.height - H
+            ox = int(margen_x / 2 + signo * e * margen_x * 0.90 * fuerza)
+            oy = int(margen_y / 2)
+            ox = max(0, min(ox, margen_x))
+            oy = max(0, min(oy, margen_y))
+            img.paste(im.crop((ox, oy, ox + W, oy + H)), (0, 0))
+            puesto = True
+    if not puesto:
+        img.paste(Image.new("RGB", (W, H), tuple(pal["fondo"])), (0, 0))
+
+    velo = float(seg.get("velo", 0.44 if puesto else 0.0))
+    if velo > 0:
+        img.paste(Image.blend(img, Image.new("RGB", (W, H), (0, 0, 0)), velo),
+                  (0, 0))
+
+    # --- Primer plano opcional: viñeta que se mueve MAS que la foto.
+    # No sabe que hay en la imagen; lo que aporta es un tercer plano de
+    # movimiento, que es lo que da la sensacion de volumen.
+    if seg.get("vineta") and puesto:
+        capa = Image.new("L", (W, H), 0)
+        dv = ImageDraw.Draw(capa)
+        # rx era 0.92W: la elipse cubria casi todo el cuadro, la mascara
+        # daba 255 en todos lados y la viñeta no oscurecia nada. Con
+        # 0.60W los bordes SI quedan afuera y se ven.
+        cx = W / 2 - signo * e * W * 0.16 * fuerza
+        rx, ry = W * 0.60, H * 0.46
+        dv.ellipse([cx - rx, H / 2 - ry, cx + rx, H / 2 + ry], fill=255)
+        capa = capa.filter(ImageFilter.GaussianBlur(140))
+        oscuro = Image.new("RGB", (W, H), (0, 0, 0))
+        img.paste(Image.composite(img, Image.blend(img, oscuro, 0.55), capa),
+                  (0, 0))
+
+    # --- Plano de adelante: el texto. Deriva EN CONTRA y mas rapido.
+    # La diferencia de velocidad entre este plano y la foto ES el
+    # parallax; si los dos se movieran igual no habria profundidad.
+    txt = seg.get("texto")
+    if not txt:
+        return
+    ent = eo_expo(min(1.0, t / 0.18))
+    f, lns = auto_tam(d, txt, W - 200, 520, int(seg.get("tam", 92)))
+    alto = len(lns) * (f.size + 16) - 16
+    y = H * float(seg.get("y_texto", 0.5)) - alto / 2
+    # 0.085W daba 46px de recorrido: entre el plano de la foto y el del
+    # texto quedaba un 7% de diferencia y no se leia como profundidad.
+    # 0.16W lo lleva a ~86px en contra, que sumado a los ~97px que se
+    # mueve la foto da una separacion que si se nota.
+    dx = -signo * e * W * 0.16 * fuerza
+    col = tuple(pal["texto"])
+    for ln in lns:
+        wl = d.textbbox((0, 0), ln, font=f)[2]
+        capa = Image.new("RGBA", (int(wl) + 70, f.size + 60), (0, 0, 0, 0))
+        _sombra_suave(capa, ln, f, 35, 30, int(255 * ent), 0, col)
+        ImageDraw.Draw(capa).text((35, 30), ln, font=f,
+                                  fill=col + (int(255 * ent),))
+        img.paste(capa, (int((W - capa.width) / 2 + dx), int(y - 30)), capa)
+        y += f.size + 16
+
 FORMATOS = {
     "declaracion": f_declaracion, "dato_duro": f_dato_duro,
     "division": f_division, "revelacion": f_revelacion,
@@ -3615,6 +3726,7 @@ FORMATOS = {
     "ruleta": f_ruleta, "lista": f_lista, "comparacion": f_comparacion,
     "prueba": f_prueba, "flujo": f_flujo, "cascada": f_cascada,
     "menu": f_menu, "escena": f_escena, "silueta": f_silueta, "grafico": f_grafico,
+    "parallax": f_parallax,
 }
 
 # Los comentarios de aca abajo describen el COLOR, no una marca ni un
