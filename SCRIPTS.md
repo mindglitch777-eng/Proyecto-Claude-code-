@@ -201,3 +201,8 @@ y cadencia de corte. Existe para no gastar tokens verificando renders.
 Capa de estilo: compila contenido (que se dice, que evidencia hay) +
 estilo (como se ve) en un guion renderizable. Seis estilos, cinco
 narrativas, cinco perfiles de ritmo. Ver ESTILOS.md.
+
+## preview.py
+Preview de estilos SIN renderizar: un cuadro de cada estilo lado a lado,
+combinaciones estilo x narrativa, tratamiento visual de un hook, y tira
+de contactos de un guion. Cero video, cero ffmpeg.

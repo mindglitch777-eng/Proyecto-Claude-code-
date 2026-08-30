@@ -7,3 +7,4 @@ factory/oportunidades.db
 motor/contenido.db
 
 # Las pruebas de render las commitea el workflow probar-render, no la sesion.
+previews/

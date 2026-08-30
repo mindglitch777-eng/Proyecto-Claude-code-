@@ -336,16 +336,43 @@ def _transicion(estilo, i, rnd):
     return estilo["transicion"]
 
 
-def _maqueta(estilo, rol, usadas, rnd):
+# Lo que cada maqueta NECESITA para no mentir ni salir vacia. Sin esto
+# el estilo elegia 'dato_duro' para un golpe sin cifra y el animador
+# dibujaba su numero por defecto: un 47 INVENTADO en pantalla. Es
+# exactamente lo que §17 prohibe, y lo encontro el preview.
+def _puede(fmt, golpe):
+    txt = [t for t in (golpe.get("texto") or []) if str(t).strip()]
+    ev = golpe.get("evidencia") or {}
+    cifra = golpe.get("cifra") or {}
+    if fmt == "dato_duro":
+        return bool(cifra.get("valor"))
+    if fmt == "prueba":
+        return bool(ev.get("imagen") or ev.get("fuente") or cifra.get("fuente"))
+    if fmt in ("comparacion", "flujo", "menu", "lista"):
+        return len(txt) >= 2
+    if fmt == "cascada":
+        return bool(txt)
+    return True
+
+
+def _maqueta(estilo, rol, usadas, rnd, golpe):
     """Maqueta para este rol, rotando entre las candidatas del estilo
-    para que dos planos del mismo rol no se vean iguales (§29)."""
+    para que dos planos del mismo rol no se vean iguales (§29), y
+    saltando las que este golpe no puede sostener."""
     cands = estilo["maquetas"].get(rol)
     if not cands:
         cands = estilo["maquetas"].get("afirmacion") or [FALLBACK]
     i = usadas.get(rol, 0)
     usadas[rol] = i + 1
-    fmt, extra = cands[i % len(cands)]
-    return fmt, dict(extra)
+    n = len(cands)
+    # Se prueba desde la que le tocaba y se sigue rotando; si ninguna
+    # de las del estilo sirve, cae al fallback, que solo pide texto.
+    for k in range(n):
+        fmt, extra = cands[(i + k) % n]
+        if _puede(fmt, golpe):
+            return fmt, dict(extra)
+    fmt, extra = FALLBACK
+    return (fmt, dict(extra)) if _puede(fmt, golpe) else ("declaracion", {})
 
 
 def _texto_a_maqueta(fmt, textos, seg, densidad):
@@ -406,7 +433,7 @@ def aplicar(contenido, estilo_id=None, narrativa_id=None, ritmo_id=None,
     segs, usadas, n_claro = [], {}, 0
     for i, g in enumerate(golpes):
         rol = g.get("rol", "afirmacion")
-        fmt, seg = _maqueta(est, rol, usadas, rnd)
+        fmt, seg = _maqueta(est, rol, usadas, rnd, g)
         seg["formato"] = fmt
         seg["_rol"] = rol
 
@@ -420,8 +447,13 @@ def aplicar(contenido, estilo_id=None, narrativa_id=None, ritmo_id=None,
         _texto_a_maqueta(fmt, g.get("texto"), seg, dens_nombre)
         if g.get("narracion"):
             seg["narracion"] = g["narracion"]
-            seg.update(est.get("captions") or {})
-            if est.get("captions"):
+            # El subtitulo suelto no va sobre maquetas que YA muestran
+            # el texto: repetiria la misma frase con otra palabra
+            # activa, dos textos de la misma oracion peleandose el
+            # cuadro. Va sobre metraje, que es donde lo usa la
+            # referencia.
+            if est.get("captions") and fmt in ("pleno", "tarjeta", "retrato"):
+                seg.update(est["captions"])
                 seg["captions_palabra_por_palabra"] = True
 
         # Metraje: el estilo puede prohibirlo (BRUTAL no lleva fotos).
@@ -435,7 +467,7 @@ def aplicar(contenido, estilo_id=None, narrativa_id=None, ritmo_id=None,
         ev = g.get("evidencia") or {}
         cifra = g.get("cifra") or {}
         if ev or cifra:
-            if fmt != "prueba" and (ev.get("imagen") or ev.get("fuente")):
+            if fmt != "prueba" and _puede("prueba", g):
                 seg["formato"] = fmt = "prueba"
                 _texto_a_maqueta(fmt, g.get("texto"), seg, dens_nombre)
             if ev.get("imagen"):
