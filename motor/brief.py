@@ -40,6 +40,33 @@ CTA_POR_OBJETIVO = {
     "entretenimiento": ["Seguime.", "Hay mas de estos."],
 }
 
+# §18 del brief: el CTA por PERFIL, no por objetivo del embudo. Los dos
+# ejes conviven -- el objetivo dice para que existe la pieza, el perfil
+# dice de que forma se pide. "Seguime para mas" es UNO de siete, no la
+# respuesta a todo.
+CTA_POR_PERFIL = {
+    "curiosidad":  ["Hay una parte que no entra acá.",
+                    "Lo raro es lo que pasa despues."],
+    "recurso":     ["Lo dejé armado en {donde}.",
+                    "La planilla está en {donde}. Gratis."],
+    "continuacion": ["Mañana probamos si esto funciona de verdad.",
+                     "Parte 2 cuando tengamos el número."],
+    "comunidad":   ["Contame en qué rubro estás y lo miro.",
+                    "Si te pasa lo mismo, escribilo abajo."],
+    "herramienta": ["La herramienta la hicimos nosotros. Está en {donde}.",
+                    "Probala y me decís."],
+    "experimento": ["Vamos a probarlo. Te muestro el resultado igual "
+                    "si sale mal.",
+                    "Esto lo estamos probando ahora."],
+    "pregunta":    ["¿Vos cuánto tardás en contestar?",
+                    "¿En tu rubro pasa igual?"],
+}
+
+
+def sugerir_cta_perfil(perfil, donde="el link de la bio"):
+    return [t.format(donde=donde)
+            for t in CTA_POR_PERFIL.get(perfil or "", ["Seguime."])]
+
 
 def faltantes(fila):
     """Que preguntas de §24 quedan sin responder."""
