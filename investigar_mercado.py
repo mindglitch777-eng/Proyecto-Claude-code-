@@ -69,41 +69,74 @@ def _fetch(url, timeout=25):
         return r.read().decode("utf-8", "ignore")
 
 
-def buscar_duckduckgo(query, limite=8):
+def buscar_duckduckgo(query, limite=8, intentos=2):
     url = "https://html.duckduckgo.com/html/?" + urllib.parse.urlencode({"q": query})
-    try:
-        html = _fetch(url)
-    except Exception as e:
-        return [], str(e)
-    # Resultados: <a class="result__a" href="...">Titulo</a>
-    items = []
-    for m in re.finditer(
-            r'<a[^>]*class="result__a"[^>]*href="([^"]+)"[^>]*>(.*?)</a>', html, re.S):
-        href, titulo = m.group(1), re.sub("<[^>]+>", "", m.group(2)).strip()
-        # DDG a veces envuelve el link real en un redirect uddg=
-        real = urllib.parse.parse_qs(urllib.parse.urlparse(href).query).get("uddg")
-        href = real[0] if real else href
-        if titulo and href.startswith("http"):
-            items.append({"titulo": titulo, "url": href})
-        if len(items) >= limite:
+    ultimo_err = None
+    for intento in range(intentos):
+        try:
+            html = _fetch(url)
+        except Exception as e:
+            ultimo_err = str(e)
+            time.sleep(8 + intento * 8)
+            continue
+        items = []
+        for m in re.finditer(
+                r'<a[^>]*class="result__a"[^>]*href="([^"]+)"[^>]*>(.*?)</a>', html, re.S):
+            href, titulo = m.group(1), re.sub("<[^>]+>", "", m.group(2)).strip()
+            real = urllib.parse.parse_qs(urllib.parse.urlparse(href).query).get("uddg")
+            href = real[0] if real else href
+            if titulo and href.startswith("http"):
+                items.append({"titulo": titulo, "url": href})
+            if len(items) >= limite:
+                break
+        if items:
+            return items, None
+        if "anomaly" in html.lower() or "unusual traffic" in html.lower():
+            ultimo_err = "DuckDuckGo detecto trafico automatizado y corto los resultados"
             break
-    return items, None
+        ultimo_err = "sin resultados en el HTML (posible limite de pedidos)"
+        time.sleep(8 + intento * 8)
+    return [], ultimo_err
 
 
-def buscar_bing(query, limite=8):
+def buscar_bing(query, limite=8, intentos=2):
     url = "https://www.bing.com/search?" + urllib.parse.urlencode({"q": query})
-    try:
-        html = _fetch(url)
-    except Exception as e:
-        return [], str(e)
-    items = []
-    for m in re.finditer(r'<h2><a href="([^"]+)"[^>]*>(.*?)</a></h2>', html, re.S):
-        href, titulo = m.group(1), re.sub("<[^>]+>", "", m.group(2)).strip()
-        if titulo and href.startswith("http"):
-            items.append({"titulo": titulo, "url": href})
-        if len(items) >= limite:
+    ultimo_err = None
+    for intento in range(intentos):
+        try:
+            html = _fetch(url)
+        except Exception as e:
+            ultimo_err = str(e)
+            time.sleep(6 + intento * 6)
+            continue
+        items = []
+        # Bing casi siempre pone clase/id en el <h2> (por eso el regex
+        # original, que exigia <h2> pelado, no matcheaba nunca). Se
+        # relaja a <h2 CUALQUIER-COSA> y ademas se prueba el patron
+        # alternativo <li class="b_algo">...<a href=...>.
+        patrones = [
+            r'<h2[^>]*><a href="([^"]+)"[^>]*>(.*?)</a></h2>',
+            r'<li class="b_algo"[^>]*>.*?<a href="([^"]+)"[^>]*>(.*?)</a>',
+        ]
+        for pat in patrones:
+            for m in re.finditer(pat, html, re.S):
+                href, titulo = m.group(1), re.sub("<[^>]+>", "", m.group(2)).strip()
+                if titulo and href.startswith("http") and "bing.com" not in href:
+                    items.append({"titulo": titulo, "url": href})
+                if len(items) >= limite:
+                    break
+            if items:
+                break
+        if items:
+            return items, None
+        # HTML vino pero sin matches: puede ser que Bing sirvio una
+        # pagina de verificacion/bloqueo en vez de resultados.
+        if "cAPTCHA" in html or "captcha" in html.lower():
+            ultimo_err = "Bing pidio verificacion (captcha), no se pudo leer"
             break
-    return items, None
+        ultimo_err = "HTML recibido pero sin resultados reconocibles (estructura distinta a la esperada)"
+        time.sleep(6 + intento * 6)
+    return [], ultimo_err
 
 
 def buscar_hotmart(query, limite=8):
@@ -160,16 +193,23 @@ def main():
     md.append("\n## Demanda real (Google Trends, 12 meses, hispanohablante)\n")
     for geo, nombre in (("AR", "Argentina"), ("MX", "México"), ("", "Global hispano, sin filtro de país")):
         terminos = ["ingresos pasivos", "vender por internet", "productos digitales"]
-        datos, err = medir_trends(terminos, geo=geo)
+        datos, err = None, None
+        for intento in range(3):
+            datos, err = medir_trends(terminos, geo=geo)
+            if datos:
+                break
+            espera = 25 * (intento + 1)
+            print(f"  Trends [{nombre}] fallo ({err}), reintento en {espera}s...")
+            time.sleep(espera)
         md.append(f"\n### {nombre}\n")
-        if err:
-            md.append(f"_No se pudo medir: {err}_\n")
+        if err and not datos:
+            md.append(f"_No se pudo medir despues de reintentos: {err}_\n")
         else:
             md.append("| Término | Promedio (0-100) | Pico (0-100) |")
             md.append("|---|---|---|")
             for t in terminos:
                 md.append(f"| {t} | {datos['promedio'].get(t,'?')} | {datos['pico'].get(t,'?')} |")
-        time.sleep(2)  # Trends limita pedidos muy seguidos
+        time.sleep(15)  # entre geos: Trends banea rapido pedidos seguidos
 
     # --- Competencia real (que existe ya) ---
     for consulta in CONSULTAS:
@@ -184,7 +224,9 @@ def main():
             else:
                 for it in items:
                     md.append(f"- [{it['titulo']}]({it['url']})")
-            time.sleep(1)
+            time.sleep(9)  # espacio real entre pedidos: la corrida
+                           # anterior con 1s gatillo el limite de DDG y
+                           # probablemente el bloqueo de Bing tambien
 
     md.append("\n## Hotmart — catálogo (best-effort)\n")
     for consulta in ("reservas whatsapp", "no show clientes", "seña turno negocio"):
