@@ -39,7 +39,8 @@
       "narracion": "El que te ganó el laburo no cobra menos.",
       "necesita": "serious tradesman portrait workshop",
       "hook": "impacto",
-      "flash": true
+      "flash": true,
+      "imagen": "assets/biblioteca/serious-tradesman-portrait-workshop/00.jpg"
     },
     {
       "encuadre": "sangre",
@@ -55,7 +56,8 @@
       ],
       "narracion": "Contestó primero. Y ya está.",
       "necesita": "man reading phone message at night",
-      "transicion": "dip"
+      "transicion": "dip",
+      "imagen": "assets/biblioteca/man-reading-phone-message-at-night/00.jpg"
     },
     {
       "encuadre": "sangre",
@@ -76,7 +78,8 @@
       "transicion": "dip",
       "izq_titulo": "Vos",
       "der_titulo": "Él",
-      "remate": "mismo laburo"
+      "remate": "mismo laburo",
+      "imagen": "assets/biblioteca/construction-worker-hands-tools-closeup/00.jpg"
     },
     {
       "formato": "comparacion",
@@ -96,7 +99,8 @@
       "der_titulo": "Ahora",
       "narracion": "Te escribieron a las diez y contestaste al otro día. El laburo ya lo tenía otro.",
       "necesita": "tired man sitting alone night window",
-      "transicion": "corte_duro"
+      "transicion": "corte_duro",
+      "imagen": "assets/biblioteca/tired-man-sitting-alone-night-window/00.jpg"
     },
     {
       "formato": "prueba",
@@ -109,7 +113,8 @@
       "necesita": "laptop screen data chart analytics",
       "fuente": "Google Trends · Argentina · 12 meses · medido 28/08/2026",
       "kicker": "VERIFICADO",
-      "transicion": "dip"
+      "transicion": "dip",
+      "imagen": "assets/biblioteca/laptop-screen-data-chart-analytics/00.jpg"
     },
     {
       "encuadre": "sangre",
@@ -127,7 +132,8 @@
       ],
       "narracion": "Cuánto vale su hora, cuánto le cuesta el material, cuánto quiere ganar.",
       "necesita": "handwritten price list notebook",
-      "transicion": "dip"
+      "transicion": "dip",
+      "imagen": "assets/biblioteca/handwritten-price-list-notebook/00.jpg"
     },
     {
       "encuadre": "sangre",
@@ -143,7 +149,8 @@
       ],
       "narracion": "Vos lo tenés en la cabeza. Por eso tardás.",
       "necesita": "frustrated man thinking workshop",
-      "transicion": "dip"
+      "transicion": "dip",
+      "imagen": "assets/biblioteca/frustrated-man-thinking-workshop/00.jpg"
     },
     {
       "encuadre": "plano",
@@ -158,7 +165,8 @@
       ],
       "narracion": "Sacarlo de la cabeza es todo el truco.",
       "necesita": "confident craftsman hands working workshop",
-      "transicion": "dip"
+      "transicion": "dip",
+      "imagen": "assets/biblioteca/confident-craftsman-hands-working-workshop/00.jpg"
     },
     {
       "formato": "cta",
