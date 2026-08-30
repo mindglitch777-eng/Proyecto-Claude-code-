@@ -1,19 +1,24 @@
-# Muestras de voz
+# Comparacion de motores de voz
 
-Misma frase con las tres voces masculinas de Piper.
-
-- `-CRUDO` = Piper tal cual sale.
-- `-REALZADA` = con la cadena de voz_piper.py (tono -2 semitonos, compresion, pecho y presencia).
+Misma frase en todos los motores, cruda y con la cadena de realce de `voz_piper.py`.
 
 Frase:
 
-> El barbero que más gana de tu barrio no laburó más que vos. Cobra distinto. Vos cobrás el corte. Él cobra la agenda. Misma tijera.
+> La mitad de lo que venden los latinos no se vende acá. Se cobra en dólares, afuera. El problema no es el mercado: es que no sabés qué vender.
 
-Archivos:
+## Archivos
 
-- `es_ES-davefx-medium-CRUDO.mp3`
-- `es_ES-davefx-medium-REALZADA.mp3`
-- `es_ES-sharvard-medium-CRUDO.mp3`
-- `es_ES-sharvard-medium-REALZADA.mp3`
-- `es_MX-ald-medium-CRUDO.mp3`
-- `es_MX-ald-medium-REALZADA.mp3`
+- `kokoro-em_alex-CRUDO.mp3`
+- `kokoro-em_alex-REALZADA.mp3`
+- `kokoro-em_santa-CRUDO.mp3`
+- `kokoro-em_santa-REALZADA.mp3`
+- `piper-es_MX-ald-CRUDO.mp3`
+- `piper-es_MX-ald-REALZADA.mp3`
+- `pocket-CRUDO.mp3`
+- `pocket-REALZADA.mp3`
+
+## Licencias
+
+- kokoro — Apache-2.0, uso comercial libre
+- pocket-tts (Kyutai) — MIT, uso comercial libre, ademas clona voz
+- piper — MIT, uso comercial libre
