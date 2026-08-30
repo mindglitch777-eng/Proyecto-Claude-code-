@@ -406,6 +406,11 @@ def _semilla_seg(seg):
 #
 # Estilo y direccion se eligen por INDICE de palabra, nunca al azar: el
 # mismo guion tiene que rendir siempre igual.
+# Como entra la palabra. Se cicla por indice con un paso distinto al
+# de estilos y direcciones (5, contra 6 y 3) para que las tres cosas no
+# vuelvan a coincidir hasta muy adelante.
+TIPOS_ENTRADA = ["desliza", "escala", "desliza", "giro", "escala"]
+
 DIRECCIONES_PALABRA = [
     (0.0, 1.0), (0.0, -1.0), (-1.0, 0.0), (1.0, 0.0),
     (-1.0, -1.0), (1.0, 1.0), (1.0, -1.0), (-1.0, 1.0),
@@ -475,9 +480,23 @@ def dibujar_palabra_cinetica(img, d, palabra, clave, lt, idx, pal, cy,
     # vuelve: ese rebote es lo que hace que "aparezca de golpe" en vez
     # de deslizarse suave.
     e = eo_back(min(1.0, lt / 0.26))
-    desliz = (1.0 - e) * (150 if (dxu and dyu) else 215)
-    ox, oy = dxu * desliz, dyu * desliz
     alpha = int(255 * min(1.0, lt / 0.14))
+    # Tres formas de entrar, no solo una. Desplazarse siempre igual,
+    # aunque cambie el borde de origen, termina leyendose como un solo
+    # efecto repetido; el golpe de escala y el enderezado dan dos
+    # sensaciones distintas con el mismo motor.
+    tipo = TIPOS_ENTRADA[(idx * 5) % len(TIPOS_ENTRADA)]
+    ox = oy = 0.0
+    escala, giro = 1.0, 0.0
+    if tipo == "desliza":
+        desliz = (1.0 - e) * (150 if (dxu and dyu) else 215)
+        ox, oy = dxu * desliz, dyu * desliz
+    elif tipo == "escala":
+        # entra grande y se acomoda: golpe seco
+        escala = 1.0 + (1.0 - e) * 0.55
+    else:  # "giro" -- entra torcida y se endereza
+        giro = (1.0 - e) * 9.0 * (1 if dxu >= 0 else -1)
+        ox = dxu * (1.0 - e) * 70
 
     x0, y0, x1, y1 = d.textbbox((0, 0), txt, font=f)
     tw, th = x1 - x0, y1 - y0
@@ -495,6 +514,12 @@ def dibujar_palabra_cinetica(img, d, palabra, clave, lt, idx, pal, cy,
         dc.text((px + 6, py + 6), txt, font=f, fill=(0, 0, 0, int(alpha * 0.55)))
     dc.text((px, py), txt, font=f, fill=tuple(col) + (alpha,))
 
+    if giro:
+        capa = capa.rotate(giro, resample=Image.BICUBIC, expand=True)
+    if escala != 1.0:
+        capa = capa.resize((max(1, int(capa.width * escala)),
+                            max(1, int(capa.height * escala))),
+                           Image.BICUBIC)
     img.paste(capa, (int((W - capa.width) / 2 + ox),
                      int(cy - capa.height / 2 + oy)), capa)
 
