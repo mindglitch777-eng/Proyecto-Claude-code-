@@ -38,7 +38,8 @@
       "captions_palabra_por_palabra": true,
       "necesita": "serious tradesman portrait workshop",
       "hook": "impacto",
-      "flash": true
+      "flash": true,
+      "imagen": "assets/biblioteca/serious-tradesman-portrait-workshop/00.jpg"
     },
     {
       "formato": "prueba",
@@ -52,7 +53,8 @@
       "captions_y": 0.88,
       "captions_palabra_por_palabra": true,
       "necesita": "man reading phone message at night",
-      "transicion": "corte_duro"
+      "transicion": "corte_duro",
+      "imagen": "assets/biblioteca/man-reading-phone-message-at-night/00.jpg"
     },
     {
       "encuadre": "tarjeta",
@@ -76,7 +78,8 @@
       "transicion": "corte_duro",
       "izq_titulo": "Vos",
       "der_titulo": "Él",
-      "remate": "mismo laburo"
+      "remate": "mismo laburo",
+      "imagen": "assets/biblioteca/construction-worker-hands-tools-closeup/00.jpg"
     },
     {
       "formato": "prueba",
@@ -90,7 +93,8 @@
       "captions_y": 0.88,
       "captions_palabra_por_palabra": true,
       "necesita": "tired man sitting alone night window",
-      "transicion": "punch"
+      "transicion": "punch",
+      "imagen": "assets/biblioteca/tired-man-sitting-alone-night-window/00.jpg"
     },
     {
       "formato": "prueba",
@@ -106,7 +110,8 @@
       "necesita": "laptop screen data chart analytics",
       "fuente": "Google Trends · Argentina · 12 meses · medido 28/08/2026",
       "kicker": "VERIFICADO",
-      "transicion": "corte_duro"
+      "transicion": "corte_duro",
+      "imagen": "assets/biblioteca/laptop-screen-data-chart-analytics/00.jpg"
     },
     {
       "formato": "menu",
@@ -131,7 +136,8 @@
       "captions_y": 0.88,
       "captions_palabra_por_palabra": true,
       "necesita": "handwritten price list notebook",
-      "transicion": "corte_duro"
+      "transicion": "corte_duro",
+      "imagen": "assets/biblioteca/handwritten-price-list-notebook/00.jpg"
     },
     {
       "encuadre": "tarjeta",
@@ -150,7 +156,8 @@
       "captions_y": 0.88,
       "captions_palabra_por_palabra": true,
       "necesita": "frustrated man thinking workshop",
-      "transicion": "corte_duro"
+      "transicion": "corte_duro",
+      "imagen": "assets/biblioteca/frustrated-man-thinking-workshop/00.jpg"
     },
     {
       "encuadre": "plano",
@@ -168,7 +175,8 @@
       "captions_y": 0.88,
       "captions_palabra_por_palabra": true,
       "necesita": "confident craftsman hands working workshop",
-      "transicion": "corte_duro"
+      "transicion": "corte_duro",
+      "imagen": "assets/biblioteca/confident-craftsman-hands-working-workshop/00.jpg"
     },
     {
       "formato": "cta",
