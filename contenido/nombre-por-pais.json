@@ -1,0 +1,66 @@
+{
+  "tema": "La misma herramienta tiene otro nombre en cada país",
+  "lenguaje": "EDITORIAL",
+  "nota": "Guion de prueba del nicho. TODAS las cifras salen de MEDICION_NICHOS.md, medidas con Google Trends desde el runner el 28/08/2026. Ejercita: escena con planos, ráfaga, silueta con figuras nuevas, gráfico construido progresivamente, y la escalera de §13.",
+  "ideas": [
+    {"rol": "hook", "duracion": 3.6,
+     "lineas": ["Tu producto", "no vende"],
+     "narracion": "Tu producto no vende.",
+     "planos": [
+       {"funcion": "contexto", "dur": 1.2, "mov": "BURST",
+        "necesita": "person typing on laptop keyboard closeup"},
+       {"funcion": "contexto", "dur": 0.5, "mov": "BURST",
+        "necesita": "google search bar screen"},
+       {"funcion": "contexto", "dur": 0.5, "mov": "BURST",
+        "necesita": "empty shop counter waiting"},
+       {"funcion": "refuerzo", "dur": 1.4, "mov": "STATIC",
+        "necesita": "frustrated entrepreneur looking at laptop"}
+     ]},
+
+    {"rol": "contradiccion", "duracion": 4.4,
+     "lineas": ["Le pusiste", "el nombre", "de otro país"],
+     "narracion": "Le pusiste el nombre de otro país.",
+     "planos": [
+       {"funcion": "relacion", "dur": 4.4,
+        "figuras": ["etiqueta", "flecha", "mapa"],
+        "texto": "Mismo producto", "pie": "otro nombre según dónde"}
+     ]},
+
+    {"rol": "evidencia", "duracion": 7.0,
+     "lineas": ["«Cotizador»"],
+     "narracion": "Cotizador tiene setenta de demanda en Argentina y setenta y ocho en México.",
+     "cifra": {"etiqueta": "VERIFICADO",
+               "fuente": "Google Trends · 12 meses · medido 28/08/2026 · MEDICION_NICHOS.md"},
+     "planos": [
+       {"funcion": "contexto", "dur": 1.6, "mov": "SUBTLE",
+        "necesita": "buenos aires street shop sign"},
+       {"funcion": "cifra", "dur": 5.4, "tipo": "barras",
+        "titulo": "«cotizador»",
+        "datos": [{"etiqueta": "México", "valor": 78.5},
+                  {"etiqueta": "Argentina", "valor": 70.7},
+                  {"etiqueta": "España", "valor": 1.0}]}
+     ]},
+
+    {"rol": "giro", "duracion": 7.0,
+     "lineas": ["En España", "esa palabra", "no existe"],
+     "narracion": "En España esa palabra no existe. Ahí buscan presupuesto online.",
+     "cifra": {"etiqueta": "VERIFICADO",
+               "fuente": "Google Trends · España · 12 meses · 28/08/2026"},
+     "planos": [
+       {"funcion": "contexto", "dur": 1.6, "mov": "SUBTLE",
+        "necesita": "madrid spain street city"},
+       {"funcion": "cifra", "dur": 5.4, "tipo": "barras",
+        "titulo": "Lo que busca España",
+        "datos": [{"etiqueta": "«presupuesto online»", "valor": 53.9},
+                  {"etiqueta": "«cotizador»", "valor": 1.0}]}
+     ]},
+
+    {"rol": "conclusion", "duracion": 4.8,
+     "lineas": ["No cambies", "el producto", "Cambiá", "el nombre"],
+     "narracion": "No cambies el producto. Cambiá el nombre.",
+     "planos": [
+       {"funcion": "refuerzo", "dur": 4.8, "mov": "STATIC",
+        "necesita": "hands writing notebook plan desk"}
+     ]}
+  ]
+}

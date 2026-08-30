@@ -3369,11 +3369,46 @@ def _sil_billete(d, x, y, s, col):
                y + h_ / 2 + s * 0.17], outline=col, width=g)
 
 
+def _sil_lupa(d, x, y, s, col):
+    """Buscar. La figura que le faltaba al nicho: casi todo lo que
+    contamos empieza con alguien escribiendo algo en un buscador."""
+    g = max(3, int(s * 0.055))
+    r = s * 0.34
+    cx, cy = x - s * 0.08, y + s * 0.36
+    d.ellipse([cx - r, cy - r, cx + r, cy + r], outline=col, width=g)
+    d.line([cx + r * 0.72, cy + r * 0.72, x + s * 0.42, y + s * 0.92],
+           fill=col, width=int(g * 1.5))
+
+
+def _sil_mapa(d, x, y, s, col):
+    """Pais / mercado. Un globo con dos meridianos: no pretende ser un
+    mapa real, alcanza con que se lea 'otro lugar'."""
+    g = max(3, int(s * 0.042))
+    r = s / 2
+    d.ellipse([x - r, y, x + r, y + s], outline=col, width=g)
+    d.line([x, y, x, y + s], fill=col, width=g)
+    d.ellipse([x - r * 0.46, y, x + r * 0.46, y + s], outline=col, width=g)
+    d.line([x - r, y + s / 2, x + r, y + s / 2], fill=col, width=g)
+
+
+def _sil_etiqueta(d, x, y, s, col):
+    """Nombre / precio. Una etiqueta colgada."""
+    g = max(3, int(s * 0.042))
+    w_, h_ = s * 1.05, s * 0.66
+    x0, y0_ = x - w_ / 2, y + s * 0.17
+    d.polygon([(x0 + s * 0.20, y0_), (x0 + w_, y0_), (x0 + w_, y0_ + h_),
+               (x0 + s * 0.20, y0_ + h_), (x0, y0_ + h_ / 2)],
+              outline=col, width=g)
+    d.ellipse([x0 + s * 0.22, y0_ + h_ / 2 - s * 0.06,
+               x0 + s * 0.34, y0_ + h_ / 2 + s * 0.06], fill=col)
+
+
 FIGURAS = {
     "persona": _sil_persona, "telefono": _sil_telefono,
     "computadora": _sil_computadora, "tienda": _sil_tienda,
     "edificio": _sil_edificio, "flecha": _sil_flecha, "reloj": _sil_reloj,
     "grafico": _sil_grafico, "billete": _sil_billete,
+    "lupa": _sil_lupa, "mapa": _sil_mapa, "etiqueta": _sil_etiqueta,
 }
 
 

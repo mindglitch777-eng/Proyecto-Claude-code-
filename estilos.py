@@ -840,9 +840,20 @@ def aplicar_ideas(contenido, lenguaje=None, semilla=None):
                 fondo.append(p)
             else:
                 promovidos.append((p, recurso, maqueta))
-        # Si no queda ningun fondo, la escena va sobre color plano.
+        # Si TODOS los planos se promovieron, la escena queda sin fondo
+        # y sin nada que sostener: emitirla igual dejaba un plano huerfano
+        # de un segundo con el texto sobre color plano, y despues el
+        # promovido con su propio texto. Se saltea, y el promovido se
+        # queda con la duracion entera de la idea.
         dur_prom = sum(float(p.get("dur", 0)) for p, _, _ in promovidos)
-        dur_escena = max(1.0, dur - dur_prom)
+        sin_escena = bool(promovidos) and not fondo
+        if sin_escena:
+            k = dur / max(1e-6, dur_prom)
+            for pp, _, _ in promovidos:
+                pp["dur"] = float(pp.get("dur", 0)) * k
+            dur_escena = 0.0
+        else:
+            dur_escena = max(1.0, dur - dur_prom)
         if fondo:
             k = dur_escena / max(1e-6, sum(float(p.get("dur", 0)) for p in fondo))
             for p in fondo:
@@ -878,11 +889,12 @@ def aplicar_ideas(contenido, lenguaje=None, semilla=None):
             seg["flash"] = True
         for k, v in (idea.get("extra") or {}).items():
             seg[k] = v
-        segs.append(seg)
+        if not sin_escena:
+            segs.append(seg)
 
         # Los promovidos van DESPUES de la escena, cada uno con su
         # maqueta y su propia duracion.
-        for p, recurso, maqueta in promovidos:
+        for j, (p, recurso, maqueta) in enumerate(promovidos):
             sp = {"formato": maqueta, "_rol": idea.get("rol", "idea"),
                   "_recurso": recurso, "_funcion": p.get("funcion"),
                   "duracion": round(float(p.get("dur", 1.5)), 2),
@@ -905,8 +917,11 @@ def aplicar_ideas(contenido, lenguaje=None, semilla=None):
                            "texto": p.get("texto") or " ".join(lineas[:1]),
                            "resaltado": ev.get("resaltado")})
             elif maqueta == "silueta":
+                # Sin escena que lo preceda, la silueta lleva el texto de
+                # la idea: si no, la idea se quedaria sin decir nada.
                 sp.update({"figuras": p.get("figuras") or idea.get("figuras") or [],
-                           "texto": p.get("texto") or "",
+                           "texto": p.get("texto") or (
+                               " ".join(lineas[:2]) if sin_escena else ""),
                            "pie": p.get("pie") or ""})
             elif maqueta in ("flujo", "comparacion", "cascada"):
                 txt = p.get("texto") or lineas
@@ -918,6 +933,11 @@ def aplicar_ideas(contenido, lenguaje=None, semilla=None):
                 else:
                     sp["lineas"] = txt
                     sp["encuadre"] = "plano"
+            if sin_escena and j == 0 and not i:
+                sp["hook"], sp["flash"] = "impacto", True
+                sp.pop("transicion", None)
+            if idea.get("narracion") and sin_escena and j == 0:
+                sp["narracion"] = idea["narracion"]
             sp = {k2: v2 for k2, v2 in sp.items() if v2 not in (None, "", [])}
             segs.append(sp)
 
