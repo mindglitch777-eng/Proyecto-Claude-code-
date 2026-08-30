@@ -1570,18 +1570,15 @@ def hk_persiana(img, t, pal):
     return out
 
 
-def hk_impacto(img, t, pal):
-    """Golpe combinado: flash + punch-zoom + shake, todo en ~0.26s.
-    Ni zoom_golpe (sin shake) ni sacudida (sin zoom) alcanzaban para
-    el 'texto pega con un golpe' del hook/cierre de la gramatica de
-    6 beats -- esto junta los tres en la MISMA ventana corta para que
-    el SFX de impacto caiga exactamente cuando el texto aparece, no
-    en una entrada suave."""
+def _punch(img, t, pal, lavado):
+    """Cuerpo comun de hk_impacto y hk_golpe. 'lavado' es el flash
+    blanco de los primeros 0.05s: tapa el corte anterior. En el
+    segmento 0 no hay corte anterior, y ahi estorba (§3)."""
     dur = 0.26
     if t > dur:
         return img
     e = eo_expo(t / dur)
-    if t < 0.05:
+    if lavado and t < 0.05:
         img = Image.blend(img, Image.new("RGB", (W, H), (255, 255, 255)),
                           (1 - t / 0.05) * 0.55)
     z = 1.42 - 0.42 * e
@@ -1595,9 +1592,48 @@ def hk_impacto(img, t, pal):
     return zz.crop((int(cx), int(cy), int(cx) + W, int(cy) + H))
 
 
+def hk_golpe(img, t, pal):
+    """§3. El golpe de APERTURA. No es hk_impacto sin flash: es otra cosa.
+
+    Sacar solo el lavado blanco no alcanzaba. Medido: con el punch-zoom
+    de 1.42x, la primera linea de la cascada (que empieza al 13% de la
+    altura) cae en -0.025 de la altura, o sea ARRIBA del borde. El
+    cuadro cero seguia sin una sola letra, ahora por el zoom en vez de
+    por el flash. Cualquier zoom por encima de ~1.10 la tapa.
+
+    Asi que el golpe de apertura no es un punch: es un asentamiento.
+    Escala 1.055 -> 1.000 y una sacudida corta. El impacto lo tiene que
+    dar la tipografia y el contraste, no una camara que esconde el
+    texto justo cuando hay que leerlo (§24: no queremos "mas efectos").
+    """
+    dur = 0.22
+    if t > dur:
+        return img
+    e = eo_expo(t / dur)
+    z = 1.055 - 0.055 * e
+    nw, nh = int(W * z), int(H * z)
+    a = 1 - t / dur
+    dx = int(math.sin(t * 80) * a * 8)
+    dy = int(math.cos(t * 64) * a * 6)
+    zz = img.resize((nw, nh), Image.LANCZOS)
+    cx = max(0, min((nw - W) / 2 + dx, nw - W))
+    cy = max(0, min((nh - H) / 2 + dy, nh - H))
+    return zz.crop((int(cx), int(cy), int(cx) + W, int(cy) + H))
+
+
+def hk_impacto(img, t, pal):
+    """Golpe combinado: flash + punch-zoom + shake, todo en ~0.26s.
+    Ni zoom_golpe (sin shake) ni sacudida (sin zoom) alcanzaban para
+    el 'texto pega con un golpe' del hook/cierre de la gramatica de
+    6 beats -- esto junta los tres en la MISMA ventana corta para que
+    el SFX de impacto caiga exactamente cuando el texto aparece, no
+    en una entrada suave."""
+    return _punch(img, t, pal, lavado=True)
+
+
 HOOKS = {"flash": hk_flash, "zoom_golpe": hk_zoom_golpe, "glitch": hk_glitch,
          "sacudida": hk_sacudida, "barras": hk_barras, "persiana": hk_persiana,
-         "impacto": hk_impacto}
+         "impacto": hk_impacto, "golpe": hk_golpe}
 
 
 
@@ -3420,28 +3456,65 @@ def f_escena(img, d, seg, t, pal):
         # 55% de la escena: el resto es tiempo de leer el bloque entero.
         entra = [dur * 0.55 * i / max(1, len(lineas)) for i in range(len(lineas))]
 
-    y = H * float(seg.get("cascada_y0", 0.13))
+    instantanea = bool(seg.get("hook_microestados"))
     base = int(seg.get("cascada_tam", CASCADA_TAM))
     col = tuple(pal["texto"])
+
+    # Primero se mide todo el bloque, despues se dibuja. Hace falta para
+    # poder centrarlo verticalmente: si la altura se fuera descubriendo
+    # linea por linea, el bloque saltaria cada vez que entra una.
+    medidas = []
+    ancho_max = W * 0.86
     for i, cruda in enumerate(lineas):
         txt, estilo, align, esc = _cascada_linea(d, cruda, i)
         if not txt:
+            medidas.append(None)
             continue
         tam = max(28, int(base * esc))
         f, apriete = _cascada_fuente(estilo, tam)
-        ancho_max = W * 0.86
         anc = _ancho_espaciado(d, txt, f, apriete)
         while anc > ancho_max and tam > 28:
             tam -= 4
             f, apriete = _cascada_fuente(estilo, tam)
             anc = _ancho_espaciado(d, txt, f, apriete)
+        medidas.append((txt, align, f, apriete, anc, tam))
+
+    if seg.get("cascada_centrado"):
+        # Sin metraje debajo, colgar el bloque del 13% deja medio cuadro
+        # de negro muerto. Se centra sobre el 44% de la altura -- un
+        # poco por encima del medio, que en vertical se lee mejor y
+        # queda lejos de la interfaz de abajo.
+        idx = [i for i, m in enumerate(medidas) if m]
+        ultimo = idx[-1] if idx else -1
+        alto = 0.0
+        for i in idx:
+            tam_i = medidas[i][5]
+            # La ultima linea suma solo su cuerpo: el interlineado de
+            # abajo no es parte del bloque.
+            alto += (tam_i if i == ultimo
+                     else tam_i * (1.18 if i % 2 == 0 else 2.05))
+        y = max(H * SEGURA_ARRIBA, H * 0.44 - alto / 2)
+    else:
+        y = H * float(seg.get("cascada_y0", 0.13))
+
+    for i, m in enumerate(medidas):
+        if not m:
+            continue
+        txt, align, f, apriete, anc, tam = m
 
         t0 = entra[i] if i < len(entra) else entra[-1]
-        lt = (ts - t0) / 0.22
-        if lt <= 0:
-            y += tam * (1.18 if i % 2 == 0 else 2.05)
-            continue
-        lt = min(1.0, lt)
+        if instantanea and t0 <= 1e-3:
+            # §3. En el hook, una linea declarada en t=0 tiene que estar
+            # ENTERA en el cuadro cero: es lo unico que se lee sin audio,
+            # y es la miniatura. El fundido de 0.22s la dejaba invisible
+            # los primeros cuatro cuadros del video.
+            lt = 1.0
+        else:
+            lt = (ts - t0) / 0.22
+            if lt <= 0:
+                y += tam * (1.18 if i % 2 == 0 else 2.05)
+                continue
+            lt = min(1.0, lt)
         alpha = int(255 * lt)
         dy = int((1 - eo_expo(lt)) * 14)
         if align == "izq":

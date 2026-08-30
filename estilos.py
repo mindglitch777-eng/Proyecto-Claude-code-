@@ -579,8 +579,9 @@ def aplicar(contenido, estilo_id=None, narrativa_id=None, ritmo_id=None,
         if i:
             seg["transicion"] = g.get("transicion") or _transicion(est, i, rnd)
         else:
-            seg["hook"] = seg.get("hook") or "impacto"
-            seg["flash"] = True
+            # Ver §3 mas abajo (aplicar_ideas): el flash del segmento 0
+            # tapa un corte que no existe y quema el primer cuadro.
+            seg["hook"] = seg.get("hook") or "golpe"
         for k, v in (g.get("extra") or {}).items():
             seg[k] = v
         segs.append(seg)
@@ -765,7 +766,10 @@ def _planos_de(idea, dur, rnd):
     """Los planos de esta idea. Si el guion los declara, manda el
     guion. Si no, se derivan de la intensidad."""
     dados = idea.get("planos")
-    if dados:
+    # "planos": [] es una declaracion, no una ausencia: la idea quiere
+    # cuadro plano. Lo pide §3 para el hook ("NO comenzar con B-roll
+    # generico"). Ausente (None) sigue derivando de la intensidad.
+    if dados is not None:
         return [dict(p) for p in dados]
     inten = str(idea.get("intensidad", "MEDIUM")).upper()
     n, movs, reparto = INTENSIDAD.get(inten, INTENSIDAD["MEDIUM"])
@@ -784,6 +788,49 @@ def _planos_de(idea, dur, rnd):
             p["necesita"] = consultas[i % len(consultas)]
         salida.append(p)
     return salida
+
+
+# §3. LOS PRIMEROS DOS SEGUNDOS
+#
+# El hook no se reparte como una idea cualquiera. La especificacion los
+# divide en tres microestados:
+#
+#   0.0-0.5   IMPACTO      la primera linea, desde el cuadro cero
+#   0.5-1.2   AFIRMACION   lo que se afirma
+#   1.2-2.0   PREGUNTA     la consecuencia, que abre el bucle
+#
+# Son anclas, no una plantilla: con una sola linea todo es impacto, con
+# dos la afirmacion y la consecuencia se funden. Y las anclas van en
+# segundos absolutos porque la atencion del pulgar es absoluta -- un
+# hook mas largo no estira los microestados, deja mas tiempo de lectura
+# despues. Lo unico que si escala es el caso corto: si el hook dura
+# menos de MICRO_TOPE, todo se comprime, porque una linea que entra
+# despues del corte no existe.
+MICRO_TOPE = 2.2
+# §3 "texto grande": el hook arranca mas grande que el cuerpo del video.
+# Si queda ancho, f_escena lo baja solo hasta que entre.
+HOOK_TAM = 96
+
+
+def _entra_hook(lineas, dur):
+    """Tiempos de entrada de las lineas del hook segun los microestados."""
+    n = len(lineas)
+    if n <= 0:
+        return []
+    if n == 1:
+        t = [0.0]
+    elif n == 2:
+        t = [0.0, 0.62]
+    elif n == 3:
+        t = [0.0, 0.55, 1.25]
+    else:
+        # La primera es el impacto; las demas se reparten entre el final
+        # de IMPACTO y el final de PREGUNTA.
+        a, b = 0.50, 1.55
+        t = [0.0] + [round(a + (b - a) * k / (n - 2), 2) for k in range(n - 1)]
+    if dur < MICRO_TOPE:
+        t = [round(x * dur / MICRO_TOPE, 2) for x in t]
+    return t
 
 
 def aplicar_ideas(contenido, lenguaje=None, semilla=None):
@@ -825,9 +872,10 @@ def aplicar_ideas(contenido, lenguaje=None, semilla=None):
         lineas = idea.get("lineas") or []
         # §4: las lineas entran repartidas en el primer 55% de la idea;
         # el resto es tiempo de leer el bloque entero.
-        entra = idea.get("entra") or [
-            round(dur * 0.55 * k / max(1, len(lineas)), 2)
-            for k in range(len(lineas))]
+        entra = idea.get("entra") or (
+            _entra_hook(lineas, dur) if i == 0 else
+            [round(dur * 0.55 * k / max(1, len(lineas)), 2)
+             for k in range(len(lineas))])
 
         # §13: los planos que NO son B-roll salen de la escena y se
         # vuelven su propio cuadro. Un plano de funcion 'cifra' detras
@@ -868,7 +916,9 @@ def aplicar_ideas(contenido, lenguaje=None, semilla=None):
             "lineas": lineas,
             "entra": entra,
             "planos": planos,
-            "velo": idea.get("velo", 0.44),
+            # El velo existe para que el texto se lea SOBRE metraje.
+            # Sin metraje debajo solo oscurece un fondo ya plano.
+            "velo": idea.get("velo", 0.44 if fondo else 0.0),
         }
         if idea.get("narracion"):
             seg["narracion"] = idea["narracion"]
@@ -885,8 +935,21 @@ def aplicar_ideas(contenido, lenguaje=None, semilla=None):
         if i:
             seg["transicion"] = idea.get("transicion") or _transicion(est, i, rnd)
         else:
-            seg["hook"] = "impacto"
-            seg["flash"] = True
+            # §3: el primer cuadro tiene que ser legible SIN AUDIO.
+            #
+            # "golpe" es el punch-zoom + sacudida de "impacto" pero sin el
+            # lavado blanco. El flash existe para tapar un corte -- el ojo
+            # pierde la escena anterior y cuando vuelve la nueva ya esta
+            # puesta. Antes del segmento 0 no hay escena anterior que
+            # tapar: lo unico que lograba era lavar los primeros cuatro
+            # cuadros del video, que en TikTok son la miniatura.
+            seg["hook"] = "golpe"
+            seg["hook_microestados"] = True
+            seg.setdefault("cascada_tam", HOOK_TAM)
+            # Sin metraje debajo el bloque se centra: colgado del 13%
+            # dejaba medio cuadro de negro muerto.
+            if not fondo:
+                seg["cascada_centrado"] = True
         for k, v in (idea.get("extra") or {}).items():
             seg[k] = v
         if not sin_escena:

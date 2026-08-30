@@ -3,19 +3,13 @@
   "lenguaje": "EDITORIAL",
   "nota": "Guion de prueba del nicho. TODAS las cifras salen de MEDICION_NICHOS.md, medidas con Google Trends desde el runner el 28/08/2026. Ejercita: escena con planos, ráfaga, silueta con figuras nuevas, gráfico construido progresivamente, y la escalera de §13.",
   "ideas": [
-    {"rol": "hook", "duracion": 3.6,
-     "lineas": ["Tu producto", "no vende"],
-     "narracion": "Tu producto no vende.",
-     "planos": [
-       {"funcion": "contexto", "dur": 1.2, "mov": "BURST",
-        "necesita": "person typing on laptop keyboard closeup"},
-       {"funcion": "contexto", "dur": 0.5, "mov": "BURST",
-        "necesita": "google search bar screen"},
-       {"funcion": "contexto", "dur": 0.5, "mov": "BURST",
-        "necesita": "empty shop counter waiting"},
-       {"funcion": "refuerzo", "dur": 1.4, "mov": "STATIC",
-        "necesita": "frustrated entrepreneur looking at laptop"}
-     ]},
+    {"rol": "hook", "duracion": 3.4,
+     "nota_hook": "FASE 2. Los cuatro elementos de §3: CONFLICTO (te quiere comprar y no puede) + ESPECIFICIDAD (un cliente, un pais con nombre) + CONSECUENCIA (venta perdida) + CURIOSIDAD (\u00abpor una palabra\u00bb abre el bucle sin cerrarlo). No adelanta ninguna cifra: la revelacion del grafico sigue siendo revelacion. planos:[] a proposito -- §3 prohibe abrir con B-roll generico, asi que el hook va sobre color plano, contraste maximo.",
+     "lineas": ["Tu producto es bueno", "Pero en Espa\u00f1a", "su nombre es un 1", "y no te encuentran"],
+     "narracion": "Tu producto es bueno. Pero en Espa\u00f1a su nombre es un uno sobre cien. Y no te encuentran.",
+     "cifra": {"etiqueta": "VERIFICADO",
+               "fuente": "Google Trends \u00b7 \u00abcotizador\u00bb en Espa\u00f1a = 1/100 \u00b7 12 meses \u00b7 28/08/2026 \u00b7 MEDICION_NICHOS.md"},
+     "planos": []},
 
     {"rol": "contradiccion", "duracion": 4.4,
      "lineas": ["Le pusiste", "el nombre", "de otro país"],
