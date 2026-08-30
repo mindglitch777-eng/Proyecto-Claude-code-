@@ -81,49 +81,24 @@ jobs:
           npx remotion render ${{ matrix.video }} out/${{ matrix.video }}.mp4 \
             --concurrency=2 --log=info
 
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: video-${{ matrix.video }}
-          path: remotion-spike/out/${{ matrix.video }}.mp4
-          retention-days: 5
-          if-no-files-found: warn
-
-  juntar:
-    needs: render
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref_name }}
-
-      - uses: actions/download-artifact@v4
-        with:
-          path: /tmp/videos
-          pattern: video-*
-          merge-multiple: true
-
-      - name: Commitear
+      - name: Commitear ${{ matrix.video }}
+        # Los artifacts NO se usan: la cuota de storage del repo esta
+        # agotada y upload-artifact falla DESPUES de renderizar bien,
+        # tirando a la basura los 3 minutos de render. Cada job
+        # commitea lo suyo con reintentos, que es el mismo camino que
+        # ya usa producir-videos.yml por el mismo motivo.
         run: |
           mkdir -p videos/remotion
-          shopt -s nullglob
-          archivos=(/tmp/videos/*.mp4)
-          if [ ${#archivos[@]} -eq 0 ]; then
-            echo "No se renderizo ningun video."
-            exit 0
-          fi
-          cp "${archivos[@]}" videos/remotion/
+          cp remotion-spike/out/${{ matrix.video }}.mp4 videos/remotion/
           git config user.name  "productor-bot"
           git config user.email "actions@github.com"
-          git add videos/remotion
-          if git diff --cached --quiet; then
-            echo "Sin cambios."
-            exit 0
-          fi
-          git commit -m "Videos de prueba Remotion: ${#archivos[@]} piezas"
-          for i in 1 2 3 4; do
-            git pull --rebase origin "$GITHUB_REF_NAME" && git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
-            sleep $((2 ** i))
+          git add videos/remotion/${{ matrix.video }}.mp4
+          if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
+          git commit -m "Video Remotion ${{ matrix.video }}"
+          for i in 1 2 3 4 5 6; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && \
+            git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
+            echo "reintento $i"
+            sleep $((RANDOM % 8 + 2 * i))
           done
           exit 1
