@@ -356,6 +356,31 @@ def dibujar_captions_kinetic(img, d, seg, t, pal):
     palabra, clave = palabras[idx]
     if not palabra:
         return
+
+    # "chico": la segunda capa de texto de la referencia. Corre AL
+    # MISMO TIEMPO que el bloque escalonado y no compite con el: es
+    # una palabra sola, chica, fina y baja, que solo confirma lo que
+    # la voz acaba de decir. Medido sobre los videos: ~4% del ancho,
+    # centrada, a media altura baja, sin franja oscura y sin rebote.
+    # El modo "grande" es el que ya existia y se deja por defecto para
+    # no re-pintar los guiones ya escritos.
+    if seg.get("captions_estilo", "grande") == "chico":
+        f = fnt(int(seg.get("captions_tam", W * 0.043)), ligera=True)
+        while d.textbbox((0, 0), palabra, font=f)[2] > W - 200 and f.size > 20:
+            f = fnt(f.size - 3, ligera=True)
+        a = int(255 * min(1.0, lt / 0.18))
+        x0b, y0b, x1b, y1b = d.textbbox((0, 0), palabra, font=f)
+        capa = Image.new("RGBA", (x1b - x0b + 60, y1b - y0b + 60), (0, 0, 0, 0))
+        _sombra_suave(capa, palabra, f, 30 - x0b, 30 - y0b, a, 0,
+                       tuple(pal["texto"]))
+        col = tuple(pal["destacado"]) if clave else tuple(pal["texto"])
+        ImageDraw.Draw(capa).text((30 - x0b, 30 - y0b), palabra, font=f,
+                                  fill=col + (a,))
+        img.paste(capa, (int((W - capa.width) / 2),
+                         int(H * float(seg.get("captions_y", 0.60))
+                             - capa.height / 2)), capa)
+        return
+
     tam = 128
     f = fnt(tam)
     while d.textbbox((0, 0), palabra, font=f)[2] > W - 140 and tam > 40:
@@ -458,144 +483,6 @@ ESTILOS_PALABRA = [
 # cual es el AHORA.
 #
 # Se activa por segmento con "captions_cascada": true.
-
-# Tipografias SOLO para la cascada. ESTILOS_PALABRA no sirve aca: tiene
-# una caja rellena de color y mayusculas negras pesadas, que es
-# exactamente el look de plantilla de CapCut que el operador no quiere.
-# Estas son todas de la misma familia de gusto -- serif italica, serif
-# recta, y sans liviana en versalitas con aire entre letras -- para que
-# el cambio de tipografia se lea como criterio editorial y no como un
-# efecto. Ninguna lleva caja ni peso extra.
-#
-#   track = aire entre letras, en pixeles. Positivo solo en las
-#   mayusculas: una palabra en caja alta sin tracking se ve apretada y
-#   barata; con aire se ve cara. En minuscula va en 0.
-ESTILOS_CASCADA = [
-    {"serif": True,  "italica": True,  "ligera": False, "mayus": False, "esc": 1.00, "track": 0},
-    {"serif": True,  "italica": False, "ligera": False, "mayus": False, "esc": 0.90, "track": 0},
-    {"serif": False, "italica": False, "ligera": True,  "mayus": True,  "esc": 0.58, "track": 11},
-    {"serif": True,  "italica": True,  "ligera": False, "mayus": False, "esc": 1.14, "track": 0},
-    {"serif": False, "italica": False, "ligera": True,  "mayus": False, "esc": 0.86, "track": 0},
-    {"serif": True,  "italica": False, "ligera": False, "mayus": True,  "esc": 0.62, "track": 9},
-    {"serif": True,  "italica": True,  "ligera": False, "mayus": False, "esc": 0.82, "track": 0},
-]
-
-CASCADA_Y0 = 0.115       # donde nace la palabra nueva (fraccion de H)
-CASCADA_PASO = 152       # pixeles entre una palabra y la siguiente
-CASCADA_TAM = 92         # cuerpo base
-
-
-def _sombra_suave(capa, txt, f, px, py, alpha, track=0):
-    """Halo oscuro difuminado detras de la palabra. La sombra dura
-    desplazada es el tic de plantilla; esto es lo que hace que el texto
-    se lea sobre una foto sin parecer pegoteado encima."""
-    h = Image.new("L", capa.size, 0)
-    dh = ImageDraw.Draw(h)
-    if track:
-        _texto_espaciado(dh, (px, py), txt, f, int(alpha * 0.85), track)
-    else:
-        dh.text((px, py), txt, font=f, fill=int(alpha * 0.85))
-    h = h.filter(ImageFilter.GaussianBlur(9))
-    capa.paste(Image.new("RGBA", capa.size, (0, 0, 0, 255)), (0, 0), h)
-
-
-def dibujar_captions_cascada(img, d, seg, t, pal):
-    """Columna de palabras que caen juntas. La nueva nace arriba y
-    empuja a las anteriores hacia abajo; cada una con su propio
-    tratamiento tipografico. t = 0..1 dentro del segmento."""
-    texto = seg.get("captions_texto") or texto_hablado(seg)
-    if not texto or not texto.strip():
-        return
-    palabras = _palabras_captions(texto)
-    n = len(palabras)
-    if n == 0:
-        return
-
-    y0 = H * float(seg.get("cascada_y0", CASCADA_Y0))
-    paso = float(seg.get("cascada_paso", CASCADA_PASO))
-    base = int(seg.get("cascada_tam", CASCADA_TAM))
-    # Cuantas palabras entran desde y0 hasta que salen por abajo. Con el
-    # paso corto son muchas, y esa es la idea: una columna densa que
-    # baja entera, no cinco palabras sueltas muy separadas.
-    ventana = max(3, min(12, int((H * 0.97 - y0) / paso) + 1))
-    ventana = int(seg.get("cascada_ventana", ventana))
-
-    avance = min(1.0, t / 0.94)
-    idx = min(n - 1, int(avance * n))
-    lt = max(0.0, min(1.0, avance * n - idx))
-    col_txt = tuple(pal["texto"])
-    col_acc = tuple(pal["destacado"])
-    jitter = float(seg.get("cascada_jitter", 0.0))
-
-    # De la mas vieja a la mas nueva: si dos se solapan, la de arriba
-    # queda encima.
-    for edad in range(ventana - 1, -1, -1):
-        i = idx - edad
-        if i < 0:
-            continue
-        palabra, clave = palabras[i]
-        if not palabra:
-            continue
-        # Sumarle 'lt' hace que la columna baje de forma continua, en
-        # vez de saltar un escalon cada vez que cambia la palabra.
-        y = y0 + (edad + lt) * paso
-        if y > H * 1.02:
-            continue
-
-        est = ESTILOS_CASCADA[i % len(ESTILOS_CASCADA)]
-        # La recien nacida entra con un golpe corto de escala; el resto
-        # ya esta asentada y solo cae.
-        golpe = (1.0 + (1.0 - eo_back(min(1.0, lt / 0.24))) * 0.22
-                 if edad == 0 else 1.0)
-        # Merma suave: lo justo para dar profundidad sin que la columna
-        # se telescopie y se separe.
-        merma = (1.16 if edad == 0 else 1.0) - 0.055 * edad
-        tam = max(26, int(base * est["esc"] * merma * golpe))
-        if edad == 0:
-            alpha = int(255 * min(1.0, lt / 0.12))
-        else:
-            alpha = int(255 * max(0.0, 1.0 - edad / ventana) ** 1.45)
-        if alpha <= 5:
-            continue
-
-        txt = palabra.upper() if est["mayus"] else palabra
-        track = est["track"]
-        def _f(tm):
-            return fnt(tm, ligera=est["ligera"], serif=est["serif"],
-                       italica=est["italica"])
-        f = _f(tam)
-        ancho_max = W - 150
-        ancho = (_ancho_espaciado(d, txt, f, track) if track
-                 else d.textbbox((0, 0), txt, font=f)[2])
-        while ancho > ancho_max and tam > 26:
-            tam -= 5
-            f = _f(tam)
-            ancho = (_ancho_espaciado(d, txt, f, track) if track
-                     else d.textbbox((0, 0), txt, font=f)[2])
-
-        x0b, y0b, x1b, y1b = d.textbbox((0, 0), txt, font=f)
-        tw = int(ancho) if track else (x1b - x0b)
-        th = y1b - y0b
-        pad = 30
-        col = col_acc if clave else col_txt
-
-        capa = Image.new("RGBA", (tw + pad * 2, th + pad * 2), (0, 0, 0, 0))
-        dc = ImageDraw.Draw(capa)
-        px, py = pad - (0 if track else x0b), pad - y0b
-        _sombra_suave(capa, txt, f, px, py, alpha, track)
-        dc = ImageDraw.Draw(capa)
-        if track:
-            _texto_espaciado(dc, (px, py), txt, f, tuple(col) + (alpha,), track)
-        else:
-            dc.text((px, py), txt, font=f, fill=tuple(col) + (alpha,))
-
-        jx = 0.0
-        if jitter:
-            rj = random.Random(i * 7919 + 13)
-            jx = rj.uniform(-1, 1) * jitter
-        img.paste(capa, (int((W - capa.width) / 2 + jx),
-                         int(y - capa.height / 2)), capa)
-
 
 # ============ RITMO DE FLASHES ============
 # 'flash' es por segmento y solo lava la ENTRADA del plano. El operador
@@ -849,11 +736,11 @@ def f_pleno(img, d, seg, t, pal):
     velo = Image.new("RGB", (W, H), (0, 0, 0))
     img.paste(Image.blend(img, velo, seg.get("velo", 0.34)), (0, 0))
 
-    # Con la cascada activa el plano aporta SOLO la foto y el velo: la
-    # columna de palabras la dibuja dibujar_captions_cascada() despues.
-    # Si no, se dibujaba la misma palabra dos veces, una encima de la
-    # otra y a distinta altura.
-    if seg.get("captions_cascada"):
+    # Si el segmento ya lleva el subtitulo palabra-por-palabra, esa capa
+    # se dibuja sola despues y sobre el mismo texto: dibujar tambien la
+    # palabra del plano ponia DOS palabras distintas de la misma frase
+    # en pantalla al mismo tiempo.
+    if seg.get("captions_palabra_por_palabra"):
         return
     palabra, clave, lt, idx = _palabra_activa(seg, t)
     if not palabra:
@@ -2925,6 +2812,272 @@ def f_flujo(img, d, seg, t, pal):
             d.polygon([(ax - 16 * p, ay1 - 17 * p), (ax + 16 * p, ay1 - 17 * p),
                        (ax, ay1)], fill=acc)
 
+# ============ CASCADA — el bloque escalonado de la referencia ============
+# Reconstruido mirando cuadro por cuadro los videos que paso el
+# operador (cuenta @ventasilenciosa). Lo que hace NO es una palabra
+# que cae ni un subtitulo grande: es un BLOQUE DE LINEAS QUE SE
+# ACUMULA y se queda quieto mientras el metraje corta debajo.
+#
+#     Por $0.50 centavos          serif, pegado a la izquierda
+#                   más...        sans pesada y apretada, corrida a la derecha
+#     Agrandas también            sans liviana, izquierda otra vez
+#              la bebida          sans pesada, centrada
+#
+# Las cuatro cosas que lo hacen ese efecto y no otro:
+#
+#   1. Las lineas ENTRAN DE A UNA y NO SE VAN. Al final del plano
+#      estan las cuatro juntas. Eso es lo que deja leer la frase
+#      entera mientras la voz ya paso a otra cosa.
+#   2. Cada linea tiene OTRA TIPOGRAFIA. Serif, sans liviana y sans
+#      pesada alternadas: el contraste es el que hace que se vea caro,
+#      no un efecto de movimiento.
+#   3. Cada linea tiene OTRA SANGRIA. Izquierda, derecha, centro. El
+#      escalonado es lo que se lee como "cascada".
+#   4. Van de a PARES: dos lineas juntas, un hueco grande, dos lineas
+#      juntas. Sin ese hueco se lee como una lista y se pierde el
+#      remate.
+#
+# El texto va DIRECTO sobre el metraje, sin caja ni franja: solo un
+# halo difuminado para que se lea. Y el metraje puede ir a sangre o
+# como tarjeta redondeada sobre negro, que la referencia alterna.
+
+# (estilo, alineacion, escala). Se cicla si el guion no declara nada.
+CASCADA_RITMO = [
+    ("serif",    "izq",    1.00),
+    ("peso",     "der",    1.05),
+    ("liviana",  "izq",    0.92),
+    ("peso",     "centro", 1.10),
+]
+CASCADA_TAM = 78
+# Tracking negativo en la pesada: en la referencia las letras casi se
+# tocan, y eso es la mitad de su caracter. Va como fraccion del cuerpo.
+CASCADA_APRIETE = -0.030
+
+
+def _cascada_linea(dib, linea, i):
+    """Normaliza una linea del guion: acepta un string suelto o un
+    diccionario que pisa estilo, alineacion y escala."""
+    est, ali, esc = CASCADA_RITMO[i % len(CASCADA_RITMO)]
+    if isinstance(linea, dict):
+        return (str(linea.get("texto", "")), linea.get("estilo", est),
+                linea.get("align", ali), float(linea.get("esc", esc)))
+    return (str(linea), est, ali, esc)
+
+
+def _cascada_fuente(estilo, tam):
+    if estilo == "serif":
+        return fnt(tam, serif=True), 0
+    if estilo == "liviana":
+        return fnt(tam, ligera=True), 0
+    return fnt(tam), int(round(tam * CASCADA_APRIETE))   # "peso"
+
+
+def f_cascada(img, d, seg, t, pal):
+    """Bloque escalonado que se acumula sobre el metraje.
+
+    JSON:
+        {"formato": "cascada",
+         "lineas": ["Por $0.50 centavos", "más...",
+                    {"texto": "la bebida", "estilo": "peso",
+                     "align": "centro", "esc": 1.2}],
+         "imagen": "...",            metraje detras (o "video")
+         "encuadre": "sangre"|"tarjeta",
+         "velo": 0.30,               cuanto se oscurece el metraje
+         "cascada_y0": 0.10}         donde arranca el bloque
+    """
+    encuadre = seg.get("encuadre", "sangre")
+    # "claro": el cartel al reves, fondo claro y letra oscura. La
+    # referencia alterna negro pleno y blanco pleno todo el tiempo, y
+    # ESE salto es la transicion: no hace falta ningun efecto, el ojo
+    # ya lo lee como un golpe.
+    claro = bool(seg.get("claro"))
+    if claro:
+        pal = {"fondo": pal["texto"], "texto": pal["fondo"],
+               "destacado": pal["destacado"]}
+    if encuadre == "plano":
+        # Cartel sin metraje: solo color y tipografia.
+        img.paste(Image.new("RGB", (W, H), tuple(pal["fondo"])), (0, 0))
+    elif encuadre == "tarjeta":
+        # Metraje como tarjeta redondeada sobre negro, como alterna la
+        # referencia. El negro alrededor es lo que deja respirar al
+        # texto que va arriba y abajo de la tarjeta.
+        img.paste(Image.new("RGB", (W, H), tuple(pal["fondo"])), (0, 0))
+        cw = int(W * 0.91)
+        ch = int(cw * 0.72)
+        cx, cy = (W - cw) // 2, int(H * 0.52 - ch / 2)
+        tarjeta = Image.new("RGB", (cw, ch), tuple(pal["fondo"]))
+        _cuadro_medio(tarjeta, seg, (0, 0, cw, ch), t)
+        mascara = Image.new("L", (cw, ch), 0)
+        ImageDraw.Draw(mascara).rounded_rectangle([0, 0, cw - 1, ch - 1],
+                                                  radius=24, fill=255)
+        img.paste(tarjeta, (cx, cy), mascara)
+    else:
+        _cuadro_medio(img, seg, (0, 0, W, H), t)
+    velo = float(seg.get("velo", 0.0 if encuadre == "plano" else 0.30))
+    if velo > 0:
+        img.paste(Image.blend(img, Image.new("RGB", (W, H), (0, 0, 0)), velo),
+                  (0, 0))
+
+    lineas = seg.get("lineas") or []
+    if not lineas:
+        return
+    n = len(lineas)
+    base = int(seg.get("cascada_tam", CASCADA_TAM))
+    y = H * float(seg.get("cascada_y0", 0.105))
+    col = tuple(pal["texto"])
+    # Cada linea aparece en su turno y ya no se va. El ultimo 18% del
+    # plano queda con el bloque completo: es el tiempo de leerlo.
+    reparto = 0.82 / n
+    entrada = min(0.13, reparto * 0.7)
+
+    for i, cruda in enumerate(lineas):
+        txt, estilo, align, esc = _cascada_linea(d, cruda, i)
+        if not txt:
+            continue
+        tam = max(28, int(base * esc))
+        f, apriete = _cascada_fuente(estilo, tam)
+        ancho_max = W * 0.88
+        anc = _ancho_espaciado(d, txt, f, apriete)
+        while anc > ancho_max and tam > 28:
+            tam -= 4
+            f, apriete = _cascada_fuente(estilo, tam)
+            anc = _ancho_espaciado(d, txt, f, apriete)
+
+        aparece = i * reparto
+        lt = (t - aparece) / entrada
+        if lt <= 0:
+            # Todavia no le toca: igual hay que reservar su altura para
+            # que las de abajo no se corran cuando entre.
+            y += tam * (1.18 if i % 2 == 0 else 2.15)
+            continue
+        lt = min(1.0, lt)
+        alpha = int(255 * lt)
+        # Sube unos pocos pixeles al entrar. Corto: en la referencia
+        # la linea aparece casi de golpe, no se desliza.
+        dy = int((1 - eo_expo(lt)) * 16)
+
+        if align == "izq":
+            x = W * 0.055
+        elif align == "der":
+            x = W - W * 0.075 - anc
+        else:
+            x = (W - anc) / 2
+
+        x0b, y0b, x1b, y1b = d.textbbox((0, 0), txt, font=f)
+        pad = 26
+        capa = Image.new("RGBA", (int(anc) + pad * 2, (y1b - y0b) + pad * 2),
+                         (0, 0, 0, 0))
+        _sombra_suave(capa, txt, f, pad, pad - y0b, alpha, apriete, col)
+        _texto_espaciado(ImageDraw.Draw(capa), (pad, pad - y0b), txt, f,
+                         col + (alpha,), apriete)
+        img.paste(capa, (int(x - pad), int(y + dy - pad)), capa)
+
+        # Los pares: dos lineas pegadas, hueco grande, dos lineas
+        # pegadas. Sin el hueco se lee como lista y se pierde el remate.
+        y += tam * (1.18 if i % 2 == 0 else 2.15)
+
+
+def _sombra_suave(capa, txt, f, px, py, alpha, track=0, col_txt=None):
+    """Halo difuminado detras del texto. La sombra dura desplazada es
+    el tic de plantilla; esto es lo que hace que el texto se lea sobre
+    metraje sin parecer pegoteado encima.
+
+    El halo va del color CONTRARIO al del texto: sobre un cartel claro
+    con letra oscura, un halo oscuro se ve como un manchon alrededor
+    de cada palabra."""
+    claro = False
+    if col_txt is not None:
+        r, g, b = col_txt[:3]
+        claro = (0.299 * r + 0.587 * g + 0.114 * b) < 128
+    h = Image.new("L", capa.size, 0)
+    dh = ImageDraw.Draw(h)
+    if track:
+        _texto_espaciado(dh, (px, py), txt, f, int(alpha * 0.8), track)
+    else:
+        dh.text((px, py), txt, font=f, fill=int(alpha * 0.8))
+    h = h.filter(ImageFilter.GaussianBlur(10))
+    halo = (255, 255, 255, 255) if claro else (0, 0, 0, 255)
+    capa.paste(Image.new("RGBA", capa.size, halo), (0, 0), h)
+
+def f_menu(img, d, seg, t, pal):
+    """Lista de precios con miniatura, como la carta de un local.
+
+    Sacado de la referencia: filas que se acumulan, cada una con el
+    texto chico a un lado y una miniatura REDONDEADA del producto al
+    otro. Escalonadas, no alineadas en una grilla. Es la forma mas
+    barata de mostrar "esto cuesta tanto y viene con esto" sin tener
+    que filmar nada.
+
+    JSON:
+        {"formato": "menu",
+         "filas": [
+           {"texto": "POR SOLO $1 MÁS.\\nAgregás bebida:", "imagen": "..."},
+           {"texto": "POR OTROS $0.25.\\ncebolla caramelizada:", "imagen": "..."}
+         ],
+         "claro": false}
+    """
+    if seg.get("claro"):
+        pal = {"fondo": pal["texto"], "texto": pal["fondo"],
+               "destacado": pal["destacado"]}
+    img.paste(Image.new("RGB", (W, H), tuple(pal["fondo"])), (0, 0))
+    filas = seg.get("filas") or []
+    if not filas:
+        return
+    n = len(filas)
+    reparto = 0.84 / n
+    entrada = min(0.14, reparto * 0.7)
+    mini = int(W * 0.155)
+    alto_fila = int(mini * 1.72)
+    y = H * float(seg.get("menu_y0", 0.14))
+    col = tuple(pal["texto"])
+
+    for i, fila in enumerate(filas):
+        lt = (t - i * reparto) / entrada
+        if lt <= 0:
+            y += alto_fila
+            continue
+        lt = min(1.0, lt)
+        alpha = int(255 * lt)
+        dy = int((1 - eo_expo(lt)) * 14)
+        # Escalonado: las impares corridas a la derecha. Sin eso se
+        # lee como una tabla y pierde el aire de la referencia.
+        sangria = W * (0.055 if i % 2 == 0 else 0.235)
+        ancho_txt = W - sangria - mini - W * 0.10
+
+        lineas = str(fila.get("texto", "")).split("\n")
+        f = fnt(max(26, int(W * 0.036)), ligera=True, serif=True)
+        yy = y + dy
+        for k, ln in enumerate(lineas):
+            ft = f if k else fnt(max(26, int(W * 0.036)), serif=True)
+            while d.textbbox((0, 0), ln, font=ft)[2] > ancho_txt and ft.size > 20:
+                ft = fnt(ft.size - 2, ligera=bool(k), serif=True)
+            x0b, y0b, x1b, y1b = d.textbbox((0, 0), ln, font=ft)
+            capa = Image.new("RGBA", (x1b - x0b + 40, y1b - y0b + 40),
+                             (0, 0, 0, 0))
+            _sombra_suave(capa, ln, ft, 20 - x0b, 20 - y0b, alpha, 0, col)
+            ImageDraw.Draw(capa).text((20 - x0b, 20 - y0b), ln, font=ft,
+                                      fill=col + (alpha,))
+            img.paste(capa, (int(sangria - 20), int(yy - 20)), capa)
+            yy += ft.size * 1.28
+
+        ruta = fila.get("imagen") or fila.get("foto")
+        if ruta and Path(ruta).exists() and lt > 0.25:
+            try:
+                im = Image.open(ruta).convert("RGB")
+            except Exception:
+                im = None
+            if im is not None:
+                mx = int(sangria + ancho_txt + W * 0.035)
+                my = int(y + dy)
+                cuadro = Image.new("RGB", (mini, mini), tuple(pal["fondo"]))
+                _pegar_encuadrado(cuadro, im, (0, 0, mini, mini))
+                mascara = Image.new("L", (mini, mini), 0)
+                ImageDraw.Draw(mascara).rounded_rectangle(
+                    [0, 0, mini - 1, mini - 1], radius=int(mini * 0.22),
+                    fill=int(255 * min(1.0, (lt - 0.25) / 0.4)))
+                img.paste(cuadro, (mx, my), mascara)
+        y += alto_fila
+
 FORMATOS = {
     "declaracion": f_declaracion, "dato_duro": f_dato_duro,
     "division": f_division, "revelacion": f_revelacion,
@@ -2937,7 +3090,8 @@ FORMATOS = {
     "mensajes": f_mensajes, "escalada": f_escalada, "cta": f_cta,
     "pleno": f_pleno, "tarjeta": f_tarjeta,
     "ruleta": f_ruleta, "lista": f_lista, "comparacion": f_comparacion,
-    "prueba": f_prueba, "flujo": f_flujo,
+    "prueba": f_prueba, "flujo": f_flujo, "cascada": f_cascada,
+    "menu": f_menu,
 }
 
 # Los comentarios de aca abajo describen el COLOR, no una marca ni un
@@ -3048,11 +3202,6 @@ def render(seg, t, prog, cfg):
     # frame igual que cualquier otro elemento.
     if seg.get("captions_palabra_por_palabra"):
         dibujar_captions_kinetic(img, d, seg, t, pal)
-    # La cascada es el otro modo: en vez de una palabra quieta, una
-    # columna que cae. Van los dos por separado a proposito -- juntos
-    # se pisan.
-    if seg.get("captions_cascada"):
-        dibujar_captions_cascada(img, d, seg, t, pal)
 
     # Vida ambiental (ver definicion arriba de FORMATOS): universal,
     # va antes de la camara para que las motas floten integradas al
@@ -3070,7 +3219,7 @@ def render(seg, t, prog, cfg):
     # que verse limpio, asi que ahi no corre: en esa maqueta el
     # movimiento ya lo da la palabra que cambia y el salto a la maqueta
     # oscura.
-    if fmt not in ("tarjeta", "comparacion", "cta", "prueba", "flujo"):
+    if fmt not in ("tarjeta", "comparacion", "cta", "prueba", "flujo", "cascada", "menu"):
         dibujar_ambiente(img, d, t_abs, pal)
     d = ImageDraw.Draw(img)
 
@@ -3665,6 +3814,7 @@ def construir_audio(cfg, segs, dur_total, tmp, voces=None, marcas=None):
         f"amix=inputs={len(etiquetas)}:duration=longest:normalize=0"
         + silencios +
         f",apad,alimiter=limit=0.95,"
+        f"loudnorm=I=-14:TP=-1.5:LRA=4,"
         f"aresample=44100[o]")
     cmd = ["ffmpeg", "-y", "-loglevel", "error"] + entradas + [
         "-filter_complex", ";".join(filtros + [mix]),
