@@ -26,12 +26,10 @@ GENERICOS = [
 ]
 
 try:
-    # Misma lista (y misma normalizacion de tildes) que hooks.py
-    # --auditar, para que las dos herramientas nunca se desincronicen
-    # sobre que palabra esta prohibida.
-    from hooks import VOCABULARIO_CLINICO, VOCABULARIO_FUERTE, normalizar
+    # Solo se reusa la normalizacion de tildes de hooks.py, para que
+    # las dos herramientas comparen texto igual.
+    from hooks import normalizar
 except ImportError:
-    VOCABULARIO_CLINICO, VOCABULARIO_FUERTE = [], []
     def normalizar(s):
         return s
 
@@ -131,17 +129,10 @@ def revisar(path):
             out += [str(x) for x in s.get(k, [])]
         return normalizar(" ".join(out).lower())
 
-    for i, s in enumerate(segs):
-        bloque = _textos_visibles(s)
-        for c in VOCABULARIO_CLINICO:
-            if normalizar(c) in bloque:
-                sug = (VOCABULARIO_FUERTE[hash(c) % len(VOCABULARIO_FUERTE)]
-                       if VOCABULARIO_FUERTE else "vocabulario coloquial")
-                problemas.append(
-                    f"Segmento {i+1}: '{c}' es vocabulario clinico "
-                    f"(nadie lo dice en la calle, y vende diagnostico en "
-                    f"vez de herramienta). Probar '{sug}'.")
-                break
+    # NOTA: aca vivia un bloqueo de vocabulario. Se saco por decision
+    # del operador: el validador revisa RETENCION (ritmo, duracion,
+    # estructura), no decide que se puede decir. Que una palabra
+    # convenga o no es criterio editorial, y ese criterio es humano.
 
     # --- CTA al final ---
     # 'pie' es donde vive el cierre en el formato 'editorial'; 'texto'
