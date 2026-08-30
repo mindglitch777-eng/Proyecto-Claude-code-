@@ -364,6 +364,17 @@ def dibujar_captions_kinetic(img, d, seg, t, pal):
     # centrada, a media altura baja, sin franja oscura y sin rebote.
     # El modo "grande" es el que ya existia y se deja por defecto para
     # no re-pintar los guiones ya escritos.
+    # Si el bloque de la escena YA muestra las mismas palabras, el
+    # subtitulo suelto las repite y quedan dos textos de la misma frase
+    # peleandose el cuadro. Solo corre cuando dice algo distinto.
+    bloque = " ".join(
+        (l.get("texto", "") if isinstance(l, dict) else str(l))
+        for l in (seg.get("lineas") or []))
+    if bloque:
+        norm = lambda x: "".join(c.lower() for c in x if c.isalnum() or c == " ")
+        if norm(palabra) and norm(palabra).strip() in norm(bloque).split():
+            return
+
     if seg.get("captions_estilo", "grande") == "chico":
         f = fnt(int(seg.get("captions_tam", W * 0.043)), ligera=True)
         while d.textbbox((0, 0), palabra, font=f)[2] > W - 200 and f.size > 20:
@@ -3631,9 +3642,18 @@ def f_grafico(img, d, seg, t, pal):
         d.rounded_rectangle([x0, yb, x0 + max(4, largo), yb + alto_b],
                             radius=r, fill=c)
         if lt > 0.5:
-            txt = _num(v * (lt if lt < 1 else 1), sufijo)
-            d.text((x0 + max(4, largo) + W * 0.022, yb - alto_b * 0.10),
-                   txt, font=fn_cifra, fill=col)
+            # SIEMPRE el valor final, nunca uno interpolado. La cifra
+            # animandose mostraba 43.4 cuando el dato es 53.9: medio
+            # segundo de un numero que no existe, en un plano etiquetado
+            # VERIFICADO. Lo que entra es la OPACIDAD, no el numero.
+            txt = _num(v, sufijo)
+            a = int(255 * min(1.0, (lt - 0.5) / 0.35))
+            capa = Image.new("RGBA", (int(d.textlength(txt, font=fn_cifra)) + 20,
+                                      fn_cifra.size + 30), (0, 0, 0, 0))
+            ImageDraw.Draw(capa).text((0, 0), txt, font=fn_cifra,
+                                      fill=tuple(col) + (a,))
+            img.paste(capa, (int(x0 + max(4, largo) + W * 0.022),
+                             int(yb - alto_b * 0.10)), capa)
     _g_fuente(img, d, seg, pal, t)
 
 # ============ MODULE_PARALLAX ============
