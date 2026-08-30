@@ -70,3 +70,52 @@ Se usaron clips de `assets/metraje_video/dinero/` como relleno, que no
 son del tema del guion (el motor actual usa fotos correctas: el cartel
 de San Telmo, la calle de Madrid). Para una comparación justa del
 resultado final habría que bajar metraje de las consultas reales.
+
+---
+
+# Guion 2 — "Tu hora vale menos que nada" (`agresivo`)
+
+El primer guion era un informe de Google Trends: índices de demanda
+relativa que no le duelen a nadie. Este arranca del dolor.
+
+**Un solo dolor:** laburás todo el mes y no te queda un peso.
+**Una sola cosa que la gente no entiende:** tu hora YA cuesta plata
+antes de que toques una herramienta.
+
+Sin jerga, sin porcentajes, sin índices. Números redondos que se siguen
+de memoria mientras se mira.
+
+## Estructura
+
+| t | bloque | qué hace |
+|---|---|---|
+| 0.0 | hook | el espectador se reconoce en el cuadro cero |
+| 2.9 | niega | le saca la explicación fácil de encima |
+| 5.9 | ráfaga | 5 cortes duros: pasa en todos los rubros |
+| 8.3 | **cuenta** | el explicador — la cuenta que nadie hace |
+| 16.5 | veredicto | `$0`, y todavía no pagó los materiales |
+| 20.7 | verdad | "no vendés cortes, vendés tu hora" |
+| 25.1 | payoff | una sola cosa para hacer |
+| 29.5 | cierre | marca |
+
+31.9 s · render 83 s · 9.8 MB
+
+## Las cifras son ILUSTRATIVAS
+
+$300.000 de alquiler, $100.000 de gastos, 160 horas, $2.500 la hora,
+$5.000 por dos horas de trabajo. Es aritmética coherente para explicar
+un mecanismo — la categoría que `FUENTES.md` ya separa de las cifras
+con fuente. **No se afirma nada sobre el mercado.** Antes de publicar
+hay que ajustarlas a precios reales del rubro del operador.
+
+## Formatos nuevos que ejercita
+
+`Punch` (entrada con rebote, acento en la línea que corta), `Rafaga`
+(cortes duros cada ~0.48 s con destello), `Cuenta` (suma progresiva y
+división a la vista), `Veredicto` (cifra gigante sobre metraje),
+`Cierre`.
+
+## NO tiene audio
+
+Ni voz, ni música, ni SFX. Para juzgar retención hay que verlo con eso
+puesto: en vertical el sonido es la mitad del video.
