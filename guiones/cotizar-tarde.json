@@ -37,7 +37,8 @@
       "sfx_vol": 0.72,
       "necesita": "serious tradesman portrait workshop",
       "captions_cascada": true,
-      "flash": true
+      "flash": true,
+      "imagen": "assets/biblioteca/serious-tradesman-portrait-workshop/00.jpg"
     },
     {
       "formato": "pleno",
@@ -48,7 +49,8 @@
       "velo": 0.5,
       "sfx_vol": 0.6,
       "necesita": "man reading phone message at night",
-      "captions_cascada": true
+      "captions_cascada": true,
+      "imagen": "assets/biblioteca/man-reading-phone-message-at-night/00.jpg"
     },
     {
       "formato": "ruleta",
@@ -66,7 +68,8 @@
       "sfx": "tick",
       "velo": 0.56,
       "sfx_vol": 0.55,
-      "necesita": "construction worker hands tools closeup"
+      "necesita": "construction worker hands tools closeup",
+      "imagen": "assets/biblioteca/construction-worker-hands-tools-closeup/00.jpg"
     },
     {
       "formato": "pleno",
@@ -77,7 +80,8 @@
       "velo": 0.44,
       "sfx_vol": 0.58,
       "necesita": "tired man sitting alone night window",
-      "captions_cascada": true
+      "captions_cascada": true,
+      "imagen": "assets/biblioteca/tired-man-sitting-alone-night-window/00.jpg"
     },
     {
       "formato": "lista",
@@ -93,7 +97,8 @@
       "sfx": "tick",
       "velo": 0.66,
       "sfx_vol": 0.55,
-      "necesita": "notebook calculator desk night"
+      "necesita": "notebook calculator desk night",
+      "imagen": "assets/biblioteca/notebook-calculator-desk-night/00.jpg"
     },
     {
       "formato": "pleno",
@@ -104,7 +109,8 @@
       "velo": 0.5,
       "sfx_vol": 0.72,
       "necesita": "old clock hands time close up",
-      "captions_cascada": true
+      "captions_cascada": true,
+      "imagen": "assets/biblioteca/old-clock-hands-time-close-up/00.jpg"
     },
     {
       "formato": "tarjeta",
@@ -114,7 +120,8 @@
       "transicion": "corte_duro",
       "sfx": "riser",
       "sfx_vol": 0.6,
-      "necesita": "hourglass sand time running out"
+      "necesita": "hourglass sand time running out",
+      "imagen": "assets/biblioteca/hourglass-sand-time-running-out/00.jpg"
     },
     {
       "formato": "pleno",
@@ -126,7 +133,8 @@
       "sfx_vol": 0.72,
       "necesita": "closed shop metal shutter street",
       "captions_cascada": true,
-      "flash": true
+      "flash": true,
+      "imagen": "assets/biblioteca/closed-shop-metal-shutter-street/00.jpg"
     },
     {
       "formato": "comparacion",
@@ -158,7 +166,8 @@
       "velo": 0.46,
       "sfx_vol": 0.58,
       "necesita": "man walking sunrise city street",
-      "captions_cascada": true
+      "captions_cascada": true,
+      "imagen": "assets/biblioteca/man-walking-sunrise-city-street/00.jpg"
     },
     {
       "formato": "pleno",
@@ -169,7 +178,8 @@
       "velo": 0.5,
       "sfx_vol": 0.6,
       "necesita": "notebook plan writing desk coffee",
-      "captions_cascada": true
+      "captions_cascada": true,
+      "imagen": "assets/biblioteca/notebook-plan-writing-desk-coffee/00.jpg"
     },
     {
       "formato": "lista",
@@ -185,7 +195,8 @@
       "sfx": "tick",
       "velo": 0.66,
       "sfx_vol": 0.55,
-      "necesita": "handwritten price list notebook"
+      "necesita": "handwritten price list notebook",
+      "imagen": "assets/biblioteca/handwritten-price-list-notebook/00.jpg"
     },
     {
       "formato": "pleno",
@@ -196,7 +207,8 @@
       "velo": 0.48,
       "sfx_vol": 0.72,
       "necesita": "frustrated man thinking workshop",
-      "captions_cascada": true
+      "captions_cascada": true,
+      "imagen": "assets/biblioteca/frustrated-man-thinking-workshop/00.jpg"
     },
     {
       "formato": "pleno",
@@ -207,7 +219,8 @@
       "velo": 0.46,
       "sfx_vol": 0.6,
       "necesita": "confident craftsman hands working workshop",
-      "captions_cascada": true
+      "captions_cascada": true,
+      "imagen": "assets/biblioteca/confident-craftsman-hands-working-workshop/00.jpg"
     },
     {
       "formato": "cta",
