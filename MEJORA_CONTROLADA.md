@@ -208,11 +208,32 @@ Cuadros reales, primeros 0.13 s:
 
 | cuadro | t | V0.5 luz / tinta | V0.6 luz / tinta |
 |---|---|---|---|
-| 1 | 0.000 s | 248.5 / 100.00 % | (pendiente del render) |
-| 2 | 0.033 s | 189.1 / 23.22 % | |
-| 3 | 0.067 s | 131.6 / **0.00 %** | |
-| 4 | 0.100 s | 95.8 / **0.00 %** | |
-| 5 | 0.133 s | 75.0 / 0.18 % | |
+| 1 | 0.000 s | 248.5 / 100.00 % | **13.5 / 1.42 %** |
+| 2 | 0.033 s | 189.1 / 23.22 % | 13.5 / 1.40 % |
+| 3 | 0.067 s | 131.6 / **0.00 %** | 13.4 / 1.36 % |
+| 4 | 0.100 s | 95.8 / **0.00 %** | 13.3 / 1.33 % |
+| 5 | 0.133 s | 75.0 / 0.18 % | 13.3 / 1.28 % |
+
+Medido sobre el mp4 renderizado en el runner, no sobre cuadros sueltos.
+La tinta ya no aparece a los 0.133 s: está desde el cuadro 1 y se
+mantiene estable mientras el bloque crece.
+
+### Audio — sin cambio, y era una duda razonable
+
+Sacarle los cuatro cortes de plano al hook le saca también sus cuatro
+SFX de corte. La sonoridad podría haber bajado. Medido, no bajó:
+
+| | V0.5 | V0.6 |
+|---|---|---|
+| Integrated | −15.9 LUFS | −15.9 LUFS |
+| True Peak | +0.1 dBTP | +0.3 dBTP |
+| LRA | 13.4 LU | 13.4 LU |
+
+El pico real subió 0.2 dB (los dos están por encima de 0 dBTP, que es un
+problema anterior y no de esta fase). La sonoridad sigue 2.5 LU por
+debajo de la referencia por el motivo ya diagnosticado: el guion tiene
+narración escrita y **cero** `voz_archivo`. Falta la voz, no el diseño
+sonoro. Eso es FASE 9 y la entrega de ElevenLabs.
 
 ### Regresión
 
