@@ -1,0 +1,245 @@
+{
+  "tema": "Perdiste el laburo por lento, no por caro",
+  "nota": "Gramatica Venta Silenciosa + dos cosas nuevas: captions en CASCADA (la palabra nace arriba y cae hasta el fondo cambiando de tipografia) y pulso de flashes cada 1.5/0.7/2.5s a lo largo de todo el video. Cada plano declara con 'necesita' que tiene que mostrar; abastecer_guiones.py lo pide a Pexels y engancha la ruta. Da el diagnostico, no nombra producto ni curso.",
+  "fps": 30,
+  "camara": 1.0,
+  "loop": false,
+  "paleta": {
+    "fondo": [
+      10,
+      10,
+      12
+    ],
+    "texto": [
+      246,
+      246,
+      244
+    ],
+    "destacado": [
+      255,
+      78,
+      36
+    ],
+    "apagado": [
+      122,
+      122,
+      128
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "pleno",
+      "narracion": "El que te ganó el laburo no cobra *menos*",
+      "duracion": 1.9,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "velo": 0.46,
+      "sfx_vol": 0.72,
+      "necesita": "serious tradesman portrait workshop",
+      "captions_cascada": true,
+      "flash": true,
+      "imagen": "assets/biblioteca/serious-tradesman-portrait-workshop/00.jpg"
+    },
+    {
+      "formato": "pleno",
+      "narracion": "Contestó *primero*",
+      "duracion": 1.4,
+      "transicion": "corte_duro",
+      "sfx": "whoosh",
+      "velo": 0.5,
+      "sfx_vol": 0.6,
+      "necesita": "man reading phone message at night",
+      "captions_cascada": true,
+      "imagen": "assets/biblioteca/man-reading-phone-message-at-night/00.jpg"
+    },
+    {
+      "formato": "ruleta",
+      "fijo": "Pasa en",
+      "palabras": [
+        "obras",
+        "fletes",
+        "mudanzas",
+        "arreglos",
+        "eventos"
+      ],
+      "narracion": "Pasa en obras, fletes, mudanzas, arreglos, eventos.",
+      "duracion": 2.5,
+      "transicion": "corte_duro",
+      "sfx": "tick",
+      "velo": 0.56,
+      "sfx_vol": 0.55,
+      "necesita": "construction worker hands tools closeup",
+      "imagen": "assets/biblioteca/construction-worker-hands-tools-closeup/00.jpg"
+    },
+    {
+      "formato": "pleno",
+      "narracion": "Te escribieron a las diez de la noche",
+      "duracion": 1.7,
+      "transicion": "corte_duro",
+      "sfx": "whoosh",
+      "velo": 0.44,
+      "sfx_vol": 0.58,
+      "necesita": "tired man sitting alone night window",
+      "captions_cascada": true,
+      "imagen": "assets/biblioteca/tired-man-sitting-alone-night-window/00.jpg"
+    },
+    {
+      "formato": "lista",
+      "titulo": "Y vos",
+      "items": [
+        "miraste las fotos",
+        "sacaste la cuenta a ojo",
+        "dijiste: mañana te confirmo"
+      ],
+      "narracion": "Miraste las fotos, sacaste la cuenta a ojo, y dijiste: mañana te confirmo.",
+      "duracion": 3.4,
+      "transicion": "corte_duro",
+      "sfx": "tick",
+      "velo": 0.66,
+      "sfx_vol": 0.55,
+      "necesita": "notebook calculator desk night",
+      "imagen": "assets/biblioteca/notebook-calculator-desk-night/00.jpg"
+    },
+    {
+      "formato": "pleno",
+      "narracion": "Mañana ya era *tarde*",
+      "duracion": 1.8,
+      "transicion": "corte_duro",
+      "sfx": "impacto",
+      "velo": 0.5,
+      "sfx_vol": 0.72,
+      "necesita": "old clock hands time close up",
+      "captions_cascada": true,
+      "imagen": "assets/biblioteca/old-clock-hands-time-close-up/00.jpg"
+    },
+    {
+      "formato": "tarjeta",
+      "texto": "Cuatro horas",
+      "narracion": "Cuatro horas. Ese es todo el margen que tenés.",
+      "duracion": 2.1,
+      "transicion": "corte_duro",
+      "sfx": "riser",
+      "sfx_vol": 0.6,
+      "necesita": "hourglass sand time running out",
+      "imagen": "assets/biblioteca/hourglass-sand-time-running-out/00.jpg"
+    },
+    {
+      "formato": "pleno",
+      "narracion": "No perdiste por *caro*. Perdiste por lento.",
+      "duracion": 2.1,
+      "transicion": "corte_duro",
+      "sfx": "impacto",
+      "velo": 0.48,
+      "sfx_vol": 0.72,
+      "necesita": "closed shop metal shutter street",
+      "captions_cascada": true,
+      "flash": true,
+      "imagen": "assets/biblioteca/closed-shop-metal-shutter-street/00.jpg"
+    },
+    {
+      "formato": "comparacion",
+      "izq_titulo": "Vos",
+      "der_titulo": "Él",
+      "izq": [
+        "contestás cuando podés",
+        "sacás el número a ojo",
+        "1 de cada 5 te entra"
+      ],
+      "der": [
+        "contesta en 2 minutos",
+        "el número ya está hecho",
+        "4 de cada 5 le entran"
+      ],
+      "remate": "mismo laburo",
+      "narracion": "Vos contestás cuando podés. Él contesta en dos minutos. Mismo laburo.",
+      "duracion": 4.8,
+      "transicion": "corte_duro",
+      "sfx": "impacto",
+      "sfx_vol": 0.66
+    },
+    {
+      "formato": "pleno",
+      "narracion": "Y no se levanta más temprano que vos",
+      "duracion": 1.9,
+      "transicion": "corte_duro",
+      "sfx": "whoosh",
+      "velo": 0.46,
+      "sfx_vol": 0.58,
+      "necesita": "man walking sunrise city street",
+      "captions_cascada": true,
+      "imagen": "assets/biblioteca/man-walking-sunrise-city-street/00.jpg"
+    },
+    {
+      "formato": "pleno",
+      "narracion": "Tiene el número hecho *antes* de que le pregunten",
+      "duracion": 2.2,
+      "transicion": "corte_duro",
+      "sfx": "riser",
+      "velo": 0.5,
+      "sfx_vol": 0.6,
+      "necesita": "notebook plan writing desk coffee",
+      "captions_cascada": true,
+      "imagen": "assets/biblioteca/notebook-plan-writing-desk-coffee/00.jpg"
+    },
+    {
+      "formato": "lista",
+      "titulo": "Lo que él ya tiene cargado",
+      "items": [
+        "cuánto vale su hora",
+        "cuánto le cuesta el material",
+        "cuánto quiere ganar"
+      ],
+      "narracion": "Cuánto vale su hora, cuánto le cuesta el material, cuánto quiere ganar.",
+      "duracion": 3.3,
+      "transicion": "corte_duro",
+      "sfx": "tick",
+      "velo": 0.66,
+      "sfx_vol": 0.55,
+      "necesita": "handwritten price list notebook",
+      "imagen": "assets/biblioteca/handwritten-price-list-notebook/00.jpg"
+    },
+    {
+      "formato": "pleno",
+      "narracion": "Vos lo tenés en la *cabeza*. Por eso tardás.",
+      "duracion": 2.2,
+      "transicion": "corte_duro",
+      "sfx": "impacto",
+      "velo": 0.48,
+      "sfx_vol": 0.72,
+      "necesita": "frustrated man thinking workshop",
+      "captions_cascada": true,
+      "imagen": "assets/biblioteca/frustrated-man-thinking-workshop/00.jpg"
+    },
+    {
+      "formato": "pleno",
+      "narracion": "Sacarlo de la cabeza es todo el truco",
+      "duracion": 1.9,
+      "transicion": "corte_duro",
+      "sfx": "riser",
+      "velo": 0.46,
+      "sfx_vol": 0.6,
+      "necesita": "confident craftsman hands working workshop",
+      "captions_cascada": true,
+      "imagen": "assets/biblioteca/confident-craftsman-hands-working-workshop/00.jpg"
+    },
+    {
+      "formato": "cta",
+      "texto": "Seguime.",
+      "narracion": "Seguime. Mañana te muestro el mío.",
+      "mayus": true,
+      "duracion": 2.0,
+      "hook": "impacto",
+      "sfx": "impacto",
+      "transicion": "corte_duro",
+      "cta_handle": "@tallerdeactivos",
+      "sfx_vol": 0.72,
+      "flash": true
+    }
+  ],
+  "flash_ritmo": [
+    1.5,
+    0.7,
+    2.5
+  ],
+  "flash_ritmo_largo": 0.08
+}
