@@ -3090,6 +3090,173 @@ def f_menu(img, d, seg, t, pal):
                 img.paste(cuadro, (mx, my), mascara)
         y += alto_fila
 
+# ============ ESCENA: una idea, varios planos ============
+# EL ERROR QUE CORRIGE
+#     Hasta aca "un golpe de contenido" y "un plano" eran la misma cosa,
+#     asi que cada vez que cortaba la imagen cambiaba tambien la idea.
+#     Con nueve ideas en veinte segundos el que mira no termina de leer
+#     ninguna: se siente rapido y mezclado.
+#
+#     En la referencia pasa lo contrario. El bloque de texto se sostiene
+#     seis u ocho segundos y lo que corta debajo es el METRAJE. Se ve
+#     literalmente en sus cuadros: "Por $0.50 centavos / más... /
+#     Agrandas también / la bebida" queda quieto mientras abajo pasan
+#     cuatro planos distintos.
+#
+# QUE HACE
+#     Una escena = UNA idea + N planos. El texto entra por lineas y se
+#     queda hasta el final; los planos cortan por debajo a su propio
+#     ritmo, cada uno con su estado de movimiento.
+#
+# ESTADOS DE MOVIMIENTO (§4 de la biblia)
+#     STATIC   nada. Ni zoom ni paneo. Para evidencia y para pausa.
+#              La ausencia de movimiento es intencional.
+#     SUBTLE   100 -> 103%. No tiene que parecer un efecto.
+#     ACTIVE   100 -> 112% o paneo visible. Para informacion nueva.
+#     BURST    plano muy corto, sin movimiento: el golpe es el corte.
+#
+# JSON:
+#   {"formato": "escena", "duracion": 6.4,
+#    "lineas": ["Te escribieron a las diez", "y contestaste al otro día"],
+#    "entra": [0.0, 1.8],            segundos en que entra cada linea
+#    "planos": [{"imagen": "...", "dur": 2.4, "mov": "SUBTLE"},
+#               {"imagen": "...", "dur": 0.35, "mov": "BURST"},
+#               {"imagen": "...", "dur": 3.6,  "mov": "STATIC"}],
+#    "velo": 0.42}
+
+MOVIMIENTO = {
+    "STATIC": (1.000, 1.000),
+    "SUBTLE": (1.000, 1.030),
+    "ACTIVE": (1.000, 1.120),
+    "BURST":  (1.045, 1.045),   # entra ya un poco adentro y no se mueve
+}
+
+
+def _plano_zoom(img, ruta, zoom, cache, deriva=0.0):
+    """Pega la foto llenando el cuadro, con un zoom dado. deriva mueve
+    el recorte horizontalmente (0 = centrado)."""
+    if not ruta or not Path(ruta).exists():
+        return False
+    base = cache.get(ruta, "PENDIENTE")
+    if base == "PENDIENTE":
+        try:
+            base = Image.open(ruta).convert("RGB")
+        except Exception:
+            base = None
+        cache[ruta] = base
+    if base is None:
+        return False
+    esc = max(W / base.width, H / base.height) * max(1.0, zoom)
+    nw, nh = max(W, int(base.width * esc)), max(H, int(base.height * esc))
+    im = base.resize((nw, nh), Image.LANCZOS)
+    ox = int((nw - W) / 2 + deriva * (nw - W) / 2)
+    oy = (nh - H) // 2
+    ox = max(0, min(ox, nw - W))
+    oy = max(0, min(oy, nh - H))
+    img.paste(im.crop((ox, oy, ox + W, oy + H)), (0, 0))
+    return True
+
+
+def _reparto_planos(planos, dur):
+    """(inicio, fin) de cada plano en segundos. Si el guion no declara
+    duraciones, se reparte parejo -- pero declararlas es el punto: el
+    ritmo irregular vive aca."""
+    total = sum(float(p.get("dur", 0)) for p in planos)
+    if total <= 0:
+        paso = dur / max(1, len(planos))
+        return [(i * paso, (i + 1) * paso) for i in range(len(planos))]
+    k = dur / total          # normaliza para que llenen la escena exacta
+    t, ventanas = 0.0, []
+    for p in planos:
+        d = float(p.get("dur", 0)) * k
+        ventanas.append((t, t + d))
+        t += d
+    return ventanas
+
+
+def f_escena(img, d, seg, t, pal):
+    """Una idea sostenida mientras el metraje corta debajo."""
+    dur = float(seg.get("duracion", 4.0)) or 4.0
+    ts = t * dur
+    planos = seg.get("planos") or []
+    cache = seg.setdefault("_cache_escena", {})
+
+    puesto = False
+    if planos:
+        ventanas = _reparto_planos(planos, dur)
+        i = 0
+        for k, (a, b) in enumerate(ventanas):
+            if ts >= a:
+                i = k
+        p = planos[i]
+        a, b = ventanas[i]
+        lt = 0.0 if b <= a else max(0.0, min(1.0, (ts - a) / (b - a)))
+        z0, z1 = MOVIMIENTO.get(str(p.get("mov", "SUBTLE")).upper(),
+                                MOVIMIENTO["SUBTLE"])
+        # eio da una curva suave; en STATIC y BURST z0 == z1 y no mueve
+        # nada, que es el punto de que existan esos dos estados.
+        zoom = z0 + (z1 - z0) * eio(lt)
+        deriva = float(p.get("deriva", 0.0)) * (lt - 0.5) * 2
+        puesto = _plano_zoom(img, p.get("imagen") or p.get("foto"),
+                             zoom, cache, deriva)
+    if not puesto:
+        img.paste(Image.new("RGB", (W, H), tuple(pal["fondo"])), (0, 0))
+
+    velo = float(seg.get("velo", 0.42 if puesto else 0.0))
+    if velo > 0:
+        img.paste(Image.blend(img, Image.new("RGB", (W, H), (0, 0, 0)), velo),
+                  (0, 0))
+
+    # --- El bloque de texto. Entra por lineas y NO se va. ---
+    lineas = seg.get("lineas") or []
+    if not lineas:
+        return
+    entra = seg.get("entra")
+    if not entra:
+        # Sin tiempos declarados, las lineas se reparten en el primer
+        # 55% de la escena: el resto es tiempo de leer el bloque entero.
+        entra = [dur * 0.55 * i / max(1, len(lineas)) for i in range(len(lineas))]
+
+    y = H * float(seg.get("cascada_y0", 0.13))
+    base = int(seg.get("cascada_tam", CASCADA_TAM))
+    col = tuple(pal["texto"])
+    for i, cruda in enumerate(lineas):
+        txt, estilo, align, esc = _cascada_linea(d, cruda, i)
+        if not txt:
+            continue
+        tam = max(28, int(base * esc))
+        f, apriete = _cascada_fuente(estilo, tam)
+        ancho_max = W * 0.86
+        anc = _ancho_espaciado(d, txt, f, apriete)
+        while anc > ancho_max and tam > 28:
+            tam -= 4
+            f, apriete = _cascada_fuente(estilo, tam)
+            anc = _ancho_espaciado(d, txt, f, apriete)
+
+        t0 = entra[i] if i < len(entra) else entra[-1]
+        lt = (ts - t0) / 0.22
+        if lt <= 0:
+            y += tam * (1.18 if i % 2 == 0 else 2.05)
+            continue
+        lt = min(1.0, lt)
+        alpha = int(255 * lt)
+        dy = int((1 - eo_expo(lt)) * 14)
+        if align == "izq":
+            x = W * 0.055
+        elif align == "der":
+            x = W - W * 0.075 - anc
+        else:
+            x = (W - anc) / 2
+        x0b, y0b, x1b, y1b = d.textbbox((0, 0), txt, font=f)
+        pad = 26
+        capa = Image.new("RGBA", (int(anc) + pad * 2, (y1b - y0b) + pad * 2),
+                         (0, 0, 0, 0))
+        _sombra_suave(capa, txt, f, pad, pad - y0b, alpha, apriete, col)
+        _texto_espaciado(ImageDraw.Draw(capa), (pad, pad - y0b), txt, f,
+                         col + (alpha,), apriete)
+        img.paste(capa, (int(x - pad), int(y + dy - pad)), capa)
+        y += tam * (1.18 if i % 2 == 0 else 2.05)
+
 FORMATOS = {
     "declaracion": f_declaracion, "dato_duro": f_dato_duro,
     "division": f_division, "revelacion": f_revelacion,
@@ -3103,7 +3270,7 @@ FORMATOS = {
     "pleno": f_pleno, "tarjeta": f_tarjeta,
     "ruleta": f_ruleta, "lista": f_lista, "comparacion": f_comparacion,
     "prueba": f_prueba, "flujo": f_flujo, "cascada": f_cascada,
-    "menu": f_menu,
+    "menu": f_menu, "escena": f_escena,
 }
 
 # Los comentarios de aca abajo describen el COLOR, no una marca ni un
@@ -3231,7 +3398,7 @@ def render(seg, t, prog, cfg):
     # que verse limpio, asi que ahi no corre: en esa maqueta el
     # movimiento ya lo da la palabra que cambia y el salto a la maqueta
     # oscura.
-    if fmt not in ("tarjeta", "comparacion", "cta", "prueba", "flujo", "cascada", "menu"):
+    if fmt not in ("tarjeta", "comparacion", "cta", "prueba", "flujo", "cascada", "menu", "escena"):
         dibujar_ambiente(img, d, t_abs, pal)
     d = ImageDraw.Draw(img)
 

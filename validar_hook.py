@@ -21,6 +21,9 @@ MAX_BLOQUE_SIN_CAMBIO = 5.0   # regla de los 5 segundos
 # la medicion de la referencia en ESTILO.md: el hueco mas largo entre
 # cortes que se le encontro fue de 10,7 segundos.
 MAX_BLOQUE_QUE_CONSTRUYE = 11.0
+# Medido en la referencia: mediana 9 caracteres, maximo 18,
+# ninguna por encima de 20.
+MAX_LINEA_CASCADA = 20
 
 # Maquetas donde entra contenido NUEVO a lo largo del plano: una linea,
 # una fila, un item, una foto. Ahi la duracion larga no es pantalla
@@ -128,6 +131,26 @@ def revisar(path):
             problemas.append(
                 f"Segmento {i+1} dura {d}s sin cambio de escena. "
                 "Fuga de retencion: partilo o agrega un pattern interrupt.")
+
+    # --- Largo de linea en los bloques escalonados ---
+    # Medido sobre los cuadros de la referencia: mediana de 9
+    # caracteres, maximo 18, CERO lineas de mas de 20. Una linea larga
+    # obliga al motor a achicar la tipografia para que entre, y ahi se
+    # pierde el golpe: el bloque deja de leerse de un vistazo.
+    largas = []
+    for i, s_ in enumerate(segs):
+        if s_.get("formato") not in ("cascada", "escena"):
+            continue
+        for ln in (s_.get("lineas") or []):
+            txt = ln.get("texto", "") if isinstance(ln, dict) else str(ln)
+            if len(txt) > MAX_LINEA_CASCADA:
+                largas.append((i + 1, len(txt), txt))
+    if largas:
+        avisos.append(
+            f"{len(largas)} linea(s) de bloque pasan {MAX_LINEA_CASCADA} "
+            f"caracteres. La referencia no tiene ninguna: mediana 9, "
+            f"maximo 18. Linea larga = tipografia chica = no se lee de "
+            f"un vistazo. La mas larga: \"{max(largas, key=lambda x: x[1])[2]}\"")
 
     # --- Transiciones: sin variedad, el cerebro predice y se aburre ---
     trans = [s.get("transicion", "fade") for s in segs[1:]]

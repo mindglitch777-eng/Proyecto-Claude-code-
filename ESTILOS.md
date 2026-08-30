@@ -126,3 +126,69 @@ conclusión LOW.
 La semilla sale del tema + estilo + ritmo. El mismo contenido con el
 mismo estilo da **siempre** el mismo video; dos contenidos distintos no
 caen en el mismo reparto de ritmo.
+
+
+---
+
+# ESCENA — una idea, varios planos
+
+## El error que corrige
+
+Hasta acá **"un golpe de contenido" y "un plano" eran la misma cosa**.
+Cada vez que cortaba la imagen cambiaba también la idea. Con nueve
+ideas en veinte segundos nadie termina de leer ninguna: se siente
+rápido y mezclado. Fue la causa de que los seis videos de la prueba
+anterior no sirvieran.
+
+En la referencia pasa lo contrario: el bloque de texto se sostiene seis
+u ocho segundos y lo que corta debajo es el **metraje**.
+
+```json
+{"formato": "escena", "duracion": 7.0,
+ "lineas": ["Te escribieron", "a las diez", "Contestaste", "al otro día"],
+ "entra":  [0.0, 0.9, 3.3, 4.2],
+ "planos": [
+   {"imagen": "...", "dur": 2.6,  "mov": "SUBTLE"},
+   {"imagen": "...", "dur": 0.4,  "mov": "BURST"},
+   {"imagen": "...", "dur": 0.35, "mov": "BURST"},
+   {"imagen": "...", "dur": 3.65, "mov": "STATIC"}],
+ "velo": 0.44}
+```
+
+## Estados de movimiento
+
+| | qué hace | cuándo |
+|---|---|---|
+| `STATIC` | nada. Ni zoom ni paneo. | evidencia, pausa. **La ausencia de movimiento es intencional.** |
+| `SUBTLE` | 100 → 103 % | no tiene que parecer un efecto |
+| `ACTIVE` | 100 → 112 %, o paneo visible | información nueva |
+| `BURST` | plano corto sin movimiento | el golpe es el corte |
+
+## Regla de largo de línea
+
+Medido sobre los cuadros de la referencia:
+
+| | mediana | máx | líneas >20 car |
+|---|---|---|---|
+| Referencia | **9** | 18 | **0 de 17** |
+| Lo que yo escribía | 18 | 25 | 3 de 8 |
+
+Una línea larga obliga al motor a achicar la tipografía para que entre,
+y ahí se pierde el golpe. `validar_hook.py` ahora avisa por encima de
+20 caracteres.
+
+## Lo que NO está resuelto
+
+- **La ráfaga es decoración, no información.** El motor la ejecuta
+  bien, pero en la demo los planos de ráfaga son B-roll genérico
+  (una persona de noche, un reloj) que no agregan nada. §30 dice que
+  una ráfaga *condensa información* — imagen, número, screenshot. Falta
+  una regla que exija que cada plano de ráfaga aporte algo que el plano
+  sostenido no tenga.
+- **La correspondencia semántica del B-roll (§22).** La consulta
+  "man reading phone message at night" devolvió un teléfono con
+  escritura en otro idioma. El motor no puede juzgar eso; hay que
+  revisar lo que baja Pexels antes de usarlo.
+- **`escena` todavía no está enganchado a `estilos.py`.** Los seis
+  estilos siguen compilando un plano por golpe. Ese es el paso
+  siguiente y es el que hace que el arreglo llegue a los videos.
