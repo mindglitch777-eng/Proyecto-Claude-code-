@@ -1,0 +1,36 @@
+name: medir-nichos
+
+# Mide demanda de busqueda real de los nichos candidatos, por pais.
+# Corre en el runner porque pytrends necesita internet abierto y las
+# esperas largas entre consultas no tienen sentido dentro de la sesion.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  medir:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Instalar
+        run: pip install --quiet pytrends
+      - name: Medir
+        run: python3 medir_nichos.py
+      - name: Guardar
+        if: always()
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain MEDICION_NICHOS.md)" ]; then
+            git add MEDICION_NICHOS.md
+            git commit -m "Medicion de demanda por nicho (Google Trends)"
+            git pull --rebase --autostash origin main || true
+            git push
+          fi
