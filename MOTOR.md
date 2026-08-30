@@ -323,34 +323,74 @@ Ese es el estándar.
 
 # ANEXO — dónde vive cada cosa en el repo
 
-Esto no es parte de la norma; es el mapa de qué está construido y qué
-falta, para que ninguna sesión vuelva a preguntar.
+Esto no es parte de la norma; es el mapa, para que ninguna sesión
+vuelva a preguntar.
 
-## Ya construido
+## El motor: `motor.py` + `motor/`
+
+Todo determinista. Ningún LLM, ninguna API paga. Lo que el programa no
+puede medir lo deja vacío y lo pide; no lo inventa.
+
+El ciclo de §25, un comando por paso:
+
+```
+IDEA           motor.py idea "titulo" --conflicto "..." --desarrollo C \
+                 --objetivo descubrimiento --variable hook --slot "precio=12 dolares"
+EVALUARLA      motor.py evaluar 1 comercial=8 viral=7 curiosidad=8 ...
+HOOKS          motor.py hooks 1                  §9, genera todos los que los datos sostienen
+HOOK SCORE     motor.py hooks 1 --ver            §10, ordenados, con las 7 dimensiones
+ELEGIR         motor.py elegir 12                §10, la elección es humana
+ESTRUCTURA     motor.py estructura C --dur 32    §5/§6
+CIFRAS         motor.py cifra 1 "67 vs 0.1" VERIFICADO --fuente "..."
+BRIEF          motor.py brief 1 q6_payoff "..."  §24
+PUERTA         motor.py listo 1                  §24: se puede producir o no
+ESQUELETO      motor.py esqueleto 1 --salida guiones/x.json
+MEDIR          motor.py publicar 1 --vistas 12400 --ret-3s 0.46 --clics-perfil 118
+APRENDER       motor.py aprender                 §23
+```
+
+| § | Qué hace | Dónde |
+|---|---|---|
+| §4 | Sin conflicto declarado la idea no se puede evaluar ni producir | `motor/ideas.py` |
+| §11 | IDEA SCORE, 10 dimensiones con el peso del orden de prioridad. **Ajustado por cobertura**: 2 casilleros llenos no puede dar lo mismo que 10 | `motor/ideas.py` |
+| §9 | 12 familias de hook × plantillas. Una plantilla a la que le falta un dato **no se usa** — sin cifra no hay hook de cifra | `motor/hooks.py` |
+| §2 §3 | Filtro de mal-agresivo: promesa garantizada, dinero fácil, "cambiará tu vida", gritos, exceso de emojis, saludo de apertura, "hoy vamos a hablar de". **Rechazo con motivo citando el §** | `motor/hooks.py` |
+| §10 | HOOK SCORE en las 7 dimensiones, con proxies medibles (largo, cifra, bucle abierto, palabra mostrable, fórmula gastada). Se guarda marcado `sugerido`, y **ningún hook se usa sin que una persona lo elija** | `motor/hooks.py` |
+| §5 §6 | Los 9 esqueletos A–I + la estructura base, cada beat con su peso y **qué maquetas de `animador_v9` sirven ahí** | `motor/estructura.py` |
+| §12 | `esqueleto` escribe un guion JSON donde cada plano ya trae beat, maqueta y duración. Primero qué se ve, después qué se dice | `motor/estructura.py` |
+| §8 | CTA por objetivo, no "seguime" siempre | `motor/brief.py` |
+| §17 | Toda cifra con etiqueta `VERIFICADO/DECLARADO/ESTIMADO/RUMOR/HIPOTESIS`. Una que diga VERIFICADO sin fuente **no pasa la puerta** | `motor/brief.py`, tabla `cifras` |
+| §19 §20 §22 | Objetivo, escalón de funnel y variable bajo prueba, obligatorios para producir | `motor/base.py` |
+| §24 | La puerta. `listo` devuelve qué falta y bloquea hasta que estén las diez | `motor/brief.py` |
+| §21 §23 | Serie y bucle de aprendizaje: qué se publicó, cómo midió, agrupado por desarrollo/objetivo/variable | tabla `publicaciones`, `motor.py aprender` |
+
+## El resto del sistema
 
 | Pieza de la norma | Dónde |
 |---|---|
-| §12 visuales, §13 ritmo | `animador_v9.py` — 28 formatos de plano |
-| §12 "qué está viendo" | `abastecer_guiones.py` — cada plano declara `"necesita": "<consulta en inglés>"` y el script se lo pide a Pexels (foto o, con `"necesita_video": true`, video) y engancha la ruta. Corre en `.github/workflows/abastecer.yml` |
+| §12 visuales, §13 ritmo | `animador_v9.py` — 28 maquetas |
+| §12 "qué está viendo" | `abastecer_guiones.py` — cada plano declara `"necesita": "<consulta en inglés>"` y el script se lo pide a Pexels (foto, o video con `"necesita_video": true`) y engancha la ruta. Corre en `.github/workflows/abastecer.yml` |
 | §13 ritmo | `"flash_ritmo": [1.5, 0.7, 2.5]` en la raíz del guion — pulso de flashes a lo largo de todo el video |
-| §13 ritmo | `"captions_cascada": true` por plano — la palabra nace arriba y cae hasta el fondo cambiando de tipografía |
-| §14 densidad, §15 retención | `validar_hook.py` — mide duración, cadencia de cortes, loop, payoff temprano |
-| §17 evidencia | formato `prueba` — muestra la captura con la fuente al pie; sin `"fuente"` escribe SIN FUENTE en pantalla |
-| §9 hooks | `hooks.py` — **generador, pero con plantillas del nicho VIEJO (estoicismo). Hay que reescribirlo.** |
-| §11 idea score | `factory/puntaje.py` — **puntúa con dimensiones del modelo viejo (`sellerability`, `economics`). Hay que rehacerlo.** |
+| §13 ritmo | `"captions_cascada": true` por plano — la palabra nace arriba y cae hasta el fondo cambiando de tipografía, con `ESTILOS_CASCADA` (serif itálica, serif recta, sans liviana en caja alta con tracking; sin cajas ni pesos de plantilla) |
+| §14 §15 | `validar_hook.py` — duración, cadencia de cortes, loop, payoff temprano |
+| §17 evidencia | maqueta `prueba` — la captura con la fuente al pie; sin `"fuente"` escribe SIN FUENTE en pantalla |
+| §6 A/C/H | maqueta `flujo` — la cadena problema → herramienta → resultado |
 | producción sin tokens | `.github/workflows/producir-videos.yml` |
 
-## Falta construir
+## Lo que sigue faltando
 
-- **§10 hook score**: puntuar 1–10 en las 7 dimensiones y guardar el
-  puntaje junto al hook.
-- **§9 generación masiva de ángulos** para el nicho nuevo.
-- **§6 selector de estructura**: elegir el esqueleto A–I según el tipo
-  de idea, en vez de usar siempre el mismo.
-- **§17 etiqueta de cifra**: campo obligatorio
-  `VERIFICADO|DECLARADO|ESTIMADO|RUMOR|HIPÓTESIS` en todo plano que
-  muestre un número.
-- **§19 objetivo declarado** por pieza.
-- **§22 registro de variable probada** por video.
-- **§23 bucle de aprendizaje**: qué se publicó, qué midió, qué se
-  cambia después.
+- **§9**: las plantillas arman la frase con los slots y a veces sale
+  torcida gramaticalmente ("Hasta que mirás nadie sabe cuánto cobrar").
+  El hook se edita a mano antes de elegirlo; `--texto` permite cargar
+  el escrito a mano y lo puntúa igual.
+- **§10**: los proxies de *potencial viral* son los más flojos de los
+  siete. Miden conflicto + concreto + brevedad, que correlaciona pero
+  no predice. Tratarlo como un orden de lectura, no como un pronóstico.
+- **§23**: el bucle guarda y agrupa, pero no propone la siguiente
+  variación. Eso todavía lo decide una persona mirando la tabla.
+- `hooks.py` (raíz) sigue con plantillas de estoicismo del nicho viejo.
+  Queda **superado por `motor/hooks.py`**; hay que borrarlo o
+  reescribirlo.
+- `factory/puntaje.py` puntúa oportunidades con dimensiones del modelo
+  viejo (`sellerability`, `economics`), que bajo el modelo de curso no
+  significan nada.

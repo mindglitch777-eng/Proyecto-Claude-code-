@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 modelos_voz/
 factory/oportunidades.db
+
+# Base del motor de contenido: estado local, no se versiona.
+motor/contenido.db

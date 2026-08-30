@@ -181,3 +181,8 @@ Un script no esta terminado porque corre sin error. Chequear:
 Todo script vive en la raiz del repo y se documenta en una linea en
 este archivo cuando se crea. Si un script deja de usarse, se borra --
 no se acumulan herramientas muertas que confunden a la proxima sesion.
+
+## motor.py
+Motor de contenido (ver MOTOR.md). Idea -> score -> hooks -> score ->
+estructura -> brief -> puerta de produccion -> esqueleto de guion ->
+resultado publicado -> aprendizaje. Determinista, sin LLM ni APIs pagas.
