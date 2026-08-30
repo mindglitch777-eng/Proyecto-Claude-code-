@@ -7,6 +7,13 @@ name: probar-render
 # sesion de Claude quema contexto en logs de render y en sacar cuadros
 # a mano. Aca vuelve UNA tira de contactos y UN informe corto.
 #
+# OJO: GitHub solo deja disparar un workflow_dispatch si el archivo
+# existe en la rama POR DEFECTO. Mientras este .yml viva unicamente en
+# una rama de trabajo, la API responde 404 y no hay forma de correrlo.
+# Hasta que se mergee a main, la alternativa es producir-videos.yml
+# (que si esta registrado) y medir el .mp4 ya renderizado con
+# 'python3 probar_render.py --solo-medir', que no vuelve a renderizar.
+#
 # Deja en la rama: pruebas/<guion>.mp4, pruebas/<guion>-tira.jpg y
 # PRUEBA_RENDER.md con sonoridad, pico real, rango dinamico y cadencia
 # de corte de cada uno.

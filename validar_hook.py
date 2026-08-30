@@ -17,6 +17,21 @@ import sys
 from pathlib import Path
 
 MAX_BLOQUE_SIN_CAMBIO = 5.0   # regla de los 5 segundos
+# Techo para los planos que SI cambian por dentro (ver abajo). Sale de
+# la medicion de la referencia en ESTILO.md: el hueco mas largo entre
+# cortes que se le encontro fue de 10,7 segundos.
+MAX_BLOQUE_QUE_CONSTRUYE = 11.0
+
+# Maquetas donde entra contenido NUEVO a lo largo del plano: una linea,
+# una fila, un item, una foto. Ahi la duracion larga no es pantalla
+# muerta -- es justamente el tiempo que tarda en armarse lo que se
+# muestra. Cortar un bloque escalonado de cuatro lineas en dos planos
+# de 2,5s rompe el efecto entero.
+FORMATOS_QUE_CONSTRUYEN = {
+    "cascada", "menu", "lista", "escalada", "conteo", "cronologia",
+    "collage", "mensajes", "ranking", "pasos", "camino", "comparacion",
+    "flujo", "prueba", "ruleta", "galeria", "terminal",
+}
 MAX_SEG_HOOK = 2.5            # el hook tiene que resolverse rapido
 MAX_PALABRAS_HOOK = 14        # ~3 segundos hablados
 
@@ -97,9 +112,19 @@ def revisar(path):
             "especificidad crea autoridad implicita y sube retencion.")
 
     # --- Regla de los 5 segundos ---
+    # Con un matiz que salio de medir la referencia (ESTILO.md): su
+    # cadencia NO es pareja. Tiene cortes de 0,03s conviviendo con
+    # planos sostenidos de hasta 10,7s. O sea que "plano largo" no es
+    # por si solo una fuga de retencion; lo es un plano largo donde no
+    # pasa NADA. Por eso la regla ahora mira tambien la maqueta.
     for i, s in enumerate(segs):
         d = s.get("duracion", 0)
-        if d > MAX_BLOQUE_SIN_CAMBIO:
+        construye = s.get("formato") in FORMATOS_QUE_CONSTRUYEN
+        if d > MAX_BLOQUE_QUE_CONSTRUYE:
+            problemas.append(
+                f"Segmento {i+1} dura {d}s. Ni la referencia sostiene un "
+                f"plano mas de {MAX_BLOQUE_QUE_CONSTRUYE:.0f}s.")
+        elif d > MAX_BLOQUE_SIN_CAMBIO and not construye:
             problemas.append(
                 f"Segmento {i+1} dura {d}s sin cambio de escena. "
                 "Fuga de retencion: partilo o agrega un pattern interrupt.")
