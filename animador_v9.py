@@ -110,7 +110,8 @@ import tempfile
 from pathlib import Path
 
 try:
-    from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageChops
+    from PIL import (Image, ImageDraw, ImageFont, ImageFilter,
+                 ImageChops, ImageEnhance)
 except ImportError:
     print("ERROR: falta Pillow.")
     sys.exit(1)
@@ -147,56 +148,215 @@ def _factor_estiro(seg, referencia, techo=2.6):
 # Sans Bold, que se lee generica/vieja en pantallas de telefono. Una
 # sola fuente cubre Light/Regular/Bold via ejes de variacion, en vez
 # de necesitar un .ttf por peso.
-FUENTE_MODERNA = Path(__file__).parent / "assets/fuentes/SpaceGrotesk-Variable.ttf"
-# Serif italica para la palabra suelta de las maquetas 'pleno'/'tarjeta'.
-# Si se agrega una fuente propia mas elegante a assets/fuentes/, se usa
-# esa; si no, Liberation Serif Italic, que viene con el sistema.
-FUENTE_SERIF_ITALICA = Path(__file__).parent / "assets/fuentes/SerifItalica.ttf"
-if not FUENTE_SERIF_ITALICA.exists():
-    FUENTE_SERIF_ITALICA = Path(
-        "/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf")
+FUENTES = Path(__file__).parent / "assets/fuentes"
+
+# TIPOGRAFIA. Dos familias y nada mas -- eso es lo que hace que un
+# video se lea como de una marca y no como una plantilla.
+#
+#   SERIF DISPLAY: Playfair Display. Contraste alto entre trazo grueso
+#   y fino, remates finos. Es la que da el aire editorial. Antes se
+#   caia en Liberation Serif, que es un clon de Times y se ve
+#   generico: era la diferencia mas grande contra la referencia.
+#
+#   GROTESCA: Archivo. Variable en PESO (100-900) y en ANCHO (62-125),
+#   asi que la misma familia da desde una linea fina hasta el bloque
+#   negro y apretado del titular, sin cambiar de tipografia.
+#
+# Las dos son licencia OFL: uso comercial libre, sin atribucion
+# obligatoria. Los OFL.txt estan en assets/fuentes/.
+SERIF = FUENTES / "PlayfairDisplay-Variable.ttf"
+SERIF_ITALICA = FUENTES / "PlayfairDisplay-Italic.ttf"
+GROTESCA = FUENTES / "Archivo-Variable.ttf"
+
+# Respaldos, por si el repo se clona sin las fuentes.
+FUENTE_MODERNA = FUENTES / "SpaceGrotesk-Variable.ttf"
+FUENTE_SERIF_ITALICA = SERIF_ITALICA if SERIF_ITALICA.exists() else Path(
+    "/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf")
+
+# Pesos con nombre, para no repartir numeros magicos por el codigo.
+#   (peso, ancho) de Archivo   |   peso de Playfair
+PESOS_GROTESCA = {
+    "fina":    (300, 100),
+    "normal":  (400, 100),
+    "media":   (500, 100),
+    "fuerte":  (700, 100),
+    # El titular: negro y un poco angosto. Ese apriete es la mitad del
+    # caracter de la referencia.
+    "titular": (860,  88),
+}
+PESOS_SERIF = {"fina": 400, "normal": 500, "media": 600,
+               "fuerte": 700, "titular": 800}
+
+_CACHE_FNT = {}
 
 
-def fnt(t, ligera=False, serif=False, italica=False):
+def fnt(t, ligera=False, serif=False, italica=False, peso=None):
+    """Fuente del sistema tipografico.
+
+    'peso' es el control nuevo: fina / normal / media / fuerte /
+    titular. 'ligera' se mantiene por compatibilidad con todo el
+    codigo que ya lo usaba y equivale a 'fina'.
+
+    Se cachea: fnt() se llama miles de veces por segundo de video y
+    abrir el .ttf y fijar los ejes de variacion cada vez costaba mas
+    que dibujar."""
+    tam = max(8, int(t))
+    nombre = peso or ("fina" if ligera else "fuerte")
+    clave = (tam, nombre, serif, italica)
+    if clave in _CACHE_FNT:
+        return _CACHE_FNT[clave]
+    f = None
     if serif:
-        cands = ([FUENTE_SERIF_ITALICA,
-                  "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf",
-                  "/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf"]
-                 if italica else [])
-        for c in cands:
-            c = str(c)
-            if Path(c).exists():
-                try:
-                    return ImageFont.truetype(c, max(8, int(t)))
-                except Exception:
-                    pass
-        for c in ["/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf",
-                  "/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"]:
-            if Path(c).exists():
-                try:
-                    return ImageFont.truetype(c, max(8, int(t)))
-                except Exception:
-                    pass
-    if FUENTE_MODERNA.exists():
-        try:
-            f = ImageFont.truetype(str(FUENTE_MODERNA), max(8, int(t)))
-            f.set_variation_by_name("Regular" if ligera else "Bold")
-            return f
-        except Exception:
-            pass
-    cands = ([ "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-               "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf"]
-             if ligera else
-             ["/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-              "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"])
-    for c in cands:
-        if Path(c).exists():
+        ruta = SERIF_ITALICA if italica else SERIF
+        if ruta.exists():
             try:
-                return ImageFont.truetype(c, max(8, int(t)))
+                f = ImageFont.truetype(str(ruta), tam)
+                f.set_variation_by_axes([PESOS_SERIF.get(nombre, 500)])
             except Exception:
-                pass
-    return ImageFont.load_default(size=max(8, int(t)))
+                f = None
+        if f is None:
+            for c in ([FUENTE_SERIF_ITALICA] if italica else []) + [
+                    "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf",
+                    "/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"]:
+                if Path(c).exists():
+                    try:
+                        f = ImageFont.truetype(str(c), tam)
+                        break
+                    except Exception:
+                        pass
+    else:
+        if GROTESCA.exists():
+            try:
+                f = ImageFont.truetype(str(GROTESCA), tam)
+                w, an = PESOS_GROTESCA.get(nombre, PESOS_GROTESCA["fuerte"])
+                f.set_variation_by_axes([w, an])
+            except Exception:
+                f = None
+        if f is None and FUENTE_MODERNA.exists():
+            try:
+                f = ImageFont.truetype(str(FUENTE_MODERNA), tam)
+                f.set_variation_by_name("Regular" if nombre in ("fina", "normal")
+                                        else "Bold")
+            except Exception:
+                f = None
+        if f is None:
+            for c in (["/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"]
+                      if nombre in ("fina", "normal") else
+                      ["/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"]):
+                if Path(c).exists():
+                    try:
+                        f = ImageFont.truetype(c, tam)
+                        break
+                    except Exception:
+                        pass
+    if f is None:
+        f = ImageFont.load_default(size=tam)
+    _CACHE_FNT[clave] = f
+    return f
 
+
+# ============ GRADING UNIFICADO ============
+# EL PROBLEMA QUE RESUELVE
+#     Las fotos de un banco vienen cada una con su temperatura: una
+#     azulada de noche, una calida de taller, una gris de oficina.
+#     Cuatro seguidas se ven como cuatro videos distintos pegados --
+#     que es literalmente lo que el operador describio como "se mezcla
+#     con otros contenidos".
+#
+#     Ningun efecto arregla eso. Lo que lo arregla es lo mismo que hace
+#     un colorista: pasar TODO el metraje por la misma corrección, para
+#     que las sombras de todos los planos caigan en el mismo lugar y
+#     las luces tambien.
+#
+# QUE HACE
+#     1. Baja la saturacion. El color de banco es siempre mas saturado
+#        de lo que conviene; el acento de marca tiene que ser lo mas
+#        saturado del cuadro.
+#     2. Tiñe las SOMBRAS hacia el fondo de la paleta y las LUCES hacia
+#        un crema. Ese split-tone es lo que unifica: dos fotos con
+#        temperatura opuesta terminan con el mismo negro y el mismo
+#        blanco.
+#     3. Sube un poco el contraste, que la desaturacion se come.
+#
+#     Es una LUT por canal calculada una sola vez por paleta, asi que
+#     aplicarla a un cuadro cuesta un point() -- nada.
+
+_CACHE_LUT = {}
+
+
+def _lut_grade(pal, fuerza=1.0):
+    clave = (tuple(pal["fondo"]), round(fuerza, 2))
+    if clave in _CACHE_LUT:
+        return _CACHE_LUT[clave]
+    # Las sombras van hacia el fondo de la paleta, con un empujon extra
+    # al azul: es lo que da el aire "de noche" incluso en una foto de
+    # dia, y hace que el naranja del acento salte.
+    fondo = pal["fondo"]
+    sombra = [(fondo[0] - 6) * 0.55, (fondo[1] - 4) * 0.55,
+              (fondo[2] + 16) * 0.75]
+    luz = [10.0, 4.0, -8.0]          # crema: mas rojo, menos azul
+    lut = []
+    for c in range(3):
+        canal = []
+        for i in range(256):
+            t = i / 255.0
+            v = i + sombra[c] * (1 - t) ** 2.2 * fuerza \
+                  + luz[c] * (t ** 2.2) * fuerza
+            # contraste suave alrededor del medio
+            v = 128 + (v - 128) * (1.0 + 0.10 * fuerza)
+            canal.append(max(0, min(255, int(round(v)))))
+        lut += canal
+    _CACHE_LUT[clave] = lut
+    return lut
+
+
+# A donde se lleva el brillo medio de TODA foto. Medido sobre las que
+# usa el proyecto: venian entre 68 y 172 de luminancia media -- dos
+# fotos seguidas con dos veces y media de diferencia de exposicion se
+# leen como dos videos distintos, por mas que el color este corregido.
+LUZ_OBJETIVO = 104.0
+GAMMA_MIN, GAMMA_MAX = 0.70, 1.55
+
+
+def _igualar_exposicion(im):
+    """Lleva el brillo medio de la foto hacia LUZ_OBJETIVO con una
+    curva de gamma.
+
+    Gamma y no una ganancia: multiplicar levanta los negros y quema los
+    blancos; la gamma mueve los medios y deja los extremos donde estan,
+    que es lo que hace falta para que dos fotos peguen sin aplastarlas.
+
+    El limite existe para no arruinar una foto que es oscura A
+    PROPOSITO: sin tope, una nocturna terminaba pareciendo de dia."""
+    chico = im.convert("L").resize((48, 85))
+    datos = list(chico.getdata())
+    media = sum(datos) / max(1, len(datos))
+    if media < 4 or media > 251:
+        return im
+    import math
+    gamma = math.log(LUZ_OBJETIVO / 255.0) / math.log(media / 255.0)
+    gamma = max(GAMMA_MIN, min(GAMMA_MAX, gamma))
+    if abs(gamma - 1.0) < 0.02:
+        return im
+    lut = [max(0, min(255, int(round(255.0 * (i / 255.0) ** gamma))))
+           for i in range(256)]
+    return im.point(lut * 3)
+
+
+def gradear(im, pal, fuerza=1.0):
+    """Pasa una foto por la correccion de color del proyecto. Devuelve
+    una imagen nueva; no toca la original."""
+    if fuerza <= 0:
+        return im
+    if im.mode != "RGB":
+        im = im.convert("RGB")
+    # Primero igualar exposicion, despues el color. Al reves, la curva
+    # de gamma correria el split-tone que se acaba de aplicar.
+    im = _igualar_exposicion(im)
+    # 0.68 de saturacion: el banco viene siempre mas saturado de lo que
+    # conviene, y el acento tiene que ser lo mas saturado del cuadro.
+    im = ImageEnhance.Color(im).enhance(1.0 - 0.32 * fuerza)
+    return im.point(_lut_grade(pal, fuerza))
 
 def envolver(d, txt, f, ancho):
     ps, ls, act = txt.split(), [], []
@@ -686,7 +846,7 @@ def _cuadros_video(ruta, fps):
     return cuadros
 
 
-def _cuadro_medio(img, seg, caja, t=0.0):
+def _cuadro_medio(img, seg, caja, t=0.0, pal=None):
     """Dibuja el metraje del segmento dentro de 'caja' (x0,y0,x1,y1),
     recortando para llenar sin deformar. Acepta un clip de video
     ("video") o una foto ("imagen"/"foto"). Si no hay nada, deja la
@@ -704,7 +864,8 @@ def _cuadro_medio(img, seg, caja, t=0.0):
             i = min(len(cuadros) - 1, max(0, int(t * dur * fps)))
             try:
                 im = Image.open(cuadros[i]).convert("RGB")
-                _pegar_encuadrado(img, im, caja)
+                _pegar_encuadrado(img, im, caja, pal,
+                                  float(seg.get('grade', 1.0)))
                 return
             except Exception:
                 pass
@@ -715,11 +876,17 @@ def _cuadro_medio(img, seg, caja, t=0.0):
         im = Image.open(ruta).convert("RGB")
     except Exception:
         return
-    _pegar_encuadrado(img, im, caja)
+    _pegar_encuadrado(img, im, caja, pal, float(seg.get("grade", 1.0)))
 
 
-def _pegar_encuadrado(img, im, caja):
-    """Escala para LLENAR la caja sin deformar y recorta el sobrante."""
+def _pegar_encuadrado(img, im, caja, pal=None, grade=1.0):
+    """Escala para LLENAR la caja sin deformar y recorta el sobrante.
+
+    Con 'pal' pasa la foto por el grading del proyecto. Se deja
+    opcional a proposito: una captura que se muestra como EVIDENCIA no
+    se gradea -- corregirle el color a una prueba es alterarla."""
+    if pal is not None and grade > 0:
+        im = gradear(im, pal, grade)
     x0, y0, x1, y1 = caja
     cw, ch = x1 - x0, y1 - y0
     esc = max(cw / im.width, ch / im.height)
@@ -742,7 +909,7 @@ def f_pleno(img, d, seg, t, pal):
 
     JSON: {"formato": "pleno", "imagen": "...", "narracion": "..."}
     """
-    _cuadro_medio(img, seg, (0, 0, W, H), t)
+    _cuadro_medio(img, seg, (0, 0, W, H), t, pal)
     # Oscurecido general para que la palabra blanca siempre se lea
     velo = Image.new("RGB", (W, H), (0, 0, 0))
     img.paste(Image.blend(img, velo, seg.get("velo", 0.34)), (0, 0))
@@ -796,7 +963,7 @@ def f_tarjeta(img, d, seg, t, pal):
     # esquina en vez de recortarla.
     cw, ch = cx1 - cx0, alto
     tarjeta = Image.new("RGB", (cw, ch), (232, 232, 230))
-    _cuadro_medio(tarjeta, seg, (0, 0, cw, ch), t)
+    _cuadro_medio(tarjeta, seg, (0, 0, cw, ch), t, pal)
     mascara = Image.new("L", (cw, ch), 0)
     ImageDraw.Draw(mascara).rounded_rectangle([0, 0, cw - 1, ch - 1],
                                               radius=34, fill=255)
@@ -2350,7 +2517,7 @@ def f_ruleta(img, d, seg, t, pal):
            "palabras": ["barbería", "peluquería", "taller"],
            "imagen": "...", "velo": 0.5}
     """
-    _cuadro_medio(img, seg, (0, 0, W, H), t)
+    _cuadro_medio(img, seg, (0, 0, W, H), t, pal)
     velo = Image.new("RGB", (W, H), (0, 0, 0))
     img.paste(Image.blend(img, velo, seg.get("velo", 0.52)), (0, 0))
 
@@ -2421,7 +2588,7 @@ def f_lista(img, d, seg, t, pal):
            "items": ["el que no vino", "el hueco de las 3"],
            "imagen": "...", "marcador": "—"}
     """
-    _cuadro_medio(img, seg, (0, 0, W, H), t)
+    _cuadro_medio(img, seg, (0, 0, W, H), t, pal)
     velo = Image.new("RGB", (W, H), (0, 0, 0))
     img.paste(Image.blend(img, velo, seg.get("velo", 0.60)), (0, 0))
 
@@ -2917,13 +3084,13 @@ def f_cascada(img, d, seg, t, pal):
         ch = int(cw * 0.72)
         cx, cy = (W - cw) // 2, int(H * 0.52 - ch / 2)
         tarjeta = Image.new("RGB", (cw, ch), tuple(pal["fondo"]))
-        _cuadro_medio(tarjeta, seg, (0, 0, cw, ch), t)
+        _cuadro_medio(tarjeta, seg, (0, 0, cw, ch), t, pal)
         mascara = Image.new("L", (cw, ch), 0)
         ImageDraw.Draw(mascara).rounded_rectangle([0, 0, cw - 1, ch - 1],
                                                   radius=24, fill=255)
         img.paste(tarjeta, (cx, cy), mascara)
     else:
-        _cuadro_medio(img, seg, (0, 0, W, H), t)
+        _cuadro_medio(img, seg, (0, 0, W, H), t, pal)
     velo = float(seg.get("velo", 0.0 if encuadre == "plano" else 0.30))
     if velo > 0:
         img.paste(Image.blend(img, Image.new("RGB", (W, H), (0, 0, 0)), velo),
@@ -3152,6 +3319,10 @@ def _plano_zoom(img, ruta, zoom, cache, deriva=0.0):
     if base == "PENDIENTE":
         try:
             base = Image.open(ruta).convert("RGB")
+            # El grading va sobre la foto ENTERA y una sola vez, no
+            # sobre cada cuadro: queda cacheada ya corregida.
+            if cache.get("_pal") is not None:
+                base = gradear(base, cache["_pal"], cache.get("_grade", 1.0))
         except Exception:
             base = None
         cache[ruta] = base
@@ -3191,6 +3362,8 @@ def f_escena(img, d, seg, t, pal):
     ts = t * dur
     planos = seg.get("planos") or []
     cache = seg.setdefault("_cache_escena", {})
+    cache.setdefault("_pal", pal)
+    cache.setdefault("_grade", float(seg.get("grade", 1.0)))
 
     puesto = False
     if planos:
@@ -3702,6 +3875,7 @@ def f_parallax(img, d, seg, t, pal):
         if base == "PENDIENTE":
             try:
                 base = Image.open(ruta).convert("RGB")
+                base = gradear(base, pal, float(seg.get("grade", 1.0)))
             except Exception:
                 base = None
             cache[ruta] = base

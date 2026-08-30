@@ -192,3 +192,71 @@ y ahí se pierde el golpe. `validar_hook.py` ahora avisa por encima de
 - **`escena` todavía no está enganchado a `estilos.py`.** Los seis
   estilos siguen compilando un plano por golpe. Ese es el paso
   siguiente y es el que hace que el arreglo llegue a los videos.
+
+
+---
+
+# TIPOGRAFÍA Y COLOR
+
+## Las dos familias
+
+| | fuente | para qué |
+|---|---|---|
+| Serif display | **Playfair Display** | el aire editorial. Contraste alto entre trazo grueso y fino |
+| Grotesca | **Archivo** | variable en peso (100–900) **y en ancho** (62–125) |
+
+Las dos son licencia **OFL**: uso comercial libre, sin atribución
+obligatoria. Los `OFL.txt` están en `assets/fuentes/`.
+
+Antes se caía en **Liberation Serif**, que es un clon de Times, y en
+Space Grotesk Bold. Era la diferencia más grande contra la referencia:
+la serif se veía genérica y la grotesca no llegaba al negro apretado
+del titular.
+
+Pesos con nombre, para no repartir números por el código:
+
+```python
+fnt(80, serif=True, peso="fina")      # Playfair 400
+fnt(80, serif=True, italica=True)     # Playfair Italic
+fnt(80, peso="titular")               # Archivo 860, ancho 88 — el titular
+fnt(40, peso="fina")                  # Archivo 300
+```
+
+`fnt()` se llama miles de veces por segundo de video, así que ahora
+cachea: abrir el `.ttf` y fijar los ejes de variación en cada llamada
+costaba más que dibujar.
+
+## Grading — por qué existe
+
+Las fotos de un banco vienen cada una con su temperatura y su
+exposición. Cuatro seguidas se ven como cuatro videos pegados — que es
+literalmente lo que se describió como *"se mezcla con otros
+contenidos"*. Ningún efecto arregla eso; lo arregla pasar todo el
+metraje por la misma corrección.
+
+**1. Igualar exposición.** Medido sobre las fotos que usa el proyecto:
+venían entre **44 y 172** de luminancia media, casi 4× de diferencia.
+Se lleva cada una hacia 104 con una curva de gamma — gamma y no
+ganancia, porque multiplicar levanta los negros y quema los blancos.
+
+| | mínimo | máximo | dispersión |
+|---|---|---|---|
+| antes | 44,3 | 172,3 | **3,89×** |
+| después | 38,4 | 82,8 | **2,16×** |
+
+No queda en 1,0× **a propósito**: hay un tope de gamma (0,70–1,55) para
+que una foto que es oscura por decisión no termine pareciendo de día.
+Las dos fotos más extremas chocan contra ese tope.
+
+**2. Split-tone.** Sombras hacia el fondo de la paleta con un empujón
+al azul, luces hacia un crema. Dos fotos con temperatura opuesta
+terminan con el mismo negro y el mismo blanco.
+
+**3. Saturación al 68 %.** El banco viene más saturado de lo que
+conviene, y el acento de marca tiene que ser lo más saturado del cuadro.
+
+## Lo que NO se gradea
+
+**La evidencia.** Una captura que se muestra en `prueba` no pasa por la
+corrección: corregirle el color a una prueba es alterarla. §18 pide
+priorizar la legibilidad de la evidencia, no su estética.
