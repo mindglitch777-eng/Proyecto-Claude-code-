@@ -19,6 +19,7 @@ Frase:
 
 ## Licencias
 
+- chatterbox (Resemble AI) — MIT, uso comercial libre, clona voz
 - kokoro — Apache-2.0, uso comercial libre
 - pocket-tts (Kyutai) — MIT, uso comercial libre, ademas clona voz
 - piper — MIT, uso comercial libre
