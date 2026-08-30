@@ -21,6 +21,7 @@ con autor y enlace de cada foto, como pide la licencia de Pexels.
 """
 import json
 import os
+import subprocess
 import sys
 import urllib.parse
 import urllib.request
@@ -29,6 +30,8 @@ from pathlib import Path
 RAIZ = Path(__file__).parent
 DESTINO = RAIZ / "assets" / "metraje"
 API = "https://api.pexels.com/v1/search"
+API_VIDEO = "https://api.pexels.com/videos/search"
+DESTINO_VIDEO = RAIZ / "assets" / "metraje_video"
 
 # Terminos en INGLES a proposito: el banco esta indexado en ingles y
 # devuelve mucho mas material que buscando en castellano.
@@ -129,10 +132,101 @@ def bajar_nicho(nicho, consulta, cantidad, k):
     return n
 
 
+def buscar_video(consulta, cantidad, k):
+    url = (f"{API_VIDEO}?{urllib.parse.urlencode({'query': consulta, 'per_page': cantidad, 'orientation': 'portrait', 'size': 'medium'})}")
+    pedido = urllib.request.Request(url, headers={
+        "Authorization": k,
+        "User-Agent": "Mozilla/5.0 (compatible; FabricaContenido/1.0)",
+        "Accept": "application/json",
+    })
+    with urllib.request.urlopen(pedido, timeout=60) as r:
+        return json.loads(r.read().decode("utf-8"))
+
+
+def _mejor_archivo(v):
+    """De las varias resoluciones que ofrece Pexels, la vertical mas
+    cercana a 1080x1920 SIN pasarse mucho: bajar un 4K para despues
+    reducirlo a 1080 es tirar ancho de banda y tiempo de decodificado
+    en cada render."""
+    archivos = [a for a in v.get("video_files", [])
+                if a.get("height") and a.get("width")
+                and a["height"] >= a["width"]]
+    if not archivos:
+        archivos = v.get("video_files", [])
+    if not archivos:
+        return None
+    # penaliza fuerte pasarse de 1920 de alto
+    def costo(a):
+        h = a.get("height") or 0
+        return abs(h - 1920) + (h - 1920) * 2 if h > 1920 else abs(h - 1920)
+    return sorted(archivos, key=costo)[0]
+
+
+def bajar_video_nicho(nicho, consulta, cantidad, k, seg_max=8):
+    """Baja clips cortos y los recorta a seg_max segundos. Un clip de
+    banco suele durar 20-30s y en el video se usan 2 o 3: guardar el
+    original entero seria decenas de MB por nada."""
+    carpeta = DESTINO_VIDEO / nicho
+    carpeta.mkdir(parents=True, exist_ok=True)
+    datos = buscar_video(consulta, cantidad, k)
+    videos = datos.get("videos", [])
+    if not videos:
+        print(f"  [{nicho}] sin videos para '{consulta}'")
+        return 0
+    creditos, n = [], 0
+    for i, v in enumerate(videos):
+        arch = _mejor_archivo(v)
+        if not arch:
+            continue
+        crudo = carpeta / f".tmp-{i:02d}.mp4"
+        destino = carpeta / f"{nicho}-{i:02d}.mp4"
+        pedido = urllib.request.Request(arch["link"], headers={
+            "User-Agent": "Mozilla/5.0 (compatible; FabricaContenido/1.0)"})
+        try:
+            with urllib.request.urlopen(pedido, timeout=180) as r, open(crudo, "wb") as out:
+                out.write(r.read())
+        except Exception as e:
+            print(f"  [{nicho}] fallo video {i}: {e}")
+            crudo.unlink(missing_ok=True)
+            continue
+        # recorte + encuadre vertical exacto, para que el render no
+        # tenga que resolver relacion de aspecto en cada cuadro
+        r = subprocess.run(
+            ["ffmpeg", "-y", "-loglevel", "error", "-i", str(crudo),
+             "-t", str(seg_max),
+             "-vf", "scale=1080:1920:force_original_aspect_ratio=increase,"
+                    "crop=1080:1920",
+             "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "23",
+             str(destino)], capture_output=True, text=True)
+        crudo.unlink(missing_ok=True)
+        if r.returncode != 0 or not destino.exists():
+            print(f"  [{nicho}] ffmpeg fallo en {i}: {r.stderr[:120]}")
+            continue
+        creditos.append(f"- `{destino.name}` — video de {v['user']['name']} "
+                        f"({v['user']['url']}) — {v['url']}")
+        n += 1
+    (carpeta / "CREDITOS.md").write_text(
+        f"# Creditos video — {nicho}\n\nVideos de Pexels, licencia libre "
+        f"para uso comercial.\n\n" + "\n".join(creditos) + "\n",
+        encoding="utf-8")
+    print(f"  [{nicho}] {n} clips -> {carpeta}")
+    return n
+
+
 def main():
     a = sys.argv[1:]
     k = clave()
     DESTINO.mkdir(parents=True, exist_ok=True)
+    if a and a[0] == "--video":
+        DESTINO_VIDEO.mkdir(parents=True, exist_ok=True)
+        resto = a[1:]
+        cuantos = int(resto[-1]) if resto and resto[-1].isdigit() else 6
+        nichos = ([resto[0]] if resto and not resto[0].isdigit()
+                  else list(NICHOS))
+        total = sum(bajar_video_nicho(n, NICHOS.get(n, n), cuantos, k)
+                    for n in nichos)
+        print(f"\nTotal: {total} clips.")
+        return 0
     if not a or a[0] == "--lote":
         total = sum(bajar_nicho(n, c, 12, k) for n, c in NICHOS.items())
         print(f"\nTotal: {total} fotos en {len(NICHOS)} nichos.")

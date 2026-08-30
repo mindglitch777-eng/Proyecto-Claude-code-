@@ -499,10 +499,67 @@ def dibujar_palabra_cinetica(img, d, palabra, clave, lt, idx, pal, cy,
                      int(cy - capa.height / 2 + oy)), capa)
 
 
-def _cuadro_medio(img, seg, caja):
-    """Dibuja el metraje/imagen del segmento dentro de 'caja' (x0,y0,x1,y1),
-    recortando para llenar sin deformar. Si el segmento no trae imagen,
-    deja la caja vacia (el fondo de la maqueta se ve igual)."""
+_CUADROS_VIDEO = {}
+
+
+def _cuadros_video(ruta, fps):
+    """Lista de cuadros ya extraidos de un clip, en orden.
+
+    El motor dibuja cuadro por cuadro con Pillow, asi que no puede
+    "leer video" -- se extraen los cuadros una vez a JPG y despues cada
+    plano elige el que le toca. Se extrae a una carpeta temporal y se
+    renombra al final: si dos procesos del pool piden el mismo clip a
+    la vez, el peor caso es trabajo duplicado, nunca una carpeta a
+    medio llenar.
+    """
+    clave = (str(ruta), int(fps))
+    if clave in _CUADROS_VIDEO:
+        return _CUADROS_VIDEO[clave]
+    base = Path(tempfile.gettempdir()) / "metraje_cuadros"
+    destino = base / f"{Path(ruta).stem}-{int(fps)}"
+    if not destino.exists():
+        tmp = base / f".{Path(ruta).stem}-{int(fps)}-{os.getpid()}"
+        tmp.mkdir(parents=True, exist_ok=True)
+        r = subprocess.run(
+            ["ffmpeg", "-y", "-loglevel", "error", "-i", str(ruta),
+             "-vf", f"fps={int(fps)}", "-q:v", "3",
+             str(tmp / "c%04d.jpg")], capture_output=True, text=True)
+        if r.returncode != 0:
+            shutil.rmtree(tmp, ignore_errors=True)
+            _CUADROS_VIDEO[clave] = []
+            return []
+        try:
+            tmp.rename(destino)
+        except OSError:
+            # otro proceso llego primero: su carpeta sirve igual
+            shutil.rmtree(tmp, ignore_errors=True)
+    cuadros = sorted(destino.glob("c*.jpg"))
+    _CUADROS_VIDEO[clave] = cuadros
+    return cuadros
+
+
+def _cuadro_medio(img, seg, caja, t=0.0):
+    """Dibuja el metraje del segmento dentro de 'caja' (x0,y0,x1,y1),
+    recortando para llenar sin deformar. Acepta un clip de video
+    ("video") o una foto ("imagen"/"foto"). Si no hay nada, deja la
+    caja vacia (el fondo de la maqueta se ve igual).
+
+    El clip avanza a su velocidad REAL, no estirado al largo del plano:
+    un clip de 8s metido en un plano de 2s se veria en camara rapida.
+    Si el plano dura mas que el clip, el ultimo cuadro se congela."""
+    vid = seg.get("video")
+    if vid and Path(vid).exists():
+        fps = seg.get("_fps", 30)
+        cuadros = _cuadros_video(vid, fps)
+        if cuadros:
+            dur = float(seg.get("duracion", 2.0)) or 2.0
+            i = min(len(cuadros) - 1, max(0, int(t * dur * fps)))
+            try:
+                im = Image.open(cuadros[i]).convert("RGB")
+                _pegar_encuadrado(img, im, caja)
+                return
+            except Exception:
+                pass
     ruta = seg.get("imagen") or seg.get("foto")
     if not ruta or not Path(ruta).exists():
         return
@@ -510,6 +567,11 @@ def _cuadro_medio(img, seg, caja):
         im = Image.open(ruta).convert("RGB")
     except Exception:
         return
+    _pegar_encuadrado(img, im, caja)
+
+
+def _pegar_encuadrado(img, im, caja):
+    """Escala para LLENAR la caja sin deformar y recorta el sobrante."""
     x0, y0, x1, y1 = caja
     cw, ch = x1 - x0, y1 - y0
     esc = max(cw / im.width, ch / im.height)
@@ -532,7 +594,7 @@ def f_pleno(img, d, seg, t, pal):
 
     JSON: {"formato": "pleno", "imagen": "...", "narracion": "..."}
     """
-    _cuadro_medio(img, seg, (0, 0, W, H))
+    _cuadro_medio(img, seg, (0, 0, W, H), t)
     # Oscurecido general para que la palabra blanca siempre se lea
     velo = Image.new("RGB", (W, H), (0, 0, 0))
     img.paste(Image.blend(img, velo, seg.get("velo", 0.34)), (0, 0))
@@ -580,7 +642,7 @@ def f_tarjeta(img, d, seg, t, pal):
     # esquina en vez de recortarla.
     cw, ch = cx1 - cx0, alto
     tarjeta = Image.new("RGB", (cw, ch), (232, 232, 230))
-    _cuadro_medio(tarjeta, seg, (0, 0, cw, ch))
+    _cuadro_medio(tarjeta, seg, (0, 0, cw, ch), t)
     mascara = Image.new("L", (cw, ch), 0)
     ImageDraw.Draw(mascara).rounded_rectangle([0, 0, cw - 1, ch - 1],
                                               radius=34, fill=255)
@@ -2134,7 +2196,7 @@ def f_ruleta(img, d, seg, t, pal):
            "palabras": ["barbería", "peluquería", "taller"],
            "imagen": "...", "velo": 0.5}
     """
-    _cuadro_medio(img, seg, (0, 0, W, H))
+    _cuadro_medio(img, seg, (0, 0, W, H), t)
     velo = Image.new("RGB", (W, H), (0, 0, 0))
     img.paste(Image.blend(img, velo, seg.get("velo", 0.52)), (0, 0))
 
@@ -2205,7 +2267,7 @@ def f_lista(img, d, seg, t, pal):
            "items": ["el que no vino", "el hueco de las 3"],
            "imagen": "...", "marcador": "—"}
     """
-    _cuadro_medio(img, seg, (0, 0, W, H))
+    _cuadro_medio(img, seg, (0, 0, W, H), t)
     velo = Image.new("RGB", (W, H), (0, 0, 0))
     img.paste(Image.blend(img, velo, seg.get("velo", 0.60)), (0, 0))
 
@@ -2451,6 +2513,9 @@ def _dibujar_cuadro(tarea):
 
 def render(seg, t, prog, cfg):
     pal = cfg["paleta"]
+    # Los cuadros de un clip se extraen a los fps del video final, asi
+    # que la maqueta necesita saber cual es.
+    seg.setdefault("_fps", cfg.get("fps", 30))
     img = base_fondo(pal, t, seg)
     # Imagen de fondo: encuadrada, duotono a la paleta y oscurecida para
     # que el texto siempre se lea. Ken Burns muy lento (ritmo del nicho).

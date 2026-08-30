@@ -14,9 +14,13 @@ on:
         required: true
         default: "todos"
       cantidad:
-        description: "Fotos por nicho"
+        description: "Piezas por nicho"
         required: false
         default: "12"
+      tipo:
+        description: "foto o video"
+        required: false
+        default: "foto"
 
 permissions:
   contents: write
@@ -36,8 +40,15 @@ jobs:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           NICHO: ${{ inputs.nicho }}
           CANTIDAD: ${{ inputs.cantidad }}
+          TIPO: ${{ inputs.tipo }}
         run: |
-          if [ "$NICHO" = "todos" ]; then
+          if [ "$TIPO" = "video" ]; then
+            if [ "$NICHO" = "todos" ]; then
+              python3 descargar_metraje.py --video "$CANTIDAD"
+            else
+              python3 descargar_metraje.py --video "$NICHO" "$CANTIDAD"
+            fi
+          elif [ "$NICHO" = "todos" ]; then
             python3 descargar_metraje.py --lote
           else
             python3 descargar_metraje.py "$NICHO" "$CANTIDAD"
@@ -47,8 +58,8 @@ jobs:
         run: |
           git config user.name  "productor-bot"
           git config user.email "actions@github.com"
-          if [ -n "$(git status --porcelain assets/metraje)" ]; then
-            git add assets/metraje
+          if [ -n "$(git status --porcelain assets/)" ]; then
+            git add assets/
             git commit -m "Metraje de banco: ${{ inputs.nicho }}"
             git pull --rebase --autostash origin main || true
             git push
