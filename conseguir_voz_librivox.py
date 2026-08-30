@@ -62,13 +62,23 @@ def _slug(t):
     return re.sub(r"[^a-z0-9]+", "-", t.lower()).strip("-")[:40] or "sin-nombre"
 
 
-def buscar_candidatos(cuantos=5, paginas_max=12):
-    """Recorre el catalogo paginado buscando proyectos en español con
-    UN solo lector en todos los capitulos. Devuelve una lista de dicts
-    con titulo, autor, lector y la URL de audio de un capitulo."""
-    encontrados, lectores_usados = [], set()
+def buscar_candidatos(cuantos=5, paginas_max=25):
+    """Recorre el catalogo paginado juntando, por LECTOR individual (no
+    por libro), un capitulo suyo para usar de referencia.
+
+    La mayoria de los libros en español de LibriVox son proyectos
+    corales -- un voluntario distinto por capitulo -- asi que exigir
+    que TODO el libro comparta un solo lector (como se probo primero)
+    da cero resultados sobre cientos de libros revisados. Agrupar por
+    lector individual aprovecha esos mismos proyectos corales: cada
+    capitulo ya es, de por si, la voz de una sola persona.
+
+    Devuelve una lista de dicts con titulo, autor, lector y la URL de
+    audio de un capitulo, uno por lector distinto."""
+    lectores_vistos = {}   # display_name -> dict del candidato
+    libros_es, secciones_con_lector = 0, 0
     for pagina in range(paginas_max):
-        if len(encontrados) >= cuantos:
+        if len(lectores_vistos) >= cuantos:
             break
         offset = pagina * 50
         url = (f"{API}?{urllib.parse.urlencode({'format': 'json', 'extended': 1, 'limit': 50, 'offset': offset})}")
@@ -79,42 +89,41 @@ def buscar_candidatos(cuantos=5, paginas_max=12):
             continue
         libros = datos.get("books", [])
         if not libros:
+            print(f"  pagina {pagina}: catalogo vacio, se corta la busqueda")
             break
         for libro in libros:
             if libro.get("language") != "Spanish":
                 continue
+            libros_es += 1
             secciones = libro.get("sections") or []
             if isinstance(secciones, dict):
                 secciones = list(secciones.values())
-            if len(secciones) < 2:
-                continue
-            lectores = set()
-            for s in secciones:
-                for r in (s.get("readers") or []):
+            for sec in secciones:
+                if not sec.get("listen_url"):
+                    continue
+                lector = None
+                for r in (sec.get("readers") or []):
                     if r.get("display_name"):
-                        lectores.add(r["display_name"])
-            if len(lectores) != 1:
-                continue  # antologia coral: se descarta, buscamos UNA voz
-            lector = next(iter(lectores))
-            if lector in lectores_usados:
-                continue  # no repetir el mismo lector en dos candidatos
-            # capitulo 2 si existe (el 1 suele ser una intro corta),
-            # el mas largo entre los primeros 4 si no
-            secciones_ok = [s for s in secciones if s.get("listen_url")]
-            if not secciones_ok:
-                continue
-            elegido = secciones_ok[1] if len(secciones_ok) > 1 else secciones_ok[0]
-            encontrados.append({
-                "titulo": libro.get("title", "?"),
-                "autor": (libro.get("authors") or [{}])[0].get("last_name", "?"),
-                "lector": lector,
-                "url_audio": elegido["listen_url"],
-                "url_libro": f"https://librivox.org/{_slug(libro.get('title',''))}/",
-            })
-            lectores_usados.add(lector)
-            if len(encontrados) >= cuantos:
+                        lector = r["display_name"]
+                        break
+                if not lector or lector in lectores_vistos:
+                    continue
+                secciones_con_lector += 1
+                lectores_vistos[lector] = {
+                    "titulo": libro.get("title", "?"),
+                    "autor": (libro.get("authors") or [{}])[0].get("last_name", "?"),
+                    "lector": lector,
+                    "url_audio": sec["listen_url"],
+                    "url_libro": f"https://librivox.org/{_slug(libro.get('title',''))}/",
+                }
+                if len(lectores_vistos) >= cuantos:
+                    break
+            if len(lectores_vistos) >= cuantos:
                 break
-    return encontrados
+    print(f"  diagnostico: {libros_es} libro(s) en español revisados, "
+          f"{secciones_con_lector} capitulo(s) con lector identificado, "
+          f"{len(lectores_vistos)} lector(es) distinto(s) encontrados")
+    return list(lectores_vistos.values())
 
 
 def bajar_y_recortar(cand, n):
