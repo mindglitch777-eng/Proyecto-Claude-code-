@@ -62,6 +62,25 @@ CONSULTAS = [
     "curso vender infoproductos tiktok",
 ]
 
+# Ronda 2: verificar si CADA nicho tiene ya el mismo problema que
+# aparecio en barberia (competencia existente en Hotmart), sin asumir
+# que barberia fue un caso aislado.
+NICHOS_A_VERIFICAR = ["barberos", "manicuristas", "entrenadores personales",
+                      "nutricionistas", "veterinarias"]
+
+# Ronda 2: ideas de producto NUEVAS a testear con los mismos criterios
+# que el kit de whatsapp -- ninguna elegida de antemano, todas se miden
+# igual y se descartan si la evidencia no las sostiene.
+CANDIDATOS_NUEVOS = [
+    "plantillas canva para promocionar salon de belleza",
+    "calculadora de precios y rentabilidad para salones",
+    "kit de contratos para profesionales independientes argentina",
+    "guia para subir precios sin perder clientes",
+    "catalogo de diseños de uñas para mostrar clientas",
+    "como cobrar en dolares freelance argentina",
+    "plantillas de presupuestos profesionales pdf",
+]
+
 
 def _fetch(url, timeout=25):
     pedido = urllib.request.Request(url, headers=UA_HEADERS)
@@ -159,6 +178,14 @@ def buscar_hotmart(query, limite=8):
     return items, (None if items else "sin resultados reconocibles en el HTML")
 
 
+def verificar_competencia_nicho(nicho, intentos=2):
+    """Busca site:hotmart.com 'guia para <nicho>' -- prueba directa de
+    si YA existe una guia de gestion de negocio para ese oficio en la
+    plataforma donde vamos a vender, no una suposicion."""
+    consulta = f'site:hotmart.com "guía para {nicho}" OR "guia para {nicho}"'
+    return buscar_duckduckgo(consulta, limite=5, intentos=intentos)
+
+
 def medir_trends(terminos, geo=""):
     try:
         from pytrends.request import TrendReq
@@ -227,6 +254,34 @@ def main():
             time.sleep(9)  # espacio real entre pedidos: la corrida
                            # anterior con 1s gatillo el limite de DDG y
                            # probablemente el bloqueo de Bing tambien
+
+    md.append("\n\n# RONDA 2 — verificacion por nicho + candidatos nuevos\n")
+    md.append("\n## ¿Ya existe una guía de gestión de negocio para cada oficio en Hotmart?\n")
+    for nicho in NICHOS_A_VERIFICAR:
+        items, err = verificar_competencia_nicho(nicho)
+        md.append(f"\n### {nicho}\n")
+        if err:
+            md.append(f"_No se pudo verificar: {err}_\n")
+        elif not items:
+            md.append("**Sin resultados — no se encontro una guia existente para este oficio.**\n")
+        else:
+            md.append("**Ya existe(n):**\n")
+            for it in items:
+                md.append(f"- [{it['titulo']}]({it['url']})")
+        time.sleep(9)
+
+    md.append("\n## Candidatos de producto nuevos — misma prueba que el kit de WhatsApp\n")
+    for consulta in CANDIDATOS_NUEVOS:
+        md.append(f"\n### \"{consulta}\"\n")
+        items, err = buscar_duckduckgo(consulta)
+        if err:
+            md.append(f"_No se pudo consultar: {err}_\n")
+        elif not items:
+            md.append("**Sin resultados — hueco real, sin competencia detectada.**\n")
+        else:
+            for it in items:
+                md.append(f"- [{it['titulo']}]({it['url']})")
+        time.sleep(9)
 
     md.append("\n## Hotmart — catálogo (best-effort)\n")
     for consulta in ("reservas whatsapp", "no show clientes", "seña turno negocio"):
