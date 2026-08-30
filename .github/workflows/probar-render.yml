@@ -1,0 +1,71 @@
+name: probar-render
+
+# Render de prueba + verificacion, del lado del runner.
+#
+# Existe para no gastar tokens: cada vez que se toca el motor visual o
+# la mezcla de audio hay que ver el resultado, y hacerlo dentro de la
+# sesion de Claude quema contexto en logs de render y en sacar cuadros
+# a mano. Aca vuelve UNA tira de contactos y UN informe corto.
+#
+# Deja en la rama: pruebas/<guion>.mp4, pruebas/<guion>-tira.jpg y
+# PRUEBA_RENDER.md con sonoridad, pico real, rango dinamico y cadencia
+# de corte de cada uno.
+
+on:
+  workflow_dispatch:
+    inputs:
+      patron:
+        description: "Guiones a probar"
+        required: false
+        default: "guiones/cotizar-tarde.json"
+      cuadros:
+        description: "Cuadros por tira de contactos"
+        required: false
+        default: "8"
+      con_video:
+        description: "Commitear tambien los .mp4 (pesan)"
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar ffmpeg y Pillow
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          pip install --quiet --no-cache-dir Pillow
+
+      - name: Renderizar y medir
+        env:
+          PATRON: ${{ inputs.patron }}
+          CUADROS: ${{ inputs.cuadros }}
+        run: python3 probar_render.py "$PATRON" --cuadros "$CUADROS"
+
+      - name: Guardar
+        if: always()
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ "${{ inputs.con_video }}" != "true" ]; then
+            rm -f pruebas/*.mp4
+          fi
+          git add -A pruebas PRUEBA_RENDER.md 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "Sin cambios."
+          else
+            git commit -m "Prueba de render: ${{ inputs.patron }}"
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          fi

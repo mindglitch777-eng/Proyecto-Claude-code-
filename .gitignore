@@ -5,3 +5,5 @@ factory/oportunidades.db
 
 # Base del motor de contenido: estado local, no se versiona.
 motor/contenido.db
+
+# Las pruebas de render las commitea el workflow probar-render, no la sesion.

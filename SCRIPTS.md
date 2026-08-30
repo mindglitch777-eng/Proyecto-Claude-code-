@@ -191,3 +191,8 @@ resultado publicado -> aprendizaje. Determinista, sin LLM ni APIs pagas.
 Auditoria del repo (solo mira, no toca): referencias rotas en los
 guiones, fotos identicas guardadas dos veces, y formatos usados que el
 animador no conoce.
+
+## probar_render.py
+Render de prueba + verificacion para GitHub Actions: deja el video, una
+tira de contactos y un informe con sonoridad, pico real, rango dinamico
+y cadencia de corte. Existe para no gastar tokens verificando renders.
