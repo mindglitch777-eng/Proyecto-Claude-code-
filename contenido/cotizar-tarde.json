@@ -1,0 +1,57 @@
+{
+  "tema": "Perdiste el laburo por lento, no por caro",
+  "narrativa": "money_story",
+  "nota": "CONTENIDO, no guion. Dice QUE se cuenta y que evidencia hay. El estilo decide como se ve. Compilar con: python3 estilos.py todos contenido/cotizar-tarde.json",
+  "golpes": [
+    {"rol": "hook",
+     "texto": ["El que te ganó el laburo", "no cobra menos"],
+     "narracion": "El que te ganó el laburo no cobra menos.",
+     "necesita": "serious tradesman portrait workshop"},
+
+    {"rol": "resultado",
+     "texto": ["Contestó primero", "y ya está"],
+     "narracion": "Contestó primero. Y ya está.",
+     "necesita": "man reading phone message at night"},
+
+    {"rol": "contradiccion",
+     "texto": ["contestás cuando podés", "sacás el número a ojo",
+               "contesta en 2 minutos", "el número ya está hecho"],
+     "narracion": "Vos contestás cuando podés. Él contesta en dos minutos.",
+     "extra": {"izq_titulo": "Vos", "der_titulo": "Él", "remate": "mismo laburo"},
+     "necesita": "construction worker hands tools closeup"},
+
+    {"rol": "descubrimiento",
+     "texto": ["Te escribieron a las diez", "y contestaste al otro día",
+               "El laburo", "ya lo tenía otro"],
+     "narracion": "Te escribieron a las diez y contestaste al otro día. El laburo ya lo tenía otro.",
+     "necesita": "tired man sitting alone night window"},
+
+    {"rol": "prueba",
+     "texto": ["«cuánto cobrar» tiene 67 de demanda. «calcular rentabilidad», 0.1."],
+     "narracion": "Cuánto cobrar tiene sesenta y siete de demanda. Calcular rentabilidad, cero coma uno.",
+     "cifra": {"valor": "67", "etiqueta": "VERIFICADO",
+               "fuente": "Google Trends · Argentina · 12 meses · medido 28/08/2026"},
+     "necesita": "laptop screen data chart analytics"},
+
+    {"rol": "metodo",
+     "texto": ["Lo que él ya tiene cargado", "cuánto vale su hora",
+               "cuánto le cuesta el material", "cuánto quiere ganar"],
+     "narracion": "Cuánto vale su hora, cuánto le cuesta el material, cuánto quiere ganar.",
+     "necesita": "handwritten price list notebook"},
+
+    {"rol": "giro",
+     "texto": ["Vos lo tenés en la cabeza", "Por eso tardás"],
+     "narracion": "Vos lo tenés en la cabeza. Por eso tardás.",
+     "necesita": "frustrated man thinking workshop"},
+
+    {"rol": "conclusion",
+     "texto": ["Sacarlo de la cabeza", "es todo el truco"],
+     "narracion": "Sacarlo de la cabeza es todo el truco.",
+     "necesita": "confident craftsman hands working workshop"},
+
+    {"rol": "cta",
+     "texto": ["Seguime."],
+     "narracion": "Seguime. Mañana te muestro el mío.",
+     "extra": {"cta_handle": "@tallerdeactivos"}}
+  ]
+}

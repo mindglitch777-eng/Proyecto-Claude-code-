@@ -1,0 +1,192 @@
+{
+  "tema": "Perdiste el laburo por lento, no por caro",
+  "nota": "Compilado por estilos.py — estilo MONEY (Money Story — la cifra manda), ritmo creciente. NO editar a mano: editar el contenido y recompilar.",
+  "_estilo": "MONEY",
+  "_narrativa": "money_story",
+  "_ritmo": "creciente",
+  "fps": 30,
+  "camara": 1.15,
+  "loop": false,
+  "paleta": {
+    "fondo": [
+      8,
+      9,
+      11
+    ],
+    "texto": [
+      248,
+      248,
+      245
+    ],
+    "destacado": [
+      255,
+      78,
+      36
+    ]
+  },
+  "segmentos": [
+    {
+      "formato": "dato_duro",
+      "_rol": "hook",
+      "_densidad": "EXTREME",
+      "_ritmo": "SUSTAINED",
+      "duracion": 4.8,
+      "texto": "no cobra menos",
+      "narracion": "El que te ganó el laburo no cobra menos.",
+      "captions_estilo": "chico",
+      "captions_y": 0.78,
+      "captions_palabra_por_palabra": true,
+      "necesita": "serious tradesman portrait workshop",
+      "hook": "impacto",
+      "flash": true
+    },
+    {
+      "formato": "dato_duro",
+      "_rol": "resultado",
+      "_densidad": "HIGH",
+      "_ritmo": "NORMAL",
+      "duracion": 2.02,
+      "texto": "y ya está",
+      "narracion": "Contestó primero. Y ya está.",
+      "captions_estilo": "chico",
+      "captions_y": 0.78,
+      "captions_palabra_por_palabra": true,
+      "necesita": "man reading phone message at night",
+      "transicion": "punch"
+    },
+    {
+      "formato": "comparacion",
+      "_rol": "contradiccion",
+      "_densidad": "MEDIUM",
+      "_ritmo": "NORMAL",
+      "duracion": 3.12,
+      "izq": [
+        "contestás cuando podés",
+        "sacás el número a ojo"
+      ],
+      "der": [
+        "contesta en 2 minutos",
+        "el número ya está hecho"
+      ],
+      "izq_titulo": "Vos",
+      "der_titulo": "Él",
+      "narracion": "Vos contestás cuando podés. Él contesta en dos minutos.",
+      "captions_estilo": "chico",
+      "captions_y": 0.78,
+      "captions_palabra_por_palabra": true,
+      "necesita": "construction worker hands tools closeup",
+      "transicion": "punch",
+      "remate": "mismo laburo"
+    },
+    {
+      "encuadre": "plano",
+      "formato": "cascada",
+      "_rol": "descubrimiento",
+      "_densidad": "MEDIUM",
+      "_ritmo": "FAST",
+      "duracion": 1.54,
+      "lineas": [
+        "Te escribieron a las diez",
+        "y contestaste al otro día",
+        "El laburo",
+        "ya lo tenía otro"
+      ],
+      "narracion": "Te escribieron a las diez y contestaste al otro día. El laburo ya lo tenía otro.",
+      "captions_estilo": "chico",
+      "captions_y": 0.78,
+      "captions_palabra_por_palabra": true,
+      "necesita": "tired man sitting alone night window",
+      "transicion": "whip"
+    },
+    {
+      "formato": "prueba",
+      "_rol": "prueba",
+      "_densidad": "HIGH",
+      "_ritmo": "FAST",
+      "duracion": 1.93,
+      "texto": "«cuánto cobrar» tiene 67 de demanda. «calcular rentabilidad», 0.1.",
+      "narracion": "Cuánto cobrar tiene sesenta y siete de demanda. Calcular rentabilidad, cero coma uno.",
+      "captions_estilo": "chico",
+      "captions_y": 0.78,
+      "captions_palabra_por_palabra": true,
+      "necesita": "laptop screen data chart analytics",
+      "fuente": "Google Trends · Argentina · 12 meses · medido 28/08/2026",
+      "kicker": "VERIFICADO",
+      "transicion": "punch"
+    },
+    {
+      "formato": "flujo",
+      "_rol": "metodo",
+      "_densidad": "MEDIUM",
+      "_ritmo": "BURST",
+      "duracion": 0.5,
+      "texto": "Lo que él ya tiene cargado",
+      "nodos": [
+        "cuánto vale su hora",
+        "cuánto le cuesta el material",
+        "cuánto quiere ganar"
+      ],
+      "narracion": "Cuánto vale su hora, cuánto le cuesta el material, cuánto quiere ganar.",
+      "captions_estilo": "chico",
+      "captions_y": 0.78,
+      "captions_palabra_por_palabra": true,
+      "necesita": "handwritten price list notebook",
+      "transicion": "punch"
+    },
+    {
+      "velo": 0.52,
+      "hook": "impacto",
+      "formato": "pleno",
+      "_rol": "giro",
+      "_densidad": "MEDIUM",
+      "_ritmo": "BURST",
+      "duracion": 0.94,
+      "texto": "Vos lo tenés en la cabeza Por eso tardás",
+      "narracion": "Vos lo tenés en la cabeza. Por eso tardás.",
+      "captions_estilo": "chico",
+      "captions_y": 0.78,
+      "captions_palabra_por_palabra": true,
+      "necesita": "frustrated man thinking workshop",
+      "transicion": "punch"
+    },
+    {
+      "encuadre": "plano",
+      "formato": "cascada",
+      "_rol": "conclusion",
+      "_densidad": "LOW",
+      "_ritmo": "FAST",
+      "duracion": 0.93,
+      "lineas": [
+        "Sacarlo de la cabeza",
+        "es todo el truco"
+      ],
+      "narracion": "Sacarlo de la cabeza es todo el truco.",
+      "captions_estilo": "chico",
+      "captions_y": 0.78,
+      "captions_palabra_por_palabra": true,
+      "necesita": "confident craftsman hands working workshop",
+      "transicion": "corte_duro"
+    },
+    {
+      "mayus": true,
+      "formato": "cta",
+      "_rol": "cta",
+      "_densidad": "MEDIUM",
+      "_ritmo": "SUSTAINED",
+      "duracion": 4.8,
+      "texto": "Seguime.",
+      "narracion": "Seguime. Mañana te muestro el mío.",
+      "captions_estilo": "chico",
+      "captions_y": 0.78,
+      "captions_palabra_por_palabra": true,
+      "transicion": "punch",
+      "cta_handle": "@tallerdeactivos"
+    }
+  ],
+  "flash_ritmo": [
+    1.5,
+    0.7,
+    2.5
+  ],
+  "flash_ritmo_largo": 0.08
+}

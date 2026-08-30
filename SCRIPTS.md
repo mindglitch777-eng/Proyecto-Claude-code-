@@ -196,3 +196,8 @@ animador no conoce.
 Render de prueba + verificacion para GitHub Actions: deja el video, una
 tira de contactos y un informe con sonoridad, pico real, rango dinamico
 y cadencia de corte. Existe para no gastar tokens verificando renders.
+
+## estilos.py
+Capa de estilo: compila contenido (que se dice, que evidencia hay) +
+estilo (como se ve) en un guion renderizable. Seis estilos, cinco
+narrativas, cinco perfiles de ritmo. Ver ESTILOS.md.
