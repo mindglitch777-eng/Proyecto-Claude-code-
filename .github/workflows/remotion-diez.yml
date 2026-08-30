@@ -1,0 +1,129 @@
+name: remotion-diez
+
+# Renderiza los 10 videos de prueba de remotion-spike/ en runners de
+# GitHub -- cero tokens de Claude Code por render.
+#
+# Cada video va en su propio runner (matrix): 10 videos tardan lo que
+# tarda EL MAS LENTO, no la suma. Cada job sube su mp4 como artifact y
+# un ultimo job los junta en un solo commit (10 jobs empujando a git al
+# mismo tiempo se pisan).
+#
+# DISPARO. workflow_dispatch solo funciona si el archivo ya esta en la
+# rama por defecto; mientras esto viva en la rama de trabajo se dispara
+# tocando remotion-spike/RENDER y empujando. Asi no renderiza en cada
+# push mientras se escribe codigo.
+
+on:
+  workflow_dispatch:
+    inputs:
+      videos:
+        description: "Ids separados por coma (vacio = los 10)"
+        required: false
+        default: ""
+  push:
+    paths:
+      - "remotion-spike/RENDER"
+
+jobs:
+  listar:
+    runs-on: ubuntu-latest
+    outputs:
+      matriz: ${{ steps.l.outputs.matriz }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: l
+        run: |
+          python3 - <<'EOF' > /tmp/m.json
+          import json, os, re
+          pedidos = [x.strip() for x in os.environ.get("VIDEOS", "").split(",") if x.strip()]
+          src = open("remotion-spike/src/guiones10.ts", encoding="utf-8").read()
+          todos = re.findall(r"id: '(v\d+)'", src)
+          print(json.dumps(pedidos or todos))
+          EOF
+          echo "matriz=$(cat /tmp/m.json)" >> "$GITHUB_OUTPUT"
+          echo "A renderizar: $(cat /tmp/m.json)"
+        env:
+          VIDEOS: ${{ inputs.videos }}
+
+  render:
+    needs: listar
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        video: ${{ fromJson(needs.listar.outputs.matriz) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: remotion-spike/package-lock.json
+
+      - name: Dependencias
+        working-directory: remotion-spike
+        run: npm ci --no-audit --no-fund
+
+      - name: Navegador para Remotion
+        working-directory: remotion-spike
+        # Remotion usa el modo headless viejo: necesita chrome-headless-shell,
+        # no el binario completo de Chrome.
+        run: npx remotion browser ensure
+
+      - name: Armar public/ (fuentes, fotos, metraje)
+        run: ./remotion-spike/preparar-public.sh
+
+      - name: Renderizar ${{ matrix.video }}
+        working-directory: remotion-spike
+        run: |
+          mkdir -p out
+          npx remotion render ${{ matrix.video }} out/${{ matrix.video }}.mp4 \
+            --concurrency=2 --log=info
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: video-${{ matrix.video }}
+          path: remotion-spike/out/${{ matrix.video }}.mp4
+          retention-days: 5
+          if-no-files-found: warn
+
+  juntar:
+    needs: render
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: /tmp/videos
+          pattern: video-*
+          merge-multiple: true
+
+      - name: Commitear
+        run: |
+          mkdir -p videos/remotion
+          shopt -s nullglob
+          archivos=(/tmp/videos/*.mp4)
+          if [ ${#archivos[@]} -eq 0 ]; then
+            echo "No se renderizo ningun video."
+            exit 0
+          fi
+          cp "${archivos[@]}" videos/remotion/
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add videos/remotion
+          if git diff --cached --quiet; then
+            echo "Sin cambios."
+            exit 0
+          fi
+          git commit -m "Videos de prueba Remotion: ${#archivos[@]} piezas"
+          for i in 1 2 3 4; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
+            sleep $((2 ** i))
+          done
+          exit 1

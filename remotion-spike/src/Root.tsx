@@ -5,6 +5,8 @@ import {DUR_TOTAL, GUION} from './guion';
 import {Pieza} from './Pieza';
 import {PiezaAgresiva} from './agresivo/PiezaAgresiva';
 import {DUR_AGRESIVO} from './guion-agresivo';
+import {Diez} from './agresivo/Diez';
+import {VIDEOS, durDe} from './guiones10';
 
 const cuadros = Math.round(DUR_TOTAL * FPS);
 
@@ -28,6 +30,20 @@ export const Root: React.FC = () => {
         width={ANCHO}
         height={ALTO}
       />
+      {/* Los 10 videos de prueba. Uno por composicion: asi el workflow
+          los renderiza en paralelo, un runner cada uno. */}
+      {VIDEOS.map((v) => (
+        <Composition
+          key={v.id}
+          id={v.id}
+          component={Diez}
+          durationInFrames={Math.round(durDe(v) * FPS)}
+          fps={FPS}
+          width={ANCHO}
+          height={ALTO}
+          defaultProps={{id: v.id}}
+        />
+      ))}
       {/* Solo el hook, para iterar sin renderizar los 26s enteros. */}
       <Composition
         id="hook"
