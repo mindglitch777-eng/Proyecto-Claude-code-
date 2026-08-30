@@ -31,7 +31,7 @@
       "_rol": "hook",
       "_densidad": "EXTREME",
       "_ritmo": "BURST",
-      "duracion": 0.85,
+      "duracion": 1.12,
       "lineas": [
         "El que te ganó el laburo",
         "no cobra menos"
@@ -41,13 +41,18 @@
       "flash": true
     },
     {
-      "formato": "dato_duro",
+      "encuadre": "plano",
+      "formato": "cascada",
       "_rol": "resultado",
       "_densidad": "MEDIUM",
       "_ritmo": "FAST",
-      "duracion": 1.04,
-      "texto": "y ya está",
+      "duracion": 1.34,
+      "lineas": [
+        "Contestó primero",
+        "y ya está"
+      ],
       "narracion": "Contestó primero. Y ya está.",
+      "claro": true,
       "transicion": "corte_duro"
     },
     {
@@ -55,7 +60,7 @@
       "_rol": "contradiccion",
       "_densidad": "MEDIUM",
       "_ritmo": "FAST",
-      "duracion": 1.58,
+      "duracion": 1.09,
       "izq": [
         "contestás cuando podés",
         "sacás el número a ojo"
@@ -76,7 +81,7 @@
       "_rol": "descubrimiento",
       "_densidad": "MEDIUM",
       "_ritmo": "SUSTAINED",
-      "duracion": 7.29,
+      "duracion": 7.98,
       "lineas": [
         "Te escribieron a las diez",
         "y contestaste al otro día",
@@ -84,7 +89,6 @@
         "ya lo tenía otro"
       ],
       "narracion": "Te escribieron a las diez y contestaste al otro día. El laburo ya lo tenía otro.",
-      "claro": true,
       "transicion": "punch"
     },
     {
@@ -92,7 +96,7 @@
       "_rol": "prueba",
       "_densidad": "MEDIUM",
       "_ritmo": "BURST",
-      "duracion": 0.43,
+      "duracion": 0.86,
       "texto": "«cuánto cobrar» tiene 67 de demanda. «calcular rentabilidad», 0.1.",
       "narracion": "Cuánto cobrar tiene sesenta y siete de demanda. Calcular rentabilidad, cero coma uno.",
       "fuente": "Google Trends · Argentina · 12 meses · medido 28/08/2026",
@@ -104,7 +108,7 @@
       "_rol": "metodo",
       "_densidad": "MEDIUM",
       "_ritmo": "NORMAL",
-      "duracion": 2.06,
+      "duracion": 2.2,
       "titulo": "Lo que él ya tiene cargado",
       "items": [
         "cuánto vale su hora",
@@ -120,12 +124,13 @@
       "_rol": "giro",
       "_densidad": "MEDIUM",
       "_ritmo": "SUSTAINED",
-      "duracion": 5.87,
+      "duracion": 5.91,
       "lineas": [
         "Vos lo tenés en la cabeza",
         "Por eso tardás"
       ],
       "narracion": "Vos lo tenés en la cabeza. Por eso tardás.",
+      "claro": true,
       "transicion": "corte_duro"
     },
     {
@@ -133,7 +138,7 @@
       "_rol": "conclusion",
       "_densidad": "LOW",
       "_ritmo": "BURST",
-      "duracion": 0.73,
+      "duracion": 0.8,
       "texto": "Sacarlo de la cabeza es todo el truco",
       "narracion": "Sacarlo de la cabeza es todo el truco.",
       "transicion": "corte_duro"
@@ -144,7 +149,7 @@
       "_rol": "cta",
       "_densidad": "LOW",
       "_ritmo": "NORMAL",
-      "duracion": 2.27,
+      "duracion": 3.0,
       "texto": "Seguime.",
       "narracion": "Seguime. Mañana te muestro el mío.",
       "transicion": "corte_duro",
