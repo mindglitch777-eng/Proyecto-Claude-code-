@@ -37,6 +37,21 @@ FORMATOS (campo "formato" por segmento):
                 "emisor": "otro"|"yo"}, ...], "contacto" opcional).
                 Para mostrar LITERALMENTE lo que dijo/hizo la otra
                 persona, en vez de iconos abstractos.
+  prueba        Evidencia CON la fuente en el mismo plano: captura
+                (imagen o video) enmarcada, recuadro que late sobre la
+                parte que importa ("resaltado": [x0,y0,x1,y1] en
+                fracciones 0..1 de la caja), la afirmacion abajo y la
+                fuente al pie (json: "fuente", "kicker", "resaltado").
+                Sin "imagen" queda como ficha de cita. Si falta
+                "fuente" el plano escribe "SIN FUENTE": la omision se
+                ve, no se disimula.
+  flujo         Cadena A -> B -> C: cajas apiladas unidas por flechas,
+                reveladas una por una, con la ultima en el color de
+                acento porque es el resultado y no un paso mas (json:
+                "nodos": [str,...] hasta 4, "notas": [str,...],
+                "texto" como titulo). Para explicar un flujo o una
+                automatizacion, que 'camino' (mapa sinuoso) y 'pasos'
+                (lista numerada) no dibujan.
   escalada      La escalada del pensamiento como CONTENIDO REAL: una
                 lista de frases que se apilan con cortes cada vez MAS
                 rapidos (aceleracion real) y tension sonora que sube
@@ -2469,6 +2484,231 @@ def f_comparacion(img, d, seg, t, pal):
                          int(yy + 14 + (1 - eo_back(lt_n)) * 20)), capa)
 
 
+def f_prueba(img, d, seg, t, pal):
+    """Evidencia CON la fuente a la vista.
+
+    El formato que le faltaba al proyecto entero: mostrar la captura y
+    de donde salio, en el mismo plano. Un numero sin fuente es una
+    opinion con tipografia grande, y este contenido se sostiene en que
+    el dato sea verificable por el que mira.
+
+    Campos:
+        "kicker"     linea chica arriba (por defecto "PRUEBA")
+        "imagen" / "foto" / "video"
+                     la captura. Si no hay ninguna, el plano se
+                     reacomoda como ficha de cita: texto grande arriba
+                     y la fuente abajo.
+        "texto"      que dice la prueba
+        "fuente"     de donde salio. Si falta, el plano LO DICE en
+                     pantalla ("SIN FUENTE") en vez de disimularlo:
+                     la omision tiene que costar algo.
+        "resaltado"  [x0, y0, x1, y1] en fracciones 0..1 de la caja de
+                     la imagen. Recuadro que late sobre la parte que
+                     importa, que es lo que uno hace con el dedo
+                     cuando muestra una captura.
+    """
+    acc = tuple(pal["destacado"])
+    col_txt = tuple(pal["texto"])
+    col_fondo = tuple(pal["fondo"])
+
+    # --- Kicker ---
+    kicker = str(seg.get("kicker", "PRUEBA")).upper()
+    ek = eo_expo(min(1.0, t / 0.16))
+    fk = fnt(34)
+    esp = 8
+    wk = _ancho_espaciado(d, kicker, fk, esp)
+    capa = Image.new("RGBA", (int(wk) + 60, fk.size + 34), (0, 0, 0, 0))
+    _texto_espaciado(ImageDraw.Draw(capa), (30, 8), kicker, fk,
+                     acc + (int(255 * ek),), esp)
+    img.paste(capa, (int((W - capa.width) / 2),
+                     int(H * 0.075 + (1 - ek) * 14)), capa)
+
+    hay_img = bool(seg.get("imagen") or seg.get("foto") or seg.get("video"))
+    ytop, ybot = int(H * 0.155), int(H * 0.575)
+
+    # --- La captura, revelada como una persiana que se abre ---
+    if hay_img:
+        er = eo_expo(min(1.0, t / 0.30))
+        cy = (ytop + ybot) / 2
+        med = (ybot - ytop) / 2 * max(0.02, er)
+        caja = (80, int(cy - med), W - 80, int(cy + med))
+        if caja[3] - caja[1] > 6:
+            _cuadro_medio(img, seg, caja, t)
+            d.rectangle([caja[0] - 3, caja[1] - 3, caja[2] + 2, caja[3] + 2],
+                        outline=acc, width=3)
+        res = seg.get("resaltado")
+        if res and er >= 0.999 and len(res) == 4:
+            cw, ch = caja[2] - caja[0], caja[3] - caja[1]
+            bx0 = caja[0] + float(res[0]) * cw
+            by0 = caja[1] + float(res[1]) * ch
+            bx1 = caja[0] + float(res[2]) * cw
+            by1 = caja[1] + float(res[3]) * ch
+            pulso = 0.5 + 0.5 * math.sin(t * 26.0)
+            capa = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            dc = ImageDraw.Draw(capa)
+            dc.rectangle([bx0, by0, bx1, by1], fill=acc + (int(26 + 22 * pulso),))
+            dc.rectangle([bx0, by0, bx1, by1],
+                         outline=acc + (int(140 + 115 * pulso),), width=5)
+            img.paste(capa, (0, 0), capa)
+
+    # --- Que dice la prueba ---
+    demora = 0.34 if hay_img else 0.14
+    ec = eo_cubic(max(0.0, min(1.0, (t - demora) / 0.30)))
+    if ec > 0:
+        ft, lns = auto_tam(d, seg.get("texto", ""), W - 190,
+                           300 if hay_img else 640, 76 if hay_img else 104)
+        if hay_img:
+            y = ybot + 44
+        else:
+            # Sin captura el plano es solo texto + fuente: centrar el
+            # bloque entre el kicker y la regla de la fuente, si no
+            # queda un pozo muerto en la mitad de abajo.
+            alto_bloque = len(lns) * (ft.size + 14) - 14
+            y = H * 0.16 + (H * 0.845 - H * 0.16 - alto_bloque) / 2
+        for ln in lns:
+            wl = d.textbbox((0, 0), ln, font=ft)[2]
+            capa = Image.new("RGBA", (W, ft.size + 34), (0, 0, 0, 0))
+            ImageDraw.Draw(capa).text(((W - wl) / 2, 0), ln, font=ft,
+                                      fill=col_txt + (int(255 * ec),))
+            img.paste(capa, (0, int(y + (1 - ec) * 26)), capa)
+            y += ft.size + 14
+
+    # --- La fuente. Ultima en entrar y siempre presente ---
+    ef = eo_expo(max(0.0, min(1.0, (t - 0.58) / 0.26)))
+    if ef <= 0:
+        return
+    fuente = str(seg.get("fuente", "")).strip()
+    etiqueta = "FUENTE" if fuente else "SIN FUENTE"
+    cuerpo = fuente or "este dato va sin respaldo"
+    col_lab = acc if fuente else (206, 92, 78)
+    yf = H * 0.845
+    semi = 300 * ef
+    d.rectangle([W / 2 - semi, yf, W / 2 + semi, yf + 2], fill=(70, 70, 82))
+
+    fe = fnt(26)
+    we = _ancho_espaciado(d, etiqueta, fe, 6)
+    capa = Image.new("RGBA", (W, fe.size + 22), (0, 0, 0, 0))
+    _texto_espaciado(ImageDraw.Draw(capa), ((W - we) / 2, 0), etiqueta, fe,
+                     col_lab + (int(255 * ef),), 6)
+    img.paste(capa, (0, int(yf + 22)), capa)
+
+    ff, lf = auto_tam(d, cuerpo, W - 200, 140, 40, ligera=True)
+    yy = yf + 74
+    for ln in lf:
+        wl = d.textbbox((0, 0), ln, font=ff)[2]
+        capa = Image.new("RGBA", (W, ff.size + 24), (0, 0, 0, 0))
+        ImageDraw.Draw(capa).text(((W - wl) / 2, 0), ln, font=ff,
+                                  fill=(178, 178, 190, int(255 * ef)))
+        img.paste(capa, (0, int(yy)), capa)
+        yy += ff.size + 8
+
+
+def f_flujo(img, d, seg, t, pal):
+    """Cadena A -> B -> C: cajas apiladas unidas por flechas.
+
+    'camino' es un mapa sinuoso de recorrido y 'pasos' una lista
+    numerada; ninguno dibuja la forma caja-flecha-caja, que es como se
+    explica un flujo o una automatizacion. La ultima caja va en el
+    color de acento: es el resultado, y tiene que leerse distinto de
+    los pasos que llevan a el.
+
+    Campos:
+        "nodos"  ["Lo que ya hacés", "La herramienta", "El resultado"]
+                 (hasta 4; mas que eso no entra legible en vertical)
+        "notas"  opcional, una linea chica adentro de cada caja
+        "texto"  opcional, titulo arriba
+    """
+    acc = tuple(pal["destacado"])
+    col_txt = tuple(pal["texto"])
+    col_fondo = tuple(pal["fondo"])
+
+    nodos = [str(n) for n in (seg.get("nodos") or [])][:4]
+    if not nodos:
+        nodos = [str(seg.get("texto", ""))]
+        titulo = None
+    else:
+        titulo = seg.get("texto")
+    notas = list(seg.get("notas") or [])
+    n = len(nodos)
+
+    # --- Titulo ---
+    if titulo:
+        et = eo_expo(min(1.0, t / 0.14))
+        ft, lt_ = auto_tam(d, str(titulo).upper(), W - 200, 150, 46)
+        yt = H * 0.10
+        for ln in lt_:
+            wl = d.textbbox((0, 0), ln, font=ft)[2]
+            capa = Image.new("RGBA", (W, ft.size + 26), (0, 0, 0, 0))
+            ImageDraw.Draw(capa).text(((W - wl) / 2, 0), ln, font=ft,
+                                      fill=(182, 182, 196, int(255 * et)))
+            img.paste(capa, (0, int(yt + (1 - et) * 12)), capa)
+            yt += ft.size + 8
+
+    gap = 96
+    alto = min(250, int((H * 0.68 - gap * (n - 1)) / n))
+    total = alto * n + gap * (n - 1)
+    y0 = int(H * 0.53 - total / 2)
+
+    t0 = 0.10 if titulo else 0.02
+    slot = (0.97 - t0) / n
+
+    for i, texto_nodo in enumerate(nodos):
+        e = eo_back(max(0.0, min(1.0, (t - t0 - i * slot) /
+                                 max(0.02, slot * 0.60))))
+        if e <= 0:
+            break
+        a = int(255 * min(1.0, max(0.0, e) * 1.5))
+        ultimo = (i == n - 1)
+        yy = y0 + i * (alto + gap)
+        dx = int(max(0.0, 1 - e) * 70)
+
+        capa = Image.new("RGBA", (W, alto + 10), (0, 0, 0, 0))
+        dc = ImageDraw.Draw(capa)
+        if ultimo:
+            dc.rounded_rectangle([110, 0, W - 110, alto], radius=26,
+                                 fill=acc + (a,))
+            col = col_fondo
+            col_nota = col_fondo
+        else:
+            dc.rounded_rectangle([110, 0, W - 110, alto], radius=26,
+                                 fill=(255, 255, 255, int(a * 0.05)),
+                                 outline=(150, 150, 166, a), width=3)
+            col = col_txt
+            col_nota = (168, 168, 184)
+
+        nota = str(notas[i]) if i < len(notas) and notas[i] else None
+        ft, lns = auto_tam(d, texto_nodo, W - 300,
+                           alto - (72 if nota else 30), 66)
+        alto_txt = len(lns) * (ft.size + 10) - 10 + (46 if nota else 0)
+        yt = (alto - alto_txt) / 2
+        for ln in lns:
+            wl = d.textbbox((0, 0), ln, font=ft)[2]
+            dc.text(((W - wl) / 2, yt), ln, font=ft, fill=col + (a,))
+            yt += ft.size + 10
+        if nota:
+            fnn = fnt(30, ligera=True)
+            wl = d.textlength(nota, font=fnn)
+            dc.text(((W - wl) / 2, yt + 10), nota, font=fnn,
+                    fill=col_nota + (int(a * 0.85),))
+        img.paste(capa, (dx, yy), capa)
+
+        # --- Flecha hacia el nodo siguiente ---
+        if ultimo:
+            continue
+        pa = max(0.0, min(1.0, (t - t0 - i * slot - slot * 0.55) /
+                          max(0.02, slot * 0.45)))
+        if pa <= 0:
+            continue
+        ax = W / 2
+        ay0 = yy + alto + 16
+        largo = (gap - 34) * eo_expo(pa)
+        d.rectangle([ax - 2, ay0, ax + 2, ay0 + largo], fill=acc)
+        if pa > 0.72:
+            p = (pa - 0.72) / 0.28
+            ay1 = ay0 + largo
+            d.polygon([(ax - 16 * p, ay1 - 17 * p), (ax + 16 * p, ay1 - 17 * p),
+                       (ax, ay1)], fill=acc)
+
 FORMATOS = {
     "declaracion": f_declaracion, "dato_duro": f_dato_duro,
     "division": f_division, "revelacion": f_revelacion,
@@ -2481,12 +2721,19 @@ FORMATOS = {
     "mensajes": f_mensajes, "escalada": f_escalada, "cta": f_cta,
     "pleno": f_pleno, "tarjeta": f_tarjeta,
     "ruleta": f_ruleta, "lista": f_lista, "comparacion": f_comparacion,
+    "prueba": f_prueba, "flujo": f_flujo,
 }
 
+# Los comentarios de aca abajo describen el COLOR, no una marca ni un
+# nicho: la etapa cambio de tema y las etiquetas viejas ("EL CORTE",
+# "nicho filosofia") ya no decian nada util sobre cuando usar cada una.
+# Los valores quedan intactos a proposito -- tocarlos re-pintaria en
+# silencio todos los guiones ya escritos.
 PALETAS = [
-    # --- MARCA EL CORTE: editorial, verde señal (ver MARCA.md) ---
+    # [0] Por defecto: casi negro, tipografia hueso, verde señal.
+    #     Editorial y de pantalla; el acento se lee como "esto importa".
     {"fondo": [15, 15, 16], "texto": [242, 239, 233], "destacado": [74, 222, 128]},
-    # --- Nicho filosofia: piedra, hueso, dorado apagado ---
+    # [1] Piedra, hueso y dorado apagado. Calida y sobria.
     {"fondo": [24, 22, 20], "texto": [238, 232, 220], "destacado": [198, 160, 92]},
     {"fondo": [18, 18, 17], "texto": [232, 228, 218], "destacado": [176, 148, 108]},
     {"fondo": [12, 12, 18], "texto": [245, 245, 250], "destacado": [255, 84, 48]},
@@ -2544,7 +2791,11 @@ def render(seg, t, prog, cfg):
     img = base_fondo(pal, t, seg)
     # Imagen de fondo: encuadrada, duotono a la paleta y oscurecida para
     # que el texto siempre se lea. Ken Burns muy lento (ritmo del nicho).
-    if seg.get("imagen") and seg.get("formato") != "retrato":
+    # 'prueba' enmarca la captura el mismo: si ademas se pintara de
+    # fondo a sangre, la misma imagen se veria dos veces y en duotono
+    # verde. Una captura que se muestra como evidencia tiene que
+    # verse con sus colores y una sola vez.
+    if seg.get("imagen") and seg.get("formato") not in ("retrato", "prueba"):
         listo = seg.get("_fondo")
         if listo is None:
             cache = {}
@@ -2598,7 +2849,7 @@ def render(seg, t, prog, cfg):
     # que verse limpio, asi que ahi no corre: en esa maqueta el
     # movimiento ya lo da la palabra que cambia y el salto a la maqueta
     # oscura.
-    if fmt not in ("tarjeta", "comparacion", "cta"):
+    if fmt not in ("tarjeta", "comparacion", "cta", "prueba", "flujo"):
         dibujar_ambiente(img, d, t_abs, pal)
     d = ImageDraw.Draw(img)
 
