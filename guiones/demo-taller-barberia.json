@@ -5,10 +5,26 @@
   "camara": 1.0,
   "loop": false,
   "paleta": {
-    "fondo": [10, 10, 12],
-    "texto": [246, 246, 244],
-    "destacado": [255, 78, 36],
-    "apagado": [122, 122, 128]
+    "fondo": [
+      10,
+      10,
+      12
+    ],
+    "texto": [
+      246,
+      246,
+      244
+    ],
+    "destacado": [
+      255,
+      78,
+      36
+    ],
+    "apagado": [
+      122,
+      122,
+      128
+    ]
   },
   "segmentos": [
     {
@@ -19,19 +35,26 @@
       "sfx": "impacto",
       "flash": true,
       "imagen": "assets/metraje/barberia/barberia-00.jpg",
-      "velo": 0.46
+      "velo": 0.46,
+      "sfx_vol": 0.72
     },
     {
       "formato": "ruleta",
       "fijo": "Pasa en",
-      "palabras": ["barberías", "peluquerías", "talleres", "gimnasios"],
+      "palabras": [
+        "barberías",
+        "peluquerías",
+        "talleres",
+        "gimnasios"
+      ],
       "narracion": "Pasa en barberías, peluquerías, talleres, gimnasios.",
       "duracion": 2.6,
       "transicion": "corte_duro",
       "sfx": "tick",
       "flash": 0.08,
       "imagen": "assets/metraje/barberia/barberia-01.jpg",
-      "velo": 0.56
+      "velo": 0.56,
+      "sfx_vol": 0.55
     },
     {
       "formato": "pleno",
@@ -41,7 +64,8 @@
       "sfx": "whoosh",
       "flash": true,
       "imagen": "assets/metraje/barberia/barberia-02.jpg",
-      "velo": 0.42
+      "velo": 0.42,
+      "sfx_vol": 0.6
     },
     {
       "formato": "lista",
@@ -56,7 +80,9 @@
       "transicion": "corte_duro",
       "sfx": "impacto",
       "imagen": "assets/metraje/barberia/barberia-03.jpg",
-      "velo": 0.66
+      "velo": 0.66,
+      "sfx_vol": 0.72,
+      "flash": 0.07
     },
     {
       "formato": "pleno",
@@ -66,7 +92,8 @@
       "sfx": "impacto",
       "flash": true,
       "imagen": "assets/metraje/barberia/barberia-04.jpg",
-      "velo": 0.48
+      "velo": 0.48,
+      "sfx_vol": 0.72
     },
     {
       "formato": "tarjeta",
@@ -76,16 +103,19 @@
       "transicion": "corte_duro",
       "sfx": "tick",
       "flash": 0.08,
-      "imagen": "assets/metraje/barberia/barberia-05.jpg"
+      "imagen": "assets/metraje/barberia/barberia-05.jpg",
+      "sfx_vol": 0.55
     },
     {
       "formato": "pleno",
       "narracion": "y te fuiste pensando que fue un día flojo",
       "duracion": 2.3,
       "transicion": "corte_duro",
-      "sfx": "whoosh",
+      "sfx": "riser",
       "imagen": "assets/metraje/barberia/barberia-06.jpg",
-      "velo": 0.44
+      "velo": 0.44,
+      "sfx_vol": 0.62,
+      "flash": 0.07
     },
     {
       "formato": "pleno",
@@ -95,20 +125,41 @@
       "sfx": "impacto",
       "flash": 0.14,
       "imagen": "assets/metraje/barberia/barberia-07.jpg",
-      "velo": 0.52
+      "velo": 0.52,
+      "sfx_vol": 0.72
     },
     {
       "formato": "comparacion",
       "izq_titulo": "Vos",
       "der_titulo": "Él",
-      "izq": ["cobrás el corte", "cobrás si viene", "el que falta no paga"],
-      "der": ["cobra la agenda", "cobra al reservar", "el que falta ya pagó"],
+      "izq": [
+        "cobrás el corte",
+        "cobrás si viene",
+        "12 turnos vacíos al mes"
+      ],
+      "der": [
+        "cobra la agenda",
+        "cobra al reservar",
+        "12 señas cobradas"
+      ],
       "remate": "misma tijera",
-      "narracion": "Vos cobrás el corte. Él cobra la agenda. Misma tijera.",
-      "duracion": 4.4,
+      "narracion": "Vos cobrás el corte. Él cobra la agenda. Misma tijera, cuatrocientos treinta y dos mil de diferencia al año.",
+      "duracion": 5.4,
       "transicion": "corte_duro",
       "sfx": "impacto",
-      "flash": true
+      "flash": true,
+      "izq_num": [
+        "",
+        "",
+        "-36.000"
+      ],
+      "der_num": [
+        "",
+        "",
+        "+36.000"
+      ],
+      "remate_num": "+432.000 al año",
+      "sfx_vol": 0.72
     },
     {
       "formato": "pleno",
@@ -118,7 +169,8 @@
       "sfx": "whoosh",
       "flash": true,
       "imagen": "assets/metraje/dinero/dinero-00.jpg",
-      "velo": 0.50
+      "velo": 0.5,
+      "sfx_vol": 0.6
     },
     {
       "formato": "tarjeta",
@@ -128,16 +180,19 @@
       "transicion": "corte_duro",
       "sfx": "impacto",
       "flash": 0.08,
-      "imagen": "assets/metraje/dinero/dinero-01.jpg"
+      "imagen": "assets/metraje/dinero/dinero-01.jpg",
+      "sfx_vol": 0.72
     },
     {
       "formato": "pleno",
       "narracion": "Tu silla puede funcionar igual",
       "duracion": 1.8,
       "transicion": "corte_duro",
-      "sfx": "whoosh",
+      "sfx": "riser",
       "imagen": "assets/metraje/barberia/barberia-08.jpg",
-      "velo": 0.44
+      "velo": 0.44,
+      "sfx_vol": 0.58,
+      "flash": 0.07
     },
     {
       "formato": "lista",
@@ -153,7 +208,8 @@
       "sfx": "tick",
       "flash": 0.08,
       "imagen": "assets/metraje/barberia/barberia-09.jpg",
-      "velo": 0.64
+      "velo": 0.64,
+      "sfx_vol": 0.55
     },
     {
       "formato": "pleno",
@@ -163,11 +219,12 @@
       "sfx": "impacto",
       "flash": true,
       "imagen": "assets/metraje/barberia/barberia-10.jpg",
-      "velo": 0.46
+      "velo": 0.46,
+      "sfx_vol": 0.72
     },
     {
       "formato": "cta",
-      "texto": "Taller de Activos",
+      "texto": "Seguime.",
       "narracion": "Seguime. Mañana te muestro el número.",
       "mayus": true,
       "duracion": 2.2,
@@ -176,7 +233,9 @@
       "transicion": "corte_duro",
       "flash": true,
       "cta_marca": "Taller de Activos",
-      "cta_sub": "Problemas reales. Productos que se mueven."
+      "cta_sub": "Problemas reales. Productos que se mueven.",
+      "cta_handle": "@tallerdeactivos",
+      "sfx_vol": 0.72
     }
   ],
   "elevenlabs": {
@@ -190,7 +249,7 @@
       "estuviste igual, parado",
       "y te fuiste pensando que fue un día flojo",
       "No fue flojo. Fue gratis.",
-      "Vos cobrás el corte. Él cobra la agenda. Misma tijera.",
+      "Vos cobrás el corte. Él cobra la agenda. Misma tijera, cuatrocientos treinta y dos mil de diferencia al año.",
       "Netflix no te cobra por ver",
       "te cobra el mes igual",
       "Tu silla puede funcionar igual",

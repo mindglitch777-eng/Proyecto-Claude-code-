@@ -1842,61 +1842,117 @@ def _logo_icono():
     return _LOGO_CACHE["icono"] or None
 
 
+def _texto_espaciado(dib, xy, txt, f, col, esp=0):
+    """Dibuja con espaciado entre letras. Pillow no lo soporta, y sin
+    esto un nombre de marca en mayuscula se ve apretado y barato: el
+    aire entre letras es la mitad de lo que hace que algo se lea caro.
+    Devuelve el ancho total."""
+    x, y = xy
+    for ch in txt:
+        dib.text((x, y), ch, font=f, fill=col)
+        x += dib.textlength(ch, font=f) + esp
+    return x - xy[0]
+
+
+def _ancho_espaciado(dib, txt, f, esp=0):
+    return sum(dib.textlength(c, font=f) for c in txt) + esp * max(0, len(txt) - 1)
+
+
 def f_cta(img, d, seg, t, pal):
-    """CTA final de marca/venta: la frase de cierre (rima visual con el
-    hook, mismo golpe si el segmento trae 'hook':'impacto') + una tarjeta
-    de marca abajo (logo, nombre de la comunidad, 'disponible en Hotmart')
-    que entra un instante despues para no competir con el golpe del texto.
+    """CIERRE DE MARCA -- editorial y sobrio.
 
-    Pedido explicito del operador: TODOS los videos tienen que cerrar
-    mostrando la app como la solucion, con una promocion clara del
-    producto -- no alcanza con el CTA hablado ('seguime'), hace falta
-    la tarjeta visual.
+    El cierre anterior era una tarjeta con borde de 2px, el logo pegado
+    al lado del nombre y un subtitulo en color: leia a plantilla, no a
+    marca. Desentonaba con el resto del video, que es justamente lo mas
+    trabajado.
 
-    JSON: {"formato": "cta", "texto": "...", "mayus": bool (default true),
-           "cta_marca": "Comunidad El Corte" (default),
-           "cta_sub": "Disponible en Hotmart" (default)}
+    Este no dibuja ni una caja. La jerarquia la hacen el aire, el
+    espaciado entre letras y una linea de un pixel que se abre desde el
+    centro. Todo entra escalonado para que el ojo lea en orden: primero
+    la frase de cierre, despues la marca, despues donde encontrarla.
+
+    JSON: {"formato": "cta", "texto": "frase de cierre",
+           "cta_marca": "Taller de Activos",
+           "cta_sub": "Problemas reales. Productos que se mueven.",
+           "cta_handle": "@tallerdeactivos"}
     """
+    fondo = tuple(pal["fondo"])
+    img.paste(Image.new("RGB", (W, H), fondo), (0, 0))
+    # Vineta muy suave: baja los bordes un par de tonos para que el
+    # centro respire. Se arma en escala de grises chiquita y se estira,
+    # que es barato y no se nota el escalado en un degrade tan plano.
+    vg = Image.new("L", (16, 28), 96)
+    ImageDraw.Draw(vg).ellipse([-5, -9, 21, 37], fill=0)
+    vg = vg.resize((W, H), Image.BILINEAR)
+    img.paste(Image.new("RGB", (W, H), tuple(max(0, c - 10) for c in fondo)),
+              (0, 0), vg)
+
+    acento = tuple(pal["destacado"])
+    claro = tuple(pal["texto"])
+    apagado = tuple(pal.get("apagado", (120, 120, 126)))
+
+    def bloque(txt, f, y, col, ap, esp=0, centrado=True):
+        """Un renglon que sube y aparece. ap = 0..1."""
+        if ap <= 0.01:
+            return
+        e = eo_cubic(min(1.0, ap))
+        alpha = int(255 * min(1.0, ap / 0.6))
+        dy = (1 - e) * 26
+        ancho = _ancho_espaciado(d, txt, f, esp)
+        capa = Image.new("RGBA", (int(ancho) + 30, f.size + 40), (0, 0, 0, 0))
+        dc = ImageDraw.Draw(capa)
+        _texto_espaciado(dc, (0, 0), txt, f, col + (alpha,), esp)
+        x = (W - capa.width) / 2 if centrado else 120
+        img.paste(capa, (int(x), int(y + dy)), capa)
+
+    # 1. Frase de cierre. Es lo que se acaba de escuchar: va primero y
+    #    va grande, pero no en mayuscula -- gritar aca abarata todo.
     txt = seg.get("texto", "")
-    txt = txt.upper() if seg.get("mayus", True) else txt
+    if seg.get("mayus", True):
+        txt = txt.upper()
+    y = H * 0.26
     if txt:
-        f, ls = auto_tam(d, txt, W - 140, H * 0.46, 130)
-        alto_l = f.size + f.size * 0.14
-        y = H * 0.16
-        for ln in ls:
-            wl = d.textbbox((0, 0), ln, font=f)[2]
-            sombra_t(d, ((W - wl) / 2, y), ln, f, tuple(pal["texto"]), 6)
-            y += alto_l
+        f, ls = auto_tam(d, txt, W - 200, H * 0.24, 104)
+        for i, ln in enumerate(ls):
+            bloque(ln, f, y, claro, min(1.0, max(0.0, (t - i * 0.05) / 0.24)))
+            y += f.size + 16
 
-    # Tarjeta de marca: entra despues del golpe del texto (arranca en
-    # t=0.30) asi el ojo primero lee el cierre y despues ve la promo.
-    ap = max(0.0, min(1.0, (t - 0.30) / 0.35))
-    e = eo_back(ap)
-    if e <= 0.01:
-        return
-    cw, ch = 780, 260
-    cx0, cy0 = (W - cw) / 2, H * 0.60
-    dy = int(40 * (1 - max(0.0, min(1.0, e))))
-    panel = tuple(max(0, c - 4) for c in pal["fondo"])
-    d.rounded_rectangle([cx0, cy0 + dy, cx0 + cw, cy0 + ch + dy], radius=28,
-                        fill=panel, outline=tuple(pal["destacado"]), width=2)
+    # 2. Linea que se abre desde el centro. Es el unico grafico del
+    #    plano y separa el cierre hablado de la marca.
+    ap_l = max(0.0, min(1.0, (t - 0.30) / 0.26))
+    if ap_l > 0:
+        medio_x = W / 2
+        largo = eo_expo(ap_l) * (W * 0.30)
+        yl = H * 0.545
+        d.rectangle([medio_x - largo, yl, medio_x + largo, yl + 1.6], fill=acento)
 
-    logo = _logo_icono()
-    tx = cx0 + 44
-    if logo is not None:
-        lw = 84
-        lh = int(logo.height * lw / logo.width)
-        lg = logo.resize((lw, lh), Image.LANCZOS)
-        img.paste(lg, (int(tx), int(cy0 + dy + (ch - lh) / 2)), lg)
-        tx += lw + 30
+    # 3. La marca. Mayuscula, MUY espaciada: es lo que la hace leer
+    #    cara en vez de apretada.
+    marca = seg.get("cta_marca", "Taller de Activos").upper()
+    fm = fnt(74)
+    esp = 9
+    while _ancho_espaciado(d, marca, fm, esp) > W - 150 and fm.size > 34:
+        fm = fnt(fm.size - 4)
+    bloque(marca, fm, H * 0.605, claro,
+           max(0.0, min(1.0, (t - 0.40) / 0.26)), esp=esp)
 
-    marca = seg.get("cta_marca", "Comunidad El Corte")
-    sub = seg.get("cta_sub", "Disponible en Hotmart")
-    fm = fnt(46)
-    fs = fnt(30, ligera=True)
-    ty = cy0 + dy + ch / 2 - (fm.size + fs.size) / 2
-    d.text((tx, ty), marca, font=fm, fill=tuple(pal["texto"]))
-    d.text((tx, ty + fm.size + 10), sub, font=fs, fill=tuple(pal["destacado"]))
+    # 4. Bajada en serif italica: el mismo tono que las palabras
+    #    sueltas del resto del video, para que el cierre pertenezca al
+    #    video y no parezca pegado de otro lado.
+    sub = seg.get("cta_sub", "")
+    if sub:
+        fs = fnt(44, serif=True, italica=True)
+        while d.textlength(sub, font=fs) > W - 200 and fs.size > 24:
+            fs = fnt(fs.size - 3, serif=True, italica=True)
+        bloque(sub, fs, H * 0.685, apagado,
+               max(0.0, min(1.0, (t - 0.54) / 0.26)))
+
+    # 5. Donde encontrarla. Chico, espaciado, en el acento.
+    handle = seg.get("cta_handle", "")
+    if handle:
+        fh = fnt(34, ligera=True)
+        bloque(handle, fh, H * 0.775, acento,
+               max(0.0, min(1.0, (t - 0.68) / 0.24)), esp=5)
 
 
 # --- Vida ambiental (universal, todos los formatos) -------------------
@@ -2204,17 +2260,19 @@ def f_lista(img, d, seg, t, pal):
 
 
 def f_comparacion(img, d, seg, t, pal):
-    """COMPARACION GRANDE -- dos columnas enfrentadas, con encabezado
-    propio, y los renglones apareciendo alternados de un lado y del
-    otro. La izquierda es lo que hace el que pierde (gris), la derecha
-    lo que hace el que gana (acento).
+    """COMPARACION GRANDE -- dos columnas enfrentadas: el que pierde en
+    ROJO, el que gana en VERDE, y un numero concreto por renglon.
 
-    Es el plano que explica el mecanismo entero de un vistazo: no lo
-    cuenta, lo MUESTRA lado a lado.
+    No es una tabla neutra. El color hace el juicio antes de que se
+    lea el texto: rojo = esto te esta costando plata, verde = esto te
+    la trae. Y cada renglon puede llevar su cifra ("-36.000" /
+    "+36.000"), que es lo que convierte un argumento en un hecho.
 
     JSON: {"formato": "comparacion",
            "izq_titulo": "VOS", "der_titulo": "ÉL",
-           "izq": ["cobrás el corte"], "der": ["cobrás la agenda"]}
+           "izq": ["cobrás el corte"], "der": ["cobrás la agenda"],
+           "izq_num": ["-36.000"], "der_num": ["+36.000"],
+           "remate": "misma tijera", "remate_num": "+432.000 al año"}
     """
     img.paste(Image.new("RGB", (W, H), seg.get("fondo_comp", (12, 12, 14))), (0, 0))
     izq = seg.get("izq") or []
@@ -2226,9 +2284,11 @@ def f_comparacion(img, d, seg, t, pal):
     medio = W // 2
     y_cab = int(H * 0.16)
     # Encabezados
+    ROJO = tuple(seg.get("color_pierde", (232, 66, 52)))
+    VERDE = tuple(seg.get("color_gana", (58, 214, 122)))
     for lado, titulo, col in (
-            (0, seg.get("izq_titulo", "VOS"), (150, 150, 156)),
-            (1, seg.get("der_titulo", "ÉL"), tuple(pal["destacado"]))):
+            (0, seg.get("izq_titulo", "VOS"), ROJO),
+            (1, seg.get("der_titulo", "ÉL"), VERDE)):
         f = fnt(64)
         txt = titulo.upper()
         wb = d.textbbox((0, 0), txt, font=f)[2]
@@ -2256,9 +2316,14 @@ def f_comparacion(img, d, seg, t, pal):
             alpha = int(255 * min(1.0, lt_i / 0.4))
             # Cada lado entra desde SU borde: refuerza el enfrentamiento.
             ox = (1.0 - e) * (-150 if lado == 0 else 150)
-            col = (206, 206, 212) if lado == 0 else tuple(pal["destacado"])
+            col = ROJO if lado == 0 else VERDE
             ancho = medio - 66
-            f, lineas = auto_tam(d, lista[k], ancho, alto_fila - 24, 66)
+            # El texto va en blanco roto y la CIFRA en el color del
+            # lado: si se pinta todo de color, el rojo y el verde
+            # pierden fuerza y ademas cuesta leer parrafos enteros en
+            # saturado. El color tiene que ser el veredicto, no el
+            # cuerpo.
+            f, lineas = auto_tam(d, lista[k], ancho, alto_fila - 74, 58)
             cx = medio / 2 if lado == 0 else medio + medio / 2
             yy = y0_items + k * alto_fila
             for ln in lineas:
@@ -2266,23 +2331,55 @@ def f_comparacion(img, d, seg, t, pal):
                 tw, th = x1b - x0b, y1b - y0b
                 capa = Image.new("RGBA", (tw + 30, th + 30), (0, 0, 0, 0))
                 dc = ImageDraw.Draw(capa)
-                dc.text((15 - x0b, 15 - y0b), ln, font=f, fill=col + (alpha,))
+                dc.text((15 - x0b, 15 - y0b), ln, font=f,
+                        fill=(228, 228, 232, alpha))
                 img.paste(capa, (int(cx - capa.width / 2 + ox), int(yy)), capa)
                 yy += f.size + 8
+            # La cifra entra un toque despues del texto: primero se lee
+            # que pasa, despues cuanto cuesta.
+            nums = seg.get("izq_num" if lado == 0 else "der_num") or []
+            if k < len(nums) and nums[k]:
+                lt_n = min(1.0, max(0.0, (t - arranque - paso * 0.35) / max(0.001, paso * 0.6)))
+                if lt_n > 0:
+                    fn = fnt(62)
+                    txtn = str(nums[k])
+                    while d.textlength(txtn, font=fn) > ancho and fn.size > 28:
+                        fn = fnt(fn.size - 4)
+                    an = int(255 * min(1.0, lt_n / 0.5))
+                    en = eo_back(lt_n)
+                    wn = d.textlength(txtn, font=fn)
+                    capa = Image.new("RGBA", (int(wn) + 30, fn.size + 40), (0, 0, 0, 0))
+                    ImageDraw.Draw(capa).text((15, 8), txtn, font=fn, fill=col + (an,))
+                    img.paste(capa, (int(cx - capa.width / 2),
+                                     int(yy + 6 + (1 - en) * 18)), capa)
 
     # Remate opcional abajo del todo, cuando ya estan las dos columnas
     remate = seg.get("remate")
-    if remate and t > 0.80:
-        lt_r = min(1.0, (t - 0.80) / 0.14)
-        f, lr = auto_tam(d, remate.upper(), W - 160, 190, 62)
-        yy = H * 0.80
+    yy = H * 0.795
+    if remate and t > 0.78:
+        lt_r = min(1.0, (t - 0.78) / 0.13)
+        f, lr = auto_tam(d, remate.upper(), W - 160, 170, 58)
         for ln in lr:
             wl = d.textbbox((0, 0), ln, font=f)[2]
             capa = Image.new("RGBA", (W, f.size + 30), (0, 0, 0, 0))
             ImageDraw.Draw(capa).text(((W - wl) / 2, 0), ln, font=f,
-                                      fill=(255, 255, 255, int(255 * lt_r)))
+                                      fill=(214, 214, 220, int(255 * lt_r)))
             img.paste(capa, (0, int(yy)), capa)
-            yy += f.size + 10
+            yy += f.size + 8
+    # La cifra que cierra la discusion. Ultima en entrar y la mas
+    # grande del plano: es el unico numero que el que mira se lleva.
+    rnum = seg.get("remate_num")
+    if rnum and t > 0.86:
+        lt_n = min(1.0, (t - 0.86) / 0.11)
+        fn = fnt(86)
+        while d.textlength(str(rnum), font=fn) > W - 160 and fn.size > 40:
+            fn = fnt(fn.size - 5)
+        wn = d.textlength(str(rnum), font=fn)
+        capa = Image.new("RGBA", (int(wn) + 40, fn.size + 46), (0, 0, 0, 0))
+        ImageDraw.Draw(capa).text((20, 10), str(rnum), font=fn,
+                                  fill=VERDE + (int(255 * lt_n),))
+        img.paste(capa, (int((W - capa.width) / 2),
+                         int(yy + 14 + (1 - eo_back(lt_n)) * 20)), capa)
 
 
 FORMATOS = {
@@ -2411,7 +2508,7 @@ def render(seg, t, prog, cfg):
     # que verse limpio, asi que ahi no corre: en esa maqueta el
     # movimiento ya lo da la palabra que cambia y el salto a la maqueta
     # oscura.
-    if fmt not in ("tarjeta", "comparacion"):
+    if fmt not in ("tarjeta", "comparacion", "cta"):
         dibujar_ambiente(img, d, t_abs, pal)
     d = ImageDraw.Draw(img)
 
