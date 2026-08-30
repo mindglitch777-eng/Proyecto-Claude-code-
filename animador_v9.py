@@ -3257,6 +3257,350 @@ def f_escena(img, d, seg, t, pal):
         img.paste(capa, (int(x - pad), int(y + dy - pad)), capa)
         y += tam * (1.18 if i % 2 == 0 else 2.05)
 
+# ============ MODULE_SILHOUETTE ============
+# §11. Ilustraciones simples, geometricas, blanco sobre negro. Dibujadas
+# con primitivas, sin depender de ningun banco de fotos.
+#
+# Existen por dos razones. La primera es que hay cosas que no se pueden
+# buscar en Pexels: "la gente que te escribe y no le contestas" no es
+# una foto, es un diagrama. La segunda es la escalera de §13: cuando no
+# hay B-roll valido, una silueta comunica mas que una foto generica de
+# alguien tecleando.
+#
+# JSON:
+#   {"formato": "silueta", "figuras": ["persona", "telefono", "flecha"],
+#    "texto": "opcional, arriba", "pie": "opcional, abajo",
+#    "claro": false}
+
+def _sil_persona(d, x, y, s, col):
+    """Silueta humana de pie. s = alto total."""
+    r = s * 0.115
+    d.ellipse([x - r, y, x + r, y + 2 * r], fill=col)              # cabeza
+    cw, ch = s * 0.30, s * 0.42
+    d.rounded_rectangle([x - cw / 2, y + 2.25 * r, x + cw / 2,
+                         y + 2.25 * r + ch], radius=s * 0.07, fill=col)
+    pw = s * 0.085
+    py = y + 2.25 * r + ch - s * 0.02
+    for lado in (-1, 1):
+        d.rounded_rectangle([x + lado * s * 0.035 - pw / 2, py,
+                             x + lado * s * 0.035 + pw / 2, y + s],
+                            radius=pw / 2, fill=col)
+
+
+def _sil_telefono(d, x, y, s, col):
+    w_, h_ = s * 0.46, s
+    d.rounded_rectangle([x - w_ / 2, y, x + w_ / 2, y + h_],
+                        radius=s * 0.075, outline=col, width=max(3, int(s * 0.035)))
+    d.rounded_rectangle([x - w_ * 0.16, y + s * 0.045, x + w_ * 0.16,
+                         y + s * 0.075], radius=s * 0.02, fill=col)
+
+
+def _sil_computadora(d, x, y, s, col):
+    w_, h_ = s * 1.18, s * 0.72
+    g = max(3, int(s * 0.038))
+    d.rounded_rectangle([x - w_ / 2, y, x + w_ / 2, y + h_],
+                        radius=s * 0.05, outline=col, width=g)
+    d.rounded_rectangle([x - w_ * 0.62, y + h_ + s * 0.03, x + w_ * 0.62,
+                         y + h_ + s * 0.11], radius=s * 0.035, fill=col)
+
+
+def _sil_tienda(d, x, y, s, col):
+    w_ = s * 1.15
+    g = max(3, int(s * 0.038))
+    d.rectangle([x - w_ / 2, y + s * 0.30, x + w_ / 2, y + s], outline=col, width=g)
+    # toldo a rayas
+    for i in range(5):
+        x0 = x - w_ / 2 + i * w_ / 5
+        if i % 2 == 0:
+            d.polygon([(x0, y + s * 0.30), (x0 + w_ / 5, y + s * 0.30),
+                       (x0 + w_ / 5, y + s * 0.13), (x0, y + s * 0.13)], fill=col)
+    d.rectangle([x - w_ / 2, y + s * 0.11, x + w_ / 2, y + s * 0.15], fill=col)
+    d.rounded_rectangle([x - s * 0.13, y + s * 0.62, x + s * 0.13, y + s],
+                        radius=s * 0.03, outline=col, width=g)
+
+
+def _sil_edificio(d, x, y, s, col):
+    w_ = s * 0.66
+    g = max(3, int(s * 0.035))
+    d.rectangle([x - w_ / 2, y, x + w_ / 2, y + s], outline=col, width=g)
+    vw = w_ * 0.16
+    for fila in range(4):
+        for c in (-1, 0, 1):
+            vx = x + c * w_ * 0.26
+            vy = y + s * 0.13 + fila * s * 0.20
+            d.rectangle([vx - vw / 2, vy, vx + vw / 2, vy + s * 0.10], fill=col)
+
+
+def _sil_flecha(d, x, y, s, col):
+    g = max(4, int(s * 0.10))
+    d.rectangle([x - s * 0.42, y + s / 2 - g / 2, x + s * 0.16,
+                 y + s / 2 + g / 2], fill=col)
+    d.polygon([(x + s * 0.10, y + s * 0.22), (x + s * 0.10, y + s * 0.78),
+               (x + s * 0.46, y + s / 2)], fill=col)
+
+
+def _sil_reloj(d, x, y, s, col):
+    g = max(3, int(s * 0.045))
+    d.ellipse([x - s / 2, y, x + s / 2, y + s], outline=col, width=g)
+    # Agujas en angulo, no a 90 grados: en vertical y horizontal exactas
+    # el reloj se lee como una letra L, no como un reloj.
+    cx, cy = x, y + s / 2
+    d.line([cx, cy, cx + s * 0.13, cy - s * 0.27], fill=col, width=g)
+    d.line([cx, cy, cx + s * 0.30, cy + s * 0.10], fill=col, width=g)
+    d.ellipse([cx - g, cy - g, cx + g, cy + g], fill=col)
+
+
+def _sil_grafico(d, x, y, s, col):
+    g = max(3, int(s * 0.035))
+    d.line([x - s / 2, y + s, x + s / 2, y + s], fill=col, width=g)
+    d.line([x - s / 2, y, x - s / 2, y + s], fill=col, width=g)
+    for i, alto in enumerate((0.30, 0.52, 0.78, 1.0)):
+        bx = x - s * 0.36 + i * s * 0.24
+        d.rectangle([bx, y + s * (1 - alto * 0.88), bx + s * 0.15, y + s],
+                    fill=col)
+
+
+def _sil_billete(d, x, y, s, col):
+    w_, h_ = s * 1.3, s * 0.62
+    g = max(3, int(s * 0.038))
+    d.rounded_rectangle([x - w_ / 2, y, x + w_ / 2, y + h_],
+                        radius=s * 0.04, outline=col, width=g)
+    d.ellipse([x - s * 0.17, y + h_ / 2 - s * 0.17, x + s * 0.17,
+               y + h_ / 2 + s * 0.17], outline=col, width=g)
+
+
+FIGURAS = {
+    "persona": _sil_persona, "telefono": _sil_telefono,
+    "computadora": _sil_computadora, "tienda": _sil_tienda,
+    "edificio": _sil_edificio, "flecha": _sil_flecha, "reloj": _sil_reloj,
+    "grafico": _sil_grafico, "billete": _sil_billete,
+}
+
+
+def f_silueta(img, d, seg, t, pal):
+    """Ilustracion geometrica sobre color plano. Las figuras entran una
+    por una; la flecha entra siempre despues de lo que separa."""
+    if seg.get("claro"):
+        pal = {"fondo": pal["texto"], "texto": pal["fondo"],
+               "destacado": pal["destacado"]}
+    img.paste(Image.new("RGB", (W, H), tuple(pal["fondo"])), (0, 0))
+    figuras = [f for f in (seg.get("figuras") or []) if f in FIGURAS]
+    if not figuras:
+        figuras = ["persona"]
+    n = len(figuras)
+    col = tuple(pal["texto"])
+    acc = tuple(pal["destacado"])
+
+    # Titulo arriba, si lo hay
+    y_fig = H * 0.34
+    titulo = seg.get("texto")
+    pie_txt = seg.get("pie")
+    if titulo:
+        et = eo_expo(min(1.0, t / 0.16))
+        f, lns = auto_tam(d, titulo, W - 200, 220, 74)
+        yy = H * 0.14
+        for ln in lns:
+            wl = d.textbbox((0, 0), ln, font=f)[2]
+            capa = Image.new("RGBA", (W, f.size + 30), (0, 0, 0, 0))
+            ImageDraw.Draw(capa).text(((W - wl) / 2, 0), ln, font=f,
+                                      fill=col + (int(255 * et),))
+            img.paste(capa, (0, int(yy)), capa)
+            yy += f.size + 12
+        y_fig = max(y_fig, yy + H * 0.06)
+
+    # Las figuras, repartidas en una fila. El tamaño lo manda el ancho
+    # disponible, pero con pocas figuras el techo sube: una silueta
+    # sola tiene que ocupar el cuadro, no quedar de tamaño de icono.
+    hueco = 1.34
+    techo = {1: 0.52, 2: 0.40, 3: 0.30}.get(n, 0.24)
+    s = min(int(H * techo), int((W * 0.86) / (n * hueco - (hueco - 1))))
+    ancho = n * s * hueco - s * (hueco - 1)
+    x0 = (W - ancho) / 2 + s / 2
+    # El bloque entero (titulo + figuras + pie) se centra vertical. Sin
+    # esto quedaba colgado arriba con el tercio de abajo vacio.
+    alto_bloque = s + (H * 0.10 if pie_txt else 0)
+    y_fig = max(y_fig, (H - alto_bloque) / 2 + (H * 0.04 if titulo else 0))
+    reparto = 0.72 / n
+    for i, nombre in enumerate(figuras):
+        lt = (t - 0.10 - i * reparto) / max(0.05, reparto * 0.55)
+        if lt <= 0:
+            continue
+        lt = min(1.0, lt)
+        capa = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        dc = ImageDraw.Draw(capa)
+        # la flecha va en el acento: es la que dice la relacion
+        c = acc if nombre == "flecha" else col
+        FIGURAS[nombre](dc, x0 + i * s * 1.34, y_fig, s,
+                        c + (int(255 * eo_expo(lt)),))
+        img.paste(capa, (0, 0), capa)
+
+    pie = pie_txt
+    if pie and t > 0.62:
+        lt = min(1.0, (t - 0.62) / 0.2)
+        f, lns = auto_tam(d, pie, W - 240, 160, 42, ligera=True)
+        yy = y_fig + s + H * 0.07
+        for ln in lns:
+            wl = d.textbbox((0, 0), ln, font=f)[2]
+            capa = Image.new("RGBA", (W, f.size + 26), (0, 0, 0, 0))
+            ImageDraw.Draw(capa).text(((W - wl) / 2, 0), ln, font=f,
+                                      fill=(168, 168, 182, int(255 * lt)))
+            img.paste(capa, (0, int(yy)), capa)
+            yy += f.size + 10
+
+# ============ MODULE_GRAPH ============
+# §7 y §11. Un grafico existe solo si responde: "que entiende el que
+# mira gracias a esto que no entenderia igual viendo B-roll?". Si la
+# respuesta es nada, no va grafico.
+#
+# Se construye PROGRESIVAMENTE, sincronizado con la narracion: no se
+# muestra el grafico entero desde el primer cuadro mientras la voz
+# todavia lo esta explicando.
+#
+# JSON:
+#   {"formato": "grafico", "tipo": "barras",
+#    "titulo": "Lo que busca la gente",
+#    "datos": [{"etiqueta": "«cuánto cobrar»", "valor": 67.5},
+#              {"etiqueta": "«calcular rentabilidad»", "valor": 0.1}],
+#    "sufijo": "", "fuente": "Google Trends AR · 12 meses",
+#    "destacar": 0}
+#
+# tipos: barras | comparacion | ranking | embudo | linea
+
+def _g_fondo(img, d, seg, pal):
+    if seg.get("claro"):
+        pal = {"fondo": pal["texto"], "texto": pal["fondo"],
+               "destacado": pal["destacado"]}
+    img.paste(Image.new("RGB", (W, H), tuple(pal["fondo"])), (0, 0))
+    return pal
+
+
+def _g_titulo(img, d, seg, pal, t):
+    titulo = seg.get("titulo") or seg.get("texto")
+    if not titulo:
+        return H * 0.20
+    e = eo_expo(min(1.0, t / 0.14))
+    f, lns = auto_tam(d, titulo, W - 190, 200, 62)
+    y = H * 0.115
+    for ln in lns:
+        wl = d.textbbox((0, 0), ln, font=f)[2]
+        capa = Image.new("RGBA", (W, f.size + 28), (0, 0, 0, 0))
+        ImageDraw.Draw(capa).text(((W - wl) / 2, 0), ln, font=f,
+                                  fill=tuple(pal["texto"]) + (int(255 * e),))
+        img.paste(capa, (0, int(y)), capa)
+        y += f.size + 12
+    return y + H * 0.045
+
+
+def _g_fuente(img, d, seg, pal, t):
+    """§9: toda cifra con su fuente. Si el guion no la declara, el plano
+    lo dice, igual que en 'prueba'."""
+    fuente = str(seg.get("fuente", "")).strip()
+    e = eo_expo(max(0.0, min(1.0, (t - 0.72) / 0.2)))
+    if e <= 0:
+        return
+    txt = fuente or "sin fuente declarada"
+    col = (168, 168, 180) if fuente else (206, 92, 78)
+    f, lns = auto_tam(d, txt, W - 200, 120, 34, ligera=True)
+    y = H * 0.885
+    for ln in lns:
+        wl = d.textbbox((0, 0), ln, font=f)[2]
+        capa = Image.new("RGBA", (W, f.size + 22), (0, 0, 0, 0))
+        ImageDraw.Draw(capa).text(((W - wl) / 2, 0), ln, font=f,
+                                  fill=col + (int(255 * e),))
+        img.paste(capa, (0, int(y)), capa)
+        y += f.size + 8
+
+
+def _num(v, sufijo=""):
+    s = f"{v:,.1f}".rstrip("0").rstrip(".") if isinstance(v, float) else str(v)
+    return s.replace(",", ".") + sufijo
+
+
+def f_grafico(img, d, seg, t, pal):
+    """Grafico construido progresivamente."""
+    pal = _g_fondo(img, d, seg, pal)
+    y = _g_titulo(img, d, seg, pal, t)
+    datos = seg.get("datos") or []
+    if not datos:
+        return
+    tipo = seg.get("tipo", "barras")
+    sufijo = seg.get("sufijo", "")
+    destacar = seg.get("destacar")
+    col = tuple(pal["texto"])
+    acc = tuple(pal["destacado"])
+    apagado = (96, 96, 106)
+    n = len(datos)
+    vmax = max([abs(float(x.get("valor", 0))) for x in datos] + [1e-9])
+
+    # Cada barra entra en su turno; la ultima queda con tiempo de leerse.
+    reparto = 0.62 / n
+    alto_zona = H * 0.86 - y
+    alto_fila = min(H * 0.15, alto_zona / n)
+    # El bloque de datos se centra en el espacio que queda bajo el
+    # titulo. Sin esto quedaba arriba y el 40% de abajo vacio.
+    y += max(0.0, (alto_zona - alto_fila * n) / 2)
+
+    if tipo == "embudo":
+        # De ancho decreciente: cada escalon pierde gente.
+        for i, it in enumerate(datos):
+            lt = max(0.0, min(1.0, (t - 0.14 - i * reparto) / max(.05, reparto * .7)))
+            if lt <= 0:
+                continue
+            v = float(it.get("valor", 0))
+            w_ = (W * 0.80) * (v / vmax) * eo_expo(lt)
+            yy = y + i * alto_fila
+            c = acc if (destacar == i) else (col if i == 0 else apagado)
+            d.rounded_rectangle([(W - w_) / 2, yy, (W + w_) / 2,
+                                 yy + alto_fila * 0.62], radius=10,
+                                fill=c + (int(255 * lt),) if len(c) == 3 else c)
+            f = fnt(38, ligera=True)
+            et = f"{it.get('etiqueta','')}  {_num(v, sufijo)}"
+            wl = d.textbbox((0, 0), et, font=f)[2]
+            d.text(((W - wl) / 2, yy + alto_fila * 0.68), et, font=f,
+                   fill=(190, 190, 200))
+        _g_fuente(img, d, seg, pal, t)
+        return
+
+    # barras / comparacion / ranking.
+    #
+    # La etiqueta va ARRIBA de la barra, no al costado. Al costado
+    # quedaba con 265px de ancho y el texto se achicaba hasta 18px:
+    # ilegible en un telefono. Arriba tiene el ancho entero.
+    #
+    # Y el largo maximo descuenta lo que ocupa la cifra, porque si no
+    # la barra llega al borde y el numero sale cortado: "67.5" se veia
+    # como "6".
+    x0 = W * 0.055
+    alto_b = alto_fila * 0.36
+    fn_cifra = fnt(int(alto_b * 1.05))
+    ancho_cifra = max(d.textbbox((0, 0), _num(float(it.get("valor", 0)), sufijo),
+                                 font=fn_cifra)[2] for it in datos) + W * 0.03
+    largo_max = W * 0.945 - x0 - ancho_cifra
+    for i, it in enumerate(datos):
+        lt = max(0.0, min(1.0, (t - 0.14 - i * reparto) / max(.05, reparto * .7)))
+        if lt <= 0:
+            continue
+        v = float(it.get("valor", 0))
+        yy = y + i * alto_fila
+        f = fnt(38, ligera=True)
+        et = str(it.get("etiqueta", ""))
+        while d.textbbox((0, 0), et, font=f)[2] > W * 0.86 and f.size > 24:
+            f = fnt(f.size - 2, ligera=True)
+        d.text((x0, yy), et, font=f, fill=(184, 184, 196))
+        yb = yy + f.size * 1.22
+        largo = largo_max * (abs(v) / vmax) * eo_expo(lt)
+        c = acc if (destacar == i or (destacar is None and i == 0)) else apagado
+        # Radio menor que la mitad del alto: con radius=alto/2 una barra
+        # corta se dibuja como un circulo y deja de leerse como barra.
+        r = int(min(alto_b * 0.30, max(2, largo / 2)))
+        d.rounded_rectangle([x0, yb, x0 + max(4, largo), yb + alto_b],
+                            radius=r, fill=c)
+        if lt > 0.5:
+            txt = _num(v * (lt if lt < 1 else 1), sufijo)
+            d.text((x0 + max(4, largo) + W * 0.022, yb - alto_b * 0.10),
+                   txt, font=fn_cifra, fill=col)
+    _g_fuente(img, d, seg, pal, t)
+
 FORMATOS = {
     "declaracion": f_declaracion, "dato_duro": f_dato_duro,
     "division": f_division, "revelacion": f_revelacion,
@@ -3270,7 +3614,7 @@ FORMATOS = {
     "pleno": f_pleno, "tarjeta": f_tarjeta,
     "ruleta": f_ruleta, "lista": f_lista, "comparacion": f_comparacion,
     "prueba": f_prueba, "flujo": f_flujo, "cascada": f_cascada,
-    "menu": f_menu, "escena": f_escena,
+    "menu": f_menu, "escena": f_escena, "silueta": f_silueta, "grafico": f_grafico,
 }
 
 # Los comentarios de aca abajo describen el COLOR, no una marca ni un
@@ -3398,7 +3742,7 @@ def render(seg, t, prog, cfg):
     # que verse limpio, asi que ahi no corre: en esa maqueta el
     # movimiento ya lo da la palabra que cambia y el salto a la maqueta
     # oscura.
-    if fmt not in ("tarjeta", "comparacion", "cta", "prueba", "flujo", "cascada", "menu", "escena"):
+    if fmt not in ("tarjeta", "comparacion", "cta", "prueba", "flujo", "cascada", "menu", "escena", "silueta", "grafico"):
         dibujar_ambiente(img, d, t_abs, pal)
     d = ImageDraw.Draw(img)
 
