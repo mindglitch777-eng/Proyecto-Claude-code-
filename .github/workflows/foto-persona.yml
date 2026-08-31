@@ -1,13 +1,24 @@
 name: foto-persona
 
-# Baja UNA foto real de una persona publica (con nombre y apellido)
-# desde Wikimedia Commons, para los videos documentales -- casos
-# reales, a diferencia del metraje generico de Pexels que usan los
-# guiones ilustrativos.
+# Baja fotos reales de personas publicas (Wikidata / Wikimedia Commons
+# / Openverse -- ver buscar_foto.py) para los videos documentales,
+# totalmente automatico y sin revision manual candidato por candidato:
+# si no hay un resultado confiable, la persona queda sin foto (el
+# video sigue con B-roll generico o fondo limpio) en vez de arriesgar
+# la cara equivocada.
 #
 # Corre en un runner y no en la sesion de Claude Code porque ese
 # entorno tiene bloqueado el acceso general a internet (se probo:
 # Wikipedia da EGRESS_BLOCKED igual que Pexels y HuggingFace).
+#
+# Dos modos:
+#   - Lote: escribir assets/personas/pedido-lote.json (una lista
+#     entera de personas) y empujar -- baja todas las que falten en
+#     una sola corrida. Es el modo pensado para una tanda de videos
+#     nueva.
+#   - Suelto: un pedido puntual, por PEDIDO.json o por el formulario
+#     de workflow_dispatch (solo funciona por UI/API una vez que este
+#     archivo ya este en la rama por defecto).
 
 permissions:
   contents: write
@@ -16,21 +27,21 @@ on:
   workflow_dispatch:
     inputs:
       nombre:
-        description: "Nombre y apellido tal cual buscarlo en Wikimedia Commons"
-        required: true
+        description: "Nombre y apellido (dejar vacio si se usa pedido-lote.json)"
+        required: false
       slug:
         description: "Carpeta destino en assets/personas/<slug>/"
-        required: true
+        required: false
       consulta:
         description: "Busqueda con contexto extra, para nombres comunes (ej. 'Becky Beach blogger')"
         required: false
-  # workflow_dispatch solo se puede disparar por API/UI si el archivo
-  # ya esta en la rama por defecto. Mientras esto vive en una rama de
-  # trabajo, se dispara escribiendo PEDIDO.json y empujando -- mismo
-  # truco que remotion-diez.yml con su archivo RENDER.
+      pista:
+        description: "Palabra para desambiguar en Wikidata (ej. 'blogger', 'youtuber')"
+        required: false
   push:
     paths:
       - "assets/personas/PEDIDO.json"
+      - "assets/personas/pedido-lote.json"
 
 jobs:
   bajar:
@@ -42,21 +53,25 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Leer el pedido
-        id: pedido
+      - name: Lote (pedido-lote.json)
+        if: hashFiles('assets/personas/pedido-lote.json') != ''
+        run: python3 descargar_fotos_lote.py
+
+      - name: Pedido suelto (PEDIDO.json o formulario)
+        if: hashFiles('assets/personas/pedido-lote.json') == ''
         run: |
           if [ -f assets/personas/PEDIDO.json ]; then
-            echo "nombre=$(python3 -c "import json;print(json.load(open('assets/personas/PEDIDO.json'))['nombre'])")" >> "$GITHUB_OUTPUT"
-            echo "slug=$(python3 -c "import json;print(json.load(open('assets/personas/PEDIDO.json'))['slug'])")" >> "$GITHUB_OUTPUT"
-            echo "consulta=$(python3 -c "import json;print(json.load(open('assets/personas/PEDIDO.json')).get('consulta',''))")" >> "$GITHUB_OUTPUT"
+            nombre=$(python3 -c "import json;print(json.load(open('assets/personas/PEDIDO.json'))['nombre'])")
+            slug=$(python3 -c "import json;print(json.load(open('assets/personas/PEDIDO.json'))['slug'])")
+            consulta=$(python3 -c "import json;print(json.load(open('assets/personas/PEDIDO.json')).get('consulta',''))")
+            pista=$(python3 -c "import json;print(json.load(open('assets/personas/PEDIDO.json')).get('pista',''))")
           else
-            echo "nombre=${{ inputs.nombre }}" >> "$GITHUB_OUTPUT"
-            echo "slug=${{ inputs.slug }}" >> "$GITHUB_OUTPUT"
-            echo "consulta=${{ inputs.consulta }}" >> "$GITHUB_OUTPUT"
+            nombre="${{ inputs.nombre }}"
+            slug="${{ inputs.slug }}"
+            consulta="${{ inputs.consulta }}"
+            pista="${{ inputs.pista }}"
           fi
-
-      - name: Bajar candidatos
-        run: python3 descargar_foto_persona.py "${{ steps.pedido.outputs.nombre }}" "${{ steps.pedido.outputs.slug }}" "${{ steps.pedido.outputs.consulta }}"
+          python3 descargar_foto_persona.py "$nombre" "$slug" "$consulta" "$pista"
 
       - name: Commitear
         run: |
@@ -64,7 +79,7 @@ jobs:
           git config user.email "actions@github.com"
           if [ -n "$(git status --porcelain assets/personas/)" ]; then
             git add assets/personas/
-            git commit -m "Foto real: ${{ inputs.nombre }}"
+            git commit -m "Fotos reales: actualizacion automatica"
             git pull --rebase origin "$GITHUB_REF_NAME" || git rebase --abort || true
             git push origin "HEAD:$GITHUB_REF_NAME"
           else
