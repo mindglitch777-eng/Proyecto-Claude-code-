@@ -21,6 +21,7 @@ import {Muestrario3, DUR_M3} from './escenas/Muestrario3';
 import {FormatoA, DUR_FA, FormatoB, DUR_FB} from './escenas/FormatoCompleto';
 import {Muestrario4, DUR_M4} from './escenas/Muestrario4';
 import {Muestrario5, DUR_M5} from './escenas/Muestrario5';
+import {Muestrario6, DUR_M6} from './escenas/Muestrario6';
 
 const cuadros = Math.round(DUR_TOTAL * FPS);
 
@@ -84,6 +85,7 @@ export const Root: React.FC = () => {
       <Composition id="formato-b" component={FormatoB} durationInFrames={Math.round(DUR_FB * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="muestrario4" component={Muestrario4} durationInFrames={Math.round(DUR_M4 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="muestrario5" component={Muestrario5} durationInFrames={Math.round(DUR_M5 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
+      <Composition id="muestrario6" component={Muestrario6} durationInFrames={Math.round(DUR_M6 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="muestrario2" component={Muestrario2} durationInFrames={Math.round(DUR_M2 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="muestrario" component={Muestrario} durationInFrames={Math.round(DUR_MUESTRARIO * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="catalogo" component={Catalogo} durationInFrames={130} fps={FPS} width={ANCHO} height={ALTO} />
