@@ -51,16 +51,26 @@ def buscar_archivo(nombre):
     pedido = urllib.request.Request(url, headers={"User-Agent": AGENTE})
     with urllib.request.urlopen(pedido, timeout=30) as r:
         datos = json.loads(r.read().decode("utf-8"))
+    # Las palabras del nombre (mas de 2 letras) tienen que estar TODAS
+    # en el titulo del archivo. Sin esto, buscar "Pieter Levels" puede
+    # traer un cuadro de "Pieter Bruegel" -- paso de verdad, la busqueda
+    # trajo eso primero antes de este chequeo.
+    palabras = [w.lower() for w in re.findall(r"\w+", nombre) if len(w) > 2]
+
     paginas = (datos.get("query") or {}).get("pages") or {}
     candidatos = []
     for p in paginas.values():
         info = (p.get("imageinfo") or [None])[0]
         if not info:
             continue
+        titulo = p.get("title", "")
+        titulo_norm = titulo.lower()
+        if not all(w in titulo_norm for w in palabras):
+            continue
         # Preferir fotos, no logos/diagramas: al menos 400px de ancho.
         if (info.get("width") or 0) < 400:
             continue
-        candidatos.append((p.get("title", ""), info))
+        candidatos.append((titulo, info))
     return candidatos
 
 
@@ -71,6 +81,7 @@ def bajar(nombre, slug):
         print(f"Sin resultados en Wikimedia Commons para '{nombre}'.")
         print("No se baja nada -- mejor sin foto que con la persona equivocada.")
         return False
+    print(f"[{slug}] candidatos encontrados: " + ", ".join(t for t, _ in candidatos[:5]))
 
     titulo, info = candidatos[0]
     src = info.get("thumburl") or info.get("url")
