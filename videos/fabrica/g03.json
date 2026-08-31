@@ -1,0 +1,20 @@
+{
+ "id": "g03",
+ "titulo": "Cuarenta videos guardados",
+ "cta": "EMPEZAR",
+ "duracionSegundos": 24.9,
+ "paleta": "confianza",
+ "formatosUsados": [
+  "congelado",
+  "diagrama",
+  "listaTachada",
+  "contador",
+  "cronologia",
+  "letraVentana",
+  "cierre"
+ ],
+ "busquedasDeMetraje": [
+  "persona joven estudiando celular",
+  "mujer joven trabajando taller manos"
+ ]
+}
