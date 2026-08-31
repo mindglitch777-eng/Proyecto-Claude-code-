@@ -2,6 +2,7 @@ import React from 'react';
 import {AbsoluteFill, Sequence, interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Golpe, Grano, Pulso, TipoGolpe} from '../escenas/golpes';
 import {cargarFuentes} from '../fuentes';
+import {PALETA} from '../identidad';
 import {compilar, Guion} from './compilar';
 import {elegirPaleta} from './paletas';
 import {REGISTRO} from './registro';
@@ -18,7 +19,11 @@ import {REGISTRO} from './registro';
 
 const FPS = 30;
 
-const CierreGenerico: React.FC<{cta: string; texto: string; acento: string}> = ({cta, texto, acento}) => {
+// El CTA es el momento de venta: siempre el mismo color de marca
+// (PALETA fija de identidad.ts), nunca la paleta auto-elegida del
+// video. Que cambie de color video a video le quita coherencia a lo
+// unico que tiene que reconocerse siempre igual.
+const CierreGenerico: React.FC<{cta: string}> = ({cta}) => {
   const frame = useCurrentFrame();
   const t = frame / FPS;
   const ap = (a: number, b: number, max = 1) =>
@@ -26,20 +31,21 @@ const CierreGenerico: React.FC<{cta: string; texto: string; acento: string}> = (
   return (
     <AbsoluteFill
       style={{
+        backgroundColor: PALETA.fondo,
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
         gap: 22, padding: '0 8%',
       }}
     >
       <div
         style={{
-          fontFamily: 'Archivo', fontWeight: 800, fontStretch: '84%', fontSize: 78, color: texto,
+          fontFamily: 'Archivo', fontWeight: 800, fontStretch: '84%', fontSize: 78, color: PALETA.texto,
           letterSpacing: '-0.03em', textTransform: 'uppercase', textAlign: 'center', lineHeight: 1.05,
           opacity: ap(0, 0.35), transform: `scale(${interpolate(t, [0, 0.35], [0.88, 1], {extrapolateRight: 'clamp'})})`,
         }}
       >
-        Comentá «<span style={{color: acento}}>{cta}</span>»
+        Comentá «<span style={{color: PALETA.acento}}>{cta}</span>»
       </div>
-      <div style={{fontFamily: 'Archivo', fontWeight: 400, fontSize: 40, color: texto, opacity: ap(0.4, 0.75, 0.75)}}>
+      <div style={{fontFamily: 'Archivo', fontWeight: 400, fontSize: 40, color: PALETA.texto, opacity: ap(0.4, 0.75, 0.75)}}>
         y te lo paso
       </div>
     </AbsoluteFill>
@@ -68,7 +74,7 @@ export const Video: React.FC<{id: string; guiones: Guion[]}> = ({id, guiones}) =
           <Sequence key={i} from={desde} durationInFrames={Math.max(1, largo)}>
             <Golpe tipo={golpe}>
               {b.parte.hace === 'cierre' ? (
-                <CierreGenerico cta={guion.cta} texto={paleta.texto} acento={paleta.acento} />
+                <CierreGenerico cta={guion.cta} />
               ) : adaptador ? (
                 adaptador(b.parte, b.dura, guion.tema)
               ) : (

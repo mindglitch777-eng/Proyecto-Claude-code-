@@ -42,6 +42,15 @@ NICHOS = {
     "nutricion": "nutritionist healthy food consultation",
     "veterinaria": "veterinarian clinic dog",
     "dinero": "money cash entrepreneur laptop",
+    # Agregados para los guiones de la fabrica de Remotion
+    # (remotion-spike/src/receta/imagenes.ts mapea cada frase de guion
+    # a una de estas categorias -- si agregas una categoria nueva ahi,
+    # agregale la consulta en ingles aca).
+    "taller": "small workshop artisan craftsman working",
+    "oficina": "coworkers office computer working",
+    "freelance": "freelancer working desk laptop",
+    "celular": "young person using smartphone studying",
+    "comercio": "small shop owner serving customer",
 }
 
 
@@ -220,6 +229,22 @@ def main():
     if a and a[0] == "--video":
         DESTINO_VIDEO.mkdir(parents=True, exist_ok=True)
         resto = a[1:]
+        # --lista <json>: los nichos vienen de listar-pendientes.js, no
+        # tecleados a mano. Es lo que usa el workflow automatico: baja
+        # SOLO lo que los guiones piden y todavia no esta.
+        if resto and resto[0] == "--lista":
+            with open(resto[1], encoding="utf-8") as f:
+                nichos = json.load(f)
+            cuantos = int(resto[2]) if len(resto) > 2 else 6
+            total = 0
+            for n in nichos:
+                if n not in NICHOS:
+                    print(f"  [{n}] sin consulta en NICHOS -- "
+                          f"agregasela a descargar_metraje.py")
+                    continue
+                total += bajar_video_nicho(n, NICHOS[n], cuantos, k)
+            print(f"\nTotal: {total} clips.")
+            return 0
         cuantos = int(resto[-1]) if resto and resto[-1].isdigit() else 6
         nichos = ([resto[0]] if resto and not resto[0].isdigit()
                   else list(NICHOS))

@@ -1,0 +1,176 @@
+name: fabrica
+
+# LA FABRICA: agarra receta/guiones.ts y deja listos los videos.
+#
+# Se dispara solo con cada guion nuevo (push que toque guiones.ts) o a
+# mano. Un solo run hace todo lo que hace falta para que el operador
+# tenga el video + su ficha de publicacion sin pedirle nada a Claude
+# Code en el medio:
+#
+#   1. Mira que metraje piden los guiones y baja lo que falte de
+#      Pexels (mismos pasos que pexels-automatico.yml, incluidos aca
+#      para que la fabrica sea autosuficiente en un solo boton).
+#   2. Renderiza una composicion por guion (f-<id>), una por runner.
+#   3. Deja el .mp4 y un .json con titulo/CTA/paleta/duracion listos
+#      para publicar -- eso es lo que un conector de subida (cuando el
+#      operador lo conecte) va a leer.
+#
+# No sube nada a ninguna red: la Regla de oro del proyecto dice que
+# publicar contenido real necesita confirmacion explicita del operador
+# en esa sesion. Esto deja el video LISTO, no publicado.
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      guiones:
+        description: "Ids separados por coma (vacio = todos los de guiones.ts)"
+        required: false
+        default: ""
+  push:
+    paths:
+      - "remotion-spike/src/receta/guiones.ts"
+
+jobs:
+  metraje:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: remotion-spike/package-lock.json
+
+      - name: Dependencias
+        working-directory: remotion-spike
+        run: npm ci --no-audit --no-fund
+
+      - name: Ver que metraje falta
+        working-directory: remotion-spike
+        run: node listar-pendientes.js
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+
+      - name: Bajar lo pendiente
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        run: |
+          if [ "$(cat remotion-spike/pendientes.json)" = "[]" ]; then
+            echo "Nada pendiente, no se llama a Pexels."
+            exit 0
+          fi
+          python3 descargar_metraje.py --video --lista remotion-spike/pendientes.json 6
+
+      - name: Actualizar el manifiesto
+        run: |
+          ./remotion-spike/preparar-public.sh
+          node remotion-spike/generar-manifiesto.js
+
+      - name: Commitear metraje nuevo y el manifiesto
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add assets/metraje_video/ remotion-spike/src/receta/manifiesto.json
+          if git diff --cached --quiet; then
+            echo "Sin cambios."
+            exit 0
+          fi
+          git commit -m "Metraje automatico segun lo que piden los guiones"
+          for i in 1 2 3 4 5 6; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && \
+            git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
+            echo "reintento $i"
+            sleep $((RANDOM % 8 + 2 * i))
+          done
+          exit 1
+
+  listar:
+    needs: metraje
+    runs-on: ubuntu-latest
+    outputs:
+      matriz: ${{ steps.l.outputs.matriz }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: l
+        run: |
+          python3 - <<'EOF' > /tmp/m.json
+          import json, os, re
+          pedidos = [x.strip() for x in os.environ.get("GUIONES", "").split(",") if x.strip()]
+          src = open("remotion-spike/src/receta/guiones.ts", encoding="utf-8").read()
+          todos = re.findall(r"id: '(g[a-zA-Z0-9_]+)'", src)
+          print(json.dumps(pedidos or todos))
+          EOF
+          echo "matriz=$(cat /tmp/m.json)" >> "$GITHUB_OUTPUT"
+          echo "A renderizar: $(cat /tmp/m.json)"
+        env:
+          GUIONES: ${{ inputs.guiones }}
+
+  render:
+    needs: listar
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        guion: ${{ fromJson(needs.listar.outputs.matriz) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: remotion-spike/package-lock.json
+
+      - name: Dependencias
+        working-directory: remotion-spike
+        run: npm ci --no-audit --no-fund
+
+      - name: Navegador para Remotion
+        working-directory: remotion-spike
+        run: npx remotion browser ensure
+
+      - name: Armar public/ (fuentes, fotos, metraje)
+        run: ./remotion-spike/preparar-public.sh
+
+      - name: Regenerar el manifiesto con lo que ya se bajo
+        run: node remotion-spike/generar-manifiesto.js
+
+      - name: Renderizar f-${{ matrix.guion }}
+        working-directory: remotion-spike
+        run: |
+          mkdir -p out
+          npx remotion render f-${{ matrix.guion }} out/f-${{ matrix.guion }}.mp4 \
+            --concurrency=2 --log=info
+
+      - name: Ficha de publicacion (titulo, CTA, paleta, duracion)
+        working-directory: remotion-spike
+        run: node metadata-video.js ${{ matrix.guion }}
+
+      - name: Commitear ${{ matrix.guion }}
+        run: |
+          mkdir -p videos/fabrica
+          cp remotion-spike/out/f-${{ matrix.guion }}.mp4 videos/fabrica/
+          cp remotion-spike/out/${{ matrix.guion }}.json videos/fabrica/
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add videos/fabrica/f-${{ matrix.guion }}.mp4 videos/fabrica/${{ matrix.guion }}.json
+          if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
+          git commit -m "Video de fabrica: ${{ matrix.guion }}"
+          for i in 1 2 3 4 5 6; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && \
+            git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
+            echo "reintento $i"
+            sleep $((RANDOM % 8 + 2 * i))
+          done
+          exit 1

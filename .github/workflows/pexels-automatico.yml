@@ -1,0 +1,91 @@
+name: pexels-automatico
+
+# El sistema que mira que metraje piden los guiones y lo baja solo.
+#
+# listar-pendientes.js compila TODOS los guiones de
+# remotion-spike/src/receta/guiones.ts (la misma funcion que usa el
+# render) y junta cada categoria de video que piden y todavia no esta
+# en el repo. Si hay algo pendiente, descargar_metraje.py lo baja de
+# Pexels y lo deja commiteado en assets/metraje_video/.
+#
+# Corre en un runner de GitHub y no en la sesion de Claude Code porque
+# ese entorno tiene bloqueado el acceso a pexels.com (mismo motivo que
+# descargar-metraje.yml).
+#
+# Botón manual (workflow_dispatch) a proposito: bajar metraje no gasta
+# dinero real ni publica nada, pero se revisa antes de que la fabrica
+# lo use en un video -- por eso no dispara solo con cada push.
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      cantidad:
+        description: "Clips por categoria pendiente"
+        required: false
+        default: "6"
+
+jobs:
+  bajar-pendientes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: remotion-spike/package-lock.json
+
+      - name: Dependencias
+        working-directory: remotion-spike
+        run: npm ci --no-audit --no-fund
+
+      - name: Ver que falta
+        working-directory: remotion-spike
+        run: node listar-pendientes.js
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+
+      - name: Bajar lo pendiente
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          CANTIDAD: ${{ inputs.cantidad }}
+        run: |
+          if [ "$(cat remotion-spike/pendientes.json)" = "[]" ]; then
+            echo "Nada pendiente, no se llama a Pexels."
+            exit 0
+          fi
+          python3 descargar_metraje.py --video --lista remotion-spike/pendientes.json "$CANTIDAD"
+
+      - name: Actualizar el manifiesto
+        run: |
+          ./remotion-spike/preparar-public.sh
+          node remotion-spike/generar-manifiesto.js
+
+      - name: Commitear metraje nuevo y el manifiesto
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add assets/metraje_video/ remotion-spike/src/receta/manifiesto.json
+          if git diff --cached --quiet; then
+            echo "Sin cambios."
+            exit 0
+          fi
+          git commit -m "Metraje automatico segun lo que piden los guiones"
+          for i in 1 2 3 4 5 6; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && \
+            git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
+            echo "reintento $i"
+            sleep $((RANDOM % 8 + 2 * i))
+          done
+          exit 1

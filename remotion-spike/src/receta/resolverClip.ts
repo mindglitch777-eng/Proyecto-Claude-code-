@@ -1,3 +1,4 @@
+import {categoriaConocida} from './imagenes';
 import manifiesto from './manifiesto.json';
 import {semilla} from './intenciones';
 
@@ -35,7 +36,11 @@ function categoriaPorPalabras(consulta: string): string | null {
  *  debe caer a un formato sin filmacion (eso lo maneja el registro). */
 export function resolverClip(consulta: string): string | null {
   if (!CATEGORIAS.length) return null;
-  const directa = categoriaPorPalabras(consulta);
+  // 1) la categoria exacta si el diccionario conoce esta frase (y ya
+  //    se bajo metraje para ella); 2) si no, adivinar por palabras en
+  //    comun; 3) si tampoco, una eleccion estable entre lo que haya.
+  const exacta = categoriaConocida(consulta);
+  const directa = (exacta && M.categorias[exacta]) ? exacta : categoriaPorPalabras(consulta);
   const cat = directa ?? CATEGORIAS[semilla(consulta) % CATEGORIAS.length];
   const clips = M.categorias[cat];
   return clips[semilla(consulta + cat) % clips.length];
