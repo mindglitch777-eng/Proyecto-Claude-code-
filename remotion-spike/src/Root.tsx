@@ -9,6 +9,7 @@ import {Diez} from './agresivo/Diez';
 import {VIDEOS, durDe} from './guiones10';
 import {Catalogo} from './dibujo/Catalogo';
 import {Muestrario, DUR_MUESTRARIO} from './escenas/Muestrario';
+import {Muestrario2, DUR_M2} from './escenas/Muestrario2';
 
 const cuadros = Math.round(DUR_TOTAL * FPS);
 
@@ -32,6 +33,7 @@ export const Root: React.FC = () => {
         width={ANCHO}
         height={ALTO}
       />
+      <Composition id="muestrario2" component={Muestrario2} durationInFrames={Math.round(DUR_M2 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="muestrario" component={Muestrario} durationInFrames={Math.round(DUR_MUESTRARIO * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="catalogo" component={Catalogo} durationInFrames={130} fps={FPS} width={ANCHO} height={ALTO} />
       {/* Los 10 videos de prueba. Uno por composicion: asi el workflow
