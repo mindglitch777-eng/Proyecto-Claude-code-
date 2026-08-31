@@ -5,6 +5,8 @@ import {Guion} from './compilar';
 //
 // Todas las cifras en 'datos' son de ejemplo (aritmetica redonda para
 // explicar un mecanismo), salvo donde diga lo contrario.
+//
+// (disparo de prueba de fabrica.yml -- ver si el pipeline anda solo)
 
 export const GUIONES: Guion[] = [
   {
