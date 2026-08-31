@@ -96,9 +96,18 @@ const datoVivo: Adaptador = (p, dur, tema) => {
 
 const letraVentana: Adaptador = (p, dur, tema) => {
   const clip = resolverClip(claveImagen(p, tema));
-  const palabra = [...p.dice].sort((a, b) => a.length - b.length)[0] || p.dice[0] || '';
   if (!clip) return punch(p, dur, tema);
-  return <LetraVentana clip={clip} texto={palabra.toUpperCase()} pie={p.dice.find((l) => l !== palabra)} />;
+  // El formato necesita UNA PALABRA, no una linea entera -- una frase
+  // completa no entra en el recorte de texto y sale cortada a la
+  // mitad. Antes esto elegia "la linea mas corta" (una oracion igual),
+  // no "la palabra mas corta": se vio en el render, letras de mas de
+  // una palabra amontonadas y tapadas.
+  const palabras = p.dice
+    .flatMap((l) => l.split(/\s+/))
+    .map((w) => w.replace(/[.,;:!?«»"']/g, ''))
+    .filter((w) => /^[a-zA-ZÀ-ÿ]{4,10}$/.test(w));
+  const palabra = palabras.sort((a, b) => a.length - b.length)[0] || p.dice[0] || '';
+  return <LetraVentana clip={clip} texto={palabra.toUpperCase()} pie={p.dice[p.dice.length - 1]} />;
 };
 
 const dosVidas: Adaptador = (p, dur, tema) => {

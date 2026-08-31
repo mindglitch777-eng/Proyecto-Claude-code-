@@ -30,6 +30,8 @@ export const IMAGENES: Record<string, string> = {
   'persona joven estudiando celular': 'celular',
   'pequeno comercio emprendedor latino': 'comercio',
   'comerciante atendiendo cliente local': 'comercio',
+  'emprendedor digital trabajando computadora': 'freelance',
+  'emprendedor digital trabajando computadora manos': 'freelance',
 };
 
 function normalizar(t: string): string {
