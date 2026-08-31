@@ -19,5 +19,6 @@ function normalizar(t: string): string {
 }
 
 export function fotoPersona(frase: string): string | null {
-  return PERSONAS[normalizar(frase)] ?? null;
+  const slug = PERSONAS[normalizar(frase)];
+  return slug ? `${slug}.jpg` : null;
 }
