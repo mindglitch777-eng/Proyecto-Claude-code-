@@ -24,10 +24,13 @@ const SONIDO: Record<TipoGolpe, {archivo: string; volumen: number} | null> = {
   negro: {archivo: 'whoosh', volumen: 0.7},
   raya: {archivo: 'whoosh', volumen: 0.8},
   fundido: null,
+  desliza: {archivo: 'tick', volumen: 0.35},
+  iris: null,
+  cortina: {archivo: 'whoosh', volumen: 0.45},
   ninguno: null,
 };
 
-export type TipoGolpe = 'fogonazo' | 'sacudon' | 'corte' | 'negro' | 'raya' | 'fundido' | 'ninguno';
+export type TipoGolpe = 'fogonazo' | 'sacudon' | 'corte' | 'negro' | 'raya' | 'fundido' | 'desliza' | 'iris' | 'cortina' | 'ninguno';
 
 export const Golpe: React.FC<{
   tipo?: TipoGolpe;
@@ -90,6 +93,47 @@ export const Golpe: React.FC<{
     // nomas -- para diagramas y dibujos, que se ven mejor apareciendo
     // continuos que cortando en seco.
     return <AbsoluteFill style={{opacity: 1 - k}}>{children}</AbsoluteFill>;
+  }
+
+  if (tipo === 'desliza') {
+    // entra deslizando desde la derecha, sin rebote ni sacudida -- el
+    // cambio de plano "fluido" que pidio el operador, en vez de un
+    // corte seco.
+    const suave = Math.pow(1 - Math.max(0, Math.min(1, p)), 3);
+    return <AbsoluteFill style={{transform: `translateX(${suave * 100}%)`}}>{children}</AbsoluteFill>;
+  }
+
+  if (tipo === 'iris') {
+    // el clasico "iris" de cine mudo: un circulo que se abre desde el
+    // centro y va revelando la escena nueva.
+    const radio = (1 - k) * 75;
+    return (
+      <AbsoluteFill style={{clipPath: `circle(${radio}% at 50% 50%)`, background: '#000'}}>
+        {efecto}
+        {children}
+      </AbsoluteFill>
+    );
+  }
+
+  if (tipo === 'cortina') {
+    // un lavado calido en diagonal que cruza la pantalla, como un
+    // "light leak" de camara analogica -- mas suave que el fogonazo
+    // blanco, para escenas que no quieren golpear sino acariciar.
+    const y = interpolate(p, [0, 1], [-40, 140]);
+    return (
+      <AbsoluteFill>
+        {efecto}
+        {children}
+        <AbsoluteFill
+          style={{
+            background: `linear-gradient(115deg, transparent, ${PALETA.acento}, transparent)`,
+            opacity: 0.75 * k,
+            clipPath: `polygon(0 ${y - 30}%, 100% ${y - 55}%, 100% ${y + 25}%, 0 ${y + 50}%)`,
+            filter: 'blur(4px)',
+          }}
+        />
+      </AbsoluteFill>
+    );
   }
 
   if (tipo === 'raya') {
