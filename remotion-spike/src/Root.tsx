@@ -8,6 +8,8 @@ import {DUR_AGRESIVO} from './guion-agresivo';
 import {Diez} from './agresivo/Diez';
 import {StressTest, DUR_STRESS} from './stress/StressTest';
 import {RebeccaBeach, DUR_REBECCA} from './documental/RebeccaBeach';
+import {Caso, duracionCaso} from './documental/CasoGenerico';
+import {CASOS} from './documental/casos';
 import {Video} from './receta/Video';
 import {GUIONES} from './receta/guiones';
 import {compilar} from './receta/compilar';
@@ -56,6 +58,20 @@ export const Root: React.FC = () => {
       ))}
       <Composition id="stress" component={StressTest} durationInFrames={Math.round(DUR_STRESS * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="rebecca-beach" component={RebeccaBeach} durationInFrames={Math.round(DUR_REBECCA * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
+      {/* Casos 2 a 20 de la serie documental: uno por entrada en
+          casos.ts, todos sobre el mismo motor generico (CasoGenerico). */}
+      {CASOS.map((c, i) => (
+        <Composition
+          key={c.slug}
+          id={`caso-${String(i + 2).padStart(2, '0')}`}
+          component={Caso}
+          durationInFrames={Math.round(duracionCaso(c) * FPS)}
+          fps={FPS}
+          width={ANCHO}
+          height={ALTO}
+          defaultProps={{cfg: c}}
+        />
+      ))}
       <Composition id="muestrario2" component={Muestrario2} durationInFrames={Math.round(DUR_M2 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="muestrario" component={Muestrario} durationInFrames={Math.round(DUR_MUESTRARIO * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="catalogo" component={Catalogo} durationInFrames={130} fps={FPS} width={ANCHO} height={ALTO} />
