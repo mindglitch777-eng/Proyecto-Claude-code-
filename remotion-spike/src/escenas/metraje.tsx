@@ -355,11 +355,13 @@ export const LetraVentana: React.FC<{clip: string; texto: string; pie?: string}>
 // La cara pone la emocion, el numero pone el argumento.
 
 export const DatoVivo: React.FC<{
-  clip: string;
+  /** filmacion generica, o 'foto' para un caso real con cara conocida */
+  clip?: string;
+  foto?: string;
   arriba: string;
   cifra: string;
   abajo?: string;
-}> = ({clip, arriba, cifra, abajo}) => {
+}> = ({clip, foto, arriba, cifra, abajo}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const t = frame / fps;
@@ -367,7 +369,7 @@ export const DatoVivo: React.FC<{
 
   return (
     <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
-      <Fondo clip={clip} velo={0.56} zoom={[1.12, 1.0]} />
+      <Fondo clip={clip} foto={foto} velo={0.56} zoom={[1.12, 1.0]} />
       <AbsoluteFill style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 7%', gap: 10}}>
         <div
           style={{
@@ -422,10 +424,12 @@ export const DatoVivo: React.FC<{
 // formato que mas comentarios genera porque la gente se siente vista.
 
 export const EstoSosVos: React.FC<{
-  clip: string;
+  /** filmacion generica, o 'foto' para un caso real con cara conocida */
+  clip?: string;
+  foto?: string;
   lineas: string[];
   cierre?: string;
-}> = ({clip, lineas, cierre}) => {
+}> = ({clip, foto, lineas, cierre}) => {
   const frame = useCurrentFrame();
   const {fps, durationInFrames} = useVideoConfig();
   const t = frame / fps;
@@ -434,7 +438,7 @@ export const EstoSosVos: React.FC<{
 
   return (
     <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
-      <Fondo clip={clip} velo={0.46} zoom={[1.0, 1.12]} />
+      <Fondo clip={clip} foto={foto} velo={0.46} zoom={[1.0, 1.12]} />
       <AbsoluteFill style={{display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '0 7% 26% 7%', gap: 18}}>
         {lineas.map((l, i) => {
           const t0 = 0.25 + i * paso;

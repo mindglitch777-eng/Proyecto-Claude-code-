@@ -9,6 +9,7 @@ import {Contador, Crecimiento, Duelo, Ranking, Recibo} from '../escenas/plata';
 import {DosVidas, Congelado, DatoVivo, EstoSosVos, LetraVentana} from '../escenas/metraje';
 import {CifraSeCae, Embudo, Encuesta, RelojQueCorre, TresVerdades} from '../escenas/mas';
 import type {Parte} from './compilar';
+import {fotoPersona} from './personas';
 import {resolverClip} from './resolverClip';
 
 // EL REGISTRO
@@ -52,11 +53,14 @@ const tresVerdades: Adaptador = (p) => (
 );
 
 const estoSosVos: Adaptador = (p, dur, tema) => {
-  const clip = resolverClip(claveImagen(p, tema));
-  if (!clip) return punch(p, dur, tema);
+  const clave = claveImagen(p, tema);
+  const foto = fotoPersona(clave);
+  const clip = foto ? undefined : resolverClip(clave) ?? undefined;
+  if (!foto && !clip) return punch(p, dur, tema);
   return (
     <EstoSosVos
       clip={clip}
+      foto={foto ?? undefined}
       lineas={p.dice.length > 1 ? p.dice.slice(0, -1) : p.dice}
       cierre={p.dice.length > 1 ? p.dice[p.dice.length - 1] : undefined}
     />
@@ -72,8 +76,10 @@ const congelado: Adaptador = (p, dur, tema) => {
 };
 
 const datoVivo: Adaptador = (p, dur, tema) => {
-  const clip = resolverClip(claveImagen(p, tema));
-  if (!clip) return punch(p, dur, tema);
+  const clave = claveImagen(p, tema);
+  const foto = fotoPersona(clave);
+  const clip = foto ? undefined : resolverClip(clave) ?? undefined;
+  if (!foto && !clip) return punch(p, dur, tema);
   const tieneDatoNumerico = p.datos && ((p.datos as any).hasta !== undefined || (p.datos as any).a !== undefined);
   const cifra = p.datos && (p.datos as any).hasta !== undefined
     ? String((p.datos as any).hasta)
@@ -85,7 +91,7 @@ const datoVivo: Adaptador = (p, dur, tema) => {
   // dice (no habia datos), esa linea YA se esta mostrando como cifra
   // -- mostrarla otra vez como "abajo" la duplicaria en pantalla.
   const abajo = tieneDatoNumerico ? p.dice[1] : undefined;
-  return <DatoVivo clip={clip} arriba={p.dice[0] || ''} cifra={cifra} abajo={abajo} />;
+  return <DatoVivo clip={clip} foto={foto ?? undefined} arriba={p.dice[0] || ''} cifra={cifra} abajo={abajo} />;
 };
 
 const letraVentana: Adaptador = (p, dur, tema) => {

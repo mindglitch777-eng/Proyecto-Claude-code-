@@ -99,4 +99,54 @@ export const GUIONES: Guion[] = [
       {hace: 'cierre', dice: ['Te paso cómo contestar en cinco minutos']},
     ],
   },
+  {
+    // CASO DOCUMENTAL -- distinto a los de arriba: no es un mecanismo
+    // ilustrativo, es un caso real con nombre, apellido y numeros
+    // verificables. Cada cifra tiene fuente (se cita en el propio
+    // video, en el formato 'crecimiento') porque un numero real sin
+    // de donde salio es tan creible como uno inventado.
+    //
+    // Fuentes consultadas: Indie Hackers ("Photo AI by Pieter Levels:
+    // Complete Deep Dive Case Study"), ppc.land, founderreality.com,
+    // jesse-qin.medium.com (todas nov. 2025). PhotoAI lanzo el
+    // 10/feb/2023. Las herramientas (Stable Diffusion -> DreamBooth ->
+    // Flux) estan confirmadas en esas mismas notas.
+    id: 'doc01',
+    tema: 'emprendedor digital trabajando computadora',
+    titulo: 'De 40 productos a uno que le cambió todo',
+    cta: 'METODO',
+    partes: [
+      {hace: 'golpe', formato: 'estoSosVos',
+       dice: ['Este es Pieter Levels', 'Ya había construido más de 40 productos', 'Casi ninguno funcionó como este'],
+       imagen: 'foto de pieter levels'},
+      {hace: 'niega', dice: ['No fue un golpe de suerte', 'Fue método, repetido muchas veces']},
+      {hace: 'historia', dice: [
+        'Armó audiencia 10 años antes de lanzar',
+        'Lanzó rápido y en público',
+        'Cobró desde el primer día',
+        'Iteró con datos reales, no con opiniones',
+      ]},
+      {hace: 'proceso', formato: 'herramientas',
+       dice: ['Con qué lo construyó', 'Sin herramienta propia. Estas tres, bien usadas.'],
+       datos: {items: [
+         {nombre: 'Stable Diffusion', color: '#00A67E'},
+         {nombre: 'DreamBooth', color: '#4285F4'},
+         {nombre: 'Flux', color: '#F2F2F2'},
+       ]}},
+      {hace: 'dato', formato: 'crecimiento', dura: 7,
+       dice: ['Así creció PhotoAI, mes a mes'],
+       datos: {
+         puntos: [
+           {cuando: 'Semana 1', etiqueta: '$5,4K', valor: 5400},
+           {cuando: 'Mes 2', etiqueta: '$28K', valor: 28000},
+           {cuando: 'Día 60', etiqueta: '$40K', valor: 40000},
+           {cuando: 'Mes 18', etiqueta: '$132K', valor: 132000},
+         ],
+         fuente: 'Indie Hackers, ppc.land, founderreality.com (nov. 2025)',
+       }},
+      {hace: 'consecuencia', dice: ['Ese producto solo', 'hoy es el 70% de todo lo que factura']},
+      {hace: 'giro', dice: ['No inventó una idea genial', 'Inventó probar rápido, en público, con audiencia ya armada']},
+      {hace: 'cierre', dice: ['Te paso el método completo']},
+    ],
+  },
 ];

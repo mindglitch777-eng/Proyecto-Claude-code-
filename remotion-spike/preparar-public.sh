@@ -16,6 +16,14 @@ for d in "$raiz"/assets/biblioteca/*/; do
   [ -f "$d/00.jpg" ] && cp "$d/00.jpg" "$dst/fotos/$n.jpg"
 done
 
+# Fotos de personas reales (casos documentales), bajadas por
+# descargar_foto_persona.py. Van a la misma carpeta fotos/ que usa
+# staticFile('fotos/...'), con el slug como nombre.
+for d in "$raiz"/assets/personas/*/; do
+  n="$(basename "$d")"
+  [ -f "$d/00.jpg" ] && cp "$d/00.jpg" "$dst/fotos/$n.jpg"
+done
+
 # Metraje en movimiento: lo que haya. La pieza elige por nombre y si
 # falta un clip cae a la foto equivalente.
 for f in "$raiz"/assets/metraje_video/*/*.mp4; do
