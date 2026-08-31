@@ -10,7 +10,7 @@ import {GROTESCA, PALETA} from '../identidad';
 // Es lo mismo que ya se aprobo para el stress test: mostrar que
 // herramienta se uso, con su color, sin vender nada con eso.
 
-export type Herramienta = {nombre: string; color: string; texto?: string};
+export type Herramienta = {nombre: string; color: string; texto?: string; logo?: React.ReactNode};
 
 export const LogosHerramientas: React.FC<{
   titulo?: string;
@@ -49,13 +49,19 @@ export const LogosHerramientas: React.FC<{
                 transform: `translateX(${interpolate(s, [0, 1], [-36, 0])}px)`,
               }}
             >
-              <div
-                style={{
-                  width: 20, height: 20, borderRadius: 6, background: h.color,
-                  transform: `scale(${interpolate(s, [0, 1], [0.4, 1])})`,
-                  flexShrink: 0,
-                }}
-              />
+              {h.logo ? (
+                <div style={{transform: `scale(${interpolate(s, [0, 1], [0.4, 1])})`, flexShrink: 0}}>
+                  {h.logo}
+                </div>
+              ) : (
+                <div
+                  style={{
+                    width: 20, height: 20, borderRadius: 6, background: h.color,
+                    transform: `scale(${interpolate(s, [0, 1], [0.4, 1])})`,
+                    flexShrink: 0,
+                  }}
+                />
+              )}
               <div style={{fontFamily: GROTESCA, fontWeight: 800, fontSize: 58, color: PALETA.texto}}>
                 {h.nombre}
               </div>

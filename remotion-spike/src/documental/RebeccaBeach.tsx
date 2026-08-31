@@ -1,14 +1,20 @@
 import React from 'react';
 import {AbsoluteFill, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Diagrama} from '../dibujo/Diagrama';
+import {Figura, NombreFigura} from '../dibujo/figuras';
+import {LogoEtsy, LogoIdeogram, LogoMidjourney, LogoOpenAI} from '../dibujo/logos';
+import {LluviaDinero, Resplandor} from '../escenas/dinero-fx';
 import {CifraSeCae} from '../escenas/mas';
 import {Cronologia, ListaTachada} from '../escenas/explica';
 import {Golpe, Grano, Pulso} from '../escenas/golpes';
 import {LogosHerramientas} from '../escenas/herramientas';
+import {Fondo} from '../escenas/metraje';
 import {Contador} from '../escenas/plata';
 import {cargarFuentes} from '../fuentes';
 import {GROTESCA, PALETA} from '../identidad';
 import {golpeSeco} from '../stress/duro';
+
+const FOTO = 'becky-beach.jpg';
 
 // GUION LITERAL DEL OPERADOR: "GENERÓ $20.000/MES CON IA"
 //
@@ -47,18 +53,50 @@ const Grande: React.FC<{txt: string; tam?: number; acento?: boolean}> = ({txt, t
       fontFamily: GROTESCA, fontWeight: 800, fontStretch: '76%', fontSize: tam, lineHeight: 0.96,
       letterSpacing: '-0.045em', textTransform: 'uppercase', textAlign: 'center',
       color: acento ? PALETA.acento : PALETA.texto,
+      textShadow: '0 6px 40px rgba(0,0,0,0.85)',
     }}
   >
     {txt}
   </div>
 );
 
+// Como ConGolpe pero con un dibujo (Figura) al lado de la palabra --
+// para no explicar todo con texto solo, como pidio el operador.
+const ConIcono: React.FC<{t0: number; fig: NombreFigura; txt: string; tam?: number; acento?: boolean; color?: string}> = (
+  {t0, fig, txt, tam = 92, acento, color = '#fff'},
+) => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const t = frame / fps;
+  const g = golpeSeco(t, t0);
+  if (t < t0) return null;
+  const trazo = Math.max(0, Math.min(1, (t - t0) / 0.4));
+  return (
+    <>
+      <div
+        style={{
+          opacity: g.opacity, transform: `scale(${g.escala}) rotate(${g.giro}deg)`,
+          display: 'flex', alignItems: 'center', gap: 26,
+        }}
+      >
+        <Figura nombre={fig} p={trazo} col={acento ? PALETA.acento : '#fff'} tam={tam * 0.85} grosor={5} />
+        <Grande txt={txt} tam={tam} acento={acento} />
+      </div>
+      {g.lavado > 0 ? <AbsoluteFill style={{background: color, opacity: g.lavado * 0.85, pointerEvents: 'none'}} /> : null}
+    </>
+  );
+};
+
 // ============================================================ 1. HOOK (0-3s)
 const Hook: React.FC = () => {
   const frame = useCurrentFrame();
   const t = frame / FPS;
+  const conDinero = t < 1.7;
   return (
     <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
+      <Fondo foto={FOTO} velo={0.6} duotono zoom={[1.04, 1.16]} />
+      {conDinero ? <Resplandor fuerza={0.5} /> : null}
+      {conDinero ? <LluviaDinero intensidad={0.85} /> : null}
       {t < 1.7 ? (
         <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 6%'}}>
           <ConGolpe t0={0.1} color={PALETA.acento}>
@@ -66,12 +104,10 @@ const Hook: React.FC = () => {
           </ConGolpe>
         </AbsoluteFill>
       ) : t < 2.5 ? (
-        <AbsoluteFill style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 26}}>
-          {['IA', 'PRODUCTOS', 'DINERO'].map((w, i) => (
-            <ConGolpe key={w} t0={1.7 + i * 0.22} color={i % 2 ? PALETA.acento : '#fff'}>
-              <Grande txt={w} tam={92} acento={i === 2} />
-            </ConGolpe>
-          ))}
+        <AbsoluteFill style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 30}}>
+          <ConIcono t0={1.7} fig="chip" txt="IA" tam={76} />
+          <ConIcono t0={1.92} fig="notebook" txt="PRODUCTOS" tam={76} />
+          <ConIcono t0={2.14} fig="billete" txt="DINERO" tam={76} acento color={PALETA.acento} />
         </AbsoluteFill>
       ) : (
         <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
@@ -97,8 +133,10 @@ const Rompe: React.FC = () => (
 const QuienEs: React.FC = () => {
   const frame = useCurrentFrame();
   const t = frame / FPS;
+  const mostrarLogo = t > 3.0;
   return (
     <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
+      {t < 2.2 ? <Fondo foto={FOTO} velo={0.5} zoom={[1.0, 1.1]} /> : null}
       {t < 2.2 ? (
         <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           <ConGolpe t0={0.15}>
@@ -114,6 +152,17 @@ const QuienEs: React.FC = () => {
           ]}
         />
       )}
+      {mostrarLogo ? (
+        <div
+          style={{
+            position: 'absolute', right: '7%', bottom: '9%', display: 'flex', alignItems: 'center', gap: 16,
+            opacity: Math.min(1, (t - 3.0) * 2.4),
+          }}
+        >
+          <LogoEtsy size={54} />
+          <div style={{fontFamily: GROTESCA, fontWeight: 700, fontSize: 34, color: PALETA.texto}}>Etsy</div>
+        </div>
+      ) : null}
       <Pulso cada={1.3} largo={0.05} fuerza={0.22} />
     </AbsoluteFill>
   );
@@ -128,7 +177,15 @@ const PrimerGiro: React.FC = () => (
 );
 
 // ========================================================= 5. CATÁLOGO (18-24s)
-const CATEGORIAS = ['PLANNERS', 'WORKBOOKS', 'JOURNALS', 'TEMPLATES', 'STICKERS', 'CLIPART', 'APPS'];
+const CATEGORIAS: {txt: string; fig: NombreFigura}[] = [
+  {txt: 'PLANNERS', fig: 'calendario'},
+  {txt: 'WORKBOOKS', fig: 'notebook'},
+  {txt: 'JOURNALS', fig: 'documento'},
+  {txt: 'TEMPLATES', fig: 'carpeta'},
+  {txt: 'STICKERS', fig: 'etiqueta'},
+  {txt: 'CLIPART', fig: 'foco'},
+  {txt: 'APPS', fig: 'telefono'},
+];
 const Catalogo: React.FC = () => {
   const frame = useCurrentFrame();
   const t = frame / FPS;
@@ -136,16 +193,13 @@ const Catalogo: React.FC = () => {
   const tNumero = 0.4 + CATEGORIAS.length * paso;
   return (
     <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
+      <Fondo clip="freelance-00.mp4" velo={0.78} duotono zoom={[1.0, 1.08]} />
       {t < tNumero ? (
         <AbsoluteFill style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 20}}>
           {CATEGORIAS.map((c, i) => {
             const t0 = 0.4 + i * paso;
             if (t < t0 || t >= t0 + paso * 2.4) return null;
-            return (
-              <ConGolpe key={c} t0={t0} color={i % 2 ? PALETA.acento : '#fff'}>
-                <Grande txt={c} tam={70} />
-              </ConGolpe>
-            );
+            return <ConIcono key={c.txt} t0={t0} fig={c.fig} txt={c.txt} tam={62} acento={i % 2 === 1} color={PALETA.acento} />;
           })}
         </AbsoluteFill>
       ) : (
@@ -180,12 +234,14 @@ const Metodo: React.FC = () => (
 // ==================================================== 7. HERRAMIENTAS (30-36s)
 const Herramientas: React.FC = () => (
   <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
+    <Fondo clip="celular-00.mp4" velo={0.76} duotono zoom={[1.02, 1.1]} />
+    <Resplandor fuerza={0.22} />
     <LogosHerramientas
       titulo="Con qué acelera"
       items={[
-        {nombre: 'ChatGPT', color: '#10A37F', texto: 'idea y texto'},
-        {nombre: 'Midjourney', color: '#4C6EF5', texto: 'imagen'},
-        {nombre: 'Ideogram', color: '#B4844B', texto: 'imagen con texto'},
+        {nombre: 'ChatGPT', color: '#10A37F', texto: 'idea y texto', logo: <LogoOpenAI color={PALETA.texto} size={54} />},
+        {nombre: 'Midjourney', color: '#4C6EF5', texto: 'imagen', logo: <LogoMidjourney color={PALETA.texto} size={54} />},
+        {nombre: 'Ideogram', color: '#B4844B', texto: 'imagen con texto', logo: <LogoIdeogram color={PALETA.texto} size={54} />},
         {nombre: 'Canva', color: '#00C4CC', texto: 'diseño final'},
       ]}
       pie="Cuatro herramientas. No una idea genial."
@@ -202,17 +258,27 @@ const ElDinero: React.FC = () => {
   const s = spring({frame: frame - 0.3 * fps, fps, config: {damping: 11, stiffness: 200, mass: 0.5}});
   return (
     <AbsoluteFill style={{backgroundColor: '#000'}}>
+      <Fondo clip="dinero-00.mp4" velo={0.66} zoom={[1.0, 1.12]} />
+      <Resplandor fuerza={0.45} />
+      <LluviaDinero intensidad={t < 3.4 ? 1.1 : 0.35} />
       {t < 3.4 ? (
         <AbsoluteFill style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
           <div
             style={{
               fontFamily: GROTESCA, fontWeight: 800, fontStretch: '70%', fontSize: 200, color: PALETA.acento,
               letterSpacing: '-0.05em', transform: `scale(${interpolate(s, [0, 1], [0.6, 1])})`, opacity: Math.min(1, s * 2),
+              textShadow: '0 10px 60px rgba(0,0,0,0.9)',
             }}
           >
             $20.000
           </div>
-          <div style={{fontFamily: GROTESCA, fontWeight: 600, fontSize: 40, color: PALETA.texto, opacity: interpolate(t, [1.2, 1.7], [0, 0.85], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}}>
+          <div
+            style={{
+              fontFamily: GROTESCA, fontWeight: 600, fontSize: 40, color: PALETA.texto,
+              opacity: interpolate(t, [1.2, 1.7], [0, 0.85], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}),
+              textShadow: '0 4px 30px rgba(0,0,0,0.9)',
+            }}
+          >
             / MES
           </div>
         </AbsoluteFill>
@@ -233,6 +299,7 @@ const VerdaderoGiro: React.FC = () => {
   const t = frame / FPS;
   return (
     <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
+      <Resplandor fuerza={0.18} />
       {t < 2.0 ? (
         <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           <ConGolpe t0={0.1}>
@@ -279,7 +346,7 @@ const Cierre: React.FC = () => {
                   opacity: Math.min(0.7, s), transform: `scale(${interpolate(s, [0, 1], [0.5, 1])})`,
                 }}
               >
-                {c}
+                {c.txt}
               </div>
             );
           })}
