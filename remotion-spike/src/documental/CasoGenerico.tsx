@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, Sequence, interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {DatosDiagrama, Diagrama} from '../dibujo/Diagrama';
 import {Figura, NombreFigura} from '../dibujo/figuras';
 import {LluviaDinero, Resplandor} from '../escenas/dinero-fx';
@@ -9,7 +9,7 @@ import {Fondo} from '../escenas/metraje';
 import {CifraSeCae} from '../escenas/mas';
 import {Contador} from '../escenas/plata';
 import {cargarFuentes} from '../fuentes';
-import {GROTESCA, PALETA} from '../identidad';
+import {GRADING, GROTESCA, PALETA, SERIF} from '../identidad';
 import {golpeSeco} from '../stress/duro';
 
 // MOTOR GENERICO PARA LA SERIE DOCUMENTAL (20 casos)
@@ -84,7 +84,8 @@ export type CentroVisual =
   | {tipo: 'lista'; items: string[]; queda: string}
   | {tipo: 'balanza'; izq: {txt: string; peso: number}; der: {txt: string; peso: number}; pie?: string}
   | {tipo: 'antesDespues'; antes: {rotulo: string; txt: string}; despues: {rotulo: string; txt: string}}
-  | {tipo: 'lineas'; items: {txt: string; fig?: NombreFigura}[]};
+  | {tipo: 'lineas'; items: {txt: string; fig?: NombreFigura}[]}
+  | {tipo: 'montaje'; items: {clip: string; texto: string; estilo?: 'marco' | 'tarjeta'}[]};
 
 export type CifraVisual =
   | {tipo: 'cifraSeCae'; arriba: string; de: string; a: string; abajo?: string}
@@ -120,6 +121,8 @@ const duracionCentro = (cv: CentroVisual): number => {
       return 5.5;
     case 'lineas':
       return 1.0 + cv.items.length * 0.42 + 1.6;
+    case 'montaje':
+      return cv.items.length * 0.78 + 0.4;
   }
 };
 
@@ -182,6 +185,87 @@ const StackImpacto: React.FC<{items: {txt: string; fig?: NombreFigura}[]}> = ({i
   );
 };
 
+// MONTAJE VELOZ
+//
+// Formato nuevo, calcado del estilo que el operador mostro como
+// referencia: metraje real cambiando cada fraccion de segundo, una
+// palabra o frase corta por corte, con un marco de color solido que
+// cambia en cada corte -- el color hace de puntuacion, no el texto.
+// Alterna dos tratamientos: pantalla completa con marco grueso
+// (titular abajo) y tarjeta tipo postal (recorte redondeado, leyenda
+// en italica abajo). Los colores del marco salen de la paleta de
+// marca (acento + variantes), nunca un color nuevo sin relacion.
+
+const MARCO_COLORES = [PALETA.acento, '#141414', PALETA.texto, '#7A2410'];
+const PASO_MONTAJE = 0.78;
+
+const ItemMarco: React.FC<{clip: string; texto: string; color: string}> = ({clip, texto, color}) => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const g = golpeSeco(frame / fps, 0);
+  return (
+    <AbsoluteFill style={{background: color}}>
+      <div style={{position: 'absolute', inset: 22, overflow: 'hidden', borderRadius: 6}}>
+        <OffthreadVideo src={staticFile(`video/${clip}`)} muted style={{width: '100%', height: '100%', objectFit: 'cover', filter: GRADING}} />
+        <AbsoluteFill style={{background: 'linear-gradient(to top, rgba(0,0,0,0.75), transparent 45%)'}} />
+      </div>
+      <AbsoluteFill style={{display: 'flex', alignItems: 'flex-end', justifyContent: 'center', padding: '0 9% 15% 9%'}}>
+        <div
+          style={{
+            opacity: g.opacity, transform: `scale(${g.escala}) rotate(${g.giro}deg)`,
+            fontFamily: GROTESCA, fontWeight: 800, fontStretch: '82%', lineHeight: 1.04,
+            fontSize: tamPorLargo(texto) * 0.62, color: '#fff', textTransform: 'uppercase',
+            letterSpacing: '-0.02em', textAlign: 'center', textShadow: '0 6px 30px rgba(0,0,0,0.85)',
+          }}
+        >
+          {texto}
+        </div>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+const ItemTarjeta: React.FC<{clip: string; texto: string; oscuro: boolean}> = ({clip, texto, oscuro}) => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const g = golpeSeco(frame / fps, 0);
+  const fondo = oscuro ? PALETA.fondo : PALETA.texto;
+  const contraste = oscuro ? PALETA.texto : PALETA.fondo;
+  return (
+    <AbsoluteFill style={{background: fondo, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 30}}>
+      <div
+        style={{
+          opacity: g.opacity, transform: `scale(${g.escala}) rotate(${g.giro}deg)`,
+          width: '76%', aspectRatio: '4 / 5', borderRadius: 20, overflow: 'hidden',
+          boxShadow: '0 24px 60px rgba(0,0,0,0.35)',
+        }}
+      >
+        <OffthreadVideo src={staticFile(`video/${clip}`)} muted style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+      </div>
+      <div style={{opacity: g.opacity, fontFamily: SERIF, fontStyle: 'italic', fontWeight: 600, fontSize: 46, color: contraste}}>
+        {texto}
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+const MontajeVeloz: React.FC<{items: {clip: string; texto: string; estilo?: 'marco' | 'tarjeta'}[]}> = ({items}) => (
+  <AbsoluteFill style={{backgroundColor: '#000'}}>
+    {items.map((it, i) => {
+      const estilo = it.estilo ?? (i % 2 === 0 ? 'marco' : 'tarjeta');
+      return (
+        <Sequence key={i} from={seg(i * PASO_MONTAJE)} durationInFrames={seg(PASO_MONTAJE)}>
+          {estilo === 'marco' ? (
+            <ItemMarco clip={it.clip} texto={it.texto} color={MARCO_COLORES[i % MARCO_COLORES.length]} />
+          ) : (
+            <ItemTarjeta clip={it.clip} texto={it.texto} oscuro={i % 4 < 2} />
+          )}
+        </Sequence>
+      );
+    })}
+  </AbsoluteFill>
+);
+
 const CentroBeat: React.FC<{cv: CentroVisual; foto?: string; clip?: string}> = ({cv, foto, clip}) => {
   if (cv.tipo === 'cronologia') {
     return (
@@ -212,7 +296,7 @@ const CentroBeat: React.FC<{cv: CentroVisual; foto?: string; clip?: string}> = (
     return (
       <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
         <Balanza izq={cv.izq} der={cv.der} pie={cv.pie} />
-        <Pulso cada={1.2} largo={0.05} fuerza={0.2} />
+        <Pulso cada={0.95} largo={0.05} fuerza={0.18} />
       </AbsoluteFill>
     );
   }
@@ -220,9 +304,12 @@ const CentroBeat: React.FC<{cv: CentroVisual; foto?: string; clip?: string}> = (
     return (
       <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
         <AntesDespues antes={cv.antes} despues={cv.despues} />
-        <Pulso cada={1.0} largo={0.05} fuerza={0.22} />
+        <Pulso cada={0.85} largo={0.05} fuerza={0.2} />
       </AbsoluteFill>
     );
+  }
+  if (cv.tipo === 'montaje') {
+    return <MontajeVeloz items={cv.items} />;
   }
   return <StackImpacto items={cv.items} />;
 };
@@ -232,6 +319,7 @@ const CifraBeat: React.FC<{cv: CifraVisual; dinero?: boolean}> = ({cv, dinero}) 
     {dinero ? <Fondo clip="dinero-00.mp4" velo={0.66} zoom={[1.0, 1.12]} /> : null}
     {dinero ? <Resplandor fuerza={0.45} /> : null}
     {dinero ? <LluviaDinero intensidad={1} /> : null}
+    {!dinero ? <Pulso cada={1.3} largo={0.05} fuerza={0.16} /> : null}
     {cv.tipo === 'cifraSeCae' ? (
       <CifraSeCae arriba={cv.arriba} de={cv.de} a={cv.a} abajo={cv.abajo} />
     ) : (
