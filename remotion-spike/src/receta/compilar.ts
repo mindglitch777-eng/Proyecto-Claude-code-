@@ -1,4 +1,4 @@
-import {CON_METRAJE, FORMATOS, GOLPES, Intencion, SOLO_TEXTO, semilla} from './intenciones';
+import {CON_METRAJE, FORMATOS, GOLPES, Intencion, REQUIERE_DATOS, SOLO_TEXTO, semilla} from './intenciones';
 
 // Un guion se escribe asi: cada parte dice QUE HACE y QUE DICE.
 // Nada de formatos, nada de tiempos. Eso lo pone el compilador.
@@ -81,9 +81,24 @@ export function compilar(g: Guion): Plan {
     const posibles = FORMATOS[p.hace] || ['punch'];
     const anterior = bloques[bloques.length - 1]?.formato;
 
+    // Un formato que necesita datos con una forma especifica (una
+    // encuesta necesita porcentajes, un ranking necesita una lista) se
+    // saca de la lista si el guion no los trajo. Mejor un formato mas
+    // simple que uno a medias mostrando "undefined".
+    const capaces = posibles.filter((f) => {
+      const necesita = REQUIERE_DATOS[f];
+      return !necesita || necesita(p.datos);
+    });
+    // Si NINGUNO de los formatos de esta intencion tiene lo que
+    // necesita (el guion no trajo esos datos), no se cae en la lista
+    // completa -- eso podria volver a elegir un formato que exige
+    // datos y romper el render. 'punch' funciona siempre con solo
+    // 'dice', asi que es el piso de seguridad real.
+    const base = capaces.length ? capaces : ['punch'];
+
     // Se descartan: los ya usados en este video, y un segundo texto
     // plano seguido.
-    let libres = posibles.filter((f) => !usados.has(f));
+    let libres = base.filter((f) => !usados.has(f));
     if (anterior && SOLO_TEXTO.has(anterior)) {
       const conImagen = libres.filter((f) => !SOLO_TEXTO.has(f));
       if (conImagen.length) libres = conImagen;
@@ -93,7 +108,7 @@ export function compilar(g: Guion): Plan {
       const conMetraje = libres.filter((f) => CON_METRAJE.has(f));
       if (conMetraje.length) libres = conMetraje;
     }
-    if (!libres.length) libres = posibles;
+    if (!libres.length) libres = base;
 
     const elegido = libres[Math.floor(rnd() * libres.length) % libres.length];
     usados.add(elegido);

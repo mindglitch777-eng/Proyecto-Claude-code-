@@ -1,0 +1,53 @@
+{
+ "categorias": {
+  "barberia": [
+   "barberia-00.mp4",
+   "barberia-01.mp4",
+   "barberia-02.mp4",
+   "barberia-03.mp4",
+   "barberia-04.mp4",
+   "barberia-05.mp4"
+  ],
+  "dinero": [
+   "dinero-00.mp4",
+   "dinero-01.mp4",
+   "dinero-02.mp4",
+   "dinero-03.mp4",
+   "dinero-04.mp4",
+   "dinero-05.mp4"
+  ],
+  "gimnasio": [
+   "gimnasio-00.mp4",
+   "gimnasio-01.mp4",
+   "gimnasio-02.mp4",
+   "gimnasio-03.mp4",
+   "gimnasio-04.mp4",
+   "gimnasio-05.mp4"
+  ],
+  "nutricion": [
+   "nutricion-00.mp4",
+   "nutricion-01.mp4",
+   "nutricion-02.mp4",
+   "nutricion-03.mp4",
+   "nutricion-04.mp4",
+   "nutricion-05.mp4"
+  ],
+  "unias": [
+   "unias-00.mp4",
+   "unias-01.mp4",
+   "unias-02.mp4",
+   "unias-03.mp4",
+   "unias-04.mp4",
+   "unias-05.mp4"
+  ],
+  "veterinaria": [
+   "veterinaria-00.mp4",
+   "veterinaria-01.mp4",
+   "veterinaria-02.mp4",
+   "veterinaria-03.mp4",
+   "veterinaria-04.mp4",
+   "veterinaria-05.mp4"
+  ]
+ },
+ "total": 36
+}

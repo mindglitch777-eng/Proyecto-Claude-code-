@@ -7,6 +7,9 @@ import {PiezaAgresiva} from './agresivo/PiezaAgresiva';
 import {DUR_AGRESIVO} from './guion-agresivo';
 import {Diez} from './agresivo/Diez';
 import {StressTest, DUR_STRESS} from './stress/StressTest';
+import {Video} from './receta/Video';
+import {GUIONES} from './receta/guiones';
+import {compilar} from './receta/compilar';
 import {VIDEOS, durDe} from './guiones10';
 import {Catalogo} from './dibujo/Catalogo';
 import {Muestrario, DUR_MUESTRARIO} from './escenas/Muestrario';
@@ -34,6 +37,22 @@ export const Root: React.FC = () => {
         width={ANCHO}
         height={ALTO}
       />
+      {/* LA FABRICA. Una composicion por cada guion en receta/guiones.ts,
+          generada sola: agregar un guion ahi (o en un JSON que la
+          fabrica lea) alcanza para tener un video nuevo, sin tocar
+          este archivo. */}
+      {GUIONES.map((g) => (
+        <Composition
+          key={g.id}
+          id={`f-${g.id}`}
+          component={Video}
+          durationInFrames={Math.round(compilar(g).duracion * FPS)}
+          fps={FPS}
+          width={ANCHO}
+          height={ALTO}
+          defaultProps={{id: g.id, guiones: GUIONES}}
+        />
+      ))}
       <Composition id="stress" component={StressTest} durationInFrames={Math.round(DUR_STRESS * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="muestrario2" component={Muestrario2} durationInFrames={Math.round(DUR_M2 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="muestrario" component={Muestrario} durationInFrames={Math.round(DUR_MUESTRARIO * FPS)} fps={FPS} width={ANCHO} height={ALTO} />

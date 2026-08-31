@@ -31,7 +31,7 @@ export const FORMATOS: Record<Intencion, string[]> = {
   niega:        ['punch', 'tresVerdades', 'listaTachada', 'diagrama'],
   pregunta:     ['encuesta', 'buscador', 'punch', 'diagrama'],
   dato:         ['contador', 'datoVivo', 'cifraSeCae', 'ranking'],
-  cuenta:       ['recibo', 'explicador', 'contador'],
+  cuenta:       ['recibo', 'contador'],
   comparar:     ['duelo', 'dosVidas', 'balanza', 'antesDespues', 'encuesta', 'ranking'],
   proceso:      ['pasos', 'diagrama', 'cronologia'],
   historia:     ['cronologia', 'diagrama', 'pasos'],
@@ -47,6 +47,35 @@ export const FORMATOS: Record<Intencion, string[]> = {
 export const CON_METRAJE = new Set([
   'dosVidas', 'congelado', 'datoVivo', 'estoSosVos', 'letraVentana',
 ]);
+
+/**
+ * Algunos formatos necesitan un dato numerico o una lista para decir
+ * algo de verdad (una encuesta sin porcentaje no es una encuesta). El
+ * autor del guion NO sabe de antemano que formato le va a tocar a su
+ * parte -- por eso el contrato es: 'dice' (el texto) SIEMPRE alcanza
+ * para cualquier formato de la intencion, y 'datos' es una mejora
+ * opcional que solo algunos formatos aprovechan.
+ *
+ * Esta tabla dice, por formato, si necesita 'datos' con una forma
+ * especifica para poder elegirse. Si el guion no trajo esos datos, el
+ * compilador lo saca de la lista en vez de renderizar a medias.
+ *
+ * Formas que se esperan (documentado aca porque no hay un TS type por
+ * formato -- 'datos' es deliberadamente libre para no atar el guion a
+ * la eleccion del compilador):
+ *   contador   {hasta:number, prefijo?, sufijo?, desde?}
+ *   cifraSeCae {de:string, a:string}
+ *   ranking    {filas:{txt,valor:number,acento?}[]}
+ *   encuesta   {aTxt,aPct:number,bTxt,bPct:number}
+ *   recibo     {conceptos:{txt,monto:number}[]}  (monto<0 = "sale")
+ */
+export const REQUIERE_DATOS: Record<string, (d: any) => boolean> = {
+  contador: (d) => !!d && typeof d.hasta === 'number',
+  cifraSeCae: (d) => !!d && typeof d.de === 'string' && typeof d.a === 'string',
+  ranking: (d) => !!d && Array.isArray(d.filas) && d.filas.length > 0,
+  encuesta: (d) => !!d && typeof d.aPct === 'number' && typeof d.bPct === 'number',
+  recibo: (d) => !!d && Array.isArray(d.conceptos) && d.conceptos.length > 0,
+};
 
 /** Cuales son "de pantalla llena de texto". Dos seguidos cansan. */
 export const SOLO_TEXTO = new Set([
