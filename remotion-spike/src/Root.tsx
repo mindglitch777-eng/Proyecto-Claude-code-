@@ -17,6 +17,7 @@ import {VIDEOS, durDe} from './guiones10';
 import {Catalogo} from './dibujo/Catalogo';
 import {Muestrario, DUR_MUESTRARIO} from './escenas/Muestrario';
 import {Muestrario2, DUR_M2} from './escenas/Muestrario2';
+import {Muestrario3, DUR_M3} from './escenas/Muestrario3';
 
 const cuadros = Math.round(DUR_TOTAL * FPS);
 
@@ -72,6 +73,7 @@ export const Root: React.FC = () => {
           defaultProps={{cfg: c}}
         />
       ))}
+      <Composition id="muestrario3" component={Muestrario3} durationInFrames={Math.round(DUR_M3 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="muestrario2" component={Muestrario2} durationInFrames={Math.round(DUR_M2 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="muestrario" component={Muestrario} durationInFrames={Math.round(DUR_MUESTRARIO * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="catalogo" component={Catalogo} durationInFrames={130} fps={FPS} width={ANCHO} height={ALTO} />
