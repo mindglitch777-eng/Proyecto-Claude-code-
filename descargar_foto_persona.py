@@ -74,35 +74,76 @@ def buscar_archivo(nombre):
     return candidatos
 
 
+def buscar_openverse(nombre):
+    """Segunda fuente si Commons no tiene nada: Openverse agrega Flickr
+    y otros bancos CC -- mas chance con gente moderna (charlas, fotos
+    de conferencias) que Commons, que es mas de figuras historicas."""
+    parametros = {
+        "q": nombre,
+        "license_type": "commercial,modification",
+        "page_size": "20",
+    }
+    url = f"https://api.openverse.org/v1/images/?{urllib.parse.urlencode(parametros)}"
+    pedido = urllib.request.Request(url, headers={"User-Agent": AGENTE})
+    with urllib.request.urlopen(pedido, timeout=30) as r:
+        datos = json.loads(r.read().decode("utf-8"))
+    palabras = [w.lower() for w in re.findall(r"\w+", nombre) if len(w) > 2]
+    candidatos = []
+    for r in datos.get("results", []):
+        titulo = (r.get("title") or "")
+        if not all(w in titulo.lower() for w in palabras):
+            continue
+        if (r.get("width") or 0) < 400:
+            continue
+        candidatos.append((titulo, r))
+    return candidatos
+
+
 def bajar(nombre, slug):
     carpeta = DESTINO / slug
+
     candidatos = buscar_archivo(nombre)
+    fuente = "commons"
     if not candidatos:
-        print(f"Sin resultados en Wikimedia Commons para '{nombre}'.")
+        print(f"Sin resultados en Wikimedia Commons para '{nombre}', probando Openverse.")
+        candidatos = buscar_openverse(nombre)
+        fuente = "openverse"
+    if not candidatos:
+        print(f"Sin resultados en ninguna fuente para '{nombre}'.")
         print("No se baja nada -- mejor sin foto que con la persona equivocada.")
         return False
-    print(f"[{slug}] candidatos encontrados: " + ", ".join(t for t, _ in candidatos[:5]))
+    print(f"[{slug}] candidatos en {fuente}: " + ", ".join(t for t, _ in candidatos[:5]))
 
     titulo, info = candidatos[0]
-    src = info.get("thumburl") or info.get("url")
     carpeta.mkdir(parents=True, exist_ok=True)
     destino = carpeta / "00.jpg"
+
+    if fuente == "commons":
+        src = info.get("thumburl") or info.get("url")
+        meta = info.get("extmetadata") or {}
+        licencia = (meta.get("LicenseShortName") or {}).get("value", "sin dato")
+        autor = re.sub(r"<[^>]+>", "", (meta.get("Artist") or {}).get("value", "sin dato"))
+        enlace = info.get("descriptionurl", info.get("url", ""))
+    else:
+        src = info.get("url")
+        licencia = f"{info.get('license', '?')} {info.get('license_version', '')}".strip()
+        autor = info.get("creator", "sin dato")
+        enlace = info.get("foreign_landing_url", src)
+
     pedido = urllib.request.Request(src, headers={"User-Agent": AGENTE})
     with urllib.request.urlopen(pedido, timeout=60) as r, open(destino, "wb") as out:
         out.write(r.read())
 
-    meta = info.get("extmetadata") or {}
-    licencia = (meta.get("LicenseShortName") or {}).get("value", "sin dato")
-    autor = re.sub(r"<[^>]+>", "", (meta.get("Artist") or {}).get("value", "sin dato"))
     (carpeta / "CREDITOS.md").write_text(
         f"# Credito -- {nombre}\n\n"
+        f"- Fuente: {fuente}\n"
         f"- Archivo: {titulo}\n"
         f"- Licencia: {licencia}\n"
         f"- Autor: {autor}\n"
-        f"- Fuente: {info.get('descriptionurl', info.get('url', ''))}\n",
+        f"- Enlace: {enlace}\n",
         encoding="utf-8",
     )
-    print(f"[{slug}] OK -- {titulo} ({licencia}) -> {destino}")
+    print(f"[{slug}] OK -- {titulo} ({licencia}, via {fuente}) -> {destino}")
     return True
 
 
