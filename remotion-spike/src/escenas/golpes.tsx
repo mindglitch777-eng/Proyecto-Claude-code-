@@ -88,10 +88,11 @@ export const Golpe: React.FC<{
 // Fogonazos cortos que corren por todo el video, cada tantos segundos,
 // aunque no haya corte. Marca un pulso, como el bombo de una cancion.
 
-export const Pulso: React.FC<{cada?: number; largo?: number; fuerza?: number}> = ({
+export const Pulso: React.FC<{cada?: number; largo?: number; fuerza?: number; color?: string}> = ({
   cada = 2.4,
   largo = 0.07,
   fuerza = 0.55,
+  color = '#fff',
 }) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
@@ -100,7 +101,7 @@ export const Pulso: React.FC<{cada?: number; largo?: number; fuerza?: number}> =
   const dentro = t - desde;
   if (desde <= 0 || dentro > largo) return null;
   const k = Math.pow(1 - dentro / largo, 2);
-  return <AbsoluteFill style={{background: '#fff', opacity: fuerza * k, pointerEvents: 'none'}} />;
+  return <AbsoluteFill style={{background: color, opacity: fuerza * k, pointerEvents: 'none'}} />;
 };
 
 // GRANO
