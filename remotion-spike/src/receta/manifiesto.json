@@ -8,6 +8,22 @@
    "barberia-04.mp4",
    "barberia-05.mp4"
   ],
+  "celular": [
+   "celular-00.mp4",
+   "celular-01.mp4",
+   "celular-02.mp4",
+   "celular-03.mp4",
+   "celular-04.mp4",
+   "celular-05.mp4"
+  ],
+  "comercio": [
+   "comercio-00.mp4",
+   "comercio-01.mp4",
+   "comercio-02.mp4",
+   "comercio-03.mp4",
+   "comercio-04.mp4",
+   "comercio-05.mp4"
+  ],
   "dinero": [
    "dinero-00.mp4",
    "dinero-01.mp4",
@@ -15,6 +31,14 @@
    "dinero-03.mp4",
    "dinero-04.mp4",
    "dinero-05.mp4"
+  ],
+  "freelance": [
+   "freelance-00.mp4",
+   "freelance-01.mp4",
+   "freelance-02.mp4",
+   "freelance-03.mp4",
+   "freelance-04.mp4",
+   "freelance-05.mp4"
   ],
   "gimnasio": [
    "gimnasio-00.mp4",
@@ -31,6 +55,22 @@
    "nutricion-03.mp4",
    "nutricion-04.mp4",
    "nutricion-05.mp4"
+  ],
+  "oficina": [
+   "oficina-00.mp4",
+   "oficina-01.mp4",
+   "oficina-02.mp4",
+   "oficina-03.mp4",
+   "oficina-04.mp4",
+   "oficina-05.mp4"
+  ],
+  "taller": [
+   "taller-00.mp4",
+   "taller-01.mp4",
+   "taller-02.mp4",
+   "taller-03.mp4",
+   "taller-04.mp4",
+   "taller-05.mp4"
   ],
   "unias": [
    "unias-00.mp4",
@@ -49,5 +89,5 @@
    "veterinaria-05.mp4"
   ]
  },
- "total": 36
+ "total": 66
 }
