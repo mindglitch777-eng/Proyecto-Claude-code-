@@ -1,0 +1,20 @@
+{
+ "id": "g01",
+ "titulo": "Tu hora ya cuesta plata",
+ "cta": "HORA",
+ "duracionSegundos": 30.2,
+ "paleta": "confianza",
+ "formatosUsados": [
+  "estoSosVos",
+  "diagrama",
+  "buscador",
+  "recibo",
+  "datoVivo",
+  "punch",
+  "cierre"
+ ],
+ "busquedasDeMetraje": [
+  "hombre cansado taller de noche",
+  "barbero cortando pelo cliente"
+ ]
+}
