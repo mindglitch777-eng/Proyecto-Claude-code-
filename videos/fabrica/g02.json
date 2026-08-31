@@ -1,0 +1,20 @@
+{
+ "id": "g02",
+ "titulo": "Si cobrás por hora, la IA te fundió",
+ "cta": "PRECIO",
+ "duracionSegundos": 28.5,
+ "paleta": "confianza",
+ "formatosUsados": [
+  "estoSosVos",
+  "punch",
+  "dosVidas",
+  "cifraSeCae",
+  "chat",
+  "antesDespues",
+  "cierre"
+ ],
+ "busquedasDeMetraje": [
+  "persona trabajando computadora oficina noche",
+  "freelance computadora trabajo escritorio"
+ ]
+}
