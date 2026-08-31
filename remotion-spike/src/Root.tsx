@@ -8,6 +8,7 @@ import {DUR_AGRESIVO} from './guion-agresivo';
 import {Diez} from './agresivo/Diez';
 import {VIDEOS, durDe} from './guiones10';
 import {Catalogo} from './dibujo/Catalogo';
+import {Muestrario, DUR_MUESTRARIO} from './escenas/Muestrario';
 
 const cuadros = Math.round(DUR_TOTAL * FPS);
 
@@ -31,6 +32,7 @@ export const Root: React.FC = () => {
         width={ANCHO}
         height={ALTO}
       />
+      <Composition id="muestrario" component={Muestrario} durationInFrames={Math.round(DUR_MUESTRARIO * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="catalogo" component={Catalogo} durationInFrames={130} fps={FPS} width={ANCHO} height={ALTO} />
       {/* Los 10 videos de prueba. Uno por composicion: asi el workflow
           los renderiza en paralelo, un runner cada uno. */}
