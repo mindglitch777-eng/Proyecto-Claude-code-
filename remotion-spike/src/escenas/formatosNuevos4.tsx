@@ -22,8 +22,18 @@ export const NarracionVertical: React.FC<{lineas: string[]; direccion?: 'sube' |
   const {fps, durationInFrames} = useVideoConfig();
   const t = frame / fps;
   const dur = durationInFrames / fps;
-  const paso = 220;
-  const avance = interpolate(t, [0.4, dur - 0.6], [0, (lineas.length - 1) * paso], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const paso = 240;
+  // cada linea tiene su propia "franja" de tiempo (sincronizada 1 a 1
+  // con lo que va diciendo la voz) y SALTA a su lugar rapido (0.16s) en
+  // vez de deslizarse despacio y continuo durante todo el video -- el
+  // desplazamiento sigue existiendo (entra desde abajo/arriba), pero
+  // dura un instante, no la mitad del tiempo de la linea.
+  const franja = dur / lineas.length;
+  const idx = Math.min(lineas.length - 1, Math.floor(t / franja));
+  const tCambio = idx * franja;
+  const avance = interpolate(t, [tCambio, tCambio + 0.16], [(idx - 1) * paso, idx * paso], {
+    extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: (k) => 1 - Math.pow(1 - k, 2),
+  });
   const signo = direccion === 'sube' ? 1 : -1;
   return (
     <AbsoluteFill style={{backgroundColor: PALETA.fondo, overflow: 'hidden'}}>
@@ -33,17 +43,17 @@ export const NarracionVertical: React.FC<{lineas: string[]; direccion?: 'sube' |
         const dist = Math.abs(y);
         const activo = dist < paso * 0.5;
         const opacidad = interpolate(dist, [0, paso * 0.5, paso * 1.6], [1, 0.4, 0], {extrapolateRight: 'clamp'});
-        const escala = interpolate(dist, [0, paso * 1.4], [1, 0.72], {extrapolateRight: 'clamp'});
+        const escala = interpolate(dist, [0, paso * 1.4], [1, 0.7], {extrapolateRight: 'clamp'});
         return (
           <div
             key={i}
             style={{
-              position: 'absolute', left: 0, right: 0, top: '50%', padding: '0 9%',
+              position: 'absolute', left: 0, right: 0, top: '50%', padding: '0 8%',
               transform: `translateY(${y}px) translateY(-50%) scale(${escala})`,
               display: 'flex', justifyContent: 'center', opacity: opacidad,
             }}
           >
-            <div style={{fontFamily: GROTESCA, fontWeight: activo ? 800 : 600, fontSize: activo ? 60 : 42, color: activo ? PALETA.acento : PALETA.texto, textAlign: 'center', lineHeight: 1.18}}>
+            <div style={{fontFamily: GROTESCA, fontWeight: activo ? 800 : 600, fontSize: activo ? 72 : 46, color: activo ? PALETA.acento : PALETA.texto, textAlign: 'center', lineHeight: 1.16}}>
               {l}
             </div>
           </div>
@@ -147,33 +157,6 @@ export const ParallaxCapas: React.FC<{fondo: string; medio: string; texto: strin
 };
 
 // ────────────────────────────────────────── 5. CERTIFICADO
-// Un diploma que se dibuja (borde, lineas, sello) -- la sensacion de
-// "esto ya es oficial, ya lo lograste".
-
-export const Certificado: React.FC<{titulo: string; nombre: string}> = ({titulo, nombre}) => {
-  const frame = useCurrentFrame();
-  const {fps, durationInFrames} = useVideoConfig();
-  const t = frame / fps;
-  const dur = durationInFrames / fps;
-  const borde = interpolate(t, [0.3, 1.2], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const sello = spring({frame: frame - dur * 0.55 * fps, fps, config: {damping: 9, stiffness: 220, mass: 0.7}});
-  return (
-    <AbsoluteFill style={{backgroundColor: '#efe9db', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-      <div style={{width: '84%', aspectRatio: '3 / 4', position: 'relative', background: '#fbf7ec', boxShadow: '0 30px 70px rgba(0,0,0,0.25)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 22, padding: '10% 8%'}}>
-        <svg width="100%" height="100%" style={{position: 'absolute', inset: 14}} viewBox="0 0 100 133">
-          <rect x={2} y={2} width={96} height={129} fill="none" stroke="#8a7a5c" strokeWidth={0.8} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - borde} />
-        </svg>
-        <div style={{fontFamily: GROTESCA, fontWeight: 700, fontSize: 24, color: '#8a7a5c', letterSpacing: '0.16em', textTransform: 'uppercase', opacity: borde}}>Certificado</div>
-        <div style={{fontFamily: SERIF, fontWeight: 700, fontSize: 44, color: '#2b2416', textAlign: 'center', opacity: borde}}>{titulo}</div>
-        <div style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 30, color: '#5a4d38', opacity: borde}}>{nombre}</div>
-        <div style={{position: 'absolute', bottom: '9%', right: '10%', width: 90, height: 90, borderRadius: '50%', border: '4px solid ' + PALETA.acento, display: 'flex', alignItems: 'center', justifyContent: 'center', transform: `scale(${Math.min(1, sello * 1.2)}) rotate(${-18 + sello * 4}deg)`, opacity: Math.min(1, sello * 1.6)}}>
-          <div style={{fontFamily: GROTESCA, fontWeight: 800, fontSize: 16, color: PALETA.acento, textAlign: 'center'}}>LISTO</div>
-        </div>
-      </div>
-    </AbsoluteFill>
-  );
-};
-
 // ────────────────────────────────────────── 6. TABLA COMPARATIVA
 // Dos columnas de filas que se van tildando o tachando -- comparacion
 // clara, mas grande y legible que un simple duelo de numeros.

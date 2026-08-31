@@ -3,7 +3,7 @@ import {AbsoluteFill, Sequence, useVideoConfig} from 'remotion';
 import {cargarFuentes} from '../fuentes';
 import {PALETA} from '../identidad';
 import {
-  Certificado, ConstelacionGrande, CortinaTeatro, Estrellas, FiguraCallouts,
+  ConstelacionGrande, CortinaTeatro, Estrellas, FiguraCallouts,
   FlechaCrecimiento, GrabadoraVoz, LupaRevela, NarracionVertical, NivelCarga,
   ParallaxCapas, Rompecabezas, Ruleta, TablaComparativa, Velocimetro,
 } from './formatosNuevos4';
@@ -35,7 +35,6 @@ const B: {dur: number; golpe: TipoGolpe; el: React.ReactNode}[] = [
     />
   )},
   {dur: 4.6, golpe: 'cortina', el: <ParallaxCapas fondo="oficina-01.mp4" medio="celular-02.mp4" texto="Todo empezó en una pantalla chica" />},
-  {dur: 4.2, golpe: 'iris', el: <Certificado titulo="Método Digital Completo" nombre="Certificado de finalización" />},
   {dur: 4.8, golpe: 'fundido', el: (
     <TablaComparativa
       colA={{titulo: 'Antes', filas: [{txt: 'Vendía su tiempo', ok: false}, {txt: 'Dependía de un jefe', ok: false}, {txt: 'Sin producto propio', ok: false}]}}
