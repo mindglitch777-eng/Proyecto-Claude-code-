@@ -1,6 +1,7 @@
 # Credito -- Pieter Levels
 
-- Archivo: File:Pieter Bruegel the Elder - Hunters in the Snow (Winter) - Google Art Project.jpg
-- Licencia: Public domain
-- Autor: Pieter Brueghel the Elder
-- Fuente: https://commons.wikimedia.org/wiki/File:Pieter_Bruegel_the_Elder_-_Hunters_in_the_Snow_(Winter)_-_Google_Art_Project.jpg
+- Fuente: openverse
+- Archivo: Pieter Levels in 3D
+- Licencia: by-sa 4.0
+- Autor: levelsio
+- Enlace: https://sketchfab.com/3d-models/5f89533b8ef649b2a49e6af3e50797ce
