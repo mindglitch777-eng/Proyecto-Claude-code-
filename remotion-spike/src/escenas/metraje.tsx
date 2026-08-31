@@ -8,7 +8,7 @@ import {GRADING, GROTESCA, PALETA, SERIF} from '../identidad';
 // usan las filmaciones que baja Pexels y se apoyan en algo que el que
 // mira reconoce: alguien como él.
 
-const Fondo: React.FC<{
+export const Fondo: React.FC<{
   clip?: string;
   foto?: string;
   zoom?: [number, number];

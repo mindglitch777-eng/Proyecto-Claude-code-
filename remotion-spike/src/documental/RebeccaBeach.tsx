@@ -5,7 +5,6 @@ import {CifraSeCae} from '../escenas/mas';
 import {Cronologia, ListaTachada} from '../escenas/explica';
 import {Golpe, Grano, Pulso} from '../escenas/golpes';
 import {LogosHerramientas} from '../escenas/herramientas';
-import {Fondo} from '../escenas/metraje';
 import {Contador} from '../escenas/plata';
 import {cargarFuentes} from '../fuentes';
 import {GROTESCA, PALETA} from '../identidad';
@@ -54,8 +53,6 @@ const Grande: React.FC<{txt: string; tam?: number; acento?: boolean}> = ({txt, t
   </div>
 );
 
-const FOTO = 'becky-beach.jpg';
-
 // ============================================================ 1. HOOK (0-3s)
 const Hook: React.FC = () => {
   const frame = useCurrentFrame();
@@ -63,14 +60,11 @@ const Hook: React.FC = () => {
   return (
     <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
       {t < 1.7 ? (
-        <>
-          <Fondo foto={FOTO} velo={0.5} zoom={[1.08, 1.0]} />
-          <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 6%'}}>
-            <ConGolpe t0={0.1} color={PALETA.acento}>
-              <Grande txt="$20.000/MES" tam={118} acento />
-            </ConGolpe>
-          </AbsoluteFill>
-        </>
+        <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 6%'}}>
+          <ConGolpe t0={0.1} color={PALETA.acento}>
+            <Grande txt="$20.000/MES" tam={118} acento />
+          </ConGolpe>
+        </AbsoluteFill>
       ) : t < 2.5 ? (
         <AbsoluteFill style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 26}}>
           {['IA', 'PRODUCTOS', 'DINERO'].map((w, i) => (
@@ -106,16 +100,11 @@ const QuienEs: React.FC = () => {
   return (
     <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
       {t < 2.2 ? (
-        <>
-          <Fondo foto={FOTO} velo={0.42} zoom={[1.0, 1.1]} />
-          <AbsoluteFill style={{display: 'flex', alignItems: 'flex-end', padding: '0 7% 20% 7%'}}>
-            <ConGolpe t0={0.15}>
-              <div style={{fontFamily: GROTESCA, fontWeight: 700, fontSize: 62, color: PALETA.texto, textShadow: '0 6px 40px rgba(0,0,0,0.9)'}}>
-                Becky Beach
-              </div>
-            </ConGolpe>
-          </AbsoluteFill>
-        </>
+        <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+          <ConGolpe t0={0.15}>
+            <Grande txt="Becky Beach" tam={84} />
+          </ConGolpe>
+        </AbsoluteFill>
       ) : (
         <Cronologia
           hitos={[
