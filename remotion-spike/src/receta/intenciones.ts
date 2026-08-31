@@ -30,10 +30,10 @@ export const FORMATOS: Record<Intencion, string[]> = {
   golpe:        ['punch', 'tresVerdades', 'congelado', 'estoSosVos', 'relojQueCorre'],
   niega:        ['punch', 'tresVerdades', 'listaTachada', 'diagrama'],
   pregunta:     ['encuesta', 'buscador', 'punch', 'diagrama'],
-  dato:         ['contador', 'datoVivo', 'cifraSeCae', 'ranking'],
+  dato:         ['contador', 'datoVivo', 'cifraSeCae', 'ranking', 'crecimiento'],
   cuenta:       ['recibo', 'contador'],
   comparar:     ['duelo', 'dosVidas', 'balanza', 'antesDespues', 'encuesta', 'ranking'],
-  proceso:      ['pasos', 'diagrama', 'cronologia'],
+  proceso:      ['pasos', 'diagrama', 'cronologia', 'herramientas'],
   historia:     ['cronologia', 'diagrama', 'pasos'],
   descarte:     ['listaTachada', 'embudo', 'notificaciones'],
   consecuencia: ['cifraSeCae', 'congelado', 'embudo', 'datoVivo', 'recibo'],
@@ -67,7 +67,11 @@ export const CON_METRAJE = new Set([
  *   cifraSeCae {de:string, a:string}
  *   ranking    {filas:{txt,valor:number,acento?}[]}
  *   encuesta   {aTxt,aPct:number,bTxt,bPct:number}
- *   recibo     {conceptos:{txt,monto:number}[]}  (monto<0 = "sale")
+ *   recibo       {conceptos:{txt,monto:number}[]}  (monto<0 = "sale")
+ *   crecimiento  {puntos:{cuando,etiqueta,valor:number}[], fuente?}
+ *                (para casos REALES con numero verificable; necesita
+ *                al menos 2 puntos, si no no hay "crecimiento" que ver)
+ *   herramientas {items:{nombre,color}[]}
  */
 export const REQUIERE_DATOS: Record<string, (d: any) => boolean> = {
   contador: (d) => !!d && typeof d.hasta === 'number',
@@ -75,6 +79,8 @@ export const REQUIERE_DATOS: Record<string, (d: any) => boolean> = {
   ranking: (d) => !!d && Array.isArray(d.filas) && d.filas.length > 0,
   encuesta: (d) => !!d && typeof d.aPct === 'number' && typeof d.bPct === 'number',
   recibo: (d) => !!d && Array.isArray(d.conceptos) && d.conceptos.length > 0,
+  crecimiento: (d) => !!d && Array.isArray(d.puntos) && d.puntos.length >= 2,
+  herramientas: (d) => !!d && Array.isArray(d.items) && d.items.length > 0,
 };
 
 /** Cuales son "de pantalla llena de texto". Dos seguidos cansan. */

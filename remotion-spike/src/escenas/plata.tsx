@@ -343,3 +343,74 @@ export const Ranking: React.FC<{
     </AbsoluteFill>
   );
 };
+
+// ─────────────────────────────────────── 6. CRECIMIENTO
+// A diferencia de Ranking (una comparacion sin orden), esto es una
+// LINEA DE TIEMPO: barras que crecen de izquierda a derecha, cada una
+// mas alta que la anterior. Es para casos reales con numeros
+// verificables -- por eso lleva 'fuente', chico y sin qeu compita con
+// el dato, pero visible: un numero real sin de donde salio es tan
+// creible como uno inventado.
+
+export const Crecimiento: React.FC<{
+  titulo?: string;
+  puntos: {cuando: string; etiqueta: string; valor: number}[];
+  fuente?: string;
+}> = ({titulo, puntos, fuente}) => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const max = Math.max(...puntos.map((p) => p.valor));
+
+  return (
+    <AbsoluteFill
+      style={{backgroundColor: PALETA.fondo, padding: '0 7%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 54}}
+    >
+      {titulo ? (
+        <div style={{fontFamily: SERIF, fontWeight: 700, fontSize: 58, color: PALETA.texto}}>{titulo}</div>
+      ) : null}
+      <div style={{display: 'flex', alignItems: 'flex-end', gap: 22, height: 620}}>
+        {puntos.map((p, i) => {
+          const ultimo = i === puntos.length - 1;
+          const t0 = 0.35 + i * 0.5;
+          const s = spring({frame: frame - t0 * fps, fps, config: {damping: 16, stiffness: 130, mass: 0.7}});
+          const alto = Math.max(6, (p.valor / max) * 100 * Math.max(0, s));
+          return (
+            <div key={i} style={{flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'center', height: '100%'}}>
+              <div
+                style={{
+                  fontFamily: GROTESCA,
+                  fontWeight: 800,
+                  fontSize: ultimo ? 46 : 32,
+                  color: ultimo ? PALETA.acento : PALETA.texto,
+                  opacity: Math.min(1, s * 2),
+                  marginBottom: 14,
+                  textAlign: 'center',
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
+                {p.etiqueta}
+              </div>
+              <div
+                style={{
+                  width: '68%',
+                  height: `${alto}%`,
+                  borderRadius: '6px 6px 0 0',
+                  background: ultimo ? PALETA.acento : PALETA.texto,
+                  opacity: ultimo ? 1 : 0.55,
+                }}
+              />
+              <div style={{fontFamily: GROTESCA, fontWeight: 600, fontSize: 30, color: PALETA.texto, opacity: 0.65, marginTop: 16, textAlign: 'center'}}>
+                {p.cuando}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {fuente ? (
+        <div style={{fontFamily: GROTESCA, fontWeight: 500, fontSize: 24, color: PALETA.texto, opacity: 0.45}}>
+          Fuente: {fuente}
+        </div>
+      ) : null}
+    </AbsoluteFill>
+  );
+};

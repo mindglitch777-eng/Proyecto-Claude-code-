@@ -3,8 +3,9 @@ import {Punch} from '../agresivo/Punch';
 import {Diagrama} from '../dibujo/Diagrama';
 import type {NombreFigura} from '../dibujo/figuras';
 import {AntesDespues, Balanza, Cronologia, ListaTachada, Pasos} from '../escenas/explica';
+import {LogosHerramientas} from '../escenas/herramientas';
 import {Buscador, Chat, Notificaciones} from '../escenas/pantallas';
-import {Contador, Duelo, Ranking, Recibo} from '../escenas/plata';
+import {Contador, Crecimiento, Duelo, Ranking, Recibo} from '../escenas/plata';
 import {DosVidas, Congelado, DatoVivo, EstoSosVos, LetraVentana} from '../escenas/metraje';
 import {CifraSeCae, Embudo, Encuesta, RelojQueCorre, TresVerdades} from '../escenas/mas';
 import type {Parte} from './compilar';
@@ -243,6 +244,16 @@ const recibo: Adaptador = (p) => {
   );
 };
 
+const crecimiento: Adaptador = (p) => {
+  const d = p.datos as {puntos: {cuando: string; etiqueta: string; valor: number}[]; fuente?: string};
+  return <Crecimiento titulo={p.dice[0]} puntos={d.puntos} fuente={d.fuente} />;
+};
+
+const herramientas: Adaptador = (p) => {
+  const d = p.datos as {items: {nombre: string; color: string; texto?: string}[]};
+  return <LogosHerramientas titulo={p.dice[0]} items={d.items} pie={p.dice[1]} />;
+};
+
 const duelo: Adaptador = (p) => {
   const d = p.datos as {izq?: string; der?: string} | undefined;
   return (
@@ -263,5 +274,5 @@ export const REGISTRO: Record<string, Adaptador> = {
   punch, tresVerdades, estoSosVos, congelado, datoVivo, letraVentana,
   dosVidas, diagrama, pasos, cronologia, listaTachada, embudo, balanza,
   antesDespues, chat, buscador, notificaciones, contador, cifraSeCae,
-  ranking, encuesta, recibo, duelo, relojQueCorre,
+  ranking, encuesta, recibo, duelo, relojQueCorre, crecimiento, herramientas,
 };
