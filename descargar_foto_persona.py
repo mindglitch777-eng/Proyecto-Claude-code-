@@ -33,13 +33,16 @@ API = "https://commons.wikimedia.org/w/api.php"
 AGENTE = "Mozilla/5.0 (compatible; FabricaContenido/1.0; +https://github.com)"
 
 
-def buscar_archivo(nombre):
+def buscar_archivo(nombre, consulta=None):
     """Busca en Commons y devuelve el primer archivo de imagen que
-    matchee el nombre de la persona."""
+    matchee el nombre de la persona. 'consulta' es lo que se le manda
+    al buscador (puede llevar contexto extra para desambiguar, ej.
+    "Becky Beach blogger"); el filtro de titulo sigue exigiendo el
+    nombre solo, no el contexto -- si no, nunca matchea nada."""
     parametros = {
         "action": "query",
         "generator": "search",
-        "gsrsearch": f"{nombre} filetype:bitmap",
+        "gsrsearch": f"{consulta or nombre} filetype:bitmap",
         "gsrnamespace": "6",  # namespace File:
         "gsrlimit": "8",
         "prop": "imageinfo",
@@ -74,12 +77,12 @@ def buscar_archivo(nombre):
     return candidatos
 
 
-def buscar_openverse(nombre):
+def buscar_openverse(nombre, consulta=None):
     """Segunda fuente si Commons no tiene nada: Openverse agrega Flickr
     y otros bancos CC -- mas chance con gente moderna (charlas, fotos
     de conferencias) que Commons, que es mas de figuras historicas."""
     parametros = {
-        "q": nombre,
+        "q": consulta or nombre,
         "license_type": "commercial,modification",
         "page_size": "20",
     }
@@ -99,14 +102,19 @@ def buscar_openverse(nombre):
     return candidatos
 
 
-def bajar(nombre, slug):
+def bajar(nombre, slug, consulta=None, cuantos=3):
+    """Baja hasta 'cuantos' candidatos, NO solo el primero. Un nombre
+    comun (una persona que se llama igual que una playa de verdad, como
+    paso con 'Becky Beach') puede traer basura en el primer resultado
+    y algo bueno en el tercero -- bajar varios y mirarlos es mas
+    confiable que confiar a ciegas en el orden del buscador."""
     carpeta = DESTINO / slug
 
-    candidatos = buscar_archivo(nombre)
+    candidatos = buscar_archivo(nombre, consulta)
     fuente = "commons"
     if not candidatos:
         print(f"Sin resultados en Wikimedia Commons para '{nombre}', probando Openverse.")
-        candidatos = buscar_openverse(nombre)
+        candidatos = buscar_openverse(nombre, consulta)
         fuente = "openverse"
     if not candidatos:
         print(f"Sin resultados en ninguna fuente para '{nombre}'.")
@@ -114,46 +122,46 @@ def bajar(nombre, slug):
         return False
     print(f"[{slug}] candidatos en {fuente}: " + ", ".join(t for t, _ in candidatos[:5]))
 
-    titulo, info = candidatos[0]
     carpeta.mkdir(parents=True, exist_ok=True)
-    destino = carpeta / "00.jpg"
+    creditos = [f"# Candidatos -- {nombre}\n\nRevisar cada uno ANTES de usarlo: un nombre comun puede\ntraer una persona o lugar equivocado.\n"]
+    n = 0
+    for titulo, info in candidatos[:cuantos]:
+        if fuente == "commons":
+            src = info.get("thumburl") or info.get("url")
+            meta = info.get("extmetadata") or {}
+            licencia = (meta.get("LicenseShortName") or {}).get("value", "sin dato")
+            autor = re.sub(r"<[^>]+>", "", (meta.get("Artist") or {}).get("value", "sin dato"))
+            enlace = info.get("descriptionurl", info.get("url", ""))
+        else:
+            src = info.get("url")
+            licencia = f"{info.get('license', '?')} {info.get('license_version', '')}".strip()
+            autor = info.get("creator", "sin dato")
+            enlace = info.get("foreign_landing_url", src)
 
-    if fuente == "commons":
-        src = info.get("thumburl") or info.get("url")
-        meta = info.get("extmetadata") or {}
-        licencia = (meta.get("LicenseShortName") or {}).get("value", "sin dato")
-        autor = re.sub(r"<[^>]+>", "", (meta.get("Artist") or {}).get("value", "sin dato"))
-        enlace = info.get("descriptionurl", info.get("url", ""))
-    else:
-        src = info.get("url")
-        licencia = f"{info.get('license', '?')} {info.get('license_version', '')}".strip()
-        autor = info.get("creator", "sin dato")
-        enlace = info.get("foreign_landing_url", src)
+        destino = carpeta / f"candidato-{n:02d}.jpg"
+        try:
+            pedido = urllib.request.Request(src, headers={"User-Agent": AGENTE})
+            with urllib.request.urlopen(pedido, timeout=60) as r, open(destino, "wb") as out:
+                out.write(r.read())
+        except Exception as e:
+            print(f"  fallo bajando candidato {n}: {e}")
+            continue
+        creditos.append(f"## candidato-{n:02d}.jpg\n- Titulo: {titulo}\n- Licencia: {licencia}\n- Autor: {autor}\n- Enlace: {enlace}\n")
+        print(f"[{slug}] candidato-{n:02d}.jpg <- {titulo} ({licencia}, via {fuente})")
+        n += 1
 
-    pedido = urllib.request.Request(src, headers={"User-Agent": AGENTE})
-    with urllib.request.urlopen(pedido, timeout=60) as r, open(destino, "wb") as out:
-        out.write(r.read())
-
-    (carpeta / "CREDITOS.md").write_text(
-        f"# Credito -- {nombre}\n\n"
-        f"- Fuente: {fuente}\n"
-        f"- Archivo: {titulo}\n"
-        f"- Licencia: {licencia}\n"
-        f"- Autor: {autor}\n"
-        f"- Enlace: {enlace}\n",
-        encoding="utf-8",
-    )
-    print(f"[{slug}] OK -- {titulo} ({licencia}, via {fuente}) -> {destino}")
-    return True
+    (carpeta / "CREDITOS.md").write_text("\n".join(creditos), encoding="utf-8")
+    return n > 0
 
 
 def main():
     if len(sys.argv) < 3:
-        print("Uso: python3 descargar_foto_persona.py \"Nombre Apellido\" slug")
+        print("Uso: python3 descargar_foto_persona.py \"Nombre Apellido\" slug [\"consulta de busqueda\"]")
         return 1
     nombre, slug = sys.argv[1], sys.argv[2]
+    consulta = sys.argv[3] if len(sys.argv) > 3 else None
     DESTINO.mkdir(parents=True, exist_ok=True)
-    return 0 if bajar(nombre, slug) else 2
+    return 0 if bajar(nombre, slug, consulta) else 2
 
 
 if __name__ == "__main__":

@@ -21,6 +21,9 @@ on:
       slug:
         description: "Carpeta destino en assets/personas/<slug>/"
         required: true
+      consulta:
+        description: "Busqueda con contexto extra, para nombres comunes (ej. 'Becky Beach blogger')"
+        required: false
   # workflow_dispatch solo se puede disparar por API/UI si el archivo
   # ya esta en la rama por defecto. Mientras esto vive en una rama de
   # trabajo, se dispara escribiendo PEDIDO.json y empujando -- mismo
@@ -45,13 +48,15 @@ jobs:
           if [ -f assets/personas/PEDIDO.json ]; then
             echo "nombre=$(python3 -c "import json;print(json.load(open('assets/personas/PEDIDO.json'))['nombre'])")" >> "$GITHUB_OUTPUT"
             echo "slug=$(python3 -c "import json;print(json.load(open('assets/personas/PEDIDO.json'))['slug'])")" >> "$GITHUB_OUTPUT"
+            echo "consulta=$(python3 -c "import json;print(json.load(open('assets/personas/PEDIDO.json')).get('consulta',''))")" >> "$GITHUB_OUTPUT"
           else
             echo "nombre=${{ inputs.nombre }}" >> "$GITHUB_OUTPUT"
             echo "slug=${{ inputs.slug }}" >> "$GITHUB_OUTPUT"
+            echo "consulta=${{ inputs.consulta }}" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Bajar foto
-        run: python3 descargar_foto_persona.py "${{ steps.pedido.outputs.nombre }}" "${{ steps.pedido.outputs.slug }}"
+      - name: Bajar candidatos
+        run: python3 descargar_foto_persona.py "${{ steps.pedido.outputs.nombre }}" "${{ steps.pedido.outputs.slug }}" "${{ steps.pedido.outputs.consulta }}"
 
       - name: Commitear
         run: |
