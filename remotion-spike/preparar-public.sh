@@ -4,7 +4,7 @@
 set -euo pipefail
 raiz="$(cd "$(dirname "$0")/.." && pwd)"
 dst="$raiz/remotion-spike/public"
-rm -rf "$dst"; mkdir -p "$dst/fuentes" "$dst/fotos" "$dst/video"
+rm -rf "$dst"; mkdir -p "$dst/fuentes" "$dst/fotos" "$dst/video" "$dst/sfx"
 
 cp "$raiz/assets/fuentes/PlayfairDisplay-Variable.ttf" "$dst/fuentes/"
 cp "$raiz/assets/fuentes/PlayfairDisplay-Italic.ttf"   "$dst/fuentes/"
@@ -31,5 +31,12 @@ for f in "$raiz"/assets/metraje_video/*/*.mp4; do
   cp "$f" "$dst/video/$(basename "$f")"
 done
 
+# Efectos de sonido: sintetizados con sfx.py, sin problema de licencia
+# (son ondas generadas, no grabaciones bajadas de ningun lado).
+for f in "$raiz"/assets/sfx/*.wav; do
+  [ -e "$f" ] || continue
+  cp "$f" "$dst/sfx/$(basename "$f")"
+done
+
 echo "public/ armado:"
-echo "  fuentes $(ls "$dst/fuentes" | wc -l)  fotos $(ls "$dst/fotos" | wc -l)  video $(ls "$dst/video" | wc -l)"
+echo "  fuentes $(ls "$dst/fuentes" | wc -l)  fotos $(ls "$dst/fotos" | wc -l)  video $(ls "$dst/video" | wc -l)  sfx $(ls "$dst/sfx" | wc -l)"

@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, interpolate, random, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, interpolate, random, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {PALETA} from '../identidad';
 
 // GOLPES DE CORTE
@@ -11,6 +11,20 @@ import {PALETA} from '../identidad';
 // es todo.
 //
 // Se envuelve cualquier escena con esto y listo.
+//
+// El sonido va pegado al mismo lugar: cada tipo de golpe dispara SU
+// efecto (sfx.py, sintetizado, sin licencia que pagar). No hay que
+// escribirlo en el guion -- sale solo con el tipo de golpe que ya
+// elige el compilador, asi que TODOS los videos lo tienen, no solo el
+// que se acuerde de pedirlo.
+const SONIDO: Record<TipoGolpe, {archivo: string; volumen: number} | null> = {
+  fogonazo: {archivo: 'impacto', volumen: 0.9},
+  sacudon: {archivo: 'impacto', volumen: 0.85},
+  corte: {archivo: 'tick', volumen: 0.55},
+  negro: {archivo: 'whoosh', volumen: 0.7},
+  raya: {archivo: 'whoosh', volumen: 0.8},
+  ninguno: null,
+};
 
 export type TipoGolpe = 'fogonazo' | 'sacudon' | 'corte' | 'negro' | 'raya' | 'ninguno';
 
@@ -18,15 +32,22 @@ export const Golpe: React.FC<{
   tipo?: TipoGolpe;
   /** cuanto dura el golpe, en segundos */
   largo?: number;
+  /** el primer golpe del video no suena: no hay corte que marcar */
+  sonido?: boolean;
   children: React.ReactNode;
-}> = ({tipo = 'fogonazo', largo = 0.14, children}) => {
+}> = ({tipo = 'fogonazo', largo = 0.14, sonido = true, children}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const t = frame / fps;
   const p = t / largo; // 0 al empezar, 1 cuando termina el golpe
 
+  const s = sonido ? SONIDO[tipo] : null;
+  const efecto = s ? (
+    <Audio src={staticFile(`sfx/${s.archivo}.wav`)} volume={s.volumen} />
+  ) : null;
+
   if (tipo === 'ninguno' || p >= 1) {
-    return <AbsoluteFill>{children}</AbsoluteFill>;
+    return <AbsoluteFill>{efecto}{children}</AbsoluteFill>;
   }
 
   // cae al cuadrado: pega fuerte y se va rapido
@@ -37,6 +58,7 @@ export const Golpe: React.FC<{
     const dy = (random(`y${frame}`) - 0.5) * 60 * k;
     return (
       <AbsoluteFill style={{transform: `translate(${dx}px,${dy}px) scale(${1 + 0.07 * k})`}}>
+        {efecto}
         {children}
       </AbsoluteFill>
     );
@@ -45,13 +67,17 @@ export const Golpe: React.FC<{
   if (tipo === 'corte') {
     // la imagen entra ya puesta pero agrandada, y se asienta
     return (
-      <AbsoluteFill style={{transform: `scale(${1 + 0.13 * k})`}}>{children}</AbsoluteFill>
+      <AbsoluteFill style={{transform: `scale(${1 + 0.13 * k})`}}>
+        {efecto}
+        {children}
+      </AbsoluteFill>
     );
   }
 
   if (tipo === 'negro') {
     return (
       <AbsoluteFill>
+        {efecto}
         {children}
         <AbsoluteFill style={{background: '#000', opacity: k}} />
       </AbsoluteFill>
@@ -63,6 +89,7 @@ export const Golpe: React.FC<{
     const y = interpolate(p, [0, 1], [-30, 130]);
     return (
       <AbsoluteFill>
+        {efecto}
         {children}
         <AbsoluteFill
           style={{
@@ -77,6 +104,7 @@ export const Golpe: React.FC<{
   // fogonazo: lava el cuadro hacia blanco + un empujon de escala
   return (
     <AbsoluteFill style={{transform: `scale(${1 + 0.05 * k})`}}>
+      {efecto}
       {children}
       <AbsoluteFill style={{background: '#fff', opacity: 0.92 * k}} />
     </AbsoluteFill>
