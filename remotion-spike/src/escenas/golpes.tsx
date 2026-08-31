@@ -23,10 +23,11 @@ const SONIDO: Record<TipoGolpe, {archivo: string; volumen: number} | null> = {
   corte: {archivo: 'tick', volumen: 0.55},
   negro: {archivo: 'whoosh', volumen: 0.7},
   raya: {archivo: 'whoosh', volumen: 0.8},
+  fundido: null,
   ninguno: null,
 };
 
-export type TipoGolpe = 'fogonazo' | 'sacudon' | 'corte' | 'negro' | 'raya' | 'ninguno';
+export type TipoGolpe = 'fogonazo' | 'sacudon' | 'corte' | 'negro' | 'raya' | 'fundido' | 'ninguno';
 
 export const Golpe: React.FC<{
   tipo?: TipoGolpe;
@@ -82,6 +83,13 @@ export const Golpe: React.FC<{
         <AbsoluteFill style={{background: '#000', opacity: k}} />
       </AbsoluteFill>
     );
+  }
+
+  if (tipo === 'fundido') {
+    // sin flash, sin sacudida: la escena entra subiendo de opacidad
+    // nomas -- para diagramas y dibujos, que se ven mejor apareciendo
+    // continuos que cortando en seco.
+    return <AbsoluteFill style={{opacity: 1 - k}}>{children}</AbsoluteFill>;
   }
 
   if (tipo === 'raya') {

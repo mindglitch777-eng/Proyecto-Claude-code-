@@ -338,7 +338,7 @@ const FinalBeat: React.FC<{lineas: string[]}> = ({lineas}) => (
 // El mismo CTA, con los mismos colores fijos, en los 20 videos de la
 // serie -- nunca cambia de color: es lo que pidio el operador para no
 // perder coherencia de marca.
-const CtaBeat: React.FC = () => {
+export const CtaBeat: React.FC = () => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const t = frame / fps;

@@ -243,6 +243,11 @@ export const Encuesta: React.FC<{
 
   const Op = ({o, gana, retraso}: {o: {txt: string; pct: number}; gana: boolean; retraso: number}) => {
     const e = spring({frame: frame - retraso * fps, fps, config: {damping: 18, stiffness: 200}});
+    // el texto pasa a color de fondo (para leerse sobre el relleno) recien
+    // cuando la barra ya termino de crecer -- antes, si se guiaba por el
+    // mismo spring que dispara la barra, el texto se oscurecia antes de
+    // que el relleno lo alcanzara y quedaba oscuro sobre oscuro, ilegible.
+    const contraste = t > tRes + 1.0;
     return (
       <div
         style={{
@@ -263,7 +268,7 @@ export const Encuesta: React.FC<{
           }}
         />
         <div style={{position: 'relative', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '32px 34px', gap: 20}}>
-          <span style={{fontFamily: GROTESCA, fontWeight: 700, fontSize: 50, color: gana && s > 0.4 ? PALETA.fondo : PALETA.texto}}>
+          <span style={{fontFamily: GROTESCA, fontWeight: 700, fontSize: 50, color: gana && contraste ? PALETA.fondo : PALETA.texto}}>
             {o.txt}
           </span>
           <span
@@ -271,7 +276,7 @@ export const Encuesta: React.FC<{
               fontFamily: GROTESCA,
               fontWeight: 800,
               fontSize: 60,
-              color: gana && s > 0.4 ? PALETA.fondo : PALETA.texto,
+              color: gana && contraste ? PALETA.fondo : PALETA.texto,
               opacity: s,
               fontVariantNumeric: 'tabular-nums',
             }}
