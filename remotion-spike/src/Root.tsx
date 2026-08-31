@@ -6,6 +6,7 @@ import {Pieza} from './Pieza';
 import {PiezaAgresiva} from './agresivo/PiezaAgresiva';
 import {DUR_AGRESIVO} from './guion-agresivo';
 import {Diez} from './agresivo/Diez';
+import {StressTest, DUR_STRESS} from './stress/StressTest';
 import {VIDEOS, durDe} from './guiones10';
 import {Catalogo} from './dibujo/Catalogo';
 import {Muestrario, DUR_MUESTRARIO} from './escenas/Muestrario';
@@ -33,6 +34,7 @@ export const Root: React.FC = () => {
         width={ANCHO}
         height={ALTO}
       />
+      <Composition id="stress" component={StressTest} durationInFrames={Math.round(DUR_STRESS * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="muestrario2" component={Muestrario2} durationInFrames={Math.round(DUR_M2 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="muestrario" component={Muestrario} durationInFrames={Math.round(DUR_MUESTRARIO * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="catalogo" component={Catalogo} durationInFrames={130} fps={FPS} width={ANCHO} height={ALTO} />
