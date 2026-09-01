@@ -68,61 +68,73 @@ def _a_mp3(wav, nombre):
     return hechos
 
 
+def _correr_en_venv(venv, script, args, timeout=1800):
+    """Corre un script standalone con el python de un venv aislado.
+
+    Chatterbox y MeloTTS dependen de versiones de librosa/numpy/
+    transformers que chocan entre si y con kokoro/pocket si comparten
+    entorno (asi fallaba antes: import librosa reventaba a mitad de
+    carga porque una instalacion posterior le habia bajado la version
+    a otra que necesitaba). Cada uno en su propio venv no tiene ese
+    problema, sin pelearse con el resolver de pip para que convivan.
+    """
+    python = Path(venv) / "bin" / "python3"
+    if not python.exists():
+        print(f"  [{script}] venv {venv} no existe, se saltea")
+        return False
+    r = subprocess.run([str(python), str(RAIZ / script)] + args,
+                       capture_output=True, text=True, timeout=timeout)
+    if r.returncode != 0:
+        print(f"  [{script}] fallo:\n{(r.stderr or r.stdout)[-900:]}")
+        return False
+    return True
+
+
 def probar_chatterbox(texto):
-    """Chatterbox Multilingual de Resemble AI (MIT).
+    """Chatterbox Multilingual de Resemble AI (MIT), en su propio venv
+    (VENV_CHATTERBOX, armado por el workflow).
 
     Es el candidato mas prometedor: en las evaluaciones lado a lado de
     Resemble le gana a ElevenLabs por preferencia, y es el primer
     modelo abierto con control de exageracion emocional -- util para
     que el hook suene mas intenso que el dato.
 
-    Es de ~0.5B parametros y aca corre en CPU, asi que va a tardar. Se
-    mide y se informa: si tarda mucho igual sirve, porque en produccion
-    cada video narra en su propia maquina y van todas en paralelo.
-
+    Es de ~0.5B parametros y aca corre en CPU, asi que va a tardar.
     'exaggeration' controla la intensidad; se prueban dos valores para
     escuchar la diferencia.
     """
+    import os
     import time
-    import torchaudio as ta
-    from chatterbox.mtl_tts import ChatterboxMultilingualTTS
 
+    venv = os.environ.get("VENV_CHATTERBOX", str(RAIZ / ".venv-chatterbox"))
     hechos = []
-    t0 = time.time()
-    modelo = ChatterboxMultilingualTTS.from_pretrained(device="cpu")
-    print(f"  [chatterbox] modelo cargado en {time.time()-t0:.0f}s")
     for etiqueta, exa in (("seco", 0.4), ("intenso", 0.8)):
-        try:
-            t1 = time.time()
-            wav = modelo.generate(texto, language_id="es", exaggeration=exa)
-            crudo = DESTINO / f"tmp-chatterbox-{etiqueta}.wav"
-            ta.save(str(crudo), wav, modelo.sr)
-            dur = ta.info(str(crudo)).num_frames / modelo.sr
-            print(f"  [chatterbox/{etiqueta}] {time.time()-t1:.0f}s "
-                  f"para {dur:.1f}s de audio "
-                  f"({(time.time()-t1)/max(dur,0.1):.1f}x tiempo real)")
+        crudo = DESTINO / f"tmp-chatterbox-{etiqueta}.wav"
+        t1 = time.time()
+        if _correr_en_venv(venv, "_generar_chatterbox.py",
+                           [texto, str(crudo), str(exa)]):
+            print(f"  [chatterbox/{etiqueta}] {time.time()-t1:.0f}s")
             hechos += _a_mp3(crudo, f"chatterbox-{etiqueta}")
             crudo.unlink(missing_ok=True)
-        except Exception as e:
-            print(f"  [chatterbox/{etiqueta}] fallo: {e}")
     return hechos
 
 
 def probar_melotts(texto):
-    """MeloTTS-Spanish (MyShell AI, MIT). Modelo dedicado en español,
-    no una voz generica multilingue -- deberia pronunciar mejor que
-    kokoro/chatterbox que reparten el mismo modelo entre 6-23 idiomas.
+    """MeloTTS-Spanish (MyShell AI, MIT), en su propio venv
+    (VENV_MELOTTS, armado por el workflow). Modelo dedicado en
+    español, no una voz generica multilingue -- deberia pronunciar
+    mejor que kokoro/chatterbox que reparten el mismo modelo entre
+    6-23 idiomas.
     """
-    from melo.api import TTS
+    import os
 
+    venv = os.environ.get("VENV_MELOTTS", str(RAIZ / ".venv-melotts"))
     hechos = []
-    modelo = TTS(language="ES", device="cpu")
-    hablante = list(modelo.hps.data.spk2id.keys())[0]
     wav = DESTINO / "tmp-melotts.wav"
-    modelo.tts_to_file(texto, modelo.hps.data.spk2id[hablante], str(wav), speed=0.95)
-    hechos += _a_mp3(wav, "melotts")
-    wav.unlink(missing_ok=True)
-    print(f"  [melotts] ok con hablante {hablante}")
+    if _correr_en_venv(venv, "_generar_melotts.py", [texto, str(wav)]):
+        hechos += _a_mp3(wav, "melotts")
+        wav.unlink(missing_ok=True)
+        print("  [melotts] ok")
     return hechos
 
 
