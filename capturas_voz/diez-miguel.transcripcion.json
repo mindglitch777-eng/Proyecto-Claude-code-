@@ -1,0 +1,377 @@
+[
+ {
+  "i": 0.0,
+  "f": 3.74,
+  "t": "Te da miedo que la inteligencia artificial te saque el trabajo."
+ },
+ {
+  "i": 4.3,
+  "f": 5.9,
+  "t": "No te lo va a sacar la máquina."
+ },
+ {
+  "i": 6.58,
+  "f": 9.44,
+  "t": "Te lo va a sacar el que aprendió a usarla."
+ },
+ {
+  "i": 10.2,
+  "f": 12.64,
+  "t": "Dos personas hacen el mismo trabajo."
+ },
+ {
+  "i": 13.34,
+  "f": 14.82,
+  "t": "Uno tarda ocho horas."
+ },
+ {
+  "i": 15.52,
+  "f": 17.38,
+  "t": "El otro, cuarenta minutos."
+ },
+ {
+  "i": 17.98,
+  "f": 18.92,
+  "t": "Cobran lo mismo."
+ },
+ {
+  "i": 19.74,
+  "f": 22.1,
+  "t": "¿Cuál de los dos va a bajar el precio primero?"
+ },
+ {
+  "i": 22.88,
+  "f": 25.58,
+  "t": "No competís contra la inteligencia artificial."
+ },
+ {
+  "i": 26.44,
+  "f": 28.6,
+  "t": "Competís contra alguien igual que vos."
+ },
+ {
+  "i": 29.16,
+  "f": 31.32,
+  "t": "Que se sentó una tarde a aprenderla."
+ },
+ {
+  "i": 31.88,
+  "f": 33.94,
+  "t": "Esa tarde es toda la diferencia."
+ },
+ {
+  "i": 34.68,
+  "f": 38.12,
+  "t": "Comenta IA y te paso por donde empezar."
+ },
+ {
+  "i": 38.82,
+  "f": 42.76,
+  "t": "Si cobras por hora, tenés un problema y todavía no lo viste."
+ },
+ {
+  "i": 43.58,
+  "f": 46.56,
+  "t": "La inteligencia artificial no te bajó el precio."
+ },
+ {
+  "i": 47.2,
+  "f": 48.18,
+  "t": "Te bajó las horas."
+ },
+ {
+  "i": 48.94,
+  "f": 52.84,
+  "t": "Lo que antes te llevaba una tarde, ahora sale en veinte minutos."
+ },
+ {
+  "i": 53.46,
+  "f": 54.44,
+  "t": "Cobrás por hora."
+ },
+ {
+  "i": 54.44,
+  "f": 58.2,
+  "t": "Acabás de cobrar cuatro veces menos por el mismo trabajo."
+ },
+ {
+  "i": 58.7,
+  "f": 61.16,
+  "t": "Al cliente no le importa cuánto tardaste."
+ },
+ {
+  "i": 61.68,
+  "f": 63.32,
+  "t": "Le importa que esté resuelto."
+ },
+ {
+  "i": 64.06,
+  "f": 65.16,
+  "t": "Deja de vender tiempo."
+ },
+ {
+  "i": 65.94,
+  "f": 67.4,
+  "t": "Vende el problema resuelto."
+ },
+ {
+  "i": 67.9,
+  "f": 71.5,
+  "t": "Comenta Precio y te paso como se arma."
+ },
+ {
+  "i": 72.18,
+  "f": 76.46,
+  "t": "Pensás que la inteligencia artificial te va a conseguir clientes."
+ },
+ {
+  "i": 76.86,
+  "f": 78.5,
+  "t": "No te va a conseguir ninguno."
+ },
+ {
+  "i": 79.22,
+  "f": 81.54,
+  "t": "La inteligencia artificial multiplica."
+ },
+ {
+  "i": 82.38,
+  "f": 85.56,
+  "t": "Si tenés un negocio que funciona, lo hace más rápido."
+ },
+ {
+  "i": 86.22,
+  "f": 90.28,
+  "t": "Si tenés cero clientes, te va a dar cero clientes más rápido."
+ },
+ {
+  "i": 91.12,
+  "f": 93.4,
+  "t": "Cero por mil, sigue siendo cero."
+ },
+ {
+  "i": 94.02,
+  "f": 96.08,
+  "t": "Primero conseguí que una persona te pague."
+ },
+ {
+  "i": 96.92,
+  "f": 97.2,
+  "t": "Una."
+ },
+ {
+  "i": 98.16,
+  "f": 99.54,
+  "t": "Después automatiza eso."
+ },
+ {
+  "i": 100.26,
+  "f": 101.34,
+  "t": "Al revés no funciona."
+ },
+ {
+  "i": 101.74,
+  "f": 104.34,
+  "t": "Y es el orden que elige casi todo el mundo."
+ },
+ {
+  "i": 105.0,
+  "f": 107.88,
+  "t": "Comenta clientes y te paso el primer paso."
+ },
+ {
+  "i": 108.54,
+  "f": 112.04,
+  "t": "Nadie te va a pagar por saber usar inteligencia artificial."
+ },
+ {
+  "i": 112.56,
+  "f": 115.42,
+  "t": "Te van a pagar por saber qué problema resolver."
+ },
+ {
+  "i": 116.18,
+  "f": 117.84,
+  "t": "La máquina hace el como."
+ },
+ {
+  "i": 118.54,
+  "f": 122.12,
+  "t": "Y lo hace gratis, para todos, al mismo tiempo."
+ },
+ {
+  "i": 122.86,
+  "f": 125.9,
+  "t": "Lo que no hace es decidir qué vale la pena."
+ },
+ {
+  "i": 126.7,
+  "f": 130.06,
+  "t": "Eso sigue siendo tuyo y es lo único que se cobra."
+ },
+ {
+  "i": 130.84,
+  "f": 134.92,
+  "t": "El que sabe 30 herramientas y ningún problema no vende nada."
+ },
+ {
+  "i": 135.68,
+  "f": 139.64,
+  "t": "El que sabe una herramienta y un problema caro factura."
+ },
+ {
+  "i": 140.22,
+  "f": 141.84,
+  "t": "Elegí el problema primero."
+ },
+ {
+  "i": 142.54,
+  "f": 146.24,
+  "t": "Comenta, problema y te paso cómo se busca."
+ },
+ {
+  "i": 146.98,
+  "f": 149.72,
+  "t": "Tu competencia no es más inteligente que vos."
+ },
+ {
+  "i": 150.36,
+  "f": 152.44,
+  "t": "Entrega antes, nada más."
+ },
+ {
+  "i": 153.24,
+  "f": 155.04,
+  "t": "El cliente pide presupuesto a tres."
+ },
+ {
+  "i": 155.9,
+  "f": 158.56,
+  "t": "El primero que contesta bien se lleva el trabajo,"
+ },
+ {
+  "i": 159.14,
+  "f": 161.46,
+  "t": "aunque no sea el más barato ni el mejor."
+ },
+ {
+  "i": 162.26,
+  "f": 165.52,
+  "t": "La inteligencia artificial no te hace más talentoso."
+ },
+ {
+  "i": 166.0,
+  "f": 170.44,
+  "t": "Te hace más rápido en contestar, en presupuestar, en mandar."
+ },
+ {
+  "i": 171.4,
+  "f": 172.4,
+  "t": "Eso es lo que se cobra."
+ },
+ {
+  "i": 173.16,
+  "f": 176.98,
+  "t": "Perdiste trabajos que ya tenías ganados por contestar dos días"
+ },
+ {
+  "i": 176.98,
+  "f": 177.34,
+  "t": "después."
+ },
+ {
+  "i": 178.24,
+  "f": 182.18,
+  "t": "Comenta rápido y te paso cómo contestar en cinco minutos."
+ },
+ {
+  "i": 182.98,
+  "f": 186.16,
+  "t": "Este tipo no tiene oficina, no tiene empleados,"
+ },
+ {
+  "i": 186.76,
+  "f": 187.68,
+  "t": "no tiene socios."
+ },
+ {
+  "i": 188.2,
+  "f": 189.9,
+  "t": "No levantó un peso de inversión."
+ },
+ {
+  "i": 190.58,
+  "f": 193.7,
+  "t": "Se llama Peter Levels y programa desde una notebook,"
+ },
+ {
+  "i": 194.2,
+  "f": 195.32,
+  "t": "mudándose de país."
+ },
+ {
+  "i": 195.9,
+  "f": 198.82,
+  "t": "Empezó haciendo 12 proyectos en 12 meses."
+ },
+ {
+  "i": 199.6,
+  "f": 201.0,
+  "t": "Casi todos fracasaron."
+ },
+ {
+  "i": 201.66,
+  "f": 204.84,
+  "t": "Uno no, después otro, después otro más."
+ },
+ {
+  "i": 205.7,
+  "f": 209.48,
+  "t": "Hoy dice facturar alrededor de 3 millones de dólares por año."
+ },
+ {
+  "i": 210.2,
+  "f": 213.84,
+  "t": "Su producto más grande es una aplicación que genera fotos"
+ },
+ {
+  "i": 213.84,
+  "f": 215.48,
+  "t": "con inteligencia artificial."
+ },
+ {
+  "i": 216.16,
+  "f": 219.82,
+  "t": "Unos 130.000 dólares por mes, el solo."
+ },
+ {
+  "i": 220.52,
+  "f": 224.46,
+  "t": "Nadie le dio permiso, publicaba lo que hacía mientras lo hacía."
+ },
+ {
+  "i": 225.12,
+  "f": 226.76,
+  "t": "Y la gente lo miraba equivocarse."
+ },
+ {
+  "i": 227.68,
+  "f": 231.12,
+  "t": "Ojo con una cosa, los números los da él."
+ },
+ {
+  "i": 231.84,
+  "f": 232.84,
+  "t": "Nadie los audito."
+ },
+ {
+  "i": 233.56,
+  "f": 237.46,
+  "t": "Pero el método no es secreto y es lo único que podés copiar."
+ },
+ {
+  "i": 238.24,
+  "f": 240.6,
+  "t": "Comenta solo y te paso los 12 meses."
+ }
+]
