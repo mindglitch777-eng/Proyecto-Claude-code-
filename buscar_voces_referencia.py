@@ -59,7 +59,10 @@ def librivox_candidatos(limite=15):
     """Audiolibros españoles en Archive.org, coleccion LibriVox."""
     api = "https://archive.org/advancedsearch.php"
     params = {
-        "q": 'collection:librivoxaudio AND language:(Spanish)',
+        # full-text en vez de filtrar por el campo language: ese campo
+        # no esta poblado de forma consistente en todos los items y la
+        # query anterior (language:(Spanish)) volvia 0 resultados
+        "q": 'collection:librivoxaudio AND spanish',
         "fl[]": ["identifier", "title", "creator"],
         "rows": str(limite), "output": "json",
     }
@@ -88,7 +91,12 @@ def descargar_y_recortar(candidatos, segundos=25):
         nombre = f"{c['fuente']}-{i:02d}"
         crudo = DESTINO / f"{nombre}-original.tmp"
         try:
-            urllib.request.urlretrieve(c["url"], crudo)
+            # urlretrieve no manda headers -- Wikimedia devuelve 403
+            # sin un User-Agent identificable, incluso para descargar
+            # el archivo (no solo para la API)
+            pedido = urllib.request.Request(c["url"], headers=UA)
+            with urllib.request.urlopen(pedido, timeout=60) as resp, open(crudo, "wb") as f:
+                f.write(resp.read())
         except Exception as e:
             print(f"  [{nombre}] no se pudo bajar: {e}")
             continue
