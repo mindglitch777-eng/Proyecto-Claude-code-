@@ -1,0 +1,25 @@
+{
+  "name": "estudio-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vista previa en vivo del guion documental: usa el MISMO componente Caso que renderiza el video final, corriendo en el navegador via @remotion/player. No es una maqueta -- si algo se ve mal aca, se ve mal en el video final.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@remotion/player": "4.0.518",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "remotion": "4.0.518"
+  },
+  "devDependencies": {
+    "@types/react": "19.0.0",
+    "@types/react-dom": "19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "5.7.3",
+    "vite": "^6.0.0"
+  }
+}
