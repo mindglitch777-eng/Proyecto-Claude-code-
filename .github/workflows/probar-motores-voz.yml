@@ -46,13 +46,20 @@ jobs:
           # espeak-ng lo necesita el conversor de texto a fonemas de
           # kokoro; sin el, el pipeline levanta pero no fonemiza español
           sudo apt-get install -y -qq ffmpeg espeak-ng
+          # pip/setuptools/wheel viejos hacen fallar la build de pkuseg
+          # (dependencia de chatterbox) con un error de compilacion --
+          # bug conocido del paquete, se resuelve actualizando esto ANTES.
+          pip install --quiet -U pip setuptools wheel
           pip install --quiet soundfile numpy
           # Cada uno por separado y sin cortar la corrida: si un motor
-          # no instala, el banco igual prueba los otros dos.
+          # no instala, el banco igual prueba los demas.
           # torch en version CPU: la normal se trae ~2.5 GB de CUDA que
           # el runner no puede usar
           pip install --quiet --no-cache-dir torch torchaudio --index-url https://download.pytorch.org/whl/cpu || echo "AVISO: torch no instalo"
           pip install --quiet --no-cache-dir chatterbox-tts || echo "AVISO: chatterbox no instalo"
+          # MeloTTS no publica wheel en pypi -- se instala desde su repo.
+          (pip install --quiet git+https://github.com/myshell-ai/MeloTTS.git \
+            && python3 -m unidic download) || echo "AVISO: melotts no instalo"
           pip install --quiet "kokoro>=0.9" || echo "AVISO: kokoro no instalo"
           pip install --quiet pocket-tts    || echo "AVISO: pocket-tts no instalo"
           pip install --quiet piper-tts     || echo "AVISO: piper-tts no instalo"

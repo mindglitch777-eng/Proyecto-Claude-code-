@@ -7,7 +7,16 @@ POR QUE
     frase con varios motores libres para elegir de oido, que es la
     unica forma honesta de decidir esto.
 
-CANDIDATOS (los tres se pueden usar comercialmente)
+CANDIDATOS (todos se pueden usar comercialmente)
+    chatterbox  Resemble AI, MIT, ~0.5B. Multilingue con language_id="es".
+             En su propio estudio ciego le gana en preferencia a
+             ElevenLabs. Antes fallaba instalar por un bug conocido de
+             pkuseg (necesita pip/setuptools/wheel actualizados ANTES
+             de instalar) -- ya resuelto en el workflow.
+    melotts  MyShell AI, MIT, liviano, modelo dedicado en español
+             (myshell-ai/MeloTTS-Spanish). Pensado para tiempo real
+             incluso en CPU -- mas rapido que chatterbox, calidad mas
+             pareja aunque menos expresiva.
     kokoro   82M parametros, Apache-2.0, pensado para correr en CPU.
              Voz masculina en español: em_alex. La queja mas comun en
              su repo es que las voces en español estan "muy entrenadas
@@ -99,6 +108,24 @@ def probar_chatterbox(texto):
     return hechos
 
 
+def probar_melotts(texto):
+    """MeloTTS-Spanish (MyShell AI, MIT). Modelo dedicado en español,
+    no una voz generica multilingue -- deberia pronunciar mejor que
+    kokoro/chatterbox que reparten el mismo modelo entre 6-23 idiomas.
+    """
+    from melo.api import TTS
+
+    hechos = []
+    modelo = TTS(language="ES", device="cpu")
+    hablante = list(modelo.hps.data.spk2id.keys())[0]
+    wav = DESTINO / "tmp-melotts.wav"
+    modelo.tts_to_file(texto, modelo.hps.data.spk2id[hablante], str(wav), speed=0.95)
+    hechos += _a_mp3(wav, "melotts")
+    wav.unlink(missing_ok=True)
+    print(f"  [melotts] ok con hablante {hablante}")
+    return hechos
+
+
 def probar_kokoro(texto):
     """Kokoro-82M. lang_code 'e' es español; em_alex es la voz
     masculina. Devuelve 24 kHz."""
@@ -187,6 +214,7 @@ def main():
     DESTINO.mkdir(exist_ok=True)
     todo = []
     for nombre, fn in (("chatterbox", probar_chatterbox),
+                       ("melotts", probar_melotts),
                        ("kokoro", probar_kokoro),
                        ("pocket", probar_pocket),
                        ("piper", probar_piper)):
@@ -201,7 +229,9 @@ def main():
         "Frase:\n\n> " + texto + "\n\n## Archivos\n\n"
         + "\n".join(f"- `{h}`" for h in sorted(todo))
         + "\n\n## Licencias\n\n"
-        "- chatterbox (Resemble AI) — MIT, uso comercial libre, clona voz\n- kokoro — Apache-2.0, uso comercial libre\n"
+        "- chatterbox (Resemble AI) — MIT, uso comercial libre, clona voz\n"
+        "- melotts (MyShell AI) — MIT, uso comercial libre, modelo dedicado en español\n"
+        "- kokoro — Apache-2.0, uso comercial libre\n"
         "- pocket-tts (Kyutai) — MIT, uso comercial libre, ademas clona voz\n"
         "- piper — MIT, uso comercial libre\n",
         encoding="utf-8")
