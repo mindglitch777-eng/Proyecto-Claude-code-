@@ -12,53 +12,51 @@ import {Fondo} from './metraje';
 // que se sigan usando dibujos grandes con movimiento fluido.
 
 // ────────────────────────────────────────── 1. NARRACION VERTICAL
-// El texto que dice la voz en off aparece como una cinta continua que
-// sube (o baja) por la pantalla -- la linea activa queda grande y
-// destacada en el centro, las que ya pasaron o las que faltan se ven
-// chicas y tenues arriba/abajo. Nada corta de golpe: todo se desliza.
+// El texto que dice la voz en off toma TODA la pantalla, una frase a
+// la vez, en una cinta continua sin huecos: la frase entra con un
+// golpe rapido, ocupa toda la pantalla mientras dura, y en el mismo
+// instante en que se va entra la siguiente -- nunca hay un vacio en
+// el medio. Cada frase cambia de tipografia (familia, peso, ancho,
+// cursiva, mayusculas) para que la seguidilla tenga variedad visual
+// en vez de verse siempre igual.
+
+const ESTILOS_NARRACION: React.CSSProperties[] = [
+  {fontFamily: GROTESCA, fontWeight: 900, fontStretch: '64%', fontStyle: 'normal', textTransform: 'uppercase', letterSpacing: '-0.02em'},
+  {fontFamily: SERIF, fontWeight: 700, fontStyle: 'italic', textTransform: 'none', letterSpacing: '0em'},
+  {fontFamily: GROTESCA, fontWeight: 300, fontStretch: '122%', fontStyle: 'normal', textTransform: 'none', letterSpacing: '0.02em'},
+  {fontFamily: 'ui-monospace, monospace', fontWeight: 700, fontStyle: 'normal', textTransform: 'uppercase', letterSpacing: '0.03em'},
+  {fontFamily: SERIF, fontWeight: 900, fontStyle: 'normal', textTransform: 'none', letterSpacing: '-0.01em'},
+];
 
 export const NarracionVertical: React.FC<{lineas: string[]; direccion?: 'sube' | 'baja'}> = ({lineas, direccion = 'sube'}) => {
   const frame = useCurrentFrame();
   const {fps, durationInFrames} = useVideoConfig();
   const t = frame / fps;
   const dur = durationInFrames / fps;
-  const paso = 240;
-  // cada linea tiene su propia "franja" de tiempo (sincronizada 1 a 1
-  // con lo que va diciendo la voz) y SALTA a su lugar rapido (0.16s) en
-  // vez de deslizarse despacio y continuo durante todo el video -- el
-  // desplazamiento sigue existiendo (entra desde abajo/arriba), pero
-  // dura un instante, no la mitad del tiempo de la linea.
   const franja = dur / lineas.length;
   const idx = Math.min(lineas.length - 1, Math.floor(t / franja));
-  const tCambio = idx * franja;
-  const avance = interpolate(t, [tCambio, tCambio + 0.16], [(idx - 1) * paso, idx * paso], {
-    extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: (k) => 1 - Math.pow(1 - k, 2),
-  });
+  const localT = t - idx * franja;
   const signo = direccion === 'sube' ? 1 : -1;
+  // entra con un golpe rapido (0.14s) y se va con otro (0.16s) -- como
+  // las dos ventanas coinciden justo en el limite de cada franja, la
+  // frase que sale y la que entra se cruzan ahi mismo, sin hueco.
+  const entra = interpolate(localT, [0, 0.14], [0, 1], {extrapolateRight: 'clamp', easing: (k) => 1 - Math.pow(1 - k, 2)});
+  const sale = interpolate(localT, [franja - 0.16, franja], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const escala = interpolate(entra, [0, 1], [0.7, 1]) * (1 + sale * 0.18);
+  const desplazamiento = signo * (interpolate(entra, [0, 1], [70, 0]) - sale * 80);
+  const opacidad = Math.min(entra, 1 - sale);
+  const estilo = ESTILOS_NARRACION[idx % ESTILOS_NARRACION.length];
   return (
-    <AbsoluteFill style={{backgroundColor: PALETA.fondo, overflow: 'hidden'}}>
-      <AbsoluteFill style={{background: `linear-gradient(to bottom, ${PALETA.fondo} 0%, transparent 30%, transparent 70%, ${PALETA.fondo} 100%)`, zIndex: 2, pointerEvents: 'none'}} />
-      {lineas.map((l, i) => {
-        const y = signo * (i * paso - avance);
-        const dist = Math.abs(y);
-        const activo = dist < paso * 0.5;
-        const opacidad = interpolate(dist, [0, paso * 0.5, paso * 1.6], [1, 0.4, 0], {extrapolateRight: 'clamp'});
-        const escala = interpolate(dist, [0, paso * 1.4], [1, 0.7], {extrapolateRight: 'clamp'});
-        return (
-          <div
-            key={i}
-            style={{
-              position: 'absolute', left: 0, right: 0, top: '50%', padding: '0 8%',
-              transform: `translateY(${y}px) translateY(-50%) scale(${escala})`,
-              display: 'flex', justifyContent: 'center', opacity: opacidad,
-            }}
-          >
-            <div style={{fontFamily: GROTESCA, fontWeight: activo ? 800 : 600, fontSize: activo ? 72 : 46, color: activo ? PALETA.acento : PALETA.texto, textAlign: 'center', lineHeight: 1.16}}>
-              {l}
-            </div>
-          </div>
-        );
-      })}
+    <AbsoluteFill style={{backgroundColor: PALETA.fondo, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 5%', overflow: 'hidden'}}>
+      <div
+        style={{
+          ...estilo, fontSize: 96, lineHeight: 1.02, width: '100%', textAlign: 'center',
+          color: idx % 2 === 0 ? PALETA.acento : PALETA.texto,
+          transform: `translateY(${desplazamiento}px) scale(${escala})`, opacity: opacidad,
+        }}
+      >
+        {lineas[idx]}
+      </div>
     </AbsoluteFill>
   );
 };
