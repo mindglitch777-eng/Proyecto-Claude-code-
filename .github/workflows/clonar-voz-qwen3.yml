@@ -1,0 +1,118 @@
+name: clonar-voz-qwen3
+
+# Clona un candidato de referencia (de muestras_voz/referencias-candidatas/)
+# con Qwen3-TTS, modelo Base 1.7B (el unico que soporta --instruct para
+# controlar tono/energia). Genera una version neutral y variantes con
+# mas energia/ritmo para comparar contra el original.
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidato:
+        description: "Nombre del archivo de referencia (sin .mp3) en muestras_voz/referencias-candidatas/"
+        required: false
+        default: "librivox-19"
+      frase:
+        description: "Frase a sintetizar con la voz clonada"
+        required: false
+        default: "IA no es negocio. IA es velocidad. Probar más. Crear más. Medir más. ¿Qué podés vender? Este es el juego real."
+
+permissions:
+  contents: write
+
+jobs:
+  clonar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clonar y compilar el motor C
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libopenblas-dev ffmpeg
+          git clone --depth 1 https://github.com/gabriele-mastrapasqua/qwen3-tts /tmp/qwen3-tts
+          cd /tmp/qwen3-tts
+          make blas
+
+      - name: Descargar el modelo Base 1.7B
+        run: |
+          cd /tmp/qwen3-tts
+          # base-large: el modelo Base (soporta --ref-audio) en 1.7B
+          # (soporta --instruct; el 0.6B no tiene subespacio de emocion propio)
+          ./download_model.sh --model base-large --dir /tmp/qwen3-tts-modelo
+
+      - name: Preparar el audio de referencia (WAV, mono, 24kHz)
+        run: |
+          ffmpeg -y -loglevel error -i \
+            "muestras_voz/referencias-candidatas/${{ inputs.candidato }}.mp3" \
+            -ar 24000 -ac 1 /tmp/referencia.wav
+
+      - name: Generar clon neutral + variantes con mas energia
+        env:
+          FRASE: ${{ inputs.frase }}
+        run: |
+          mkdir -p muestras_voz/clones
+          cd /tmp/qwen3-tts
+          NOMBRE="${{ inputs.candidato }}"
+
+          echo "=== neutral ==="
+          ./qwen_tts -d /tmp/qwen3-tts-modelo --ref-audio /tmp/referencia.wav \
+            --text "$FRASE" --language Spanish \
+            -o "/tmp/clon-neutral.wav" || echo "AVISO: neutral fallo"
+
+          echo "=== energico (rate 1.15) ==="
+          ./qwen_tts -d /tmp/qwen3-tts-modelo --ref-audio /tmp/referencia.wav \
+            --text "$FRASE" --language Spanish \
+            --instruct "Speak with high energy, confidence and a fast, punchy, dynamic pace, like a hard-hitting documentary narrator" \
+            --rate 1.15 \
+            -o "/tmp/clon-energico1.wav" || echo "AVISO: energico1 fallo"
+
+          echo "=== mas energico (rate 1.25) ==="
+          ./qwen_tts -d /tmp/qwen3-tts-modelo --ref-audio /tmp/referencia.wav \
+            --text "$FRASE" --language Spanish \
+            --instruct "Speak with high energy, confidence and a fast, punchy, dynamic pace, like a hard-hitting documentary narrator" \
+            --rate 1.25 \
+            -o "/tmp/clon-energico2.wav" || echo "AVISO: energico2 fallo"
+
+          for variante in neutral energico1 energico2; do
+            if [ -f "/tmp/clon-$variante.wav" ]; then
+              ffmpeg -y -loglevel error -i "/tmp/clon-$variante.wav" -b:a 128k \
+                "$GITHUB_WORKSPACE/muestras_voz/clones/${NOMBRE}-clon-${variante}.mp3"
+            fi
+          done
+
+      - name: Realzar con la cadena de voz_piper.py
+        env:
+          CANDIDATO: ${{ inputs.candidato }}
+        run: |
+          pip install --quiet numpy
+          python3 -c "
+          import os, sys
+          sys.path.insert(0, '.')
+          from pathlib import Path
+          from voz_piper import realzar
+          import subprocess
+          candidato = os.environ['CANDIDATO']
+          for wav in Path('/tmp').glob('clon-*.wav'):
+              nombre = wav.stem
+              realzado = Path(f'/tmp/{nombre}-realzado.wav')
+              if realzar(wav, realzado):
+                  mp3 = Path(f'muestras_voz/clones/{candidato}-{nombre}-REALZADA.mp3')
+                  subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(realzado),
+                                  '-b:a', '128k', str(mp3)])
+          "
+
+      - name: Guardar en el repo
+        if: always()
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain muestras_voz)" ]; then
+            git add muestras_voz
+            git commit -m "Clon de ${{ inputs.candidato }}: neutral + variantes energicas"
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          else
+            echo "Sin cambios."
+          fi
