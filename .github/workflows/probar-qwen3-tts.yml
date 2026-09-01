@@ -1,0 +1,94 @@
+name: probar-qwen3-tts
+
+# Motor C puro de Qwen3-TTS (gabriele-mastrapasqua/qwen3-tts): sin
+# Python, sin PyTorch, sin GPU -- solo C + BLAS. Corre aca porque
+# necesita bajar el modelo (~3 GB) desde huggingface.co, bloqueado en
+# el entorno de Claude Code. Se probo que compila limpio en un runner
+# x86 identico a este (ver commit de este workflow).
+
+on:
+  workflow_dispatch:
+    inputs:
+      frase:
+        description: "Frase a sintetizar"
+        required: false
+        default: "La mitad de lo que venden los latinos no se vende acá. Se cobra en dólares, afuera. El problema no es el mercado: es que no sabés qué vender."
+      modelo:
+        description: "Tamaño de modelo"
+        required: false
+        default: "small"
+        type: choice
+        options: ["small", "large"]
+
+permissions:
+  contents: write
+
+jobs:
+  qwen3tts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clonar y compilar el motor C
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libopenblas-dev ffmpeg
+          git clone --depth 1 https://github.com/gabriele-mastrapasqua/qwen3-tts /tmp/qwen3-tts
+          cd /tmp/qwen3-tts
+          make blas
+
+      - name: Descargar el modelo
+        run: |
+          cd /tmp/qwen3-tts
+          # no interactivo: --model elige la opcion sin el menu
+          ./download_model.sh --model "${{ inputs.modelo }}" --dir /tmp/qwen3-tts-modelo
+
+      - name: Generar muestras (varias voces preset, todas en español)
+        env:
+          FRASE: ${{ inputs.frase }}
+        run: |
+          mkdir -p muestras_voz
+          cd /tmp/qwen3-tts
+          for voz in ryan vivian serena aiden; do
+            echo "=== $voz ==="
+            ./qwen_tts -d /tmp/qwen3-tts-modelo --text "$FRASE" \
+              --speaker "$voz" --language Spanish \
+              -o "/tmp/qwen3-$voz.wav" || echo "AVISO: $voz fallo"
+            if [ -f "/tmp/qwen3-$voz.wav" ]; then
+              ffmpeg -y -loglevel error -i "/tmp/qwen3-$voz.wav" -b:a 128k \
+                "$GITHUB_WORKSPACE/muestras_voz/qwen3tts-$voz-CRUDO.mp3"
+            fi
+          done
+
+      - name: Realzar con la cadena de voz_piper.py
+        run: |
+          pip install --quiet numpy
+          python3 -c "
+          import sys
+          sys.path.insert(0, '.')
+          from pathlib import Path
+          from voz_piper import realzar
+          import subprocess
+          for wav in Path('/tmp').glob('qwen3-*.wav'):
+              nombre = wav.stem.replace('qwen3-', '')
+              realzado = Path(f'/tmp/{nombre}-realzado.wav')
+              if realzar(wav, realzado):
+                  mp3 = Path(f'muestras_voz/qwen3tts-{nombre}-REALZADA.mp3')
+                  subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(realzado),
+                                  '-b:a', '128k', str(mp3)])
+          "
+
+      - name: Guardar en el repo
+        if: always()
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain muestras_voz)" ]; then
+            git add muestras_voz
+            git commit -m "Muestras: Qwen3-TTS motor C (voces preset, español)"
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          else
+            echo "Sin cambios."
+          fi
