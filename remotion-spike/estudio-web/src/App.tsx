@@ -1,9 +1,17 @@
+import type {PlayerRef} from '@remotion/player';
 import {Player} from '@remotion/player';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import type {NombreFigura} from '../../src/dibujo/figuras';
 import {Caso, CasoConfig, duracionCaso} from '../../src/documental/CasoGenerico';
+import {CASOS} from '../../src/documental/casos';
 import {ALTO, ANCHO, FPS} from '../../src/identidad';
 import './App.css';
+
+// Tipos de centro que este formulario sabe editar. 'diagrama' y
+// 'montaje' todavia no tienen UI propia -- los casos reales de esos
+// tipos no aparecen en el selector de abajo hasta que se sumen.
+const TIPOS_SOPORTADOS = new Set(['lineas', 'cronologia', 'balanza', 'antesDespues']);
+const CASOS_CARGABLES = CASOS.filter((c) => TIPOS_SOPORTADOS.has(c.centro.tipo));
 
 const FIGS: NombreFigura[] = [
   'lupa', 'ojo', 'etiqueta', 'foco', 'notebook', 'mensaje', 'gente', 'billete',
@@ -109,6 +117,42 @@ function construirCfg(e: Estado): CasoConfig {
   };
 }
 
+// Inversa de construirCfg: convierte un CasoConfig real (de casos.ts)
+// en el estado del formulario, para poder cargar y probar guiones que
+// ya existen en vez de escribir uno de prueba desde cero.
+function estadoDesdeCfg(cfg: CasoConfig): Estado {
+  const base = estadoDefault();
+  const centro = cfg.centro;
+  const cifra = cfg.cifra;
+  return {
+    ...base,
+    slug: cfg.slug,
+    hook: cfg.hook,
+    hookDinero: !!cfg.hookDinero,
+    centroTipo: (TIPOS_SOPORTADOS.has(centro.tipo) ? centro.tipo : 'lineas') as CentroTipo,
+    items: centro.tipo === 'lineas' ? centro.items.map((i) => ({txt: i.txt, fig: i.fig ?? 'lupa'})) : base.items,
+    hitos: centro.tipo === 'cronologia' ? centro.hitos.map((h) => ({cuando: h.cuando, que: h.que})) : base.hitos,
+    izq: centro.tipo === 'balanza' ? centro.izq : base.izq,
+    der: centro.tipo === 'balanza' ? centro.der : base.der,
+    pie: centro.tipo === 'balanza' ? centro.pie ?? '' : base.pie,
+    antes: centro.tipo === 'antesDespues' ? centro.antes : base.antes,
+    despues: centro.tipo === 'antesDespues' ? centro.despues : base.despues,
+    cifraActiva: !!cifra,
+    cifraTipo: cifra?.tipo === 'contador' ? 'contador' : 'cifraSeCae',
+    cifra: {
+      arriba: cifra?.arriba ?? '',
+      de: cifra?.tipo === 'cifraSeCae' ? cifra.de : '',
+      a: cifra?.tipo === 'cifraSeCae' ? cifra.a : '',
+      abajo: cifra?.abajo ?? '',
+      hasta: cifra?.tipo === 'contador' ? cifra.hasta : 0,
+      prefijo: cifra?.tipo === 'contador' ? cifra.prefijo ?? '' : '',
+      sufijo: cifra?.tipo === 'contador' ? cifra.sufijo ?? '' : '',
+    },
+    cifraDinero: !!cfg.cifraDinero,
+    final: cfg.final,
+  };
+}
+
 function Conmutador({activo, titulo, sub, onClick}: {activo: boolean; titulo: string; sub: string; onClick: () => void}) {
   return (
     <div className="conmutador" onClick={onClick}>
@@ -129,6 +173,15 @@ function FilaLista({valor, onCambio, onQuitar, placeholder}: {valor: string; onC
 
 export function App() {
   const [estado, setEstado] = useState<Estado>(cargarEstado);
+  const playerRef = useRef<PlayerRef>(null);
+
+  // al cargar otro caso desde el selector, arrancar la vista previa
+  // de nuevo desde el frame 0 -- si no, sigue desde donde iba el
+  // caso anterior y confunde (parece que "no cambio nada").
+  function cargarCaso(cfg: CasoConfig) {
+    setEstado(estadoDesdeCfg(cfg));
+    playerRef.current?.seekTo(0);
+  }
 
   useEffect(() => {
     try { localStorage.setItem(CLAVE, JSON.stringify(estado)); } catch { /* ignorar */ }
@@ -157,6 +210,21 @@ export function App() {
           <div className="chip ok"><b>$</b> lluvia de dinero activa</div>
         )}
       </div>
+
+      <label className="campo">Cargar un caso real de la serie (para probar)</label>
+      <select
+        defaultValue=""
+        onChange={(ev) => {
+          const c = CASOS_CARGABLES.find((x) => x.slug === ev.target.value);
+          if (c) cargarCaso(c);
+        }}
+        style={{marginBottom: 20}}
+      >
+        <option value="" disabled>Elegir caso...</option>
+        {CASOS_CARGABLES.map((c) => (
+          <option key={c.slug} value={c.slug}>{c.slug} ({c.centro.tipo})</option>
+        ))}
+      </select>
 
       <div className="grilla">
         <div>
@@ -329,6 +397,7 @@ export function App() {
         <div className="columna-preview">
           <div className="marco-player">
             <Player
+              ref={playerRef}
               component={Caso}
               inputProps={{cfg}}
               durationInFrames={frames}
