@@ -20,12 +20,12 @@ import {Fondo} from './metraje';
 // cursiva, mayusculas) para que la seguidilla tenga variedad visual
 // en vez de verse siempre igual.
 
-const ESTILOS_NARRACION: React.CSSProperties[] = [
-  {fontFamily: GROTESCA, fontWeight: 900, fontStretch: '64%', fontStyle: 'normal', textTransform: 'uppercase', letterSpacing: '-0.02em'},
-  {fontFamily: SERIF, fontWeight: 700, fontStyle: 'italic', textTransform: 'none', letterSpacing: '0em'},
-  {fontFamily: GROTESCA, fontWeight: 300, fontStretch: '122%', fontStyle: 'normal', textTransform: 'none', letterSpacing: '0.02em'},
-  {fontFamily: 'ui-monospace, monospace', fontWeight: 700, fontStyle: 'normal', textTransform: 'uppercase', letterSpacing: '0.03em'},
-  {fontFamily: SERIF, fontWeight: 900, fontStyle: 'normal', textTransform: 'none', letterSpacing: '-0.01em'},
+const ESTILOS_NARRACION: (React.CSSProperties & {fondo: string; texto: string})[] = [
+  {fontFamily: GROTESCA, fontWeight: 900, fontStretch: '64%', fontStyle: 'normal', textTransform: 'uppercase', letterSpacing: '-0.02em', fondo: '#0A0A0C', texto: PALETA.acento},
+  {fontFamily: SERIF, fontWeight: 700, fontStyle: 'italic', textTransform: 'none', letterSpacing: '0em', fondo: '#1a0f08', texto: '#ffb37a'},
+  {fontFamily: GROTESCA, fontWeight: 300, fontStretch: '122%', fontStyle: 'normal', textTransform: 'none', letterSpacing: '0.02em', fondo: '#0c1420', texto: '#7fd4ff'},
+  {fontFamily: 'ui-monospace, monospace', fontWeight: 700, fontStyle: 'normal', textTransform: 'uppercase', letterSpacing: '0.03em', fondo: '#0a1a10', texto: '#8dffb0'},
+  {fontFamily: SERIF, fontWeight: 900, fontStyle: 'normal', textTransform: 'none', letterSpacing: '-0.01em', fondo: '#1c0a14', texto: PALETA.texto},
 ];
 
 export const NarracionVertical: React.FC<{lineas: string[]; direccion?: 'sube' | 'baja'}> = ({lineas, direccion = 'sube'}) => {
@@ -46,12 +46,29 @@ export const NarracionVertical: React.FC<{lineas: string[]; direccion?: 'sube' |
   const desplazamiento = signo * (interpolate(entra, [0, 1], [70, 0]) - sale * 80);
   const opacidad = Math.min(entra, 1 - sale);
   const estilo = ESTILOS_NARRACION[idx % ESTILOS_NARRACION.length];
+  // el numero de fondo (frase actual / total) gigante y traslucido llena
+  // el espacio muerto arriba/abajo del texto -- ademas de decorativo,
+  // marca visualmente el avance de la cinta de frases.
+  const numEntra = interpolate(localT, [0, 0.3], [0, 1], {extrapolateRight: 'clamp', easing: (k) => 1 - Math.pow(1 - k, 3)});
+  // el tamano de letra se auto-ajusta: frases cortas ocupan mas pantalla,
+  // frases largas se achican lo justo para no desbordar el ancho.
+  const largo = lineas[idx].length;
+  const fontSize = Math.max(64, Math.min(150, 2400 / Math.max(largo, 10)));
   return (
-    <AbsoluteFill style={{backgroundColor: PALETA.fondo, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 5%', overflow: 'hidden'}}>
+    <AbsoluteFill style={{backgroundColor: estilo.fondo, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 6%', overflow: 'hidden'}}>
       <div
         style={{
-          ...estilo, fontSize: 96, lineHeight: 1.02, width: '100%', textAlign: 'center',
-          color: idx % 2 === 0 ? PALETA.acento : PALETA.texto,
+          position: 'absolute', top: '50%', left: '50%', fontFamily: GROTESCA, fontWeight: 900,
+          fontSize: 640, color: estilo.texto, opacity: 0.08 * numEntra,
+          transform: `translate(-50%,-50%) scale(${interpolate(numEntra, [0, 1], [0.85, 1])})`,
+        }}
+      >
+        {idx + 1}
+      </div>
+      <div
+        style={{
+          ...estilo, fontSize, lineHeight: 1.05, width: '100%', textAlign: 'center',
+          color: estilo.texto,
           transform: `translateY(${desplazamiento}px) scale(${escala})`, opacity: opacidad,
         }}
       >
