@@ -285,7 +285,7 @@ const ElDinero: React.FC = () => {
       ) : (
         <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           <ConGolpe t0={3.4}>
-            <Grande txt="No fue magia." tam={90} />
+            <Grande txt="No fue magia. Fue método." tam={80} />
           </ConGolpe>
         </AbsoluteFill>
       )}
@@ -360,7 +360,7 @@ const Cierre: React.FC = () => {
       ) : (
         <AbsoluteFill style={{backgroundColor: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           <ConGolpe t0={5.2}>
-            <Grande txt="Este es el juego." tam={78} />
+            <Grande txt="Este es el juego real." tam={70} />
           </ConGolpe>
         </AbsoluteFill>
       )}

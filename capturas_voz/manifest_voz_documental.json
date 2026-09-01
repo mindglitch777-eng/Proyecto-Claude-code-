@@ -127,7 +127,7 @@
   {
     "slug": "rebecca-beach",
     "index": 25,
-    "texto": "No fue magia."
+    "texto": "No fue magia. Fue método."
   },
   {
     "slug": "rebecca-beach",
@@ -162,7 +162,7 @@
   {
     "slug": "rebecca-beach",
     "index": 32,
-    "texto": "Este es el juego."
+    "texto": "Este es el juego real."
   },
   {
     "slug": "rebecca-beach",
@@ -177,32 +177,32 @@
   {
     "slug": "taylor-posada",
     "index": 0,
-    "texto": "Dejó un trabajo de $50.000 al año."
+    "texto": "Renunció a un sueldo de $50.000 al año."
   },
   {
     "slug": "taylor-posada",
     "index": 1,
-    "texto": "4 meses después, una tienda facturó $175.194."
+    "texto": "Cuatro meses después facturó $175.194."
   },
   {
     "slug": "taylor-posada",
     "index": 2,
-    "texto": "Qué producto atraía"
+    "texto": "Qué producto hacía parar el scroll"
   },
   {
     "slug": "taylor-posada",
     "index": 3,
-    "texto": "Qué diseño funcionaba"
+    "texto": "Qué diseño vendía sin decir una palabra"
   },
   {
     "slug": "taylor-posada",
     "index": 4,
-    "texto": "Qué precio tenía sentido"
+    "texto": "Qué precio no espantaba al comprador"
   },
   {
     "slug": "taylor-posada",
     "index": 5,
-    "texto": "Qué imagen conseguía clics"
+    "texto": "Qué imagen paraba el pulgar"
   },
   {
     "slug": "taylor-posada",
@@ -222,27 +222,27 @@
   {
     "slug": "taylor-posada",
     "index": 9,
-    "texto": "Esa diferencia es la que importa"
+    "texto": "Esa es la plata que se lleva a casa. La otra es humo"
   },
   {
     "slug": "taylor-posada",
     "index": 10,
-    "texto": "Facturar no es ganar."
+    "texto": "Facturar no es ganar. Dejá de confundirlos."
   },
   {
     "slug": "taylor-posada",
     "index": 11,
-    "texto": "Los números importan cuando entendés qué parte del sistema produce dinero."
+    "texto": "La plata real está en entender qué parte del sistema la produce."
   },
   {
     "slug": "caso-03",
     "index": 0,
-    "texto": "Generó $4.699 en 15 días vendiendo un producto digital."
+    "texto": "Generó $4.699 en 15 días con un PDF."
   },
   {
     "slug": "caso-03",
     "index": 1,
-    "texto": "Y lo hizo desde Latinoamérica."
+    "texto": "Sentado en Latinoamérica. No en Silicon Valley."
   },
   {
     "slug": "caso-03",
@@ -262,47 +262,47 @@
   {
     "slug": "caso-03",
     "index": 5,
-    "texto": "El PDF no era la máquina: era todo lo de alrededor"
+    "texto": "El PDF no vendió nada solo: vendió todo lo de alrededor"
   },
   {
     "slug": "caso-03",
     "index": 6,
-    "texto": "Crear un PDF puede ser fácil."
+    "texto": "Crear el PDF es lo fácil. Lo hace cualquiera en una tarde."
   },
   {
     "slug": "caso-03",
     "index": 7,
-    "texto": "Conseguir que alguien saque la tarjeta es otra historia."
+    "texto": "Conseguir que alguien saque la tarjeta es el negocio real."
   },
   {
     "slug": "caso-04",
     "index": 0,
-    "texto": "Facturó más de $35.000 con un solo producto digital."
+    "texto": "Facturó más de $35.000 con UN solo producto."
   },
   {
     "slug": "caso-04",
     "index": 1,
-    "texto": "Pero mirá cómo llegó hasta ahí."
+    "texto": "Y no, no fue suerte. Mirá el camino."
   },
   {
     "slug": "caso-04",
     "index": 2,
-    "texto": "Conocimiento convertido en oferta"
+    "texto": "Lo que ya sabía, convertido en oferta"
   },
   {
     "slug": "caso-04",
     "index": 3,
-    "texto": "Contenido alrededor del problema"
+    "texto": "Contenido que hablaba del problema, no del producto"
   },
   {
     "slug": "caso-04",
     "index": 4,
-    "texto": "El contenido atrae gente"
+    "texto": "Ese contenido atrajo gente sola"
   },
   {
     "slug": "caso-04",
     "index": 5,
-    "texto": "Se vende una y otra vez"
+    "texto": "El producto se vendió una y otra vez, dormido"
   },
   {
     "slug": "caso-04",
@@ -317,7 +317,7 @@
   {
     "slug": "caso-04",
     "index": 8,
-    "texto": "Costo de reproducirlo: casi cero"
+    "texto": "Costo de venderlo de nuevo: casi cero"
   },
   {
     "slug": "caso-04",
@@ -327,17 +327,17 @@
   {
     "slug": "caso-04",
     "index": 10,
-    "texto": "La batalla es conseguir atención y convertirla."
+    "texto": "La verdadera pelea es por la atención, no por el producto."
   },
   {
     "slug": "caso-05",
     "index": 0,
-    "texto": "Construyeron un negocio de productos digitales."
+    "texto": "Armaron un negocio de productos digitales."
   },
   {
     "slug": "caso-05",
     "index": 1,
-    "texto": "Después construyeron una IA para escalarlo."
+    "texto": "Y cuando funcionó, construyeron una IA para multiplicarlo."
   },
   {
     "slug": "caso-05",
@@ -352,7 +352,7 @@
   {
     "slug": "caso-05",
     "index": 4,
-    "texto": "Ya no vendían un producto: vendían la infraestructura"
+    "texto": "Dejaron de vender un producto: empezaron a vender la máquina"
   },
   {
     "slug": "caso-05",
@@ -362,17 +362,17 @@
   {
     "slug": "caso-05",
     "index": 6,
-    "texto": "...y construir una alrededor de un problema que ya sabés que existe."
+    "texto": "...y construir un negocio alrededor de un problema real."
   },
   {
     "slug": "caso-06",
     "index": 0,
-    "texto": "Más de $7.000 de beneficio en un mes vendiendo imágenes con IA."
+    "texto": "Más de $7.000 de ganancia en un mes vendiendo imágenes con IA."
   },
   {
     "slug": "caso-06",
     "index": 1,
-    "texto": "Pero no lo hizo solo."
+    "texto": "Y no, no lo hizo solo. Ese es el dato que nadie cuenta."
   },
   {
     "slug": "caso-06",
@@ -387,52 +387,52 @@
   {
     "slug": "caso-06",
     "index": 4,
-    "texto": "El equipo, no la IA sola, fue lo que escaló"
+    "texto": "El equipo escaló esto. La IA sola nunca lo hubiera hecho"
   },
   {
     "slug": "caso-06",
     "index": 5,
-    "texto": "Una herramienta puede ayudarte a crear."
+    "texto": "Una herramienta te ayuda a crear más rápido."
   },
   {
     "slug": "caso-06",
     "index": 6,
-    "texto": "Un sistema es lo que permite escalar."
+    "texto": "Un sistema con gente es lo único que te hace escalar."
   },
   {
     "slug": "caso-07",
     "index": 0,
-    "texto": "Convirtió plantillas de Canva en casi $12.000 de revenue."
+    "texto": "Convirtió plantillas de Canva en casi $12.000."
   },
   {
     "slug": "caso-07",
     "index": 1,
-    "texto": "Pero estás mirando la parte equivocada."
+    "texto": "Y estás a punto de mirar la parte equivocada de esta historia."
   },
   {
     "slug": "caso-07",
     "index": 2,
-    "texto": "Mismo producto, listing débil"
+    "texto": "El mismo producto con un listing débil"
   },
   {
     "slug": "caso-07",
     "index": 3,
-    "texto": "Mismo producto, listing optimizado"
+    "texto": "El mismo producto con un listing que vende"
   },
   {
     "slug": "caso-07",
     "index": 4,
-    "texto": "El listing vende antes que vos"
+    "texto": "El listing vende antes de que vos digas una palabra"
   },
   {
     "slug": "caso-07",
     "index": 5,
-    "texto": "Antes de crear otro producto..."
+    "texto": "Antes de inventar otro producto..."
   },
   {
     "slug": "caso-07",
     "index": 6,
-    "texto": "...mejorá cómo estás vendiendo el que ya tenés."
+    "texto": "...arreglá cómo estás vendiendo el que ya tenés."
   },
   {
     "slug": "caso-08",
@@ -442,52 +442,52 @@
   {
     "slug": "caso-08",
     "index": 1,
-    "texto": "Sin atajos."
+    "texto": "Sin atajos, sin trucos, sin excusas."
   },
   {
     "slug": "caso-08",
     "index": 2,
-    "texto": "MES 1: Primeras ventas"
+    "texto": "MES 1: Las primeras ventas, más flojas de lo que esperaba"
   },
   {
     "slug": "caso-08",
     "index": 3,
-    "texto": "MES 3: Empieza a aparecer información real"
+    "texto": "MES 3: Empieza a aparecer información real, no ilusiones"
   },
   {
     "slug": "caso-08",
     "index": 4,
-    "texto": "MES 12: Ya no tenés una opinión: tenés datos"
+    "texto": "MES 12: Ya no opina: tiene datos"
   },
   {
     "slug": "caso-08",
     "index": 5,
-    "texto": "Una semana puede demostrar que algo es posible."
+    "texto": "Una semana demuestra que algo es posible."
   },
   {
     "slug": "caso-08",
     "index": 6,
-    "texto": "Un año puede demostrar cómo funciona realmente."
+    "texto": "Un año demuestra si de verdad funciona."
   },
   {
     "slug": "caso-09",
     "index": 0,
-    "texto": "Convirtió algo que podés generar con ChatGPT en más de 40 productos."
+    "texto": "Convirtió algo que ChatGPT hace gratis en más de 40 productos pagos."
   },
   {
     "slug": "caso-09",
     "index": 1,
-    "texto": "Ahí está el detalle."
+    "texto": "Ahí está la trampa que nadie ve."
   },
   {
     "slug": "caso-09",
     "index": 2,
-    "texto": "No un prompt genérico"
+    "texto": "No vendió un prompt genérico"
   },
   {
     "slug": "caso-09",
     "index": 3,
-    "texto": "Una solución para cada problema"
+    "texto": "Vendió una solución distinta para cada problema"
   },
   {
     "slug": "caso-09",
@@ -497,17 +497,17 @@
   {
     "slug": "caso-09",
     "index": 5,
-    "texto": "El secreto no era la cantidad: era la especificidad"
+    "texto": "El secreto nunca fue la cantidad: fue la especificidad"
   },
   {
     "slug": "caso-09",
     "index": 6,
-    "texto": "Un prompt genérico compite con millones."
+    "texto": "Un prompt genérico compite contra millones de prompts iguales."
   },
   {
     "slug": "caso-09",
     "index": 7,
-    "texto": "Una solución específica compite con muchos menos."
+    "texto": "Una solución específica casi no tiene competencia."
   },
   {
     "slug": "caso-10",
@@ -517,7 +517,7 @@
   {
     "slug": "caso-10",
     "index": 1,
-    "texto": "¿Y si su trabajo fuera conseguirte tu primer comprador?"
+    "texto": "¿Y si su único trabajo fuera conseguirte el primer comprador?"
   },
   {
     "slug": "caso-10",
@@ -542,22 +542,22 @@
   {
     "slug": "caso-10",
     "index": 6,
-    "texto": "Demuestra que alguien estuvo dispuesto a pagarte."
+    "texto": "Demuestra que alguien, al fin, estuvo dispuesto a pagarte."
   },
   {
     "slug": "caso-11",
     "index": 0,
-    "texto": "Este tipo de producto parece demasiado chico para ser un negocio."
+    "texto": "Este producto parece demasiado chico para ser un negocio."
   },
   {
     "slug": "caso-11",
     "index": 1,
-    "texto": "Por eso puede funcionar."
+    "texto": "Por eso funciona."
   },
   {
     "slug": "caso-11",
     "index": 2,
-    "texto": "Un producto para todo el mundo"
+    "texto": "Un producto pensado para todo el mundo"
   },
   {
     "slug": "caso-11",
@@ -567,7 +567,7 @@
   {
     "slug": "caso-11",
     "index": 4,
-    "texto": "La especificidad no es debilidad: es posicionamiento"
+    "texto": "La especificidad no te achica: te posiciona"
   },
   {
     "slug": "caso-11",
@@ -577,7 +577,7 @@
   {
     "slug": "caso-11",
     "index": 6,
-    "texto": "A veces el dinero está en un problema chico que nadie resuelve bien."
+    "texto": "A veces la plata está en el problema chico que nadie quiere resolver."
   },
   {
     "slug": "caso-12",
@@ -587,7 +587,7 @@
   {
     "slug": "caso-12",
     "index": 1,
-    "texto": "Ahora cualquiera puede hacerlo."
+    "texto": "Ahora cualquiera puede hacerlo. Cualquiera."
   },
   {
     "slug": "caso-12",
@@ -597,32 +597,32 @@
   {
     "slug": "caso-12",
     "index": 3,
-    "texto": "AHORA: Producir es gratis. Elegir es la ventaja"
+    "texto": "AHORA: Producir ya es gratis. Ahora la ventaja es saber elegir"
   },
   {
     "slug": "caso-12",
     "index": 4,
-    "texto": "La IA bajó el costo de crear."
+    "texto": "La IA bajó el costo de crear a cero."
   },
   {
     "slug": "caso-12",
     "index": 5,
-    "texto": "Ahora la pregunta es quién crea algo que realmente importe."
+    "texto": "La única pregunta que queda es quién crea algo que valga la pena."
   },
   {
     "slug": "caso-13",
     "index": 0,
-    "texto": "Una pregunta de un cliente puede valer más que 100 horas inventando un producto."
+    "texto": "Una sola pregunta de un cliente vale más que 100 horas inventando un producto de la nada."
   },
   {
     "slug": "caso-13",
     "index": 1,
-    "texto": "El primer cliente no solo te da dinero."
+    "texto": "El primer cliente no solo te paga."
   },
   {
     "slug": "caso-13",
     "index": 2,
-    "texto": "Puede darte la idea del próximo producto."
+    "texto": "Te puede regalar la idea de tu próximo producto."
   },
   {
     "slug": "caso-14",
@@ -632,7 +632,7 @@
   {
     "slug": "caso-14",
     "index": 1,
-    "texto": "crear 30 días y descubrir que nadie quería comprarlo."
+    "texto": "pasar 30 días creando algo que nadie iba a comprar."
   },
   {
     "slug": "caso-14",
@@ -647,12 +647,12 @@
   {
     "slug": "caso-14",
     "index": 4,
-    "texto": "No construyas para descubrir si existe demanda."
+    "texto": "No construyas para ver si hay demanda."
   },
   {
     "slug": "caso-14",
     "index": 5,
-    "texto": "Descubrí la demanda. Después construí."
+    "texto": "Encontrá la demanda primero. Después construí."
   },
   {
     "slug": "caso-15",
@@ -662,7 +662,7 @@
   {
     "slug": "caso-15",
     "index": 1,
-    "texto": "Mirá la cantidad de modelos que hay detrás."
+    "texto": "Y no fue con un solo producto: mirá todo lo que armó detrás."
   },
   {
     "slug": "caso-15",
@@ -702,12 +702,12 @@
   {
     "slug": "caso-15",
     "index": 9,
-    "texto": "El objetivo no es vender una cosa."
+    "texto": "El objetivo nunca fue vender una sola cosa."
   },
   {
     "slug": "caso-15",
     "index": 10,
-    "texto": "Es construir un sistema donde cada venta te acerque a la siguiente."
+    "texto": "Fue construir un sistema donde cada venta empuja a la siguiente."
   },
   {
     "slug": "caso-16",
@@ -717,7 +717,7 @@
   {
     "slug": "caso-16",
     "index": 1,
-    "texto": "¿Cuánto trabajo imaginás? Probablemente demasiado."
+    "texto": "¿Cuánto trabajo imaginás? Casi seguro que estás exagerando."
   },
   {
     "slug": "caso-16",
@@ -757,7 +757,7 @@
   {
     "slug": "caso-16",
     "index": 9,
-    "texto": "A veces significa encontrar qué partes de tu trabajo pueden ser sistemas."
+    "texto": "A veces significa encontrar qué parte de tu trabajo se puede repetir sola."
   },
   {
     "slug": "caso-17",
@@ -767,7 +767,7 @@
   {
     "slug": "caso-17",
     "index": 1,
-    "texto": "Tan específico que nadie pensaría en venderlo."
+    "texto": "Tan específico que nadie lo iba a comprar. Eso pensaban."
   },
   {
     "slug": "caso-17",
@@ -787,17 +787,17 @@
   {
     "slug": "caso-17",
     "index": 5,
-    "texto": "Un producto mediocre para millones puede vender menos..."
+    "texto": "Un producto mediocre para millones vende menos..."
   },
   {
     "slug": "caso-17",
     "index": 6,
-    "texto": "...que una solución excelente para un grupo pequeño."
+    "texto": "...que una solución excelente para un grupo chico que sí lo necesita."
   },
   {
     "slug": "caso-18",
     "index": 0,
-    "texto": "Imaginá una fábrica que convierte una idea en un producto digital en horas."
+    "texto": "Imaginate una fábrica que convierte una idea en producto en horas."
   },
   {
     "slug": "caso-18",
@@ -807,22 +807,22 @@
   {
     "slug": "caso-18",
     "index": 2,
-    "texto": "Producir rápido una mala idea solo te permite fracasar más rápido."
+    "texto": "Producir rápido una mala idea solo te hace fracasar más rápido."
   },
   {
     "slug": "caso-18",
     "index": 3,
-    "texto": "La fábrica real es la que aprende qué merece ser producido."
+    "texto": "La fábrica de verdad es la que sabe qué merece ser producido."
   },
   {
     "slug": "caso-19",
     "index": 0,
-    "texto": "Analizamos personas que hacen dinero con productos digitales."
+    "texto": "Analizamos a gente que hace dinero con productos digitales."
   },
   {
     "slug": "caso-19",
     "index": 1,
-    "texto": "Casi ninguna lo hace igual."
+    "texto": "Casi ninguno lo hace de la misma forma."
   },
   {
     "slug": "caso-19",
@@ -857,12 +857,12 @@
   {
     "slug": "caso-19",
     "index": 8,
-    "texto": "No existe un único camino. Existe un proceso."
+    "texto": "No hay un único camino. Hay un proceso."
   },
   {
     "slug": "caso-19",
     "index": 9,
-    "texto": "Probar. Medir. Aprender. Repetir."
+    "texto": "Probar. Medir. Aprender. Repetir. Ese es el verdadero secreto."
   },
   {
     "slug": "caso-20",
@@ -882,6 +882,6 @@
   {
     "slug": "caso-20",
     "index": 3,
-    "texto": "Era encontrar uno que mereciera convertirse en cien."
+    "texto": "Era encontrar UNO que mereciera convertirse en cien."
   }
 ]
