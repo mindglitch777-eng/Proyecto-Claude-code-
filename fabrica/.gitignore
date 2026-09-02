@@ -1,0 +1,5 @@
+node_modules/
+_salida_voz/
+# Audio concatenado que genera ejemplos/generar_demo_01.ts -- se
+# regenera con `npm run demo-punta-a-punta` (necesita ffmpeg nomas).
+ejemplos/demo_01/

@@ -844,3 +844,75 @@ experimentos + memoria de resultados reales, en vez de switch-case
 rígidos como los que tiene `CasoGenerico.tsx` hoy. Ver propuesta de
 arquitectura en `NUEVA_FABRICA.md` (fase de diseño, sin implementar
 todavía).
+
+## 2026-09-02 (continuación) — Nueva fábrica: primera implementación real (Fases 2-9)
+
+El operador aprobó la propuesta de `NUEVA_FABRICA.md` con 3 aclaraciones
+(descartar `receta/` sin investigarlo, la fábrica nueva es independiente
+de los sistemas viejos, seguir las 12 fases) y pidió avanzar todo lo
+posible en la sesión sin esperar aprobación por cada paso, documentando
+bloqueos en vez de inventar soluciones. Resultado: `fabrica/` (paquete
+Node standalone + módulos Python), Fases 2 a 9 con código real,
+probado, no solo estructura de carpetas.
+
+**Lo que quedó funcionando y probado (`cd fabrica && npm run
+test-todo`, todo verde):**
+- `voz/normalizador.py` — números/dinero/porcentajes/años a texto
+  hablado en español (reglas reales de apócope: "veintiún mil", "un
+  millón DE dólares", etc.), con tests que reprodujeron y corrigieron
+  2 bugs reales de la primera versión (100→"cien uno" en vez de
+  "ciento uno"; 21000→"veintiuno mil" en vez de "veintiún mil").
+- `voz/contrato.py` — tipo `UnidadNarrativa` + orquestador que reusa
+  el motor real (`generar_voz_documental_qwen.py` + `voz_piper.py`),
+  wiring probado (no ejecución completa: el motor C no corre en este
+  sandbox, ver `fabrica/PENDIENTES.md`).
+- `componentes/registro.json` + `schema.json` + `validar_registro.ts`
+  — 17 componentes catalogados (13 leyendo el código real de
+  `remotion-spike/src/escenas|dibujo/*.tsx`, 4 por nombre nomás,
+  marcados `sin_validar`); el validador cruza cada entrada contra el
+  archivo real (no confía en que el JSON esté bien escrito).
+- `directores/visual.ts` — Director Visual real: filtra+puntúa el
+  registro por categoría/intensidad/capacidad de texto/assets/
+  duración real/anti-repetición, nunca por nombre de componente.
+- `directores/audio.ts` — decide golpe/volumen por unidad sobre el
+  vocabulario real de `golpes.tsx`. Música de fondo queda
+  explícitamente sin resolver (era pendiente de todo el proyecto antes
+  de esta sesión).
+- `assets/resolver.py` — busca en `assets/biblioteca`/`personas`/
+  `metraje_video` reales por palabras clave, con curación honesta
+  (`assets/tags.json` marcado como aproximación, no verificación
+  visual); devuelve FALTANTE explícito en vez de inventar un match.
+- `qa/checks_duros.py` — ffprobe/ffmpeg reales (duración, audio,
+  resolución, fps, silencios, pantallas negras, volumen/clipping).
+- `memoria/api.ts` — historial de componentes usados (anti-repetición)
+  + laboratorio (hipótesis/experimento/resultado real/conclusión),
+  separación estricta: nunca se escribe un resultado real sin fuente.
+- `composicion/armar.ts` + `remotion-spike/src/fabrica_bridge/
+  FabricaVideo.tsx` — **probado de punta a punta con un render real**
+  (`fabrica-demo-01`, `fabrica/ejemplos/generar_demo_01.ts`): el
+  Director Visual eligió "cronologia" y "contador" sin que nadie los
+  nombrara a mano, usando audio real ya generado de la serie
+  documental: renderizó bien al primer intento (17.56s, video+audio,
+  verificado con el propio `checks_duros.py`).
+
+**Bug real encontrado y corregido en el camino:** ese mismo render
+expuso que `checks_duros.py` marcaba el fondo de marca casi-negro de
+la serie (`PALETA.fondo = #0A0A0C`) como "pantalla negra sospechosa"
+por un `pix_th` de `blackdetect` mal calibrado para un fondo tan
+oscuro -- correjido (`pix_th=0.035`) con test de regresión que prueba
+las dos cosas: el fondo de marca ya NO dispara la alerta, el negro
+puro (`#000`, el que usa `CifraBeat` con `dinero=true`) SIGUE
+disparándola.
+
+**Lo que quedó deliberadamente sin resolver (documentado en
+`fabrica/PENDIENTES.md`, no inventado):** timestamps palabra-por-
+palabra de Qwen3-TTS, licencia comercial exacta del motor/modelo,
+calidad de pronunciación de cifras normalizadas (sin medir
+auditivamente todavía), ideación automática de guion (requeriría un
+LLM de pago, se sigue haciendo conversando gratis), generalizar el
+patrón de "varios audios superpuestos en un mismo bloque" (`AudioCentro`)
+a la fábrica nueva, y catalogar los ~28 componentes restantes de
+`escenas/`/`agresivo/` que no se leyeron todavía.
+
+Ver `fabrica/README.md` para el estado fase por fase y cómo correr
+cada sistema.

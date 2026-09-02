@@ -10,6 +10,8 @@ import {StressTest, DUR_STRESS} from './stress/StressTest';
 import {RebeccaBeach, DUR_REBECCA} from './documental/RebeccaBeach';
 import {Caso, duracionCaso} from './documental/CasoGenerico';
 import {CASOS} from './documental/casos';
+import {FabricaVideo, ArbolFabrica} from './fabrica_bridge/FabricaVideo';
+import demo01 from './fabrica_bridge/demo_01.json';
 import {Video} from './receta/Video';
 import {GUIONES} from './receta/guiones';
 import {compilar} from './receta/compilar';
@@ -64,6 +66,21 @@ export const Root: React.FC = () => {
         />
       ))}
       <Composition id="stress" component={StressTest} durationInFrames={Math.round(DUR_STRESS * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
+      {/* Prueba de punta a punta de la nueva fabrica (fabrica/ en la
+          raiz del repo, independiente de todo lo demas en este
+          archivo): el arbol sale de fabrica/ejemplos/generar_demo_01.ts,
+          que ya corrio el Director Visual + Director de Audio +
+          Composicion reales -- esto solo renderiza lo que esos
+          sistemas decidieron. Ver fabrica/README.md. */}
+      <Composition
+        id="fabrica-demo-01"
+        component={FabricaVideo}
+        durationInFrames={Math.round((demo01 as ArbolFabrica).duracionTotalSeg * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{arbol: demo01 as ArbolFabrica}}
+      />
       <Composition id="rebecca-beach" component={RebeccaBeach} durationInFrames={Math.round(DUR_REBECCA * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       {/* Casos 2 a 20 de la serie documental: uno por entrada en
           casos.ts, todos sobre el mismo motor generico (CasoGenerico). */}

@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "fabrica/componentes/schema.json",
+  "title": "Entrada del registro de componentes",
+  "description": "Un componente audiovisual autodescripto (seccion 5 del prompt maestro). El Director Visual filtra/puntua sobre estos campos -- nunca sobre el nombre del componente.",
+  "type": "object",
+  "required": ["id", "archivo", "exportacion", "categoria", "funcion", "intensidad", "ritmo", "capacidadTexto", "requiereAssets", "duracionMinMaxSeg", "compatibleCon", "soportaAudioSincronizado", "estado"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Identificador unico, estable (no cambia si se renombra el archivo)."
+    },
+    "archivo": {
+      "type": "string",
+      "description": "Ruta del .tsx real, relativa a remotion-spike/src/."
+    },
+    "exportacion": {
+      "type": "string",
+      "description": "Nombre exacto del export de React que Remotion monta."
+    },
+    "categoria": {
+      "type": "string",
+      "enum": ["texto", "cifra", "comparacion", "timeline", "diagrama", "lista", "logos", "encuesta", "cuenta_regresiva", "montaje", "otro"],
+      "description": "Que TIPO de informacion comunica, no de que video viene."
+    },
+    "funcion": {
+      "type": "string",
+      "description": "En una frase: que le permite decir al video este componente."
+    },
+    "intensidad": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "0 = calmo/informativo, 1 = maximo impacto visual/emocional."
+    },
+    "ritmo": {
+      "type": "string",
+      "enum": ["estatico", "dinamico", "muy_dinamico"],
+      "description": "Cuanto cambia visualmente por si solo durante su duracion."
+    },
+    "capacidadTexto": {
+      "type": "string",
+      "enum": ["ninguna", "corta", "media", "larga"],
+      "description": "corta ~1-4 palabras, media ~1 frase, larga ~parrafo/lista de items."
+    },
+    "requiereAssets": {
+      "type": "object",
+      "required": ["tipo", "obligatorio"],
+      "properties": {
+        "tipo": {"type": "string", "enum": ["ninguno", "foto", "video", "icono"]},
+        "obligatorio": {"type": "boolean"}
+      }
+    },
+    "duracionMinMaxSeg": {
+      "type": "array",
+      "items": {"type": "number"},
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "[minimo, maximo] en segundos que el componente necesita para verse bien -- no es la duracion real (esa la fija el audio, ver soportaAudioSincronizado)."
+    },
+    "compatibleCon": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Categorias con las que combina bien en una misma composicion."
+    },
+    "soportaAudioSincronizado": {
+      "type": "boolean",
+      "description": "Si TRUE, el componente puede recibir uno o mas clips de audio con duracion real y usarlos como fuente de tiempo (patron AudioCentro de CasoGenerico.tsx). Si FALSE, su duracion sale de duracionMinMaxSeg nomas."
+    },
+    "props": {
+      "type": "object",
+      "description": "Documentacion libre de las props reales del componente (nombre: tipo/descripcion), sacada de leer el codigo, no inventada."
+    },
+    "estado": {
+      "type": "string",
+      "enum": ["validado", "sin_validar"],
+      "description": "validado = se leyo el codigo fuente y se probo su comportamiento real. sin_validar = catalogado por nombre/carpeta solamente, metadata es una primera aproximacion."
+    },
+    "notas": {
+      "type": "string"
+    }
+  }
+}

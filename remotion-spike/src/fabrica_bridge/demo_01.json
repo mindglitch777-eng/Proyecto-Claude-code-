@@ -1,0 +1,47 @@
+{
+  "id": "fabrica-demo-01",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "u1",
+      "desdeSeg": 0,
+      "duracionSeg": 11.626,
+      "componenteId": "cronologia",
+      "props": {
+        "hitos": [
+          {
+            "cuando": "MES 1",
+            "que": "Las primeras ventas, más flojas de lo que esperaba"
+          },
+          {
+            "cuando": "MES 3",
+            "que": "Empieza a aparecer información real, no ilusiones"
+          },
+          {
+            "cuando": "MES 12",
+            "que": "Ya no opina: tiene datos",
+            "acento": true
+          }
+        ]
+      },
+      "archivoAudio": "fabrica_demo/u1_cronologia.mp3",
+      "golpe": "ninguno",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "u2",
+      "desdeSeg": 11.626,
+      "duracionSeg": 5.386,
+      "componenteId": "contador",
+      "props": {
+        "abajo": "El secreto nunca fue la cantidad: fue la especificidad",
+        "hasta": 40,
+        "sufijo": "+"
+      },
+      "archivoAudio": "fabrica_demo/u2_cifra.mp3",
+      "golpe": "negro",
+      "volumenSfx": 0.5
+    }
+  ],
+  "duracionTotalSeg": 17.512
+}
