@@ -40,6 +40,7 @@ import {PruebaVineta, DUR_PRUEBA_VINETA} from './pruebas-r6/PruebaVineta';
 import {PruebaLightLeak, DUR_PRUEBA_LIGHTLEAK} from './pruebas-r6/PruebaLightLeak';
 import {PruebaCortina, DUR_PRUEBA_CORTINA} from './pruebas-r6/PruebaCortina';
 import {Torre3D} from './tres/Torre3D';
+import {PruebaEnfasis} from './pruebas-r6/PruebaEnfasis';
 
 const cuadros = Math.round(DUR_TOTAL * FPS);
 
@@ -230,6 +231,7 @@ export const Root: React.FC = () => {
       <Composition id="prueba-vineta" component={PruebaVineta} durationInFrames={DUR_PRUEBA_VINETA} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="prueba-lightleak" component={PruebaLightLeak} durationInFrames={DUR_PRUEBA_LIGHTLEAK} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="prueba-cortina" component={PruebaCortina} durationInFrames={DUR_PRUEBA_CORTINA} fps={FPS} width={ANCHO} height={ALTO} />
+      <Composition id="prueba-enfasis" component={PruebaEnfasis} durationInFrames={Math.round(6 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition
         id="prueba-torre3d"
         component={Torre3D}

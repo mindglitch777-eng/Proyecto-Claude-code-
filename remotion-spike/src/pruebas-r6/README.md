@@ -185,6 +185,32 @@ razonable para un momento puntual de alto impacto, no medido si usarlo
 en muchas escenas seguidas de un video largo sigue siendo práctico en
 tiempo de render de GitHub Actions.
 
+## R6-11 — Information Emphasis Engine real (`@remotion/rough-notation`)
+
+`remotion-spike/src/dibujo/enfasis.tsx`: primitiva reusable `<Enfasis>`
+(circulo/subrayado/resaltado/tachado) que envuelve cualquier texto de
+cualquier componente y calcula su propio `progress` desde
+`useCurrentFrame()` a partir de dos props simples (`activarEnSeg`,
+`duracionSeg`) -- deliberadamente genérica, no atada a un componente
+puntual: la decisión de QUÉ destacar y CUÁNDO la sigue tomando el
+componente que la usa, esto solo resuelve el CÓMO (el trazo a mano).
+
+Conectada como prueba real a `Contador` (`escenas/plata.tsx`): nuevo
+prop opcional `enfasis?: TipoEnfasis` (default `undefined`, CERO
+cambios para cualquier video ya generado que no lo pase) que dibuja un
+círculo real alrededor del número justo cuando termina de aterrizar
+(mismo instante que el "golpe" del spring que ya existía). Confirmado
+con render real (composición `prueba-enfasis`): el círculo se dibuja a
+mano alrededor de "$3.560" en el momento correcto.
+
+Pulido pendiente (menor, no bloqueante): el círculo de rough-notation
+sobredimensiona un poco respecto al texto (comportamiento normal de la
+librería, pensado para texto en un párrafo, no para un número enorme
+de 210px) y en este layout llega a superponerse levemente con las
+etiquetas `arriba`/`abajo` -- se puede ajustar con más separación
+vertical si se usa en producción real, no se tocó el layout de
+`Contador` para no afectar los videos existentes que no usan `enfasis`.
+
 **Implementado en producción** (`remotion-spike/src/escenas/golpes.tsx`):
 el golpe `'cortina'` -- que ya era conceptualmente "un lavado cálido
 diagonal, como un light leak de cámara analógica" con una imitación en

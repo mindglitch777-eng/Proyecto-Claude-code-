@@ -1,6 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {GROTESCA, PALETA, SERIF} from '../identidad';
+import {Enfasis, TipoEnfasis} from '../dibujo/enfasis';
 
 const plata = (n: number) => '$' + Math.round(n).toLocaleString('es-AR');
 
@@ -19,7 +20,13 @@ export const Contador: React.FC<{
   prefijo?: string;
   sufijo?: string;
   desde?: number;
-}> = ({arriba, hasta, abajo, prefijo = '$', sufijo, desde = 0}) => {
+  /** R6-11 (Information Emphasis Engine): opcional, default sin
+   * cambios -- si se pasa, dibuja a mano (rough-notation) un
+   * circulo/subrayado/resaltado alrededor del numero justo cuando
+   * termina de aterrizar (mismo instante que el "golpe" del spring de
+   * abajo). No afecta ningun video ya generado que no pase este prop. */
+  enfasis?: TipoEnfasis;
+}> = ({arriba, hasta, abajo, prefijo = '$', sufijo, desde = 0, enfasis}) => {
   const frame = useCurrentFrame();
   const {fps, durationInFrames} = useVideoConfig();
   const t = frame / fps;
@@ -63,9 +70,19 @@ export const Contador: React.FC<{
           fontVariantNumeric: 'tabular-nums',
         }}
       >
-        {prefijo}
-        {Math.round(valor).toLocaleString('es-AR')}
-        {sufijo}
+        {enfasis ? (
+          <Enfasis tipo={enfasis} activarEnSeg={dur * 0.62} duracionSeg={0.5}>
+            {prefijo}
+            {Math.round(valor).toLocaleString('es-AR')}
+            {sufijo}
+          </Enfasis>
+        ) : (
+          <>
+            {prefijo}
+            {Math.round(valor).toLocaleString('es-AR')}
+            {sufijo}
+          </>
+        )}
       </div>
       {abajo ? (
         <div
