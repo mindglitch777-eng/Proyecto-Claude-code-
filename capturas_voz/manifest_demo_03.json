@@ -1,0 +1,74 @@
+[
+  {
+    "index": 0,
+    "unidad": "hook",
+    "idx_en_unidad": 0,
+    "id": "hook_0",
+    "texto_crudo": "Nicolás Gómez vendió lo mismo 2.847 veces.",
+    "texto": "Nicolás Gómez vendió lo mismo dos mil ochocientos cuarenta y siete veces."
+  },
+  {
+    "index": 1,
+    "unidad": "hook",
+    "idx_en_unidad": 1,
+    "id": "hook_1",
+    "texto_crudo": "A $9 cada uno.",
+    "texto": "A nueve dólares cada uno."
+  },
+  {
+    "index": 2,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 0,
+    "id": "desarrollo_0",
+    "texto_crudo": "El 15 de marzo de 2024 subió su primer archivo. Cero ventas esa primera semana.",
+    "texto": "El quince de marzo de dos mil veinticuatro subió su primer archivo. Cero ventas esa primera semana."
+  },
+  {
+    "index": 3,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 1,
+    "id": "desarrollo_1",
+    "texto_crudo": "Para el mes 3 ya aparecía en las búsquedas: diez ventas por semana.",
+    "texto": "Para el mes tres ya aparecía en las búsquedas: diez ventas por semana."
+  },
+  {
+    "index": 4,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 2,
+    "id": "desarrollo_2",
+    "texto_crudo": "Al mes 8, cien ventas por semana... sin gastar un peso en anuncios.",
+    "texto": "Al mes ocho, cien ventas por semana... sin gastar un peso en anuncios."
+  },
+  {
+    "index": 5,
+    "unidad": "escalada",
+    "idx_en_unidad": 0,
+    "id": "escalada_0",
+    "texto_crudo": "En 8 meses, la curva no se movió despacio: se multiplicó por diez cada vez.",
+    "texto": "En ocho meses, la curva no se movió despacio: se multiplicó por diez cada vez."
+  },
+  {
+    "index": 6,
+    "unidad": "payoff",
+    "idx_en_unidad": 0,
+    "id": "payoff_0",
+    "texto_crudo": "Un trabajo full-time cambia tu tiempo por plata, siempre en la misma proporción.",
+    "texto": "Un trabajo full-time cambia tu tiempo por plata, siempre en la misma proporción."
+  },
+  {
+    "index": 7,
+    "unidad": "payoff",
+    "idx_en_unidad": 1,
+    "id": "payoff_1",
+    "texto_crudo": "Un archivo de $9 se vende mientras dormís, 2.847 veces si hace falta.",
+    "texto": "Un archivo de nueve dólares se vende mientras dormís, dos mil ochocientos cuarenta y siete veces si hace falta."
+  },
+  {
+    "index": 8,
+    "unidad": "cierre",
+    "idx_en_unidad": 0,
+    "id": "cierre_0",
+    "texto_crudo": "El tiempo no escala. El archivo, sí.",
+    "texto": "El tiempo no escala. El archivo, sí."
+  }
+]
