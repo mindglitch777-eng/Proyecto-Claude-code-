@@ -1,0 +1,930 @@
+{
+  "taylor-posada": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "Renunció a un sueldo de $50.000 al año.",
+        "archivo": "taylor-posada_00.mp3",
+        "duracion": 2.533878
+      },
+      {
+        "campo": "hook",
+        "texto": "Cuatro meses después facturó $175.194.",
+        "archivo": "taylor-posada_01.mp3",
+        "duracion": 4.388571
+      },
+      {
+        "campo": "centro",
+        "texto": "Qué producto hacía parar el scroll",
+        "archivo": "taylor-posada_02.mp3",
+        "duracion": 1.645714
+      },
+      {
+        "campo": "centro",
+        "texto": "Qué diseño vendía sin decir una palabra",
+        "archivo": "taylor-posada_03.mp3",
+        "duracion": 2.220408
+      },
+      {
+        "campo": "centro",
+        "texto": "Qué precio no espantaba al comprador",
+        "archivo": "taylor-posada_04.mp3",
+        "duracion": 2.35102
+      },
+      {
+        "campo": "centro",
+        "texto": "Qué imagen paraba el pulgar",
+        "archivo": "taylor-posada_05.mp3",
+        "duracion": 1.515102
+      },
+      {
+        "campo": "cifra",
+        "texto": "De esos $175.194 facturados",
+        "archivo": "taylor-posada_06.mp3",
+        "duracion": 3.63102
+      },
+      {
+        "campo": "cifra",
+        "texto": "Ganancia real",
+        "archivo": "taylor-posada_07.mp3",
+        "duracion": 0.992653
+      },
+      {
+        "campo": "cifra",
+        "texto": "$48.000",
+        "archivo": "taylor-posada_08.mp3",
+        "duracion": 1.567347
+      },
+      {
+        "campo": "cifra",
+        "texto": "Esa es la plata que se lleva a casa. La otra es humo",
+        "archivo": "taylor-posada_09.mp3",
+        "duracion": 3.761633
+      },
+      {
+        "campo": "final",
+        "texto": "Facturar no es ganar. Dejá de confundirlos.",
+        "archivo": "taylor-posada_10.mp3",
+        "duracion": 3.186939
+      },
+      {
+        "campo": "final",
+        "texto": "La plata real está en entender qué parte del sistema la produce.",
+        "archivo": "taylor-posada_11.mp3",
+        "duracion": 3.866122
+      }
+    ]
+  },
+  "caso-03": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "Generó $4.699 en 15 días con un PDF.",
+        "archivo": "caso-03_00.mp3",
+        "duracion": 3.996735
+      },
+      {
+        "campo": "hook",
+        "texto": "Sentado en Latinoamérica. No en Silicon Valley.",
+        "archivo": "caso-03_01.mp3",
+        "duracion": 3.291429
+      },
+      {
+        "campo": "cifra",
+        "texto": "A los 15 días",
+        "archivo": "caso-03_02.mp3",
+        "duracion": 1.201633
+      },
+      {
+        "campo": "cifra",
+        "texto": "$4.699",
+        "archivo": "caso-03_03.mp3",
+        "duracion": 5.041633
+      },
+      {
+        "campo": "cifra",
+        "texto": "$6.116 a los 30 días",
+        "archivo": "caso-03_04.mp3",
+        "duracion": 3.291429
+      },
+      {
+        "campo": "cifra",
+        "texto": "El PDF no vendió nada solo: vendió todo lo de alrededor",
+        "archivo": "caso-03_05.mp3",
+        "duracion": 4.649796
+      },
+      {
+        "campo": "final",
+        "texto": "Crear el PDF es lo fácil. Lo hace cualquiera en una tarde.",
+        "archivo": "caso-03_06.mp3",
+        "duracion": 3.996735
+      },
+      {
+        "campo": "final",
+        "texto": "Conseguir que alguien saque la tarjeta es el negocio real.",
+        "archivo": "caso-03_07.mp3",
+        "duracion": 3.186939
+      }
+    ]
+  },
+  "caso-04": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "Facturó más de $35.000 con UN solo producto.",
+        "archivo": "caso-04_00.mp3",
+        "duracion": 3.683265
+      },
+      {
+        "campo": "hook",
+        "texto": "Y no, no fue suerte. Mirá el camino.",
+        "archivo": "caso-04_01.mp3",
+        "duracion": 2.533878
+      },
+      {
+        "campo": "centro",
+        "texto": "Lo que ya sabía, convertido en oferta",
+        "archivo": "caso-04_02.mp3",
+        "duracion": 2.66449
+      },
+      {
+        "campo": "centro",
+        "texto": "Contenido que hablaba del problema, no del producto",
+        "archivo": "caso-04_03.mp3",
+        "duracion": 3.056327
+      },
+      {
+        "campo": "centro",
+        "texto": "Ese contenido atrajo gente sola",
+        "archivo": "caso-04_04.mp3",
+        "duracion": 2.089796
+      },
+      {
+        "campo": "centro",
+        "texto": "El producto se vendió una y otra vez, dormido",
+        "archivo": "caso-04_05.mp3",
+        "duracion": 2.925714
+      },
+      {
+        "campo": "cifra",
+        "texto": "Facturación con un solo producto",
+        "archivo": "caso-04_06.mp3",
+        "duracion": 2.716735
+      },
+      {
+        "campo": "cifra",
+        "texto": "35000+",
+        "archivo": "caso-04_07.mp3",
+        "duracion": 1.906939
+      },
+      {
+        "campo": "cifra",
+        "texto": "Costo de venderlo de nuevo: casi cero",
+        "archivo": "caso-04_08.mp3",
+        "duracion": 2.716735
+      },
+      {
+        "campo": "final",
+        "texto": "Bajo costo de reproducción no significa ventas automáticas.",
+        "archivo": "caso-04_09.mp3",
+        "duracion": 3.866122
+      },
+      {
+        "campo": "final",
+        "texto": "La verdadera pelea es por la atención, no por el producto.",
+        "archivo": "caso-04_10.mp3",
+        "duracion": 3.63102
+      }
+    ]
+  },
+  "caso-05": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "Armaron un negocio de productos digitales.",
+        "archivo": "caso-05_00.mp3",
+        "duracion": 2.533878
+      },
+      {
+        "campo": "hook",
+        "texto": "Y cuando funcionó, construyeron una IA para multiplicarlo.",
+        "archivo": "caso-05_01.mp3",
+        "duracion": 3.761633
+      },
+      {
+        "campo": "cifra",
+        "texto": "En sus primeros 6 meses",
+        "archivo": "caso-05_02.mp3",
+        "duracion": 2.011429
+      },
+      {
+        "campo": "cifra",
+        "texto": "1000000+",
+        "archivo": "caso-05_03.mp3",
+        "duracion": 1.123265
+      },
+      {
+        "campo": "cifra",
+        "texto": "Dejaron de vender un producto: empezaron a vender la máquina",
+        "archivo": "caso-05_04.mp3",
+        "duracion": 2.977959
+      },
+      {
+        "campo": "final",
+        "texto": "Hay una diferencia enorme entre usar una herramienta...",
+        "archivo": "caso-05_05.mp3",
+        "duracion": 2.481633
+      },
+      {
+        "campo": "final",
+        "texto": "...y construir un negocio alrededor de un problema real.",
+        "archivo": "caso-05_06.mp3",
+        "duracion": 2.35102
+      }
+    ]
+  },
+  "caso-06": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "Más de $7.000 de ganancia en un mes vendiendo imágenes con IA.",
+        "archivo": "caso-06_00.mp3",
+        "duracion": 3.813878
+      },
+      {
+        "campo": "hook",
+        "texto": "Y no, no lo hizo solo. Ese es el dato que nadie cuenta.",
+        "archivo": "caso-06_01.mp3",
+        "duracion": 3.500408
+      },
+      {
+        "campo": "cifra",
+        "texto": "Beneficio en un solo mes",
+        "archivo": "caso-06_02.mp3",
+        "duracion": 2.220408
+      },
+      {
+        "campo": "cifra",
+        "texto": "7000+",
+        "archivo": "caso-06_03.mp3",
+        "duracion": 1.201633
+      },
+      {
+        "campo": "cifra",
+        "texto": "El equipo escaló esto. La IA sola nunca lo hubiera hecho",
+        "archivo": "caso-06_04.mp3",
+        "duracion": 3.996735
+      },
+      {
+        "campo": "final",
+        "texto": "Una herramienta te ayuda a crear más rápido.",
+        "archivo": "caso-06_05.mp3",
+        "duracion": 2.847347
+      },
+      {
+        "campo": "final",
+        "texto": "Un sistema con gente es lo único que te hace escalar.",
+        "archivo": "caso-06_06.mp3",
+        "duracion": 2.925714
+      }
+    ]
+  },
+  "caso-07": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "Convirtió plantillas de Canva en casi $12.000.",
+        "archivo": "caso-07_00.mp3",
+        "duracion": 2.795102
+      },
+      {
+        "campo": "hook",
+        "texto": "Y estás a punto de mirar la parte equivocada de esta historia.",
+        "archivo": "caso-07_01.mp3",
+        "duracion": 3.291429
+      },
+      {
+        "campo": "centro",
+        "texto": "El mismo producto con un listing débil",
+        "archivo": "caso-07_02.mp3",
+        "duracion": 2.220408
+      },
+      {
+        "campo": "centro",
+        "texto": "El mismo producto con un listing que vende",
+        "archivo": "caso-07_03.mp3",
+        "duracion": 2.586122
+      },
+      {
+        "campo": "centro",
+        "texto": "El listing vende antes de que vos digas una palabra",
+        "archivo": "caso-07_04.mp3",
+        "duracion": 3.186939
+      },
+      {
+        "campo": "final",
+        "texto": "Antes de inventar otro producto...",
+        "archivo": "caso-07_05.mp3",
+        "duracion": 2.011429
+      },
+      {
+        "campo": "final",
+        "texto": "...arreglá cómo estás vendiendo el que ya tenés.",
+        "archivo": "caso-07_06.mp3",
+        "duracion": 2.533878
+      }
+    ]
+  },
+  "caso-08": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "Alguien probó el mismo modelo durante un año entero.",
+        "archivo": "caso-08_00.mp3",
+        "duracion": 3.108571
+      },
+      {
+        "campo": "hook",
+        "texto": "Sin atajos, sin trucos, sin excusas.",
+        "archivo": "caso-08_01.mp3",
+        "duracion": 3.239184
+      },
+      {
+        "campo": "centro",
+        "texto": "MES 1: Las primeras ventas, más flojas de lo que esperaba",
+        "archivo": "caso-08_02.mp3",
+        "duracion": 4.205714
+      },
+      {
+        "campo": "centro",
+        "texto": "MES 3: Empieza a aparecer información real, no ilusiones",
+        "archivo": "caso-08_03.mp3",
+        "duracion": 3.996735
+      },
+      {
+        "campo": "centro",
+        "texto": "MES 12: Ya no opina: tiene datos",
+        "archivo": "caso-08_04.mp3",
+        "duracion": 3.186939
+      },
+      {
+        "campo": "final",
+        "texto": "Una semana demuestra que algo es posible.",
+        "archivo": "caso-08_05.mp3",
+        "duracion": 2.66449
+      },
+      {
+        "campo": "final",
+        "texto": "Un año demuestra si de verdad funciona.",
+        "archivo": "caso-08_06.mp3",
+        "duracion": 2.586122
+      }
+    ]
+  },
+  "caso-09": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "Convirtió algo que ChatGPT hace gratis en más de 40 productos pagos.",
+        "archivo": "caso-09_00.mp3",
+        "duracion": 4.257959
+      },
+      {
+        "campo": "hook",
+        "texto": "Ahí está la trampa que nadie ve.",
+        "archivo": "caso-09_01.mp3",
+        "duracion": 1.959184
+      },
+      {
+        "campo": "centro",
+        "texto": "No vendió un prompt genérico",
+        "archivo": "caso-09_02.mp3",
+        "duracion": 1.697959
+      },
+      {
+        "campo": "centro",
+        "texto": "Vendió una solución distinta para cada problema",
+        "archivo": "caso-09_03.mp3",
+        "duracion": 2.716735
+      },
+      {
+        "campo": "cifra",
+        "texto": "40+",
+        "archivo": "caso-09_04.mp3",
+        "duracion": 1.123265
+      },
+      {
+        "campo": "cifra",
+        "texto": "El secreto nunca fue la cantidad: fue la especificidad",
+        "archivo": "caso-09_05.mp3",
+        "duracion": 3.996735
+      },
+      {
+        "campo": "final",
+        "texto": "Un prompt genérico compite contra millones de prompts iguales.",
+        "archivo": "caso-09_06.mp3",
+        "duracion": 3.683265
+      },
+      {
+        "campo": "final",
+        "texto": "Una solución específica casi no tiene competencia.",
+        "archivo": "caso-09_07.mp3",
+        "duracion": 3.369796
+      }
+    ]
+  },
+  "caso-10": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "¿Y si tu primer producto no necesitara hacerte rico?",
+        "archivo": "caso-10_00.mp3",
+        "duracion": 3.369796
+      },
+      {
+        "campo": "hook",
+        "texto": "¿Y si su único trabajo fuera conseguirte el primer comprador?",
+        "archivo": "caso-10_01.mp3",
+        "duracion": 2.925714
+      },
+      {
+        "campo": "centro",
+        "texto": "$7: Tu primer comprador",
+        "archivo": "caso-10_02.mp3",
+        "duracion": 1.776327
+      },
+      {
+        "campo": "centro",
+        "texto": "$47: Ya sabés qué le falta",
+        "archivo": "caso-10_03.mp3",
+        "duracion": 2.142041
+      },
+      {
+        "campo": "centro",
+        "texto": "$97: La solución completa",
+        "archivo": "caso-10_04.mp3",
+        "duracion": 2.716735
+      },
+      {
+        "campo": "final",
+        "texto": "El primer dólar no demuestra que encontraste un negocio.",
+        "archivo": "caso-10_05.mp3",
+        "duracion": 2.847347
+      },
+      {
+        "campo": "final",
+        "texto": "Demuestra que alguien, al fin, estuvo dispuesto a pagarte.",
+        "archivo": "caso-10_06.mp3",
+        "duracion": 2.716735
+      }
+    ]
+  },
+  "caso-11": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "Este producto parece demasiado chico para ser un negocio.",
+        "archivo": "caso-11_00.mp3",
+        "duracion": 3.369796
+      },
+      {
+        "campo": "hook",
+        "texto": "Por eso funciona.",
+        "archivo": "caso-11_01.mp3",
+        "duracion": 1.306122
+      },
+      {
+        "campo": "centro",
+        "texto": "Un producto pensado para todo el mundo",
+        "archivo": "caso-11_02.mp3",
+        "duracion": 2.977959
+      },
+      {
+        "campo": "centro",
+        "texto": "Un problema específico, bien resuelto",
+        "archivo": "caso-11_03.mp3",
+        "duracion": 2.272653
+      },
+      {
+        "campo": "centro",
+        "texto": "La especificidad no te achica: te posiciona",
+        "archivo": "caso-11_04.mp3",
+        "duracion": 3.291429
+      },
+      {
+        "campo": "final",
+        "texto": "El mercado más grande no siempre es el más interesante.",
+        "archivo": "caso-11_05.mp3",
+        "duracion": 3.056327
+      },
+      {
+        "campo": "final",
+        "texto": "A veces la plata está en el problema chico que nadie quiere resolver.",
+        "archivo": "caso-11_06.mp3",
+        "duracion": 3.500408
+      }
+    ]
+  },
+  "caso-12": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "Hay un problema con vender productos hechos con IA.",
+        "archivo": "caso-12_00.mp3",
+        "duracion": 2.481633
+      },
+      {
+        "campo": "hook",
+        "texto": "Ahora cualquiera puede hacerlo. Cualquiera.",
+        "archivo": "caso-12_01.mp3",
+        "duracion": 2.586122
+      },
+      {
+        "campo": "centro",
+        "texto": "ANTES: Producir era la barrera",
+        "archivo": "caso-12_02.mp3",
+        "duracion": 2.011429
+      },
+      {
+        "campo": "centro",
+        "texto": "AHORA: Producir ya es gratis. Ahora la ventaja es saber elegir",
+        "archivo": "caso-12_03.mp3",
+        "duracion": 4.519184
+      },
+      {
+        "campo": "final",
+        "texto": "La IA bajó el costo de crear a cero.",
+        "archivo": "caso-12_04.mp3",
+        "duracion": 2.011429
+      },
+      {
+        "campo": "final",
+        "texto": "La única pregunta que queda es quién crea algo que valga la pena.",
+        "archivo": "caso-12_05.mp3",
+        "duracion": 4.075102
+      }
+    ]
+  },
+  "caso-13": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "Una sola pregunta de un cliente vale más que 100 horas inventando un producto de la nada.",
+        "archivo": "caso-13_00.mp3",
+        "duracion": 4.963265
+      },
+      {
+        "campo": "final",
+        "texto": "El primer cliente no solo te paga.",
+        "archivo": "caso-13_01.mp3",
+        "duracion": 2.795102
+      },
+      {
+        "campo": "final",
+        "texto": "Te puede regalar la idea de tu próximo producto.",
+        "archivo": "caso-13_02.mp3",
+        "duracion": 3.369796
+      }
+    ]
+  },
+  "caso-14": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "El error más caro de este negocio:",
+        "archivo": "caso-14_00.mp3",
+        "duracion": 2.220408
+      },
+      {
+        "campo": "hook",
+        "texto": "pasar 30 días creando algo que nadie iba a comprar.",
+        "archivo": "caso-14_01.mp3",
+        "duracion": 3.108571
+      },
+      {
+        "campo": "centro",
+        "texto": "ORDEN EQUIVOCADO: 30 días creando, 0 ventas",
+        "archivo": "caso-14_02.mp3",
+        "duracion": 3.422041
+      },
+      {
+        "campo": "centro",
+        "texto": "ORDEN CORRECTO: Buscar demanda. Recién ahí crear",
+        "archivo": "caso-14_03.mp3",
+        "duracion": 3.239184
+      },
+      {
+        "campo": "final",
+        "texto": "No construyas para ver si hay demanda.",
+        "archivo": "caso-14_04.mp3",
+        "duracion": 2.089796
+      },
+      {
+        "campo": "final",
+        "texto": "Encontrá la demanda primero. Después construí.",
+        "archivo": "caso-14_05.mp3",
+        "duracion": 2.977959
+      }
+    ]
+  },
+  "caso-15": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "Superó los $300.000 vendiendo productos digitales.",
+        "archivo": "caso-15_00.mp3",
+        "duracion": 4.257959
+      },
+      {
+        "campo": "hook",
+        "texto": "Y no fue con un solo producto: mirá todo lo que armó detrás.",
+        "archivo": "caso-15_01.mp3",
+        "duracion": 3.552653
+      },
+      {
+        "campo": "centro",
+        "texto": "Ebooks",
+        "archivo": "caso-15_02.mp3",
+        "duracion": 0.626939
+      },
+      {
+        "campo": "centro",
+        "texto": "Mini-apps",
+        "archivo": "caso-15_03.mp3",
+        "duracion": 0.940408
+      },
+      {
+        "campo": "centro",
+        "texto": "Shopify",
+        "archivo": "caso-15_04.mp3",
+        "duracion": 0.809796
+      },
+      {
+        "campo": "centro",
+        "texto": "Automatizaciones con IA",
+        "archivo": "caso-15_05.mp3",
+        "duracion": 2.533878
+      },
+      {
+        "campo": "cifra",
+        "texto": "El resultado",
+        "archivo": "caso-15_06.mp3",
+        "duracion": 0.940408
+      },
+      {
+        "campo": "cifra",
+        "texto": "300000+",
+        "archivo": "caso-15_07.mp3",
+        "duracion": 0.992653
+      },
+      {
+        "campo": "cifra",
+        "texto": "No un producto: una escalera de valor",
+        "archivo": "caso-15_08.mp3",
+        "duracion": 3.056327
+      },
+      {
+        "campo": "final",
+        "texto": "El objetivo nunca fue vender una sola cosa.",
+        "archivo": "caso-15_09.mp3",
+        "duracion": 2.977959
+      },
+      {
+        "campo": "final",
+        "texto": "Fue construir un sistema donde cada venta empuja a la siguiente.",
+        "archivo": "caso-15_10.mp3",
+        "duracion": 3.761633
+      }
+    ]
+  },
+  "caso-16": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "1.500 productos.",
+        "archivo": "caso-16_00.mp3",
+        "duracion": 1.567347
+      },
+      {
+        "campo": "hook",
+        "texto": "¿Cuánto trabajo imaginás? Casi seguro que estás exagerando.",
+        "archivo": "caso-16_01.mp3",
+        "duracion": 3.552653
+      },
+      {
+        "campo": "centro",
+        "texto": "Una categoría",
+        "archivo": "caso-16_02.mp3",
+        "duracion": 1.253878
+      },
+      {
+        "campo": "centro",
+        "texto": "Una audiencia",
+        "archivo": "caso-16_03.mp3",
+        "duracion": 1.38449
+      },
+      {
+        "campo": "centro",
+        "texto": "Variaciones y bundles",
+        "archivo": "caso-16_04.mp3",
+        "duracion": 1.776327
+      },
+      {
+        "campo": "cifra",
+        "texto": "No son 1.500 ideas distintas",
+        "archivo": "caso-16_05.mp3",
+        "duracion": 2.35102
+      },
+      {
+        "campo": "cifra",
+        "texto": "1500+",
+        "archivo": "caso-16_06.mp3",
+        "duracion": 1.515102
+      },
+      {
+        "campo": "cifra",
+        "texto": "Es una idea, multiplicada en variaciones",
+        "archivo": "caso-16_07.mp3",
+        "duracion": 2.481633
+      },
+      {
+        "campo": "final",
+        "texto": "Escalar no siempre significa trabajar más.",
+        "archivo": "caso-16_08.mp3",
+        "duracion": 3.552653
+      },
+      {
+        "campo": "final",
+        "texto": "A veces significa encontrar qué parte de tu trabajo se puede repetir sola.",
+        "archivo": "caso-16_09.mp3",
+        "duracion": 3.683265
+      }
+    ]
+  },
+  "caso-17": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "Este producto parecía una idea horrible.",
+        "archivo": "caso-17_00.mp3",
+        "duracion": 2.586122
+      },
+      {
+        "campo": "hook",
+        "texto": "Tan específico que nadie lo iba a comprar. Eso pensaban.",
+        "archivo": "caso-17_01.mp3",
+        "duracion": 3.94449
+      },
+      {
+        "campo": "centro",
+        "texto": "Producto mediocre para millones",
+        "archivo": "caso-17_02.mp3",
+        "duracion": 1.906939
+      },
+      {
+        "campo": "centro",
+        "texto": "Solución excelente para pocos",
+        "archivo": "caso-17_03.mp3",
+        "duracion": 2.35102
+      },
+      {
+        "campo": "centro",
+        "texto": "No necesitás que millones lo quieran",
+        "archivo": "caso-17_04.mp3",
+        "duracion": 2.403265
+      },
+      {
+        "campo": "final",
+        "texto": "Un producto mediocre para millones vende menos...",
+        "archivo": "caso-17_05.mp3",
+        "duracion": 2.795102
+      },
+      {
+        "campo": "final",
+        "texto": "...que una solución excelente para un grupo chico que sí lo necesita.",
+        "archivo": "caso-17_06.mp3",
+        "duracion": 3.552653
+      }
+    ]
+  },
+  "caso-18": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "Imaginate una fábrica que convierte una idea en producto en horas.",
+        "archivo": "caso-18_00.mp3",
+        "duracion": 3.63102
+      },
+      {
+        "campo": "hook",
+        "texto": "No meses. Horas.",
+        "archivo": "caso-18_01.mp3",
+        "duracion": 1.906939
+      },
+      {
+        "campo": "final",
+        "texto": "Producir rápido una mala idea solo te hace fracasar más rápido.",
+        "archivo": "caso-18_02.mp3",
+        "duracion": 3.422041
+      },
+      {
+        "campo": "final",
+        "texto": "La fábrica de verdad es la que sabe qué merece ser producido.",
+        "archivo": "caso-18_03.mp3",
+        "duracion": 3.422041
+      }
+    ]
+  },
+  "caso-19": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "Analizamos a gente que hace dinero con productos digitales.",
+        "archivo": "caso-19_00.mp3",
+        "duracion": 3.369796
+      },
+      {
+        "campo": "hook",
+        "texto": "Casi ninguno lo hace de la misma forma.",
+        "archivo": "caso-19_01.mp3",
+        "duracion": 3.108571
+      },
+      {
+        "campo": "centro",
+        "texto": "Etsy",
+        "archivo": "caso-19_02.mp3",
+        "duracion": 0.626939
+      },
+      {
+        "campo": "centro",
+        "texto": "Hotmart",
+        "archivo": "caso-19_03.mp3",
+        "duracion": 0.731429
+      },
+      {
+        "campo": "centro",
+        "texto": "Shopify",
+        "archivo": "caso-19_04.mp3",
+        "duracion": 0.809796
+      },
+      {
+        "campo": "centro",
+        "texto": "Cursos",
+        "archivo": "caso-19_05.mp3",
+        "duracion": 0.940408
+      },
+      {
+        "campo": "centro",
+        "texto": "IA",
+        "archivo": "caso-19_06.mp3",
+        "duracion": 0.626939
+      },
+      {
+        "campo": "centro",
+        "texto": "Afiliación",
+        "archivo": "caso-19_07.mp3",
+        "duracion": 0.862041
+      },
+      {
+        "campo": "final",
+        "texto": "No hay un único camino. Hay un proceso.",
+        "archivo": "caso-19_08.mp3",
+        "duracion": 2.403265
+      },
+      {
+        "campo": "final",
+        "texto": "Probar. Medir. Aprender. Repetir. Ese es el verdadero secreto.",
+        "archivo": "caso-19_09.mp3",
+        "duracion": 4.702041
+      }
+    ]
+  },
+  "caso-20": {
+    "campos": [
+      {
+        "campo": "hook",
+        "texto": "Si empezara de cero mañana...",
+        "archivo": "caso-20_00.mp3",
+        "duracion": 1.697959
+      },
+      {
+        "campo": "hook",
+        "texto": "no empezaría creando un producto.",
+        "archivo": "caso-20_01.mp3",
+        "duracion": 2.011429
+      },
+      {
+        "campo": "final",
+        "texto": "El objetivo nunca fue crear cien productos.",
+        "archivo": "caso-20_02.mp3",
+        "duracion": 3.056327
+      },
+      {
+        "campo": "final",
+        "texto": "Era encontrar UNO que mereciera convertirse en cien.",
+        "archivo": "caso-20_03.mp3",
+        "duracion": 3.291429
+      }
+    ]
+  }
+}

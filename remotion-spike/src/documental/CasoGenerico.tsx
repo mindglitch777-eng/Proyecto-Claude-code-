@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {DatosDiagrama, Diagrama} from '../dibujo/Diagrama';
 import {Figura, NombreFigura} from '../dibujo/figuras';
 import {LluviaDinero, Resplandor} from '../escenas/dinero-fx';
@@ -11,6 +11,28 @@ import {Contador} from '../escenas/plata';
 import {cargarFuentes} from '../fuentes';
 import {GRADING, GROTESCA, PALETA, SERIF} from '../identidad';
 import {golpeSeco} from '../stress/duro';
+import mapaAudioDocRaw from './mapa_audio_documental.json';
+
+// ============================================== AUDIO REAL (Qwen3-TTS)
+//
+// mapaAudioDocRaw se genera con mapear_audio_documental.ts a partir de
+// capturas_voz/manifest_voz_documental.json + los mp3 en
+// capturas_voz/audio_documental/ (copiados a public/audio_documental/
+// para que staticFile los encuentre). Un caso sin entrada aca (por
+// ahora, ninguno de los 19 -- ver mapear_audio_documental.ts) cae en
+// las duraciones "adivinadas" de siempre, para no romper si algun dia
+// se agrega un caso nuevo antes de generarle la voz.
+
+type CampoAudioDoc = {campo: 'hook' | 'centro' | 'cifra' | 'final'; texto: string; archivo: string; duracion: number};
+const mapaAudioDoc = mapaAudioDocRaw as Record<string, {campos: CampoAudioDoc[]}>;
+
+// Aire despues de que termina de sonar cada linea, antes de cortar a
+// la siguiente -- sin esto el corte visual queda pegado al final de
+// la palabra, se siente atropellado.
+const AIRE_LINEA = 0.25;
+
+const audiosDe = (slug: string, campo: CampoAudioDoc['campo']): CampoAudioDoc[] =>
+  (mapaAudioDoc[slug]?.campos ?? []).filter((c) => c.campo === campo);
 
 // MOTOR GENERICO PARA LA SERIE DOCUMENTAL (20 casos)
 //
@@ -104,8 +126,19 @@ export type CasoConfig = {
 };
 
 // ==================================================== DURACION POR BLOQUE
+//
+// Con audio real (ver AUDIO REAL arriba): la duracion de un bloque es
+// la SUMA de sus clips + un respiro de aire por linea + un margen de
+// cierre. Sin audio para ese bloque (diagrama y montaje no llevan
+// narracion propia -- son rotulos en pantalla, ver
+// mapear_audio_documental.ts) se mantiene la duracion "adivinada" de
+// siempre, calculada a partir de la cantidad/forma del contenido.
 
-const duracionCentro = (cv: CentroVisual): number => {
+const sumaAudio = (audios: CampoAudioDoc[], margenFinal: number): number =>
+  audios.reduce((acc, a) => acc + a.duracion + AIRE_LINEA, 0) + margenFinal;
+
+const duracionCentro = (cv: CentroVisual, audiosCentro: CampoAudioDoc[]): number => {
+  if (audiosCentro.length > 0) return sumaAudio(audiosCentro, 0.6);
   switch (cv.tipo) {
     case 'cronologia':
       return 1.6 + cv.hitos.length * 1.6;
@@ -126,17 +159,57 @@ const duracionCentro = (cv: CentroVisual): number => {
   }
 };
 
+const duracionesBloques = (cfg: CasoConfig) => {
+  const audiosHook = audiosDe(cfg.slug, 'hook');
+  const audiosCentro = audiosDe(cfg.slug, 'centro');
+  const audiosCifra = audiosDe(cfg.slug, 'cifra');
+  const audiosFinal = audiosDe(cfg.slug, 'final');
+
+  const durHook = audiosHook.length > 0 ? sumaAudio(audiosHook, 0.4) : cfg.hook.length * 1.6 + 0.5;
+  const durCentro = duracionCentro(cfg.centro, audiosCentro);
+  const durCifra = cfg.cifra ? (audiosCifra.length > 0 ? sumaAudio(audiosCifra, 0.6) : 5.6) : 0;
+  const durFinal = audiosFinal.length > 0 ? sumaAudio(audiosFinal, 0.5) : cfg.final.length * 1.75 + 0.5;
+  return {durHook, durCentro, durCifra, durFinal};
+};
+
 export const duracionCaso = (cfg: CasoConfig): number => {
-  const durHook = cfg.hook.length * 1.6 + 0.5;
-  const durCentro = duracionCentro(cfg.centro);
-  const durCifra = cfg.cifra ? 5.6 : 0;
-  const durFinal = cfg.final.length * 1.75 + 0.5;
+  const {durHook, durCentro, durCifra, durFinal} = duracionesBloques(cfg);
   return durHook + durCentro + durCifra + durFinal + 3;
 };
 
 // ==================================================================== BEATS
 
-const Secuencia: React.FC<{lineas: string[]; ventana: number}> = ({lineas, ventana}) => {
+// Con audios: cada linea vive en su propio Sequence, con su Audio real
+// adentro -- el corte visual pasa exactamente cuando termina de sonar
+// esa linea (+ AIRE_LINEA), nunca antes ni despues. Sin audios (caso
+// sin voz generada todavia) cae al reparto viejo por "ventana" fija.
+const Secuencia: React.FC<{lineas: string[]; ventana: number; audios?: CampoAudioDoc[]}> = ({lineas, ventana, audios}) => {
+  if (audios && audios.length === lineas.length) {
+    let cursor = 0;
+    return (
+      <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 9%'}}>
+        {lineas.map((linea, i) => {
+          const dur = audios[i].duracion + AIRE_LINEA;
+          const desde = cursor;
+          cursor += dur;
+          const esUltima = i === lineas.length - 1;
+          return (
+            <Sequence key={i} from={seg(desde)} durationInFrames={seg(dur)}>
+              <ConGolpe t0={0.08} color={esUltima ? PALETA.acento : '#fff'}>
+                <LineaImpacto txt={linea} acento={esUltima} />
+              </ConGolpe>
+              <Audio src={staticFile(`audio_documental/${audios[i].archivo}`)} />
+            </Sequence>
+          );
+        })}
+      </AbsoluteFill>
+    );
+  }
+  // Fallback sin audio: comportamiento original (ventana fija).
+  return <SecuenciaSinAudio lineas={lineas} ventana={ventana} />;
+};
+
+const SecuenciaSinAudio: React.FC<{lineas: string[]; ventana: number}> = ({lineas, ventana}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const t = frame / fps;
@@ -157,27 +230,39 @@ const HookBeat: React.FC<{cfg: CasoConfig}> = ({cfg}) => (
     {cfg.foto || cfg.clip ? <Fondo foto={cfg.foto} clip={cfg.clip} velo={0.6} duotono zoom={[1.04, 1.16]} /> : null}
     {cfg.hookDinero ? <Resplandor fuerza={0.5} /> : null}
     {cfg.hookDinero ? <LluviaDinero intensidad={0.85} /> : null}
-    <Secuencia lineas={cfg.hook} ventana={1.6} />
+    <Secuencia lineas={cfg.hook} ventana={1.6} audios={audiosDe(cfg.slug, 'hook')} />
     <Pulso cada={0.9} largo={0.05} fuerza={0.3} />
   </AbsoluteFill>
 );
 
-const StackImpacto: React.FC<{items: {txt: string; fig?: NombreFigura}[]}> = ({items}) => {
+const StackImpacto: React.FC<{items: {txt: string; fig?: NombreFigura}[]; audios: CampoAudioDoc[]}> = ({items, audios}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const t = frame / fps;
-  const paso = 0.42;
+  const conAudio = audios.length === items.length;
+  // t0 acumulado de duracion real si hay audio; "paso" fijo si no
+  const t0s: number[] = [];
+  let cursor = 0.3;
+  for (let i = 0; i < items.length; i++) {
+    t0s.push(cursor);
+    cursor += conAudio ? audios[i].duracion + AIRE_LINEA : 0.42;
+  }
   return (
     <AbsoluteFill style={{backgroundColor: PALETA.fondo, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 20, padding: '0 6%'}}>
       {items.map((it, i) => {
-        const t0 = 0.3 + i * paso;
+        const t0 = t0s[i];
         if (t < t0) return null;
-        return it.fig ? (
-          <ConIcono key={i} t0={t0} fig={it.fig} txt={it.txt} acento={i % 2 === 1} color={PALETA.acento} />
-        ) : (
-          <ConGolpe key={i} t0={t0} color={i % 2 ? PALETA.acento : '#fff'}>
-            <LineaImpacto txt={it.txt} acento={i % 2 === 1} />
-          </ConGolpe>
+        return (
+          <React.Fragment key={i}>
+            {it.fig ? (
+              <ConIcono t0={t0} fig={it.fig} txt={it.txt} acento={i % 2 === 1} color={PALETA.acento} />
+            ) : (
+              <ConGolpe t0={t0} color={i % 2 ? PALETA.acento : '#fff'}>
+                <LineaImpacto txt={it.txt} acento={i % 2 === 1} />
+              </ConGolpe>
+            )}
+            {conAudio ? <Sequence from={seg(t0)}><Audio src={staticFile(`audio_documental/${audios[i].archivo}`)} /></Sequence> : null}
+          </React.Fragment>
         );
       })}
       <Pulso cada={0.6} largo={0.04} fuerza={0.2} />
@@ -266,12 +351,37 @@ const MontajeVeloz: React.FC<{items: {clip: string; texto: string; estilo?: 'mar
   </AbsoluteFill>
 );
 
-const CentroBeat: React.FC<{cv: CentroVisual; foto?: string; clip?: string}> = ({cv, foto, clip}) => {
+// Superpone el audio real de cada linea del centro en su offset
+// acumulado -- el contenido visual (Cronologia/Balanza/AntesDespues)
+// sigue animandose proporcionalmente segun la duracion TOTAL del
+// Sequence padre (que ya es la suma real de estos mismos audios, ver
+// duracionCentro), asi que ambos quedan alineados en el total aunque
+// el reparto visual interno entre hitos sea aproximado, no al frame.
+const AudioCentro: React.FC<{audios: CampoAudioDoc[]}> = ({audios}) => {
+  let cursor = 0;
+  return (
+    <>
+      {audios.map((a, i) => {
+        const from = cursor;
+        cursor += a.duracion + AIRE_LINEA;
+        return (
+          <Sequence key={i} from={seg(from)}>
+            <Audio src={staticFile(`audio_documental/${a.archivo}`)} />
+          </Sequence>
+        );
+      })}
+    </>
+  );
+};
+
+const CentroBeat: React.FC<{slug: string; cv: CentroVisual; foto?: string; clip?: string}> = ({slug, cv, foto, clip}) => {
+  const audios = audiosDe(slug, 'centro');
   if (cv.tipo === 'cronologia') {
     return (
       <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
         <Cronologia hitos={cv.hitos} />
         <Pulso cada={1.3} largo={0.05} fuerza={0.22} />
+        <AudioCentro audios={audios} />
       </AbsoluteFill>
     );
   }
@@ -289,6 +399,7 @@ const CentroBeat: React.FC<{cv: CentroVisual; foto?: string; clip?: string}> = (
         {foto || clip ? <Fondo foto={foto} clip={clip} velo={0.78} duotono zoom={[1.0, 1.08]} /> : null}
         <ListaTachada items={cv.items} queda={cv.queda} />
         <Pulso cada={1.1} largo={0.05} fuerza={0.26} />
+        <AudioCentro audios={audios} />
       </AbsoluteFill>
     );
   }
@@ -297,6 +408,7 @@ const CentroBeat: React.FC<{cv: CentroVisual; foto?: string; clip?: string}> = (
       <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
         <Balanza izq={cv.izq} der={cv.der} pie={cv.pie} />
         <Pulso cada={0.95} largo={0.05} fuerza={0.18} />
+        <AudioCentro audios={audios} />
       </AbsoluteFill>
     );
   }
@@ -305,16 +417,17 @@ const CentroBeat: React.FC<{cv: CentroVisual; foto?: string; clip?: string}> = (
       <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
         <AntesDespues antes={cv.antes} despues={cv.despues} />
         <Pulso cada={0.85} largo={0.05} fuerza={0.2} />
+        <AudioCentro audios={audios} />
       </AbsoluteFill>
     );
   }
   if (cv.tipo === 'montaje') {
     return <MontajeVeloz items={cv.items} />;
   }
-  return <StackImpacto items={cv.items} />;
+  return <StackImpacto items={cv.items} audios={audios} />;
 };
 
-const CifraBeat: React.FC<{cv: CifraVisual; dinero?: boolean}> = ({cv, dinero}) => (
+const CifraBeat: React.FC<{slug: string; cv: CifraVisual; dinero?: boolean}> = ({slug, cv, dinero}) => (
   <AbsoluteFill style={{backgroundColor: dinero ? '#000' : PALETA.fondo}}>
     {dinero ? <Fondo clip="dinero-00.mp4" velo={0.66} zoom={[1.0, 1.12]} /> : null}
     {dinero ? <Resplandor fuerza={0.45} /> : null}
@@ -325,12 +438,13 @@ const CifraBeat: React.FC<{cv: CifraVisual; dinero?: boolean}> = ({cv, dinero}) 
     ) : (
       <Contador arriba={cv.arriba} hasta={cv.hasta} prefijo={cv.prefijo} sufijo={cv.sufijo} abajo={cv.abajo} />
     )}
+    <AudioCentro audios={audiosDe(slug, 'cifra')} />
   </AbsoluteFill>
 );
 
-const FinalBeat: React.FC<{lineas: string[]}> = ({lineas}) => (
+const FinalBeat: React.FC<{slug: string; lineas: string[]}> = ({slug, lineas}) => (
   <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
-    <Secuencia lineas={lineas} ventana={1.75} />
+    <Secuencia lineas={lineas} ventana={1.75} audios={audiosDe(slug, 'final')} />
     <Pulso cada={1.0} largo={0.05} fuerza={0.24} />
   </AbsoluteFill>
 );
@@ -359,10 +473,7 @@ export const CtaBeat: React.FC = () => {
 
 export const Caso: React.FC<{cfg: CasoConfig}> = ({cfg}) => {
   cargarFuentes();
-  const durHook = cfg.hook.length * 1.6 + 0.5;
-  const durCentro = duracionCentro(cfg.centro);
-  const durCifra = cfg.cifra ? 5.6 : 0;
-  const durFinal = cfg.final.length * 1.75 + 0.5;
+  const {durHook, durCentro, durCifra, durFinal} = duracionesBloques(cfg);
 
   let cursor = 0;
   type GolpeTipo = Parameters<typeof Golpe>[0]['tipo'];
@@ -375,16 +486,23 @@ export const Caso: React.FC<{cfg: CasoConfig}> = ({cfg}) => {
     desde: cursor,
     hasta: cursor + durCentro,
     golpe: 'corte',
-    el: <CentroBeat cv={cfg.centro} foto={cfg.centro.tipo === 'lista' ? cfg.foto : undefined} clip={cfg.centro.tipo === 'lista' ? cfg.clip : undefined} />,
+    el: (
+      <CentroBeat
+        slug={cfg.slug}
+        cv={cfg.centro}
+        foto={cfg.centro.tipo === 'lista' ? cfg.foto : undefined}
+        clip={cfg.centro.tipo === 'lista' ? cfg.clip : undefined}
+      />
+    ),
   });
   cursor += durCentro;
 
   if (cfg.cifra) {
-    bloques.push({desde: cursor, hasta: cursor + durCifra, golpe: 'fogonazo', el: <CifraBeat cv={cfg.cifra} dinero={cfg.cifraDinero} />});
+    bloques.push({desde: cursor, hasta: cursor + durCifra, golpe: 'fogonazo', el: <CifraBeat slug={cfg.slug} cv={cfg.cifra} dinero={cfg.cifraDinero} />});
     cursor += durCifra;
   }
 
-  bloques.push({desde: cursor, hasta: cursor + durFinal, golpe: 'sacudon', el: <FinalBeat lineas={cfg.final} />});
+  bloques.push({desde: cursor, hasta: cursor + durFinal, golpe: 'sacudon', el: <FinalBeat slug={cfg.slug} lineas={cfg.final} />});
   cursor += durFinal;
 
   bloques.push({desde: cursor, hasta: cursor + 3, golpe: 'fogonazo', el: <CtaBeat />});

@@ -4,7 +4,7 @@
 set -euo pipefail
 raiz="$(cd "$(dirname "$0")/.." && pwd)"
 dst="$raiz/remotion-spike/public"
-rm -rf "$dst"; mkdir -p "$dst/fuentes" "$dst/fotos" "$dst/video" "$dst/sfx"
+rm -rf "$dst"; mkdir -p "$dst/fuentes" "$dst/fotos" "$dst/video" "$dst/sfx" "$dst/audio_documental"
 
 cp "$raiz/assets/fuentes/PlayfairDisplay-Variable.ttf" "$dst/fuentes/"
 cp "$raiz/assets/fuentes/PlayfairDisplay-Italic.ttf"   "$dst/fuentes/"
@@ -38,5 +38,13 @@ for f in "$raiz"/assets/sfx/*.wav; do
   cp "$f" "$dst/sfx/$(basename "$f")"
 done
 
+# Audio narrado de los 20 documentales (Qwen3-TTS, voz clonada) --
+# generado por generar_voz_documental_qwen.py, commiteado en
+# capturas_voz/ (a diferencia de public/, que no se versiona).
+for f in "$raiz"/capturas_voz/audio_documental/*.mp3; do
+  [ -e "$f" ] || continue
+  cp "$f" "$dst/audio_documental/$(basename "$f")"
+done
+
 echo "public/ armado:"
-echo "  fuentes $(ls "$dst/fuentes" | wc -l)  fotos $(ls "$dst/fotos" | wc -l)  video $(ls "$dst/video" | wc -l)  sfx $(ls "$dst/sfx" | wc -l)"
+echo "  fuentes $(ls "$dst/fuentes" | wc -l)  fotos $(ls "$dst/fotos" | wc -l)  video $(ls "$dst/video" | wc -l)  sfx $(ls "$dst/sfx" | wc -l)  audio_documental $(ls "$dst/audio_documental" | wc -l)"
