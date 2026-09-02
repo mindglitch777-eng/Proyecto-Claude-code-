@@ -1,5 +1,5 @@
 import path from 'node:path';
-import {correrCicloMejora, extraerCorreccionesSeguras, type ParametrosGeneracion} from './ciclo_mejora';
+import {correrCicloMejora, extraerCorreccionesSeguras, formatearReporteIteraciones, type ParametrosGeneracion} from './ciclo_mejora';
 import type {ArbolComposicion} from '../composicion/tipos';
 import type {TipoGolpe} from '../directores/audio';
 
@@ -67,6 +67,23 @@ function main() {
   // inventa una correccion para algo que no sabe corregir con seguridad.
   check('la categoria repetida sigue reportada en ambos intentos (no es "corregible" por este ciclo)',
     historial[1].alertasComposicion.some((a) => a.includes('misma categoria de componente')));
+
+  // totalProblemas (Ronda 5, seccion 15): cuenta real, no inventada,
+  // de alertasComposicion + alertasCritica por intento.
+  check('intento 1 totalProblemas coincide con la suma real de alertas',
+    historial[0].totalProblemas === historial[0].alertasComposicion.length + historial[0].alertasCritica.length);
+  check('intento 2 tiene MENOS problemas que el intento 1 (la correccion redujo algo real)',
+    historial[1].totalProblemas < historial[0].totalProblemas);
+
+  // formatearReporteIteraciones (seccion 15): formato exacto pedido.
+  const reporte = formatearReporteIteraciones('video_prueba_ciclo', historial);
+  const lineas = reporte.split('\n');
+  check('el reporte empieza con el id del video', lineas[0] === 'video_prueba_ciclo');
+  check('el reporte termina en FINAL', lineas[lineas.length - 1] === 'FINAL');
+  check('el reporte tiene una linea "iteracion_N -> M problemas" por cada intento',
+    lineas.length === historial.length + 2);
+  const n0 = historial[0].totalProblemas;
+  check('la primera iteracion en el texto coincide con el conteo real', lineas[1] === `iteracion_1 -> ${n0} problema${n0 === 1 ? '' : 's'}`);
 
   if (FALLOS.length) {
     console.log(`\n${FALLOS.length} FALLO(S):\n`);

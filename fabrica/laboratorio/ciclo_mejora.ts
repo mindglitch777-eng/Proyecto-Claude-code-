@@ -50,6 +50,11 @@ export type ResultadoIteracion = {
   arbol: ArbolComposicion;
   alertasComposicion: string[];
   alertasCritica: string[];
+  /** Total de alertas de esta iteracion (composicion + critica) --
+   * calculado una vez aca para no recalcularlo en cada lugar que
+   * quiera reportar el progreso (orden maestra seccion 15: registrar
+   * cada iteracion como "iteracion_N -> M problemas"). */
+  totalProblemas: number;
   correccionesPropuestas: string[];
   seAplicaronCorrecciones: boolean;
 };
@@ -121,6 +126,7 @@ export function correrCicloMejora(
 
     historial.push({
       intento, arbol, alertasComposicion, alertasCritica,
+      totalProblemas: alertasComposicion.length + alertasCritica.length,
       correccionesPropuestas: razones,
       seAplicaronCorrecciones: seAplicaran,
     });
@@ -135,4 +141,27 @@ export function correrCicloMejora(
     };
   }
   return historial;
+}
+
+/**
+ * Formatea el historial de un ciclo en el formato pedido por la
+ * orden maestra (sección 15), ej.:
+ *
+ *   video_001
+ *   iteracion_1 -> 7 problemas
+ *   iteracion_2 -> 3 problemas
+ *   iteracion_3 -> 1 problema
+ *   FINAL
+ *
+ * Solo formatea -- no vuelve a calcular nada, `historial` ya trae
+ * `totalProblemas` por iteracion desde `correrCicloMejora()`.
+ */
+export function formatearReporteIteraciones(videoId: string, historial: ResultadoIteracion[]): string {
+  const lineas = [videoId];
+  for (const it of historial) {
+    const n = it.totalProblemas;
+    lineas.push(`iteracion_${it.intento} -> ${n} problema${n === 1 ? '' : 's'}`);
+  }
+  lineas.push('FINAL');
+  return lineas.join('\n');
 }

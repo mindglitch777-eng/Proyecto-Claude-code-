@@ -23,6 +23,29 @@ export type ResultadoReal = {
   fechaMedicion: string;
 };
 
+/** Una variante concreta dentro de un experimento A/B (Ronda 5,
+ * orden maestra secciones 18-19). `videoId` queda vacío hasta que esa
+ * variante puntual se genera de verdad -- registrar una variante no
+ * implica que ya exista un video para ella. */
+export type VarianteExperimento = {
+  nombre: string; // 'A', 'B', o un nombre descriptivo corto
+  descripcion: string;
+  videoId?: string;
+};
+
+/** El contrato de un experimento A/B real: UNA variable que cambia a
+ * proposito entre variantes, y las que se mantienen iguales para que
+ * la comparacion tenga sentido (si todo cambia a la vez, no se puede
+ * saber que causo la diferencia). Ver ejemplo en la orden maestra,
+ * sección 18: "Variante A: cifra completa. Variante B: cifra
+ * progresiva. Variable modificada: forma de revelar la información.
+ * Variables controladas: guion, voz, duración aproximada." */
+export type ExperimentoAB = {
+  variableModificada: string;
+  variablesControladas: string[];
+  variantes: VarianteExperimento[];
+};
+
 export type EntradaLaboratorio = {
   id: string;
   /** lo que CREEMOS que puede funcionar -- siempre HIPOTESIS, nunca
@@ -32,6 +55,10 @@ export type EntradaLaboratorio = {
    * hook/estructura). */
   experimento: string;
   videoId?: string;
+  /** Opcional -- solo cuando esta entrada de laboratorio es
+   * específicamente un experimento A/B con variantes explícitas (no
+   * todas las hipótesis lo son). Ver `ExperimentoAB` arriba. */
+  experimentoAB?: ExperimentoAB;
   /** null mientras no haya dato real -- NUNCA se rellena con una
    * estimacion (seccion 19). */
   resultadoReal: ResultadoReal | null;

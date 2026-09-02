@@ -1,6 +1,7 @@
 import type {ComponenteRegistrado} from '../componentes/tipos';
 import type {TipoGolpe} from '../directores/audio';
 import type {EstrategiaEdicion} from '../directores/edicion/tipos';
+import type {MapaRetencion} from '../directores/retencion/tipos';
 
 /** Un clip de audio real, con su duracion medida (nunca estimada). */
 export type ClipAudio = {archivo: string; duracionSeg: number};
@@ -56,4 +57,12 @@ export type ArbolComposicion = {
   fps: number;
   escenas: EscenaComposicion[];
   duracionTotalSeg: number;
+  /** Ronda 5: mapa narrativo + alertas del Director de Retención 2.0,
+   * calculado sobre el árbol YA armado (ver
+   * fabrica/directores/retencion/). Opcional -- se adjunta desde el
+   * generador (armarComposicion() no sabe nada de retención, mismo
+   * principio de capas separadas que estrategiaEdicion). El Crítico
+   * Audiovisual (fabrica/qa/critico_audiovisual.py) lo lee para la
+   * categoría "Retención". */
+  analisisRetencion?: MapaRetencion;
 };

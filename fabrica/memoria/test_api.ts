@@ -74,6 +74,29 @@ try {
     exploto2 = true;
   }
   check('registrar resultado de un id inexistente explota (no crea uno nuevo silenciosamente)', exploto2);
+
+  // ─── experimentos A/B (Ronda 5) ───
+  const entradaAB = agregarHipotesis({
+    id: 'exp-test-ab-1',
+    hipotesis: 'Una revelacion progresiva de una cifra genera mas interes que mostrarla inmediatamente',
+    experimento: 'variante A (cifra completa de una) vs variante B (cifra progresiva)',
+    experimentoAB: {
+      variableModificada: 'forma de revelar la informacion',
+      variablesControladas: ['guion', 'voz', 'duracion aproximada'],
+      variantes: [
+        {nombre: 'A', descripcion: 'cifra completa desde el primer frame'},
+        {nombre: 'B', descripcion: 'cifra progresiva (contador animado)'},
+      ],
+    },
+  });
+  check('experimentoAB queda guardado con sus 2 variantes', entradaAB.experimentoAB?.variantes.length === 2);
+  check('experimentoAB guarda la variable modificada', entradaAB.experimentoAB?.variableModificada === 'forma de revelar la informacion');
+  const leidaAB = leerLaboratorio().find((e) => e.id === 'exp-test-ab-1')!;
+  check('experimentoAB persiste al releer el archivo', leidaAB.experimentoAB?.variantes[1].nombre === 'B');
+
+  // Una hipotesis SIN experimentoAB sigue funcionando exactamente
+  // igual que antes (campo opcional, no rompe nada existente).
+  check('una entrada sin experimentoAB no tiene el campo (o es undefined)', entrada.experimentoAB === undefined);
 } finally {
   restaurar();
 }

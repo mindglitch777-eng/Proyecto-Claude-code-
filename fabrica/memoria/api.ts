@@ -7,7 +7,7 @@
  */
 import {readFileSync, writeFileSync} from 'node:fs';
 import path from 'node:path';
-import type {EntradaLaboratorio, EstadoExperimento, RegistroVideo, ResultadoReal} from './tipos';
+import type {EntradaLaboratorio, EstadoExperimento, ExperimentoAB, RegistroVideo, ResultadoReal} from './tipos';
 
 const HISTORIAL_PATH = path.join(__dirname, 'historial_componentes.json');
 const LABORATORIO_PATH = path.join(__dirname, 'laboratorio.json');
@@ -57,6 +57,9 @@ export function agregarHipotesis(datos: {
   hipotesis: string;
   experimento: string;
   videoId?: string;
+  /** Ronda 5: solo cuando esta hipótesis es específicamente un
+   * experimento A/B con variantes explícitas -- ver memoria/tipos.ts. */
+  experimentoAB?: ExperimentoAB;
 }): EntradaLaboratorio {
   const laboratorio = leerLaboratorio();
   if (laboratorio.some((e) => e.id === datos.id)) {
