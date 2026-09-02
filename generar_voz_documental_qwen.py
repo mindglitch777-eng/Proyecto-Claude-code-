@@ -58,7 +58,7 @@ def main():
     destino = Path(args.destino)
     destino.mkdir(parents=True, exist_ok=True)
 
-    ok, fallidas = 0, []
+    ok, fallidas, desde_ultimo_commit = 0, [], 0
     for item in manifest:
         nombre = f"{item['slug']}_{item['index']:02d}"
         wav = destino / f"{nombre}.wav"
@@ -68,13 +68,35 @@ def main():
         print(f"[{nombre}] {item['texto'][:60]!r}")
         if generar_linea(args.motor, args.modelo, args.referencia, item["texto"], wav):
             ok += 1
+            desde_ultimo_commit += 1
         else:
             fallidas.append(nombre)
+
+        # checkpoint cada 20 lineas: si el job se corta por timeout no
+        # se pierde el trabajo ya hecho (un timeout de job mata el job
+        # entero sin correr los steps de "guardar" que van al final)
+        if desde_ultimo_commit >= 20:
+            _checkpoint(destino)
+            desde_ultimo_commit = 0
+
+    if desde_ultimo_commit:
+        _checkpoint(destino)
 
     print(f"\n{ok}/{len(manifest)} lineas generadas.")
     if fallidas:
         print(f"Fallidas: {fallidas}")
         sys.exit(1)
+
+
+def _checkpoint(destino):
+    subprocess.run(["git", "add", str(destino)], cwd=RAIZ)
+    r = subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=RAIZ)
+    if r.returncode == 0:
+        return  # nada nuevo desde el ultimo checkpoint
+    subprocess.run(["git", "commit", "-m", "Checkpoint: audio documental (Qwen3-TTS)"], cwd=RAIZ)
+    subprocess.run(["git", "pull", "--rebase", "--autostash"], cwd=RAIZ)
+    subprocess.run(["git", "push"], cwd=RAIZ)
+    print("  [checkpoint guardado]")
 
 
 if __name__ == "__main__":

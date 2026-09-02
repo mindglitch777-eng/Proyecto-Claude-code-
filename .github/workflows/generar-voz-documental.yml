@@ -19,6 +19,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Configurar git (el script hace checkpoints intermedios)
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+
       - name: Clonar y compilar el motor C
         run: |
           sudo apt-get update -qq
@@ -65,11 +70,9 @@ jobs:
                   wav.unlink()
           "
 
-      - name: Guardar en el repo
+      - name: Guardar en el repo (version final realzada)
         if: always()
         run: |
-          git config user.name  "productor-bot"
-          git config user.email "actions@github.com"
           if [ -n "$(git status --porcelain capturas_voz/audio_documental)" ]; then
             git add capturas_voz/audio_documental
             git commit -m "Audio narrado de los 20 documentales (Qwen3-TTS, voz clonada)"
