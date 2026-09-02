@@ -34,11 +34,13 @@ entorno / qué reemplazaría o mejoraría / riesgos / recomendación.
   costo, confirmado leyendo la licencia real.
 - **Dependencias:** ninguna nueva más allá de alinear la versión con
   el resto de paquetes `remotion`/`@remotion/*` ya instalados.
-- **¿Funciona en nuestro entorno?** Debería — es parte del mismo
-  monorepo/CLI que ya usamos para renderizar (`npx remotion render`),
-  sin necesidad de GPU ni servicio externo. **NO CONFIRMADO — falta
-  instalarlo y probar un render real** antes de integrarlo a la
-  fábrica.
+- **¿Funciona en nuestro entorno?** **CONFIRMADO con render real**
+  (2026-09-02, ver `remotion-spike/src/pruebas-r6/README.md`):
+  instalado, probado en una composición aislada con fade/slide/wipe
+  encadenados, renderiza 75/75 frames sin error y la duración total
+  (2.5s) coincide exacto con la fórmula de superposición documentada.
+  Verificado también visualmente (frames exportados a PNG) que el
+  blend real ocurre — no es solo que "no tira error".
 - **Qué reemplazaría/mejoraría:** el sistema de `Golpe`/`TipoGolpe`
   actual NO se reemplaza (sigue siendo la fuente de la intensidad/SFX
   motivada por el Director de Edición) — `@remotion/transitions` se
@@ -51,8 +53,8 @@ entorno / qué reemplazaría o mejoraría / riesgos / recomendación.
   consecutivas) — es un cambio real a la Composición, no cosmético.
   Por eso no se integró ya esta ronda (evitar cambiar la arquitectura
   de timing sin haberlo probado primero en aislamiento).
-- **Recomendación:** **PROBAR en la próxima ronda**, en un ejemplo
-  aislado (no en el pipeline de producción) antes de integrarlo.
+- **Recomendación:** **USAR — confirmado, listo para integrar** (tarea
+  R6-8: sumarlo al puente de render real para los golpes de corte duro).
 
 ## 2. Licencia de Remotion — **CONFIRMADO, sin acción requerida**
 
@@ -202,19 +204,242 @@ entorno / qué reemplazaría o mejoraría / riesgos / recomendación.
   maestra prohíbe explícitamente. No hay ninguna limitación real de
   Remotion hoy que Twick resuelva y que justifique ese costo.
 
+## 8. `@remotion/effects` — **USAR** (motor de ~60 efectos visuales WebGL2)
+
+- **Fuente:** paquete oficial ([docs](https://www.remotion.dev/docs/effects/)).
+- **Qué hace:** ~60 efectos reales (blur, glow, vignette,
+  chromaticAberration, lightLeak, noise, scanlines, halftone,
+  pixelate, wave, starburst, dropShadow, duotone, thermalVision,
+  etc.) aplicados vía prop `effects={[...]}` sobre `<Video>`,
+  `<Solid>`, `<CanvasImage>` o `<HtmlInCanvas>`; también expone
+  `createEffect()` para efectos 2D/WebGL2 100% custom.
+- **Qué problema resuelve:** hoy el "impacto visual" de un golpe
+  (`golpes.tsx`) es CSS puro (opacidad, transform, filter básico) —
+  esto da acceso a efectos de grado cinematográfico reales (glow real,
+  aberración cromática, light leak) que hoy no existen en la fábrica,
+  conectables directamente a la intensidad/energía que ya calcula el
+  Director de Edición (no hay que inventar una nueva escala: la
+  energía de la escena ya existe como número).
+- **Gratis:** sí, misma licencia de Remotion (ítem 2).
+- **Dependencias:** requiere WebGL2. Para renderizar (no solo Studio)
+  hace falta `Config.setChromiumOpenGlRenderer("angle")` en
+  `remotion.config.ts` — **riesgo real a confirmar**: no sabemos si el
+  `headless_shell` que usamos hoy soporta ANGLE/WebGL2 sin flags
+  adicionales. Es la primera pregunta a responder en la prueba aislada.
+- **¿Funciona en nuestro entorno?** **CONFIRMADO con render real**
+  (2026-09-02, ver `remotion-spike/src/pruebas-r6/README.md`): era la
+  pregunta de mayor riesgo de toda la tanda (WebGL2 sin GPU dedicada en
+  headless) y quedó resuelta con evidencia, no supuesto — renderizó
+  60/60 frames (más lento que un render CSS normal, señal real de que
+  WebGL2 se activó) y el frame exportado a PNG muestra una viñeta
+  (`vignette`) visiblemente aplicada, sin pantalla negra. Corrió con el
+  `Config.setChromiumOpenGlRenderer('angle')` que ya estaba puesto en
+  `remotion.config.ts` desde antes, sin cambios adicionales. Pendiente
+  honesto: confirmado en el sandbox de esta sesión (Chromium de
+  Playwright), no todavía en un runner real de GitHub Actions (usa un
+  Chrome Headless Shell distinto, descargado por `remotion browser
+  ensure`) — a confirmar ahí antes de dar el riesgo por cerrado del
+  todo.
+- **Qué reemplazaría/mejoraría:** los efectos de impacto CSS actuales
+  no se descartan (siguen funcionando sin WebGL como base) —
+  `@remotion/effects` se sumaría como capa opcional de mayor calidad
+  para golpes de alta energía (`fogonazo`, `sacudon`) donde el efecto
+  CSS se queda corto.
+- **Riesgos:** ninguno de software confirmado (WebGL2 sí funciona) —
+  el riesgo que queda es de tiempo de render (más lento que CSS/Canvas
+  2D) y de confirmar el mismo comportamiento en el runner real de
+  GitHub Actions, no de si la tecnología funciona en absoluto.
+- **Recomendación:** **USAR — confirmado, listo para integrar** (tarea
+  R6-9: capa de efectos conectada a la energía del Director de
+  Edición).
+
+## 9. `@remotion/three` — **USAR** (3D real, primer momento verdaderamente 3D de la fábrica)
+
+- **Fuente:** paquete oficial ([docs](https://www.remotion.dev/docs/three/)),
+  integración con React Three Fiber.
+- **Qué hace:** permite escenas 3D reales (geometría, cámaras, luces)
+  dentro de un `<ThreeCanvas width height>`, con animación determinista
+  atada a `useCurrentFrame()` (NUNCA `useFrame()` de
+  `@react-three/fiber`, que rompe la determinística del render — esto
+  quedó explícito en la doc oficial y hay que respetarlo al pie de la
+  letra). Requiere `<Sequence layout="none">` dentro del `ThreeCanvas`.
+- **Qué problema resuelve:** es la respuesta directa al pedido
+  explícito del operador de motion design "hasta 3D" — hoy CERO
+  componentes de la fábrica usan profundidad/cámara/geometría 3D real,
+  todo es 2D (CSS transforms, como mucho `perspective` falso).
+- **Gratis:** sí, misma licencia de Remotion + Three.js (MIT) +
+  React Three Fiber (MIT) — sin dependencias pagas.
+- **Dependencias:** `three`, `@react-three/fiber`, `@remotion/three`.
+  Renderiza sobre WebGL igual que `@remotion/effects` (ítem 8) — mismo
+  riesgo de soporte headless a confirmar en la prueba aislada.
+- **¿Funciona en nuestro entorno?** **CONFIRMADO con render real**
+  (2026-09-02, ver `remotion-spike/src/pruebas-r6/README.md`): 60/60
+  frames renderizados, frame exportado a PNG muestra un cubo 3D real
+  en perspectiva con sombreado direccional de `meshStandardMaterial`
+  reaccionando a una `pointLight` (no un placeholder plano) — confirma
+  geometría, cámara y luz reales funcionando en el mismo entorno
+  headless que ya usamos, sin GPU dedicada. Mismo pendiente honesto que
+  el ítem 8: confirmado en este sandbox, falta confirmar en el runner
+  real de GitHub Actions.
+- **Qué reemplazaría/mejoraría:** nada existente se reemplaza (no hay
+  nada 3D hoy) — sería un componente nuevo en el registro, usado con
+  criterio (no forzar 3D donde un golpe 2D ya comunica bien, sección
+  26 de la orden maestra: no sobreingeniería).
+- **Riesgos:** el de WebGL2 headless quedó resuelto (ítem 8) — queda el
+  riesgo real de performance a escala (una escena 3D más compleja que
+  un cubo puede ser bastante más cara de renderizar; a medir cuando se
+  diseñe el primer componente 3D de producción real, R6-10).
+- **Recomendación:** **USAR — confirmado, listo para integrar** (tarea
+  R6-10: primer componente 3D real en el registro, con criterio —
+  no forzar 3D donde un golpe 2D ya comunica bien, sección 26 de la
+  orden maestra).
+
+## 10. `@remotion/rough-notation` — **USAR** (anotaciones de texto dibujadas a mano)
+
+- **Fuente:** paquete oficial ([docs](https://www.remotion.dev/docs/text-highlights)),
+  wrapper de la librería `rough-notation` (MIT).
+- **Qué hace:** `<Highlight>`, `<Circle>`, `<Underline>`,
+  `<StrikeThrough>`, `<CrossedOff>`, `<Box>`, `<Bracket>` — anotaciones
+  de texto tipo "dibujado a mano" (marcador, círculo, subrayado),
+  animadas con `progress` derivado de `interpolate(frame, ...)`, cada
+  componente decide si la anotación va detrás o encima del texto.
+- **Qué problema resuelve:** es el candidato directo para el
+  "Information Emphasis Engine" pedido en Prompt Maestro 2 — hoy el
+  énfasis de texto en la fábrica es solo tamaño/color/negrita CSS; esto
+  da un lenguaje visual distinto (marcador real sobre una cifra clave,
+  círculo real sobre un dato) sin depender de ninguna API externa.
+- **Gratis:** sí, MIT + licencia de Remotion.
+- **Dependencias:** ninguna nueva de peso, es una librería de dibujo
+  SVG/canvas puro, sin WebGL — de las 4 herramientas de esta tanda, es
+  la de MENOR riesgo técnico (no depende de GPU/WebGL2).
+- **¿Funciona en nuestro entorno?** **CONFIRMADO con render real**
+  (2026-09-02, ver `remotion-spike/src/pruebas-r6/README.md`): 90/90
+  frames, sin complicaciones — como se esperaba, fue la prueba de
+  menor riesgo y menor tiempo de render de las 4.
+- **Qué reemplazaría/mejoraría:** los énfasis CSS actuales no
+  desaparecen — esto se suma para momentos específicos donde vale la
+  pena el efecto "a mano" (una cifra clave, una palabra que se quiere
+  remarcar como si alguien la subrayara en vivo).
+- **Riesgos:** ninguno técnico relevante identificado ni encontrado en
+  la prueba real.
+- **Recomendación:** **USAR — confirmado, listo para integrar** (tarea
+  R6-11: Information Emphasis Engine).
+
+## 11. `@remotion/sfx` — **USAR** (banco de efectos de sonido gratis, sin licencia por verificar)
+
+- **Fuente:** paquete oficial, sonidos alojados en `remotion.media`.
+- **Qué hace:** ~30 efectos de sonido reales (whoosh, whip, ding,
+  vine-boom, record-scratch, etc.) vía `<Audio src="https://remotion.media/NOMBRE.wav">`
+  del paquete `@remotion/sfx`.
+- **Qué problema resuelve:** hoy los golpes de la fábrica no tienen
+  SFX propio real más allá de lo que decida el Director de Audio con
+  los recursos existentes — esto da una librería lista, sin fricción
+  de licencia (parte del propio proyecto Remotion), para asociar un
+  sonido real a un golpe de alta energía.
+- **Gratis:** sí — alojado por el propio proyecto Remotion.
+- **Dependencias:** requiere red en tiempo de render (fetch a
+  `remotion.media`) — a diferencia de nuestro flujo actual, que usa
+  audio local generado/curado. Si el runner de GitHub Actions no tiene
+  salida a internet en el paso de render, esto falla — **a confirmar**.
+- **¿Funciona en nuestro entorno?** Probablemente sí (los runners de
+  GitHub Actions sí tienen salida a internet, ya lo usamos para bajar
+  dependencias) — de todos modos, más prudente descargar los WAV una
+  vez a `public/` en vez de depender de una URL externa en cada render
+  (evita un punto de falla de red en cada video generado).
+- **Qué reemplazaría/mejoraría:** nada se reemplaza — es un banco de
+  sonido adicional para el Director de Audio.
+- **Recomendación:** **PROBAR con prioridad baja/media** — no es de
+  las 4 herramientas de la tanda de instalación aislada (transitions/
+  effects/three/rough-notation), pero queda anotado para la próxima
+  vez que se toque el Director de Audio.
+
+## 12. Generación de video/imagen con modelos de HuggingFace (Pyramid Flow SD3, Wan2.2-TI2V-5B, Mochi 1, SVD) — **DESCARTAR, bloqueado por hardware**
+
+- **Fuente:** búsqueda directa en HuggingFace + repos de cada modelo.
+- **Qué se investigó:** si algún modelo de texto-a-video o
+  imagen-a-video corría gratis, sin GPU, en un runner de GitHub
+  Actions (CPU-only) — la pregunta explícita que motivó esta
+  investigación tras el pedido de "máximo nivel visual" del operador.
+- **Hallazgo real:** los 4 modelos investigados (Pyramid Flow SD3,
+  Wan2.2-TI2V-5B, Mochi 1, Stable Video Diffusion) requieren GPU real
+  incluso con cuantización agresiva (mínimo ~10GB de VRAM en GGUF
+  cuantizado) — ninguno corre en CPU en un tiempo razonable, y los
+  runners gratuitos de GitHub Actions son 100% CPU-only, sin GPU.
+- **Gratis:** los modelos en sí son gratis/open-weight, pero el
+  hardware necesario para correrlos no lo es en nuestro entorno actual.
+- **¿Funciona en nuestro entorno?** **NO — confirmado, no es falta de
+  investigación.** Esto es explícitamente lo que el operador pidió
+  documentar cuando algo se bloquea: no es que no busquemos lo
+  suficiente, es un límite real de hardware.
+- **Qué reemplazaría/mejoraría:** en teoría, generación de clips de
+  video/imagen originales en vez de depender de un banco de assets
+  curado — sigue siendo el enfoque actual (banco de assets propio +
+  componentes generativos en Canvas/CSS/SVG), que no requiere GPU.
+- **Recomendación:** **DESCARTAR mientras no haya acceso a GPU.** Si
+  en el futuro el operador consigue acceso a GPU (propia o de un
+  servicio, pago o con cuota gratis tipo Colab), esto se retoma — no
+  se cierra la puerta, solo se documenta como bloqueado por hardware,
+  no por decisión de diseño.
+
+## 13. Librerías comunitarias de componentes Remotion (`remocn`, `remotion-animated`, `remotion-bits`, `remotion-kit`, `remotion-templates`) — **PROBAR solo como inspiración, no como dependencia**
+
+- **Fuente:** búsqueda en GitHub —
+  [`remocn/remocn`](https://github.com/remocn/remocn) ("Onda", 110+
+  componentes copy-paste, 18 transiciones, MIT),
+  [`stefanwittwer/remotion-animated`](https://github.com/stefanwittwer/remotion-animated)
+  (`<Animated/>`, primitiva declarativa de animación, MIT), más
+  `av/remotion-bits`, `seblavoie/remotion-kit`,
+  `reactvideoeditor/remotion-templates` (encontrados, no auditados en
+  profundidad).
+- **Qué hacen:** catálogos de componentes/animaciones Remotion
+  reusables, en su mayoría de estilo "copy-paste" (como shadcn/ui) en
+  vez de paquete npm instalable — se copia el código fuente, no se
+  agrega como dependencia.
+- **Qué problema resuelve, en teoría:** ahorrar tiempo de diseño de
+  motion (curvas de animación, composición de efectos) ya resuelto por
+  otros.
+- **Gratis:** sí, todo MIT.
+- **¿Funciona en nuestro entorno?** Sí técnicamente (es código React/
+  Remotion plano), pero **no se instala como dependencia** — el estilo
+  "copy-paste" significa que adoptarlo implica traer código de un
+  tercero a mantener como propio, sin el control de calidad/pruebas
+  que tiene nuestro propio catálogo de 26+ componentes.
+- **Riesgos:** código de terceros sin el mismo nivel de prueba/control
+  que nuestros propios componentes; mezclar estilos de motion no
+  curados puede romper la coherencia visual entre golpes que ya logramos.
+- **Recomendación:** **PROBAR únicamente como referencia de diseño**
+  (leer su código para inspirarse en curvas/timings de animación), NO
+  copiar componentes completos a la fábrica salvo que se audite y
+  adapte cada uno individualmente al estilo/convenciones propias.
+
 ---
 
 ## Resumen de recomendaciones
 
 | Herramienta | Clasificación | Prioridad |
 |---|---|---|
-| `@remotion/transitions` | USAR (probar primero, aislado) | Alta |
+| `@remotion/transitions` | **USAR — confirmado con render real (2026-09-02)** | Alta, integrar (R6-8) |
 | Licencia Remotion | Confirmado, sin acción | — |
 | `@remotion/install-whisper-cpp` + `@remotion/captions` | PROBAR | Alta (resuelve pendiente más antiguo) |
 | `@remotion/media-utils` | PROBAR | Baja (sin necesidad concreta hoy) |
 | `remotion-superpowers` (plugin) | DESCARTAR | — |
 | Templates comerciales (RenderComp, etc.) | DESCARTAR como dependencia | — |
 | Twick | DESCARTAR | — |
+| `@remotion/effects` | **USAR — confirmado con render real, WebGL2 funciona headless (2026-09-02)** | Alta, integrar (R6-9) |
+| `@remotion/three` | **USAR — confirmado con render real, 3D funciona headless (2026-09-02)** | Alta, integrar (R6-10) |
+| `@remotion/rough-notation` | **USAR — confirmado con render real (2026-09-02)** | Alta, integrar (R6-11) |
+| `@remotion/sfx` | PROBAR | Media (próxima vez que se toque Director de Audio) |
+| Modelos de video/imagen de HuggingFace | DESCARTAR — bloqueado por hardware (no hay GPU) | — |
+| Librerías comunitarias (`remocn`, `remotion-animated`, etc.) | PROBAR solo como inspiración de diseño | Baja |
+
+**Evidencia real de las 4 confirmaciones de arriba:**
+`remotion-spike/src/pruebas-r6/README.md` — 4 composiciones aisladas
+instaladas, renderizadas con el mismo `headless_shell` que usa la
+fábrica, y verificadas visualmente frame por frame (no solo "no tiró
+error"). El hallazgo más importante: WebGL2 (necesario para efectos y
+3D) SÍ funciona en este entorno headless sin GPU dedicada, algo que no
+estaba garantizado y era el riesgo más grande de investigar antes de
+prometer nada al operador.
 
 Ninguna de estas integraciones se implementó todavía en el código de
 la fábrica esta ronda — son candidatos evaluados y priorizados, no
@@ -222,3 +447,10 @@ cambios de arquitectura ya hechos (sección 17: "la arquitectura debe
 poder sobrevivir sin una dependencia externa crítica"; sección 24: un
 cambio que afecta arquitectura se documenta y se espera). Quedan como
 el primer punto de "PRÓXIMO PASO" en `ESTADO_ACTUAL.md`.
+
+La siguiente acción concreta (tarea R6-7) es instalar
+`@remotion/transitions`, `@remotion/effects`, `@remotion/three` y
+`@remotion/rough-notation` en `remotion-spike/` y probar cada uno en
+una composición aislada — sobre todo para responder, con una prueba
+real y no una suposición, si WebGL2 funciona en el `headless_shell`
+que ya usamos para renderizar (riesgo real de los ítems 8 y 9).

@@ -30,6 +30,10 @@ import {Muestrario5, DUR_M5} from './escenas/Muestrario5';
 import {Muestrario6, DUR_M6} from './escenas/Muestrario6';
 import {Muestrario7, DUR_M7} from './escenas/Muestrario7';
 import {Muestrario8, DUR_M8} from './escenas/Muestrario8';
+import {PruebaTransiciones, DUR_PRUEBA_TRANSICIONES} from './pruebas-r6/PruebaTransiciones';
+import {PruebaEfectos, DUR_PRUEBA_EFECTOS} from './pruebas-r6/PruebaEfectos';
+import {Prueba3D, DUR_PRUEBA_3D} from './pruebas-r6/Prueba3D';
+import {PruebaHighlights, DUR_PRUEBA_HIGHLIGHTS} from './pruebas-r6/PruebaHighlights';
 
 const cuadros = Math.round(DUR_TOTAL * FPS);
 
@@ -182,6 +186,14 @@ export const Root: React.FC = () => {
           defaultProps={{id: v.id}}
         />
       ))}
+      {/* R6-7: pruebas aisladas de los 4 paquetes nuevos investigados en
+          fabrica/skills/INVESTIGACION_HERRAMIENTAS.md, ANTES de integrar
+          nada a la fabrica de verdad -- ver fabrica/docs/AUDITORIA_PROMPT_MAESTRO_2.md.
+          Ninguna de estas 4 composiciones se usa en produccion todavia. */}
+      <Composition id="prueba-transiciones" component={PruebaTransiciones} durationInFrames={DUR_PRUEBA_TRANSICIONES} fps={FPS} width={ANCHO} height={ALTO} />
+      <Composition id="prueba-efectos" component={PruebaEfectos} durationInFrames={DUR_PRUEBA_EFECTOS} fps={FPS} width={ANCHO} height={ALTO} />
+      <Composition id="prueba-3d" component={Prueba3D} durationInFrames={DUR_PRUEBA_3D} fps={FPS} width={ANCHO} height={ALTO} />
+      <Composition id="prueba-highlights" component={PruebaHighlights} durationInFrames={DUR_PRUEBA_HIGHLIGHTS} fps={FPS} width={ANCHO} height={ALTO} />
       {/* Solo el hook, para iterar sin renderizar los 26s enteros. */}
       <Composition
         id="hook"
