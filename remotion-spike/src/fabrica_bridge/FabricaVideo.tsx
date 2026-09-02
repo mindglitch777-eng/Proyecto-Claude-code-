@@ -12,7 +12,7 @@ import {Remate} from '../agresivo/Remate';
 import {Chat, Buscador, Notificaciones} from '../escenas/pantallas';
 import {Grafico} from '../escenas/Grafico';
 import {Silueta} from '../escenas/Silueta';
-import {Golpe, TipoGolpe} from '../escenas/golpes';
+import {Golpe, TipoGolpe, Anticipo} from '../escenas/golpes';
 import {PALETA} from '../identidad';
 
 // PUENTE DE RENDER de la nueva fabrica (fabrica/composicion/). Esto NO
@@ -80,6 +80,18 @@ export type ArbolFabrica = {
 
 const seg = (s: number, fps: number) => Math.round(s * fps);
 
+// Golpes que cubren la pantalla entera o la sacuden -- verificado
+// extrayendo frames reales de fabrica-demo-03 (Ronda 3): el corte
+// "especialmente fuerte" que senalo el operador a los ~36.5s resulto
+// ser el golpe "negro" (blackout total), no "sacudon" como hubiera
+// asumido solo mirando el nivel de intensidad -- "negro" es
+// tecnicamente nivel "pausa", pero visualmente es tan abrupto como un
+// impacto porque tapa TODA la pantalla de golpe. Por eso esta lista
+// se arma por COBERTURA VISUAL real (fogonazo=blanco total,
+// negro=negro total, sacudon=shake+scale fuerte), no por el nombre
+// del nivel de intensidad.
+const GOLPES_FUERTES: TipoGolpe[] = ['fogonazo', 'sacudon', 'negro'];
+
 export const FabricaVideo: React.FC<{arbol: ArbolFabrica}> = ({arbol}) => {
   const {fps} = useVideoConfig();
   return (
@@ -102,11 +114,19 @@ export const FabricaVideo: React.FC<{arbol: ArbolFabrica}> = ({arbol}) => {
             </Sequence>
           );
         }
+        const siguiente = arbol.escenas[i + 1];
+        const preparaGolpeFuerte = siguiente && GOLPES_FUERTES.includes(siguiente.golpe);
         return (
           <Sequence key={i} from={desde} durationInFrames={duracion}>
             <Golpe tipo={e.golpe} sonido={i > 0}>
               <Comp {...e.props} />
             </Golpe>
+            {/* ANTICIPO (Ronda 3): si la escena que sigue corta con un
+                golpe fuerte, los ultimos instantes de ESTA escena
+                muestran pulsos que se aceleran -- prepara el impacto
+                en vez de que salte de la nada (pedido explicito del
+                operador viendo fabrica-demo-03). */}
+            {preparaGolpeFuerte && <Anticipo />}
             {/* MULTI-AUDIO: cada clip se superpone en su propio offset
                 relativo dentro de esta misma escena -- el componente
                 visual se monta una sola vez arriba, no una vez por

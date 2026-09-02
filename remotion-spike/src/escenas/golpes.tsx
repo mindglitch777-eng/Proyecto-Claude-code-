@@ -184,6 +184,40 @@ export const Pulso: React.FC<{cada?: number; largo?: number; fuerza?: number; co
   return <AbsoluteFill style={{background: color, opacity: fuerza * k, pointerEvents: 'none'}} />;
 };
 
+// ANTICIPO
+//
+// Ronda 3 (calidad visual): el operador senalo que el corte a los
+// ~36.5s de fabrica-demo-03 (revelacion -> sacudon) es "especialmente
+// fuerte" y pidio conservar la idea del impacto pero PREPARARLO, no
+// que salte de la nada. Esto reusa el mismo Pulso de arriba (ya
+// existia, no se usaba en ningun lado de la fabrica) pero acelerando
+// los pulsos a medida que se acerca el final de la escena -- como un
+// latido que se acelera antes del golpe, no una serie pareja.
+//
+// Se monta DENTRO de la escena que TERMINA en un golpe fuerte (no en
+// la escena que empieza), leyendo `durationInFrames` de su propia
+// Sequence para saber cuanto falta para el corte.
+export const Anticipo: React.FC<{ventanaSeg?: number; pulsos?: number; color?: string}> = ({
+  ventanaSeg = 0.5,
+  pulsos = 3,
+  color = '#fff',
+}) => {
+  const frame = useCurrentFrame();
+  const {fps, durationInFrames} = useVideoConfig();
+  const framesRestantes = durationInFrames - frame;
+  const ventanaFrames = ventanaSeg * fps;
+  if (framesRestantes > ventanaFrames || framesRestantes < 0) return null;
+
+  const progreso = 1 - framesRestantes / ventanaFrames; // 0 al entrar en la ventana, 1 en el ultimo frame
+  // raiz cuadrada en vez de lineal: los pulsos arrancan espaciados y
+  // se van juntando -- eso ES la aceleracion, no pulsos parejos.
+  const faseGlobal = pulsos * Math.sqrt(Math.max(0, progreso));
+  const faseDentroDePulso = faseGlobal - Math.floor(faseGlobal);
+  const k = Math.pow(1 - faseDentroDePulso, 2);
+  const intensidadMax = interpolate(progreso, [0, 1], [0.12, 0.4]);
+  return <AbsoluteFill style={{background: color, opacity: intensidadMax * k, pointerEvents: 'none'}} />;
+};
+
 // GRANO
 //
 // Ruido finito encima de todo. Le saca el aspecto de "hecho en la
