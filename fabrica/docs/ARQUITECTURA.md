@@ -38,10 +38,21 @@ motivada
 Director de Retención 2.0 (fabrica/directores/retencion/, Ronda 5) --
 mapa narrativo del video completo + alertas de arco
   ↓
+Knowledge Engine + Hook Engine (fabrica/conocimiento/, fabrica/hooks/,
+Ronda 6) -- catálogo de patrones de apertura con evidencia real citada
+por id; consultable, todavía NO conectado a la elección automática del
+Director de Edición
+  ↓
 Composición (fabrica/composicion/armar.ts) -- offsets exactos en
-segundos, audio real como fuente de verdad del timing
+segundos, audio real como fuente de verdad del timing; desde Ronda 6
+también reserva margen real para una transición con superposición
+(@remotion/transitions) cuando el golpe siguiente es 'fundido'/'desliza'
   ↓
 Render (Remotion, remotion-spike/src/fabrica_bridge/FabricaVideo.tsx)
+-- TransitionSeries real para golpes continuos, lightLeak() real para
+'cortina', primer componente 3D real (Torre3D, @remotion/three),
+Information Emphasis Engine real (dibujo/enfasis.tsx,
+@remotion/rough-notation) conectado opcionalmente a Contador (Ronda 6)
   ↓
 QA duro (fabrica/qa/checks_duros.py) -- hechos objetivos del mp4
   ↓
@@ -58,9 +69,11 @@ heurística con resultado real
 ```
 
 Videos de prueba reales generados hasta ahora: `fabrica-demo-01` a
-`fabrica-demo-05` (`fabrica/salidas/`), cada uno con su ronda de
-mejoras documentada (`MEJORAS_RONDA3.md`, `MEJORAS_RONDA4.md`, este
-documento para la Ronda 5).
+`fabrica-demo-06` (`fabrica/salidas/` / `capturas_voz/audio_demo_06/`
+-- demo_06 tiene voz real generada pero el render final quedó pausado
+a pedido explícito del operador, ver `PENDIENTES.md`), cada ronda con
+su detalle documentado (`MEJORAS_RONDA3.md`, `MEJORAS_RONDA4.md`, este
+documento para la Ronda 5, `MEJORAS_RONDA6.md` para la Ronda 6).
 
 ## QUÉ FALTA (ver PENDIENTES.md para el detalle completo)
 
@@ -69,12 +82,25 @@ documento para la Ronda 5).
   su mecanismo más importante sin ejercitar en producción todavía.
 - Subtítulos (nunca se generaron en ningún video de la fábrica) --
   candidato identificado: `@remotion/install-whisper-cpp` +
-  `@remotion/captions` (ver `fabrica/skills/INVESTIGACION_HERRAMIENTAS.md`).
-- Transiciones con superposición real (crossfade/slide de verdad entre
-  dos escenas) -- candidato identificado: `@remotion/transitions`
-  (mismo documento de skills).
+  `@remotion/captions` (ver `fabrica/skills/INVESTIGACION_HERRAMIENTAS.md`),
+  todavía en PROBAR, no se tocó en Ronda 6.
 - Motor de composiciones en capas -- deliberadamente NO construido
   (prohibido como sistema paralelo, ver `MEJORAS_RONDA4.md`).
+- Cinematic Director (capa de coordinación de cámara/profundidad/
+  iluminación) -- Ronda 6 agregó el primer componente 3D real
+  (`Torre3D`), pero no una capa central que decida esto para todo el
+  catálogo. Ver `fabrica/docs/AUDITORIA_PROMPT_MAESTRO_2.md`.
+- Hook Engine conectado a la elección automática -- el catálogo
+  (`fabrica/hooks/`) existe y es consultable, pero el Director de
+  Edición todavía no lo usa para elegir el patrón de apertura de un
+  video real.
+- Confirmar WebGL2 (`@remotion/effects`/`@remotion/three`) en el
+  runner REAL de GitHub Actions -- confirmado con render real solo en
+  el sandbox de esta sesión (Chromium de Playwright), el workflow de
+  producción usa un binario distinto (`npx remotion browser ensure`).
+- Vignette cinemática sutil sobre una escena completa -- probado con
+  `@remotion/effects` (Ronda 6), resultó mucho más opaco de lo
+  esperado con los parámetros probados; necesita más ajuste, no se usó.
 
 ## QUÉ PROBAMOS Y QUÉ FUNCIONÓ
 
@@ -90,6 +116,22 @@ documento para la Ronda 5).
   de verdad en demo_05 (penalizó "silueta" recién usado), con un
   efecto secundario real documentado (cambió la clasificación de
   intención de la escena de pausa).
+- WebGL2 (`@remotion/effects`, `@remotion/three`) en el `headless_shell`
+  sin GPU dedicada (Ronda 6) -- funcionó, era el riesgo más grande de
+  toda la investigación de motion design y quedó resuelto con render
+  real, no supuesto.
+- Transición real con superposición (`@remotion/transitions`, Ronda 6)
+  -- funcionó de punta a punta con audio real, sin desincronizar la
+  narración (confirmado con `ffmpeg silencedetect`, ver
+  `remotion-spike/src/pruebas-r6/README.md`).
+- `lightLeak()` real reemplazando el golpe 'cortina' (Ronda 6) --
+  funcionó, mejor calidad visual que el CSS que imitaba lo mismo.
+- Primer componente 3D real, `Torre3D` (Ronda 6) -- funcionó de punta a
+  punta con audio real a través del pipeline completo, con una
+  iteración real de ajuste de escala/espaciado documentada.
+- Information Emphasis Engine real, `<Enfasis>` con rough-notation
+  (Ronda 6) -- funcionó, conectado como opt-in a `Contador` sin romper
+  ningún video existente.
 
 ## QUÉ NO FUNCIONÓ / QUÉ SE ENCONTRÓ ROTO
 
@@ -103,16 +145,30 @@ documento para la Ronda 5).
   confirma que la limitación de "props/semántica distinta dentro de la
   misma categoría" sigue siendo real y recurrente, no un caso
   aislado. Ver ítem 10 de `PENDIENTES.md`.
+- `vignette()` de `@remotion/effects` en modo `color` sobre un `<Solid
+  color="transparent">` (Ronda 6) -- se esperaba un look "bordes
+  oscuros, centro transparente" como el de `lightLeak()`, pero salió
+  mucho más opaco de lo esperado incluso con `radius=0.55` (el "centro
+  sin afectar" casi no se distinguía). No se usó; documentado como
+  necesita-más-ajuste, no descartado del todo.
 
 ## QUÉ NO SABEMOS
 
 - Si alguna de las heurísticas de retención/edición de esta fábrica
   correlaciona con retención REAL -- no hay ningún video publicado con
   métricas todavía.
-- Si `@remotion/transitions`/`@remotion/install-whisper-cpp` funcionan
+- Si `@remotion/install-whisper-cpp`/`@remotion/captions` funcionan
   bien en nuestro entorno real (GitHub Actions, sin GPU) -- evaluados
   por investigación, NO probados en código todavía (ver
   `fabrica/skills/INVESTIGACION_HERRAMIENTAS.md`).
+- Si `@remotion/effects`/`@remotion/three` (confirmados con render real
+  en el sandbox de esta sesión, Ronda 6) se comportan igual en el
+  runner REAL de GitHub Actions -- usa un Chrome Headless Shell
+  distinto al Chromium de Playwright de este entorno.
+- Si el costo de render extra de WebGL (transiciones/efectos/3D) sigue
+  siendo práctico a escala de producción (muchas escenas, muchos
+  videos por corrida de CI) -- no medido todavía, solo probado en
+  composiciones cortas y aisladas.
 
 ## QUÉ NO DEBEMOS VOLVER A HACER
 
@@ -133,10 +189,14 @@ documento para la Ronda 5).
 | `fabrica/README.md` | Visión general y estado por fase (histórico) |
 | `fabrica/PENDIENTES.md` | Todo lo pendiente, con motivo/bloqueo/próximo paso |
 | `fabrica/PENDIENTES_OPERADOR.md` | Solo lo que necesita al operador |
-| `fabrica/ESTADO_ACTUAL.md` | Informe ejecutivo de la ronda más reciente |
-| `fabrica/MEJORAS_RONDA3.md` / `_RONDA4.md` | Detalle técnico de cada ronda anterior |
-| `fabrica/research/` | Investigación con evidencia clasificada (retención, etc.) |
+| `fabrica/ESTADO_ACTUAL.md` | Informe ejecutivo de Ronda 4 (histórico, no actualizado desde) |
+| `fabrica/MEJORAS_RONDA3.md` / `_RONDA4.md` / `_RONDA6.md` | Detalle técnico de cada ronda (Ronda 5 es este mismo documento) |
+| `fabrica/docs/AUDITORIA_PROMPT_MAESTRO_2.md` | Mapeo del Prompt Maestro 2 (38 secciones) contra el estado real |
+| `fabrica/research/` | Investigación en prosa con evidencia clasificada (retención, etc.) |
+| `fabrica/conocimiento/` | Knowledge Engine (Ronda 6) -- la misma investigación, tipada y consultable |
+| `fabrica/hooks/` | Hook Engine (Ronda 6) -- catálogo de patrones de apertura con evidencia citada |
 | `fabrica/skills/` | Herramientas externas investigadas, USAR/PROBAR/DESCARTAR |
+| `remotion-spike/src/pruebas-r6/README.md` | Evidencia real (renders, frames) de cada integración visual de Ronda 6 |
 | `fabrica/experiments/` | Experimentos A/B formalizados |
 | `fabrica/criticas/` | Salidas guardadas del Crítico Audiovisual por video |
 | `fabrica/decisions/` | Decisiones arquitectónicas tomadas y rechazadas, con motivo |

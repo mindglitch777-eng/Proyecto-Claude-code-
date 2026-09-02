@@ -357,3 +357,39 @@ del sistema o no.
   la función que arma el árbol.
 - **¿Bloquea el resto?** NO. Documentado como el primer paso lógico de
   la próxima ronda en `ESTADO_ACTUAL.md`.
+
+## 14. Ronda 6 (motion design real + Knowledge/Hook Engine) — ver `MEJORAS_RONDA6.md`
+
+- **Qué se hizo:** `@remotion/transitions`/`effects`/`three`/
+  `rough-notation` instalados, probados aislados y CONECTADOS de
+  verdad (transición real con superposición para golpes continuos,
+  `lightLeak()` real para 'cortina', primer componente 3D real
+  `Torre3D`, Information Emphasis Engine real conectado a `Contador`).
+  Más `fabrica/conocimiento/` (Knowledge Engine tipado) y
+  `fabrica/hooks/` (Hook Engine, catálogo de patrones de apertura con
+  evidencia citada), y `memoria/patrones.ts` evolucionado con `hookId`.
+  Cero videos nuevos generados (instrucción explícita del operador).
+- **Pendiente técnico concreto (no arreglado esta ronda):**
+  `vignette()` de `@remotion/effects` en modo `color` sobre un `<Solid
+  color="transparent">` resultó mucho más opaco de lo esperado (se
+  quería un look "bordes oscuros, centro transparente" como
+  `lightLeak()`) -- no se usó para el estilo 'cinematico', necesita más
+  ajuste de parámetros o probar `mode:'alpha'` en una próxima ronda.
+- **Pendiente de confirmación (no de diseño):** `@remotion/effects`/
+  `@remotion/three` se confirmaron con render real SOLO en el sandbox
+  de esta sesión (Chromium de Playwright) -- el workflow real de
+  GitHub Actions usa `npx remotion browser ensure` (un Chrome Headless
+  Shell distinto, descargado de `remotion.media`). Antes de depender de
+  estas herramientas en un video de producción real, correr el mismo
+  tipo de prueba (`remotion-spike/src/pruebas-r6/`) en un run real de
+  CI para confirmar el mismo comportamiento.
+- **Pendiente de integración (decisión tomada, no ejecutada):** el
+  Hook Engine (`fabrica/hooks/`) es un catálogo consultable
+  (`patronesCompatibles(intencion)`), pero el Director de Edición
+  todavía no lo usa para elegir el patrón de apertura de un video real
+  -- decisión explícita de no conectarlo automáticamente esta ronda
+  (cambio de mayor riesgo sobre lógica que ya funciona bien).
+- **¿Bloquea el resto?** NO. Todo lo construido es aditivo/opt-in
+  (confirmado con tests de que ningún generador de demo anterior
+  cambió de comportamiento); lo pendiente queda como trabajo futuro
+  explícito.
