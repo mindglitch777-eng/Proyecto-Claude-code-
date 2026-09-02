@@ -1,0 +1,41 @@
+import type {InvestigacionNecesaria} from './tipos';
+
+export const INVESTIGACION_NECESARIA: InvestigacionNecesaria[] = [
+  {
+    id: 'tiktok-creator-academy-oficial-bloqueado',
+    pregunta: '¿Qué dice oficialmente TikTok (Creator Academy / TikTok for Business) sobre retención, hooks y qué hace que un video mantenga a la audiencia mirando?',
+    fuentePropuesta: 'https://www.tiktok.com/creator-academy (fuente oficial de la plataforma)',
+    queFalta: 'El contenido real de esa página -- solo tenemos lo que blogs de marketing DICEN que dice TikTok, sin poder confirmarlo directo.',
+    bloqueo: 'Acceso bloqueado por la política de red de este entorno (egress proxy) al intentar WebFetch en Ronda 7 (2026-09-02) -- error EGRESS_BLOCKED, dominio tiktok.com.',
+    fecha: '2026-09-02',
+    estado: 'pendiente',
+  },
+  {
+    id: 'estadisticas-tiktok-blogs-no-verificables',
+    pregunta: '¿Son reales las cifras específicas que circulan en blogs de marketing (ej. "84.3% de los videos virales de TikTok usan gatillos psicológicos en los primeros 3 segundos", "TikTok Creator Health Score Q4 2025", "los creadores que testean crecen 2.5x más rápido")?',
+    fuentePropuesta: 'Blogs de marketing de video (opus.pro, faceless.so, joyspace.ai, y otros sitios de contenido SEO encontrados en la búsqueda de Ronda 7).',
+    queFalta: 'Ninguno de estos sitios cita una fuente primaria verificable (ni un estudio, ni una publicación oficial de la plataforma) para esas cifras puntuales.',
+    bloqueo: 'Las cifras parecen generadas por sitios de contenido SEO/marketing sin metodología transparente -- no se pudo rastrear ningún dato hasta una fuente primaria real.',
+    fecha: '2026-09-02',
+    estado: 'descartada',
+    resolucion: 'NO se incorporaron al Knowledge Engine (fabrica/conocimiento/) -- exactamente el caso que la directiva pide evitar ("no tratar publicaciones individuales de redes sociales/blogs como verdad científica"). Si se necesita un número real de referencia, hay que buscar el estudio o dato de plataforma primario, no citar el blog que lo repite.',
+  },
+  {
+    id: 'licencia-remotion-templates-1000',
+    pregunta: '¿Bajo qué licencia exacta se distribuyen las 1000 plantillas del repositorio ali-abassi/remotion-templates?',
+    fuentePropuesta: 'https://github.com/ali-abassi/remotion-templates',
+    queFalta: 'El archivo LICENSE del repositorio no se pudo confirmar en la lectura de Ronda 7 -- el repo advierte que "código y medios de terceros retienen sus propios requisitos de licencia" pero no queda claro el estado del código propio del repo.',
+    bloqueo: 'WebFetch devolvió un resumen sin encontrar un archivo LICENSE explícito en el contenido accedido.',
+    fecha: '2026-09-02',
+    estado: 'pendiente',
+  },
+  {
+    id: 'webgl2-github-actions-runner-real',
+    pregunta: '¿@remotion/effects y @remotion/three (WebGL2) funcionan igual en el runner real de GitHub Actions que en el sandbox de esta sesión?',
+    fuentePropuesta: 'Un run real del workflow de producción (fabrica.yml) usando estos paquetes.',
+    queFalta: 'GitHub Actions usa `npx remotion browser ensure` (Chrome Headless Shell propio de Remotion, descargado de remotion.media) -- un binario distinto al Chromium de Playwright de este sandbox. No se corrió ningún workflow real todavía con estos paquetes.',
+    bloqueo: 'No se puede disparar un workflow de GitHub Actions real desde este sandbox sin hacer un push que dispare CI -- pendiente de la próxima vez que se genere un video real con estos paquetes.',
+    fecha: '2026-09-02',
+    estado: 'pendiente',
+  },
+];
