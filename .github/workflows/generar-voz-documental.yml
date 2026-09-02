@@ -1,0 +1,83 @@
+name: generar-voz-documental
+
+# Genera el audio de narracion de los 20 casos documentales con
+# Qwen3-TTS (motor C), clonando la voz elegida (librivox-11, tono
+# serio/elegante, rate 1.25). Un archivo POR LINEA del manifest, no
+# audio continuo a cortar despues -- evita el problema de alineacion
+# que tuvimos con deteccion de silencio sobre habla real.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar git (el script hace checkpoints intermedios)
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+
+      - name: Clonar y compilar el motor C
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libopenblas-dev ffmpeg
+          git clone --depth 1 https://github.com/gabriele-mastrapasqua/qwen3-tts /tmp/qwen3-tts
+          cd /tmp/qwen3-tts
+          make blas
+
+      - name: Descargar el modelo Base 1.7B
+        run: |
+          cd /tmp/qwen3-tts
+          ./download_model.sh --model base-large --dir /tmp/qwen3-tts-modelo
+
+      - name: Preparar el audio de referencia (WAV, mono, 24kHz)
+        run: |
+          ffmpeg -y -loglevel error -i \
+            muestras_voz/referencias-candidatas/librivox-11.mp3 \
+            -ar 24000 -ac 1 /tmp/referencia.wav
+
+      - name: Generar las 177 lineas
+        run: |
+          python3 generar_voz_documental_qwen.py \
+            --motor /tmp/qwen3-tts/qwen_tts \
+            --modelo /tmp/qwen3-tts-modelo \
+            --referencia /tmp/referencia.wav
+
+      - name: Realzar (sin bajar el tono -- ya es un narrador real)
+        run: |
+          pip install --quiet numpy
+          python3 -c "
+          import sys
+          sys.path.insert(0, '.')
+          from pathlib import Path
+          from voz_piper import realzar
+          import subprocess
+          origen = Path('capturas_voz/audio_documental')
+          for wav in sorted(origen.glob('*.wav')):
+              realzado = origen / f'{wav.stem}-realzado.wav'
+              if realzar(wav, realzado, semitonos=0):
+                  mp3 = origen / f'{wav.stem}.mp3'
+                  subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(realzado),
+                                  '-b:a', '128k', str(mp3)])
+                  realzado.unlink()
+                  wav.unlink()
+          "
+
+      - name: Guardar en el repo (version final realzada)
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain capturas_voz/audio_documental)" ]; then
+            git add capturas_voz/audio_documental
+            git commit -m "Audio narrado de los 20 documentales (Qwen3-TTS, voz clonada)"
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          else
+            echo "Sin cambios."
+          fi
