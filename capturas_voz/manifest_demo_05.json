@@ -1,0 +1,98 @@
+[
+  {
+    "index": 0,
+    "unidad": "hook",
+    "idx_en_unidad": 0,
+    "id": "hook_0",
+    "texto_crudo": "Mica cobra 340 dólares por video editado a mano.",
+    "texto": "Mica cobra trescientos cuarenta dólares por video editado a mano."
+  },
+  {
+    "index": 1,
+    "unidad": "hook",
+    "idx_en_unidad": 1,
+    "id": "hook_1",
+    "texto_crudo": "Le llevaba tres horas terminar cada uno.",
+    "texto": "Le llevaba tres horas terminar cada uno."
+  },
+  {
+    "index": 2,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 0,
+    "id": "desarrollo_0",
+    "texto_crudo": "El primer mes, grababa y editaba todo ella sola.",
+    "texto": "El primer mes, grababa y editaba todo ella sola."
+  },
+  {
+    "index": 3,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 1,
+    "id": "desarrollo_1",
+    "texto_crudo": "Para el mes cinco, empezó a automatizar el corte.",
+    "texto": "Para el mes cinco, empezó a automatizar el corte."
+  },
+  {
+    "index": 4,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 2,
+    "id": "desarrollo_2",
+    "texto_crudo": "Al mes diez, entrega dieciocho videos por semana.",
+    "texto": "Al mes diez, entrega dieciocho videos por semana."
+  },
+  {
+    "index": 5,
+    "unidad": "aceleracion",
+    "idx_en_unidad": 0,
+    "id": "aceleracion_0",
+    "texto_crudo": "De tres a dieciocho videos por semana... el salto no fue gradual.",
+    "texto": "De tres a dieciocho videos por semana... el salto no fue gradual."
+  },
+  {
+    "index": 6,
+    "unidad": "pausa",
+    "idx_en_unidad": 0,
+    "id": "pausa_0",
+    "texto_crudo": "El precio nunca bajó.",
+    "texto": "El precio nunca bajó."
+  },
+  {
+    "index": 7,
+    "unidad": "impacto",
+    "idx_en_unidad": 0,
+    "id": "impacto_0",
+    "texto_crudo": "Sigue cobrando 340 dólares por video.",
+    "texto": "Sigue cobrando trescientos cuarenta dólares por video."
+  },
+  {
+    "index": 8,
+    "unidad": "impacto",
+    "idx_en_unidad": 1,
+    "id": "impacto_1",
+    "texto_crudo": "Dieciocho videos por semana, a 340 dólares cada uno, son más de seis mil dólares.",
+    "texto": "Dieciocho videos por semana, a trescientos cuarenta dólares cada uno, son más de seis mil dólares."
+  },
+  {
+    "index": 9,
+    "unidad": "desarrollo2",
+    "idx_en_unidad": 0,
+    "id": "desarrollo2_0",
+    "texto_crudo": "Lo único que cambió fue cuánto tiempo le costaba cada uno.",
+    "texto": "Lo único que cambió fue cuánto tiempo le costaba cada uno."
+  },
+  {
+    "index": 10,
+    "unidad": "cierre",
+    "idx_en_unidad": 0,
+    "id": "cierre_0",
+    "texto_crudo": "El video es el mismo trabajo.",
+    "texto": "El video es el mismo trabajo."
+  },
+  {
+    "index": 11,
+    "unidad": "cierre",
+    "idx_en_unidad": 1,
+    "id": "cierre_1",
+    "texto_crudo": "El tiempo, no.",
+    "texto": "El tiempo, no."
+  }
+]
