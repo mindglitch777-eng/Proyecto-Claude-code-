@@ -38,18 +38,31 @@ del sistema o no.
   para ser práctica con modelos grandes y un token de Hugging Face --
   no es la primera opción mientras el presupuesto sea $0 y no haya
   necesidad medida de esa precisión extra.
-- **Qué falta para cerrar esto del todo:** implementar el paso de
-  forced-alignment con faster-whisper SOBRE un audio real ya generado
-  por Qwen3-TTS (necesita que primero exista ese audio -- ver ítem 3
-  más abajo, la prueba de normalización) y medir si la precisión
-  alcanza para sincronizar palabra por palabra dentro de un componente
-  como Punch. No se implementó todavía porque no hay audio real nuevo
-  generado en esta sesión para probarlo encima (Qwen3-TTS no corre en
-  este sandbox).
+- **HECHO, prototipo real corrido (2026-09-02):**
+  `fabrica/voz/probar_alineacion.py` corrió `faster-whisper` (modelo
+  "small", CPU) sobre `capturas_voz/audio_demo_03/desarrollo_0.wav`
+  (audio real de Qwen3-TTS, no un ejemplo aislado). Resultado en
+  `fabrica/voz/resultados_alineacion/desarrollo_0.json`:
+  - Las 15 palabras del texto esperado se alinearon con timestamps
+    coherentes (progresión natural de ~0.2-0.6s por palabra, una pausa
+    real de 0.34s detectada entre las dos oraciones).
+  - **Bonus real, no buscado a propósito:** Whisper transcribió "El 15
+    de marzo de 2024 subió su primer archivo..." -- reconoció la fecha
+    completa como concepto (día/mes/año), no como palabras sueltas
+    raras. Esto es evidencia indirecta pero real de que el audio de
+    Qwen3-TTS SÍ pronuncia bien una fecha completa (un ASR de calidad
+    no reconstruye una fecha coherente a partir de un audio mal
+    pronunciado).
+  - **Precisión: parece alcanzar** para sincronizar palabra por
+    palabra dentro de un componente como Punch -- HEURÍSTICA basada en
+    una sola muestra, no una medición estadística con muchos audios;
+    antes de confiar en esto para producción conviene correrlo sobre
+    más audios reales.
 - **¿Bloquea el resto?** NO. El sistema funciona con sincronización por
   unidad completa (ya probado en los 20 videos documentales y en
-  fabrica-demo-02). Palabra por palabra es una mejora, no un requisito
-  para operar.
+  fabrica-demo-02/03). Palabra por palabra es una mejora, no un
+  requisito para operar, y ahora hay una prueba real de que el camino
+  es viable.
 
 ## 2. Licencia comercial de Qwen3-TTS (motor + modelo) — RESUELTO (2026-09-02)
 
@@ -177,7 +190,7 @@ del sistema o no.
   el primer dato real, se pueda cargar sin rediseñar nada.
 - **¿Bloquea el resto?** NO. Es esperable no tener esto todavía.
 
-## 8. Qwen3-TTS avisa que `--instruct` + `--ref-audio` en el modelo Base no está oficialmente soportado — CONFIRMADO, sin resolver
+## 8. Qwen3-TTS avisa que `--instruct` + `--ref-audio` en el modelo Base no está oficialmente soportado — comparación A/B generada, falta escuchar
 
 - **Hecho confirmado (aparece en TODOS los logs de generación de esta
   ronda, tanto para el guion nuevo como para la prueba de
@@ -194,16 +207,32 @@ del sistema o no.
   (el script que generó la voz de los 20 videos documentales ya
   entregados), así que esto no es nuevo de esta sesión, solo ahora
   quedó documentado con evidencia directa del motor.
-- **Por qué no se resuelve ahora:** el audio se sigue generando sin
-  errores con la configuración actual, y no hay evidencia (todavía) de
-  que la calidad esté degradada -- resolver esto requeriría escuchar
-  primero (ver `PENDIENTES_OPERADOR.md` ítem 3) para saber si vale la
-  pena migrar al patrón CustomVoice de dos pasos.
-- **Qué hacer después, si hace falta:** extraer la voz UNA VEZ con
-  `--save-voice` sobre el modelo Base, y usar ese archivo con
-  `--load-voice` sobre el modelo CustomVoice (no-Base) en las
-  generaciones futuras -- evita el warning y es el camino "soportado"
-  según la propia documentación del motor.
+- **HECHO, comparación A/B generada (2026-09-02):**
+  `.github/workflows/comparar-customvoice-qwen3-tts.yml` corrió
+  exitosamente ambos métodos con la MISMA frase real (la de
+  `dinero_porcentaje`) y la MISMA voz de referencia (librivox-11):
+  - `muestras_voz/comparacion_customvoice/metodo-actual.mp3` -- el
+    método actual de producción (Base + `--ref-audio` + `--instruct`,
+    el que avisa "no soportado").
+  - `muestras_voz/comparacion_customvoice/metodo-customvoice.mp3` --
+    el método de dos pasos que el motor recomienda (`--save-voice`
+    sobre Base, después `--load-voice --icl-only --instruct` sobre el
+    modelo CustomVoice/"large"). Se extrajo la voz una sola vez con
+    `--voice-name "librivox11" --save-voice`.
+  - Nombres de modelo correctos confirmados leyendo el repo:
+    `download_model.sh --model large` (no "base-large") es el
+    CustomVoice de 1.7B; el flag `--icl-only` es necesario para que
+    `--instruct`/`--emotion` sigan funcionando sobre la voz cargada.
+  - **Sin resolver (no puedo escuchar):** cuál de los dos suena mejor
+    -- ver `PENDIENTES_OPERADOR.md` ítem 3, ahora con los dos archivos
+    ya listos para comparar directamente.
+- **Si el operador prefiere el método CustomVoice tras escuchar:**
+  migrar `generar_voz_documental_qwen.py` (y los workflows de esta
+  ronda) a extraer la voz UNA VEZ (`--save-voice`, se puede commitear
+  el `.qvoice` resultante, ~25MB) y usarla con `--load-voice
+  --icl-only` en cada generación futura -- evita el warning y es el
+  camino "soportado" según la propia documentación del motor. No se
+  hizo todavía porque depende de esa escucha.
 - **¿Bloquea el resto?** NO. Genera audio utilizable hoy; es una
   posible mejora de calidad, no un error duro.
 

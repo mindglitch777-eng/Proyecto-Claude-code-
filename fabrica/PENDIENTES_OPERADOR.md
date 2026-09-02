@@ -30,22 +30,29 @@ real de producción. Puntos concretos a confirmar con el oído:
 - Cómo suenan los nombres propios con tilde/ñ (Nicolás Gómez, Isabella
   Kotsias) — si el motor los pronuncia bien o los "traga".
 - Si las fechas y números grandes suenan naturales o mecánicos.
+  (Dato a favor, no una confirmación completa: corrí un
+  reconocedor de voz automático sobre el audio real de la fecha del
+  video -- "15 de marzo de 2024" -- y la reconoció como fecha completa
+  sin problema, señal indirecta de que se pronuncia bien. Pero un
+  reconocedor automático no reemplaza tu oído.)
 
-## 3. Decisión: ¿perseguir el warning de `--instruct` + `--ref-audio`?
+## 3. Escuchar la comparación A/B del método de voz (ya generada)
 
-El motor de Qwen3-TTS avisa en TODAS las corridas de esta ronda:
-> `Warning: --instruct with voice cloning on a Base model is not
-> officially supported.`
+El motor de Qwen3-TTS avisa en todas las corridas que el método actual
+de producción (voz clonada + `--instruct` sobre el modelo Base) "no
+está oficialmente soportado", y sugiere un método alternativo de dos
+pasos. Ya generé la MISMA frase con ambos métodos para que los
+compares directo:
 
-Y sugiere un camino alternativo (extraer la voz una vez con
-`--save-voice`, después usarla con `--load-voice` + `--instruct` en el
-modelo no-Base). El audio sigue generándose sin errores con la
-configuración actual (la misma que ya usa
-`generar_voz_documental_qwen.py` para los 20 videos ya entregados), así
-que esto **no bloquea nada hoy**. La decisión depende de lo que
-escuches en los puntos 1 y 2: si la voz ya suena bien, no hace falta
-tocar nada; si notás algo raro de tono/energía, vale la pena investigar
-el camino alternativo en una próxima ronda.
+- `muestras_voz/comparacion_customvoice/metodo-actual.mp3` — el que ya
+  usan los 20 videos entregados.
+- `muestras_voz/comparacion_customvoice/metodo-customvoice.mp3` — el
+  método "oficialmente soportado".
+
+Si te suenan parecidos o el actual te convence, no hace falta tocar
+nada. Si el de CustomVoice suena mejor (más natural, mejor energía),
+avisame y migro `generar_voz_documental_qwen.py` a ese método (implica
+generar y commitear un archivo de voz reusable de ~25MB una sola vez).
 
 ## 4. Opcional: cuenta gratis de Jamendo para música
 
