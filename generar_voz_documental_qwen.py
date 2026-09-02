@@ -52,9 +52,17 @@ def main():
     ap.add_argument("--referencia", required=True)
     ap.add_argument("--manifest", default=str(RAIZ / "capturas_voz/manifest_voz_documental.json"))
     ap.add_argument("--destino", default=str(RAIZ / "capturas_voz/audio_documental"))
+    ap.add_argument("--slug", default=None,
+                     help="Procesar solo este caso (para correr los 20 en paralelo, un job por caso)")
+    ap.add_argument("--sin-checkpoint", action="store_true",
+                     help="No hacer commits intermedios (para el modo matrix: cada job sube un artifact, no pushea directo)")
     args = ap.parse_args()
 
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
+    if args.slug:
+        manifest = [m for m in manifest if m["slug"] == args.slug]
+        if not manifest:
+            sys.exit(f"Ningun item con slug={args.slug!r} en el manifest")
     destino = Path(args.destino)
     destino.mkdir(parents=True, exist_ok=True)
 
@@ -74,12 +82,15 @@ def main():
 
         # checkpoint cada 20 lineas: si el job se corta por timeout no
         # se pierde el trabajo ya hecho (un timeout de job mata el job
-        # entero sin correr los steps de "guardar" que van al final)
-        if desde_ultimo_commit >= 20:
+        # entero sin correr los steps de "guardar" que van al final).
+        # En modo matrix (--sin-checkpoint) cada job sube un artifact
+        # al final en vez de pushear directo -- 20 jobs pusheando al
+        # mismo tiempo al mismo repo es una receta para conflictos.
+        if not args.sin_checkpoint and desde_ultimo_commit >= 20:
             _checkpoint(destino)
             desde_ultimo_commit = 0
 
-    if desde_ultimo_commit:
+    if not args.sin_checkpoint and desde_ultimo_commit:
         _checkpoint(destino)
 
     print(f"\n{ok}/{len(manifest)} lineas generadas.")

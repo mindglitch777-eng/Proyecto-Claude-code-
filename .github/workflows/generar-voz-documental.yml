@@ -35,7 +35,14 @@ jobs:
       - name: Descargar el modelo Base 1.7B
         run: |
           cd /tmp/qwen3-tts
-          ./download_model.sh --model base-large --dir /tmp/qwen3-tts-modelo
+          # download_model.sh reanuda descargas parciales (deja el
+          # .part) -- un "connection reset" transitorio de huggingface.co
+          # se resuelve reintentando, sin necesitar logica mas fina.
+          for intento in 1 2 3 4 5; do
+            ./download_model.sh --model base-large --dir /tmp/qwen3-tts-modelo && break
+            echo "intento $intento fallo, reintentando en 10s..."
+            sleep 10
+          done
 
       - name: Preparar el audio de referencia (WAV, mono, 24kHz)
         run: |
