@@ -16,38 +16,42 @@ name: generar-voz-documental-paralelo
 
 on:
   workflow_dispatch:
+    inputs:
+      slugs:
+        description: "Casos separados por coma (vacio = los 20). Sirve para regenerar solo lineas nuevas -- el script ya salta las que existen."
+        required: false
+        default: ""
 
 permissions:
   contents: write
 
 jobs:
+  listar:
+    runs-on: ubuntu-latest
+    outputs:
+      matriz: ${{ steps.l.outputs.matriz }}
+    steps:
+      - id: l
+        run: |
+          python3 - <<'EOF' > /tmp/m.json
+          import json, os
+          pedidos = [x.strip() for x in os.environ.get("SLUGS", "").split(",") if x.strip()]
+          todos = ["rebecca-beach", "taylor-posada"] + [f"caso-{i:02d}" for i in range(3, 21)]
+          print(json.dumps(pedidos or todos))
+          EOF
+          echo "matriz=$(cat /tmp/m.json)" >> "$GITHUB_OUTPUT"
+          echo "A generar: $(cat /tmp/m.json)"
+        env:
+          SLUGS: ${{ inputs.slugs }}
+
   generar:
+    needs: listar
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
-        slug:
-          - rebecca-beach
-          - taylor-posada
-          - caso-03
-          - caso-04
-          - caso-05
-          - caso-06
-          - caso-07
-          - caso-08
-          - caso-09
-          - caso-10
-          - caso-11
-          - caso-12
-          - caso-13
-          - caso-14
-          - caso-15
-          - caso-16
-          - caso-17
-          - caso-18
-          - caso-19
-          - caso-20
+        slug: ${{ fromJson(needs.listar.outputs.matriz) }}
     steps:
       - uses: actions/checkout@v4
 
