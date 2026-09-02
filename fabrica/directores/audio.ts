@@ -29,18 +29,36 @@ export type DecisionAudio = {
   razon: string;
 };
 
-/** Mapa real de golpe -> intensidad segun el mapa SONIDO de
- * golpes.tsx (fogonazo/sacudon = impacto fuerte 0.85-0.9; corte/
- * desliza = tick suave 0.35-0.55; negro/raya/cortina = whoosh
- * 0.45-0.8; fundido/iris/ninguno = sin sonido). */
-const GOLPE_POR_NIVEL: Record<NivelIntensidad, TipoGolpe> = {
-  calma: 'fundido',
-  tension: 'raya',
-  aceleracion: 'corte',
-  impacto: 'fogonazo',
-  pausa: 'negro',
-  revelacion: 'sacudon',
+/** Familias de golpe por nivel de intensidad (Ronda 3 -- antes esto
+ * era un mapa 1:1 fijo: "impacto" SIEMPRE daba "fogonazo", "pausa"
+ * SIEMPRE "negro", etc. Bug real encontrado mirando fabrica-demo-03:
+ * de los 9 tipos reales de golpes.tsx, "desliza", "iris" y "cortina"
+ * NUNCA se elegian -- ningun camino del codigo llegaba a ellos. Eso
+ * es la causa mecanica de la sensacion de "pantalla desaparece ->
+ * pantalla aparece" siempre igual que señalo el operador viendo el
+ * video: no es que el golpe este mal, es que siempre es EL MISMO
+ * dentro de cada nivel.
+ *
+ * Cada nivel ahora tiene una lista ordenada por preferencia (el
+ * primero es el que se elige por defecto, IDENTICO al comportamiento
+ * viejo si no se pide evitar nada -- no rompe los tests existentes).
+ * `elegirGolpe()` recorre la lista y devuelve el primero que no este
+ * en `evitarGolpes` (mismo principio de anti-repeticion que ya usa
+ * DirectorVisual, no un sistema nuevo). */
+const GOLPES_POR_NIVEL: Record<NivelIntensidad, TipoGolpe[]> = {
+  calma: ['fundido', 'iris'],
+  tension: ['raya', 'cortina'],
+  aceleracion: ['corte', 'desliza'],
+  impacto: ['fogonazo', 'sacudon'],
+  pausa: ['negro', 'fundido'],
+  revelacion: ['sacudon', 'fogonazo', 'iris'],
 };
+
+function elegirGolpe(nivel: NivelIntensidad, evitarGolpes: TipoGolpe[]): TipoGolpe {
+  const candidatos = GOLPES_POR_NIVEL[nivel];
+  const libre = candidatos.find((g) => !evitarGolpes.includes(g));
+  return libre ?? candidatos[0]; // si estan todos "usados", mejor repetir que romper
+}
 
 const VOLUMEN_POR_NIVEL: Record<NivelIntensidad, number> = {
   calma: 0,
@@ -64,19 +82,24 @@ export class DirectorAudio {
     intensidadVisual: number; // 0-1, la misma que uso el Director Visual
     esRevelacion?: boolean;
     esCierre?: boolean; // ultima unidad del video / CTA
+    /** Golpes usados en las ultimas unidades de ESTE video (Ronda 3) --
+     * mismo principio que `evitar` en DirectorVisual.consultar(), para
+     * que dos escalas seguidas de "impacto" no caigan siempre en
+     * "fogonazo" solo porque las dos son impacto. */
+    evitarGolpes?: TipoGolpe[];
   }): DecisionAudio {
-    const {indice, total, intensidadVisual, esRevelacion, esCierre} = params;
+    const {indice, total, intensidadVisual, esRevelacion, esCierre, evitarGolpes = []} = params;
 
     if (esRevelacion) {
       return {
-        nivel: 'revelacion', golpeSugerido: GOLPE_POR_NIVEL.revelacion,
+        nivel: 'revelacion', golpeSugerido: elegirGolpe('revelacion', evitarGolpes),
         volumenSfxSugerido: VOLUMEN_POR_NIVEL.revelacion, musicaSugerida: null,
         razon: 'unidad marcada como revelacion/giro por el guion -> golpe fuerte',
       };
     }
     if (esCierre) {
       return {
-        nivel: 'pausa', golpeSugerido: GOLPE_POR_NIVEL.pausa,
+        nivel: 'pausa', golpeSugerido: elegirGolpe('pausa', evitarGolpes),
         volumenSfxSugerido: VOLUMEN_POR_NIVEL.pausa, musicaSugerida: null,
         razon: 'ultima unidad / cierre -> golpe de pausa (negro), no de impacto',
       };
@@ -100,7 +123,7 @@ export class DirectorAudio {
     else nivel = 'calma';
 
     return {
-      nivel, golpeSugerido: GOLPE_POR_NIVEL[nivel],
+      nivel, golpeSugerido: elegirGolpe(nivel, evitarGolpes),
       volumenSfxSugerido: VOLUMEN_POR_NIVEL[nivel], musicaSugerida: null,
       razon: `intensidadVisual=${intensidadVisual}, progreso=${progreso.toFixed(2)} -> nivel ${nivel}`,
     };
