@@ -14,6 +14,7 @@ from normalizador import (  # noqa: E402
     normalizar_dinero,
     normalizar_fecha,
     normalizar_numero,
+    normalizar_numero_decimal_coma,
     normalizar_porcentaje,
     numero_a_palabras,
     texto_con_narracion_normalizada,
@@ -173,6 +174,28 @@ def test_numero_suelto_no_rompe_numeros_ya_manejados():
     tipos2 = sorted(u.tipo for u in unidades2)
     check("dinero y anio no se rompen por el detector de numero suelto",
           tipos2, ["anio", "dinero"])
+
+
+def test_decimal_generico_con_coma():
+    # Regresion de un bug real encontrado preparando la prueba de
+    # Qwen3-TTS: "3,5" NO debe partirse en dos numeros sueltos "3" y
+    # "5". La parte decimal se lee digito por digito (unica forma
+    # correcta de no perder la diferencia entre "3,5" y "3,05").
+    u = normalizar_numero_decimal_coma(3, "5")
+    check("3,5 hablado", u.texto_hablado, "tres coma cinco")
+    check("3,5 visual", u.texto_visual, "3,5")
+    u2 = normalizar_numero_decimal_coma(3, "05")
+    check("3,05 hablado (cero a la izquierda no se pierde)", u2.texto_hablado, "tres coma cero cinco")
+    check("3,05 valor numerico correcto", u2.valor, 3.05)
+
+    unidades = detectar_y_normalizar("Un salto de 3,5 veces respecto al año anterior")
+    check("3,5 veces: una sola unidad detectada (no dos numeros sueltos)", len(unidades), 1)
+    check("tipo detectado", unidades[0].tipo, "numero")
+    check("hablado correcto", unidades[0].texto_hablado, "tres coma cinco")
+
+    salida = texto_con_narracion_normalizada("La cifra creció 3,5 veces")
+    check("no queda una coma pegada entre dos numeros sueltos", "tres,cinco" in salida, False)
+    check("texto final correcto", "tres coma cinco veces" in salida, True)
 
 
 def test_deteccion_automatica_sobre_texto_real():

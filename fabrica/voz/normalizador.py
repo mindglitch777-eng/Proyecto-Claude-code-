@@ -190,6 +190,21 @@ def normalizar_numero(valor: float) -> UnidadNormalizada:
     return UnidadNormalizada(tipo="numero", valor=valor, texto_hablado=hablado, texto_visual=visual)
 
 
+def normalizar_numero_decimal_coma(parte_entera: int, decimales_str: str) -> UnidadNormalizada:
+    """Decimal generico escrito con coma (convencion es-AR/es-LatAm),
+    ej. "3,5" o "3,05" -- NO es dinero (eso es normalizar_dinero, que
+    trata los 2 decimales como centavos, una unidad con escala propia).
+    Aca no hay ninguna unidad que salve la ambiguedad de un cero a la
+    izquierda ("3,05" vale la mitad de "3,5"), asi que la parte
+    decimal se lee DIGITO POR DIGITO -- la unica forma de no perder esa
+    diferencia sin inventar una regla de redondeo."""
+    digitos_hablados = " ".join(numero_a_palabras(int(d)) for d in decimales_str)
+    hablado = f"{numero_a_palabras(parte_entera)} coma {digitos_hablados}"
+    valor = float(f"{parte_entera}.{decimales_str}")
+    visual = f"{_formatear_visual_miles(parte_entera)},{decimales_str}"
+    return UnidadNormalizada(tipo="numero", valor=valor, texto_hablado=hablado, texto_visual=visual)
+
+
 def normalizar_dinero(valor: float, moneda: str = "USD") -> UnidadNormalizada:
     if moneda not in MONEDAS:
         raise ValueError(f"Moneda no soportada: {moneda!r} (soportadas: {list(MONEDAS)})")
@@ -315,6 +330,7 @@ _RE_PORCENTAJE = re.compile(r"(\d+(?:,\d+)?)\s?%")
 _RE_FECHA_BARRA = re.compile(r"\b([0-3]?\d)[/-](0?[1-9]|1[0-2])[/-](\d{4})\b")
 _RE_ANIO = re.compile(r"\b(19|20)\d{2}\b")
 _RE_NUMERO_MILES = re.compile(r"\b\d{1,3}(?:\.\d{3})+\b")
+_RE_NUMERO_DECIMAL_COMA = re.compile(r"\b(\d{1,3}(?:\.\d{3})*),(\d+)\b")
 _RE_NUMERO_SIMPLE = re.compile(r"\b\d{1,3}\b")
 _RE_SEGUIDO_DE_MES = re.compile(r"^\s+de\s+(" + "|".join(MESES.values()) + r")\b", re.IGNORECASE)
 
@@ -371,6 +387,20 @@ def detectar_y_normalizar(texto: str, moneda_por_defecto: str = "USD") -> list[U
             continue
         valor = int(m.group(0).replace(".", ""))
         u = normalizar_numero(valor)
+        u.span = m.span()
+        encontrados.append(u)
+        ocupado.append(m.span())
+
+    # Decimal generico con coma ("3,5", "3,05" -- NO dinero, NO
+    # porcentaje, esos ya se consumieron arriba) ANTES del numero
+    # suelto: sin esto, "3,5" se parte en dos numeros sueltos "3" y "5"
+    # con la coma pegada entre medio (bug real encontrado preparando
+    # la prueba de Qwen3-TTS, 2026-09-02).
+    for m in _RE_NUMERO_DECIMAL_COMA.finditer(texto):
+        if not _libre(*m.span()):
+            continue
+        parte_entera = int(m.group(1).replace(".", ""))
+        u = normalizar_numero_decimal_coma(parte_entera, m.group(2))
         u.span = m.span()
         encontrados.append(u)
         ocupado.append(m.span())

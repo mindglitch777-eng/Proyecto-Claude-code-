@@ -1,0 +1,91 @@
+[
+  {
+    "index": 0,
+    "id": "dinero_porcentaje",
+    "categorias": [
+      "dinero",
+      "porcentaje"
+    ],
+    "texto_crudo": "Facturó $12.450 el primer mes, un 68% más que en su mejor mes anterior.",
+    "texto": "Facturó doce mil cuatrocientos cincuenta dólares el primer mes, un sesenta y ocho por ciento más que en su mejor mes anterior.",
+    "duracion_estimada_seg": 6.8
+  },
+  {
+    "index": 1,
+    "id": "fecha_cantidad_grande",
+    "categorias": [
+      "fecha",
+      "cantidad_grande",
+      "nombre_propio"
+    ],
+    "texto_crudo": "El 3 de noviembre de 2024, Taylor Posada superó los 2.300.000 pesos en ventas.",
+    "texto": "El tres de noviembre de dos mil veinticuatro, Taylor Posada superó los dos millones trescientos mil pesos en ventas.",
+    "duracion_estimada_seg": 5.9
+  },
+  {
+    "index": 2,
+    "id": "nombre_propio_pausas_porcentaje",
+    "categorias": [
+      "nombre_propio",
+      "pausas",
+      "porcentaje"
+    ],
+    "texto_crudo": "Pieter Levels lo intentó durante meses... y recién en el mes doce, un 40% de sus clientes volvió a comprar.",
+    "texto": "Pieter Levels lo intentó durante meses... y recién en el mes doce, un cuarenta por ciento de sus clientes volvió a comprar.",
+    "duracion_estimada_seg": 6.8
+  },
+  {
+    "index": 3,
+    "id": "abreviatura_anio_porcentaje",
+    "categorias": [
+      "abreviatura",
+      "anio",
+      "porcentaje"
+    ],
+    "texto_crudo": "Según el Dr. Guzmán, desde 2018 EE.UU. lidera ese mercado, aprox. un 15% del total.",
+    "texto": "Según el doctor Guzmán, desde dos mil dieciocho Estados Unidos lidera ese mercado, aproximadamente un quince por ciento del total.",
+    "duracion_estimada_seg": 6.2
+  },
+  {
+    "index": 4,
+    "id": "decimal_cantidad_grande",
+    "categorias": [
+      "decimal",
+      "dinero",
+      "cantidad_grande"
+    ],
+    "texto_crudo": "La cifra llegó a $1.250.000,75, un salto de 3,5 veces respecto al año anterior.",
+    "texto": "La cifra llegó a un millón doscientos cincuenta mil dólares con setenta y cinco centavos, un salto de tres coma cinco veces respecto al año anterior.",
+    "duracion_estimada_seg": 8.1
+  },
+  {
+    "index": 5,
+    "id": "nombre_propio_con_tilde_ene",
+    "categorias": [
+      "nombre_propio"
+    ],
+    "texto_crudo": "Isabella Kotsias y Nicolás Gómez coincidieron en la misma conclusión, año tras año.",
+    "texto": "Isabella Kotsias y Nicolás Gómez coincidieron en la misma conclusión, año tras año.",
+    "duracion_estimada_seg": 4.0
+  },
+  {
+    "index": 6,
+    "id": "numero_suelto_dias",
+    "categorias": [
+      "numero"
+    ],
+    "texto_crudo": "Publicó 3 videos por semana durante 15 semanas seguidas, sin faltar un solo día.",
+    "texto": "Publicó tres videos por semana durante quince semanas seguidas, sin faltar un solo día.",
+    "duracion_estimada_seg": 4.3
+  },
+  {
+    "index": 7,
+    "id": "frase_corta_intensidad",
+    "categorias": [
+      "intensidad (usar con --instruct/--rate distintos en el workflow)"
+    ],
+    "texto_crudo": "Esto cambia todo.",
+    "texto": "Esto cambia todo.",
+    "duracion_estimada_seg": 0.9
+  }
+]
