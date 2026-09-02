@@ -31,21 +31,38 @@ del sistema o no.
   unidad completa (ya probado en los 20 videos documentales). Palabra
   por palabra es una mejora, no un requisito para operar.
 
-## 2. Licencia comercial de Qwen3-TTS (motor + modelo) — NO CONFIRMADO
+## 2. Licencia comercial de Qwen3-TTS (motor + modelo) — RESUELTO (2026-09-02)
 
-- **Problema:** no se leyó la licencia exacta del motor
-  `gabriele-mastrapasqua/qwen3-tts` ni del checkpoint del modelo Base
-  1.7B bajado de Hugging Face, para uso comercial (venta de contenido).
-- **Afecta a:** toda la fábrica (la voz es la identidad de marca).
-- **Por qué no se resolvió:** requiere leer documentos legales
-  externos con precisión; no es algo que deba inferirse.
-- **Qué necesitamos:** que el operador confirme (o pida a alguien que
-  confirme) los términos de licencia del repo y del modelo.
-- **Qué hacer después:** si la licencia no permite uso comercial,
-  buscar alternativa gratuita con licencia clara (ej. Piper con voces
-  CC0, o volver a evaluar candidatas de `buscar_voces_referencia.py`).
-- **¿Bloquea el resto?** NO bloquea construir la fábrica. SÍ bloquearía
-  publicar contenido comercial con esta voz si la licencia no lo
+- **Motor C** (`gabriele-mastrapasqua/qwen3-tts`): **MIT** — confirmado
+  leyendo el archivo `LICENSE` del repo directamente. Permisivo, uso
+  comercial sin restricciones.
+- **Modelo** (`Qwen/Qwen3-TTS-12Hz-1.7B-Base`, el checkpoint que
+  usamos): **Apache 2.0** — confirmado leyendo el `LICENSE` del repo
+  `QwenLM/Qwen3-TTS` en GitHub (permite uso comercial, redistribución y
+  derivados, con atribución y sin garantía). El model card de Hugging
+  Face para ese checkpoint específico también aparece etiquetado
+  `apache-2.0` en los resultados de búsqueda, pero **no pude confirmar
+  esto último leyendo la página directamente**: `huggingface.co` está
+  bloqueado por el proxy de red del sandbox (mismo límite que ya
+  documentamos para otras búsquedas esta sesión). La evidencia
+  converge (repo del modelo en GitHub = Apache 2.0, motor = MIT, y el
+  buscador reporta lo mismo para la página de Hugging Face) pero
+  técnicamente falta esa última confirmación directa.
+- **Aparte del motor/modelo: la VOZ que clonamos** (LibriVox, variante
+  "enérgico 2") es una grabación de dominio público leída por un
+  narrador voluntario que la publicó específicamente para reutilización
+  — esto ya se investigó y aprobó ANTES de esta sesión (no es lo mismo
+  que la licencia del software/modelo, es la licencia de la grabación
+  de referencia).
+- **Qué falta, si se quiere el 100%:** que alguien con acceso a
+  huggingface.co confirme visualmente el tag de licencia en
+  `https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-Base` — 2 minutos,
+  no requiere leer nada legal complejo, solo mirar el badge de licencia
+  en la página.
+- **¿Bloquea el resto?** NO. Con MIT (motor) + Apache 2.0 (modelo,
+  confirmado por 2 fuentes independientes aunque no 3) + grabación de
+  referencia de dominio público, no hay ninguna señal de restricción de
+  uso comercial. Riesgo residual bajo, no cero.
   permite — es un riesgo de negocio, no de ingeniería.
 
 ## 3. Calidad de Qwen3-TTS con números/monedas/fechas en español — NO MEDIDO
