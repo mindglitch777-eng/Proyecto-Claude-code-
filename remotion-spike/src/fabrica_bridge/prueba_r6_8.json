@@ -1,0 +1,48 @@
+{
+  "id": "prueba-r6-8",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "u1",
+      "desdeSeg": 0,
+      "duracionSeg": 3.736009,
+      "componenteId": "contador",
+      "props": {
+        "hasta": 89,
+        "prefijo": "$",
+        "arriba": "EL CURSO CUESTA"
+      },
+      "audios": [
+        {
+          "archivo": "pruebas-r6/audio_a.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.136009
+        }
+      ],
+      "golpe": "corte",
+      "volumenSfx": 0.7,
+      "transicionSalienteSeg": 0.6
+    },
+    {
+      "unidadId": "u2",
+      "desdeSeg": 3.136009,
+      "duracionSeg": 2.361995,
+      "componenteId": "contador",
+      "props": {
+        "hasta": 3560,
+        "prefijo": "$",
+        "arriba": "Y GENERA POR SEMANA"
+      },
+      "audios": [
+        {
+          "archivo": "pruebas-r6/audio_b.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.111995
+        }
+      ],
+      "golpe": "fundido",
+      "volumenSfx": 0.7
+    }
+  ],
+  "duracionTotalSeg": 5.998004
+}

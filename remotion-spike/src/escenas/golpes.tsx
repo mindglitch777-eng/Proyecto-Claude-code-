@@ -38,8 +38,16 @@ export const Golpe: React.FC<{
   largo?: number;
   /** el primer golpe del video no suena: no hay corte que marcar */
   sonido?: boolean;
+  /** R6-8: cuando el puente de render ya resolvio la entrada de esta
+   * escena con una transicion REAL de @remotion/transitions
+   * (superposicion de verdad, ver FabricaVideo.tsx y
+   * fabrica/composicion/armar.ts), el efecto visual CSS de aca abajo
+   * quedaria duplicado -- se salta SOLO la parte visual (mismo camino
+   * que 'ninguno'), el sonido del golpe se mantiene igual porque es
+   * una capa independiente. */
+  sinEfectoVisual?: boolean;
   children: React.ReactNode;
-}> = ({tipo = 'fogonazo', largo = 0.14, sonido = true, children}) => {
+}> = ({tipo = 'fogonazo', largo = 0.14, sonido = true, sinEfectoVisual = false, children}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const t = frame / fps;
@@ -50,7 +58,7 @@ export const Golpe: React.FC<{
     <Audio src={staticFile(`sfx/${s.archivo}.wav`)} volume={s.volumen} />
   ) : null;
 
-  if (tipo === 'ninguno' || p >= 1) {
+  if (tipo === 'ninguno' || sinEfectoVisual || p >= 1) {
     return <AbsoluteFill>{efecto}{children}</AbsoluteFill>;
   }
 

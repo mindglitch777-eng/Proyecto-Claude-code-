@@ -71,9 +71,27 @@ completo de cada una:
   de motor de render sería una reescritura completa de la fábrica sin
   ninguna limitación real de Remotion que lo justifique.
 
+## Decisiones tomadas — Ronda 6
+
+- **`@remotion/transitions` integrado de verdad (R6-8)** — decisión:
+  solo los golpes 'fundido'/'desliza' (ya conceptualmente continuos)
+  usan una transición REAL con superposición; el resto de golpes
+  (impacto) siguen con el efecto CSS de siempre, sin forzar un encaje
+  que no es. Para que la superposición no se coma audio real, se
+  extendió el margen de aire de las escenas elegibles (de 0.25s a
+  0.6s, solo cuando tienen audio propio) y se corrigió la matemática
+  de offsets en `armar.ts` para que `desdeSeg`/`duracionTotalSeg`
+  reflejen la posición REAL post-superposición, no una ficticia. Ver
+  `remotion-spike/src/pruebas-r6/README.md` (sección R6-8) para la
+  prueba de punta a punta con audio real y evidencia del crossfade.
+- **`@remotion/effects` y `@remotion/three` confirmados con render
+  real (R6-7)** — WebGL2 funciona en el `headless_shell` sin GPU
+  dedicada, resultado que no estaba garantizado. Pendiente de
+  confirmar en el runner real de GitHub Actions (usa un binario de
+  Chromium distinto), no solo en este sandbox.
+
 ## Pendientes de decisión (requieren probar antes de decidir)
 
-- `@remotion/transitions` y `@remotion/install-whisper-cpp` +
-  `@remotion/captions` — clasificados como PROBAR, no se instalaron
-  todavía esta ronda (ver `fabrica/skills/INVESTIGACION_HERRAMIENTAS.md`
-  y "PRÓXIMO PASO" en `ESTADO_ACTUAL.md`).
+- `@remotion/install-whisper-cpp` + `@remotion/captions` — clasificados
+  como PROBAR, no se instalaron todavía (ver
+  `fabrica/skills/INVESTIGACION_HERRAMIENTAS.md`).

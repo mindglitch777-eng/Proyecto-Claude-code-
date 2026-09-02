@@ -51,5 +51,73 @@ Shell de Remotion desde `remotion.media`), un binario distinto al
 Playwright pre-instalado usado acá. Es razonable esperar el mismo
 comportamiento (ambos son Chromium con ANGLE), pero **no está
 confirmado en GitHub Actions real** hasta que se corra ahí — anotado
-como el primer paso de R6-8/R6-9/R6-10 antes de dar por cerrado el
-riesgo de CI.
+como el primer paso de R6-9/R6-10 antes de dar por cerrado el riesgo de
+CI (R6-8, abajo, ya se integró y probó).
+
+## R6-8 — Transiciones reales integradas al puente de render (`FabricaVideo.tsx`)
+
+Problema real que había que resolver antes de conectar
+`@remotion/transitions` de verdad (no solo probarlo aislado): el
+`TransitionSeries.Transition` SUPERPONE dos escenas, acortando la
+duración total -- pero en la fábrica cada escena dura EXACTO lo que
+dura su audio real (Qwen3-TTS) + un margen de aire fijo de 0.25s
+(`AIRE_SEG`, ver `fabrica/composicion/armar.ts`). Si se aplicara una
+transición real sin más, la escena siguiente arrancaría antes de lo
+que su propio audio "sabe" que le corresponde -- un desincronismo
+real, no cosmético.
+
+**Solución implementada** (`fabrica/composicion/armar.ts`,
+`remotion-spike/src/fabrica_bridge/FabricaVideo.tsx`,
+`remotion-spike/src/escenas/golpes.tsx`):
+
+1. Solo los golpes ya conceptualmente "continuos" (`fundido`,
+   `desliza` -- nunca los de impacto: fogonazo/sacudon/negro/corte/
+   raya/cortina, mismo criterio de siempre de no forzar un encaje que
+   no es) califican para una transición real.
+2. Una escena solo puede ofrecer una transición real si TIENE audio
+   propio (si no, no hay garantía de silencio real al final).
+3. `armarComposicion()` extiende el margen de cola de `AIRE_SEG` (0.25s)
+   a `AIRE_TRANSICION_SEG` (0.6s) SOLO en esas escenas, y ajusta el
+   cursor para que `desdeSeg` de la escena siguiente refleje la
+   posición REAL que produce la superposición (no una posición
+   ficticia "como si no hubiera transición") -- ver el comentario largo
+   en `armar.ts` con la derivación completa.
+4. `FabricaVideo.tsx` pasó de `<Sequence>` planas a `<TransitionSeries>`
+   real, insertando `<TransitionSeries.Transition>` (fade para
+   'fundido', slide-from-right con spring para 'desliza') solo donde
+   `transicionSalienteSeg` viene marcado en el árbol.
+5. `Golpe` (`golpes.tsx`) gana un prop `sinEfectoVisual` para no
+   duplicar el efecto CSS de siempre cuando la transición real ya
+   resuelve la entrada (el sonido del golpe se mantiene igual).
+
+**Prueba de punta a punta con audio REAL** (no inventado):
+`fabrica/composicion/prueba_r6_8.ts` arma un árbol de 2 escenas
+usando 2 audios reales ya generados con Qwen3-TTS para fabrica-demo-06
+(`hook_0.wav` = 3.136009s, `hook_1.wav` = 2.111995s, copiados a
+`public/pruebas-r6/`), con golpe `fundido` en la segunda. Resultado
+verificado con render real (composición `prueba-r6-8`):
+
+- `armarComposicion()` calculó `desdeSeg` de la escena 2 = exactamente
+  `3.136009` -- el mismo número que la duración real medida del primer
+  audio, sin el hueco de silencio de 0.25s que había antes.
+- `ffmpeg -af silencedetect` sobre el .mp4 renderizado confirma: sin
+  hueco de silencio anómalo entre el fin del audio 1 y el comienzo del
+  audio 2 (los silencios detectados son las pausas naturales DENTRO de
+  cada narración, no un artefacto del corte) -- cero desincronismo.
+- El video renderizó exactamente 180 cuadros (`duracionTotalSeg` =
+  5.998004s × 30fps), sin cuadros congelados/vacíos al final -- prueba
+  de que la resta de la superposición en el cursor de `armar.ts` es
+  correcta.
+- El frame en el cuadro 102 (t≈3.4s, dentro de la ventana de
+  transición) muestra REALMENTE los dos textos superpuestos
+  ("EL CURSO CUESTA $89" desvaneciéndose sobre "Y GENERA POR SEMANA
+  $3.560" apareciendo) -- confirma un crossfade real de
+  `@remotion/transitions`, no un efecto CSS de golpes.tsx.
+
+Los tests unitarios de `armarComposicion()` (`test_armar.ts`) cubren
+los 3 casos: transición real activada, golpe siguiente NO continuo
+(sin cambios respecto a antes de R6-8) y escena sin audio (nunca
+ofrece transición real, aunque el golpe siguiente calificaría). Los 12
+suites de test de `fabrica/` (incluidos todos los generadores de
+demo_01..06) siguen pasando sin cambios -- backward compatible
+confirmado, no solo asumido.

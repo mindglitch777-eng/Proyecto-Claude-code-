@@ -46,6 +46,15 @@ export type EscenaComposicion = {
   audios: {archivo: string; desdeSegRelativo: number; duracionSeg: number}[];
   golpe: TipoGolpe;
   volumenSfx: number;
+  /** R6-8: presente SOLO cuando esta escena tiene un margen de
+   * silencio real (mayor al AIRE_SEG normal) reservado antes de la
+   * proxima, porque la proxima entra con un golpe 'fundido' o
+   * 'desliza' -- le dice al puente de render que hay espacio seguro
+   * para una superposicion REAL de @remotion/transitions (no solo el
+   * efecto CSS de golpes.tsx) sin comerse audio real de ninguna de las
+   * dos escenas. Ver fabrica/composicion/armar.ts. Ausente = misma
+   * ruta de siempre (Sequence + efecto CSS del Golpe), sin cambios. */
+  transicionSalienteSeg?: number;
   /** Ronda 4: viaja serializada en el JSON para que el puente de
    * render (microeventos -> props reales) y la critica editorial
    * puedan leerla. Opcional, ver nota en UnidadResuelta. */

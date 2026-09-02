@@ -1,4 +1,4 @@
-import {armarComposicion} from './armar';
+import {AIRE_SEG, AIRE_TRANSICION_SEG, armarComposicion} from './armar';
 import type {UnidadResuelta} from './tipos';
 import type {ComponenteRegistrado} from '../componentes/tipos';
 
@@ -79,6 +79,59 @@ function compFake(id: string, extra?: Partial<ComponenteRegistrado>): Componente
   ];
   const arbol = armarComposicion('demo', unidades);
   check('array vacio: duracion = punto medio de [2,6] = 4', arbol.escenas[0].duracionSeg === 4);
+}
+
+// R6-8: unidad CON audio real seguida de una unidad que entra con
+// golpe 'fundido' -- el puente de render va a resolver eso como una
+// transicion REAL (@remotion/transitions), asi que esta escena debe
+// reservar el margen extendido (AIRE_TRANSICION_SEG) y la SIGUIENTE
+// debe arrancar exactamente cuando termina el audio real de esta
+// (sin el AIRE_SEG normal, reemplazado por la transicion visual).
+{
+  const unidades: UnidadResuelta[] = [
+    {id: 'u1', componente: compFake('c1'), props: {}, audios: [{archivo: 'a.mp3', duracionSeg: 4.0}], golpe: 'corte', volumenSfx: 0.9},
+    {id: 'u2', componente: compFake('c2'), props: {}, audios: [{archivo: 'b.mp3', duracionSeg: 2.0}], golpe: 'fundido', volumenSfx: 0.5},
+  ];
+  const arbol = armarComposicion('demo-transicion', unidades);
+  const audioEndU1 = 4.0; // duracion real del audio, sin el AIRE_SEG de cola
+  check('escena 1 declara duracionSeg = audio(4.0) + AIRE_TRANSICION_SEG(0.6) = 4.6',
+    Math.abs(arbol.escenas[0].duracionSeg - (4.0 + AIRE_TRANSICION_SEG)) < 1e-9);
+  check('escena 1 trae transicionSalienteSeg = AIRE_TRANSICION_SEG',
+    arbol.escenas[0].transicionSalienteSeg === AIRE_TRANSICION_SEG);
+  check('escena 2 arranca EXACTO donde termina el audio real de la 1 (sin el AIRE_SEG normal)',
+    Math.abs(arbol.escenas[1].desdeSeg - audioEndU1) < 1e-9);
+  check('duracionTotalSeg refleja la posicion REAL renderizada (con la superposicion restada), no la suma ingenua',
+    Math.abs(arbol.duracionTotalSeg - (audioEndU1 + (2.0 + AIRE_SEG) + 0.5)) < 1e-9);
+}
+
+// R6-8: la misma unidad de arriba, pero la siguiente entra con un
+// golpe de IMPACTO (no continuo) -- nada debe cambiar respecto al
+// comportamiento pre-R6-8 (ni duracionSeg extendida ni transicion real).
+{
+  const unidades: UnidadResuelta[] = [
+    {id: 'u1', componente: compFake('c1'), props: {}, audios: [{archivo: 'a.mp3', duracionSeg: 4.0}], golpe: 'corte', volumenSfx: 0.9},
+    {id: 'u2', componente: compFake('c2'), props: {}, audios: [{archivo: 'b.mp3', duracionSeg: 2.0}], golpe: 'fogonazo', volumenSfx: 0.5},
+  ];
+  const arbol = armarComposicion('demo-sin-transicion', unidades);
+  check('sin golpe continuo siguiente: duracionSeg normal (4.0 + AIRE_SEG)',
+    Math.abs(arbol.escenas[0].duracionSeg - (4.0 + AIRE_SEG)) < 1e-9);
+  check('sin golpe continuo siguiente: no trae transicionSalienteSeg',
+    arbol.escenas[0].transicionSalienteSeg === undefined);
+}
+
+// R6-8: unidad SIN audio seguida de un golpe 'desliza' -- no hay
+// garantia de silencio real al final, asi que NO se marca como
+// transicion real aunque el golpe siguiente calificaria.
+{
+  const unidades: UnidadResuelta[] = [
+    {id: 'u1', componente: compFake('c1', {duracionMinMaxSeg: [4, 10]}), props: {}, audios: null, golpe: 'ninguno', volumenSfx: 0},
+    {id: 'u2', componente: compFake('c2'), props: {}, audios: [{archivo: 'b.mp3', duracionSeg: 2.0}], golpe: 'desliza', volumenSfx: 0.5},
+  ];
+  const arbol = armarComposicion('demo-sin-audio', unidades);
+  check('sin audio real: no se marca transicionSalienteSeg aunque la siguiente sea "desliza"',
+    arbol.escenas[0].transicionSalienteSeg === undefined);
+  check('sin audio real: duracionSeg queda en el punto medio de siempre (7), sin extender',
+    arbol.escenas[0].duracionSeg === 7);
 }
 
 if (FALLOS.length) {

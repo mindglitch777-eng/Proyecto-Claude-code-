@@ -1,5 +1,8 @@
 import React from 'react';
 import {AbsoluteFill, Audio, Sequence, staticFile, useVideoConfig} from 'remotion';
+import {TransitionSeries, linearTiming, springTiming} from '@remotion/transitions';
+import {fade} from '@remotion/transitions/fade';
+import {slide} from '@remotion/transitions/slide';
 import {Cronologia, ListaTachada, Balanza, AntesDespues, Pasos} from '../escenas/explica';
 import {Contador, Recibo, Duelo, Ranking, Crecimiento} from '../escenas/plata';
 import {CifraSeCae, RelojQueCorre, Embudo, Encuesta, TresVerdades} from '../escenas/mas';
@@ -79,6 +82,12 @@ export type EscenaFabrica = {
   audios: {archivo: string; desdeSegRelativo: number; duracionSeg: number}[];
   golpe: TipoGolpe;
   volumenSfx: number;
+  /** R6-8: espejo de EscenaComposicion.transicionSalienteSeg (ver
+   * fabrica/composicion/armar.ts) -- presente SOLO si esta escena
+   * reservo margen de silencio real para que la PROXIMA entre con una
+   * superposicion de verdad. Ausente = un arbol viejo (demo_01..06) o
+   * una escena sin ese margen, misma ruta de siempre. */
+  transicionSalienteSeg?: number;
   /** Ronda 4: estrategia del Director de Edicion, si el generador la
    * calculo. Opcional -- un arbol viejo (demo_01..04) sigue siendo
    * valido sin esto. */
@@ -120,53 +129,86 @@ const seg = (s: number, fps: number) => Math.round(s * fps);
 // del nivel de intensidad.
 const GOLPES_FUERTES: TipoGolpe[] = ['fogonazo', 'sacudon', 'negro'];
 
+/** R6-8: presentacion real de @remotion/transitions para cada golpe
+ * "continuo" (ver fabrica/composicion/armar.ts,
+ * GOLPES_TRANSICION_REAL) -- 'fundido' ya era conceptualmente un
+ * crossfade y 'desliza' ya entraba desde la derecha en CSS
+ * (golpes.tsx), esto es la MISMA idea con superposicion real de dos
+ * escenas en vez de una sola escena animandose sola. */
+function presentacionTransicion(golpe: TipoGolpe) {
+  if (golpe === 'desliza') return slide({direction: 'from-right'});
+  return fade();
+}
+function timingTransicion(golpe: TipoGolpe, durationInFrames: number) {
+  if (golpe === 'desliza') return springTiming({config: {damping: 200}, durationInFrames});
+  return linearTiming({durationInFrames});
+}
+
 export const FabricaVideo: React.FC<{arbol: ArbolFabrica}> = ({arbol}) => {
   const {fps} = useVideoConfig();
   return (
     <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
-      {arbol.escenas.map((e, i) => {
-        const Comp = IMPLEMENTACIONES[e.componenteId];
-        const desde = seg(e.desdeSeg, fps);
-        const duracion = seg(e.duracionSeg, fps);
-        if (!Comp) {
-          // Preferible mostrar el faltante que ocultarlo (seccion 14,
-          // mismo principio que "asset faltante > asset incorrecto"
-          // aplicado a un componente sin implementacion registrada).
-          return (
-            <Sequence key={i} from={desde} durationInFrames={duracion}>
-              <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#900'}}>
-                <div style={{color: '#fff', fontSize: 40, fontFamily: 'sans-serif', textAlign: 'center', padding: '0 8%'}}>
-                  FALTA IMPLEMENTACION: {e.componenteId}
-                </div>
-              </AbsoluteFill>
-            </Sequence>
+      <TransitionSeries>
+        {arbol.escenas.map((e, i) => {
+          const Comp = IMPLEMENTACIONES[e.componenteId];
+          const duracion = seg(e.duracionSeg, fps);
+          // R6-8: si la escena ANTERIOR reservo margen real de
+          // silencio para esta, se inserta una TransitionSeries.Transition
+          // de verdad (superposicion real) antes de montar esta escena
+          // -- ver el comentario largo en fabrica/composicion/armar.ts
+          // sobre por que esto es seguro (no se come audio real de
+          // ninguna de las dos escenas).
+          const anterior = arbol.escenas[i - 1];
+          const transicionEntranteSeg = anterior?.transicionSalienteSeg;
+          const sinEfectoVisualCSS = Boolean(transicionEntranteSeg);
+          const siguiente = arbol.escenas[i + 1];
+          const preparaGolpeFuerte = siguiente && GOLPES_FUERTES.includes(siguiente.golpe);
+
+          const contenido = !Comp ? (
+            // Preferible mostrar el faltante que ocultarlo (seccion 14,
+            // mismo principio que "asset faltante > asset incorrecto"
+            // aplicado a un componente sin implementacion registrada).
+            <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#900'}}>
+              <div style={{color: '#fff', fontSize: 40, fontFamily: 'sans-serif', textAlign: 'center', padding: '0 8%'}}>
+                FALTA IMPLEMENTACION: {e.componenteId}
+              </div>
+            </AbsoluteFill>
+          ) : (
+            <>
+              <Golpe tipo={e.golpe} sonido={i > 0} sinEfectoVisual={sinEfectoVisualCSS}>
+                <Comp {...e.props} {...propsDesdeMicroeventos(e)} />
+              </Golpe>
+              {/* ANTICIPO (Ronda 3): si la escena que sigue corta con un
+                  golpe fuerte, los ultimos instantes de ESTA escena
+                  muestran pulsos que se aceleran -- prepara el impacto
+                  en vez de que salte de la nada (pedido explicito del
+                  operador viendo fabrica-demo-03). */}
+              {preparaGolpeFuerte && <Anticipo />}
+              {/* MULTI-AUDIO: cada clip se superpone en su propio offset
+                  relativo dentro de esta misma escena -- el componente
+                  visual se monta una sola vez arriba, no una vez por
+                  clip. Generaliza AudioCentro de CasoGenerico.tsx. */}
+              {e.audios.map((a, j) => (
+                <Sequence key={j} from={seg(a.desdeSegRelativo, fps)}>
+                  <Audio src={staticFile(a.archivo)} />
+                </Sequence>
+              ))}
+            </>
           );
-        }
-        const siguiente = arbol.escenas[i + 1];
-        const preparaGolpeFuerte = siguiente && GOLPES_FUERTES.includes(siguiente.golpe);
-        return (
-          <Sequence key={i} from={desde} durationInFrames={duracion}>
-            <Golpe tipo={e.golpe} sonido={i > 0}>
-              <Comp {...e.props} {...propsDesdeMicroeventos(e)} />
-            </Golpe>
-            {/* ANTICIPO (Ronda 3): si la escena que sigue corta con un
-                golpe fuerte, los ultimos instantes de ESTA escena
-                muestran pulsos que se aceleran -- prepara el impacto
-                en vez de que salte de la nada (pedido explicito del
-                operador viendo fabrica-demo-03). */}
-            {preparaGolpeFuerte && <Anticipo />}
-            {/* MULTI-AUDIO: cada clip se superpone en su propio offset
-                relativo dentro de esta misma escena -- el componente
-                visual se monta una sola vez arriba, no una vez por
-                clip. Generaliza AudioCentro de CasoGenerico.tsx. */}
-            {e.audios.map((a, j) => (
-              <Sequence key={j} from={seg(a.desdeSegRelativo, fps)}>
-                <Audio src={staticFile(a.archivo)} />
-              </Sequence>
-            ))}
-          </Sequence>
-        );
-      })}
+
+          return (
+            <React.Fragment key={i}>
+              {transicionEntranteSeg && (
+                <TransitionSeries.Transition
+                  presentation={presentacionTransicion(e.golpe)}
+                  timing={timingTransicion(e.golpe, seg(transicionEntranteSeg, fps))}
+                />
+              )}
+              <TransitionSeries.Sequence durationInFrames={duracion}>{contenido}</TransitionSeries.Sequence>
+            </React.Fragment>
+          );
+        })}
+      </TransitionSeries>
     </AbsoluteFill>
   );
 };

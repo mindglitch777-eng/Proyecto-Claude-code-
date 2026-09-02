@@ -16,6 +16,7 @@ import demo02 from './fabrica_bridge/demo_02.json';
 import demo03 from './fabrica_bridge/demo_03.json';
 import demo04 from './fabrica_bridge/demo_04.json';
 import demo05 from './fabrica_bridge/demo_05.json';
+import pruebaR68 from './fabrica_bridge/prueba_r6_8.json';
 import {Video} from './receta/Video';
 import {GUIONES} from './receta/guiones';
 import {compilar} from './receta/compilar';
@@ -142,6 +143,20 @@ export const Root: React.FC = () => {
         width={ANCHO}
         height={ALTO}
         defaultProps={{arbol: demo05 as ArbolFabrica}}
+      />
+      {/* R6-8: prueba de punta a punta de la transicion real
+          (@remotion/transitions) con 2 audios REALES -- ver
+          fabrica/composicion/prueba_r6_8.ts y
+          remotion-spike/src/pruebas-r6/README.md. No es un video de
+          produccion. */}
+      <Composition
+        id="prueba-r6-8"
+        component={FabricaVideo}
+        durationInFrames={Math.round((pruebaR68 as ArbolFabrica).duracionTotalSeg * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{arbol: pruebaR68 as ArbolFabrica}}
       />
       <Composition id="rebecca-beach" component={RebeccaBeach} durationInFrames={Math.round(DUR_REBECCA * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       {/* Casos 2 a 20 de la serie documental: uno por entrada en
