@@ -916,3 +916,76 @@ a la fábrica nueva, y catalogar los ~28 componentes restantes de
 
 Ver `fabrica/README.md` para el estado fase por fase y cómo correr
 cada sistema.
+
+## 2026-09-02 (continuación) — Ronda autónoma: multi-audio generalizado, 26 componentes, primer video real, música y QA ampliado
+
+Sesión de trabajo autónomo sin frenar a preguntar (instrucción
+explícita del operador). Resumen de lo resuelto, en orden:
+
+- **Multi-audio generalizado** (resolvía PENDIENTES.md #6 de la ronda
+  anterior): `fabrica/composicion/armar.ts` ahora acepta un array de
+  clips de audio por unidad narrativa (patrón `AudioCentro` de la
+  serie documental, generalizado). Probado con tests de offsets
+  exactos y con 2 renders reales.
+- **Catálogo de componentes completado:** 17 → 26 componentes
+  validados leyendo el código real (`agresivo/` completo: punch,
+  ráfaga, explicador, remate; el resto de `escenas/plata.tsx` y
+  `pantallas.tsx`; `Grafico.tsx`, `Silueta.tsx`). Documentado por qué
+  se excluyó todo lo demás (constantes hardcodeadas, demos/muestrarios)
+  en `fabrica/componentes/README.md` — no se infló el número.
+- **Extensibilidad del Director Visual probada empíricamente:** un
+  test agrega un componente inventado a una copia del registro y
+  confirma que es elegible sin tocar `visual.ts`.
+- **Primer video real de punta a punta:** `fabrica-demo-02` (4
+  unidades: hook/timeline/cifra/cierre), con multi-audio real en 3 de
+  ellas, un asset de fondo resuelto por el resolver real (no puesto a
+  mano), anti-repetición real cruzando memoria entre videos, y
+  registrado en `memoria/laboratorio.json` como hipótesis (sin
+  resultado real -- no se publicó). Renderizado con Remotion (30.9s,
+  1080x1920) y verificado limpio con el QA duro.
+- **Bug real encontrado y corregido:** el resolver de assets
+  (`assets/resolver.py`) matcheaba por una palabra genérica compartida
+  ("trabajo") en vez de la palabra específica -- corregido con
+  ponderación por frecuencia de documento (palabras en ≥3 carpetas
+  pesan menos) y comparación real entre pools foto/video en vez de
+  "el primero que pasa el umbral".
+- **Normalizador de voz fortalecido:** fechas completas (con barras y
+  en palabras), abreviaturas comunes (Dr., Sra., EE.UU., etc.),
+  números sueltos sin separador de miles (gap real: antes no se
+  detectaban) y decimales genéricos con coma -- este último corrigió
+  otro bug real encontrado en el camino ("3,5" se partía en "tres" +
+  "cinco" sueltos).
+- **Prueba real de Qwen3-TTS preparada** (no disparada): manifest de 8
+  frases que cubre dinero/porcentaje/fecha/cantidad grande/nombre
+  propio/abreviatura/pausas, todas ya normalizadas, más un workflow
+  (`prueba-normalizacion-qwen3-tts.yml`) con la configuración real de
+  producción (voz clonada librivox-11, mismo instruct/rate). No se
+  pudo disparar porque el workflow solo existe en la rama de trabajo
+  de esta sesión y la API de GitHub solo reconoce workflow_dispatch
+  desde la rama por defecto -- requiere que el operador mergee (ver
+  `fabrica/PENDIENTES.md` #3).
+- **Timestamps/alineación de Qwen3-TTS investigado y confirmado:** el
+  motor NO expone ninguno (leído el repo directamente). Alternativa
+  gratis/local identificada: `faster-whisper` con
+  `word_timestamps=True` (sin GPU, sin token de Hugging Face).
+- **Infraestructura de música de fondo, sin servicio pago:**
+  `fabrica/musica/resolver_musica.py` (misma filosofía de FALTANTE
+  explícito que el resolver de assets), catálogo vacío a propósito (no
+  hay tracks reales todavía), workflow de investigación de candidatos
+  libres de derechos preparado (mismo bloqueo de rama que la prueba de
+  Qwen3-TTS).
+- **QA ampliado:** `fabrica/qa/checks_composicion.py` -- assets de
+  audio faltantes en el árbol de composición (problema duro), texto
+  que probablemente excede la capacidad declarada del componente
+  (alerta heurística, verificada visualmente extrayendo frames reales
+  del render), duración esperada vs. real (problema duro si difieren
+  más de 1 segundo).
+
+Los 26 archivos de test de `fabrica/` pasan (`npm run test-todo`).
+Todo el trabajo está commiteado y pusheado a
+`claude/organize-repo-duplicates-xl042t`.
+
+Ver el informe final de esta ronda (secciones A-H) en el mensaje de
+Claude Code de esta sesión para el detalle completo de qué está listo
+para probar, qué necesita al operador, y cómo correr el primer video
+real. `fabrica/PENDIENTES.md` tiene el detalle de cada bloqueo.
