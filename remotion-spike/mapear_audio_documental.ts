@@ -31,7 +31,7 @@ function textosDeCentro(c: CentroVisual): string[] {
     case 'antesDespues':
       return [`${c.antes.rotulo}: ${c.antes.txt}`, `${c.despues.rotulo}: ${c.despues.txt}`];
     case 'diagrama':
-      return []; // rotulos en pantalla, sin audio propio
+      return c.narracion ?? [];
     case 'montaje':
       return []; // no se usa en los 20 casos documentales actuales
     default:

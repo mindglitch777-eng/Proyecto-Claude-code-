@@ -73,15 +73,14 @@ SEMITONOS = -2
 
 def _cadena(semitonos=SEMITONOS):
     """Arma la cadena de realce. semitonos=0 salta el pitch-shift --
-    pensado para voces YA clonadas de un narrador real (Qwen3-TTS),
-    que ya traen su propio tono: bajarlas 2 semitonos ademas de eso
-    duplica la gravedad y termina sonando impostado ("voz de villano"),
-    en vez de simplemente agregar presencia como hace con Piper (fino
-    y plano de por si)."""
-    partes = []
-    if semitonos:
-        f = 2 ** (semitonos / 12)
-        partes.append(f"asetrate=22050*{f:.5f},aresample=22050,atempo={1/f:.5f}")
+    pensado para voces YA clonadas de un narrador real (Qwen3-TTS), que
+    usan una cadena distinta (ver mas abajo): la de Piper de aca abajo
+    esta pensada para tapar una voz sintetica fina y plana, no para
+    limpiar una voz real."""
+    if not semitonos:
+        return _CADENA_REAL
+    f = 2 ** (semitonos / 12)
+    partes = [f"asetrate=22050*{f:.5f},aresample=22050,atempo={1/f:.5f}"]
     partes += [
         "highpass=f=70",
         "equalizer=f=250:width_type=q:w=1:g=-3",
@@ -92,6 +91,30 @@ def _cadena(semitonos=SEMITONOS):
         "loudnorm=I=-14:TP=-1.5:LRA=11",
     ]
     return ",".join(partes)
+
+
+# Cadena para voces YA clonadas de un narrador real (Qwen3-TTS,
+# semitonos=0). El audio de referencia (una lectura de LibriVox, grabada
+# casera) trae ruido de fondo y color de microfono de mala calidad, y el
+# clonado lo hereda -- el operador lo escucho ("se nota que esta
+# grabada con un microfono medio pelo"). A diferencia de la cadena de
+# Piper de arriba (pensada para agregarle cuerpo a una voz sintetica
+# fina), aca el objetivo es LIMPIAR una grabacion real, no impostarla:
+#   afftdn      saca el ruido de fondo/hiss heredado de la referencia
+#   highpass    saca el retumbe inaudible que solo come bitrate
+#   250 Hz -2   barro leve, mucho mas suave que en la cadena de Piper
+#   deesser     esses silbadas, sin el hueco fijo en 7 kHz de antes
+#   acompressor mas suave que el de Piper: solo pareja la voz, no la
+#               impostura de "podcast"
+#   loudnorm    -14 LUFS, igual que el resto
+_CADENA_REAL = ",".join([
+    "afftdn=nf=-25",
+    "highpass=f=80",
+    "equalizer=f=250:width_type=q:w=1:g=-2",
+    "deesser=i=0.15",
+    "acompressor=threshold=-20dB:ratio=2.5:attack=10:release=200:makeup=1.5",
+    "loudnorm=I=-14:TP=-1.5:LRA=11",
+])
 
 
 CADENA = _cadena()

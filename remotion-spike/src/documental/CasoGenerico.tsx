@@ -102,7 +102,7 @@ const ConIcono: React.FC<{t0: number; fig: NombreFigura; txt: string; acento?: b
 
 export type CentroVisual =
   | {tipo: 'cronologia'; hitos: {cuando: string; que: string; acento?: boolean}[]}
-  | {tipo: 'diagrama'; d: DatosDiagrama}
+  | {tipo: 'diagrama'; d: DatosDiagrama; narracion?: string[]}
   | {tipo: 'lista'; items: string[]; queda: string}
   | {tipo: 'balanza'; izq: {txt: string; peso: number}; der: {txt: string; peso: number}; pie?: string}
   | {tipo: 'antesDespues'; antes: {rotulo: string; txt: string}; despues: {rotulo: string; txt: string}}
@@ -129,10 +129,10 @@ export type CasoConfig = {
 //
 // Con audio real (ver AUDIO REAL arriba): la duracion de un bloque es
 // la SUMA de sus clips + un respiro de aire por linea + un margen de
-// cierre. Sin audio para ese bloque (diagrama y montaje no llevan
-// narracion propia -- son rotulos en pantalla, ver
-// mapear_audio_documental.ts) se mantiene la duracion "adivinada" de
-// siempre, calculada a partir de la cantidad/forma del contenido.
+// cierre. Sin audio para ese bloque (solo montaje, que no lleva
+// narracion propia -- ver mapear_audio_documental.ts) se mantiene la
+// duracion "adivinada" de siempre, calculada a partir de la
+// cantidad/forma del contenido.
 
 const sumaAudio = (audios: CampoAudioDoc[], margenFinal: number): number =>
   audios.reduce((acc, a) => acc + a.duracion + AIRE_LINEA, 0) + margenFinal;
@@ -390,6 +390,7 @@ const CentroBeat: React.FC<{slug: string; cv: CentroVisual; foto?: string; clip?
       <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
         <Diagrama d={cv.d} />
         <Pulso cada={1.6} largo={0.05} fuerza={0.2} />
+        <AudioCentro audios={audios} />
       </AbsoluteFill>
     );
   }

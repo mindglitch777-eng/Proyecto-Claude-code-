@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Diagrama} from '../dibujo/Diagrama';
 import {Figura, NombreFigura} from '../dibujo/figuras';
 import {LogoEtsy, LogoIdeogram, LogoMidjourney, LogoOpenAI} from '../dibujo/logos';
@@ -13,6 +13,7 @@ import {Contador} from '../escenas/plata';
 import {cargarFuentes} from '../fuentes';
 import {GROTESCA, PALETA} from '../identidad';
 import {golpeSeco} from '../stress/duro';
+import duracionesRaw from './mapa_audio_rebecca.json';
 
 const FOTO = 'becky-beach.jpg';
 
@@ -29,9 +30,49 @@ const FOTO = 'becky-beach.jpg';
 // segundo a segundo -- pasarlo por el compilador (que elige formato al
 // azar) rompería esa coreografia. Se arma literal, como el stress
 // test, reusando los mismos componentes de la biblioteca.
+//
+// AUDIO REAL: las 35 lineas de capturas_voz/audio_documental/
+// rebecca-beach_00..34.mp3 se corresponden 1 a 1, en orden, con cada
+// palabra/frase que este guion ya mostraba en pantalla. La duracion
+// original (escrita a mano, ~58s) era mas corta que lo que tarda esa
+// narracion real, asi que los tiempos de abajo salen de la duracion
+// MEDIDA de cada clip (mapa_audio_rebecca.json, generado por
+// mapear_audio_rebecca.ts) en vez de estar fijos -- igual que
+// CasoGenerico.tsx, pero calculado a mano porque este video no pasa
+// por ese motor. La animacion interna de los bloques compartidos
+// (Cronologia, CifraSeCae, Contador, ListaTachada, LogosHerramientas)
+// sigue siendo proporcional a la duracion del bloque, no al frame
+// exacto de cada linea -- mismo tradeoff que AudioCentro en
+// CasoGenerico.tsx.
 
 const FPS = 30;
 const seg = (s: number) => Math.round(s * FPS);
+const AIRE = 0.25;
+const DUR: number[] = duracionesRaw as number[];
+
+const archivoDe = (idx: number) => `rebecca-beach_${String(idx).padStart(2, '0')}.mp3`;
+
+type Beat = {idx: number; t0: number};
+
+function secuencial(indices: number[], inicio = 0.1): {items: Beat[]; fin: number} {
+  const items: Beat[] = [];
+  let t = inicio;
+  for (const idx of indices) {
+    items.push({idx, t0: t});
+    t += DUR[idx] + AIRE;
+  }
+  return {items, fin: t};
+}
+
+const AudioBeats: React.FC<{items: Beat[]}> = ({items}) => (
+  <>
+    {items.map((b, i) => (
+      <Sequence key={i} from={seg(b.t0)}>
+        <Audio src={staticFile(`audio_documental/${archivoDe(b.idx)}`)} />
+      </Sequence>
+    ))}
+  </>
+);
 
 const ConGolpe: React.FC<{t0: number; color?: string; children: React.ReactNode}> = ({t0, color = '#fff', children}) => {
   const frame = useCurrentFrame();
@@ -87,57 +128,75 @@ const ConIcono: React.FC<{t0: number; fig: NombreFigura; txt: string; tam?: numb
   );
 };
 
-// ============================================================ 1. HOOK (0-3s)
+// ============================================================ 1. HOOK
+// 0: "$20.000 al mes." | 1: "IA" | 2: "Productos" | 3: "Dinero" | 4: "¿Cómo?"
+const H_finNumero = 0.1 + DUR[0] + AIRE;
+const H_iconos = secuencial([1, 2, 3], H_finNumero);
+const H_comoT0 = H_iconos.fin;
+export const HOOK_DUR = H_comoT0 + DUR[4] + 0.45;
+
 const Hook: React.FC = () => {
   const frame = useCurrentFrame();
   const t = frame / FPS;
-  const conDinero = t < 1.7;
+  const conDinero = t < H_finNumero;
   return (
     <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
       <Fondo foto={FOTO} velo={0.6} duotono zoom={[1.04, 1.16]} />
       {conDinero ? <Resplandor fuerza={0.5} /> : null}
       {conDinero ? <LluviaDinero intensidad={0.85} /> : null}
-      {t < 1.7 ? (
+      {t < H_finNumero ? (
         <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 6%'}}>
           <ConGolpe t0={0.1} color={PALETA.acento}>
             <Grande txt="$20.000/MES" tam={118} acento />
           </ConGolpe>
         </AbsoluteFill>
-      ) : t < 2.5 ? (
+      ) : t < H_iconos.fin ? (
         <AbsoluteFill style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 30}}>
-          <ConIcono t0={1.7} fig="chip" txt="IA" tam={76} />
-          <ConIcono t0={1.92} fig="notebook" txt="PRODUCTOS" tam={76} />
-          <ConIcono t0={2.14} fig="billete" txt="DINERO" tam={76} acento color={PALETA.acento} />
+          <ConIcono t0={H_iconos.items[0].t0} fig="chip" txt="IA" tam={76} />
+          <ConIcono t0={H_iconos.items[1].t0} fig="notebook" txt="PRODUCTOS" tam={76} />
+          <ConIcono t0={H_iconos.items[2].t0} fig="billete" txt="DINERO" tam={76} acento color={PALETA.acento} />
         </AbsoluteFill>
       ) : (
         <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-          <ConGolpe t0={2.5} color={PALETA.acento}>
+          <ConGolpe t0={H_comoT0} color={PALETA.acento}>
             <Grande txt="¿CÓMO?" tam={150} />
           </ConGolpe>
         </AbsoluteFill>
       )}
       <Pulso cada={0.9} largo={0.05} fuerza={0.3} />
+      <AudioBeats items={[{idx: 0, t0: 0.1}, ...H_iconos.items, {idx: 4, t0: H_comoT0}]} />
     </AbsoluteFill>
   );
 };
 
-// ================================================ 2. ROMPER EXPECTATIVA (3-7s)
+// ================================================ 2. ROMPER EXPECTATIVA
+// 5: "Prompts." | 6: "Cursos de IA." | 7: "Señales de trading." | 8: "Productos digitales."
+const R_beats = secuencial([5, 6, 7, 8], 0.1);
+export const ROMPE_DUR = R_beats.fin + 0.4;
+
 const Rompe: React.FC = () => (
   <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
     <ListaTachada items={['Prompts', 'Cursos de IA', 'Señales de trading']} queda="Productos digitales" />
     <Pulso cada={1.1} largo={0.05} fuerza={0.26} />
+    <AudioBeats items={R_beats.items} />
   </AbsoluteFill>
 );
 
-// ========================================================= 3. QUIÉN ES (7-12s)
+// ========================================================= 3. QUIÉN ES
+// 9: "Becky Beach" | 10-12: los 3 hitos de la Cronologia
+const Q_finNombre = 0.15 + DUR[9] + AIRE;
+const Q_crono = secuencial([10, 11, 12], Q_finNombre);
+const Q_logoT0 = Q_finNombre + 0.8;
+export const QUIENES_DUR = Q_crono.fin + 0.4;
+
 const QuienEs: React.FC = () => {
   const frame = useCurrentFrame();
   const t = frame / FPS;
-  const mostrarLogo = t > 3.0;
+  const mostrarLogo = t > Q_logoT0;
   return (
     <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
-      {t < 2.2 ? <Fondo foto={FOTO} velo={0.5} zoom={[1.0, 1.1]} /> : null}
-      {t < 2.2 ? (
+      {t < Q_finNombre ? <Fondo foto={FOTO} velo={0.5} zoom={[1.0, 1.1]} /> : null}
+      {t < Q_finNombre ? (
         <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           <ConGolpe t0={0.15}>
             <Grande txt="Becky Beach" tam={84} />
@@ -156,7 +215,7 @@ const QuienEs: React.FC = () => {
         <div
           style={{
             position: 'absolute', right: '7%', bottom: '9%', display: 'flex', alignItems: 'center', gap: 16,
-            opacity: Math.min(1, (t - 3.0) * 2.4),
+            opacity: Math.min(1, (t - Q_logoT0) * 2.4),
           }}
         >
           <LogoEtsy size={54} />
@@ -164,19 +223,27 @@ const QuienEs: React.FC = () => {
         </div>
       ) : null}
       <Pulso cada={1.3} largo={0.05} fuerza={0.22} />
+      <AudioBeats items={[{idx: 9, t0: 0.15}, ...Q_crono.items]} />
     </AbsoluteFill>
   );
 };
 
-// ==================================================== 4. EL PRIMER GIRO (12-18s)
+// ==================================================== 4. EL PRIMER GIRO
+// 13: "Antes, un producto tardaba" | 14: "Semanas o meses" | 15: "Menos de 20 minutos" | 16: "Con IA"
+const PG_beats = secuencial([13, 14, 15, 16], 0.1);
+export const PRIMERGIRO_DUR = PG_beats.fin + 0.4;
+
 const PrimerGiro: React.FC = () => (
   <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
     <CifraSeCae arriba="Antes, un producto tardaba" de="Semanas o meses" a="< 20 minutos" abajo="Con IA" />
     <Pulso cada={1.2} largo={0.05} fuerza={0.24} color={PALETA.acento} />
+    <AudioBeats items={PG_beats.items} />
   </AbsoluteFill>
 );
 
-// ========================================================= 5. CATÁLOGO (18-24s)
+// ========================================================= 5. CATÁLOGO
+// 17: "Planners. Workbooks... Apps." (un solo clip para las 7 categorias)
+// 18: "Productos digitales creados" | 19: "Más de 1500" | 20: "Y sigue subiendo"
 const CATEGORIAS: {txt: string; fig: NombreFigura}[] = [
   {txt: 'PLANNERS', fig: 'calendario'},
   {txt: 'WORKBOOKS', fig: 'notebook'},
@@ -186,19 +253,25 @@ const CATEGORIAS: {txt: string; fig: NombreFigura}[] = [
   {txt: 'CLIPART', fig: 'foco'},
   {txt: 'APPS', fig: 'telefono'},
 ];
+const CAT_finIconos = 0.1 + DUR[17] + AIRE;
+const CAT_contador = secuencial([18, 19, 20], CAT_finIconos);
+export const CATALOGO_DUR = CAT_contador.fin + 0.4;
+// paso/inicio originales (0.4 + 7*0.42) se reescalan para llenar la
+// ventana real que da el audio de la lista completa (linea 17).
+const CAT_ESCALA = (CAT_finIconos - 0.1) / (CATEGORIAS.length * 0.42);
+const CAT_paso = 0.42 * CAT_ESCALA;
+
 const Catalogo: React.FC = () => {
   const frame = useCurrentFrame();
   const t = frame / FPS;
-  const paso = 0.42;
-  const tNumero = 0.4 + CATEGORIAS.length * paso;
   return (
     <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
       <Fondo clip="freelance-00.mp4" velo={0.78} duotono zoom={[1.0, 1.08]} />
-      {t < tNumero ? (
+      {t < CAT_finIconos ? (
         <AbsoluteFill style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 20}}>
           {CATEGORIAS.map((c, i) => {
-            const t0 = 0.4 + i * paso;
-            if (t < t0 || t >= t0 + paso * 2.4) return null;
+            const t0 = 0.1 + i * CAT_paso;
+            if (t < t0 || t >= t0 + CAT_paso * 2.4) return null;
             return <ConIcono key={c.txt} t0={t0} fig={c.fig} txt={c.txt} tam={62} acento={i % 2 === 1} color={PALETA.acento} />;
           })}
         </AbsoluteFill>
@@ -206,11 +279,17 @@ const Catalogo: React.FC = () => {
         <Contador arriba="Productos digitales creados" hasta={1500} sufijo="+" abajo="Y sigue subiendo" />
       )}
       <Pulso cada={0.55} largo={0.04} fuerza={0.2} />
+      <AudioBeats items={[{idx: 17, t0: 0.1}, ...CAT_contador.items]} />
     </AbsoluteFill>
   );
 };
 
-// =========================================================== 6. MÉTODO (24-30s)
+// =========================================================== 6. MÉTODO
+// 35: "Todo arranca de un problema." | 36: "Investigación..." | 37: "De ahí, el producto."
+// 38: "Publicación..." | 39: "Y venta..." -- una linea por nodo del diagrama.
+const MET_beats = secuencial([35, 36, 37, 38, 39], 0.1);
+export const METODO_DUR = MET_beats.fin + 0.4;
+
 const Metodo: React.FC = () => (
   <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
     <Diagrama
@@ -228,10 +307,15 @@ const Metodo: React.FC = () => (
       }}
     />
     <Pulso cada={1.6} largo={0.05} fuerza={0.2} />
+    <AudioBeats items={MET_beats.items} />
   </AbsoluteFill>
 );
 
-// ==================================================== 7. HERRAMIENTAS (30-36s)
+// ==================================================== 7. HERRAMIENTAS
+// 21: "Con qué acelera: ChatGPT..." (lista completa en un clip) | 22: "Cuatro herramientas..."
+const HER_beats = secuencial([21, 22], 0.1);
+export const HERRAMIENTAS_DUR = HER_beats.fin + 0.4;
+
 const Herramientas: React.FC = () => (
   <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
     <Fondo clip="celular-00.mp4" velo={0.76} duotono zoom={[1.02, 1.1]} />
@@ -247,21 +331,29 @@ const Herramientas: React.FC = () => (
       pie="Cuatro herramientas. No una idea genial."
     />
     <Pulso cada={0.8} largo={0.05} fuerza={0.24} color={PALETA.acento} />
+    <AudioBeats items={HER_beats.items} />
   </AbsoluteFill>
 );
 
-// ====================================================== 8. EL DINERO (36-42s)
+// ====================================================== 8. EL DINERO
+// 23: "$20.000" | 24: "Por mes." | 25: "No fue magia. Fue método."
+const ED_num = secuencial([23, 24], 0.3);
+const ED_finFase1 = ED_num.fin + 0.3;
+const ED_25t0 = ED_finFase1;
+export const ELDINERO_DUR = ED_25t0 + DUR[25] + 0.45;
+
 const ElDinero: React.FC = () => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const t = frame / fps;
   const s = spring({frame: frame - 0.3 * fps, fps, config: {damping: 11, stiffness: 200, mass: 0.5}});
+  const tagT0 = ED_num.items[1].t0;
   return (
     <AbsoluteFill style={{backgroundColor: '#000'}}>
       <Fondo clip="dinero-00.mp4" velo={0.66} zoom={[1.0, 1.12]} />
       <Resplandor fuerza={0.45} />
-      <LluviaDinero intensidad={t < 3.4 ? 1.1 : 0.35} />
-      {t < 3.4 ? (
+      <LluviaDinero intensidad={t < ED_finFase1 ? 1.1 : 0.35} />
+      {t < ED_finFase1 ? (
         <AbsoluteFill style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
           <div
             style={{
@@ -275,7 +367,7 @@ const ElDinero: React.FC = () => {
           <div
             style={{
               fontFamily: GROTESCA, fontWeight: 600, fontSize: 40, color: PALETA.texto,
-              opacity: interpolate(t, [1.2, 1.7], [0, 0.85], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}),
+              opacity: interpolate(t, [tagT0, tagT0 + 0.5], [0, 0.85], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}),
               textShadow: '0 4px 30px rgba(0,0,0,0.9)',
             }}
           >
@@ -284,55 +376,67 @@ const ElDinero: React.FC = () => {
         </AbsoluteFill>
       ) : (
         <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-          <ConGolpe t0={3.4}>
+          <ConGolpe t0={ED_finFase1}>
             <Grande txt="No fue magia. Fue método." tam={80} />
           </ConGolpe>
         </AbsoluteFill>
       )}
+      <AudioBeats items={[...ED_num.items, {idx: 25, t0: ED_25t0}]} />
     </AbsoluteFill>
   );
 };
 
-// ================================================ 9. EL VERDADERO GIRO (42-48s)
+// ================================================ 9. EL VERDADERO GIRO
+// 26: "IA no es negocio." | 27: "IA es velocidad." | 28-30: "Probar/Crear/Medir más."
+const VG_27t0 = 0.1 + DUR[26] + AIRE;
+const VG_palabras = secuencial([28, 29, 30], VG_27t0 + DUR[27] + AIRE);
+export const VERDADEROGIRO_DUR = VG_palabras.fin + 0.4;
+
 const VerdaderoGiro: React.FC = () => {
   const frame = useCurrentFrame();
   const t = frame / FPS;
   return (
     <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
       <Resplandor fuerza={0.18} />
-      {t < 2.0 ? (
+      {t < VG_27t0 ? (
         <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           <ConGolpe t0={0.1}>
             <Grande txt="IA ≠ NEGOCIO" tam={78} />
           </ConGolpe>
         </AbsoluteFill>
-      ) : t < 4.0 ? (
+      ) : t < VG_palabras.items[0].t0 ? (
         <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-          <ConGolpe t0={2.0} color={PALETA.acento}>
+          <ConGolpe t0={VG_27t0} color={PALETA.acento}>
             <Grande txt="IA = VELOCIDAD" tam={82} acento />
           </ConGolpe>
         </AbsoluteFill>
       ) : (
         <AbsoluteFill style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 22}}>
           {['PROBAR MÁS', 'CREAR MÁS', 'MEDIR MÁS'].map((w, i) => (
-            <ConGolpe key={w} t0={4.0 + i * 0.32} color={i % 2 ? PALETA.acento : '#fff'}>
+            <ConGolpe key={w} t0={VG_palabras.items[i].t0} color={i % 2 ? PALETA.acento : '#fff'}>
               <Grande txt={w} tam={64} />
             </ConGolpe>
           ))}
         </AbsoluteFill>
       )}
       <Pulso cada={1.0} largo={0.05} fuerza={0.26} />
+      <AudioBeats items={[{idx: 26, t0: 0.1}, {idx: 27, t0: VG_27t0}, ...VG_palabras.items]} />
     </AbsoluteFill>
   );
 };
 
-// =========================================================== 10. CIERRE (48-55s)
+// =========================================================== 10. CIERRE
+// 31: "¿Qué podés vender?" | 32: "Este es el juego real."
+const CI_finBadges = 1.5;
+const CI_32t0 = CI_finBadges + DUR[31] + AIRE;
+export const CIERRE_DUR = CI_32t0 + DUR[32] + 0.45;
+
 const Cierre: React.FC = () => {
   const frame = useCurrentFrame();
   const t = frame / FPS;
   return (
     <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
-      {t < 3.0 ? (
+      {t < CI_finBadges ? (
         <AbsoluteFill style={{display: 'flex', flexWrap: 'wrap', alignContent: 'center', justifyContent: 'center', gap: 14, padding: '10% 8%'}}>
           {CATEGORIAS.concat(CATEGORIAS).map((c, i) => {
             const t0 = 0.05 + i * 0.11;
@@ -351,25 +455,30 @@ const Cierre: React.FC = () => {
             );
           })}
         </AbsoluteFill>
-      ) : t < 5.2 ? (
+      ) : t < CI_32t0 ? (
         <AbsoluteFill style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 8%'}}>
-          <ConGolpe t0={3.0} color={PALETA.acento}>
+          <ConGolpe t0={CI_finBadges} color={PALETA.acento}>
             <Grande txt="¿QUÉ PODÉS VENDER?" tam={82} />
           </ConGolpe>
         </AbsoluteFill>
       ) : (
         <AbsoluteFill style={{backgroundColor: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-          <ConGolpe t0={5.2}>
+          <ConGolpe t0={CI_32t0}>
             <Grande txt="Este es el juego real." tam={70} />
           </ConGolpe>
         </AbsoluteFill>
       )}
       <Pulso cada={1.4} largo={0.05} fuerza={0.22} />
+      <AudioBeats items={[{idx: 31, t0: CI_finBadges}, {idx: 32, t0: CI_32t0}]} />
     </AbsoluteFill>
   );
 };
 
-// ============================================================= 11. CTA (55-58s)
+// ============================================================= 11. CTA
+// 33: "Comentá «método»" | 34: "y te paso cómo armar el tuyo."
+const CTA_34t0 = 0.1 + DUR[33] + AIRE;
+export const CTA_DUR = CTA_34t0 + DUR[34] + 0.4;
+
 const Cta: React.FC = () => {
   const frame = useCurrentFrame();
   const t = frame / FPS;
@@ -380,29 +489,36 @@ const Cta: React.FC = () => {
       <div style={{fontFamily: GROTESCA, fontWeight: 800, fontStretch: '84%', fontSize: 74, color: PALETA.texto, letterSpacing: '-0.03em', textTransform: 'uppercase', textAlign: 'center', opacity: ap(0, 0.35)}}>
         Comentá «<span style={{color: PALETA.acento}}>MÉTODO</span>»
       </div>
-      <div style={{fontFamily: GROTESCA, fontWeight: 400, fontSize: 38, color: PALETA.texto, opacity: ap(0.4, 0.75, 0.75)}}>
+      <div style={{fontFamily: GROTESCA, fontWeight: 400, fontSize: 38, color: PALETA.texto, opacity: ap(CTA_34t0, CTA_34t0 + 0.35, 0.75)}}>
         y te paso cómo armar el tuyo
       </div>
+      <AudioBeats items={[{idx: 33, t0: 0.1}, {idx: 34, t0: CTA_34t0}]} />
     </AbsoluteFill>
   );
 };
 
 // ================================================================ ROOT
-const SEGMENTOS: {desde: number; hasta: number; golpe: Parameters<typeof Golpe>[0]['tipo']; sonido?: boolean; el: React.ReactNode}[] = [
-  {desde: 0, hasta: 3, golpe: 'ninguno', el: <Hook />},
-  {desde: 3, hasta: 7, golpe: 'sacudon', el: <Rompe />},
-  {desde: 7, hasta: 12, golpe: 'corte', el: <QuienEs />},
-  {desde: 12, hasta: 18, golpe: 'raya', el: <PrimerGiro />},
-  {desde: 18, hasta: 24, golpe: 'fogonazo', el: <Catalogo />},
-  {desde: 24, hasta: 30, golpe: 'negro', el: <Metodo />},
-  {desde: 30, hasta: 36, golpe: 'corte', el: <Herramientas />},
-  {desde: 36, hasta: 42, golpe: 'negro', sonido: false, el: <ElDinero />},
-  {desde: 42, hasta: 48, golpe: 'fogonazo', el: <VerdaderoGiro />},
-  {desde: 48, hasta: 55, golpe: 'sacudon', el: <Cierre />},
-  {desde: 55, hasta: 58, golpe: 'fogonazo', el: <Cta />},
-];
+const SEGMENTOS: {desde: number; hasta: number; golpe: Parameters<typeof Golpe>[0]['tipo']; sonido?: boolean; el: React.ReactNode}[] = [];
+{
+  let cursor = 0;
+  const agregar = (dur: number, golpe: Parameters<typeof Golpe>[0]['tipo'], el: React.ReactNode, sonido?: boolean) => {
+    SEGMENTOS.push({desde: cursor, hasta: cursor + dur, golpe, sonido, el});
+    cursor += dur;
+  };
+  agregar(HOOK_DUR, 'ninguno', <Hook />);
+  agregar(ROMPE_DUR, 'sacudon', <Rompe />);
+  agregar(QUIENES_DUR, 'corte', <QuienEs />);
+  agregar(PRIMERGIRO_DUR, 'raya', <PrimerGiro />);
+  agregar(CATALOGO_DUR, 'fogonazo', <Catalogo />);
+  agregar(METODO_DUR, 'negro', <Metodo />);
+  agregar(HERRAMIENTAS_DUR, 'corte', <Herramientas />);
+  agregar(ELDINERO_DUR, 'negro', <ElDinero />, false);
+  agregar(VERDADEROGIRO_DUR, 'fogonazo', <VerdaderoGiro />);
+  agregar(CIERRE_DUR, 'sacudon', <Cierre />);
+  agregar(CTA_DUR, 'fogonazo', <Cta />);
+}
 
-export const DUR_REBECCA = 58;
+export const DUR_REBECCA = SEGMENTOS[SEGMENTOS.length - 1].hasta;
 
 export const RebeccaBeach: React.FC = () => {
   cargarFuentes();
