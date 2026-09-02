@@ -1,0 +1,98 @@
+[
+  {
+    "index": 0,
+    "unidad": "hook",
+    "idx_en_unidad": 0,
+    "id": "hook_0",
+    "texto_crudo": "Jai Rodríguez cobra $47.",
+    "texto": "Jai Rodríguez cobra cuarenta y siete dólares."
+  },
+  {
+    "index": 1,
+    "unidad": "hook",
+    "idx_en_unidad": 1,
+    "id": "hook_1",
+    "texto_crudo": "Por algo que armó en dos tardes.",
+    "texto": "Por algo que armó en dos tardes."
+  },
+  {
+    "index": 2,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 0,
+    "id": "desarrollo_0",
+    "texto_crudo": "Las primeras 3 ventas fueron casi por error.",
+    "texto": "Las primeras tres ventas fueron casi por error."
+  },
+  {
+    "index": 3,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 1,
+    "id": "desarrollo_1",
+    "texto_crudo": "Para el mes 4, ya eran 19 clientes en una semana.",
+    "texto": "Para el mes cuatro, ya eran diecinueve clientes en una semana."
+  },
+  {
+    "index": 4,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 2,
+    "id": "desarrollo_2",
+    "texto_crudo": "Al mes 9, cerró 47 clientes en una sola semana.",
+    "texto": "Al mes nueve, cerró cuarenta y siete clientes en una sola semana."
+  },
+  {
+    "index": 5,
+    "unidad": "aceleracion",
+    "idx_en_unidad": 0,
+    "id": "aceleracion_0",
+    "texto_crudo": "De 3 a 47 clientes por semana... la curva no subió despacio.",
+    "texto": "De tres a cuarenta y siete clientes por semana... la curva no subió despacio."
+  },
+  {
+    "index": 6,
+    "unidad": "pausa",
+    "idx_en_unidad": 0,
+    "id": "pausa_0",
+    "texto_crudo": "El precio nunca cambió.",
+    "texto": "El precio nunca cambió."
+  },
+  {
+    "index": 7,
+    "unidad": "impacto",
+    "idx_en_unidad": 0,
+    "id": "impacto_0",
+    "texto_crudo": "Sigue costando $47.",
+    "texto": "Sigue costando cuarenta y siete dólares."
+  },
+  {
+    "index": 8,
+    "unidad": "impacto",
+    "idx_en_unidad": 1,
+    "id": "impacto_1",
+    "texto_crudo": "47 clientes en una semana, a $47 cada uno, son casi 2.209 dólares.",
+    "texto": "cuarenta y siete clientes en una semana, a cuarenta y siete dólares cada uno, son casi dos mil doscientos nueve dólares."
+  },
+  {
+    "index": 9,
+    "unidad": "desarrollo2",
+    "idx_en_unidad": 0,
+    "id": "desarrollo2_0",
+    "texto_crudo": "Lo único que cambió fue dónde lo mostraba, y a quién.",
+    "texto": "Lo único que cambió fue dónde lo mostraba, y a quién."
+  },
+  {
+    "index": 10,
+    "unidad": "cierre",
+    "idx_en_unidad": 0,
+    "id": "cierre_0",
+    "texto_crudo": "El archivo es el mismo.",
+    "texto": "El archivo es el mismo."
+  },
+  {
+    "index": 11,
+    "unidad": "cierre",
+    "idx_en_unidad": 1,
+    "id": "cierre_1",
+    "texto_crudo": "El resultado, no.",
+    "texto": "El resultado, no."
+  }
+]
