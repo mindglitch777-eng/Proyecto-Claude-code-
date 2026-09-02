@@ -37,6 +37,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
@@ -115,6 +116,94 @@ def verificar_texto_capacidad(arbol: dict, registro: list[dict]) -> list[str]:
     return alertas
 
 
+def verificar_categoria_repetida_consecutiva(arbol: dict, registro: list[dict]) -> list[str]:
+    """QA creativo (Ronda 3, item 18 del pedido): dos escenas SEGUIDAS
+    de la misma categoria (ej. dos 'cifra' una atras de la otra) son la
+    formula repetitiva que el operador señalo -- 'no queremos texto ->
+    numero -> grafico -> texto -> numero -> grafico'. Heuristica, no
+    error duro: a veces SI tiene sentido (dos cifras relacionadas
+    seguidas puede ser una decision real)."""
+    por_id = {c["id"]: c for c in registro}
+    alertas = []
+    escenas = arbol.get("escenas", [])
+    for i in range(1, len(escenas)):
+        anterior, actual = escenas[i - 1], escenas[i]
+        cat_anterior = (por_id.get(anterior["componenteId"]) or {}).get("categoria")
+        cat_actual = (por_id.get(actual["componenteId"]) or {}).get("categoria")
+        if cat_anterior and cat_anterior == cat_actual:
+            alertas.append(
+                f"escenas '{anterior['unidadId']}' y '{actual['unidadId']}' seguidas usan la "
+                f"misma categoria de componente ({cat_actual!r}) -- revisar si es una decision "
+                f"real o formula repetitiva"
+            )
+    return alertas
+
+
+def verificar_golpe_repetido_consecutivo(arbol: dict) -> list[str]:
+    """Dos escenas seguidas con el MISMO golpe de transicion (ej.
+    'fogonazo' dos veces seguidas) refuerzan la sensacion de formula
+    mecanica -- ver fabrica/directores/audio.ts, ahora elige entre
+    varios golpes por familia de intensidad para evitar esto, pero
+    puede seguir pasando si el llamador no pasa `evitarGolpes`."""
+    alertas = []
+    escenas = arbol.get("escenas", [])
+    for i in range(1, len(escenas)):
+        anterior, actual = escenas[i - 1], escenas[i]
+        if actual.get("golpe") not in (None, "ninguno") and actual.get("golpe") == anterior.get("golpe"):
+            alertas.append(
+                f"escenas '{anterior['unidadId']}' y '{actual['unidadId']}' seguidas usan el "
+                f"mismo golpe de transicion ({actual['golpe']!r}) -- poca variedad de corte"
+            )
+    return alertas
+
+
+def verificar_intensidad_plana(arbol: dict) -> list[str]:
+    """Si el video entero (3+ escenas) usa un solo tipo de golpe (fuera
+    de la primera escena, que suele ir sin golpe), no hay variacion de
+    ritmo real -- 'calma -> desarrollo -> aceleracion -> impacto' pedido
+    en la seccion 1 no puede sentirse si todo es la misma transicion."""
+    escenas = arbol.get("escenas", [])
+    golpes = [e.get("golpe") for e in escenas[1:] if e.get("golpe") not in (None, "ninguno")]
+    if len(escenas) >= 3 and golpes and len(set(golpes)) == 1:
+        return [f"las {len(golpes)} transiciones del video (sin contar la primera escena) son "
+                f"todas {golpes[0]!r} -- sin variacion de intensidad/ritmo real"]
+    return []
+
+
+_RE_NUMERO_DESTACADO = re.compile(r"\b\d{1,3}(?:[.,]\d{3})*\b")
+
+
+def verificar_cifra_repetida_en_texto(arbol: dict) -> list[str]:
+    """Un mismo numero (2+ digitos, para no marcar 'un'/'2' sueltos de
+    texto corriente) apareciendo en los props de texto de 2+ escenas
+    DISTINTAS es la repeticion de cifra que la seccion 5 del pedido
+    señala explicitamente ('si ya mostramos 2.847, despues no
+    necesitamos volver a mostrarlo de la misma manera'). Ver
+    fabrica/composicion/repeticion_datos.ts para la decision real de
+    que hacer en el generador -- esto es la RED DE SEGURIDAD que lo
+    detecta si igual se coló."""
+    apariciones: dict[str, list[str]] = {}
+    for escena in arbol.get("escenas", []):
+        texto = _texto_total_de_props(escena.get("props", {}))
+        for m in _RE_NUMERO_DESTACADO.finditer(texto):
+            numero = m.group(0)
+            if len(numero.replace(".", "").replace(",", "")) < 2:
+                continue
+            apariciones.setdefault(numero, [])
+            if escena["unidadId"] not in apariciones[numero]:
+                apariciones[numero].append(escena["unidadId"])
+
+    alertas = []
+    for numero, unidades in apariciones.items():
+        if len(unidades) > 1:
+            alertas.append(
+                f"la cifra '{numero}' aparece en el texto de {len(unidades)} escenas distintas "
+                f"({', '.join(unidades)}) -- revisar si cada aparicion cumple una funcion nueva "
+                f"o es repeticion sin tratamiento (ver repeticion_datos.ts)"
+            )
+    return alertas
+
+
 def verificar_duracion_esperada_vs_real(duracion_esperada_seg: float,
                                          duracion_real_seg: float) -> str | None:
     diferencia = abs(duracion_esperada_seg - duracion_real_seg)
@@ -135,6 +224,10 @@ def correr_qa_composicion(arbol_path: str, public_dir: Path = PUBLIC_DIR_DEFAULT
 
     r.problemas.extend(verificar_assets_arbol(arbol, public_dir))
     r.alertas.extend(verificar_texto_capacidad(arbol, registro))
+    r.alertas.extend(verificar_categoria_repetida_consecutiva(arbol, registro))
+    r.alertas.extend(verificar_golpe_repetido_consecutivo(arbol))
+    r.alertas.extend(verificar_intensidad_plana(arbol))
+    r.alertas.extend(verificar_cifra_repetida_en_texto(arbol))
 
     if duracion_real_seg is not None:
         problema_duracion = verificar_duracion_esperada_vs_real(

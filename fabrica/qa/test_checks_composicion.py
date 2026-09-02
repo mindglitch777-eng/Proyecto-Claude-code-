@@ -13,7 +13,11 @@ sys.path.insert(0, str(Path(__file__).parent))
 from checks_composicion import (  # noqa: E402
     correr_qa_composicion,
     verificar_assets_arbol,
+    verificar_categoria_repetida_consecutiva,
+    verificar_cifra_repetida_en_texto,
     verificar_duracion_esperada_vs_real,
+    verificar_golpe_repetido_consecutivo,
+    verificar_intensidad_plana,
     verificar_texto_capacidad,
 )
 
@@ -88,6 +92,96 @@ def test_duracion_fuera_de_tolerancia_reporta_problema():
     problema = verificar_duracion_esperada_vs_real(30.0, 35.0)
     check("diferencia grande (5s) SI es problema", problema is not None)
     check("el problema menciona ambas duraciones", "30.00" in problema and "35.00" in problema)
+
+
+def test_categoria_repetida_consecutiva_alerta():
+    registro = [{"id": "a", "categoria": "cifra"}, {"id": "b", "categoria": "cifra"}, {"id": "c", "categoria": "texto"}]
+    arbol = {"escenas": [
+        {"unidadId": "u1", "componenteId": "a"},
+        {"unidadId": "u2", "componenteId": "b"},
+        {"unidadId": "u3", "componenteId": "c"},
+    ]}
+    alertas = verificar_categoria_repetida_consecutiva(arbol, registro)
+    check("dos 'cifra' seguidas alertan", len(alertas) == 1)
+    check("cifra seguida de texto no alerta de mas", "u2" in alertas[0] and "u3" not in alertas[0])
+
+
+def test_categoria_variada_no_alerta():
+    registro = [{"id": "a", "categoria": "cifra"}, {"id": "b", "categoria": "texto"}]
+    arbol = {"escenas": [{"unidadId": "u1", "componenteId": "a"}, {"unidadId": "u2", "componenteId": "b"}]}
+    check("categorias distintas seguidas: sin alerta", len(verificar_categoria_repetida_consecutiva(arbol, registro)) == 0)
+
+
+def test_golpe_repetido_consecutivo_alerta():
+    arbol = {"escenas": [
+        {"unidadId": "u1", "golpe": "fogonazo"},
+        {"unidadId": "u2", "golpe": "fogonazo"},
+        {"unidadId": "u3", "golpe": "negro"},
+    ]}
+    alertas = verificar_golpe_repetido_consecutivo(arbol)
+    check("dos fogonazo seguidos alertan", len(alertas) == 1)
+
+
+def test_golpe_ninguno_repetido_no_alerta():
+    # 'ninguno' es el golpe de la primera escena (sin corte que
+    # marcar) -- no tiene sentido alertar si aparece "repetido".
+    arbol = {"escenas": [{"unidadId": "u1", "golpe": "ninguno"}, {"unidadId": "u2", "golpe": "ninguno"}]}
+    check("golpe 'ninguno' repetido no alerta", len(verificar_golpe_repetido_consecutivo(arbol)) == 0)
+
+
+def test_intensidad_plana_alerta_con_un_solo_golpe_en_todo_el_video():
+    arbol = {"escenas": [
+        {"unidadId": "u1", "golpe": "ninguno"},
+        {"unidadId": "u2", "golpe": "corte"},
+        {"unidadId": "u3", "golpe": "corte"},
+        {"unidadId": "u4", "golpe": "corte"},
+    ]}
+    alertas = verificar_intensidad_plana(arbol)
+    check("4 escenas, mismo golpe salvo la primera: alerta de intensidad plana", len(alertas) == 1)
+
+
+def test_intensidad_variada_no_alerta():
+    arbol = {"escenas": [
+        {"unidadId": "u1", "golpe": "ninguno"},
+        {"unidadId": "u2", "golpe": "corte"},
+        {"unidadId": "u3", "golpe": "fogonazo"},
+        {"unidadId": "u4", "golpe": "negro"},
+    ]}
+    check("golpes variados: sin alerta de intensidad plana", len(verificar_intensidad_plana(arbol)) == 0)
+
+
+def test_cifra_repetida_en_texto_alerta():
+    arbol = {"escenas": [
+        {"unidadId": "hook", "props": {"lineas": ["Vendió lo mismo 2.847 veces."]}},
+        {"unidadId": "payoff", "props": {"lineas": ["Se vende solo, 2.847 veces si hace falta."]}},
+    ]}
+    alertas = verificar_cifra_repetida_en_texto(arbol)
+    check("2.847 repetido en 2 escenas: alerta", len(alertas) == 1)
+    check("la alerta nombra ambas escenas", "hook" in alertas[0] and "payoff" in alertas[0])
+
+
+def test_cifra_unica_no_alerta():
+    arbol = {"escenas": [
+        {"unidadId": "hook", "props": {"lineas": ["Vendió lo mismo 2.847 veces."]}},
+        {"unidadId": "desarrollo", "props": {"hitos": [{"que": "10 ventas por semana"}]}},
+    ]}
+    check("cifras distintas en cada escena: sin alerta", len(verificar_cifra_repetida_en_texto(arbol)) == 0)
+
+
+def test_numeros_sueltos_de_un_digito_no_generan_ruido():
+    # "un", "2 pasos" -- no queremos que un digito solo (parte de
+    # lenguaje corriente) dispare la alerta de cifra repetida.
+    arbol = {"escenas": [
+        {"unidadId": "u1", "props": {"texto": "Paso 1 del proceso"}},
+        {"unidadId": "u2", "props": {"texto": "Paso 1, otra vez explicado"}},
+    ]}
+    # OJO: esto SI compartiria "1" -- pero un digito solo es una señal
+    # muy debil (podria ser "paso 1" en dos contextos distintos, no
+    # necesariamente una cifra protagonista repetida). Se documenta la
+    # limitacion: el check no distingue "cifra protagonista" de
+    # "numero de paso/referencia", es heuristico por diseño.
+    alertas = verificar_cifra_repetida_en_texto(arbol)
+    check("digito de 1 solo caracter no cuenta (requiere 2+)", not any("'1'" in a for a in alertas))
 
 
 def test_contra_arbol_real_de_fabrica_demo_02():
