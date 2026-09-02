@@ -13,6 +13,7 @@ import {CASOS} from './documental/casos';
 import {FabricaVideo, ArbolFabrica} from './fabrica_bridge/FabricaVideo';
 import demo01 from './fabrica_bridge/demo_01.json';
 import demo02 from './fabrica_bridge/demo_02.json';
+import demo03 from './fabrica_bridge/demo_03.json';
 import {Video} from './receta/Video';
 import {GUIONES} from './receta/guiones';
 import {compilar} from './receta/compilar';
@@ -93,6 +94,20 @@ export const Root: React.FC = () => {
         width={ANCHO}
         height={ALTO}
         defaultProps={{arbol: demo02 as ArbolFabrica}}
+      />
+      {/* Ronda 2 de fortalecimiento: video de prueba integral con voz
+          REAL de Qwen3-TTS (no reciclada), 5 categorias de componente
+          distintas elegidas por metadata real (hook/desarrollo/
+          escalada/payoff/cierre). Ver fabrica/ejemplos/generar_demo_03.ts
+          y fabrica/PENDIENTES_OPERADOR.md. */}
+      <Composition
+        id="fabrica-demo-03"
+        component={FabricaVideo}
+        durationInFrames={Math.round((demo03 as ArbolFabrica).duracionTotalSeg * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{arbol: demo03 as ArbolFabrica}}
       />
       <Composition id="rebecca-beach" component={RebeccaBeach} durationInFrames={Math.round(DUR_REBECCA * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       {/* Casos 2 a 20 de la serie documental: uno por entrada en

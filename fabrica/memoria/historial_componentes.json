@@ -18,5 +18,27 @@
       "cifra-se-cae",
       "punch"
     ]
+  },
+  {
+    "videoId": "fabrica-demo-03",
+    "fecha": "2026-09-02T16:09:56.228Z",
+    "componentesUsados": [
+      "punch",
+      "cronologia",
+      "recibo",
+      "antes-despues",
+      "punch"
+    ]
+  },
+  {
+    "videoId": "fabrica-demo-03",
+    "fecha": "2026-09-02T16:11:48.328Z",
+    "componentesUsados": [
+      "punch",
+      "cronologia",
+      "grafico",
+      "antes-despues",
+      "punch"
+    ]
   }
 ]

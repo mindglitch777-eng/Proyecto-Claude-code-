@@ -151,20 +151,45 @@ function main() {
   console.log(`Unidad 3 (escalada, cifra): eligio "${elEscalada.componente.id}" (score ${elEscalada.score.toFixed(2)})`);
   elEscalada.razones.forEach((r) => console.log('   - ' + r));
   const golpeEscalada = directorAudio.decidirParaUnidad({indice: 2, total: TOTAL, intensidadVisual: elEscalada.componente.intensidad});
+  // LIMITACION REAL encontrada corriendo este mismo script (Ronda 2):
+  // la categoria 'cifra' mezcla componentes con contratos de props MUY
+  // distintos (grafico = serie de puntos neutral, recibo = balance de
+  // dinero entra/sale, contador = un solo numero) -- el Director
+  // Visual elige bien por metadata (intensidad/capacidadTexto), pero
+  // el LLAMADOR todavia tiene que saber que forma de props arma segun
+  // quien gano. No hay generador de props 100% generico todavia (ver
+  // PENDIENTES.md) -- se resuelve por componente conocido, honesto
+  // sobre la limitacion en vez de fingir que no existe.
+  const propsEscalada: Record<string, unknown> =
+    elEscalada.componente.id === 'recibo'
+      ? {
+          // reinterpretado como ingresos semanales en dolares (10 y 100
+          // ventas/semana x $9 c/u) -- consistente con el resto del
+          // guion, no un numero inventado aparte.
+          titulo: 'Cómo crecieron los ingresos por semana',
+          entra: [
+            {txt: 'Semana 1', monto: 0, t: 0.6},
+            {txt: 'Mes 3 (10 ventas/sem)', monto: 90, t: 2.2},
+            {txt: 'Mes 8 (100 ventas/sem)', monto: 900, t: 4.0},
+          ],
+          sale: [],
+          total: {txt: 'Esa semana', t: 5.0},
+        }
+      : {
+          idea: {
+            titulo: 'Ventas por semana',
+            datos: [
+              {etiqueta: 'Mes 1', valor: 0},
+              {etiqueta: 'Mes 3', valor: 10},
+              {etiqueta: 'Mes 8', valor: 100},
+            ],
+            etiqueta: 'ventas/semana',
+            fuente: 'Datos ilustrativos para esta prueba de fábrica',
+          },
+        };
   unidades.push({
     id: 'escalada', componente: elEscalada.componente,
-    props: {
-      idea: {
-        titulo: 'Ventas por semana',
-        datos: [
-          {etiqueta: 'Mes 1', valor: 0},
-          {etiqueta: 'Mes 3', valor: 10},
-          {etiqueta: 'Mes 8', valor: 100},
-        ],
-        etiqueta: 'ventas/semana',
-        fuente: 'Datos ilustrativos para esta prueba de fábrica',
-      },
-    },
+    props: propsEscalada,
     audios: audiosEscalada, golpe: golpeEscalada.golpeSugerido, volumenSfx: golpeEscalada.volumenSfxSugerido,
   });
   usadosEnEsteVideo.push(elEscalada.componente.id);
@@ -182,13 +207,23 @@ function main() {
   console.log(`Unidad 4 (payoff, comparacion): eligio "${elPayoff.componente.id}" (score ${elPayoff.score.toFixed(2)})`);
   elPayoff.razones.forEach((r) => console.log('   - ' + r));
   const golpePayoff = directorAudio.decidirParaUnidad({indice: 3, total: TOTAL, intensidadVisual: elPayoff.componente.intensidad, esRevelacion: true});
+  // Misma limitacion que en escalada: 'comparacion' mezcla balanza
+  // (peso numerico en una balanza) y antes-despues (dos paneles de
+  // texto) -- contratos distintos, se arma segun quien gano de verdad.
+  const propsPayoff: Record<string, unknown> =
+    elPayoff.componente.id === 'antes-despues'
+      ? {
+          antes: {rotulo: 'Trabajo full-time', txt: 'Cambia tu tiempo por plata, siempre igual.'},
+          despues: {rotulo: 'Un archivo de $9', txt: 'Se vende solo, 2.847 veces si hace falta.'},
+        }
+      : {
+          izq: {txt: 'Trabajo full-time', peso: 8},
+          der: {txt: 'Un archivo de $9', peso: 3},
+          pie: 'El tiempo no escala igual en los dos lados.',
+        };
   unidades.push({
     id: 'payoff', componente: elPayoff.componente,
-    props: {
-      izq: {txt: 'Trabajo full-time', peso: 8},
-      der: {txt: 'Un archivo de $9', peso: 3},
-      pie: 'El tiempo no escala igual en los dos lados.',
-    },
+    props: propsPayoff,
     audios: audiosPayoff, golpe: golpePayoff.golpeSugerido, volumenSfx: golpePayoff.volumenSfxSugerido,
   });
   usadosEnEsteVideo.push(elPayoff.componente.id);

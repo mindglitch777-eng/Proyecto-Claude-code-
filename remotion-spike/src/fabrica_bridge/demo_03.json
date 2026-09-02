@@ -1,0 +1,170 @@
+{
+  "id": "fabrica-demo-03",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "hook",
+      "desdeSeg": 0,
+      "duracionSeg": 6.1320190000000006,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "Nicolás Gómez vendió lo mismo 2.847 veces.",
+          "A $9 cada uno."
+        ],
+        "entra": [
+          0,
+          4.474014
+        ],
+        "clip": "freelance-00.mp4"
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_03/hook_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.224014
+        },
+        {
+          "archivo": "fabrica_demo_03/hook_1.wav",
+          "desdeSegRelativo": 4.474014,
+          "duracionSeg": 1.408005
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "desarrollo",
+      "desdeSeg": 6.1320190000000006,
+      "duracionSeg": 14.318028,
+      "componenteId": "cronologia",
+      "props": {
+        "hitos": [
+          {
+            "cuando": "15 MAR 2024",
+            "que": "Primer archivo subido. Cero ventas."
+          },
+          {
+            "cuando": "MES 3",
+            "que": "Aparece en búsquedas: 10 ventas/semana"
+          },
+          {
+            "cuando": "MES 8",
+            "que": "100 ventas/semana, $0 en anuncios",
+            "acento": true
+          }
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_03/desarrollo_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 6.144014
+        },
+        {
+          "archivo": "fabrica_demo_03/desarrollo_1.wav",
+          "desdeSegRelativo": 6.394014,
+          "duracionSeg": 3.52
+        },
+        {
+          "archivo": "fabrica_demo_03/desarrollo_2.wav",
+          "desdeSegRelativo": 10.164014,
+          "duracionSeg": 3.904014
+        }
+      ],
+      "golpe": "fundido",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "escalada",
+      "desdeSeg": 20.450047,
+      "duracionSeg": 5.754014,
+      "componenteId": "grafico",
+      "props": {
+        "idea": {
+          "titulo": "Ventas por semana",
+          "datos": [
+            {
+              "etiqueta": "Mes 1",
+              "valor": 0
+            },
+            {
+              "etiqueta": "Mes 3",
+              "valor": 10
+            },
+            {
+              "etiqueta": "Mes 8",
+              "valor": 100
+            }
+          ],
+          "etiqueta": "ventas/semana",
+          "fuente": "Datos ilustrativos para esta prueba de fábrica"
+        }
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_03/escalada_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 5.504014
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "payoff",
+      "desdeSeg": 26.204061000000003,
+      "duracionSeg": 10.292019,
+      "componenteId": "antes-despues",
+      "props": {
+        "antes": {
+          "rotulo": "Trabajo full-time",
+          "txt": "Cambia tu tiempo por plata, siempre igual."
+        },
+        "despues": {
+          "rotulo": "Un archivo de $9",
+          "txt": "Se vende solo, 2.847 veces si hace falta."
+        }
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_03/payoff_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.224014
+        },
+        {
+          "archivo": "fabrica_demo_03/payoff_1.wav",
+          "desdeSegRelativo": 4.474014,
+          "duracionSeg": 5.568005
+        }
+      ],
+      "golpe": "sacudon",
+      "volumenSfx": 0.85
+    },
+    {
+      "unidadId": "cierre",
+      "desdeSeg": 36.496080000000006,
+      "duracionSeg": 3.45,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "El tiempo no escala.",
+          "El archivo, sí."
+        ],
+        "entra": [
+          0
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_03/cierre_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.2
+        }
+      ],
+      "golpe": "negro",
+      "volumenSfx": 0.5
+    }
+  ],
+  "duracionTotalSeg": 40.44608000000001
+}

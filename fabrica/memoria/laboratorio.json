@@ -18,5 +18,25 @@
     "conclusion": null,
     "estado": "esperando_datos",
     "fechaCreacion": "2026-09-02T11:49:52.092Z"
+  },
+  {
+    "id": "fabrica-demo-03-1788365396229",
+    "hipotesis": "Un video con 5 categorias de componente distintas (texto/timeline/cifra/comparacion/texto), cada una eligiendo su mejor candidato real por metadata (no por nombre fijo), y voz 100% nueva generada por Qwen3-TTS (no reciclada), produce un video que se siente completo y no como una demo tecnica.",
+    "experimento": "fabrica-demo-03: Ronda 2 de fortalecimiento -- guion nuevo (hook/desarrollo/escalada/payoff/cierre), voz real de Qwen3-TTS (capturas_voz/audio_demo_03/), assets reales, anti-repeticion real.",
+    "videoId": "fabrica-demo-03",
+    "resultadoReal": null,
+    "conclusion": null,
+    "estado": "esperando_datos",
+    "fechaCreacion": "2026-09-02T16:09:56.229Z"
+  },
+  {
+    "id": "fabrica-demo-03-1788365508329",
+    "hipotesis": "Un video con 5 categorias de componente distintas (texto/timeline/cifra/comparacion/texto), cada una eligiendo su mejor candidato real por metadata (no por nombre fijo), y voz 100% nueva generada por Qwen3-TTS (no reciclada), produce un video que se siente completo y no como una demo tecnica.",
+    "experimento": "fabrica-demo-03: Ronda 2 de fortalecimiento -- guion nuevo (hook/desarrollo/escalada/payoff/cierre), voz real de Qwen3-TTS (capturas_voz/audio_demo_03/), assets reales, anti-repeticion real.",
+    "videoId": "fabrica-demo-03",
+    "resultadoReal": null,
+    "conclusion": null,
+    "estado": "esperando_datos",
+    "fechaCreacion": "2026-09-02T16:11:48.329Z"
   }
 ]
