@@ -46,6 +46,32 @@ export type ExperimentoAB = {
   variantes: VarianteExperimento[];
 };
 
+/**
+ * R7-7 (Ronda 7, directiva FASE NUEVA 9): verificado -- este contrato
+ * YA satisface el esquema pedido "Hipótesis → Variables →
+ * Implementación → Resultado → Datos → Conclusión", campo por campo:
+ *
+ *   HIPÓTESIS      -> EntradaLaboratorio.hipotesis
+ *   VARIABLES      -> ExperimentoAB.variableModificada + .variablesControladas
+ *                     (solo cuando la entrada ES un experimento A/B formal --
+ *                     no toda hipótesis necesita variantes explícitas)
+ *   IMPLEMENTACIÓN -> EntradaLaboratorio.experimento (qué se probó concretamente)
+ *   RESULTADO+DATOS-> EntradaLaboratorio.resultadoReal (ResultadoReal, con
+ *                     fuente + fecha de medición -- nunca estimado)
+ *   CONCLUSIÓN     -> EntradaLaboratorio.conclusion
+ *
+ * No se agregó ningún campo nuevo -- el schema de Ronda 5 ya cubría
+ * esto. Lo que SÍ se confirma explícitamente acá (y ya estaba
+ * garantizado por el propio sistema de tipos, no es una promesa
+ * suelta): `ResultadoReal` NUNCA tiene un campo de "score" -- los
+ * scores internos de la fábrica (Director Visual, resolver de assets,
+ * resolver de música) viven en objetos completamente separados
+ * (`fabrica/directores/tipos.ts` `CandidatoVisual.score`,
+ * `assets/resolver.py`, `musica/resolver_musica.py`) y nunca se
+ * escriben acá -- la separación "score interno" vs "resultado real"
+ * que pide la directiva ya es estructural, no una convención que se
+ * pueda romper por accidente.
+ */
 export type EntradaLaboratorio = {
   id: string;
   /** lo que CREEMOS que puede funcionar -- siempre HIPOTESIS, nunca
