@@ -1,0 +1,139 @@
+/**
+ * Adaptadores de props por categoria (Ronda 2, item pendiente #10):
+ * dos componentes de la MISMA categoria pueden tener contratos de
+ * props completamente distintos (grafico espera una serie neutral,
+ * recibo espera un balance de dinero con timings fijos). Sin esto, un
+ * script generador tiene que "adivinar" que forma de props armar
+ * DESPUES de que el Director Visual elige un ganador que no se sabe
+ * de antemano -- lo que paso de verdad armando fabrica-demo-03
+ * (fabrica/ejemplos/generar_demo_03.ts), resuelto ahi con un `if`
+ * puntual.
+ *
+ * Esto generaliza ESE caso puntual a un adaptador real: un modelo de
+ * datos neutral por categoria + una funcion que arma la forma de
+ * props correcta segun el id del componente ganador. No es magia:
+ * cubre los componentes reales de cada categoria que de verdad
+ * representan el mismo tipo de dato (una progresion numerica; una
+ * comparacion de dos lados) -- los que no encajan en ese concepto
+ * (`embudo`, con N pisos en vez de una progresion o dos lados;
+ * `explicador`, una tabla de conceptos, no una serie) quedan
+ * explicitamente AFUERA, con un error claro si se los pide, en vez de
+ * forzar una traduccion que no tiene sentido.
+ */
+// Mismo formato que `plata()` en remotion-spike/src/escenas/plata.tsx
+// ('$' + separador de miles es-AR) -- no se importa de ahi porque
+// fabrica/ es un paquete Node standalone, independiente de
+// remotion-spike/ (ver fabrica/README.md).
+function formatearPlata(n: number): string {
+  return '$' + Math.round(n).toLocaleString('es-AR');
+}
+
+export type PuntoProgresion = {etiqueta: string; valor: number};
+
+export type DatosProgresion = {
+  titulo?: string;
+  puntos: PuntoProgresion[]; // 2+ puntos, orden cronologico
+  etiqueta?: string; // ej. "ventas/semana"
+  fuente?: string;
+  esDinero?: boolean; // si true, los valores se formatean y tratan como moneda
+};
+
+const COMPONENTES_CIFRA_SOPORTADOS = ['grafico', 'recibo', 'contador', 'cifra-se-cae'] as const;
+
+export function propsParaCifra(componenteId: string, datos: DatosProgresion): Record<string, unknown> {
+  if (datos.puntos.length < 2) {
+    throw new Error('propsParaCifra: se necesitan al menos 2 puntos para representar una progresion');
+  }
+  const primero = datos.puntos[0];
+  const ultimo = datos.puntos[datos.puntos.length - 1];
+
+  switch (componenteId) {
+    case 'grafico':
+      return {
+        idea: {
+          titulo: datos.titulo ?? '',
+          datos: datos.puntos.map((p) => ({etiqueta: p.etiqueta, valor: p.valor})),
+          etiqueta: datos.etiqueta ?? '',
+          fuente: datos.fuente ?? '',
+        },
+      };
+
+    case 'recibo': {
+      // Solo tiene sentido narrativo si los valores SON dinero de
+      // verdad -- un "recibo" mostrando cantidades sin unidad de
+      // moneda confundiria al espectador (seccion 7: representar mal
+      // el concepto es peor que no representarlo).
+      if (!datos.esDinero) {
+        throw new Error('propsParaCifra: "recibo" solo tiene sentido para progresiones de dinero (esDinero=true)');
+      }
+      const separacionSeg = 1.6;
+      const entra = datos.puntos.map((p, i) => ({txt: p.etiqueta, monto: p.valor, t: 0.6 + i * separacionSeg}));
+      return {
+        titulo: datos.titulo ?? '',
+        entra,
+        sale: [],
+        total: {txt: 'Total', t: 0.6 + datos.puntos.length * separacionSeg},
+      };
+    }
+
+    case 'contador':
+      return {
+        arriba: datos.titulo,
+        desde: primero.valor,
+        hasta: ultimo.valor,
+        abajo: datos.etiqueta,
+        prefijo: datos.esDinero ? '$' : '',
+      };
+
+    case 'cifra-se-cae': {
+      const fmt = (v: number) => (datos.esDinero ? formatearPlata(v) : String(v));
+      return {arriba: datos.titulo, de: fmt(primero.valor), a: fmt(ultimo.valor), abajo: datos.etiqueta};
+    }
+
+    default:
+      throw new Error(
+        `propsParaCifra: no hay adaptador para "${componenteId}" -- componentes soportados: ${COMPONENTES_CIFRA_SOPORTADOS.join(', ')}. ` +
+          `Si es un componente real nuevo de categoria 'cifra' que SI representa una progresion numerica, agregar un caso aca.`
+      );
+  }
+}
+
+export type LadoComparacion = {rotulo: string; texto: string; peso?: number};
+
+export type DatosComparacion = {
+  izquierda: LadoComparacion;
+  derecha: LadoComparacion;
+  remate?: string;
+};
+
+const COMPONENTES_COMPARACION_SOPORTADOS = ['antes-despues', 'balanza', 'duelo'] as const;
+
+export function propsParaComparacion(componenteId: string, datos: DatosComparacion): Record<string, unknown> {
+  switch (componenteId) {
+    case 'antes-despues':
+      return {
+        antes: {rotulo: datos.izquierda.rotulo, txt: datos.izquierda.texto},
+        despues: {rotulo: datos.derecha.rotulo, txt: datos.derecha.texto},
+      };
+
+    case 'balanza':
+      return {
+        izq: {txt: datos.izquierda.rotulo, peso: datos.izquierda.peso ?? 5},
+        der: {txt: datos.derecha.rotulo, peso: datos.derecha.peso ?? 5},
+        pie: datos.remate,
+      };
+
+    case 'duelo':
+      return {
+        izq: {rotulo: datos.izquierda.rotulo, valor: datos.izquierda.texto},
+        der: {rotulo: datos.derecha.rotulo, valor: datos.derecha.texto},
+        remate: datos.remate,
+      };
+
+    default:
+      throw new Error(
+        `propsParaComparacion: no hay adaptador para "${componenteId}" -- componentes soportados: ${COMPONENTES_COMPARACION_SOPORTADOS.join(', ')}. ` +
+          `'embudo' (N pisos) no encaja en el concepto de "dos lados" -- necesitaria su propio adaptador, no forzarlo aca.`
+      );
+  }
+}

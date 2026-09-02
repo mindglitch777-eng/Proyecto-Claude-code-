@@ -9,12 +9,13 @@
     "test-director-audio": "tsx directores/test_audio.ts",
     "test-memoria": "tsx memoria/test_api.ts",
     "test-composicion": "tsx composicion/test_armar.ts",
+    "test-adaptadores": "tsx composicion/test_adaptadores.ts",
     "test-normalizador": "python3 voz/test_normalizador.py",
     "test-resolver-assets": "python3 assets/test_resolver.py",
     "test-resolver-musica": "python3 musica/test_resolver_musica.py",
     "test-qa": "python3 qa/test_checks_duros.py",
     "test-qa-composicion": "python3 qa/test_checks_composicion.py",
-    "test-todo": "npm run validar-registro && npm run test-director-visual && npm run test-director-audio && npm run test-memoria && npm run test-composicion && npm run test-normalizador && npm run test-resolver-assets && npm run test-resolver-musica && npm run test-qa && npm run test-qa-composicion",
+    "test-todo": "npm run validar-registro && npm run test-director-visual && npm run test-director-audio && npm run test-memoria && npm run test-composicion && npm run test-adaptadores && npm run test-normalizador && npm run test-resolver-assets && npm run test-resolver-musica && npm run test-qa && npm run test-qa-composicion",
     "demo-punta-a-punta": "tsx ejemplos/generar_demo_01.ts"
   },
   "devDependencies": {
