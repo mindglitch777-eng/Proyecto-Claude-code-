@@ -1,0 +1,98 @@
+[
+  {
+    "index": 0,
+    "unidad": "hook",
+    "idx_en_unidad": 0,
+    "id": "hook_0",
+    "texto_crudo": "Tomás vende su curso a 89 dólares.",
+    "texto": "Tomás vende su curso a ochenta y nueve dólares."
+  },
+  {
+    "index": 1,
+    "unidad": "hook",
+    "idx_en_unidad": 1,
+    "id": "hook_1",
+    "texto_crudo": "El primer mes, vendió apenas seis.",
+    "texto": "El primer mes, vendió apenas seis."
+  },
+  {
+    "index": 2,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 0,
+    "id": "desarrollo_0",
+    "texto_crudo": "Los primeros meses, mandaba mensajes uno por uno.",
+    "texto": "Los primeros meses, mandaba mensajes uno por uno."
+  },
+  {
+    "index": 3,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 1,
+    "id": "desarrollo_1",
+    "texto_crudo": "Al mes cinco, armó un embudo automático.",
+    "texto": "Al mes cinco, armó un embudo automático."
+  },
+  {
+    "index": 4,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 2,
+    "id": "desarrollo_2",
+    "texto_crudo": "Al mes ocho, vendió cuarenta cursos en una semana.",
+    "texto": "Al mes ocho, vendió cuarenta cursos en una semana."
+  },
+  {
+    "index": 5,
+    "unidad": "aceleracion",
+    "idx_en_unidad": 0,
+    "id": "aceleracion_0",
+    "texto_crudo": "De seis a cuarenta ventas por semana... la curva no fue pareja.",
+    "texto": "De seis a cuarenta ventas por semana... la curva no fue pareja."
+  },
+  {
+    "index": 6,
+    "unidad": "pausa",
+    "idx_en_unidad": 0,
+    "id": "pausa_0",
+    "texto_crudo": "El curso nunca cambió de precio.",
+    "texto": "El curso nunca cambió de precio."
+  },
+  {
+    "index": 7,
+    "unidad": "impacto",
+    "idx_en_unidad": 0,
+    "id": "impacto_0",
+    "texto_crudo": "Sigue costando 89 dólares.",
+    "texto": "Sigue costando ochenta y nueve dólares."
+  },
+  {
+    "index": 8,
+    "unidad": "impacto",
+    "idx_en_unidad": 1,
+    "id": "impacto_1",
+    "texto_crudo": "Cuarenta ventas esa semana, a 89 dólares cada una, son más de tres mil quinientos dólares.",
+    "texto": "Cuarenta ventas esa semana, a ochenta y nueve dólares cada una, son más de tres mil quinientos dólares."
+  },
+  {
+    "index": 9,
+    "unidad": "desarrollo2",
+    "idx_en_unidad": 0,
+    "id": "desarrollo2_0",
+    "texto_crudo": "Lo único que cambió fue quién mandaba el mensaje: un sistema, no él.",
+    "texto": "Lo único que cambió fue quién mandaba el mensaje: un sistema, no él."
+  },
+  {
+    "index": 10,
+    "unidad": "cierre",
+    "idx_en_unidad": 0,
+    "id": "cierre_0",
+    "texto_crudo": "El curso es el mismo archivo.",
+    "texto": "El curso es el mismo archivo."
+  },
+  {
+    "index": 11,
+    "unidad": "cierre",
+    "idx_en_unidad": 1,
+    "id": "cierre_1",
+    "texto_crudo": "El alcance, no.",
+    "texto": "El alcance, no."
+  }
+]
