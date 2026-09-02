@@ -71,6 +71,22 @@ function main() {
   const conVentanaChica = decidirPrioridadPatron({patron: patronA, historial: historialLargo, laboratorio: [], ventana: 3});
   check('la ventana limita cuantos usos recientes se cuentan', conVentanaChica.penalizacion === 3);
 
+  // R6-5: hookId agrega una dimension real a la clave -- mismo
+  // categoria/estilos/golpe pero DISTINTO patron de hook no debe
+  // contar como el mismo patron (y viceversa).
+  const patronConHookA: PatronEdicion = {...patronA, hookId: 'contexto-parcial'};
+  const patronConHookB: PatronEdicion = {...patronA, hookId: 'loop-abierto'};
+  const historialConHookA: RegistroPatron[] = [
+    {videoId: 'v1', fecha: 'x', patron: patronConHookA},
+    {videoId: 'v2', fecha: 'x', patron: patronConHookA},
+  ];
+  const mismoHook = decidirPrioridadPatron({patron: patronConHookA, historial: historialConHookA, laboratorio: []});
+  check('mismo categoria/estilos/golpe/hookId -> se cuenta como el mismo patron', mismoHook.penalizacion === 2);
+  const hookDistinto = decidirPrioridadPatron({patron: patronConHookB, historial: historialConHookA, laboratorio: []});
+  check('mismo categoria/estilos/golpe pero hookId DISTINTO -> patron distinto, sin penalizacion', hookDistinto.penalizacion === 0);
+  const sinHookVsConHook = decidirPrioridadPatron({patron: patronA, historial: historialConHookA, laboratorio: []});
+  check('sin hookId vs con hookId -> patron distinto (compatibilidad hacia atras: un generador viejo no choca con uno que ya usa el Hook Engine)', sinHookVsConHook.penalizacion === 0);
+
   if (FALLOS.length) {
     console.log(`\n${FALLOS.length} FALLO(S):\n`);
     for (const f of FALLOS) console.log(f);

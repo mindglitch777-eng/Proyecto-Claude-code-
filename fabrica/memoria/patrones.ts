@@ -40,6 +40,17 @@ export type PatronEdicion = {
   /** Orden no importa para comparar -- se normaliza ordenando alfabeticamente. */
   estilos: string[];
   golpe: string;
+  /** R6-5 (Ronda 6, Prompt Maestro 2): opcional -- id de un patron del
+   * Hook Engine (fabrica/hooks/catalogo.ts) cuando este PatronEdicion
+   * describe la unidad de APERTURA de un video. Evoluciona la
+   * anti-repeticion para trackear "este patron de hook/estructura se
+   * repitio" ademas de "esta combinacion visual se repitio", con la
+   * MISMA logica de recuperar prioridad si hay resultadoReal bueno --
+   * no es un sistema paralelo, es una dimension mas de la clave. Las
+   * unidades que no son el hook (o generadores viejos que no llaman al
+   * Hook Engine) simplemente no lo pasan -- comportamiento identico al
+   * de antes de R6-5. */
+  hookId?: string;
 };
 
 export type RegistroPatron = {
@@ -54,7 +65,7 @@ export type DecisionPrioridadPatron = {
 };
 
 function clavePatron(p: PatronEdicion): string {
-  return `${p.categoria}|${[...p.estilos].sort().join(',')}|${p.golpe}`;
+  return `${p.categoria}|${[...p.estilos].sort().join(',')}|${p.golpe}|${p.hookId ?? ''}`;
 }
 
 function leerJson<T>(ruta: string): T {

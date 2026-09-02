@@ -89,6 +89,27 @@ completo de cada una:
   dedicada, resultado que no estaba garantizado. Pendiente de
   confirmar en el runner real de GitHub Actions (usa un binario de
   Chromium distinto), no solo en este sandbox.
+- **Knowledge Engine y Hook Engine como módulos separados pero
+  cruzados por id (R6-3, R6-4)** — decisión: el Knowledge Engine
+  (`fabrica/conocimiento/`) indexa TIPADO lo que ya estaba en
+  `research/retencion.md` (nunca inventa afirmaciones nuevas sin pasar
+  antes por el documento en prosa con su fuente real); el Hook Engine
+  (`fabrica/hooks/`) cita esos items POR ID, con un validador de
+  integridad referencial (`validarCatalogo()`) — evita que ambos
+  sistemas se desincronicen en silencio. Decisión explícita de NO
+  conectar todavía el Hook Engine a la elección automática del
+  Director de Edición: es un catálogo consultable, la integración
+  automática es un cambio de mayor riesgo sobre lógica que ya funciona
+  bien, se deja para una ronda futura.
+- **Anti-repetición evolucionada con `hookId` opcional, no un sistema
+  paralelo (R6-5)** — decisión: en vez de construir un tracker
+  separado para "patrones de hook repetidos", se agregó `hookId?`
+  como una dimensión más de la misma clave de `PatronEdicion`
+  (`memoria/patrones.ts`) — reutiliza toda la lógica ya testeada de
+  "recuperar prioridad si hay `resultadoReal` bueno" sin duplicarla.
+  100% retrocompatible (el campo es opcional, confirmado con tests):
+  un generador viejo que no pasa `hookId` se comporta exactamente
+  igual que antes de R6-5.
 
 ## Pendientes de decisión (requieren probar antes de decidir)
 
