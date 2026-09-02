@@ -77,10 +77,12 @@
     "soportaAudioSincronizado": true,
     "props": {
       "antes": "{rotulo: string, txt: string}",
-      "despues": "{rotulo: string, txt: string}"
+      "despues": "{rotulo: string, txt: string}",
+      "momentoCambioSeg": "number, opcional -- segundo (relativo al inicio de la escena) en que ocurre el cambio de cara. Sin esto, cae en dur*0.52 (comportamiento historico). PASAR el offset real del audio que dice 'despues' (ver directores/edicion/microeventos.ts, microevento 'se_revela_comparacion')",
+      "anchoCambioSeg": "number, opcional -- ancho de la ventana de transicion en segundos. Sin esto, dur*0.2 (comportamiento historico)"
     },
     "estado": "validado",
-    "notas": "Probado con audio real (AudioCentro). El corte de cortina ocurre a dur*0.42..dur*0.62 fijo -- con audios muy distintos en duracion (antes largo, despues corto) el corte puede no caer justo cuando termina de hablarse 'antes'."
+    "notas": "Probado con audio real (AudioCentro). RONDA 4: la sospecha documentada aca ('con audios muy distintos en duracion el corte puede no caer justo cuando termina de hablarse antes') se confirmo real y medida en fabrica-demo-04 (desfasaje de ~1.6s, ver MEJORAS_RONDA4.md) -- se agrego momentoCambioSeg/anchoCambioSeg (opcionales, backward-compatible) para que el generador pueda anclar el cambio al offset REAL del audio en vez de a una fraccion fija de la duracion total."
   },
   {
     "id": "pasos",

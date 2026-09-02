@@ -1,5 +1,6 @@
 import type {ComponenteRegistrado} from '../componentes/tipos';
 import type {TipoGolpe} from '../directores/audio';
+import type {EstrategiaEdicion} from '../directores/edicion/tipos';
 
 /** Un clip de audio real, con su duracion medida (nunca estimada). */
 export type ClipAudio = {archivo: string; duracionSeg: number};
@@ -23,6 +24,13 @@ export type UnidadResuelta = {
   audios: ClipAudio[] | null;
   golpe: TipoGolpe;
   volumenSfx: number;
+  /** Ronda 4: la estrategia que decidio el Director de Edicion para
+   * esta unidad (intencion, energia, microeventos, etc.). OPCIONAL a
+   * proposito -- un generador viejo (demo_01/02/03/04) que no llama al
+   * Director de Edicion sigue siendo un UnidadResuelta valido, esto no
+   * rompe nada retroactivamente (seccion 25: "no romper la
+   * arquitectura actual"). */
+  estrategiaEdicion?: EstrategiaEdicion;
 };
 
 export type EscenaComposicion = {
@@ -37,6 +45,10 @@ export type EscenaComposicion = {
   audios: {archivo: string; desdeSegRelativo: number; duracionSeg: number}[];
   golpe: TipoGolpe;
   volumenSfx: number;
+  /** Ronda 4: viaja serializada en el JSON para que el puente de
+   * render (microeventos -> props reales) y la critica editorial
+   * puedan leerla. Opcional, ver nota en UnidadResuelta. */
+  estrategiaEdicion?: EstrategiaEdicion;
 };
 
 export type ArbolComposicion = {

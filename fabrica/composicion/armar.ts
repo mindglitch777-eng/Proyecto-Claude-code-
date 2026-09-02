@@ -65,6 +65,7 @@ export function armarComposicion(id: string, unidades: UnidadResuelta[], fps = 3
       audios,
       golpe: u.golpe,
       volumenSfx: u.volumenSfx,
+      ...(u.estrategiaEdicion ? {estrategiaEdicion: u.estrategiaEdicion} : {}),
     };
   });
   return {id, fps, escenas, duracionTotalSeg: cursor + MARGEN_FINAL_SEG};

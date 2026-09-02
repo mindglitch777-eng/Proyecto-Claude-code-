@@ -57,6 +57,16 @@ const IMPLEMENTACIONES: Record<string, React.FC<any>> = {
   silueta: Silueta,
 };
 
+/** Forma MINIMA de un microevento, duck-tipada a proposito (Ronda 4):
+ * el contrato completo (MicroEvento, EstrategiaEdicion) vive en
+ * fabrica/directores/edicion/tipos.ts, un paquete Node sin React que
+ * remotion-spike NO importa como dependencia de build -- mismo
+ * principio ya establecido para TipoGolpe (ver el comentario en
+ * fabrica/directores/audio.ts). Este bridge solo necesita leer
+ * `tipo` + `enSegRelativo` de los microeventos que llegan serializados
+ * en el JSON del arbol, nada mas. */
+type MicroEventoFabrica = {enSegRelativo: number; tipo: string};
+
 export type EscenaFabrica = {
   unidadId: string;
   desdeSeg: number;
@@ -69,7 +79,25 @@ export type EscenaFabrica = {
   audios: {archivo: string; desdeSegRelativo: number; duracionSeg: number}[];
   golpe: TipoGolpe;
   volumenSfx: number;
+  /** Ronda 4: estrategia del Director de Edicion, si el generador la
+   * calculo. Opcional -- un arbol viejo (demo_01..04) sigue siendo
+   * valido sin esto. */
+  estrategiaEdicion?: {microeventos?: MicroEventoFabrica[]};
 };
+
+/** Traduce el microevento 'se_revela_comparacion' (si existe) al prop
+ * real `momentoCambioSeg` de AntesDespues -- la UNICA traduccion
+ * microevento->prop que existe hoy, deliberadamente puntual (seccion
+ * 24 de la orden maestra: no construir un sistema generico de
+ * "cualquier componente puede declarar que lee microeventos" antes de
+ * tener un segundo caso real que lo justifique). Ver
+ * fabrica/directores/edicion/microeventos.ts para el porque de este
+ * microevento especifico. */
+function propsDesdeMicroeventos(e: EscenaFabrica): Record<string, unknown> {
+  if (e.componenteId !== 'antes-despues') return {};
+  const revelacion = e.estrategiaEdicion?.microeventos?.find((m) => m.tipo === 'se_revela_comparacion');
+  return revelacion ? {momentoCambioSeg: revelacion.enSegRelativo} : {};
+}
 
 export type ArbolFabrica = {
   id: string;
@@ -119,7 +147,7 @@ export const FabricaVideo: React.FC<{arbol: ArbolFabrica}> = ({arbol}) => {
         return (
           <Sequence key={i} from={desde} durationInFrames={duracion}>
             <Golpe tipo={e.golpe} sonido={i > 0}>
-              <Comp {...e.props} />
+              <Comp {...e.props} {...propsDesdeMicroeventos(e)} />
             </Golpe>
             {/* ANTICIPO (Ronda 3): si la escena que sigue corta con un
                 golpe fuerte, los ultimos instantes de ESTA escena

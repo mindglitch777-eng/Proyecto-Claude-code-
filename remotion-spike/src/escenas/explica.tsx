@@ -339,12 +339,28 @@ export const Cronologia: React.FC<{
 export const AntesDespues: React.FC<{
   antes: {rotulo: string; txt: string};
   despues: {rotulo: string; txt: string};
-}> = ({antes, despues}) => {
+  /** Ronda 4: en que segundo (relativo al inicio de la escena) debe
+   * ocurrir el cambio de cara -- pensado para recibir el offset REAL
+   * del audio que empieza a hablar del "despues" (ver
+   * fabrica/directores/edicion/microeventos.ts, microevento
+   * 'se_revela_comparacion'), no una fraccion arbitraria de la
+   * duracion total. Sin este prop, se comporta EXACTAMENTE igual que
+   * antes (52% de la duracion total, ventana de 20%) -- hallazgo real
+   * documentado en MEJORAS_RONDA4.md: sin este anclaje, hubo un
+   * desfasaje medido de ~1.6s entre lo que la voz ya decia y lo que la
+   * pantalla todavia mostraba en fabrica-demo-04. */
+  momentoCambioSeg?: number;
+  anchoCambioSeg?: number;
+}> = ({antes, despues, momentoCambioSeg, anchoCambioSeg}) => {
   const frame = useCurrentFrame();
   const {fps, durationInFrames} = useVideoConfig();
   const t = frame / fps;
   const dur = durationInFrames / fps;
-  const corte = interpolate(t, [dur * 0.42, dur * 0.62], [0, 100], {
+  const anchoCambio = anchoCambioSeg ?? dur * 0.2;
+  const centroCambio = momentoCambioSeg ?? dur * 0.52;
+  const inicioCambio = Math.max(0, centroCambio - anchoCambio / 2);
+  const finCambio = Math.min(dur, centroCambio + anchoCambio / 2);
+  const corte = interpolate(t, [inicioCambio, finCambio], [0, 100], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
     easing: (x) => 1 - Math.pow(1 - x, 3),
