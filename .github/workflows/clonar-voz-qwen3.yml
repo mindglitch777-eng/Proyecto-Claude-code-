@@ -64,14 +64,14 @@ jobs:
           echo "=== energico (rate 1.15) ==="
           ./qwen_tts -d /tmp/qwen3-tts-modelo --ref-audio /tmp/referencia.wav \
             --text "$FRASE" --language Spanish \
-            --instruct "Speak with high energy, confidence and a fast, punchy, dynamic pace, like a hard-hitting documentary narrator" \
+            --instruct "Speak in a serious, elegant, composed and confident tone, clear and articulate -- not aggressive, not menacing, not overly deep" \
             --rate 1.15 \
             -o "/tmp/clon-energico1.wav" || echo "AVISO: energico1 fallo"
 
           echo "=== mas energico (rate 1.25) ==="
           ./qwen_tts -d /tmp/qwen3-tts-modelo --ref-audio /tmp/referencia.wav \
             --text "$FRASE" --language Spanish \
-            --instruct "Speak with high energy, confidence and a fast, punchy, dynamic pace, like a hard-hitting documentary narrator" \
+            --instruct "Speak in a serious, elegant, composed and confident tone, clear and articulate -- not aggressive, not menacing, not overly deep" \
             --rate 1.25 \
             -o "/tmp/clon-energico2.wav" || echo "AVISO: energico2 fallo"
 
@@ -97,7 +97,9 @@ jobs:
           for wav in Path('/tmp').glob('clon-*.wav'):
               nombre = wav.stem
               realzado = Path(f'/tmp/{nombre}-realzado.wav')
-              if realzar(wav, realzado):
+              # semitonos=0: esta voz ya es un narrador real clonado,
+              # bajarle el tono ademas de eso suena a impostado
+              if realzar(wav, realzado, semitonos=0):
                   mp3 = Path(f'muestras_voz/clones/{candidato}-{nombre}-REALZADA.mp3')
                   subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(realzado),
                                   '-b:a', '128k', str(mp3)])

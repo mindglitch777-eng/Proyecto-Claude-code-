@@ -69,17 +69,32 @@ VELOCIDAD = 1.12
 #   acompressor      la voz "pegada al microfono" de podcast
 #   loudnorm         -14 LUFS, que es lo que piden las redes
 SEMITONOS = -2
-_F = 2 ** (SEMITONOS / 12)
-CADENA = (
-    f"asetrate=22050*{_F:.5f},aresample=22050,atempo={1/_F:.5f},"
-    "highpass=f=70,"
-    "equalizer=f=250:width_type=q:w=1:g=-3,"
-    "equalizer=f=110:width_type=q:w=1:g=2.5,"
-    "equalizer=f=4000:width_type=q:w=1.2:g=3,"
-    "equalizer=f=7000:width_type=q:w=1.5:g=-2,"
-    "acompressor=threshold=-18dB:ratio=3:attack=8:release=180:makeup=2,"
-    "loudnorm=I=-14:TP=-1.5:LRA=11"
-)
+
+
+def _cadena(semitonos=SEMITONOS):
+    """Arma la cadena de realce. semitonos=0 salta el pitch-shift --
+    pensado para voces YA clonadas de un narrador real (Qwen3-TTS),
+    que ya traen su propio tono: bajarlas 2 semitonos ademas de eso
+    duplica la gravedad y termina sonando impostado ("voz de villano"),
+    en vez de simplemente agregar presencia como hace con Piper (fino
+    y plano de por si)."""
+    partes = []
+    if semitonos:
+        f = 2 ** (semitonos / 12)
+        partes.append(f"asetrate=22050*{f:.5f},aresample=22050,atempo={1/f:.5f}")
+    partes += [
+        "highpass=f=70",
+        "equalizer=f=250:width_type=q:w=1:g=-3",
+        "equalizer=f=110:width_type=q:w=1:g=2.5",
+        "equalizer=f=4000:width_type=q:w=1.2:g=3",
+        "equalizer=f=7000:width_type=q:w=1.5:g=-2",
+        "acompressor=threshold=-18dB:ratio=3:attack=8:release=180:makeup=2",
+        "loudnorm=I=-14:TP=-1.5:LRA=11",
+    ]
+    return ",".join(partes)
+
+
+CADENA = _cadena()
 
 
 def asegurar_modelo(nombre):
@@ -118,11 +133,14 @@ def sintetizar(texto, nombre, destino, velocidad=VELOCIDAD):
     return False
 
 
-def realzar(entrada, salida):
-    """Aplica la cadena de realce. Devuelve True si salio."""
+def realzar(entrada, salida, semitonos=SEMITONOS):
+    """Aplica la cadena de realce. Devuelve True si salio.
+
+    semitonos=0 para voces ya clonadas de un narrador real (no bajarles
+    mas el tono); el default -2 sigue siendo el usado para Piper."""
     r = subprocess.run(
         ["ffmpeg", "-y", "-loglevel", "error", "-i", str(entrada),
-         "-af", CADENA, "-ar", "44100", str(salida)],
+         "-af", _cadena(semitonos), "-ar", "44100", str(salida)],
         capture_output=True, text=True)
     if r.returncode != 0:
         print(f"  ERROR realce: {r.stderr[:200]}")
