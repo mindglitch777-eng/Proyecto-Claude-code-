@@ -10,26 +10,43 @@ del sistema o no.
 
 ---
 
-## 1. Timestamps palabra-por-palabra de Qwen3-TTS — NO CONFIRMADO
+## 1. Timestamps palabra-por-palabra de Qwen3-TTS — RESUELTO (investigación), pendiente de implementar
 
-- **Problema:** no se sabe si el motor `qwen3-tts` (C,
-  gabriele-mastrapasqua/qwen3-tts) expone alineación interna
-  (timestamps por palabra o fonema) o si solo entrega el WAV final.
+- **Confirmado leyendo el repo `gabriele-mastrapasqua/qwen3-tts`
+  (README + referencia de flags del CLI), 2026-09-02:** el motor NO
+  expone timestamps ni alineación de ningún tipo. El `qwen_tts` CLI
+  solo acepta salida a WAV (24kHz/16-bit/mono), PCM crudo a stdout, o
+  streaming -- ninguna de las tres trae metadata de tiempo por
+  palabra/fonema. La documentación completa (voice cloning, control de
+  emoción, cuantización, rendimiento) no menciona "timestamp",
+  "alignment", "word boundary" ni "subtitle" en ningún lado. Esto es
+  ahora un hecho confirmado, no una suposición.
 - **Afecta a:** Fase 3 (Voz) — sincronización fina palabra-por-palabra
   dentro de una unidad narrativa larga (hoy la sincronización es por
   UNIDAD completa, no por palabra dentro de la unidad).
-- **Por qué no se resolvió:** requiere leer el código fuente del motor
-  a fondo o instrumentarlo directamente; no se hizo en esta sesión por
-  prioridad (se avanzó todo lo demás primero).
-- **Qué necesitamos:** que alguien lea el repo
-  `gabriele-mastrapasqua/qwen3-tts` (o yo lo haga en una próxima
-  sesión) buscando específicamente flags de alineación/timestamps.
-- **Qué hacer después:** si no expone alineación, evaluar correr un
-  forced-aligner gratuito (ej. whisper con timestamps) como paso
-  posterior sobre el audio ya generado.
+- **Alternativa gratis/local investigada:** `faster-whisper` con
+  `word_timestamps=True` -- corre 100% local, sin GPU (2x más rápido
+  que Whisper original en CPU, con cuantización INT8), sin necesitar
+  token de Hugging Face ni dependencias extra, y Whisper es
+  multilingüe con soporte real de español. Es la opción recomendada
+  para $0 presupuesto en un runner de GitHub Actions (CPU solamente).
+  Existe una alternativa de mayor precisión (`WhisperX`, que agrega
+  alineación forzada con wav2vec2, <100ms de error) pero requiere GPU
+  para ser práctica con modelos grandes y un token de Hugging Face --
+  no es la primera opción mientras el presupuesto sea $0 y no haya
+  necesidad medida de esa precisión extra.
+- **Qué falta para cerrar esto del todo:** implementar el paso de
+  forced-alignment con faster-whisper SOBRE un audio real ya generado
+  por Qwen3-TTS (necesita que primero exista ese audio -- ver ítem 3
+  más abajo, la prueba de normalización) y medir si la precisión
+  alcanza para sincronizar palabra por palabra dentro de un componente
+  como Punch. No se implementó todavía porque no hay audio real nuevo
+  generado en esta sesión para probarlo encima (Qwen3-TTS no corre en
+  este sandbox).
 - **¿Bloquea el resto?** NO. El sistema funciona con sincronización por
-  unidad completa (ya probado en los 20 videos documentales). Palabra
-  por palabra es una mejora, no un requisito para operar.
+  unidad completa (ya probado en los 20 videos documentales y en
+  fabrica-demo-02). Palabra por palabra es una mejora, no un requisito
+  para operar.
 
 ## 2. Licencia comercial de Qwen3-TTS (motor + modelo) — RESUELTO (2026-09-02)
 
@@ -65,19 +82,42 @@ del sistema o no.
   uso comercial. Riesgo residual bajo, no cero.
   permite — es un riesgo de negocio, no de ingeniería.
 
-## 3. Calidad de Qwen3-TTS con números/monedas/fechas en español — NO MEDIDO
+## 3. Calidad de Qwen3-TTS con números/monedas/fechas en español — PREPARADO, falta que el operador lo dispare
 
-- **Problema:** no se midió específicamente cómo pronuncia el modelo
-  números grandes, monedas y fechas ya normalizados por
-  `fabrica/voz/normalizador.py` (sí se probó con frases narrativas
-  comunes en la serie documental).
-- **Afecta a:** Fase 3 (Voz) — calidad real del resultado final.
-- **Qué necesitamos:** escuchar un lote de muestras generadas con el
-  normalizador nuevo (se puede armar apenas se corra el motor en
-  GitHub Actions).
+- **Qué se construyó esta sesión:** `fabrica/voz/preparar_prueba_qwen.py`
+  arma un lote de 8 frases reales que cubren dinero, porcentaje, fecha
+  completa (con barras y en palabras), cantidad grande, nombre propio
+  (personas reales de `assets/personas/`), abreviatura, año, decimal y
+  número suelto -- cada una ya pasada por el normalizador real, en
+  `capturas_voz/manifest_prueba_normalizacion.json`. El workflow
+  `.github/workflows/prueba-normalizacion-qwen3-tts.yml` ya está listo
+  para generar audio real de esas 8 frases con la MISMA configuración
+  de producción (modelo Base 1.7B, voz clonada librivox-11, mismo
+  instruct + rate 1.25 que `generar_voz_documental_qwen.py`), con
+  variantes opcionales calmo/urgente para probar distintas
+  intensidades, y calcula la duración real de cada wav para compararla
+  contra la duración estimada del manifest.
+- **Por qué no lo disparé yo mismo:** el workflow solo existe en la
+  rama de trabajo de esta sesión (`claude/organize-repo-duplicates-xl042t`).
+  La API de GitHub para disparar un workflow_dispatch por nombre de
+  archivo solo lo reconoce si el workflow ya está en la rama por
+  defecto (`main`) -- lo confirmé al intentarlo (404). Esta sesión
+  tiene instrucción explícita de NUNCA pushear a una rama distinta de
+  la asignada, así que mergear a `main` yo mismo está fuera de lo que
+  puedo decidir solo.
+- **Qué necesita el operador (acción concreta, 2 minutos):** mergear
+  esta rama (o al menos el archivo del workflow) a `main`, y despues
+  disparar "prueba-normalizacion-qwen3-tts" desde la pestaña Actions
+  de GitHub (o pedirme que lo dispare yo vía API una vez mergeado).
+  Tarda unos 15-30 minutos en correr (baja el modelo, ~3GB) y al
+  terminar comitea los mp3 en `muestras_voz/prueba_normalizacion/`.
+- **Qué hacer con el resultado:** escuchar los 8 mp3 (pronunciación de
+  números/fechas/nombres) y comparar la duración real que loguea el
+  workflow contra `duracion_estimada_seg` del manifest.
 - **¿Bloquea el resto?** NO. El normalizador ya produce el texto
-  hablado correcto según reglas de español; falta solo la validación
-  auditiva.
+  hablado correcto según reglas de español (con tests); falta solo la
+  validación auditiva real, que depende de que el operador dispare el
+  workflow.
 
 ## 4. Límite real de minutos gratis de GitHub Actions en volumen alto
 
@@ -115,41 +155,30 @@ del sistema o no.
   humana en el primer paso, que además es justo lo que la
   especificación pide (autonomía PROGRESIVA, no total desde el día 1).
 
-## 6. Composición → Render (Fase 8/8b) — probado de punta a punta solo con un ejemplo de 2 unidades
+## 6. Composición → Render (Fase 8/8b) — RESUELTO: multi-audio generalizado, dos renders reales de punta a punta
 
-- **Estado real:** SÍ se probó de punta a punta y SÍ funcionó al
-  primer render (`fabrica/ejemplos/generar_demo_01.ts` →
-  `remotion-spike/src/fabrica_bridge/FabricaVideo.tsx`, composición
-  `fabrica-demo-01`): el Director Visual eligió "cronologia" y
-  "contador" sin que nadie los nombrara a mano, el Director de Audio
-  decidió los golpes, Composición calculó los offsets desde audio real
-  (clips reales ya generados de la serie documental, concatenados con
-  ffmpeg), y Remotion renderizó un mp4 real de 17.56s con video+audio,
-  verificado con el propio QA duro de la fábrica.
-- **Lo que falta para llamarlo "completo":** el ejemplo tiene 2
-  unidades armadas a mano (no un guion real nuevo de punta a punta con
-  hook+desarrollo+cierre), y usa audio YA EXISTENTE en vez de generar
-  voz nueva (el motor Qwen3-TTS no corre en este sandbox). Tampoco
-  prueba componentes que llevan MÁS DE UN audio superpuesto dentro de
-  un mismo bloque (patrón `AudioCentro` de `CasoGenerico.tsx` — ver
-  nota abajo).
+- **Estado real (actualizado 2026-09-02):** el patrón `AudioCentro` de
+  la serie documental (varios audios superpuestos dentro de UN mismo
+  bloque visual) YA ESTÁ GENERALIZADO en `fabrica/composicion/armar.ts`
+  -- cualquier unidad narrativa puede traer un array `ClipAudio[]`, y
+  Composición calcula el offset acumulado exacto de cada clip dentro
+  de la escena (probado con tests unitarios de offsets exactos, y con
+  2 renders reales: `fabrica-demo-01`, 2 unidades, hasta 3 clips por
+  unidad; `fabrica-demo-02`, 4 unidades con multi-audio en 3 de ellas,
+  con asset de fondo resuelto por el resolver real y anti-repetición
+  cruzando memoria entre videos). Ambos renders pasaron el QA duro sin
+  problemas ni alertas.
+- **Lo que sigue faltando:** ambos ejemplos usan audio YA EXISTENTE de
+  la serie documental (no generan voz nueva, porque Qwen3-TTS no corre
+  en este sandbox) y las unidades siguen armadas a mano en un script
+  (no desde un guion nuevo real escrito para esto). Ver ítem 5 (Guion)
+  y el ítem 3 de arriba (prueba de Qwen3-TTS ya preparada, falta que
+  el operador la dispare).
 - **Afecta a:** Fase 8 (Composición/Render) y, en menor medida, Fase 1
   (Guion — ver ítem 5).
-- **Qué necesitamos:** el primer guion real completo (a mano o
-  conversando conmigo) para correr la fábrica con contenido nuevo de
-  verdad, generando voz nueva vía GitHub Actions.
-- **Limitación de diseño encontrada (no un bug, una decisión pendiente):**
-  `fabrica/composicion/armar.ts` modela 1 unidad = 1 audio = 1 escena.
-  El patrón `AudioCentro` de la serie documental (varios audios
-  superpuestos dentro de UN bloque visual, ej. una Cronología con 3
-  hitos cada uno con su propio clip) es más rico y NO está generalizado
-  todavía en la fábrica nueva -- el demo de esta sesión usó un truco
-  legítimo pero manual (concatenar los 3 clips en un solo archivo) en
-  vez de resolver el caso general. Generalizar esto es trabajo real de
-  una próxima sesión si se necesitan bloques multi-audio.
-- **¿Bloquea el resto?** NO. El caso simple (1 unidad = 1 audio) que sí
-  está resuelto cubre highlight/hook/cierre de un video perfectamente;
-  el caso multi-audio-por-bloque es una mejora, no un bloqueo.
+- **¿Bloquea el resto?** NO. El caso multi-audio está resuelto y
+  probado con render real; lo único que falta es contenido nuevo de
+  verdad (guion + voz nueva), no una limitación técnica del sistema.
 
 ## 7. Datos reales / Aprendizaje (Fases 10-12) — sin datos todavía
 
