@@ -1,0 +1,144 @@
+name: generar-voz-documental-paralelo
+
+# Version en paralelo de generar-voz-documental: en vez de un runner
+# generando las 177 lineas en serie, 20 runners generan en simultaneo
+# (uno por caso). Cada uno sube su resultado como artifact -- 20 jobs
+# pusheando al repo al mismo tiempo es una receta para conflictos de
+# git, asi que un job final "consolidar" (needs: generar, corre
+# siempre que al menos alguno de los 20 haya terminado con exito)
+# junta todos los artifacts y hace UN SOLO commit.
+#
+# Costo: cada uno de los 20 jobs repite la descarga del modelo
+# (~8 GB) y la compilacion del motor -- eso es ~20x mas trafico total
+# que la version en serie, pero sigue siendo gratis (dentro de la
+# cuota de minutos de GitHub Actions) y termina en una fraccion del
+# tiempo de reloj.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        slug:
+          - rebecca-beach
+          - taylor-posada
+          - caso-03
+          - caso-04
+          - caso-05
+          - caso-06
+          - caso-07
+          - caso-08
+          - caso-09
+          - caso-10
+          - caso-11
+          - caso-12
+          - caso-13
+          - caso-14
+          - caso-15
+          - caso-16
+          - caso-17
+          - caso-18
+          - caso-19
+          - caso-20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clonar y compilar el motor C
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libopenblas-dev ffmpeg
+          git clone --depth 1 https://github.com/gabriele-mastrapasqua/qwen3-tts /tmp/qwen3-tts
+          cd /tmp/qwen3-tts
+          make blas
+
+      - name: Descargar el modelo Base 1.7B
+        run: |
+          cd /tmp/qwen3-tts
+          # download_model.sh reanuda descargas parciales (deja el
+          # .part) -- con 20 jobs en paralelo pegandole a huggingface.co
+          # a la vez, un "connection reset" transitorio de vez en
+          # cuando es esperable, asi que reintentar alcanza sin
+          # necesitar logica mas fina.
+          for intento in 1 2 3 4 5; do
+            ./download_model.sh --model base-large --dir /tmp/qwen3-tts-modelo && break
+            echo "intento $intento fallo, reintentando en 10s..."
+            sleep 10
+          done
+
+      - name: Preparar el audio de referencia (WAV, mono, 24kHz)
+        run: |
+          ffmpeg -y -loglevel error -i \
+            muestras_voz/referencias-candidatas/librivox-11.mp3 \
+            -ar 24000 -ac 1 /tmp/referencia.wav
+
+      - name: Generar las lineas de este caso
+        run: |
+          python3 generar_voz_documental_qwen.py \
+            --motor /tmp/qwen3-tts/qwen_tts \
+            --modelo /tmp/qwen3-tts-modelo \
+            --referencia /tmp/referencia.wav \
+            --slug "${{ matrix.slug }}" \
+            --sin-checkpoint
+
+      - name: Realzar (sin bajar el tono -- ya es un narrador real)
+        run: |
+          pip install --quiet numpy
+          python3 -c "
+          import sys
+          sys.path.insert(0, '.')
+          from pathlib import Path
+          from voz_piper import realzar
+          import subprocess
+          origen = Path('capturas_voz/audio_documental')
+          for wav in sorted(origen.glob('*.wav')):
+              realzado = origen / f'{wav.stem}-realzado.wav'
+              if realzar(wav, realzado, semitonos=0):
+                  mp3 = origen / f'{wav.stem}.mp3'
+                  subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(realzado),
+                                  '-b:a', '128k', str(mp3)])
+                  realzado.unlink()
+                  wav.unlink()
+          "
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: audio-${{ matrix.slug }}
+          path: capturas_voz/audio_documental/*.mp3
+          if-no-files-found: error
+
+  consolidar:
+    needs: generar
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: /tmp/artifacts
+          pattern: audio-*
+
+      - name: Juntar todo en un solo commit
+        run: |
+          mkdir -p capturas_voz/audio_documental
+          find /tmp/artifacts -name '*.mp3' -exec cp {} capturas_voz/audio_documental/ \;
+          ls capturas_voz/audio_documental/ | wc -l
+
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain capturas_voz/audio_documental)" ]; then
+            git add capturas_voz/audio_documental
+            git commit -m "Audio narrado de los 20 documentales (Qwen3-TTS, en paralelo)"
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          else
+            echo "Sin cambios."
+          fi
