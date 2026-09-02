@@ -32,6 +32,13 @@ export type UnidadResuelta = {
    * rompe nada retroactivamente (seccion 25: "no romper la
    * arquitectura actual"). */
   estrategiaEdicion?: EstrategiaEdicion;
+  /** Ronda 7: ids de fabrica/hooks/catalogo.ts (Viral/Retention Engine)
+   * usados a propósito en esta unidad -- ej. la unidad de hook puede
+   * declarar `['contexto-parcial']`. Opcional a propósito: ningún
+   * generador anterior a Ronda 7 lo declara, y sigue siendo válido sin
+   * esto (el Director de Retención simplemente no reporta
+   * `patronesUsados` para esas unidades). */
+  patronesRetencion?: string[];
 };
 
 export type EscenaComposicion = {
@@ -59,6 +66,10 @@ export type EscenaComposicion = {
    * render (microeventos -> props reales) y la critica editorial
    * puedan leerla. Opcional, ver nota en UnidadResuelta. */
   estrategiaEdicion?: EstrategiaEdicion;
+  /** Ronda 7: ver nota en UnidadResuelta -- viaja igual, sin tocar el
+   * puente de render (es informacion para el Director de Retencion,
+   * no para el render visual). */
+  patronesRetencion?: string[];
 };
 
 export type ArbolComposicion = {

@@ -55,7 +55,30 @@ export type AlertaRetencion = {
   razon: string;
 };
 
+/** Ronda 7 (directiva "Sistema Operativo de Contenido y Ventas", FASE
+ * NUEVA 4): la respuesta a las 4 preguntas que el Director de
+ * Retención debe poder contestar sobre cada patrón del Viral/Retention
+ * Engine (fabrica/hooks/) que una unidad haya declarado usar. Ver
+ * `fabrica/hooks/consultar.ts` `explicarPatron()` -- este tipo es el
+ * mismo contrato, sin acoplar este módulo al tipo `PatronRetencion`
+ * completo (solo lo que hace falta reportar). */
+export type PatronUsadoInfo = {
+  patronId: string;
+  nombre: string;
+  categoria: string;
+  porQue: string;
+  evidencia: {id: string; concepto: string; nivel: string}[];
+  esHipotesisUObservado: string;
+  /** unidadId(s) del video que dependen de este patrón. */
+  dependeDe: string;
+};
+
 export type MapaRetencion = {
   mapa: PuntoMapa[];
   alertas: AlertaRetencion[];
+  /** Presente SOLO si alguna unidad del árbol declaró
+   * `patronesRetencion` (Ronda 7) -- un árbol viejo o uno cuyo
+   * generador todavía no usa el Viral/Retention Engine simplemente no
+   * trae este campo, sin romper nada. */
+  patronesUsados?: PatronUsadoInfo[];
 };

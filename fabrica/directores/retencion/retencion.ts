@@ -4,7 +4,8 @@
  */
 import type {ArbolComposicion} from '../../composicion/tipos';
 import type {IntencionEdicion, NivelEnergia} from '../edicion/tipos';
-import type {AlertaRetencion, FaseNarrativa, MapaRetencion, PuntoMapa} from './tipos';
+import type {AlertaRetencion, FaseNarrativa, MapaRetencion, PatronUsadoInfo, PuntoMapa} from './tipos';
+import {explicarPatron} from '../../hooks/consultar';
 
 const FASE_POR_INTENCION: Record<IntencionEdicion, FaseNarrativa> = {
   enganchar: 'hook',
@@ -31,7 +32,38 @@ export class DirectorRetencion {
   analizarVideo(arbol: ArbolComposicion): MapaRetencion {
     const mapa = this.construirMapa(arbol);
     const alertas = this.detectarAlertas(mapa);
-    return {mapa, alertas};
+    const patronesUsados = this.resolverPatronesUsados(arbol);
+    return {mapa, alertas, ...(patronesUsados ? {patronesUsados} : {})};
+  }
+
+  /** Ronda 7: si alguna unidad del árbol declaró `patronesRetencion`
+   * (Viral/Retention Engine, fabrica/hooks/), resuelve cada patrón
+   * usado contra su evidencia real y arma la lista de qué unidades
+   * dependen de él -- responde las 4 preguntas de la directiva sin que
+   * quien llama tenga que saber nada del catálogo de patrones. */
+  private resolverPatronesUsados(arbol: ArbolComposicion): PatronUsadoInfo[] | undefined {
+    const unidadesPorPatron = new Map<string, string[]>();
+    for (const escena of arbol.escenas) {
+      for (const patronId of escena.patronesRetencion ?? []) {
+        const unidades = unidadesPorPatron.get(patronId) ?? [];
+        unidades.push(escena.unidadId);
+        unidadesPorPatron.set(patronId, unidades);
+      }
+    }
+    if (unidadesPorPatron.size === 0) return undefined;
+
+    return [...unidadesPorPatron.entries()].map(([patronId, unidades]) => {
+      const explicacion = explicarPatron(patronId, unidades.join(', '));
+      return {
+        patronId,
+        nombre: explicacion.patron.nombre,
+        categoria: explicacion.patron.categoria,
+        porQue: explicacion.porQue,
+        evidencia: explicacion.evidencia,
+        esHipotesisUObservado: explicacion.esHipotesisUObservado,
+        dependeDe: explicacion.dependeDe,
+      };
+    });
   }
 
   private construirMapa(arbol: ArbolComposicion): PuntoMapa[] {

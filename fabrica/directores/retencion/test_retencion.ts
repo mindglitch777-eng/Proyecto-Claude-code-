@@ -115,6 +115,26 @@ function main() {
   check('arbol sin estrategiaEdicion no rompe', mapaViejo.mapa.every((p) => p.fase === 'sin_clasificar'));
   check('arbol sin estrategiaEdicion no crashea al buscar climax (energia default pareja, el primer candidato lo marca)', mapaViejo.mapa.filter((p) => p.esClimax).length === 1);
 
+  // R7-5: si ninguna unidad declara patronesRetencion (el caso de
+  // siempre hasta ahora), MapaRetencion no trae patronesUsados -- cero
+  // cambios para todo arbol anterior a Ronda 7.
+  check('sin patronesRetencion declarados, patronesUsados queda ausente', director.analizarVideo(arbolViejo).patronesUsados === undefined);
+
+  // R7-5: cuando SI se declaran, el Director de Retencion resuelve
+  // cada patron contra su evidencia real y reporta de que unidades depende.
+  const conPatrones = arbol([
+    {...escena('hook', 5, 'enganchar'), patronesRetencion: ['contexto-parcial', 'loop-abierto']},
+    escena('cierre', 5, 'cerrar'),
+  ]);
+  const mapaConPatrones = director.analizarVideo(conPatrones);
+  check('patronesUsados tiene los 2 patrones declarados', mapaConPatrones.patronesUsados?.length === 2);
+  const contextoParcial = mapaConPatrones.patronesUsados?.find((p) => p.patronId === 'contexto-parcial');
+  check('responde que patron (nombre real, no el id crudo)', contextoParcial?.nombre === 'Contexto parcial');
+  check('responde por que (no vacio)', !!contextoParcial?.porQue && contextoParcial.porQue.trim().length > 0);
+  check('responde con que evidencia (item real del Knowledge Engine)', contextoParcial?.evidencia.length === 1 && contextoParcial.evidencia[0].id === 'loewenstein-1994-brecha-curiosidad');
+  check('distingue evidencia real de heuristica/hipotesis', contextoParcial?.esHipotesisUObservado === 'evidencia_real');
+  check('reporta de que unidad depende', contextoParcial?.dependeDe === 'hook');
+
   if (FALLOS.length) {
     console.log(`\n${FALLOS.length} FALLO(S):\n`);
     for (const f of FALLOS) console.log(f);

@@ -112,6 +112,7 @@ export function armarComposicion(id: string, unidades: UnidadResuelta[], fps = 3
       volumenSfx: u.volumenSfx,
       ...(puedeTransicionReal ? {transicionSalienteSeg: AIRE_TRANSICION_SEG} : {}),
       ...(u.estrategiaEdicion ? {estrategiaEdicion: u.estrategiaEdicion} : {}),
+      ...(u.patronesRetencion && u.patronesRetencion.length > 0 ? {patronesRetencion: u.patronesRetencion} : {}),
     };
   });
   return {id, fps, escenas, duracionTotalSeg: cursor + MARGEN_FINAL_SEG};

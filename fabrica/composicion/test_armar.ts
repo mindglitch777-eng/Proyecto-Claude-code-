@@ -134,6 +134,20 @@ function compFake(id: string, extra?: Partial<ComponenteRegistrado>): Componente
     arbol.escenas[0].duracionSeg === 7);
 }
 
+// R7-5: patronesRetencion viaja tal cual desde UnidadResuelta a
+// EscenaComposicion, sin afectar timing -- y una unidad que no lo
+// declara (el caso de siempre) no trae el campo, para no romper nada
+// retroactivamente.
+{
+  const unidades: UnidadResuelta[] = [
+    {id: 'u1', componente: compFake('c1'), props: {}, audios: null, golpe: 'ninguno', volumenSfx: 0, patronesRetencion: ['contexto-parcial', 'cifra-inmediata']},
+    {id: 'u2', componente: compFake('c2'), props: {}, audios: null, golpe: 'ninguno', volumenSfx: 0},
+  ];
+  const arbol = armarComposicion('demo-patrones', unidades);
+  check('escena 1 trae patronesRetencion tal cual se declaro', JSON.stringify(arbol.escenas[0].patronesRetencion) === JSON.stringify(['contexto-parcial', 'cifra-inmediata']));
+  check('escena 2 (sin declarar patrones) no trae el campo', arbol.escenas[1].patronesRetencion === undefined);
+}
+
 if (FALLOS.length) {
   console.error(`${FALLOS.length} FALLO(S):`);
   FALLOS.forEach((f) => console.error(' ' + f));
