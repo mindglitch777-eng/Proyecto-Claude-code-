@@ -1,0 +1,68 @@
+name: probar-alineacion-faster-whisper
+
+# Prototipo real de forced-alignment (PENDIENTES.md item 1): Qwen3-TTS
+# no expone timestamps por palabra -- faster-whisper con
+# word_timestamps=True es la alternativa gratis/local identificada
+# (sin GPU, sin token de Hugging Face). Corre sobre audio YA GENERADO
+# por Qwen3-TTS en esta misma sesion (capturas_voz/audio_demo_03/),
+# para saber con datos reales si la precision alcanza para sincronizar
+# palabra por palabra dentro de un componente como Punch.
+#
+# Descarga el modelo de faster-whisper desde Hugging Face -- bloqueado
+# en el sandbox de Claude Code, por eso corre aca (igual que la
+# descarga del modelo de Qwen3-TTS).
+
+on:
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths: [".github/workflows/probar-alineacion-faster-whisper.yml"]
+  workflow_dispatch:
+    inputs:
+      archivo_audio:
+        description: "Audio a alinear (relativo a capturas_voz/)"
+        required: false
+        default: "audio_demo_03/desarrollo_0.wav"
+      texto_esperado:
+        description: "Texto que deberia decir ese audio"
+        required: false
+        default: "El quince de marzo de dos mil veinticuatro subió su primer archivo. Cero ventas esa primera semana."
+
+permissions:
+  contents: write
+
+jobs:
+  alinear:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar faster-whisper
+        run: pip install --quiet faster-whisper
+
+      - name: Correr el forced-aligner sobre el audio real
+        env:
+          AUDIO: ${{ inputs.archivo_audio || 'audio_demo_03/desarrollo_0.wav' }}
+          TEXTO: ${{ inputs.texto_esperado || 'El quince de marzo de dos mil veinticuatro subió su primer archivo. Cero ventas esa primera semana.' }}
+        run: |
+          mkdir -p fabrica/voz/resultados_alineacion
+          python3 fabrica/voz/probar_alineacion.py "capturas_voz/$AUDIO" "$TEXTO" \
+            | tee "fabrica/voz/resultados_alineacion/$(basename "$AUDIO" .wav).json"
+
+      - name: Guardar en el repo
+        if: always()
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain fabrica/voz/resultados_alineacion)" ]; then
+            git add fabrica/voz/resultados_alineacion
+            git commit -m "Prototipo de forced-alignment con faster-whisper sobre audio real"
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          else
+            echo "Sin cambios."
+          fi

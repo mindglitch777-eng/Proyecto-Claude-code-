@@ -1,0 +1,127 @@
+name: comparar-customvoice-qwen3-tts
+
+# Investigacion pedida en PENDIENTES.md item 8 / PENDIENTES_OPERADOR.md
+# item 3: el motor de Qwen3-TTS avisa en TODAS las corridas que
+# combinar --ref-audio (clonado de voz) con --instruct en el modelo
+# Base "no esta oficialmente soportado", y sugiere un camino de dos
+# pasos: extraer la voz una vez con el modelo Base (--save-voice) y
+# usarla despues en el modelo CustomVoice (--load-voice + --icl-only +
+# --instruct).
+#
+# Este workflow genera la MISMA frase con AMBOS metodos para poder
+# comparar A/B: el metodo actual de produccion (el que ya usa
+# generar_voz_documental_qwen.py) vs el metodo "oficialmente
+# soportado". NO reemplaza nada de produccion todavia -- es solo la
+# investigacion, el operador decide despues de escuchar si vale la
+# pena migrar.
+
+on:
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths: [".github/workflows/comparar-customvoice-qwen3-tts.yml"]
+  workflow_dispatch:
+    inputs:
+      frase:
+        description: "Frase a sintetizar con ambos metodos"
+        required: false
+        default: "Facturó doce mil cuatrocientos cincuenta dólares el primer mes, un sesenta y ocho por ciento más que en su mejor mes anterior."
+
+permissions:
+  contents: write
+
+jobs:
+  comparar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clonar y compilar el motor C
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libopenblas-dev ffmpeg
+          git clone --depth 1 https://github.com/gabriele-mastrapasqua/qwen3-tts /tmp/qwen3-tts
+          cd /tmp/qwen3-tts
+          make blas
+
+      - name: Descargar AMBOS modelos (Base para extraer voz, CustomVoice para generar)
+        run: |
+          cd /tmp/qwen3-tts
+          ./download_model.sh --model base-large --dir /tmp/modelo-base
+          ./download_model.sh --model large --dir /tmp/modelo-custom
+
+      - name: Preparar el audio de referencia (voz real de produccion, librivox-11)
+        run: |
+          ffmpeg -y -loglevel error -i \
+            "muestras_voz/referencias-candidatas/librivox-11.mp3" \
+            -ar 24000 -ac 1 /tmp/referencia.wav
+
+      - name: Metodo ACTUAL (Base + --ref-audio + --instruct, no oficialmente soportado)
+        env:
+          FRASE: ${{ inputs.frase || 'Facturó doce mil cuatrocientos cincuenta dólares el primer mes, un sesenta y ocho por ciento más que en su mejor mes anterior.' }}
+        run: |
+          cd /tmp/qwen3-tts
+          ./qwen_tts -d /tmp/modelo-base --ref-audio /tmp/referencia.wav \
+            --text "$FRASE" --language Spanish \
+            --instruct "Speak in a serious, elegant, composed and confident tone, clear and articulate -- not aggressive, not menacing, not overly deep" \
+            --rate 1.25 \
+            -o /tmp/metodo-actual.wav < /dev/null || echo "AVISO: metodo actual fallo"
+
+      - name: Extraer la voz UNA VEZ (metodo oficialmente soportado, paso 1/2)
+        run: |
+          cd /tmp/qwen3-tts
+          ./qwen_tts -d /tmp/modelo-base --ref-audio /tmp/referencia.wav \
+            --language Spanish --voice-name "librivox11" \
+            --save-voice /tmp/librivox11.qvoice < /dev/null || echo "AVISO: extraccion de voz fallo"
+          ls -la /tmp/librivox11.qvoice || echo "AVISO: no se genero el archivo .qvoice"
+
+      - name: Generar con la voz extraida en CustomVoice (metodo oficialmente soportado, paso 2/2)
+        env:
+          FRASE: ${{ inputs.frase || 'Facturó doce mil cuatrocientos cincuenta dólares el primer mes, un sesenta y ocho por ciento más que en su mejor mes anterior.' }}
+        run: |
+          cd /tmp/qwen3-tts
+          if [ -f /tmp/librivox11.qvoice ]; then
+            ./qwen_tts -d /tmp/modelo-custom --load-voice /tmp/librivox11.qvoice --icl-only \
+              --text "$FRASE" --language Spanish \
+              --instruct "Speak in a serious, elegant, composed and confident tone, clear and articulate -- not aggressive, not menacing, not overly deep" \
+              --rate 1.25 \
+              -o /tmp/metodo-customvoice.wav < /dev/null || echo "AVISO: metodo CustomVoice fallo"
+          else
+            echo "AVISO: no hay .qvoice, se salta este paso"
+          fi
+
+      - name: Realzar ambos con la cadena de voz_piper.py (misma que produccion)
+        run: |
+          pip install --quiet numpy
+          mkdir -p muestras_voz/comparacion_customvoice
+          python3 -c "
+          import sys
+          sys.path.insert(0, '.')
+          from pathlib import Path
+          from voz_piper import realzar
+          import subprocess
+          for wav in Path('/tmp').glob('metodo-*.wav'):
+              nombre = wav.stem
+              realzado = Path(f'/tmp/{nombre}-realzado.wav')
+              if realzar(wav, realzado, semitonos=0):
+                  mp3 = Path(f'muestras_voz/comparacion_customvoice/{nombre}.mp3')
+                  subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(realzado),
+                                  '-b:a', '128k', str(mp3)])
+                  print(f'ok -> {mp3}')
+              else:
+                  print(f'ERROR realzando {nombre}')
+          "
+
+      - name: Guardar en el repo
+        if: always()
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain muestras_voz/comparacion_customvoice)" ]; then
+            git add muestras_voz/comparacion_customvoice
+            git commit -m "Comparacion metodo actual vs CustomVoice de Qwen3-TTS"
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          else
+            echo "Sin cambios -- revisar los logs anteriores, ningun metodo genero audio."
+          fi
