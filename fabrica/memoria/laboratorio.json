@@ -38,5 +38,15 @@
     "conclusion": null,
     "estado": "esperando_datos",
     "fechaCreacion": "2026-09-02T16:11:48.329Z"
+  },
+  {
+    "id": "fabrica-demo-04-1788371856580",
+    "hipotesis": "Variedad real de golpes (evitarGolpes) + anticipo antes de un golpe fuerte + tratamiento explicito de un valor repetido (consecuencia derivada en vez de repetir la cifra) + 7 categorias sin repetir consecutiva produce un video que se siente mas dirigido y menos formulaico que fabrica-demo-03.",
+    "experimento": "fabrica-demo-04: Ronda 3 de calidad audiovisual -- guion nuevo (hook/desarrollo/aceleracion/pausa/impacto/desarrollo2/cierre), voz real de Qwen3-TTS, $47 establecido en hook y resuelto por consecuencia ($2.209) en impacto en vez de repetido.",
+    "videoId": "fabrica-demo-04",
+    "resultadoReal": null,
+    "conclusion": null,
+    "estado": "esperando_datos",
+    "fechaCreacion": "2026-09-02T17:57:36.581Z"
   }
 ]

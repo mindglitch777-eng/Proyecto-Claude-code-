@@ -40,5 +40,18 @@
       "antes-despues",
       "punch"
     ]
+  },
+  {
+    "videoId": "fabrica-demo-04",
+    "fecha": "2026-09-02T17:57:36.580Z",
+    "componentesUsados": [
+      "punch",
+      "cronologia",
+      "contador",
+      "silueta",
+      "antes-despues",
+      "lista-tachada",
+      "punch"
+    ]
   }
 ]

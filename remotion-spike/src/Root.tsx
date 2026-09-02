@@ -14,6 +14,7 @@ import {FabricaVideo, ArbolFabrica} from './fabrica_bridge/FabricaVideo';
 import demo01 from './fabrica_bridge/demo_01.json';
 import demo02 from './fabrica_bridge/demo_02.json';
 import demo03 from './fabrica_bridge/demo_03.json';
+import demo04 from './fabrica_bridge/demo_04.json';
 import {Video} from './receta/Video';
 import {GUIONES} from './receta/guiones';
 import {compilar} from './receta/compilar';
@@ -108,6 +109,20 @@ export const Root: React.FC = () => {
         width={ANCHO}
         height={ALTO}
         defaultProps={{arbol: demo03 as ArbolFabrica}}
+      />
+      {/* Ronda 3 de calidad audiovisual: golpes con variedad real +
+          anti-repeticion, Anticipo antes de un golpe fuerte,
+          tratamiento explicito de un valor repetido ($47 -> consecuencia
+          derivada $2.209 en vez de repetirlo), QA creativo. Ver
+          fabrica/ejemplos/generar_demo_04.ts y fabrica/MEJORAS_RONDA3.md. */}
+      <Composition
+        id="fabrica-demo-04"
+        component={FabricaVideo}
+        durationInFrames={Math.round((demo04 as ArbolFabrica).duracionTotalSeg * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{arbol: demo04 as ArbolFabrica}}
       />
       <Composition id="rebecca-beach" component={RebeccaBeach} durationInFrames={Math.round(DUR_REBECCA * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       {/* Casos 2 a 20 de la serie documental: uno por entrada en

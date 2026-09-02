@@ -1,0 +1,206 @@
+{
+  "id": "fabrica-demo-04",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "hook",
+      "desdeSeg": 0,
+      "duracionSeg": 5.236009,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "Jai Rodríguez cobra $47.",
+          "Por algo que armó en dos tardes."
+        ],
+        "entra": [
+          0,
+          3.001995
+        ],
+        "clip": "freelance-00.mp4"
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_04/hook_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.751995
+        },
+        {
+          "archivo": "fabrica_demo_04/hook_1.wav",
+          "desdeSegRelativo": 3.001995,
+          "duracionSeg": 1.984014
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "desarrollo",
+      "desdeSeg": 5.236009,
+      "duracionSeg": 12.142019,
+      "componenteId": "cronologia",
+      "props": {
+        "hitos": [
+          {
+            "cuando": "Semana 1",
+            "que": "3 ventas, casi por error"
+          },
+          {
+            "cuando": "Mes 4",
+            "que": "19 clientes en una semana"
+          },
+          {
+            "cuando": "Mes 9",
+            "que": "47 clientes en una semana",
+            "acento": true
+          }
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_04/desarrollo_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.456009
+        },
+        {
+          "archivo": "fabrica_demo_04/desarrollo_1.wav",
+          "desdeSegRelativo": 3.706009,
+          "duracionSeg": 3.008005
+        },
+        {
+          "archivo": "fabrica_demo_04/desarrollo_2.wav",
+          "desdeSegRelativo": 6.964014,
+          "duracionSeg": 4.928005
+        }
+      ],
+      "golpe": "fundido",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "aceleracion",
+      "desdeSeg": 17.378028,
+      "duracionSeg": 4.346009,
+      "componenteId": "contador",
+      "props": {
+        "arriba": "Clientes por semana",
+        "desde": 3,
+        "hasta": 47,
+        "abajo": "clientes/semana",
+        "prefijo": ""
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_04/aceleracion_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.096009
+        }
+      ],
+      "golpe": "fogonazo",
+      "volumenSfx": 0.9
+    },
+    {
+      "unidadId": "pausa",
+      "desdeSeg": 21.724037,
+      "duracionSeg": 1.786009,
+      "componenteId": "silueta",
+      "props": {
+        "idea": {
+          "texto": "El precio nunca cambió.",
+          "pie": ""
+        }
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_04/pausa_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 1.536009
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "impacto",
+      "desdeSeg": 23.510046,
+      "duracionSeg": 10.100000000000001,
+      "componenteId": "antes-despues",
+      "props": {
+        "antes": {
+          "rotulo": "Precio por cliente",
+          "txt": "$47"
+        },
+        "despues": {
+          "rotulo": "47 clientes esa semana",
+          "txt": "$2.209 en total"
+        }
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_04/impacto_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.368005
+        },
+        {
+          "archivo": "fabrica_demo_04/impacto_1.wav",
+          "desdeSegRelativo": 2.618005,
+          "duracionSeg": 7.231995
+        }
+      ],
+      "golpe": "sacudon",
+      "volumenSfx": 0.85
+    },
+    {
+      "unidadId": "desarrollo2",
+      "desdeSeg": 33.610046,
+      "duracionSeg": 3.578005,
+      "componenteId": "lista-tachada",
+      "props": {
+        "items": [
+          "Más anuncios",
+          "Más contenido",
+          "Más seguidores"
+        ],
+        "queda": "Mostrarlo en el lugar correcto"
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_04/desarrollo2_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.328005
+        }
+      ],
+      "golpe": "corte",
+      "volumenSfx": 0.6
+    },
+    {
+      "unidadId": "cierre",
+      "desdeSeg": 37.188050999999994,
+      "duracionSeg": 3.2520179999999996,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "El archivo es el mismo.",
+          "El resultado, no."
+        ],
+        "entra": [
+          0,
+          1.786009
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_04/cierre_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 1.536009
+        },
+        {
+          "archivo": "fabrica_demo_04/cierre_1.wav",
+          "desdeSegRelativo": 1.786009,
+          "duracionSeg": 1.216009
+        }
+      ],
+      "golpe": "negro",
+      "volumenSfx": 0.5
+    }
+  ],
+  "duracionTotalSeg": 40.940068999999994
+}
