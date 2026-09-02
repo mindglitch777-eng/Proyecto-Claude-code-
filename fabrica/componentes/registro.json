@@ -556,5 +556,28 @@
     },
     "estado": "validado",
     "notas": "Mismo acoplamiento de tipo que Grafico: `idea: Extract<Idea, {tipo:'silueta'}>` de ../guion.ts. Nunca probado con audio sincronizado."
+  },
+  {
+    "id": "torre-3d",
+    "archivo": "tres/Torre3D.tsx",
+    "exportacion": "Torre3D",
+    "categoria": "cifra",
+    "funcion": "Version 3D real (Three.js/@remotion/three, no CSS) de una cifra de dinero que crece: una torre de bloques se apila con profundidad, camara y luz reales mientras el numero cuenta hasta el valor final -- mismo rol narrativo que Contador, para el momento de mas impacto de un video (usar con criterio, no reemplaza a Contador en todos lados).",
+    "intensidad": 0.85,
+    "ritmo": "dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
+    "duracionMinMaxSeg": [3, 9],
+    "compatibleCon": ["texto"],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "arriba": "string, opcional",
+      "hasta": "number -- valor final",
+      "abajo": "string, opcional",
+      "prefijo": "string, default '$'",
+      "sufijo": "string, opcional"
+    },
+    "estado": "validado",
+    "notas": "R6-10 (Ronda 6): primer componente realmente 3D del catalogo, confirmado con render real en el headless_shell sin GPU dedicada (ver remotion-spike/src/pruebas-r6/README.md y fabrica/skills/INVESTIGACION_HERRAMIENTAS.md item 9). La animacion del conteo usa la MISMA curva que Contador (escenas/plata.tsx) para que el aterrizaje del numero coincida con el ultimo bloque asentandose. Mas caro de renderizar que un componente CSS/Canvas 2D (WebGL) -- no medido en tiempo de render a escala de produccion todavia, anotado como pendiente antes de usarlo en muchas escenas seguidas."
   }
 ]

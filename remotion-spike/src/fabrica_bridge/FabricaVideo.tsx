@@ -15,6 +15,7 @@ import {Remate} from '../agresivo/Remate';
 import {Chat, Buscador, Notificaciones} from '../escenas/pantallas';
 import {Grafico} from '../escenas/Grafico';
 import {Silueta} from '../escenas/Silueta';
+import {Torre3D} from '../tres/Torre3D';
 import {Golpe, TipoGolpe, Anticipo} from '../escenas/golpes';
 import {PALETA} from '../identidad';
 
@@ -58,6 +59,7 @@ const IMPLEMENTACIONES: Record<string, React.FC<any>> = {
   notificaciones: Notificaciones,
   grafico: Grafico,
   silueta: Silueta,
+  'torre-3d': Torre3D,
 };
 
 /** Forma MINIMA de un microevento, duck-tipada a proposito (Ronda 4):

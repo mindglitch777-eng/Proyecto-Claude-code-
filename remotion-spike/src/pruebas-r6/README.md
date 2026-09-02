@@ -149,6 +149,42 @@ herramientas probadas en dos grupos reales:
   utilizable, y no vale la pena adivinar parámetros sin poder verlos
   renderizados uno por uno. Queda como PENDIENTE, no descartado.
 
+## R6-10 — Primer componente 3D real, agregado al registro (`torre-3d`)
+
+`remotion-spike/src/tres/Torre3D.tsx`: una torre de 7 bloques 3D reales
+(Three.js/`@remotion/three`, geometría/cámara/luz de verdad, rotación
+sutil de grupo) que se apila mientras un número cuenta hasta el valor
+final -- mismo rol narrativo que `Contador` (misma curva de conteo,
+para que el aterrizaje del número coincida con el último bloque
+asentándose), pero con profundidad real en vez de CSS. Agregado
+formalmente al registro de componentes
+(`fabrica/componentes/registro.json`, id `torre-3d`, categoría
+`cifra`) y al mapa de implementaciones de `FabricaVideo.tsx` -- no es
+una prueba aislada, es un componente real y usable por el Director
+Visual.
+
+Iteración real durante la prueba (documentada porque así se hizo, no
+porque saliera bien a la primera): el primer render con bloques de
+1.7×0.42×1.7 y espaciado 0.5 dio una torre demasiado apretada -- los
+bloques se veían como un bloque sólido sin separación visible. Se
+ajustó a 1.3×0.28×1.3 con espaciado 0.62, confirmado con un segundo
+render real que sí muestra 7 bloques distintos con huecos visibles y
+caras superiores en perspectiva.
+
+Probado de punta a punta con audio real a través del pipeline
+completo (no solo como composición aislada):
+`fabrica/composicion/prueba_r6_10.ts` arma un árbol con `torre-3d` +
+un audio real de 5.568s (`impacto_1.wav` de demo_06) + golpe
+`fogonazo`, y la composición `prueba-r6-10` (usa `FabricaVideo`, el
+puente de render real) renderizó los 190 cuadros esperados
+correctamente.
+
+Pendiente honesto: no se midió el costo de render de este componente a
+escala de producción (WebGL es más caro que CSS/Canvas 2D, ver R6-7) --
+razonable para un momento puntual de alto impacto, no medido si usarlo
+en muchas escenas seguidas de un video largo sigue siendo práctico en
+tiempo de render de GitHub Actions.
+
 **Implementado en producción** (`remotion-spike/src/escenas/golpes.tsx`):
 el golpe `'cortina'` -- que ya era conceptualmente "un lavado cálido
 diagonal, como un light leak de cámara analógica" con una imitación en

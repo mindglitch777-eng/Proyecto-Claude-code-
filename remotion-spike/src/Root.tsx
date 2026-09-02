@@ -17,6 +17,7 @@ import demo03 from './fabrica_bridge/demo_03.json';
 import demo04 from './fabrica_bridge/demo_04.json';
 import demo05 from './fabrica_bridge/demo_05.json';
 import pruebaR68 from './fabrica_bridge/prueba_r6_8.json';
+import pruebaR610 from './fabrica_bridge/prueba_r6_10.json';
 import {Video} from './receta/Video';
 import {GUIONES} from './receta/guiones';
 import {compilar} from './receta/compilar';
@@ -38,6 +39,7 @@ import {PruebaHighlights, DUR_PRUEBA_HIGHLIGHTS} from './pruebas-r6/PruebaHighli
 import {PruebaVineta, DUR_PRUEBA_VINETA} from './pruebas-r6/PruebaVineta';
 import {PruebaLightLeak, DUR_PRUEBA_LIGHTLEAK} from './pruebas-r6/PruebaLightLeak';
 import {PruebaCortina, DUR_PRUEBA_CORTINA} from './pruebas-r6/PruebaCortina';
+import {Torre3D} from './tres/Torre3D';
 
 const cuadros = Math.round(DUR_TOTAL * FPS);
 
@@ -161,6 +163,19 @@ export const Root: React.FC = () => {
         height={ALTO}
         defaultProps={{arbol: pruebaR68 as ArbolFabrica}}
       />
+      {/* R6-10: prueba de punta a punta del componente "torre-3d"
+          (primer componente 3D real del catalogo) a traves del
+          pipeline real armarComposicion -> FabricaVideo.tsx, con audio
+          real. Ver fabrica/composicion/prueba_r6_10.ts. */}
+      <Composition
+        id="prueba-r6-10"
+        component={FabricaVideo}
+        durationInFrames={Math.round((pruebaR610 as ArbolFabrica).duracionTotalSeg * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{arbol: pruebaR610 as ArbolFabrica}}
+      />
       <Composition id="rebecca-beach" component={RebeccaBeach} durationInFrames={Math.round(DUR_REBECCA * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       {/* Casos 2 a 20 de la serie documental: uno por entrada en
           casos.ts, todos sobre el mismo motor generico (CasoGenerico). */}
@@ -215,6 +230,15 @@ export const Root: React.FC = () => {
       <Composition id="prueba-vineta" component={PruebaVineta} durationInFrames={DUR_PRUEBA_VINETA} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="prueba-lightleak" component={PruebaLightLeak} durationInFrames={DUR_PRUEBA_LIGHTLEAK} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="prueba-cortina" component={PruebaCortina} durationInFrames={DUR_PRUEBA_CORTINA} fps={FPS} width={ANCHO} height={ALTO} />
+      <Composition
+        id="prueba-torre3d"
+        component={Torre3D}
+        durationInFrames={Math.round(6 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{arriba: 'GENERASTE', hasta: 3560, prefijo: '$', abajo: 'esta semana'}}
+      />
       {/* Solo el hook, para iterar sin renderizar los 26s enteros. */}
       <Composition
         id="hook"

@@ -1,0 +1,28 @@
+{
+  "id": "prueba-r6-10",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "u1",
+      "desdeSeg": 0,
+      "duracionSeg": 5.818005,
+      "componenteId": "torre-3d",
+      "props": {
+        "hasta": 3560,
+        "prefijo": "$",
+        "arriba": "GENERASTE",
+        "abajo": "esta semana"
+      },
+      "audios": [
+        {
+          "archivo": "pruebas-r6/audio_c.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 5.568005
+        }
+      ],
+      "golpe": "fogonazo",
+      "volumenSfx": 0.7
+    }
+  ],
+  "duracionTotalSeg": 6.318005
+}
