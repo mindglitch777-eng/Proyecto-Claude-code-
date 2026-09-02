@@ -20,7 +20,7 @@ const AUDIO_DIR = path.join(RAIZ, 'capturas_voz/audio_documental');
 
 type LineaManifest = {slug: string; index: number; texto: string};
 
-function textosDeCentro(c: CentroVisual): string[] {
+export function textosDeCentro(c: CentroVisual): string[] {
   switch (c.tipo) {
     case 'lineas':
       return c.items.map((it) => it.txt);
@@ -39,7 +39,7 @@ function textosDeCentro(c: CentroVisual): string[] {
   }
 }
 
-function textosDeCaso(cfg: CasoConfig): string[] {
+export function textosDeCaso(cfg: CasoConfig): string[] {
   const salida: string[] = [...cfg.hook];
   salida.push(...textosDeCentro(cfg.centro));
   if (cfg.cifra) {
@@ -140,4 +140,4 @@ function main() {
   if (errores.length) process.exit(1);
 }
 
-main();
+if (require.main === module) main();
