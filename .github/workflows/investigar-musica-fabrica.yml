@@ -21,6 +21,14 @@ on:
         description: "Termino de busqueda (mood/genero)"
         required: false
         default: "motivational upbeat corporate hustle"
+  # Mismo truco que prueba-normalizacion-qwen3-tts.yml: workflow_dispatch
+  # por API solo funciona desde la rama por defecto, pero un evento
+  # `push` lee el workflow de la rama que recibio el push. `paths`
+  # apunta a este mismo archivo para que el commit de resultados (que
+  # solo toca fabrica/musica/CANDIDATOS.md) no dispare un loop.
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths: [".github/workflows/investigar-musica-fabrica.yml"]
 
 permissions:
   contents: write

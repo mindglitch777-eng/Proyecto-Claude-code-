@@ -34,6 +34,16 @@ on:
         default: "produccion"
         type: choice
         options: ["produccion", "calmo", "urgente"]
+  # workflow_dispatch por API solo se puede disparar si el workflow ya
+  # esta registrado en la rama por defecto -- esta rama todavia no esta
+  # mergeada a main. Truco real (no un hack fragil): un evento `push`
+  # SI lee el workflow desde la rama que recibio el push, sin importar
+  # si es la default o no. Se limita con `paths` a este mismo archivo
+  # para que el commit de resultados que el propio job hace al final
+  # (que solo toca muestras_voz/) nunca dispare un loop.
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths: [".github/workflows/prueba-normalizacion-qwen3-tts.yml"]
 
 permissions:
   contents: write
