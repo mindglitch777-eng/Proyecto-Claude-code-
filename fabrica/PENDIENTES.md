@@ -299,3 +299,33 @@ del sistema o no.
   soluciona esto sin necesitar ningún merge.
 - **¿Bloquea el resto?** NO, ya resuelto y usado con éxito 3 veces
   esta ronda (música, prueba de normalización, voz del guion nuevo).
+
+## 12. Ronda 3 (calidad audiovisual) — ver `MEJORAS_RONDA3.md` para el detalle completo
+
+- **Qué se hizo:** golpes con variedad real + anti-repetición
+  (`directores/audio.ts`), Anticipo antes de un golpe fuerte
+  (`golpes.tsx` + `FabricaVideo.tsx`), tratamiento explícito de datos
+  repetidos (`composicion/repeticion_datos.ts`), QA creativo (4
+  heurísticas nuevas en `checks_composicion.py`), y un video nuevo de
+  punta a punta (`fabrica-demo-04.mp4`) que ejercita las cuatro cosas
+  con voz real y fue verificado con QA + inspección de frames +
+  análisis de luminancia (no solo "el código corrió").
+- **Limitación real encontrada durante la verificación:** el QA de
+  "cifra repetida en texto" (`verificar_cifra_repetida_en_texto`) no
+  distingue "número protagonista" de "número mencionado de paso" —
+  alertó "47" repetido en 3 escenas de `demo_04` aunque
+  `repeticion_datos.ts` sí tomó la decisión correcta (mostrar "$2.209"
+  como cifra grande, "47" solo como texto secundario). Ver
+  "INVESTIGACIONES PENDIENTES" en `MEJORAS_RONDA3.md` para una posible
+  solución (marcar en el árbol qué prop es "el número destacado").
+- **Qué NO se hizo esta ronda (documentado, no fingido como resuelto):**
+  escenas que evolucionan internamente, un motor de composiciones en
+  capas (el pedido original prohibió construir esto como sistema
+  paralelo), jerarquía visual centralizada, retrofit de microanimación
+  en los 26 componentes existentes, continuidad visual entre escenas,
+  Director de Retención con etiquetas cualitativas. Detalle completo en
+  la sección "PROBLEMAS QUE SIGUEN ABIERTOS" de `MEJORAS_RONDA3.md`.
+- **¿Bloquea el resto?** NO. Lo construido es una mejora real sobre lo
+  que ya funcionaba, verificada con tests + QA + evidencia visual; lo
+  no construido queda como trabajo futuro explícito, no como deuda
+  oculta.

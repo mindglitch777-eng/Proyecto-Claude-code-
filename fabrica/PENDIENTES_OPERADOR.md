@@ -1,7 +1,37 @@
-# Pendientes que necesitan al operador — Ronda 2 (fortalecimiento + prueba integral)
+# Pendientes que necesitan al operador
 
 Solo lo que de verdad necesita que vos hagas algo o decidas algo. El
 detalle técnico completo de cada tema está en `fabrica/PENDIENTES.md`.
+
+## Ronda 3 (calidad audiovisual)
+
+### Escuchar/ver `fabrica-demo-04.mp4` (la entrega de esta ronda)
+
+Es un video nuevo, con guion nuevo y voz real, hecho específicamente
+para probar las 4 mejoras de esta ronda (golpes variados, anticipo
+antes de un golpe fuerte, no repetir una cifra ya mostrada, QA
+creativo). Todo lo técnico ya salió limpio (QA duro, QA de composición,
+inspección de frames, análisis de luminancia — ver
+`fabrica/MEJORAS_RONDA3.md`, sección "RESULTADO DEL NUEVO VIDEO"). Lo
+que no puedo verificar yo es cómo se SIENTE al mirarlo/escucharlo de
+corrido: si el ritmo mejoró de verdad respecto a `fabrica-demo-03.mp4`,
+si la pausa antes de la revelación se siente como un respiro real o
+como un bache, si el anticipo antes del golpe final se nota o es
+demasiado sutil.
+
+### Qué quedó sin construir esta ronda (a propósito, no por olvido)
+
+El pedido original tenía 24 puntos; se les dio profundidad real a 4
+(los de arriba) y se dejaron documentados como pendientes 6 más
+(escenas que evolucionan internamente, un motor de "composiciones" en
+capas, jerarquía visual centralizada, microanimaciones en los 26
+componentes existentes, continuidad visual entre escenas, Director de
+Retención con etiquetas cualitativas) — ver la sección "PROBLEMAS QUE
+SIGUEN ABIERTOS" de `fabrica/MEJORAS_RONDA3.md` para el detalle de cada
+uno y por qué se priorizó así. Si alguno de estos te importa más que
+los otros para la próxima ronda, decímelo y arranco por ahí.
+
+## Ronda 2 (fortalecimiento + prueba integral)
 
 ## 1. Escuchar `fabrica-demo-03.mp4` (el video de prueba)
 
