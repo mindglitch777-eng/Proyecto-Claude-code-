@@ -763,3 +763,84 @@ duracion de la voz contra seg["duracion"] del JSON, pero esa cifra es
 la ADIVINADA al escribir el guion -- al renderizar,
 construir_linea_tiempo() la reescribe con la duracion real del audio.
 Marcaba como "voz cortada" a videos correctos. Ahora verifica el total.
+
+## 2026-09-02 — Serie documental (Remotion) migrada a voz real de Qwen3-TTS; 20 videos entregados
+
+**Contexto:** entre la sesión anterior (20-ago) y esta no se documentó
+nada en este log a pesar de la regla del proyecto -- esta entrada
+cubre retroactivamente todo lo hecho.
+
+**Motor viejo (Pillow/ffmpeg, `animador_v9.py`/`fabrica.py`) reemplazado
+por Remotion** (`remotion-spike/`) para la serie nueva. El motor viejo
+sigue siendo el que produjo "El Corte" (producto de Hotmart, rumiación
+nocturna) y no se tocó ni se borró.
+
+**Serie documental nueva:** 20 videos de casos reales de gente que
+generó ingresos con productos digitales/IA (`rebecca-beach` a mano en
+`RebeccaBeach.tsx`, `taylor-posada`..`caso-20` genéricos vía
+`CasoGenerico.tsx` + datos en `casos.ts`).
+
+**Voz: de ElevenLabs (créditos agotados) a Qwen3-TTS clonado.**
+Investigación rigurosa (a pedido explícito del operador, distinguiendo
+límite de modelo vs. de implementación) encontró
+`gabriele-mastrapasqua/qwen3-tts`: motor en C puro, sin Python/PyTorch/
+GPU, corre en CPU con OpenBLAS. Se probaron ~20 voces candidatas
+(LibriVox + otras fuentes, todas de licencia libre) hasta elegir
+`librivox-11` variante "enérgico 2" (rate 1.25, tono serio/elegante).
+**Rechazado explícitamente:** clonar la voz de un creador real de un
+video de TikTok que subió el operador -- riesgo de derechos de voz de
+una persona identificable, aunque el operador insistió.
+
+**Pipeline de audio (paralelizado en GitHub Actions, matrix de N
+jobs):** `generar_voz_documental_qwen.py` genera un archivo por línea
+del manifest (`capturas_voz/manifest_voz_documental.json`), evita
+re-generar líneas cuyo archivo ya existe (reanudable). 177 líneas
+iniciales generadas en ~15 min (vs 1-2h en serie).
+
+**Sincronización real (no adivinada):** `mapear_audio_documental.ts`
+reconstruye la secuencia exacta de texto hablado por caso desde
+`casos.ts` (misma lógica que generó el manifest), la valida línea a
+línea, mide la duración real de cada clip con ffprobe, y ese mapa
+(`mapa_audio_documental.json`) es lo que usa `CasoGenerico.tsx` para
+calcular la duración de cada bloque y insertar cada `<Audio>` en su
+offset exacto -- reemplazando toda duración heurística. Mismo patrón
+aplicado a mano en `RebeccaBeach.tsx` (`mapear_audio_rebecca.ts`), que
+al tener un guion armado segundo a segundo ANTES de existir voz, tuvo
+que ser retimeado por completo (58s → 92s) para que la narración real
+entrara sin cortes -- **lección para la nueva fábrica: un guion con
+tiempos fijos e independientes del audio real no es compatible con
+narración real; el timing tiene que derivarse siempre del audio, nunca
+al revés.**
+
+**2 bugs reales encontrados y corregidos en este pipeline** (quedan
+documentados porque son la clase de error que la nueva arquitectura
+debería prevenir estructuralmente, no solo parchear):
+1. La cadena de realce de audio (`voz_piper.py`) estaba pensada para
+   tapar lo fino/plano de Piper (voz sintética), no para limpiar una
+   voz YA clonada de una grabación real -- el operador escuchó que se
+   notaba el micrófono de mala calidad de la referencia de LibriVox.
+   Se separó en dos cadenas (`_cadena` para Piper, `_CADENA_REAL` con
+   denoise `afftdn` + `deesser` real para voces clonadas) y se
+   reprocesaron las 177 líneas ya generadas.
+2. Al agregarle narración a los bloques "diagrama" (antes mudos, solo
+   rótulos en pantalla con flechas) las líneas nuevas se agregaron al
+   final del manifest de cada caso, pero el orden real de un video es
+   hook→centro→cifra→final -- en los casos con cifra o final después
+   del centro, el índice quedó desalineado con el texto. Se corrigió
+   reordenando por texto exacto (no por índice) y renombrando los
+   archivos en disco (`reordenar_manifest_diagramas.ts`).
+
+**Resultado entregado:** los 20 videos completos (`videos/documental/`)
+renderizados vía GitHub Actions (`producir-documentales.yml`, mismo
+patrón matrix+commit-por-job que `remotion-diez.yml` por la cuota de
+artifacts agotada) y enviados al operador.
+
+**Pendiente / próxima sesión:** el operador pidió arrancar el diseño
+de una "nueva fábrica audiovisual" de próxima generación (prompt
+maestro completo pegado en la conversación, no todavía en un archivo
+del repo aparte de esta referencia) -- un sistema de componentes
+autodescriptos + Director Visual/Audio/Retención + laboratorio de
+experimentos + memoria de resultados reales, en vez de switch-case
+rígidos como los que tiene `CasoGenerico.tsx` hoy. Ver propuesta de
+arquitectura en `NUEVA_FABRICA.md` (fase de diseño, sin implementar
+todavía).
