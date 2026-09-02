@@ -121,3 +121,43 @@ ofrece transición real, aunque el golpe siguiente calificaría). Los 12
 suites de test de `fabrica/` (incluidos todos los generadores de
 demo_01..06) siguen pasando sin cambios -- backward compatible
 confirmado, no solo asumido.
+
+## R6-9 — Capa de efectos reales (`@remotion/effects`) para golpes
+
+Hallazgo técnico real (con evidencia, no supuesto) sobre cómo funciona
+`effects` de `@remotion/effects`: el efecto post-procesa los PIXELES
+PROPIOS del elemento etiquetado (`<Video>`/`<Solid>`/`<CanvasImage>`),
+no el contenido de React que esté DEBAJO en el DOM. Esto separa las 4
+herramientas probadas en dos grupos reales:
+
+- **`chromaticAberration`/`glow` sobre un `<Solid>` de color sólido**
+  (ver `PruebaEfectos.tsx`, R6-7): funcionan como efecto GENERATIVO
+  sobre ese color -- útiles para un flash/destello propio, no para
+  procesar la escena de abajo.
+- **`lightLeak`** (ver `PruebaLightLeak.tsx`, NUEVO): SÍ funciona como
+  capa decorativa transparente encima de contenido real -- confirmado
+  con un `<Solid color="transparent">`, el "CONTENIDO DEBAJO" se ve
+  perfectamente a través de las zonas sin leak, y el barrido cálido
+  diagonal es real WebGL, no CSS.
+- **`vignette`** (ver `PruebaVineta.tsx`, NUEVO): probado con
+  `mode:'color'` sobre un `<Solid color="transparent">` esperando el
+  mismo comportamiento que `lightLeak` (oscurecer solo los bordes,
+  centro transparente) -- el resultado real fue mucho más opaco de lo
+  esperado incluso con `radius=0.55` (el "centro sin afectar" casi no
+  se distingue del resto). **No se usa esta ronda** -- necesitaría más
+  ajuste de parámetros para dar un look "viñeta cinemática sutil"
+  utilizable, y no vale la pena adivinar parámetros sin poder verlos
+  renderizados uno por uno. Queda como PENDIENTE, no descartado.
+
+**Implementado en producción** (`remotion-spike/src/escenas/golpes.tsx`):
+el golpe `'cortina'` -- que ya era conceptualmente "un lavado cálido
+diagonal, como un light leak de cámara analógica" con una imitación en
+CSS (gradiente + `clip-path`) -- ahora usa el `lightLeak()` REAL de
+`@remotion/effects`. Confirmado con la composición `prueba-cortina`
+(usa el componente `Golpe` real, no una copia aislada): el texto de la
+escena real se ve correctamente a través del leak, con el barrido
+cálido diagonal genuino. Ningún otro golpe cambió -- `fogonazo` se dejó
+con su CSS actual porque una prueba real de `glow()` sobre un Solid ya
+blanco no mostraría una mejora clara (glow necesita contraste
+brillante/oscuro para tener algo que resaltar; un blanco uniforme no lo
+tiene) -- mejor no cambiarlo que cambiarlo sin una mejora demostrable.

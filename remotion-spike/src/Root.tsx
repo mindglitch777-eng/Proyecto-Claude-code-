@@ -35,6 +35,9 @@ import {PruebaTransiciones, DUR_PRUEBA_TRANSICIONES} from './pruebas-r6/PruebaTr
 import {PruebaEfectos, DUR_PRUEBA_EFECTOS} from './pruebas-r6/PruebaEfectos';
 import {Prueba3D, DUR_PRUEBA_3D} from './pruebas-r6/Prueba3D';
 import {PruebaHighlights, DUR_PRUEBA_HIGHLIGHTS} from './pruebas-r6/PruebaHighlights';
+import {PruebaVineta, DUR_PRUEBA_VINETA} from './pruebas-r6/PruebaVineta';
+import {PruebaLightLeak, DUR_PRUEBA_LIGHTLEAK} from './pruebas-r6/PruebaLightLeak';
+import {PruebaCortina, DUR_PRUEBA_CORTINA} from './pruebas-r6/PruebaCortina';
 
 const cuadros = Math.round(DUR_TOTAL * FPS);
 
@@ -209,6 +212,9 @@ export const Root: React.FC = () => {
       <Composition id="prueba-efectos" component={PruebaEfectos} durationInFrames={DUR_PRUEBA_EFECTOS} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="prueba-3d" component={Prueba3D} durationInFrames={DUR_PRUEBA_3D} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="prueba-highlights" component={PruebaHighlights} durationInFrames={DUR_PRUEBA_HIGHLIGHTS} fps={FPS} width={ANCHO} height={ALTO} />
+      <Composition id="prueba-vineta" component={PruebaVineta} durationInFrames={DUR_PRUEBA_VINETA} fps={FPS} width={ANCHO} height={ALTO} />
+      <Composition id="prueba-lightleak" component={PruebaLightLeak} durationInFrames={DUR_PRUEBA_LIGHTLEAK} fps={FPS} width={ANCHO} height={ALTO} />
+      <Composition id="prueba-cortina" component={PruebaCortina} durationInFrames={DUR_PRUEBA_CORTINA} fps={FPS} width={ANCHO} height={ALTO} />
       {/* Solo el hook, para iterar sin renderizar los 26s enteros. */}
       <Composition
         id="hook"

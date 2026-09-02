@@ -1,5 +1,6 @@
 import React from 'react';
-import {AbsoluteFill, Audio, interpolate, random, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, Solid, interpolate, random, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {lightLeak} from '@remotion/effects/light-leak';
 import {PALETA} from '../identidad';
 
 // GOLPES DE CORTE
@@ -49,7 +50,7 @@ export const Golpe: React.FC<{
   children: React.ReactNode;
 }> = ({tipo = 'fogonazo', largo = 0.14, sonido = true, sinEfectoVisual = false, children}) => {
   const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
+  const {fps, width, height} = useVideoConfig();
   const t = frame / fps;
   const p = t / largo; // 0 al empezar, 1 cuando termina el golpe
 
@@ -124,21 +125,24 @@ export const Golpe: React.FC<{
   }
 
   if (tipo === 'cortina') {
-    // un lavado calido en diagonal que cruza la pantalla, como un
-    // "light leak" de camara analogica -- mas suave que el fogonazo
-    // blanco, para escenas que no quieren golpear sino acariciar.
-    const y = interpolate(p, [0, 1], [-40, 140]);
+    // R6-9: lavado calido "light leak de camara analogica" real, con
+    // @remotion/effects (WebGL2) en vez del gradiente+clip-path en CSS
+    // de antes -- confirmado con render real que lightLeak() funciona
+    // como capa decorativa TRANSPARENTE encima del contenido (ver
+    // remotion-spike/src/pruebas-r6/PruebaLightLeak.tsx), a diferencia
+    // de vignette() que resulto demasiado opaco para este uso (mismo
+    // README). El `progress` de lightLeak ya hace su propio ciclo
+    // revela/retrae en 0..1, igual forma que `p` de este componente.
     return (
       <AbsoluteFill>
         {efecto}
         {children}
-        <AbsoluteFill
-          style={{
-            background: `linear-gradient(115deg, transparent, ${PALETA.acento}, transparent)`,
-            opacity: 0.75 * k,
-            clipPath: `polygon(0 ${y - 30}%, 100% ${y - 55}%, 100% ${y + 25}%, 0 ${y + 50}%)`,
-            filter: 'blur(4px)',
-          }}
+        <Solid
+          width={width}
+          height={height}
+          color="transparent"
+          style={{position: 'absolute', top: 0, left: 0}}
+          effects={[lightLeak({progress: p, hueShift: 20})]}
         />
       </AbsoluteFill>
     );
