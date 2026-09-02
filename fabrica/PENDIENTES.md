@@ -1,5 +1,8 @@
 # Pendientes y bloqueos — Nueva Fábrica
 
+**Ver también `PENDIENTES_OPERADOR.md`** — solo lo que necesita que el
+operador haga o decida algo, extraído de este archivo más completo.
+
 Este archivo es la lista concreta de lo que necesita intervención,
 investigación o decisión humana. Se actualiza a medida que se
 construye, nunca se inventa una solución para cerrar un ítem acá.
@@ -82,42 +85,24 @@ del sistema o no.
   uso comercial. Riesgo residual bajo, no cero.
   permite — es un riesgo de negocio, no de ingeniería.
 
-## 3. Calidad de Qwen3-TTS con números/monedas/fechas en español — PREPARADO, falta que el operador lo dispare
+## 3. Calidad de Qwen3-TTS con números/monedas/fechas en español — DISPARADO, falta escuchar
 
-- **Qué se construyó esta sesión:** `fabrica/voz/preparar_prueba_qwen.py`
-  arma un lote de 8 frases reales que cubren dinero, porcentaje, fecha
-  completa (con barras y en palabras), cantidad grande, nombre propio
-  (personas reales de `assets/personas/`), abreviatura, año, decimal y
-  número suelto -- cada una ya pasada por el normalizador real, en
-  `capturas_voz/manifest_prueba_normalizacion.json`. El workflow
-  `.github/workflows/prueba-normalizacion-qwen3-tts.yml` ya está listo
-  para generar audio real de esas 8 frases con la MISMA configuración
-  de producción (modelo Base 1.7B, voz clonada librivox-11, mismo
-  instruct + rate 1.25 que `generar_voz_documental_qwen.py`), con
-  variantes opcionales calmo/urgente para probar distintas
-  intensidades, y calcula la duración real de cada wav para compararla
-  contra la duración estimada del manifest.
-- **Por qué no lo disparé yo mismo:** el workflow solo existe en la
-  rama de trabajo de esta sesión (`claude/organize-repo-duplicates-xl042t`).
-  La API de GitHub para disparar un workflow_dispatch por nombre de
-  archivo solo lo reconoce si el workflow ya está en la rama por
-  defecto (`main`) -- lo confirmé al intentarlo (404). Esta sesión
-  tiene instrucción explícita de NUNCA pushear a una rama distinta de
-  la asignada, así que mergear a `main` yo mismo está fuera de lo que
-  puedo decidir solo.
-- **Qué necesita el operador (acción concreta, 2 minutos):** mergear
-  esta rama (o al menos el archivo del workflow) a `main`, y despues
-  disparar "prueba-normalizacion-qwen3-tts" desde la pestaña Actions
-  de GitHub (o pedirme que lo dispare yo vía API una vez mergeado).
-  Tarda unos 15-30 minutos en correr (baja el modelo, ~3GB) y al
-  terminar comitea los mp3 en `muestras_voz/prueba_normalizacion/`.
-- **Qué hacer con el resultado:** escuchar los 8 mp3 (pronunciación de
-  números/fechas/nombres) y comparar la duración real que loguea el
-  workflow contra `duracion_estimada_seg` del manifest.
+- **Actualizado 2026-09-02 (Ronda 2):** el workflow SÍ se disparó y
+  terminó bien -- se resolvió el bloqueo de rama con un truco real (ver
+  ítem 11 más abajo), no hizo falta esperar ningún merge. Los 8 mp3
+  reales ya están en `muestras_voz/prueba_normalizacion/` (prefijo
+  `produccion-`), generados con la voz clonada real (librivox-11) y la
+  configuración exacta de producción.
+- **Falta:** que el operador los escuche (ver `PENDIENTES_OPERADOR.md`
+  ítem 2) -- en particular las líneas `05_nombre_propio_con_tilde_ene`
+  y `06_numero_suelto_dias`, que generaron la MISMA duración exacta
+  (110592 samples, 72 frames) con textos completamente distintos. Sin
+  escuchar el contenido real no puedo confirmar si es una coincidencia
+  real del motor (ambos textos tienen una cantidad de tokens similar)
+  o un problema de generación.
 - **¿Bloquea el resto?** NO. El normalizador ya produce el texto
   hablado correcto según reglas de español (con tests); falta solo la
-  validación auditiva real, que depende de que el operador dispare el
-  workflow.
+  validación auditiva real.
 
 ## 4. Límite real de minutos gratis de GitHub Actions en volumen alto
 
@@ -191,3 +176,97 @@ del sistema o no.
   (`fabrica/memoria/laboratorio.json` + tipos) para que en cuanto haya
   el primer dato real, se pueda cargar sin rediseñar nada.
 - **¿Bloquea el resto?** NO. Es esperable no tener esto todavía.
+
+## 8. Qwen3-TTS avisa que `--instruct` + `--ref-audio` en el modelo Base no está oficialmente soportado — CONFIRMADO, sin resolver
+
+- **Hecho confirmado (aparece en TODOS los logs de generación de esta
+  ronda, tanto para el guion nuevo como para la prueba de
+  normalización):**
+  ```
+  Warning: --instruct with voice cloning on a Base model is not
+  officially supported. For best results, extract the voice with the
+  Base model and use it with CustomVoice:
+    ./qwen_tts -d qwen3-tts-1.7b-base --ref-audio ref.wav --save-voice voice.bin
+    ./qwen_tts -d qwen3-tts-1.7b --load-voice voice.bin --instruct "..." --text "..."
+  ```
+- **Afecta a:** toda la generación de voz de la fábrica -- esta es la
+  MISMA combinación de flags que ya usa `generar_voz_documental_qwen.py`
+  (el script que generó la voz de los 20 videos documentales ya
+  entregados), así que esto no es nuevo de esta sesión, solo ahora
+  quedó documentado con evidencia directa del motor.
+- **Por qué no se resuelve ahora:** el audio se sigue generando sin
+  errores con la configuración actual, y no hay evidencia (todavía) de
+  que la calidad esté degradada -- resolver esto requeriría escuchar
+  primero (ver `PENDIENTES_OPERADOR.md` ítem 3) para saber si vale la
+  pena migrar al patrón CustomVoice de dos pasos.
+- **Qué hacer después, si hace falta:** extraer la voz UNA VEZ con
+  `--save-voice` sobre el modelo Base, y usar ese archivo con
+  `--load-voice` sobre el modelo CustomVoice (no-Base) en las
+  generaciones futuras -- evita el warning y es el camino "soportado"
+  según la propia documentación del motor.
+- **¿Bloquea el resto?** NO. Genera audio utilizable hoy; es una
+  posible mejora de calidad, no un error duro.
+
+## 9. Bug real: un `while read ... done < archivo` con un comando que lee stdin adentro se desincroniza — RESUELTO
+
+- **Encontrado corriendo por primera vez `prueba-normalizacion-qwen3-tts.yml`
+  (Ronda 2):** de 8 frases a generar, solo se generó la primera --
+  `qwen_tts` consumía parte del mismo file descriptor de stdin que el
+  `while read` estaba iterando, desincronizando la lectura de la
+  siguiente línea (sus campos aparecían mezclados: el índice numérico
+  desaparecía, el id se corría al lugar del texto).
+- **Fix aplicado** en `prueba-normalizacion-qwen3-tts.yml` y (desde el
+  arranque) en `generar-voz-demo-03.yml`: cargar todas las líneas con
+  `mapfile` primero (sin file descriptor compartido con el comando de
+  adentro del loop) y redirigir el stdin de `qwen_tts` a `/dev/null`
+  por las dudas. Confirmado con una segunda corrida exitosa (8/8
+  frases generadas).
+- **Lección para cualquier script futuro que llame a un binario externo
+  dentro de un loop de bash que lee de un archivo:** nunca usar
+  `while read ... done < archivo` si el comando de adentro puede tocar
+  stdin -- usar `mapfile` + `for` es el patrón seguro.
+- **¿Bloquea el resto?** NO, ya está resuelto.
+
+## 10. Limitación real: componentes de la MISMA categoría tienen props completamente distintas
+
+- **Encontrado corriendo `generar_demo_03.ts` por primera vez:** el
+  Director Visual eligió "recibo" y "antes-despues" en vez de
+  "grafico" y "balanza" -- prueba real de que el scoring por metadata
+  funciona de verdad (no estaba hardcodeado), pero reveló que el
+  script generador todavía necesita saber armar la forma de props
+  correcta SEGÚN QUIÉN GANÓ, porque dos componentes de la categoría
+  "cifra" (o "comparacion") pueden tener contratos de props
+  completamente distintos (`grafico` espera una serie de puntos
+  neutral; `recibo` espera un balance de dinero entra/sale con
+  timings fijos por renglón).
+- **Cómo se resolvió PARA ESTE video:** con un `if` sobre el id
+  ganador dentro de `generar_demo_03.ts`, documentado inline como
+  limitación conocida -- no con un generador de props 100% genérico
+  (quedaría fuera del alcance de "fortalecer, no reescribir" de esta
+  ronda).
+- **Qué haría falta para una solución real:** un "adaptador de datos"
+  por categoría (no por componente) que sepa transformar un modelo de
+  datos neutral (ej. "una serie de {etiqueta, valor}") a la forma de
+  props de CUALQUIER componente de esa categoría -- trabajo real de
+  diseño para una próxima ronda si se agregan guiones con contenido
+  variable, no una prueba puntual como esta.
+- **¿Bloquea el resto?** NO. El caso puntual de este video quedó
+  resuelto; la generalización es una mejora de robustez futura.
+
+## 11. Cómo disparar un workflow que solo existe en una rama no-default (sin mergear a main)
+
+- **Confirmado en esta ronda:** la API de GitHub para
+  `workflow_dispatch` (por nombre de archivo o UI de Actions) solo
+  reconoce un workflow si ya está registrado en la rama por defecto --
+  un intento devuelve 404 si el archivo solo existe en una rama de
+  trabajo.
+- **Truco real (no un hack frágil, ya usado antes en este mismo repo
+  para el mismo problema, ver commits de `remotion-diez.yml`):** un
+  evento `push` SÍ lee el workflow desde la rama que recibió el push,
+  sin depender de cuál es la rama por defecto. Agregar un trigger
+  `push` acotado a la rama de trabajo, con `paths` apuntando al PROPIO
+  archivo del workflow (para que el commit de resultados que el job
+  hace al final -- que toca otros archivos -- nunca dispare un loop),
+  soluciona esto sin necesitar ningún merge.
+- **¿Bloquea el resto?** NO, ya resuelto y usado con éxito 3 veces
+  esta ronda (música, prueba de normalización, voz del guion nuevo).

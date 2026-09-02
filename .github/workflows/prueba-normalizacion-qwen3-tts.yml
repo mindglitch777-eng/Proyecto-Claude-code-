@@ -135,19 +135,29 @@ jobs:
           done
 
       - name: Realzar con la cadena de voz_piper.py
+        env:
+          # Bug real encontrado (2026-09-02): "${{ inputs.variante_intensidad }}"
+          # puesto directo en un string de Python se evalua ANTES de que
+          # el shell/python lo vean -- al disparar por push (no por
+          # workflow_dispatch) el contexto `inputs` no existe y GitHub
+          # lo sustituye por CADENA VACIA, dejando nombres de archivo
+          # rotos ("-00_algo-REALZADA.mp3" en vez de "produccion-00_algo-REALZADA.mp3").
+          # Fix: pasar por una env var con su propio fallback.
+          VARIANTE: ${{ inputs.variante_intensidad || 'produccion' }}
         run: |
           pip install --quiet numpy
           python3 -c "
-          import sys
+          import os, sys
           sys.path.insert(0, '.')
           from pathlib import Path
           from voz_piper import realzar
           import subprocess
+          variante = os.environ['VARIANTE']
           for wav in Path('/tmp').glob('prueba-*.wav'):
               nombre = wav.stem.replace('prueba-', '')
               realzado = Path(f'/tmp/{nombre}-realzado.wav')
               if realzar(wav, realzado, semitonos=0):
-                  mp3 = Path(f'muestras_voz/prueba_normalizacion/${{ inputs.variante_intensidad }}-{nombre}-REALZADA.mp3')
+                  mp3 = Path(f'muestras_voz/prueba_normalizacion/{variante}-{nombre}-REALZADA.mp3')
                   subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(realzado),
                                   '-b:a', '128k', str(mp3)])
           "
