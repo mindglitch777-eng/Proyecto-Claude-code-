@@ -1,0 +1,89 @@
+name: producir-documentales
+
+# Renderiza los 20 videos documentales de remotion-spike/ (rebecca-beach
+# + caso-02..caso-20) en runners de GitHub -- cero tokens de Claude
+# Code por render. Mismo patron que remotion-diez.yml: un runner por
+# video (matrix), asi los 20 tardan lo que tarda EL MAS LENTO, no la
+# suma. Cada job commitea su propio mp4 -- no artifacts: la cuota de
+# storage del repo esta agotada (ver remotion-diez.yml).
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      videos:
+        description: "Ids separados por coma (vacio = los 20)"
+        required: false
+        default: ""
+
+jobs:
+  listar:
+    runs-on: ubuntu-latest
+    outputs:
+      matriz: ${{ steps.l.outputs.matriz }}
+    steps:
+      - id: l
+        run: |
+          python3 - <<'EOF' > /tmp/m.json
+          import json, os
+          pedidos = [x.strip() for x in os.environ.get("VIDEOS", "").split(",") if x.strip()]
+          todos = ["rebecca-beach"] + [f"caso-{i:02d}" for i in range(2, 21)]
+          print(json.dumps(pedidos or todos))
+          EOF
+          echo "matriz=$(cat /tmp/m.json)" >> "$GITHUB_OUTPUT"
+          echo "A renderizar: $(cat /tmp/m.json)"
+        env:
+          VIDEOS: ${{ inputs.videos }}
+
+  render:
+    needs: listar
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        video: ${{ fromJson(needs.listar.outputs.matriz) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: remotion-spike/package-lock.json
+
+      - name: Dependencias
+        working-directory: remotion-spike
+        run: npm ci --no-audit --no-fund
+
+      - name: Navegador para Remotion
+        working-directory: remotion-spike
+        run: npx remotion browser ensure
+
+      - name: Armar public/ (fuentes, fotos, metraje, audio narrado)
+        run: ./remotion-spike/preparar-public.sh
+
+      - name: Renderizar ${{ matrix.video }}
+        working-directory: remotion-spike
+        run: |
+          mkdir -p out
+          npx remotion render ${{ matrix.video }} out/${{ matrix.video }}.mp4 \
+            --concurrency=2 --log=info
+
+      - name: Commitear ${{ matrix.video }}
+        run: |
+          mkdir -p videos/documental
+          cp remotion-spike/out/${{ matrix.video }}.mp4 videos/documental/
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add videos/documental/${{ matrix.video }}.mp4
+          if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
+          git commit -m "Video documental: ${{ matrix.video }}"
+          for i in 1 2 3 4 5 6; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && \
+            git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
+            echo "reintento $i"
+            sleep $((RANDOM % 8 + 2 * i))
+          done
+          exit 1
