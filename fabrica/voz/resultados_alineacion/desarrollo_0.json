@@ -1,0 +1,86 @@
+{
+  "audio": "capturas_voz/audio_demo_03/desarrollo_0.wav",
+  "texto_esperado": "El quince de marzo de dos mil veinticuatro subió su primer archivo. Cero ventas esa primera semana.",
+  "texto_transcripto": "El 15 de marzo de 2024 subió su primer archivo. Cero ventas esa primera semana.",
+  "idioma_detectado": "es",
+  "probabilidad_idioma": 1,
+  "duracion_audio_seg": 6.144,
+  "palabras_con_timestamp": [
+    {
+      "palabra": "El",
+      "inicio": 0.0,
+      "fin": 0.66
+    },
+    {
+      "palabra": "15",
+      "inicio": 0.66,
+      "fin": 0.96
+    },
+    {
+      "palabra": "de",
+      "inicio": 0.96,
+      "fin": 1.14
+    },
+    {
+      "palabra": "marzo",
+      "inicio": 1.14,
+      "fin": 1.46
+    },
+    {
+      "palabra": "de",
+      "inicio": 1.46,
+      "fin": 1.58
+    },
+    {
+      "palabra": "2024",
+      "inicio": 1.58,
+      "fin": 2.44
+    },
+    {
+      "palabra": "subió",
+      "inicio": 2.44,
+      "fin": 3.02
+    },
+    {
+      "palabra": "su",
+      "inicio": 3.02,
+      "fin": 3.14
+    },
+    {
+      "palabra": "primer",
+      "inicio": 3.14,
+      "fin": 3.38
+    },
+    {
+      "palabra": "archivo.",
+      "inicio": 3.38,
+      "fin": 3.84
+    },
+    {
+      "palabra": "Cero",
+      "inicio": 4.18,
+      "fin": 4.42
+    },
+    {
+      "palabra": "ventas",
+      "inicio": 4.42,
+      "fin": 4.86
+    },
+    {
+      "palabra": "esa",
+      "inicio": 4.86,
+      "fin": 5.12
+    },
+    {
+      "palabra": "primera",
+      "inicio": 5.12,
+      "fin": 5.42
+    },
+    {
+      "palabra": "semana.",
+      "inicio": 5.42,
+      "fin": 5.74
+    }
+  ],
+  "cantidad_palabras_alineadas": 15
+}
