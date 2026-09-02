@@ -345,9 +345,24 @@ export function generarArbol(params: ParametrosGeneracion, log: boolean = true):
     unidadId: 'desarrollo2', categoria: elDesarrollo2.componente.categoria, intensidadComponente: elDesarrollo2.componente.intensidad,
     indice: 5, total: TOTAL, duracionSegTotal: duracionDesarrollo2, offsetsAudioSeg: offsetsAcumulados(audiosDesarrollo2),
   }, golpeDesarrollo2.golpeSugerido);
+  // Limitacion YA documentada (PENDIENTES.md item 10): dos componentes
+  // de la categoria "lista" pueden tener props Y SEMANTICA distintas.
+  // "ranking" no es solo un cambio de forma de props -- es un
+  // concepto distinto ("comparar varios items por valor", no "tachar
+  // opciones descartadas"), asi que la rama no reusa el mismo
+  // contenido con otro shape: se reformula para que tenga sentido real
+  // en cada caso, nunca se fuerza contenido de "tachado" dentro de un
+  // grafico de barras.
+  const propsDesarrollo2 = elDesarrollo2.componente.id === 'ranking'
+    ? {titulo: 'En qué se le iba el tiempo antes', filas: [
+        {txt: 'Editar a mano', valor: 70},
+        {txt: 'Subir y programar', valor: 20},
+        {txt: 'Revisar comentarios', valor: 10},
+      ], unidad: '%'}
+    : {items: ['Más horas', 'Más estrés', 'Menos tiempo libre'], queda: 'El mismo talento, mejor proceso.'};
   unidades.push({
     id: 'desarrollo2', componente: elDesarrollo2.componente,
-    props: {items: ['Más horas', 'Más estrés', 'Menos tiempo libre'], queda: 'El mismo talento, mejor proceso.'},
+    props: propsDesarrollo2,
     audios: audiosDesarrollo2, golpe: golpeDesarrollo2.golpeSugerido, volumenSfx: golpeDesarrollo2.volumenSfxSugerido,
     estrategiaEdicion: estrategiaDesarrollo2,
   });

@@ -48,5 +48,15 @@
     "conclusion": null,
     "estado": "esperando_datos",
     "fechaCreacion": "2026-09-02T17:57:36.581Z"
+  },
+  {
+    "id": "fabrica-demo-05-1788382415270",
+    "hipotesis": "El Director de Edicion (intencion/energia/estilos/microeventos/transicion motivada, decidido por metadata) produce un video que se percibe mas dirigido que fabrica-demo-04, sin ninguna excepcion manual por escena.",
+    "experimento": "fabrica-demo-05: Ronda 4, guion nuevo (Mica, edicion de video), voz real de Qwen3-TTS, Director de Edicion real para las 7 unidades, ciclo de mejora controlado corrido de verdad.",
+    "videoId": "fabrica-demo-05",
+    "resultadoReal": null,
+    "conclusion": null,
+    "estado": "esperando_datos",
+    "fechaCreacion": "2026-09-02T20:53:35.270Z"
   }
 ]

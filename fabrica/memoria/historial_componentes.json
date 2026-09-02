@@ -53,5 +53,17 @@
       "lista-tachada",
       "punch"
     ]
+  },
+  {
+    "videoId": "fabrica-demo-05",
+    "fecha": "2026-09-02T20:53:35.268Z",
+    "componentesUsados": [
+      "punch",
+      "cronologia",
+      "contador",
+      "tres-verdades",
+      "antes-despues",
+      "ranking"
+    ]
   }
 ]

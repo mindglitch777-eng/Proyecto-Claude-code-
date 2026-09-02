@@ -9,5 +9,6 @@ motor/contenido.db
 # Las pruebas de render las commitea el workflow probar-render, no la sesion.
 previews/
 
-# Archivo temporal del test del ciclo de mejora controlado (fabrica/laboratorio/).
-fabrica/laboratorio/.tmp_test_ciclo.json
+# Archivos temporales del ciclo de mejora controlado (fabrica/laboratorio/):
+# el arbol de cada intento se escribe ahi para pasarlo a los scripts de QA.
+fabrica/laboratorio/.tmp_*.json

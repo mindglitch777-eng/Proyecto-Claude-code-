@@ -1,0 +1,546 @@
+{
+  "id": "fabrica-demo-05",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "hook",
+      "desdeSeg": 0,
+      "duracionSeg": 6.708005,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "Mica cobra $340.",
+          "Le llevaba tres horas terminarlo."
+        ],
+        "entra": [
+          0,
+          3.77
+        ],
+        "clip": "freelance-00.mp4"
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_05/hook_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.52
+        },
+        {
+          "archivo": "fabrica_demo_05/hook_1.wav",
+          "desdeSegRelativo": 3.77,
+          "duracionSeg": 2.688005
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0,
+      "estrategiaEdicion": {
+        "unidadId": "hook",
+        "intencion": "enganchar",
+        "energia": "muy_alta",
+        "densidadVisual": "densa",
+        "estilos": [
+          "agresivo",
+          "documental"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "elementoSecundario": {
+          "tipo": "otro",
+          "descripcion": "informacion de apoyo que la narracion agrega despues (unidad \"hook\")"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "primera unidad del video (hook): capturar atencion desde el frame 0"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "ninguno",
+          "funcion": "dirigir_atencion",
+          "intensidad": "muy_alta",
+          "motivo": "golpe \"ninguno\" acompana una unidad con intencion \"enganchar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"hook\""
+          },
+          {
+            "enSegRelativo": 3.77,
+            "tipo": "entra_elemento_secundario",
+            "descripcion": "entra informacion de apoyo que la narracion agrega despues (unidad \"hook\")",
+            "razon": "offset real del clip de audio #1 (3.77s) -- la narracion empieza a hablar de esto en este punto"
+          },
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_sfx",
+            "descripcion": "SFX de entrada acompanando el elemento principal",
+            "razon": "estilo combinado incluye enfasis sonoro en la entrada (ver estilos.ts, tiposMicroEventoPreferidos)"
+          }
+        ],
+        "relacionConAnterior": "abre el video -- no hay escena anterior con la cual relacionarse",
+        "respiracion": false,
+        "razonGeneral": "unidad \"hook\" (1/7, categoria=texto): intencion=enganchar (energia=muy_alta, densidad=densa), estilos=[agresivo+documental]"
+      }
+    },
+    {
+      "unidadId": "desarrollo",
+      "desdeSeg": 6.708005,
+      "duracionSeg": 9.838004000000002,
+      "componenteId": "cronologia",
+      "props": {
+        "hitos": [
+          {
+            "cuando": "Mes 1",
+            "que": "graba y edita todo ella sola"
+          },
+          {
+            "cuando": "Mes 5",
+            "que": "empieza a automatizar el corte"
+          },
+          {
+            "cuando": "Mes 10",
+            "que": "entrega 18 videos por semana",
+            "acento": true
+          }
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_05/desarrollo_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.88
+        },
+        {
+          "archivo": "fabrica_demo_05/desarrollo_1.wav",
+          "desdeSegRelativo": 3.13,
+          "duracionSeg": 3.391995
+        },
+        {
+          "archivo": "fabrica_demo_05/desarrollo_2.wav",
+          "desdeSegRelativo": 6.771995,
+          "duracionSeg": 2.816009
+        }
+      ],
+      "golpe": "fundido",
+      "volumenSfx": 0,
+      "estrategiaEdicion": {
+        "unidadId": "desarrollo",
+        "intencion": "contextualizar",
+        "energia": "baja",
+        "densidadVisual": "moderada",
+        "estilos": [
+          "storytelling",
+          "documental"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "la progresion completa que se esta contando"
+        },
+        "elementoSecundario": {
+          "tipo": "otro",
+          "descripcion": "informacion de apoyo que la narracion agrega despues (unidad \"desarrollo\")"
+        },
+        "entrada": {
+          "tipo": "progresiva",
+          "razon": "entrada gradual, coherente con una energia media/baja"
+        },
+        "salida": {
+          "tipo": "se_desvanece",
+          "razon": "transicion suave hacia la unidad siguiente, sin necesidad de un ancla visual"
+        },
+        "transicion": {
+          "golpe": "fundido",
+          "funcion": "sin_funcion_especial",
+          "intensidad": "baja",
+          "motivo": "golpe \"fundido\" acompana una unidad con intencion \"contextualizar\" (elemento principal: la progresion completa que se esta contando)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra la progresion completa que se esta contando",
+            "razon": "elemento principal de la unidad \"desarrollo\""
+          },
+          {
+            "enSegRelativo": 3.13,
+            "tipo": "entra_elemento_secundario",
+            "descripcion": "entra informacion de apoyo que la narracion agrega despues (unidad \"desarrollo\")",
+            "razon": "offset real del clip de audio #1 (3.13s) -- la narracion empieza a hablar de esto en este punto"
+          },
+          {
+            "enSegRelativo": 6.771995,
+            "tipo": "entra_elemento_secundario",
+            "descripcion": "entra informacion de apoyo que la narracion agrega despues (unidad \"desarrollo\")",
+            "razon": "offset real del clip de audio #2 (6.77s) -- la narracion empieza a hablar de esto en este punto"
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "razonGeneral": "unidad \"desarrollo\" (2/7, categoria=timeline): intencion=contextualizar (energia=baja, densidad=moderada), estilos=[storytelling+documental]"
+      }
+    },
+    {
+      "unidadId": "aceleracion",
+      "desdeSeg": 16.546009,
+      "duracionSeg": 4.474014,
+      "componenteId": "contador",
+      "props": {
+        "arriba": "Videos por semana",
+        "desde": 3,
+        "hasta": 18,
+        "abajo": "videos/semana",
+        "prefijo": ""
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_05/aceleracion_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.224014
+        }
+      ],
+      "golpe": "fogonazo",
+      "volumenSfx": 0.9,
+      "estrategiaEdicion": {
+        "unidadId": "aceleracion",
+        "intencion": "construir_tension",
+        "energia": "alta",
+        "densidadVisual": "minima",
+        "estilos": [
+          "misterio",
+          "cinematico"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "fogonazo",
+          "funcion": "preparar_impacto",
+          "intensidad": "alta",
+          "motivo": "golpe \"fogonazo\" acompana una unidad con intencion \"construir_tension\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"aceleracion\""
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "razonGeneral": "unidad \"aceleracion\" (3/7, categoria=cifra): intencion=construir_tension (energia=alta, densidad=minima), estilos=[misterio+cinematico]"
+      }
+    },
+    {
+      "unidadId": "pausa",
+      "desdeSeg": 21.020023000000002,
+      "duracionSeg": 1.53,
+      "componenteId": "tres-verdades",
+      "props": {
+        "frases": [
+          "El precio nunca bajó."
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_05/pausa_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 1.28
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55,
+      "estrategiaEdicion": {
+        "unidadId": "pausa",
+        "intencion": "construir_tension",
+        "energia": "media",
+        "densidadVisual": "minima",
+        "estilos": [
+          "misterio",
+          "cinematico"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "progresiva",
+          "razon": "entrada gradual, coherente con una energia media/baja"
+        },
+        "salida": {
+          "tipo": "se_desvanece",
+          "razon": "transicion suave hacia la unidad siguiente, sin necesidad de un ancla visual"
+        },
+        "transicion": {
+          "golpe": "raya",
+          "funcion": "preparar_impacto",
+          "intensidad": "media",
+          "motivo": "golpe \"raya\" acompana una unidad con intencion \"construir_tension\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"pausa\""
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "razonGeneral": "unidad \"pausa\" (4/7, categoria=texto): intencion=construir_tension (energia=media, densidad=minima), estilos=[misterio+cinematico]"
+      }
+    },
+    {
+      "unidadId": "impacto",
+      "desdeSeg": 22.550023000000003,
+      "duracionSeg": 8.88399,
+      "componenteId": "antes-despues",
+      "props": {
+        "antes": {
+          "rotulo": "Precio por video",
+          "txt": "$340"
+        },
+        "despues": {
+          "rotulo": "18 videos esa semana",
+          "txt": "$6.120 en total"
+        }
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_05/impacto_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.391995
+        },
+        {
+          "archivo": "fabrica_demo_05/impacto_1.wav",
+          "desdeSegRelativo": 3.641995,
+          "duracionSeg": 4.991995
+        }
+      ],
+      "golpe": "sacudon",
+      "volumenSfx": 0.85,
+      "estrategiaEdicion": {
+        "unidadId": "impacto",
+        "intencion": "revelar",
+        "energia": "alta",
+        "densidadVisual": "minima",
+        "estilos": [
+          "misterio",
+          "agresivo"
+        ],
+        "elementoPrincipal": {
+          "tipo": "cifra",
+          "descripcion": "la cifra protagonista (dinero)"
+        },
+        "elementoSecundario": {
+          "tipo": "otro",
+          "descripcion": "informacion de apoyo que la narracion agrega despues (unidad \"impacto\")"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "sacudon",
+          "funcion": "preparar_impacto",
+          "intensidad": "alta",
+          "motivo": "golpe \"sacudon\" acompana una unidad con intencion \"revelar\" (elemento principal: la cifra protagonista (dinero))"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra la cifra protagonista (dinero)",
+            "razon": "elemento principal de la unidad \"impacto\""
+          },
+          {
+            "enSegRelativo": 3.641995,
+            "tipo": "se_revela_comparacion",
+            "descripcion": "la narracion empieza a describir el lado \"despues\"/consecuencia de la comparacion",
+            "razon": "offset real del clip de audio #1 (3.64s) -- el cambio visual debe ocurrir aca, no a mitad de la duracion total de la escena"
+          }
+        ],
+        "relacionConAnterior": "contrasta deliberadamente con la tension construida en las unidades anteriores",
+        "respiracion": false,
+        "razonGeneral": "unidad \"impacto\" (5/7, categoria=comparacion): intencion=revelar (energia=alta, densidad=minima), estilos=[misterio+agresivo] [combinar \"misterio\" + \"agresivo\" no es una combinacion tipica declarada en estilos.ts -- revisar si tiene sentido para esta unidad o si conviene elegir otro estilo secundario]"
+      }
+    },
+    {
+      "unidadId": "desarrollo2",
+      "desdeSeg": 31.434013000000004,
+      "duracionSeg": 3.77,
+      "componenteId": "ranking",
+      "props": {
+        "titulo": "En qué se le iba el tiempo antes",
+        "filas": [
+          {
+            "txt": "Editar a mano",
+            "valor": 70
+          },
+          {
+            "txt": "Subir y programar",
+            "valor": 20
+          },
+          {
+            "txt": "Revisar comentarios",
+            "valor": 10
+          }
+        ],
+        "unidad": "%"
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_05/desarrollo2_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.52
+        }
+      ],
+      "golpe": "corte",
+      "volumenSfx": 0.6,
+      "estrategiaEdicion": {
+        "unidadId": "desarrollo2",
+        "intencion": "acelerar",
+        "energia": "media",
+        "densidadVisual": "densa",
+        "estilos": [
+          "agresivo",
+          "data"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "la progresion completa que se esta contando"
+        },
+        "entrada": {
+          "tipo": "progresiva",
+          "razon": "entrada gradual, coherente con una energia media/baja"
+        },
+        "salida": {
+          "tipo": "se_desvanece",
+          "razon": "transicion suave hacia la unidad siguiente, sin necesidad de un ancla visual"
+        },
+        "transicion": {
+          "golpe": "corte",
+          "funcion": "marcar_cambio",
+          "intensidad": "media",
+          "motivo": "golpe \"corte\" acompana una unidad con intencion \"acelerar\" (elemento principal: la progresion completa que se esta contando)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra la progresion completa que se esta contando",
+            "razon": "elemento principal de la unidad \"desarrollo2\""
+          },
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_sfx",
+            "descripcion": "SFX de entrada acompanando el elemento principal",
+            "razon": "estilo combinado incluye enfasis sonoro en la entrada (ver estilos.ts, tiposMicroEventoPreferidos)"
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "razonGeneral": "unidad \"desarrollo2\" (6/7, categoria=lista): intencion=acelerar (energia=media, densidad=densa), estilos=[agresivo+data]"
+      }
+    },
+    {
+      "unidadId": "cierre",
+      "desdeSeg": 35.204013,
+      "duracionSeg": 2.996009,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "El video es el mismo trabajo.",
+          "El tiempo, no."
+        ],
+        "entra": [
+          0,
+          1.786009
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_05/cierre_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 1.536009
+        },
+        {
+          "archivo": "fabrica_demo_05/cierre_1.wav",
+          "desdeSegRelativo": 1.786009,
+          "duracionSeg": 0.96
+        }
+      ],
+      "golpe": "negro",
+      "volumenSfx": 0.5,
+      "estrategiaEdicion": {
+        "unidadId": "cierre",
+        "intencion": "cerrar",
+        "energia": "alta",
+        "densidadVisual": "minima",
+        "estilos": [
+          "cinematico",
+          "storytelling"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "elementoSecundario": {
+          "tipo": "otro",
+          "descripcion": "informacion de apoyo que la narracion agrega despues (unidad \"cierre\")"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "cierre del video: no debe quedar nada pendiente despues"
+        },
+        "transicion": {
+          "golpe": "negro",
+          "funcion": "marcar_cambio",
+          "intensidad": "alta",
+          "motivo": "golpe \"negro\" acompana una unidad con intencion \"cerrar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"cierre\""
+          },
+          {
+            "enSegRelativo": 1.786009,
+            "tipo": "entra_elemento_secundario",
+            "descripcion": "entra informacion de apoyo que la narracion agrega despues (unidad \"cierre\")",
+            "razon": "offset real del clip de audio #1 (1.79s) -- la narracion empieza a hablar de esto en este punto"
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "razonGeneral": "unidad \"cierre\" (7/7, categoria=texto): intencion=cerrar (energia=alta, densidad=minima), estilos=[cinematico+storytelling]"
+      }
+    }
+  ],
+  "duracionTotalSeg": 38.700022000000004
+}

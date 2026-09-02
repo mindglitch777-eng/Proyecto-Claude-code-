@@ -15,6 +15,7 @@ import demo01 from './fabrica_bridge/demo_01.json';
 import demo02 from './fabrica_bridge/demo_02.json';
 import demo03 from './fabrica_bridge/demo_03.json';
 import demo04 from './fabrica_bridge/demo_04.json';
+import demo05 from './fabrica_bridge/demo_05.json';
 import {Video} from './receta/Video';
 import {GUIONES} from './receta/guiones';
 import {compilar} from './receta/compilar';
@@ -123,6 +124,20 @@ export const Root: React.FC = () => {
         width={ANCHO}
         height={ALTO}
         defaultProps={{arbol: demo04 as ArbolFabrica}}
+      />
+      {/* Ronda 4: Director de Edicion (intencion/energia/estilos/
+          microeventos/transicion motivada) decidiendo de verdad para
+          las 7 unidades, mas el ciclo de mejora controlado corrido en
+          serio. Ver fabrica/ejemplos/generar_demo_05.ts y
+          fabrica/ESTADO_ACTUAL.md. */}
+      <Composition
+        id="fabrica-demo-05"
+        component={FabricaVideo}
+        durationInFrames={Math.round((demo05 as ArbolFabrica).duracionTotalSeg * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{arbol: demo05 as ArbolFabrica}}
       />
       <Composition id="rebecca-beach" component={RebeccaBeach} durationInFrames={Math.round(DUR_REBECCA * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       {/* Casos 2 a 20 de la serie documental: uno por entrada en
