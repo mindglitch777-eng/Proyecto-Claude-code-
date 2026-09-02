@@ -9,8 +9,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from normalizador import (  # noqa: E402
     detectar_y_normalizar,
+    normalizar_abreviatura,
     normalizar_anio,
     normalizar_dinero,
+    normalizar_fecha,
     normalizar_numero,
     normalizar_porcentaje,
     numero_a_palabras,
@@ -100,6 +102,77 @@ def test_anio():
     check("2018 hablado", normalizar_anio(2018).texto_hablado, "dos mil dieciocho")
     check("2018 visual", normalizar_anio(2018).texto_visual, "2018")
     check("2026 hablado", normalizar_anio(2026).texto_hablado, "dos mil veintiséis")
+
+
+def test_fecha_completa():
+    u = normalizar_fecha(15, 3, 2024)
+    check("15/03/2024 hablado", u.texto_hablado, "quince de marzo de dos mil veinticuatro")
+    check("15/03/2024 visual", u.texto_visual, "15/03/2024")
+    u1 = normalizar_fecha(1, 1, 2026)
+    check("dia 1 usa ordinal 'primero', no 'uno'", u1.texto_hablado, "primero de enero de dos mil veintiséis")
+
+
+def test_fecha_detectada_con_barras_y_guiones():
+    unidades = detectar_y_normalizar("El lanzamiento fue el 15/03/2024 en la ciudad")
+    check("cantidad detectada (fecha con barras)", len(unidades), 1)
+    check("tipo detectado", unidades[0].tipo, "fecha")
+    check("no confunde el anio de la fecha con un anio suelto aparte",
+          len([u for u in unidades if u.tipo == "anio"]), 0)
+
+    unidades = detectar_y_normalizar("Firmado el 1-12-2025")
+    check("fecha con guiones detectada", len(unidades), 1)
+    check("tipo detectado (guiones)", unidades[0].tipo, "fecha")
+
+
+def test_fecha_escrita_en_palabras_sin_parser_dedicado():
+    # "15 de marzo de 2024": no hay un parser de fechas dedicado para
+    # este formato -- la deteccion de anio (2024) y la de numero suelto
+    # con contexto "de <mes>" (15 -> "quince") se combinan solas.
+    salida = texto_con_narracion_normalizada("El evento fue el 15 de marzo de 2024")
+    check("dia+mes+anio en palabras arma la fecha completa hablada",
+          "quince de marzo de dos mil veinticuatro" in salida, True)
+
+    salida_dia_1 = texto_con_narracion_normalizada("Fue el 1 de enero de 2026")
+    check("dia 1 en formato palabras tambien usa 'primero'",
+          "primero de enero de dos mil veintiséis" in salida_dia_1, True)
+
+
+def test_abreviaturas():
+    check("Dr. hablado", normalizar_abreviatura("Dr.").texto_hablado, "doctor")
+    check("Dr. visual (se conserva la abreviatura)", normalizar_abreviatura("Dr.").texto_visual, "Dr.")
+    check("EE.UU. hablado", normalizar_abreviatura("EE.UU.").texto_hablado, "Estados Unidos")
+
+    unidades = detectar_y_normalizar("La Dra. Gomez atendio en EE.UU. hace 3 años, aprox.")
+    tipos = [u.tipo for u in unidades]
+    check("detecta Dra., EE.UU. y aprox. como abreviaturas", tipos.count("abreviatura"), 3)
+    salida = texto_con_narracion_normalizada("La Dra. Gomez vive en EE.UU.")
+    check("Dra. expandido en el texto hablado", "doctora" in salida, True)
+    check("EE.UU. expandido en el texto hablado", "Estados Unidos" in salida, True)
+    check("no quedan puntos de abreviatura sueltos en el texto hablado", "Dra." in salida, False)
+
+
+def test_numero_suelto_sin_separador_de_miles():
+    # Gap real: antes de esta ronda, un numero de 1-3 digitos sin punto
+    # de miles (ej. "15 productos") no se detectaba en absoluto.
+    unidades = detectar_y_normalizar("Vendio 15 productos en 3 dias")
+    check("cantidad detectada (dos numeros sueltos)", len(unidades), 2)
+    check("tipos detectados", [u.tipo for u in unidades], ["numero", "numero"])
+    check("15 hablado", unidades[0].texto_hablado, "quince")
+    check("3 hablado", unidades[1].texto_hablado, "tres")
+
+
+def test_numero_suelto_no_rompe_numeros_ya_manejados():
+    # "1.500" no debe partirse en "1" + "500" sueltos -- el span ya
+    # ocupado por el numero-con-miles debe ganar.
+    unidades = detectar_y_normalizar("Más de 1.500 productos, con un 35% de crecimiento")
+    check("sigue detectando solo 2 unidades (no se rompe 1.500)", len(unidades), 2)
+    tipos = sorted(u.tipo for u in unidades)
+    check("tipos detectados (sin numeros sueltos espurios)", tipos, ["numero", "porcentaje"])
+
+    unidades2 = detectar_y_normalizar("Generó $7.000 el mismo año, 2018")
+    tipos2 = sorted(u.tipo for u in unidades2)
+    check("dinero y anio no se rompen por el detector de numero suelto",
+          tipos2, ["anio", "dinero"])
 
 
 def test_deteccion_automatica_sobre_texto_real():

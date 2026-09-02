@@ -103,6 +103,48 @@ function check(desc: string, cond: boolean) {
   check('cada candidato trae al menos una razon', r.every((c) => c.razones.length > 0));
 }
 
+// 6) EXTENSIBILIDAD (pedido explicito del operador): agregar un
+//    componente nuevo al registro NO debe requerir tocar visual.ts.
+//    Se clona el registro real, se le suma una entrada inventada
+//    (nunca vista por DirectorVisual) con un id que no existe en
+//    ningun `if`/`switch` de todo el codigo, y se instancia un
+//    Director NUEVO con esa lista -- si lo elige, es prueba de que el
+//    filtro+score corre sobre datos, no sobre nombres conocidos de
+//    antemano.
+{
+  const componenteInventado: ComponenteRegistrado = {
+    id: 'componente-de-prueba-that-never-existed-before',
+    archivo: 'no-existe.tsx',
+    exportacion: 'NoExiste',
+    categoria: 'cifra',
+    funcion: 'Componente de prueba, no real, solo para probar extensibilidad.',
+    intensidad: 0.9,
+    ritmo: 'muy_dinamico',
+    capacidadTexto: 'corta',
+    requiereAssets: {tipo: 'ninguno', obligatorio: false},
+    duracionMinMaxSeg: [2, 6],
+    compatibleCon: [],
+    soportaAudioSincronizado: true,
+    estado: 'validado',
+  };
+  const registroExtendido = [...registro, componenteInventado];
+  const directorExtendido = new DirectorVisual(registroExtendido);
+
+  const r = directorExtendido.consultar({
+    categorias: ['cifra'], intensidadDeseada: 0.9, capacidadTextoNecesaria: 'corta',
+    assetsDisponibles: [], duracionDisponibleSeg: 3, requiereAudioSincronizado: true,
+  });
+  check('extensibilidad: el componente inventado aparece entre los candidatos',
+    r.some((c) => c.componente.id === componenteInventado.id));
+  check('extensibilidad: con intensidad/duracion que le calzan perfecto, sale PRIMERO',
+    r.length > 0 && r[0].componente.id === componenteInventado.id);
+  check('extensibilidad: el Director original (sin el componente nuevo) NO lo conoce',
+    !director.consultar({
+      categorias: ['cifra'], intensidadDeseada: 0.9, capacidadTextoNecesaria: 'corta',
+      assetsDisponibles: [], duracionDisponibleSeg: 3,
+    }).some((c) => c.componente.id === componenteInventado.id));
+}
+
 if (FALLOS.length) {
   console.error(`${FALLOS.length} FALLO(S):\n`);
   FALLOS.forEach((f) => console.error(' ' + f));

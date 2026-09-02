@@ -28,7 +28,7 @@ import sys
 from dataclasses import dataclass, field
 from typing import Literal
 
-TipoUnidad = Literal["numero", "dinero", "porcentaje", "anio"]
+TipoUnidad = Literal["numero", "dinero", "porcentaje", "anio", "fecha", "abreviatura"]
 
 # ============================================================
 # NUMERO -> PALABRAS (espanol, escala corta: mil / millon / mil
@@ -238,6 +238,57 @@ def normalizar_anio(anio: int) -> UnidadNormalizada:
                               texto_visual=str(anio))
 
 
+MESES = {1: "enero", 2: "febrero", 3: "marzo", 4: "abril", 5: "mayo", 6: "junio",
+          7: "julio", 8: "agosto", 9: "septiembre", 10: "octubre", 11: "noviembre", 12: "diciembre"}
+
+
+def normalizar_fecha(dia: int, mes: int, anio: int) -> UnidadNormalizada:
+    """Fecha completa (dia + mes + anio). Regla real del español: el
+    dia 1 de un mes se lee como ordinal ("primero de enero"), el resto
+    de los dias se lee como cardinal ("dos de enero", "quince de
+    marzo") -- NO como ordinal (nadie dice "el quinceavo de marzo").
+    El anio se lee siempre como numero completo (ver normalizar_anio).
+    """
+    dia_hablado = "primero" if dia == 1 else numero_a_palabras(dia)
+    hablado = f"{dia_hablado} de {MESES[mes]} de {numero_a_palabras(anio)}"
+    visual = f"{dia:02d}/{mes:02d}/{anio}"
+    return UnidadNormalizada(tipo="fecha", valor=float(anio), texto_hablado=hablado, texto_visual=visual)
+
+
+# ============================================================
+# ABREVIATURAS (seccion 10/11): lo que se ve en pantalla puede quedar
+# abreviado (asi se lee mas rapido), pero un TTS que "lee" "Dr." tal
+# cual suena mal o directamente deletrea las letras -- se expande SOLO
+# en texto_hablado, texto_visual conserva la abreviatura tal como la
+# escribio el guionista.
+# ============================================================
+ABREVIATURAS = {
+    "EE.UU.": "Estados Unidos",
+    "Dra.": "doctora",
+    "Dr.": "doctor",
+    "Sra.": "señora",
+    "Srta.": "señorita",
+    "Sr.": "señor",
+    "Uds.": "ustedes",
+    "Ud.": "usted",
+    "aprox.": "aproximadamente",
+    "p.ej.": "por ejemplo",
+    "etc.": "etcétera",
+    "núm.": "número",
+    "vs.": "contra",
+}
+_ABREVIATURAS_LOWER = {k.lower(): v for k, v in ABREVIATURAS.items()}
+_RE_ABREVIATURA = re.compile(
+    "|".join(re.escape(k) for k in sorted(ABREVIATURAS, key=len, reverse=True)),
+    re.IGNORECASE,
+)
+
+
+def normalizar_abreviatura(texto_original: str) -> UnidadNormalizada:
+    hablado = _ABREVIATURAS_LOWER[texto_original.lower()]
+    return UnidadNormalizada(tipo="abreviatura", valor=0.0, texto_hablado=hablado, texto_visual=texto_original)
+
+
 # ============================================================
 # DETECCION AUTOMATICA SOBRE UN TEXTO LIBRE
 # ============================================================
@@ -245,16 +296,27 @@ def normalizar_anio(anio: int) -> UnidadNormalizada:
 # escritura ya usados en los guiones de la serie documental):
 #   $1.234[,56]         -> dinero (USD por defecto; ver `moneda_por_defecto`)
 #   1.234 / 1234 + %    -> porcentaje
+#   15/03/2024 o 15-03-2024      -> fecha completa
 #   1900-2099 aislado    -> anio (falso positivo posible con montos sin
 #                            "$" que casualmente caen en ese rango --
 #                            aceptado como limitacion conocida, no se
 #                            resuelve con mas heuristica fragil)
 #   1.234 (con puntos de miles, sin $ ni %)  -> numero
+#   Dr. / Sr. / EE.UU. / etc.    -> abreviatura (diccionario cerrado,
+#                            ver ABREVIATURAS -- no se adivinan nuevas)
+#   numero suelto de 1 a 3 digitos (sin separador de miles, sin ya
+#   haber sido consumido por otra regla) -> numero. Si va seguido de
+#   "de <mes>" se trata como el dia de una fecha escrita en palabras
+#   (ej. "15 de marzo de 2024" -> el "2024" ya lo agarra _RE_ANIO, el
+#   "15" lo agarra esta regla con la forma especial del dia 1 = "primero").
 
 _RE_DINERO = re.compile(r"\$\s?(\d{1,3}(?:\.\d{3})*)(?:,(\d{2}))?")
 _RE_PORCENTAJE = re.compile(r"(\d+(?:,\d+)?)\s?%")
+_RE_FECHA_BARRA = re.compile(r"\b([0-3]?\d)[/-](0?[1-9]|1[0-2])[/-](\d{4})\b")
 _RE_ANIO = re.compile(r"\b(19|20)\d{2}\b")
 _RE_NUMERO_MILES = re.compile(r"\b\d{1,3}(?:\.\d{3})+\b")
+_RE_NUMERO_SIMPLE = re.compile(r"\b\d{1,3}\b")
+_RE_SEGUIDO_DE_MES = re.compile(r"^\s+de\s+(" + "|".join(MESES.values()) + r")\b", re.IGNORECASE)
 
 
 def detectar_y_normalizar(texto: str, moneda_por_defecto: str = "USD") -> list[UnidadNormalizada]:
@@ -269,6 +331,20 @@ def detectar_y_normalizar(texto: str, moneda_por_defecto: str = "USD") -> list[U
         centavos = int(m.group(2)) if m.group(2) else 0
         valor = entero + centavos / 100
         u = normalizar_dinero(valor, moneda_por_defecto)
+        u.span = m.span()
+        encontrados.append(u)
+        ocupado.append(m.span())
+
+    # Fechas dd/mm/yyyy o dd-mm-yyyy ANTES que anio/numero-miles: una
+    # fecha completa "consume" su yyyy entero para que no se procese
+    # de nuevo por separado como si fuera un anio suelto.
+    for m in _RE_FECHA_BARRA.finditer(texto):
+        if not _libre(*m.span()):
+            continue
+        dia, mes, anio = int(m.group(1)), int(m.group(2)), int(m.group(3))
+        if not (1 <= dia <= 31):
+            continue
+        u = normalizar_fecha(dia, mes, anio)
         u.span = m.span()
         encontrados.append(u)
         ocupado.append(m.span())
@@ -295,6 +371,33 @@ def detectar_y_normalizar(texto: str, moneda_por_defecto: str = "USD") -> list[U
             continue
         valor = int(m.group(0).replace(".", ""))
         u = normalizar_numero(valor)
+        u.span = m.span()
+        encontrados.append(u)
+        ocupado.append(m.span())
+
+    for m in _RE_ABREVIATURA.finditer(texto):
+        if not _libre(*m.span()):
+            continue
+        u = normalizar_abreviatura(m.group(0))
+        u.span = m.span()
+        encontrados.append(u)
+        ocupado.append(m.span())
+
+    # Numero suelto (1-3 digitos, sin separador de miles): ultimo
+    # porque cualquier digito ya consumido por dinero/fecha/anio/miles
+    # cae DENTRO de un span ocupado y se salta -- solo llegan aca los
+    # numeros que ninguna regla mas especifica reclamo.
+    for m in _RE_NUMERO_SIMPLE.finditer(texto):
+        if not _libre(*m.span()):
+            continue
+        valor = int(m.group(0))
+        resto = texto[m.end():m.end() + 30]
+        if _RE_SEGUIDO_DE_MES.match(resto):
+            hablado = "primero" if valor == 1 else numero_a_palabras(valor)
+            u = UnidadNormalizada(tipo="numero", valor=valor, texto_hablado=hablado,
+                                   texto_visual=str(valor))
+        else:
+            u = normalizar_numero(valor)
         u.span = m.span()
         encontrados.append(u)
         ocupado.append(m.span())

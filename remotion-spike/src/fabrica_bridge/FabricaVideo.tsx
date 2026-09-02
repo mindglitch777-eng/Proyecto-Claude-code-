@@ -1,10 +1,17 @@
 import React from 'react';
 import {AbsoluteFill, Audio, Sequence, staticFile, useVideoConfig} from 'remotion';
 import {Cronologia, ListaTachada, Balanza, AntesDespues, Pasos} from '../escenas/explica';
-import {Contador} from '../escenas/plata';
+import {Contador, Recibo, Duelo, Ranking, Crecimiento} from '../escenas/plata';
 import {CifraSeCae, RelojQueCorre, Embudo, Encuesta, TresVerdades} from '../escenas/mas';
 import {Diagrama} from '../dibujo/Diagrama';
 import {LogosHerramientas} from '../escenas/herramientas';
+import {Punch} from '../agresivo/Punch';
+import {Rafaga} from '../agresivo/Rafaga';
+import {Explicador} from '../agresivo/Explicador';
+import {Remate} from '../agresivo/Remate';
+import {Chat, Buscador, Notificaciones} from '../escenas/pantallas';
+import {Grafico} from '../escenas/Grafico';
+import {Silueta} from '../escenas/Silueta';
 import {Golpe, TipoGolpe} from '../escenas/golpes';
 import {PALETA} from '../identidad';
 
@@ -28,6 +35,10 @@ const IMPLEMENTACIONES: Record<string, React.FC<any>> = {
   'antes-despues': AntesDespues,
   pasos: Pasos,
   contador: Contador,
+  recibo: Recibo,
+  duelo: Duelo,
+  ranking: Ranking,
+  crecimiento: Crecimiento,
   'cifra-se-cae': CifraSeCae,
   'reloj-que-corre': RelojQueCorre,
   embudo: Embudo,
@@ -35,6 +46,15 @@ const IMPLEMENTACIONES: Record<string, React.FC<any>> = {
   'tres-verdades': TresVerdades,
   diagrama: Diagrama,
   'logos-herramientas': LogosHerramientas,
+  punch: Punch,
+  rafaga: Rafaga,
+  explicador: Explicador,
+  remate: Remate,
+  chat: Chat,
+  buscador: Buscador,
+  notificaciones: Notificaciones,
+  grafico: Grafico,
+  silueta: Silueta,
 };
 
 export type EscenaFabrica = {
@@ -43,7 +63,10 @@ export type EscenaFabrica = {
   duracionSeg: number;
   componenteId: string;
   props: Record<string, unknown>;
-  archivoAudio: string | null;
+  /** MULTI-AUDIO: 0, 1 o varios clips superpuestos DENTRO de esta
+   * misma escena/componente (patron generalizado de AudioCentro). Los
+   * offsets son relativos al INICIO de la escena, no del video. */
+  audios: {archivo: string; desdeSegRelativo: number; duracionSeg: number}[];
   golpe: TipoGolpe;
   volumenSfx: number;
 };
@@ -84,7 +107,15 @@ export const FabricaVideo: React.FC<{arbol: ArbolFabrica}> = ({arbol}) => {
             <Golpe tipo={e.golpe} sonido={i > 0}>
               <Comp {...e.props} />
             </Golpe>
-            {e.archivoAudio ? <Audio src={staticFile(e.archivoAudio)} /> : null}
+            {/* MULTI-AUDIO: cada clip se superpone en su propio offset
+                relativo dentro de esta misma escena -- el componente
+                visual se monta una sola vez arriba, no una vez por
+                clip. Generaliza AudioCentro de CasoGenerico.tsx. */}
+            {e.audios.map((a, j) => (
+              <Sequence key={j} from={seg(a.desdeSegRelativo, fps)}>
+                <Audio src={staticFile(a.archivo)} />
+              </Sequence>
+            ))}
           </Sequence>
         );
       })}

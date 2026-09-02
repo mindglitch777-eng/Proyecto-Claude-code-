@@ -12,6 +12,7 @@ import {Caso, duracionCaso} from './documental/CasoGenerico';
 import {CASOS} from './documental/casos';
 import {FabricaVideo, ArbolFabrica} from './fabrica_bridge/FabricaVideo';
 import demo01 from './fabrica_bridge/demo_01.json';
+import demo02 from './fabrica_bridge/demo_02.json';
 import {Video} from './receta/Video';
 import {GUIONES} from './receta/guiones';
 import {compilar} from './receta/compilar';
@@ -80,6 +81,18 @@ export const Root: React.FC = () => {
         width={ANCHO}
         height={ALTO}
         defaultProps={{arbol: demo01 as ArbolFabrica}}
+      />
+      {/* Segundo ejemplo de la nueva fabrica: 4 unidades, multi-audio
+          en 3 de ellas, anti-repeticion real (ver
+          fabrica/ejemplos/generar_demo_02.ts). */}
+      <Composition
+        id="fabrica-demo-02"
+        component={FabricaVideo}
+        durationInFrames={Math.round((demo02 as ArbolFabrica).duracionTotalSeg * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{arbol: demo02 as ArbolFabrica}}
       />
       <Composition id="rebecca-beach" component={RebeccaBeach} durationInFrames={Math.round(DUR_REBECCA * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       {/* Casos 2 a 20 de la serie documental: uno por entrada en

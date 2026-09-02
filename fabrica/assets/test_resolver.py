@@ -60,6 +60,32 @@ def test_resolver_general_prioriza_persona():
     check("resolver(): con persona_slug usa resolver_persona", r.tipo == "foto" and r.carpeta == "taylor-posada")
 
 
+def test_palabra_generica_no_produce_match_falso():
+    # Regresion de un bug real: "trabajo" aparece en los tags de varias
+    # carpetas (barberia, freelance, oficina...) -- antes del fix de
+    # frecuencia de documento, una consulta sobre freelance matcheaba
+    # por error con 'barber-shop-haircut-man-working' (ambas carpetas
+    # comparten SOLO la palabra "trabajo", nada especifico).
+    r = resolver_metraje("alguien probando un modelo de negocio, trabajo freelance")
+    check("no matchea con barberia solo por la palabra generica 'trabajo'",
+          r.carpeta != "barberia")
+    check("matchea con freelance (comparte 'trabajo' Y 'freelance', señal real)",
+          r.encontrado and r.carpeta == "freelance")
+
+
+def test_resolver_general_prioriza_mejor_score_no_el_primero():
+    # Si tipo=None, resolver() debe comparar biblioteca Y metraje y
+    # devolver el de MEJOR score, no "el primero que pasa el umbral".
+    r = resolver("alguien entrenando en el gimnasio")
+    check("resolver() sin tipo: encuentra el gimnasio en metraje", r.encontrado and r.tipo == "video")
+
+
+def test_resolver_general_respeta_tipo_pedido():
+    r = resolver("alguien entrenando en el gimnasio", tipo="foto")
+    check("resolver(tipo=foto): no devuelve un video aunque exista un match mejor ahi",
+          not r.encontrado or r.tipo == "foto")
+
+
 def test_resolver_general_faltante_no_rompe():
     r = resolver("un dragon volando sobre un volcan alienigena")
     check("resolver(): FALTANTE general no explota, devuelve objeto valido", r.encontrado is False)

@@ -10,26 +10,51 @@
  * margen de aire fijo -- nunca una duracion inventada. Solo las
  * unidades SIN audio (componente.soportaAudioSincronizado=false)
  * caen al rango aproximado del registro.
+ *
+ * MULTI-AUDIO (generalizacion del patron AudioCentro de
+ * CasoGenerico.tsx, hecha en esta sesion): una unidad puede traer
+ * VARIOS clips de audio (ej. una Cronologia con 3 hitos, cada uno con
+ * su propia narracion). La duracion de la unidad es la SUMA de todos
+ * sus clips + aire entre cada uno; cada clip se posiciona en su
+ * offset acumulado DENTRO de la escena. El componente visual se monta
+ * UNA sola vez para toda la escena (sigue siendo su misma animacion
+ * proporcional interna) -- lo que cambia es que ahora puede sonar mas
+ * de un audio durante esa animacion, en vez de uno solo.
  */
 import type {ArbolComposicion, EscenaComposicion, UnidadResuelta} from './tipos';
 
-const AIRE_SEG = 0.25;
+/** Publico a proposito: componentes como Punch necesitan un array
+ * `entra` con el offset de cada linea -- para que coincida EXACTO con
+ * lo que este modulo va a calcular (y no una copia del numero 0.25
+ * puesta a mano en otro archivo), se expone la misma constante. */
+export const AIRE_SEG = 0.25;
 const MARGEN_FINAL_SEG = 0.5;
 
-function duracionDeUnidad(u: UnidadResuelta): number {
-  if (u.audio) return u.audio.duracionSeg + AIRE_SEG;
-  // sin audio real: usar un punto intermedio del rango declarado por
-  // el propio componente, nunca un numero inventado aparte -- es la
-  // misma fuente de verdad que uso el Director Visual para puntuarlo.
-  const [minS, maxS] = u.componente.duracionMinMaxSeg;
-  return (minS + maxS) / 2;
+function resolverAudios(u: UnidadResuelta): {
+  duracionSeg: number;
+  audios: EscenaComposicion['audios'];
+} {
+  if (!u.audios || u.audios.length === 0) {
+    // sin audio real: punto intermedio del rango declarado por el
+    // propio componente -- misma fuente de verdad que uso el
+    // Director Visual para puntuarlo, nunca un numero aparte.
+    const [minS, maxS] = u.componente.duracionMinMaxSeg;
+    return {duracionSeg: (minS + maxS) / 2, audios: []};
+  }
+  let cursor = 0;
+  const audios: EscenaComposicion['audios'] = u.audios.map((clip) => {
+    const desdeSegRelativo = cursor;
+    cursor += clip.duracionSeg + AIRE_SEG;
+    return {archivo: clip.archivo, desdeSegRelativo, duracionSeg: clip.duracionSeg};
+  });
+  return {duracionSeg: cursor, audios};
 }
 
 export function armarComposicion(id: string, unidades: UnidadResuelta[], fps = 30): ArbolComposicion {
   let cursor = 0;
   const escenas: EscenaComposicion[] = unidades.map((u) => {
     const desdeSeg = cursor;
-    const duracionSeg = duracionDeUnidad(u);
+    const {duracionSeg, audios} = resolverAudios(u);
     cursor += duracionSeg;
     return {
       unidadId: u.id,
@@ -37,7 +62,7 @@ export function armarComposicion(id: string, unidades: UnidadResuelta[], fps = 3
       duracionSeg,
       componenteId: u.componente.id,
       props: u.props,
-      archivoAudio: u.audio?.archivo ?? null,
+      audios,
       golpe: u.golpe,
       volumenSfx: u.volumenSfx,
     };

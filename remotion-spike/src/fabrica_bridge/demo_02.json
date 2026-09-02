@@ -1,0 +1,135 @@
+{
+  "id": "fabrica-demo-02",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "hook",
+      "desdeSeg": 0,
+      "duracionSeg": 6.836,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "Alguien probó el mismo modelo durante un año entero.",
+          "Sin atajos, sin trucos, sin excusas."
+        ],
+        "entra": [
+          0,
+          3.346
+        ],
+        "clip": "freelance-00.mp4"
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo/caso-08_00.mp3",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.096
+        },
+        {
+          "archivo": "fabrica_demo/caso-08_01.mp3",
+          "desdeSegRelativo": 3.346,
+          "duracionSeg": 3.24
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "centro",
+      "desdeSeg": 6.836,
+      "duracionSeg": 12.126000000000001,
+      "componenteId": "cronologia",
+      "props": {
+        "hitos": [
+          {
+            "cuando": "MES 1",
+            "que": "Las primeras ventas, más flojas de lo que esperaba"
+          },
+          {
+            "cuando": "MES 3",
+            "que": "Empieza a aparecer información real, no ilusiones"
+          },
+          {
+            "cuando": "MES 12",
+            "que": "Ya no opina: tiene datos",
+            "acento": true
+          }
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo/caso-08_02.mp3",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.2
+        },
+        {
+          "archivo": "fabrica_demo/caso-08_03.mp3",
+          "desdeSegRelativo": 4.45,
+          "duracionSeg": 4.008
+        },
+        {
+          "archivo": "fabrica_demo/caso-08_04.mp3",
+          "desdeSegRelativo": 8.708,
+          "duracionSeg": 3.168
+        }
+      ],
+      "golpe": "fundido",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "cifra",
+      "desdeSeg": 18.962000000000003,
+      "duracionSeg": 5.636,
+      "componenteId": "cifra-se-cae",
+      "props": {
+        "abajo": "El secreto nunca fue la cantidad: fue la especificidad",
+        "hasta": 40,
+        "sufijo": "+"
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo/caso-09_04.mp3",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 1.128
+        },
+        {
+          "archivo": "fabrica_demo/caso-09_05.mp3",
+          "desdeSegRelativo": 1.378,
+          "duracionSeg": 4.008
+        }
+      ],
+      "golpe": "fogonazo",
+      "volumenSfx": 0.9
+    },
+    {
+      "unidadId": "cierre",
+      "desdeSeg": 24.598000000000003,
+      "duracionSeg": 5.756,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "Una semana demuestra que algo es posible.",
+          "Un año demuestra si de verdad funciona."
+        ],
+        "entra": [
+          0,
+          2.914
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo/caso-08_05.mp3",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.664
+        },
+        {
+          "archivo": "fabrica_demo/caso-08_06.mp3",
+          "desdeSegRelativo": 2.914,
+          "duracionSeg": 2.592
+        }
+      ],
+      "golpe": "negro",
+      "volumenSfx": 0.5
+    }
+  ],
+  "duracionTotalSeg": 30.854000000000003
+}

@@ -5,7 +5,7 @@
     {
       "unidadId": "u1",
       "desdeSeg": 0,
-      "duracionSeg": 11.626,
+      "duracionSeg": 12.126000000000001,
       "componenteId": "cronologia",
       "props": {
         "hitos": [
@@ -24,24 +24,51 @@
           }
         ]
       },
-      "archivoAudio": "fabrica_demo/u1_cronologia.mp3",
+      "audios": [
+        {
+          "archivo": "fabrica_demo/caso-08_02.mp3",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.2
+        },
+        {
+          "archivo": "fabrica_demo/caso-08_03.mp3",
+          "desdeSegRelativo": 4.45,
+          "duracionSeg": 4.008
+        },
+        {
+          "archivo": "fabrica_demo/caso-08_04.mp3",
+          "desdeSegRelativo": 8.708,
+          "duracionSeg": 3.168
+        }
+      ],
       "golpe": "ninguno",
       "volumenSfx": 0
     },
     {
       "unidadId": "u2",
-      "desdeSeg": 11.626,
-      "duracionSeg": 5.386,
+      "desdeSeg": 12.126000000000001,
+      "duracionSeg": 5.636,
       "componenteId": "contador",
       "props": {
         "abajo": "El secreto nunca fue la cantidad: fue la especificidad",
         "hasta": 40,
         "sufijo": "+"
       },
-      "archivoAudio": "fabrica_demo/u2_cifra.mp3",
+      "audios": [
+        {
+          "archivo": "fabrica_demo/caso-09_04.mp3",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 1.128
+        },
+        {
+          "archivo": "fabrica_demo/caso-09_05.mp3",
+          "desdeSegRelativo": 1.378,
+          "duracionSeg": 4.008
+        }
+      ],
       "golpe": "negro",
       "volumenSfx": 0.5
     }
   ],
-  "duracionTotalSeg": 17.512
+  "duracionTotalSeg": 18.262
 }

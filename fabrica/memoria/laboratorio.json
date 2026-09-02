@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "id": "fabrica-demo-02-1788349387573",
+    "hipotesis": "Usar \"punch\" (golpes de texto sobre metraje) en vez de un texto estatico en el hook y el cierre mantiene mas intensidad visual que TresVerdades sin perder sincronizacion real con el audio.",
+    "experimento": "fabrica-demo-02: hook y cierre con \"punch\" (multi-audio real, 2 clips cada uno), centro con \"cronologia\" (3 clips), cifra con \"contador\" (2 clips) -- primera vez que se usa \"punch\" en la fabrica nueva.",
+    "videoId": "fabrica-demo-02",
+    "resultadoReal": null,
+    "conclusion": null,
+    "estado": "esperando_datos",
+    "fechaCreacion": "2026-09-02T11:43:07.573Z"
+  },
+  {
+    "id": "fabrica-demo-02-1788349792092",
+    "hipotesis": "Usar \"punch\" (golpes de texto sobre metraje) en vez de un texto estatico en el hook y el cierre mantiene mas intensidad visual que TresVerdades sin perder sincronizacion real con el audio.",
+    "experimento": "fabrica-demo-02: hook y cierre con \"punch\" (multi-audio real, 2 clips cada uno), centro con \"cronologia\" (3 clips), cifra con \"contador\" (2 clips) -- primera vez que se usa \"punch\" en la fabrica nueva.",
+    "videoId": "fabrica-demo-02",
+    "resultadoReal": null,
+    "conclusion": null,
+    "estado": "esperando_datos",
+    "fechaCreacion": "2026-09-02T11:49:52.092Z"
+  }
+]
