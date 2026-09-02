@@ -3,6 +3,25 @@
 Solo lo que de verdad necesita que vos hagas algo o decidas algo. El
 detalle técnico completo de cada tema está en `fabrica/PENDIENTES.md`.
 
+## Ronda 4 (Director de Edición)
+
+### Escuchar/ver `fabrica-demo-05.mp4` (la entrega de esta ronda)
+
+Guion nuevo (Mica, edición de video), voz real, generado llamando de
+verdad al Director de Edición para las 7 escenas. Todo lo técnico salió
+limpio (QA duro, QA de composición, crítica editorial nueva, todo
+verificado con frames reales -- ver `fabrica/ESTADO_ACTUAL.md`,
+sección "RESULTADOS"). Lo que no puedo evaluar yo: si el cambio de
+lenguaje visual entre "desarrollo" y "aceleración" (que la crítica
+editorial marcó sola, sin que yo se lo pidiera puntualmente) se siente
+como una decisión de dirección o como un salto brusco.
+
+### Sin decisiones pendientes de gasto/cuentas esta ronda
+
+Todo lo construido es interno a la fábrica (ninguna API nueva, ningún
+servicio pago, ninguna integración externa) -- no hay nada que
+necesite tu aprobación de presupuesto o de cuenta esta vez.
+
 ## Ronda 3 (calidad audiovisual)
 
 ### Escuchar/ver `fabrica-demo-04.mp4` (la entrega de esta ronda)

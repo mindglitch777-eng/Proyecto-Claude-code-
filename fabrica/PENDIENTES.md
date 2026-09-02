@@ -329,3 +329,31 @@ del sistema o no.
   que ya funcionaba, verificada con tests + QA + evidencia visual; lo
   no construido queda como trabajo futuro explícito, no como deuda
   oculta.
+
+## 13. Ronda 4 (Director de Edición) — ver `MEJORAS_RONDA4.md` y `ESTADO_ACTUAL.md`
+
+- **Qué se hizo:** nueva capa `fabrica/directores/edicion/` (Director
+  de Edición: intención/energía/estilos/microeventos/transición
+  motivada), Editorial Critic (`qa/critica_editorial.py`), ciclo de
+  mejora controlado (`laboratorio/ciclo_mejora.ts`), anti-repetición
+  por patrón (`memoria/patrones.ts`), y `fabrica-demo-05.mp4` generado
+  llamando de verdad a todo el pipeline. Detalle completo en
+  `ESTADO_ACTUAL.md`.
+- **Bug real encontrado y corregido en esta ronda:** el Director
+  Visual eligió `ranking` para una unidad de categoría "lista" cuyo
+  contenido estaba pensado para `lista-tachada` -- mismo problema de
+  "props distintas dentro de una misma categoría" del ítem 10, pero
+  esta vez con consecuencia real (crash del render). Corregido con una
+  rama que reformula el CONTENIDO para `ranking`, no solo la forma de
+  los props.
+- **Pendiente técnico concreto (no arreglado esta ronda, de bajo
+  costo):** `generar_demo_05.ts` registra en
+  `historial_componentes.json`/`laboratorio.json`/`patrones_usados.json`
+  ANTES de que el render (proceso separado) confirme que el video es
+  válido -- un render fallido deja entradas fantasma que contaminan la
+  anti-repetición de videos futuros. Pasó de verdad esta ronda (se
+  detectó y limpió a mano). Arreglo propuesto: mover esos registros a
+  después de un QA duro exitoso sobre el mp4 renderizado, no dentro de
+  la función que arma el árbol.
+- **¿Bloquea el resto?** NO. Documentado como el primer paso lógico de
+  la próxima ronda en `ESTADO_ACTUAL.md`.
