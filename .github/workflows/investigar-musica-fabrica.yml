@@ -42,7 +42,7 @@ jobs:
 
       - name: Buscar en Free Music Archive y Jamendo
         env:
-          BUSQUEDA: ${{ inputs.busqueda }}
+          BUSQUEDA: ${{ inputs.busqueda || 'motivational upbeat corporate hustle' }}
           JAMENDO_CLIENT_ID: ${{ secrets.JAMENDO_CLIENT_ID }}
         run: |
           python3 - <<'PYEOF'
