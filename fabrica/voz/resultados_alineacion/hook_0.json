@@ -1,0 +1,61 @@
+{
+  "audio": "capturas_voz/audio_demo_10/hook_0.wav",
+  "texto_esperado": "La inteligencia artificial no te va a hacer ganar plata.",
+  "texto_transcripto": "La inteligencia artificial no te va a hacer ganar plata.",
+  "idioma_detectado": "es",
+  "probabilidad_idioma": 1,
+  "duracion_audio_seg": 3.584,
+  "palabras_con_timestamp": [
+    {
+      "palabra": "La",
+      "inicio": 0.0,
+      "fin": 0.82
+    },
+    {
+      "palabra": "inteligencia",
+      "inicio": 0.82,
+      "fin": 1.36
+    },
+    {
+      "palabra": "artificial",
+      "inicio": 1.36,
+      "fin": 1.8
+    },
+    {
+      "palabra": "no",
+      "inicio": 1.8,
+      "fin": 2.16
+    },
+    {
+      "palabra": "te",
+      "inicio": 2.16,
+      "fin": 2.28
+    },
+    {
+      "palabra": "va",
+      "inicio": 2.28,
+      "fin": 2.4
+    },
+    {
+      "palabra": "a",
+      "inicio": 2.4,
+      "fin": 2.48
+    },
+    {
+      "palabra": "hacer",
+      "inicio": 2.48,
+      "fin": 2.58
+    },
+    {
+      "palabra": "ganar",
+      "inicio": 2.58,
+      "fin": 2.9
+    },
+    {
+      "palabra": "plata.",
+      "inicio": 2.9,
+      "fin": 3.08
+    }
+  ],
+  "cantidad_palabras_alineadas": 10
+}
