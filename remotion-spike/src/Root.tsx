@@ -19,6 +19,7 @@ import demo05 from './fabrica_bridge/demo_05.json';
 import demo06 from './fabrica_bridge/demo_06.json';
 import demo07 from './fabrica_bridge/demo_07.json';
 import demo08 from './fabrica_bridge/demo_08.json';
+import demo09 from './fabrica_bridge/demo_09.json';
 import pruebaR68 from './fabrica_bridge/prueba_r6_8.json';
 import pruebaR610 from './fabrica_bridge/prueba_r6_10.json';
 import {Video} from './receta/Video';
@@ -202,6 +203,23 @@ export const Root: React.FC = () => {
         width={ANCHO}
         height={ALTO}
         defaultProps={{arbol: demo08 as ArbolFabrica}}
+      />
+      {/* R7-31: PRUEBA REAL de "que la fabrica piense la edicion" --
+          mismo guion/voz/preset que fabrica-demo-08, UNICAS variables
+          nuevas: (1) Rhythm Engine real (curva_energia.ts) empujando la
+          energia de cada unidad segun su posicion en el arco completo,
+          (2) cambios de encuadre reales anclados a pausas de voz medidas
+          por ffmpeg silencedetect (composicion/pausas.ts) en las
+          unidades de un solo clip de audio que en demo_08 quedaban
+          estaticas. Ver fabrica/ejemplos/generar_demo_09.ts. */}
+      <Composition
+        id="fabrica-demo-09"
+        component={FabricaVideo}
+        durationInFrames={Math.round((demo09 as ArbolFabrica).duracionTotalSeg * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{arbol: demo09 as ArbolFabrica}}
       />
       {/* R6-8: prueba de punta a punta de la transicion real
           (@remotion/transitions) con 2 audios REALES -- ver

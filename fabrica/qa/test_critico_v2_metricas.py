@@ -11,6 +11,8 @@ from critico_v2_metricas import calcular_metricas  # noqa: E402
 RAIZ = Path(__file__).resolve().parents[2]
 ARBOL_REAL = RAIZ / "remotion-spike" / "src" / "fabrica_bridge" / "demo_08.json"
 MP4_REAL = RAIZ / "fabrica" / "salidas" / "fabrica-demo-08.mp4"
+ARBOL_09 = RAIZ / "remotion-spike" / "src" / "fabrica_bridge" / "demo_09.json"
+MP4_09 = RAIZ / "fabrica" / "salidas" / "fabrica-demo-09.mp4"
 
 FALLOS = []
 
@@ -43,6 +45,22 @@ def main() -> int:
         m2 = calcular_metricas(str(ARBOL_REAL), str(MP4_REAL))
         check("con --mp4 real: silencios_sospechosos es un numero real, no None", m2.silencios_sospechosos is not None)
         check("con --mp4 real: volumen_medio_db es un numero real", m2.volumen_medio_db is not None)
+
+    # R7-31: comparacion objetiva real demo_08 (baseline) vs demo_09
+    # (Rhythm Engine + cambia_encuadre real anclado a pausas medidas) --
+    # el propio prompt pide "no me digas solamente mejoro", asi que esto
+    # deja la comparacion MEDIDA como test repetible, no como afirmacion
+    # suelta en un informe.
+    if ARBOL_09.exists():
+        m3 = calcular_metricas(str(ARBOL_09), str(MP4_09) if MP4_09.exists() else None)
+        check("demo_09 tiene mas eventos de cambio reales que demo_08 (nuevo mecanismo de pausas)",
+              m3.cantidad_eventos_de_cambio > m.cantidad_eventos_de_cambio)
+        check("demo_09 tiene al menos 2 microeventos cambia_encuadre reales (aceleracion + desarrollo2)",
+              m3.cantidad_microeventos_cambia_encuadre >= 2)
+        check("demo_08 (baseline) tiene 0 cambia_encuadre -- el mecanismo no existia todavia",
+              m.cantidad_microeventos_cambia_encuadre == 0)
+        check("demo_09 reduce (o iguala) la duracion media de bloque visual respecto de demo_08",
+              m3.duracion_media_bloque_visual_seg <= m.duracion_media_bloque_visual_seg)
 
     if FALLOS:
         print(f"{len(FALLOS)} FALLO(S):")

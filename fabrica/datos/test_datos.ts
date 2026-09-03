@@ -7,13 +7,16 @@ function check(desc: string, cond: boolean) {
   if (!cond) FALLOS.push(`FALLO: ${desc}`);
 }
 
-// R7-30: REGISTROS_VIDEO ya no esta vacio -- tiene 1 entrada real
-// (fabrica-demo-08, generado y renderizado de verdad, QA real corrido
+// R7-30/R7-31: REGISTROS_VIDEO ya no esta vacio -- tiene 2 entradas
+// reales (fabrica-demo-08 y fabrica-demo-09, A/B real del mismo
+// guion/voz, ambas generadas y renderizadas de verdad, QA real corrido
 // por el Orquestador) -- sigue sin ningun video PUBLICADO (metricas
 // null en todos), eso es lo que valida el resto de este bloque.
 check('REGISTROS_VIDEO tiene la entrada real de fabrica-demo-08', REGISTROS_VIDEO.some((r) => r.videoId === 'fabrica-demo-08'));
+check('REGISTROS_VIDEO tiene la entrada real de fabrica-demo-09', REGISTROS_VIDEO.some((r) => r.videoId === 'fabrica-demo-09'));
 check('REGISTROS_VIDEO: ningun registro tiene metricas reales todavia (nada publicado)', REGISTROS_VIDEO.every((r) => r.metricas === null));
 check('REGISTROS_VIDEO: fabrica-demo-08 tiene qaResumen real con ok=true', REGISTROS_VIDEO.find((r) => r.videoId === 'fabrica-demo-08')?.qaResumen?.ok === true);
+check('REGISTROS_VIDEO: fabrica-demo-09 tiene qaResumen real con ok=true', REGISTROS_VIDEO.find((r) => r.videoId === 'fabrica-demo-09')?.qaResumen?.ok === true);
 check('REGISTROS_PRODUCTO real esta vacio', REGISTROS_PRODUCTO.length === 0);
 check('retencionPromedioPorHook sobre el almacen real da objeto vacio (sin metricas reales, sin inventar un promedio)', Object.keys(retencionPromedioPorHook()).length === 0);
 

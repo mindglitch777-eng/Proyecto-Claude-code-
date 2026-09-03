@@ -40,5 +40,30 @@ export const REGISTROS_VIDEO: RegistroVideoCompleto[] = [
       fuente: 'orquestador.ts (checks_duros.py + checks_composicion.py)',
     },
   },
+  {
+    // R7-31 (prompt "que la fábrica piense la edición"): mismo
+    // guion/voz/preset que fabrica-demo-08 (A/B real), únicas variables
+    // nuevas: Rhythm Engine (curva_energia.ts) + cambia_encuadre real
+    // anclado a pausas de voz medidas (composicion/pausas.ts). Mismo
+    // hallazgo de no-persistencia que arriba -- agregado a mano después
+    // de correr el orquestador de verdad sobre fabrica-demo-09.mp4.
+    videoId: 'fabrica-demo-09',
+    idea: 'Curso online de Tomás: de 6 a 40 ventas por semana con el mismo precio.',
+    tema: 'productos digitales / cursos online',
+    angulo: 'resultado de negocio real (mismo precio, más alcance)',
+    hookPatronId: 'contexto-parcial',
+    estructura: 'hook-desarrollo-aceleracion-pausa-impacto-desarrollo2-cierre',
+    duracionSeg: 38.322065,
+    voz: 'Qwen3-TTS',
+    componentesUsados: ['punch', 'cronologia', 'contador', 'tres-verdades', 'antes-despues', 'ranking'],
+    formato: 'vertical 1080x1920, perfil de estilo "financiero_directo"',
+    fecha: '2026-09-03',
+    metricas: null,
+    qaResumen: {
+      ok: true,
+      problemas: [],
+      fuente: 'orquestador.ts (checks_duros.py + checks_composicion.py)',
+    },
+  },
 ];
 export const REGISTROS_PRODUCTO: RegistroProducto[] = [];

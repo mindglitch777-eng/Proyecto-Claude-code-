@@ -62,26 +62,54 @@ documentar.
 
 | Sección | Estado | Nota |
 |---|---|---|
-| Auditoría (Fase A/B) | pendiente | Reutiliza mapa de madurez + auditoría de techos ya existentes, no repite desde cero |
-| Intención narrativa por unidad | pendiente | Evaluar si `IntencionEdicion` (ya existe, 8 valores) cubre lo pedido o hace falta extender, ANTES de crear un tipo paralelo |
-| Rhythm Engine / curva de energía | pendiente | Foco principal -- `decidirEnergia()` ya existe pero es local por unidad, falta una curva objetivo para todo el video |
-| Cambios visuales con WHY/WHAT/INTENSITY/TIMING | pendiente | `estrategia.transicion.motivo` + `microeventos` ya dan parte de esto -- evaluar extender, no duplicar |
-| Cambios repentinos deliberados | pendiente | Conectar con densidad de microeventos en unidades largas |
-| Hook Engine v2 | evaluado, probablemente no ampliado esta ronda | Presupuesto de tiempo |
-| Lenguaje visual de negocios (dinero/ventas/etc.) | evaluado, probablemente no ampliado esta ronda | Presupuesto de tiempo |
-| Energy contrast | conectado con la curva de energía (mismo trabajo) | |
-| Audio como parte de la edición | evaluado, no ampliado esta ronda más allá de lo ya conectado (R7-22) | |
+| Auditoría (Fase A/B) | hecho (liviana) | Reutilizó mapa de madurez + auditoría de techos ya existentes; el diagnóstico del propio operador sobre demo-08 se confirmó numéricamente con Crítico v2 antes de tocar código (ver abajo) |
+| Intención narrativa por unidad | ya existía, no se tocó | `IntencionEdicion` (8 valores) ya cubre esto desde R4; no se creó tipo paralelo |
+| Rhythm Engine / curva de energía | **implementado y ejercitado en video real** | `directores/edicion/curva_energia.ts` (nuevo) -- `CurvaEnergia` con 7 checkpoints, empuja energía SOLO hacia arriba, nunca contradice `dejar_respirar`. Conectado a `DirectorEdicion.planificar()`. Efecto limpio confirmado en `fabrica-demo-09`: unidad "impacto" (revelación/clímax) pasó de `alta` a `muy_alta` sin cambiar de componente -- ahora el clímax realmente se distingue energéticamente de las demás unidades, cosa que en demo-08 no pasaba (impacto tenía la misma energía que hook/cierre) |
+| Cambios visuales con WHY/WHAT/INTENSITY/TIMING | ya existía, extendido | `estrategia.transicion.motivo` + `microeventos.razon` ya daban esto; se agregó el nuevo microevento `cambia_encuadre` con su propia razón explícita (pausa real medida) |
+| Cambios repentinos / unidades estáticas | **implementado y ejercitado** | Causa raíz real encontrada: unidades de 1 solo clip de audio no tenían NINGÚN offset interno para anclar un cambio (regla dura anti-invención). Fix: `composicion/pausas.ts` detecta pausas de voz REALES con `ffmpeg silencedetect` (mismo mecanismo que QA duro) y las usa como ancla de un `cambia_encuadre` real. Resultado medido: +2 eventos de cambio reales en demo-09 (aceleración a los 17.79s, desarrollo2 a los 32.91s), confirmado visualmente en frames extraídos |
+| Hook Engine v2 | no ampliado esta ronda | Presupuesto de tiempo -- foco puesto en Rhythm Engine + unidades estáticas por ser la causa raíz más directa del diagnóstico del operador |
+| Lenguaje visual de negocios (dinero/ventas/etc.) | no ampliado esta ronda | Presupuesto de tiempo |
+| Energy contrast | conectado con la curva de energía (mismo trabajo) | Ver hallazgo honesto abajo: un efecto colateral de la memoria anti-repetición (no de la curva) redujo el contraste en la unidad "pausa" en este video puntual |
+| Audio como parte de la edición | no ampliado esta ronda más allá de lo ya conectado (R7-22) | |
 | Familias de transición | evaluado -- los 10 `TipoGolpe` ya existentes se mapean contra esto, no se crea taxonomía nueva | |
-| Anti-Predictability Engine | pendiente | Extender anti-repetición existente más allá de componentId/golpe |
-| Visual Density Engine | ya existe (`DensidadVisual` en `combinarEstilos`) | evaluar si varía lo suficiente en el tiempo |
-| Payoff Engine | evaluado, no ampliado esta ronda | |
-| CTA integrado | evaluado, no ampliado esta ronda | |
-| Crítico Audiovisual v2 (métricas objetivas) | pendiente | Pieza central para la comparación de la sección 20 |
-| Self-correction real | ya existe (`laboratorio/ciclo_mejora.ts`) | evaluar y ejercitar de nuevo |
-| Video real de prueba (Sección 19) | pendiente | `fabrica-demo-09`, mismo guion que demo_08 para comparar |
-| Comparación objetiva (Sección 20) | pendiente | Tabla de métricas demo_08 vs demo_09 |
-| Honestidad (Sección 21) | aplicada en todo lo anterior | |
+| Anti-Predictability Engine | no ampliado esta ronda | Sigue en componentId/golpe/patrón de retención (R6-5), no se extendió a estructura/color/ritmo esta ronda |
+| Visual Density Engine | ya existía, sin cambios de código esta ronda | `DensidadVisual` en `combinarEstilos`; el Crítico v2 SÍ mide ahora si varía en el tiempo (`densidad_visual_varia`) -- reveló que en demo-09 dejó de variar por el mismo efecto colateral de memoria mencionado arriba |
+| Payoff Engine | no ampliado esta ronda | |
+| CTA integrado | no ampliado esta ronda | |
+| Crítico Audiovisual v2 (métricas objetivas) | **implementado y usado para la comparación real** | `qa/critico_v2_metricas.py` (nuevo) -- todo MEDIDO directo del árbol/render real, heurísticas siempre prefijadas `HEURISTICO:`, nunca una métrica de retención inventada |
+| Self-correction real | ya existía (`laboratorio/ciclo_mejora.ts`), ejercitado de nuevo | No se disparó una segunda iteración esta ronda porque el ciclo no encontró problemas duros bloqueantes en demo-09 (QA ok=true) -- el loop DETECT→CORRECT existe pero esta ronda no lo necesitó, no se simuló su uso |
+| Video real de prueba (Sección 19) | **hecho** | `fabrica-demo-09.mp4` (38.38s), mismo guion/voz/preset que demo-08, renderizado real, QA real ok=true, entregado al operador |
+| Comparación objetiva (Sección 20) | **hecho** | Ver tabla de métricas + hallazgo del confound en el informe entregado al operador (2026-09-03) |
+| Honestidad (Sección 21) | aplicada en todo lo anterior | Incluye reportar un efecto que NO es mejora atribuible a este trabajo (ver confound de memoria anti-repetición) en vez de adjudicárselo a la curva/pausas |
+
+## Hallazgo honesto de esta ronda (no inventar una mejora que no es tal)
+
+Al comparar demo-08 vs demo-09 con el Crítico v2 aparecieron dos cambios que
+**NO** son efecto del Rhythm Engine ni de `cambia_encuadre`: la unidad
+"pausa" cambió de componente (`silueta` → `tres-verdades`) y la unidad
+"desarrollo2" también (`lista-tachada` → `ranking`). Causa real: el
+Director Visual usa `componentesUsadosRecientes(5)` (memoria cross-video
+de R6-5, ya existente) para penalizar componentes recién usados -- y
+`fabrica-demo-08` ya estaba registrado en `memoria/historial_componentes.json`
+cuando se generó demo-09, así que "silueta" (usado en demo-08) quedó
+penalizado y perdió el slot de "pausa" frente a "tres-verdades". Efecto
+secundario real: la intención de esa unidad pasó de `dejar_respirar` a
+`construir_tension`, y **eso** -- no la curva -- es lo que hizo que
+`densidad_visual_varia` pasara de `true` a `false` en demo-09. Se documenta
+en vez de re-generar el video para "arreglarlo": es un límite real y
+honesto del método de comparación A/B cuando se usa memoria persistente
+entre videos consecutivos, no un bug a corregir con urgencia.
 
 ## Historial de actualizaciones
 
 - **2026-09-03**: creado antes de tocar código.
+- **2026-09-03 (cierre de ronda)**: Rhythm Engine (`curva_energia.ts`) +
+  detección de pausas reales (`composicion/pausas.ts`) + microevento
+  `cambia_encuadre` implementados, testeados (38 suites verdes) y
+  ejercitados en un video real (`fabrica-demo-09.mp4`) comparado
+  objetivamente contra `fabrica-demo-08.mp4` con el nuevo Crítico v2
+  (`qa/critico_v2_metricas.py`). Hook Engine v2, biblioteca de lenguaje
+  visual de negocios, familias de transición nuevas, Payoff Engine, CTA
+  integrado y Anti-Predictability Engine ampliado quedan sin tocar esta
+  ronda (presupuesto de tiempo, ver tabla arriba) -- no se simuló ni se
+  documentó como "hecho" nada de esto.

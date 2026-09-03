@@ -108,5 +108,15 @@
     "conclusion": null,
     "estado": "esperando_datos",
     "fechaCreacion": "2026-09-03T22:03:33.028Z"
+  },
+  {
+    "id": "fabrica-demo-09-1788475319135",
+    "hipotesis": "Aplicar el preset de estilo \"financiero_directo\" (configuracion.ts, R7-29) uniformemente a todas las unidades, en vez de estilosSugeridos sueltos a mano (como hacía fabrica-demo-07), no debería empeorar el perfil de QA (duro + composición) del mismo guion/voz -- es la única variable que cambia respecto de fabrica-demo-07 (experimento A/B real, misma disciplina que R7-22).",
+    "experimento": "fabrica-demo-09: mismo guion/voz que fabrica-demo-07 (Tomás, curso online), ÚNICA variable nueva: perfil de estilo \"financiero_directo\" aplicado por directores/edicion/configuracion.ts (R7-29/R7-30).",
+    "videoId": "fabrica-demo-09",
+    "resultadoReal": null,
+    "conclusion": null,
+    "estado": "esperando_datos",
+    "fechaCreacion": "2026-09-03T22:41:59.135Z"
   }
 ]

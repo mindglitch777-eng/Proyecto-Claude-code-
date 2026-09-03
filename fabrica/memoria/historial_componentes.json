@@ -125,5 +125,17 @@
       "antes-despues",
       "lista-tachada"
     ]
+  },
+  {
+    "videoId": "fabrica-demo-09",
+    "fecha": "2026-09-03T22:41:59.133Z",
+    "componentesUsados": [
+      "punch",
+      "cronologia",
+      "contador",
+      "tres-verdades",
+      "antes-despues",
+      "ranking"
+    ]
   }
 ]

@@ -10,7 +10,95 @@ después de cada bloque de trabajo real, como pide el "Prompt Maestro
 del prompt "Capa de exploración agresiva" (para no perderlo de nuevo
 en la memoria de la conversación), `docs/PROMPT_EXPLORACION_AGRESIVA.md`.
 
-## Último bloque de trabajo: R7-30 (2026-09-03) -- Orquestador real + video real generado
+## Último bloque de trabajo: R7-31 (2026-09-03) -- que la fábrica PIENSE la edición
+
+Pedido explícito del operador: diagnóstico propio sobre `fabrica-demo-08`
+(cambios estructurales fuertes solo en ~15.7s/21.7s/30.4s/34.3s, tramos
+largos sin variación, edición dependiente de texto+timeline) + prohibición
+explícita de "arreglarlo con más efectos" -- pidió arreglar el SISTEMA DE
+DECISIÓN. Texto completo (24 secciones) en
+`docs/PROMPT_DIRECCION_AUDIOVISUAL.md`, con tabla de estado sección por
+sección y un hallazgo honesto documentado ahí (ver abajo).
+
+**HECHO (real, testeado, ejercitado en video):**
+- **Rhythm Engine real** (`directores/edicion/curva_energia.ts`, nuevo):
+  curva de energía objetivo para todo el video (7 checkpoints
+  hook→explicación→aceleración→micro-pausa→revelación→aceleración→cierre),
+  conectada a `DirectorEdicion.planificar()`. Diseño deliberadamente
+  limitado: solo empuja energía HACIA ARRIBA, nunca contradice una unidad
+  de respiración real -- evita que una curva rígida pise contenido real.
+  Efecto limpio confirmado en el video real: la unidad "impacto"
+  (revelación/clímax) pasó de `alta` a `muy_alta` sin cambiar de
+  componente, ahora el clímax se distingue energéticamente de las demás
+  unidades (en demo-08 tenía la misma energía que hook/cierre).
+- **Causa raíz real de los tramos estáticos, encontrada y corregida**:
+  las unidades de un solo clip de audio (aceleración, pausa, desarrollo2)
+  no tenían NINGÚN offset interno donde anclar un cambio visual -- por la
+  regla dura del proyecto de nunca inventar timing no medido. Fix:
+  `composicion/pausas.ts` (nuevo) detecta pausas de voz REALES con
+  `ffmpeg silencedetect` (mismo mecanismo que ya usaba `checks_duros.py`,
+  umbral distinto) y las usa para anclar un microevento `cambia_encuadre`
+  real -- un tipo que existía en `tipos.ts` hace varias rondas pero nunca
+  se emitía ni se consumía (hallazgo real de "implementado pero no
+  usado"). Ejercitado en Remotion (`CambioEncuadre.tsx`, nuevo, wrapper
+  genérico de scale-pulse anclado a un frame).
+- **Crítico Audiovisual v2** (`qa/critico_v2_metricas.py`, nuevo): métricas
+  objetivas MEDIDAS del árbol/render real (cantidad y timestamps de
+  cambios estructurales, duración media/máxima de bloque visual, variedad
+  de componentes/golpes, densidad visual en el tiempo, silencios/negros
+  reales). Confirmó numéricamente el diagnóstico del operador sobre
+  demo-08 antes de tocar código, y sirvió para la comparación real.
+- **Video real de prueba generado y renderizado**: `fabrica-demo-09.mp4`
+  (38.38s), mismo guion/voz/preset `financiero_directo` que demo-08 (A/B
+  real, única variable nueva: las dos de arriba). QA duro y de
+  composición 100% limpios (`ok: true`). Entregado al operador.
+- **Comparación objetiva real demo-08 vs demo-09** (Crítico v2):
+  cantidad de eventos de cambio 12→14 (+2, exactamente los dos
+  `cambia_encuadre` nuevos, anclados a pausas reales a los 17.79s y
+  32.91s); duración media de bloque visual 3.32s→2.81s (menos tramos
+  largos sin variación); duración máxima de bloque sin cambio: sin
+  cambios (5.82s en ambos) -- la unidad "pausa" no tenía ninguna pausa
+  de voz útil detectada dentro de la ventana real, así que honestamente
+  no se le agregó ningún cambio inventado. Confirmado visualmente con
+  frames extraídos del render (el pulso de escala es visible en el
+  frame exacto de la pausa detectada).
+- **Hallazgo honesto (no atribuido de más)**: la comparación reveló que
+  la unidad "pausa" y "desarrollo2" cambiaron de COMPONENTE entre
+  demo-08 y demo-09 (`silueta`→`tres-verdades`,
+  `lista-tachada`→`ranking`) -- esto NO es efecto del Rhythm Engine ni
+  de `cambia_encuadre`, es la memoria anti-repetición cross-video ya
+  existente (`componentesUsadosRecientes(5)`, R6-5) penalizando
+  componentes que demo-08 ya había usado y registrado en
+  `memoria/historial_componentes.json`. Efecto secundario real: la
+  intención de "pausa" pasó de `dejar_respirar` a `construir_tension`, y
+  ESO -- no la curva -- redujo la variación de densidad visual en ese
+  punto. Se documenta como un límite real del método de comparación A/B
+  con memoria persistente entre videos consecutivos, no como una mejora
+  falsa ni como un bug urgente.
+- **Registro real**: `memoria/laboratorio.json` (hipótesis
+  `esperando_datos`, sin resultado inventado) + `datos/datos.ts`
+  (segunda entrada real, `qaResumen.ok=true`, `metricas: null` porque
+  nunca se publicó).
+
+**NO abordado esta ronda (presupuesto de tiempo, documentado sin
+maquillar en `docs/PROMPT_DIRECCION_AUDIOVISUAL.md`)**: Hook Engine v2,
+biblioteca de lenguaje visual de negocios (dinero/ventas/etc.), familias
+de transición nuevas más allá de los `TipoGolpe` existentes, Payoff
+Engine, CTA integrado a la narrativa, Anti-Predictability Engine
+extendido más allá de componentId/golpe/patrón de retención.
+
+**Suite completa verificada**: `npm run test-todo` (38/38 OK, incluye
+un nuevo test de comparación objetiva demo-08 vs demo-09) + `tsc
+--noEmit` limpio en `fabrica/` y `remotion-spike/`.
+
+**PRÓXIMO PASO real, ya registrado**: si se genera un demo-10, resetear
+o filtrar `historial_componentes.json` para ese experimento puntual (o
+comparar solo escenas con el mismo componente) para que el A/B vuelva a
+ser de una sola variable limpia; después, Hook Engine v2 o Anti-
+Predictability Engine extendido son los candidatos más directos según
+la propia lista de pendientes de esta ronda.
+
+## Bloque anterior: R7-30 (2026-09-03) -- Orquestador real + video real generado
 
 Pedido explícito del operador: "no más piezas sueltas, construí una
 máquina" -- Orquestador real que conecte todo el pipeline y termine en
