@@ -1,0 +1,114 @@
+[
+  {
+    "index": 0,
+    "unidad": "hook",
+    "idx_en_unidad": 0,
+    "id": "hook_0",
+    "texto_crudo": "La inteligencia artificial no te va a hacer ganar plata.",
+    "texto": "La inteligencia artificial no te va a hacer ganar plata."
+  },
+  {
+    "index": 1,
+    "unidad": "hook",
+    "idx_en_unidad": 1,
+    "id": "hook_1",
+    "texto_crudo": "Y cuanto antes entiendas esto, mejor.",
+    "texto": "Y cuanto antes entiendas esto, mejor."
+  },
+  {
+    "index": 2,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 0,
+    "id": "desarrollo_0",
+    "texto_crudo": "Porque hoy cualquiera puede generar cien videos, cien imágenes y cien productos en una tarde.",
+    "texto": "Porque hoy cualquiera puede generar cien videos, cien imágenes y cien productos en una tarde."
+  },
+  {
+    "index": 3,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 1,
+    "id": "desarrollo_1",
+    "texto_crudo": "El problema es que producir más no significa vender más.",
+    "texto": "El problema es que producir más no significa vender más."
+  },
+  {
+    "index": 4,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 2,
+    "id": "desarrollo_2",
+    "texto_crudo": "Podés automatizar absolutamente todo...",
+    "texto": "Podés automatizar absolutamente todo..."
+  },
+  {
+    "index": 5,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 3,
+    "id": "desarrollo_3",
+    "texto_crudo": "...y seguir automatizando una idea que nadie quiere.",
+    "texto": "...y seguir automatizando una idea que nadie quiere."
+  },
+  {
+    "index": 6,
+    "unidad": "giro",
+    "idx_en_unidad": 0,
+    "id": "giro_0",
+    "texto_crudo": "Los que están aprovechando la IA de verdad hacen algo distinto.",
+    "texto": "Los que están aprovechando la IA de verdad hacen algo distinto."
+  },
+  {
+    "index": 7,
+    "unidad": "giro",
+    "idx_en_unidad": 1,
+    "id": "giro_1",
+    "texto_crudo": "Primero encuentran un problema.",
+    "texto": "Primero encuentran un problema."
+  },
+  {
+    "index": 8,
+    "unidad": "giro",
+    "idx_en_unidad": 2,
+    "id": "giro_2",
+    "texto_crudo": "Después encuentran una oferta.",
+    "texto": "Después encuentran una oferta."
+  },
+  {
+    "index": 9,
+    "unidad": "giro",
+    "idx_en_unidad": 3,
+    "id": "giro_3",
+    "texto_crudo": "Y recién ahí utilizan IA para multiplicar lo que funciona.",
+    "texto": "Y recién ahí utilizan IA para multiplicar lo que funciona."
+  },
+  {
+    "index": 10,
+    "unidad": "revelacion",
+    "idx_en_unidad": 0,
+    "id": "revelacion_0",
+    "texto_crudo": "La máquina no decide qué quiere comprar la gente.",
+    "texto": "La máquina no decide qué quiere comprar la gente."
+  },
+  {
+    "index": 11,
+    "unidad": "revelacion",
+    "idx_en_unidad": 1,
+    "id": "revelacion_1",
+    "texto_crudo": "Te ayuda a ejecutar.",
+    "texto": "Te ayuda a ejecutar."
+  },
+  {
+    "index": 12,
+    "unidad": "payoff",
+    "idx_en_unidad": 0,
+    "id": "payoff_0",
+    "texto_crudo": "La ventaja está en saber qué ejecutar.",
+    "texto": "La ventaja está en saber qué ejecutar."
+  },
+  {
+    "index": 13,
+    "unidad": "payoff",
+    "idx_en_unidad": 1,
+    "id": "payoff_1",
+    "texto_crudo": "Y eso cambia completamente el juego.",
+    "texto": "Y eso cambia completamente el juego."
+  }
+]
