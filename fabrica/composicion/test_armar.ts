@@ -1,6 +1,18 @@
 import {AIRE_SEG, AIRE_TRANSICION_SEG, armarComposicion} from './armar';
 import type {UnidadResuelta} from './tipos';
 import type {ComponenteRegistrado} from '../componentes/tipos';
+import type {EstrategiaEdicion} from '../directores/edicion/tipos';
+
+function estrategiaFake(patronRetencionId?: string): EstrategiaEdicion {
+  return {
+    unidadId: 'x', intencion: 'contextualizar', energia: 'media', densidadVisual: 'moderada',
+    estilos: ['documental'], elementoPrincipal: {tipo: 'concepto', descripcion: 'x'},
+    entrada: {tipo: 'progresiva', razon: 'x'}, salida: {tipo: 'se_desvanece', razon: 'x'},
+    transicion: {golpe: 'ninguno', motivo: 'x', funcion: 'sin_funcion_especial', intensidad: 'media'},
+    microeventos: [], relacionConAnterior: 'x', respiracion: false, patronRetencionId,
+    razonGeneral: 'x',
+  };
+}
 
 const FALLOS: string[] = [];
 function check(desc: string, cond: boolean) {
@@ -146,6 +158,25 @@ function compFake(id: string, extra?: Partial<ComponenteRegistrado>): Componente
   const arbol = armarComposicion('demo-patrones', unidades);
   check('escena 1 trae patronesRetencion tal cual se declaro', JSON.stringify(arbol.escenas[0].patronesRetencion) === JSON.stringify(['contexto-parcial', 'cifra-inmediata']));
   check('escena 2 (sin declarar patrones) no trae el campo', arbol.escenas[1].patronesRetencion === undefined);
+}
+
+// R7-15: patronesRetencion se DERIVA automaticamente de
+// estrategiaEdicion.patronRetencionId cuando el generador no lo puso a
+// mano -- esta es la conexion real a la eleccion automatica del
+// Director de Edicion. Lo explicito sigue ganando si esta presente.
+{
+  const unidades: UnidadResuelta[] = [
+    {id: 'u1', componente: compFake('c1'), props: {}, audios: null, golpe: 'ninguno', volumenSfx: 0, estrategiaEdicion: estrategiaFake('cifra-inmediata')},
+    {id: 'u2', componente: compFake('c2'), props: {}, audios: null, golpe: 'ninguno', volumenSfx: 0, estrategiaEdicion: estrategiaFake(undefined)},
+    {id: 'u3', componente: compFake('c3'), props: {}, audios: null, golpe: 'ninguno', volumenSfx: 0, estrategiaEdicion: estrategiaFake('cifra-inmediata'), patronesRetencion: ['loop-abierto']},
+  ];
+  const arbol = armarComposicion('demo-patrones-auto', unidades);
+  check('escena 1 deriva patronesRetencion de estrategiaEdicion.patronRetencionId (auto, R7-15)',
+    JSON.stringify(arbol.escenas[0].patronesRetencion) === JSON.stringify(['cifra-inmediata']));
+  check('escena 2 (estrategiaEdicion sin patronRetencionId) no trae el campo',
+    arbol.escenas[1].patronesRetencion === undefined);
+  check('escena 3: patronesRetencion explicito sigue ganando sobre el automatico',
+    JSON.stringify(arbol.escenas[2].patronesRetencion) === JSON.stringify(['loop-abierto']));
 }
 
 if (FALLOS.length) {

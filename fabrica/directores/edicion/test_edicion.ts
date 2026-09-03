@@ -1,5 +1,6 @@
 import {DirectorEdicion} from './edicion';
 import type {ContextoUnidad} from './tipos';
+import {porId as patronPorId} from '../../hooks/consultar';
 
 const FALLOS: string[] = [];
 function check(desc: string, cond: boolean) {
@@ -77,6 +78,24 @@ function main() {
 
   // razonGeneral siempre es un texto no vacio (auditable).
   check('razonGeneral no esta vacio', eHook.razonGeneral.length > 0 && eImpacto.razonGeneral.length > 0);
+
+  // R7-15: eleccion automatica de un patron del Viral/Retention Engine
+  // -- conecta el catalogo (antes solo consultable a mano) a la
+  // decision real del Director de Edicion.
+  check('la unidad de hook (intencion enganchar) recibe un patronRetencionId real', !!eHook.patronRetencionId && !!patronPorId(eHook.patronRetencionId!));
+  check('el patron elegido para el hook es compatible con "enganchar"', patronPorId(eHook.patronRetencionId!)!.compatibleConIntencion.includes('enganchar'));
+  check('la unidad de revelacion recibe un patron compatible con "revelar"', patronPorId(eImpacto.patronRetencionId!)!.compatibleConIntencion.includes('revelar'));
+  check('razonGeneral menciona el patron de retencion elegido', eHook.razonGeneral.includes('patron_retencion='));
+
+  // Anti-repeticion: si el primer candidato compatible ya se uso en
+  // este video (evitarPatrones), elige el siguiente compatible en vez
+  // de repetirlo -- mismo principio que evitarGolpes de DirectorAudio.
+  const primerCandidato = director.planificar(hook, 'ninguno').patronRetencionId!;
+  const conAntiRepeticion = director.planificar(hook, 'ninguno', [primerCandidato]);
+  check('evitarPatrones hace que NO se repita el primer candidato si hay otro compatible',
+    conAntiRepeticion.patronRetencionId !== primerCandidato);
+  check('el patron alternativo elegido sigue siendo compatible con "enganchar"',
+    patronPorId(conAntiRepeticion.patronRetencionId!)!.compatibleConIntencion.includes('enganchar'));
 
   if (FALLOS.length) {
     console.log(`\n${FALLOS.length} FALLO(S):\n`);

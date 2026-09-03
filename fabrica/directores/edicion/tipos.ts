@@ -123,6 +123,16 @@ export type EstrategiaEdicion = {
   /** Texto libre, NO una metrica: como se relaciona esta unidad con la
    * anterior (continuidad, contraste, ninguna relacion especial). */
   relacionConAnterior: string;
+  /** R7-15: id real de fabrica/hooks/catalogo.ts (Viral/Retention
+   * Engine) elegido AUTOMÁTICAMENTE para esta unidad, según qué
+   * patrones son compatibles con `intencion` (patronesCompatibles()).
+   * Antes de R7-15 el catálogo era solo consultable a mano -- esto es
+   * la conexión real a la elección automática que R6-4 dejó
+   * deliberadamente diferida. Ausente solo si `patronesCompatibles`
+   * no devuelve ningún candidato para la intención (no ocurre hoy con
+   * el catálogo real de 18 patrones, pero el campo queda opcional por
+   * si una intención nueva se agrega sin patrones todavía). */
+  patronRetencionId?: string;
   /** true = esta unidad es, a proposito, un momento de silencio/
    * respiro (seccion 18: "el sistema tambien debe poder decidir NO
    * poner nada"). No es lo mismo que energia='baja' -- una unidad de

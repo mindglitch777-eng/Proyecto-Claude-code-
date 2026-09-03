@@ -100,7 +100,15 @@ completo de cada una:
   conectar todavía el Hook Engine a la elección automática del
   Director de Edición: es un catálogo consultable, la integración
   automática es un cambio de mayor riesgo sobre lógica que ya funciona
-  bien, se deja para una ronda futura.
+  bien, se deja para una ronda futura. **Actualización R7-15:** se
+  conectó -- `DirectorEdicion.planificar()` ahora elige un patrón
+  automáticamente (con anti-repetición vía `evitarPatrones`, mismo
+  principio que `evitarGolpes`), y `armarComposicion()` deriva
+  `patronesRetencion` de esa elección. El riesgo se mitigó dejando lo
+  explícito (`patronesRetencion` puesto a mano por un generador) con
+  prioridad sobre lo automático, y confirmando con tests que ningún
+  generador existente cambia de comportamiento visual/de golpe/de
+  componente -- solo se agrega metadata nueva.
 - **Anti-repetición evolucionada con `hookId` opcional, no un sistema
   paralelo (R6-5)** — decisión: en vez de construir un tracker
   separado para "patrones de hook repetidos", se agregó `hookId?`

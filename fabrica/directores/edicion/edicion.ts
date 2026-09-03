@@ -19,6 +19,7 @@
 import type {TipoGolpe} from '../audio';
 import {combinarEstilos} from './estilos';
 import {construirMicroeventos} from './microeventos';
+import {patronesCompatibles} from '../../hooks/consultar';
 import type {
   ContextoUnidad, ElementoDestacado, EstiloId, EstrategiaEdicion, EstrategiaEntrada,
   EstrategiaSalida, FuncionTransicion, IntencionEdicion, NivelEnergia,
@@ -58,7 +59,14 @@ const ESTILOS_POR_INTENCION: Record<IntencionEdicion, EstiloId[]> = {
 };
 
 export class DirectorEdicion {
-  planificar(ctx: ContextoUnidad, golpeDecidido: TipoGolpe): EstrategiaEdicion {
+  /**
+   * @param evitarPatrones ids de fabrica/hooks/catalogo.ts usados
+   * recientemente en ESTE video (mismo principio que `evitarGolpes` de
+   * DirectorAudio.decidirParaUnidad) -- el llamador es quien conoce el
+   * historial real, este método no lee memoria por sí mismo (mismo
+   * principio arquitectónico que el resto de los Directores).
+   */
+  planificar(ctx: ContextoUnidad, golpeDecidido: TipoGolpe, evitarPatrones: string[] = []): EstrategiaEdicion {
     const intencion = this.decidirIntencion(ctx);
     const respiracion = intencion === 'dejar_respirar';
 
@@ -88,10 +96,13 @@ export class DirectorEdicion {
 
     const relacionConAnterior = this.decidirRelacionConAnterior(ctx, intencion);
 
+    const patronRetencionId = this.decidirPatronRetencion(intencion, evitarPatrones);
+
     const razonGeneral =
       `unidad "${ctx.unidadId}" (${ctx.indice + 1}/${ctx.total}, categoria=${ctx.categoria}): ` +
       `intencion=${intencion} (energia=${energia}, densidad=${densidadVisual}), ` +
-      `estilos=[${idsEstilos.join('+')}]${combinacion.advertencias.length ? ` [${combinacion.advertencias.join('; ')}]` : ''}`;
+      `estilos=[${idsEstilos.join('+')}]${combinacion.advertencias.length ? ` [${combinacion.advertencias.join('; ')}]` : ''}` +
+      `${patronRetencionId ? `, patron_retencion=${patronRetencionId}` : ''}`;
 
     return {
       unidadId: ctx.unidadId,
@@ -107,8 +118,25 @@ export class DirectorEdicion {
       microeventos,
       relacionConAnterior,
       respiracion,
+      patronRetencionId,
       razonGeneral,
     };
+  }
+
+  /**
+   * R7-15: elección automática de un patrón del Viral/Retention Engine
+   * (fabrica/hooks/) compatible con la intención ya decidida --
+   * conecta el catálogo (antes solo consultable a mano) a la decisión
+   * real de edición. Misma lógica que `elegirGolpe` de
+   * directores/audio.ts: primer candidato compatible que no esté en
+   * `evitarPatrones`; si todos están usados, mejor repetir el primero
+   * que romper (ningún patrón disponible es peor que uno repetido).
+   */
+  private decidirPatronRetencion(intencion: IntencionEdicion, evitarPatrones: string[]): string | undefined {
+    const candidatos = patronesCompatibles(intencion);
+    if (candidatos.length === 0) return undefined;
+    const libre = candidatos.find((p) => !evitarPatrones.includes(p.id));
+    return (libre ?? candidatos[0]).id;
   }
 
   private decidirIntencion(ctx: ContextoUnidad): IntencionEdicion {

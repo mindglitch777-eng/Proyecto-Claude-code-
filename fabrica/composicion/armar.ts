@@ -112,7 +112,19 @@ export function armarComposicion(id: string, unidades: UnidadResuelta[], fps = 3
       volumenSfx: u.volumenSfx,
       ...(puedeTransicionReal ? {transicionSalienteSeg: AIRE_TRANSICION_SEG} : {}),
       ...(u.estrategiaEdicion ? {estrategiaEdicion: u.estrategiaEdicion} : {}),
-      ...(u.patronesRetencion && u.patronesRetencion.length > 0 ? {patronesRetencion: u.patronesRetencion} : {}),
+      ...(() => {
+        // R7-15: conecta la eleccion automatica del Director de Edicion
+        // (estrategiaEdicion.patronRetencionId) al mapa de retencion --
+        // `patronesRetencion` explicito de la unidad sigue ganando si el
+        // generador lo puso a mano (mismo principio que "sugerido, no
+        // dictado" ya usado en el resto de la fabrica). Una unidad sin
+        // estrategiaEdicion (arbol viejo) no gana ningun campo nuevo --
+        // retrocompatibilidad identica a antes de R7-15.
+        const explicitos = u.patronesRetencion && u.patronesRetencion.length > 0 ? u.patronesRetencion : undefined;
+        const automatico = u.estrategiaEdicion?.patronRetencionId ? [u.estrategiaEdicion.patronRetencionId] : undefined;
+        const patronesRetencion = explicitos ?? automatico;
+        return patronesRetencion ? {patronesRetencion} : {};
+      })(),
     };
   });
   return {id, fps, escenas, duracionTotalSeg: cursor + MARGEN_FINAL_SEG};

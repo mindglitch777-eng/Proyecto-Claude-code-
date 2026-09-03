@@ -33,7 +33,10 @@ transición con variedad real + anti-repetición
   ↓
 Director de Edición (fabrica/directores/edicion/, Ronda 4) --
 intención/energía/estilos combinables/microeventos/transición
-motivada
+motivada; desde R7-15 también elige AUTOMÁTICAMENTE un patrón
+compatible del Viral/Retention Engine para cada unidad (con
+anti-repetición explícita vía `evitarPatrones`, mismo principio que
+`evitarGolpes` del Director de Audio)
   ↓
 Director de Retención 2.0 (fabrica/directores/retencion/, Ronda 5) --
 mapa narrativo del video completo + alertas de arco
@@ -41,10 +44,11 @@ mapa narrativo del video completo + alertas de arco
 Knowledge Engine + Viral/Retention Engine (fabrica/conocimiento/,
 fabrica/hooks/, Ronda 6, ampliado Ronda 7 a 27 categorías / 18
 patrones / 14 categorías de patrón) -- catálogo de conocimiento y de
-patrones de retención con evidencia real citada por id, ya conectado
-al Director de Retención (campo opcional `patronesRetencion`, Ronda
-7); todavía NO conectado a la elección automática del Director de
-Edición
+patrones de retención con evidencia real citada por id, conectado al
+Director de Edición (elección automática, R7-15) Y al Director de
+Retención (campo `patronesRetencion` derivado automáticamente en
+`armarComposicion()`, sin que el generador tenga que declararlo a
+mano)
   ↓
 Composición (fabrica/composicion/armar.ts) -- offsets exactos en
 segundos, audio real como fuente de verdad del timing; desde Ronda 6
@@ -124,10 +128,12 @@ operativo de contenido + ventas, no producir contenido nuevo.
   iluminación) -- Ronda 6 agregó el primer componente 3D real
   (`Torre3D`), pero no una capa central que decida esto para todo el
   catálogo. Ver `fabrica/docs/AUDITORIA_PROMPT_MAESTRO_2.md`.
-- Hook Engine conectado a la elección automática -- el catálogo
-  (`fabrica/hooks/`) existe y es consultable, pero el Director de
-  Edición todavía no lo usa para elegir el patrón de apertura de un
-  video real.
+- ~~Hook Engine conectado a la elección automática~~ RESUELTO (R7-15):
+  `DirectorEdicion.planificar()` elige automáticamente un patrón
+  compatible con la intención de cada unidad, con anti-repetición
+  (`evitarPatrones`) y `armarComposicion()` lo propaga a
+  `patronesRetencion` sin que el generador tenga que declararlo a
+  mano.
 - Confirmar WebGL2 (`@remotion/effects`/`@remotion/three`) en el
   runner REAL de GitHub Actions -- confirmado con render real solo en
   el sandbox de esta sesión (Chromium de Playwright), el workflow de
@@ -180,6 +186,12 @@ operativo de contenido + ventas, no producir contenido nuevo.
   Engine armó un carrusel de 7 slides (dentro del rango 6-10 del
   patrón observado), sin inventar contenido, y los 7 PNG se
   renderizaron de verdad (`fabrica/salidas/carrusel_001/`).
+- Elección automática de patrón de retención por unidad (R7-15) --
+  funcionó: probado que el patrón elegido para una unidad "enganchar"
+  siempre es compatible con esa intención (y lo mismo para "revelar"),
+  y que la anti-repetición evita repetir el primer candidato cuando ya
+  se usó en el mismo video, sin romper ningún test previo del Director
+  de Edición ni de `armarComposicion()`.
 
 ## QUÉ NO FUNCIONÓ / QUÉ SE ENCONTRÓ ROTO
 
