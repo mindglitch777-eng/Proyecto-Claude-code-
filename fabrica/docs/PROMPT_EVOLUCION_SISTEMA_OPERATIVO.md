@@ -242,7 +242,7 @@ contenido.
 | 10 | Sistema de aprendizaje real | pendiente | ya existe `fabrica/memoria/`, evaluar contra lo pedido |
 | 11 | Motor de decisión (Decision Engine) | pendiente | ya existe `fabrica/decision_engine/`, evaluar contra lo pedido |
 | 12 | Sistema de ventas conectado | pendiente | ya existe `fabrica/ventas/`, evaluar contra lo pedido |
-| 13 | Sistema de configuración de estilo | pendiente | |
+| 13 | Sistema de configuración de estilo | **HECHO** | `directores/edicion/configuracion.ts` -- auditado primero que `ContextoUnidad.estilosSugeridos` ya era el mecanismo real (no se duplicó), se agregó una capa de 5 PRESETS reutilizables a nivel de video completo (`ventas_agresivo`, `documental_serio`, `financiero_directo`, `misterio_revelacion`, `educativo_calmo`) con `aplicarConfiguracionVideo()` que nunca pisa un valor ya puesto a mano. `financiero_directo` está basado directo en el hallazgo real de R7-28 sobre ese nicho. Con tests (`test-configuracion-video`) |
 | 14 | QA real (medible, no solo JSON válido) | **PARCIAL, primer pedazo real implementado** | `fabrica/qa/contraste.py` -- fórmula oficial WCAG 2.x, valida las 3 combinaciones reales de la paleta de marca + escaneo best-effort de hex literales en `.tsx`. Hallazgo real: `texto sobre acento` = 3.05:1, NO cumple para texto normal (documentado, ningún componente actual lo usa mal). Con tests (`test-qa-contraste`, en `test-todo`). Sigue pendiente: tamaño de texto real medido en frame renderizado, contraste sobre b-roll fotográfico (requeriría procesar píxeles de un export real, no solo código fuente) |
 | 15 | Autocrítica | pendiente | |
 | 16 | Implementación real | pendiente | |
