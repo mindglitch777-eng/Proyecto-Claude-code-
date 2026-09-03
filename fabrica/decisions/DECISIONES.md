@@ -150,6 +150,38 @@ a partir de UNA fuente del Knowledge Engine sin inventar contenido, y
 se probó de punta a punta generando y renderizando 7 slides reales
 desde el item `brunson-value-ladder` (`fabrica/salidas/carrusel_001/`).
 
+## Estrategia de investigación mejorada tras bloqueos de red (R7-18)
+
+**Decisión:** antes de registrar algo como "BLOQUEADO -- no confirmado"
+por un bloqueo de red, probar en este orden:
+
+1. `WebSearch` (no bloqueado, cubre la mayoría del contenido general).
+2. Si aparece un repositorio de GitHub: `raw.githubusercontent.com/<owner>/<repo>/<rama>/<path>`
+   para leer un archivo puntual (README, LICENSE, código fuente) --
+   confirmado real y accesible (a diferencia de `github.com` como
+   página web, que a veces sí y a veces no). Para explorar una
+   estructura de carpetas completa: `git clone --depth 1
+   --filter=blob:none --sparse` + `git sparse-checkout set <carpeta>`
+   (liviano, confirmado real, no descarga el repo entero).
+3. `registry.npmjs.org` (API pública, no bloqueada) para inspeccionar
+   metadata real de paquetes (`npm view`) o incluso el código fuente
+   completo de un paquete chico (`npm pack` + `tar xzf`) sin necesidad
+   de instalarlo como dependencia.
+4. Solo si las tres fallan, registrar el bloqueo real (dominio
+   exacto, error exacto) -- nunca inventar el contenido.
+
+**Por qué:** una sesión anterior reportó "bloqueado" ante el primer
+`WebFetch` fallido (ej. `www.remotion.dev`, `mcp.remotion.dev`) sin
+probar estas rutas alternativas -- el operador señaló correctamente
+que esto era demasiado conservador y limitaba la investigación sin
+necesidad. Confirmado con pruebas reales (2026-09-03): `github.com`
+como página web y `reddit.com`/`stackoverflow.com`/`dev.to`/
+`gist.githubusercontent.com` SÍ están bloqueados por política de red
+de este sandbox (sin alternativa conocida), pero
+`raw.githubusercontent.com`, `git clone` a GitHub, y
+`registry.npmjs.org` NO lo están -- y cubren la gran mayoría de lo que
+hace falta investigar sobre herramientas/librerías/skills reales.
+
 ## "Prompt Maestro 3" NO crea `fabrica/inteligencia/` paralelo (R7-17)
 
 **Decisión:** el pedido de una "capa de inteligencia" con carpetas

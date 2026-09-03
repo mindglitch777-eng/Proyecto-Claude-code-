@@ -43,6 +43,7 @@ import {PruebaCortina, DUR_PRUEBA_CORTINA} from './pruebas-r6/PruebaCortina';
 import {Torre3D} from './tres/Torre3D';
 import {PruebaEnfasis} from './pruebas-r6/PruebaEnfasis';
 import {PruebaCaptions} from './subtitulos/PruebaCaptions';
+import {GraficoTorta} from './escenas/GraficoTorta';
 
 const cuadros = Math.round(DUR_TOTAL * FPS);
 
@@ -240,6 +241,18 @@ export const Root: React.FC = () => {
           descarga del modelo esta bloqueada por politica de red -- ver
           remotion-spike/src/subtitulos/README.md). */}
       <Composition id="prueba-captions" component={PruebaCaptions} durationInFrames={Math.round(3.52 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
+      {/* R7-18: primer grafico de torta/donut real de la fabrica,
+          usando @remotion/shapes (MIT, oficial de Remotion) -- tipo de
+          dato que Grafico.tsx (barras) nunca cubrio. */}
+      <Composition
+        id="prueba-grafico-torta"
+        component={GraficoTorta}
+        durationInFrames={Math.round(3 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{titulo: 'De donde vienen las ventas', segmentos: [{etiqueta: 'Orgánico', valor: 52}, {etiqueta: 'Referidos', valor: 31}, {etiqueta: 'Pago', valor: 17}]}}
+      />
       {/* R7-10: Carousel Engine -- primer render REAL (still, no
           video) de 3 slides de un carrusel de prueba
           (fabrica/carrusel/test_carrusel.ts, carrusel "c1"). Se

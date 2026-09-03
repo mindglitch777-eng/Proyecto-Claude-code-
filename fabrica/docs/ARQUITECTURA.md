@@ -197,6 +197,12 @@ operativo de contenido + ventas, no producir contenido nuevo.
   y que la anti-repetición evita repetir el primer candidato cuando ya
   se usó en el mismo video, sin romper ningún test previo del Director
   de Edición ni de `armarComposicion()`.
+- `@remotion/shapes`/`paths` real -- primer gráfico de torta/donut de
+  la fábrica (`GraficoTorta.tsx`, R7-18). Bug real encontrado y
+  corregido probando (el path de `makePie()` está centrado en
+  `(radio,radio)`, no en `(0,0)`): el primer render salía con el
+  gráfico fuera de cuadro, el segundo (ya corregido) salió bien --
+  evidencia en `fabrica/salidas/grafico_torta_001/`.
 - Build real de whisper.cpp + render real de subtítulos estilo TikTok
   (R7-16) -- funcionó: `installWhisperCpp()` compila el binario de
   verdad (`whisper-cli` corre) y `TikTokCaptions.tsx` renderiza

@@ -538,6 +538,26 @@
     "notas": "Su prop real es `idea: Extract<Idea, {tipo:'grafico'}>` importado de ../guion.ts (el sistema del motor VIEJO de 'El Corte', no de la fabrica nueva) -- para usarlo desde la fabrica hay que armar un objeto con esa forma exacta (incluye tambien `dur` y `narracion` que el componente no lee pero el tipo exige); no es un acoplamiento roto, solo hay que respetar el tipo. Nunca probado con audio sincronizado."
   },
   {
+    "id": "grafico_torta",
+    "archivo": "escenas/GraficoTorta.tsx",
+    "exportacion": "GraficoTorta",
+    "categoria": "comparacion",
+    "funcion": "Grafico de torta/donut real (segmentos como proporcion de un total) -- tipo de dato que la fabrica nunca tuvo antes (Grafico.tsx solo cubre barras). Usa @remotion/shapes (R7-18, exploracion agresiva del ecosistema Remotion).",
+    "intensidad": 0.55,
+    "ritmo": "dinamico",
+    "capacidadTexto": "media",
+    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
+    "duracionMinMaxSeg": [4, 10],
+    "compatibleCon": ["cifra", "comparacion"],
+    "soportaAudioSincronizado": false,
+    "props": {
+      "titulo": "string",
+      "segmentos": "{etiqueta: string, valor: number}[]"
+    },
+    "estado": "validado",
+    "notas": "Componente NATIVO de la fabrica (sin acoplamiento al motor viejo de 'El Corte', a diferencia de 'grafico'). Renderizado real con npx remotion still como evidencia -- ver remotion-spike/src/skills/README_R7-18.md. Nunca probado con audio sincronizado."
+  },
+  {
     "id": "silueta",
     "archivo": "escenas/Silueta.tsx",
     "exportacion": "Silueta",

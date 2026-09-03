@@ -459,6 +459,67 @@ entorno / qué reemplazaría o mejoraría / riesgos / recomendación.
   `remotion-spike/` -- ya está disponible, cuesta $0, y evita
   reinventar patrones que Remotion ya documentó oficialmente.
 
+## 15. Ecosistema oficial completo de Remotion (32 paquetes @remotion/*) + @remotion/shapes/paths integrados de verdad — R7-18
+
+- **Fuente:** `registry.npmjs.org` (búsqueda directa + `npm view` +
+  `npm pack` para inspeccionar código fuente), 2026-09-03 -- respuesta
+  al pedido explícito del operador de "no considerar que ya tenemos
+  Remotion como razón para cortar la investigación".
+- **Hallazgo real:** hasta esta ronda solo se habían evaluado 13 de
+  los 32 paquetes oficiales `@remotion/*` que existen. Se catalogaron
+  los 32 (lista completa en `fabrica/skills/registro.ts`, id
+  `ecosistema-remotion-oficial-completo`).
+- **Probado de verdad (no solo leído):** se instalaron
+  `@remotion/shapes` + `@remotion/paths` (MIT) y se construyó
+  `GraficoTorta.tsx` (`remotion-spike/src/escenas/`) -- primer gráfico
+  de TORTA/DONUT real de la fábrica (Grafico.tsx solo cubre barras).
+  **Bug real encontrado y corregido probando**: el path que devuelve
+  `makePie()` está centrado en `(radio, radio)`, no en `(0,0)` -- el
+  primer intento con un `viewBox` centrado en el origen dejaba el
+  gráfico fuera de cuadro. Corregido y confirmado con un segundo
+  render real (evidencia en `fabrica/salidas/grafico_torta_001/`).
+  Registrado en `fabrica/componentes/registro.json` (id
+  `grafico_torta`), pasa `validar_registro.ts`.
+- **`@remotion/mcp` (oficial, MIT) inspeccionado leyendo su código
+  fuente real:** un servidor MCP mínimo (un solo tool,
+  "remotion-documentation") que busca en la documentación oficial vía
+  `mcp.remotion.dev` -- confirmado real, pero ese dominio está
+  bloqueado por la política de red de este sandbox (mismo bloqueo que
+  `www.remotion.dev`). Útil en otro entorno, inútil acá.
+- **Licencias aclaradas:** `light-leaks`, `starburst`, `maptiler`,
+  `lottie`, `rive`, `gif`, `google-fonts` usan la "Remotion License"
+  (gratis para individuos/empresas ≤3 empleados, ya confirmado que
+  cubre a este proyecto) -- no tienen un LICENSE.md propio distinto,
+  heredan el de la raíz del monorepo (confirmado leyendo
+  `packages/<nombre>/` del repo real vía `git clone --sparse`).
+  `shapes`, `paths`, `motion-blur`, `noise`, `animation-utils`,
+  `fonts`, `elevenlabs`, `gsap`, `skia`, `rounded-text-box` son MIT
+  explícito.
+- **Hallazgo real de compatibilidad (probando, no leyendo):**
+  `@remotion/motion-blur@4.0.520` se instaló para probarlo y se
+  encontró que declara una dependencia DURA (no peer) a
+  `remotion@4.0.520`, mientras todo el proyecto fija `4.0.518` --
+  trae una copia anidada de Remotion en otra versión. `shapes`/`paths`
+  tienen la misma dependencia dura pero SÍ se probaron con render real
+  sin problema (son generadores de SVG puros, no tocan el motor
+  temporal); `motion-blur` sí lo toca (compara frames para calcular el
+  desenfoque), mayor riesgo de romper algo silenciosamente. Se
+  desinstaló en vez de dejarlo a medio probar -- queda como PROBAR
+  recién cuando se homologue todo el proyecto a una sola versión de
+  Remotion.
+- **Candidatos para la próxima ronda (PROBAR, no instalados
+  todavía):** `@remotion/lottie` (ecosistema enorme de animaciones
+  gratis), `@remotion/gsap` (integración con GSAP).
+- **Descartados con motivo concreto:** `@remotion/lambda`/`cloudrun`/
+  `vercel` (render serverless -- cuestan infraestructura en la nube,
+  contradice $0 y "sin infraestructura propia"). `@remotion/maptiler`
+  (requiere API key de un servicio externo con plan pago más allá de
+  un free tier).
+- **Recomendación:** **USAR** `@remotion/shapes`/`paths` (ya
+  integrado). **PROBAR** `motion-blur`/`lottie`/`gsap` en una próxima
+  ronda con un caso de uso real concreto (no instalar preventivamente
+  sin necesidad, mismo principio de siempre).
+
 ---
 
 ## Resumen de recomendaciones
@@ -479,6 +540,9 @@ entorno / qué reemplazaría o mejoraría / riesgos / recomendación.
 | Modelos de video/imagen de HuggingFace | DESCARTAR — bloqueado por hardware (no hay GPU) | — |
 | Librerías comunitarias (`remocn`, `remotion-animated`, etc.) | PROBAR solo como inspiración de diseño | Baja |
 | Remotion Agent Skills del entorno (`remotion-markup`/`render`/`captions`) | **USAR — confirmadas reales, gratis (2026-09-03)** | Alta, referencia constante |
+| `@remotion/shapes` + `@remotion/paths` | **USAR — integrado y probado con render real, bug encontrado y corregido (2026-09-03)** | Alta, gráfico de torta ya en el registro de componentes |
+| `@remotion/mcp` (oficial) | PROBAR -- real pero bloqueado en este sandbox | Baja acá, útil en otro entorno |
+| Resto del ecosistema oficial @remotion/* (32 paquetes catalogados) | PROBAR selectivamente (motion-blur/lottie/gsap primero) | Media |
 
 **Evidencia real de las 4 confirmaciones de arriba:**
 `remotion-spike/src/pruebas-r6/README.md` — 4 composiciones aisladas
