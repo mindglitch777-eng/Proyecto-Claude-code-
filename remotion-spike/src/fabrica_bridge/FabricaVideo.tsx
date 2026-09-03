@@ -18,6 +18,7 @@ import {Silueta} from '../escenas/Silueta';
 import {Torre3D} from '../tres/Torre3D';
 import {Golpe, TipoGolpe, Anticipo} from '../escenas/golpes';
 import {Vineta} from '../escenas/Vineta';
+import {CamaraOrganica} from '../escenas/CamaraOrganica';
 import {PALETA} from '../identidad';
 
 // PUENTE DE RENDER de la nueva fabrica (fabrica/composicion/). Esto NO
@@ -94,8 +95,9 @@ export type EscenaFabrica = {
   /** Ronda 4: estrategia del Director de Edicion, si el generador la
    * calculo. Opcional -- un arbol viejo (demo_01..04) sigue siendo
    * valido sin esto. `estilos` se agrega en R7-24 (antes solo se leia
-   * `microeventos` aca) -- ver Vineta abajo. */
-  estrategiaEdicion?: {microeventos?: MicroEventoFabrica[]; estilos?: string[]};
+   * `microeventos` aca) -- ver Vineta abajo. `energia` se agrega en
+   * R7-25 -- ver CamaraOrganica abajo. */
+  estrategiaEdicion?: {microeventos?: MicroEventoFabrica[]; estilos?: string[]; energia?: string};
 };
 
 /** Traduce el microevento 'se_revela_comparacion' (si existe) al prop
@@ -198,9 +200,25 @@ export const FabricaVideo: React.FC<{arbol: ArbolFabrica}> = ({arbol}) => {
             </AbsoluteFill>
           ) : (
             <>
-              <Golpe tipo={e.golpe} sonido={i > 0} sinEfectoVisual={sinEfectoVisualCSS}>
-                <Comp {...e.props} {...propsDesdeMicroeventos(e)} />
-              </Golpe>
+              {/* R7-25: tecnica de "camara" (nunca investigada antes,
+                  ver docstring de CamaraOrganica.tsx) -- temblor
+                  organico sutil solo en unidades de energia muy_alta
+                  (el Director de Edicion ya calcula esto), simulando
+                  una camara en mano en el momento de mas urgencia
+                  narrativa. Envuelve el golpe entero para que el
+                  temblor se sienta en el contenido real, no en un
+                  overlay separado. */}
+              {e.estrategiaEdicion?.energia === 'muy_alta' ? (
+                <CamaraOrganica>
+                  <Golpe tipo={e.golpe} sonido={i > 0} sinEfectoVisual={sinEfectoVisualCSS}>
+                    <Comp {...e.props} {...propsDesdeMicroeventos(e)} />
+                  </Golpe>
+                </CamaraOrganica>
+              ) : (
+                <Golpe tipo={e.golpe} sonido={i > 0} sinEfectoVisual={sinEfectoVisualCSS}>
+                  <Comp {...e.props} {...propsDesdeMicroeventos(e)} />
+                </Golpe>
+              )}
               {/* R7-24: primera conexion real a produccion de
                   @remotion/effects mas alla de lightLeak -- la vinieta
                   ya se habia probado y confirmado en R6-9

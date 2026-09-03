@@ -44,6 +44,8 @@ import {CarruselSlide, ANCHO_CARRUSEL, ALTO_CARRUSEL} from './carrusel/CarruselS
 import {PruebaCortina, DUR_PRUEBA_CORTINA} from './pruebas-r6/PruebaCortina';
 import {Torre3D} from './tres/Torre3D';
 import {PruebaEnfasis} from './pruebas-r6/PruebaEnfasis';
+import {PruebaRoundedTextBox, DUR_PRUEBA_ROUNDED_TEXT_BOX} from './pruebas-r7/PruebaRoundedTextBox';
+import {PruebaGsap, DUR_PRUEBA_GSAP} from './pruebas-r7/PruebaGsap';
 import {PruebaCaptions} from './subtitulos/PruebaCaptions';
 import {GraficoTorta} from './escenas/GraficoTorta';
 
@@ -266,6 +268,11 @@ export const Root: React.FC = () => {
       <Composition id="prueba-lightleak" component={PruebaLightLeak} durationInFrames={DUR_PRUEBA_LIGHTLEAK} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="prueba-cortina" component={PruebaCortina} durationInFrames={DUR_PRUEBA_CORTINA} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="prueba-enfasis" component={PruebaEnfasis} durationInFrames={Math.round(6 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
+      {/* R7-25: exploracion agresiva del ecosistema Remotion (segunda
+          pasada) -- @remotion/rounded-text-box y @remotion/gsap,
+          ninguno usado en produccion todavia, ver docs/ARSENAL_AUDIOVISUAL.md. */}
+      <Composition id="prueba-rounded-text-box" component={PruebaRoundedTextBox} durationInFrames={DUR_PRUEBA_ROUNDED_TEXT_BOX} fps={FPS} width={ANCHO} height={ALTO} />
+      <Composition id="prueba-gsap" component={PruebaGsap} durationInFrames={DUR_PRUEBA_GSAP} fps={FPS} width={ANCHO} height={ALTO} />
       {/* R7-16: subtitulos estilo TikTok reales (@remotion/captions) sobre
           audio REAL de fabrica_demo_05, con una fixture SINTETICA de
           Caption[] (whisper.cpp compila real en este sandbox pero la
