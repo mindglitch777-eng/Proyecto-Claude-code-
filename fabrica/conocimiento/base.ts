@@ -468,4 +468,67 @@ export const CONOCIMIENTO: ItemConocimiento[] = [
     comoUtilizarlo: 'Confirma (no cambia) la elección de estilos ya codificada en ESTILOS_POR_INTENCION (directores/edicion/edicion.ts): "comparar"->[data,documental] y "contextualizar"->[documental] van en la dirección correcta para este nicho. Señal para NO agregar más "misterio"/"cinematico" del necesario en contenido de cifras/resultados de negocio.',
     queNoDemuestra: 'No demuestra que TODO video de este nicho deba ser rápido/denso -- el propio Director de Retención ya sabe que un video sin ninguna "pausa"/"dejar_respirar" genera fatiga (ver auditoría), la convención de "rápido y denso" no anula la necesidad de variar el ritmo.',
   },
+  // ── R7-28, punto 11 del prompt: referencias reales de alta calidad
+  // para ESTUDIAR estructura, no para copiar contenido. Limitación
+  // honesta de entrada: este sandbox tiene bloqueado el acceso directo
+  // a TikTok/YouTube/Instagram (confirmado con curl en rondas
+  // anteriores, ver fabrica/research/) -- no se puede mirar o
+  // transcribir un video real minuto a minuto. Lo que SÍ se pudo hacer
+  // con WebSearch: identificar creadores/formatos reales y verificables
+  // y las convenciones estructurales documentadas sobre ellos, siendo
+  // explícito sobre qué se pudo confirmar y qué no.
+  {
+    id: 'cleo-abram-identidad-visual-huge-if-true',
+    concepto: 'Caso real: decisión deliberada de identidad visual contra el cliché del nicho (Cleo Abram, "Huge If True")',
+    descripcion:
+      'Cleo Abram (periodista de video, creadora de la serie "Huge If True" sobre ciencia/tecnología, con episodios de varios cientos de horas de investigación/producción cada uno) reportó en una entrevista real (Washington Post Creator, Video Consortium) que ella y su diseñadora rechazaron deliberadamente la estética gris/negro típica de contenido tech (que evoca una visión distópica del futuro) a favor de una paleta de colores más optimista -- una decisión de identidad de marca tomada explícitamente para reforzar el tono editorial del contenido (un show "optimista" sobre tecnología), no una elección estética aislada.',
+    categoria: 'visuales',
+    tags: ['identidad-visual', 'paleta-color', 'referencia-real', 'tono-editorial'],
+    nivel: 'patron_observado',
+    confirmado: false,
+    fuente: 'wpcreator.washingtonpost.com, "Creator Q+A: Cleo Abram"; videoconsortium.org, "In Sync Episode 8: Cleo Abram" -- ambas son entrevistas directas a la creadora, no un análisis de terceros.',
+    fecha: '2026-09-03',
+    contexto: 'Contenido explicativo/documental de un solo creador con identidad de marca fuerte -- aplica a la decisión de paleta/tono de la fábrica (PALETA en remotion-spike), no a la estructura narrativa en sí.',
+    nivelConfianza: 'baja',
+    ejemplos: ['La fábrica ya tiene una PALETA de marca propia -- este caso confirma que la elección de color debe estar subordinada al tono editorial deseado (en nuestro caso, contenido de resultados de negocio/motivacional, no "misterioso" ni "corporativo frío"), no ser una elección estética libre.'],
+    limitaciones: 'Un solo caso, reportado por la propia creadora en entrevista -- no es una medición de qué paleta retiene mejor, es una decisión de diseño deliberada sin dato de resultado adjunto. No se pudo acceder al video real (bloqueado en este sandbox) para verificar la ejecución, solo la intención declarada.',
+    comoUtilizarlo: 'Confirma como principio de diseño (no como regla nueva) que la PALETA de la fábrica debería revisarse contra el tono real que se quiere transmitir por tipo de contenido -- ej. un guion de "resultado de negocio triunfal" no debería usar la misma paleta que uno de "advertencia/riesgo".',
+    queNoDemuestra: 'No demuestra que esta paleta específica (o cualquier paleta optimista) mejore la retención -- es una decisión de tono, no un resultado medido.',
+  },
+  {
+    id: 'estructura-hook-mistake-fix-nicho-financiero',
+    concepto: 'Estructura documentada "Hook -> Error común -> Solución" para contenido financiero/de negocios corto',
+    descripcion:
+      'Múltiples guías de práctica para contenido corto financiero/de negocios documentan la misma estructura de 3 partes: HOOK (plantear que el espectador está complicando algo más de lo necesario), ERROR COMÚN (qué hace la mayoría mal), SOLUCIÓN (la forma mejor/más simple) -- una variante específica de nicho de la estructura genérica hook->desarrollo->payoff que ya usa la fábrica, con el énfasis puesto en la comparación error-vs-solución en vez de una revelación pura.',
+    categoria: 'estructuras',
+    tags: ['estructura-narrativa', 'financiero', 'error-solucion', 'referencia-real'],
+    nivel: 'patron_observado',
+    confirmado: false,
+    fuente: 'stratboost.ai, "AI Script Templates for TikTok, Reels & Shorts (2026)" y "YouTube Shorts Script Template" -- guías de práctica de creación de contenido, convergentes en esta estructura específica para el nicho financiero.',
+    fecha: '2026-09-03',
+    contexto: 'Contenido de negocios/finanzas personales corto -- el mismo nicho de los guiones de prueba de la fábrica.',
+    nivelConfianza: 'media',
+    ejemplos: ['Ya existen categorías compatibles en fabrica/hooks/catalogo.ts (contradiccion, escalada, comparacion) que cubren conceptualmente esta estructura -- no hace falta un patrón nuevo, esto CONFIRMA que esas categorías son la elección correcta para un guion tipo "error común -> solución", más que agregar una cuarta categoría redundante.'],
+    limitaciones: 'Guías de herramientas de generación de guiones con incentivo comercial propio (venden el generador), no un estudio independiente de qué estructura convierte mejor.',
+    comoUtilizarlo: 'Al escribir un guion nuevo de nicho financiero/negocios, verificar que la unidad de "escalada" o "contradiccion" efectivamente contraste un error común contra la solución (no solo presente información neutral) -- checklist de guion, no cambio de código.',
+    queNoDemuestra: 'No demuestra que esta estructura supere a "resultado primero" (patrón ya catalogado, id hook-resultado-primero-2026) -- son dos estructuras válidas para el mismo nicho, la elección depende del guion concreto.',
+  },
+  {
+    id: 'kinetic-typography-ventana-atencion-inicial',
+    concepto: 'Texto animado (kinetic typography) como mecanismo de captura de atención en la ventana de los primeros segundos',
+    descripcion:
+      'Múltiples fuentes de práctica de diseño convergen en que el texto animado (vs. texto estático) es especialmente efectivo en los primeros 0.5-3 segundos de un video corto -- la ventana crítica en la que un espectador decide si sigue mirando o desliza. Un caso real citado con frecuencia (campaña Spotify Wrapped 2023) reporta métricas de reengagement e interacción asociadas al uso de tipografía animada a gran escala -- cifras reportadas por fuentes de marketing, no verificadas de forma independiente por este análisis.',
+    categoria: 'motion_design',
+    tags: ['kinetic-typography', 'atencion-inicial', 'texto-animado', 'referencia-real'],
+    nivel: 'patron_observado',
+    confirmado: false,
+    fuente: 'designrush.com, "8.25 Seconds to Impress: Typography Animation Examples"; prolificstudio.co, "50 Best Kinetic Typography Animation Video Examples" -- ambas citan el caso Spotify Wrapped 2023 con cifras de la propia campaña, no de una fuente de medición independiente.',
+    fecha: '2026-09-03',
+    contexto: 'Los primeros 0.5-3 segundos de cualquier video corto vertical -- coincide exactamente con la unidad "hook" que ya prioriza el Director de Retención (fase="hook", alerta "hook_debil" si la primera unidad no lo es).',
+    nivelConfianza: 'baja',
+    ejemplos: ['La fábrica ya usa @remotion/rough-notation para kinetic text highlights (R6-11) -- este hallazgo confirma que priorizar texto ANIMADO (no estático) específicamente en la unidad de apertura (no solo en destacar cifras a mitad de video) es donde más impacto tendría según esta convención documentada.'],
+    limitaciones: 'La cifra de "0.5 segundos" y el caso Spotify Wrapped son reportados por fuentes de marketing/diseño con interés en promover la técnica, no un estudio controlado independiente -- tratar como orientación de dirección, no como umbral validado.',
+    comoUtilizarlo: 'Revisar si la unidad de apertura (hook) de los guiones de la fábrica usa consistentemente un componente con capacidad de texto animado real (no solo aparición estática) -- auditoría rápida de componentes/registro.json para unidades marcadas esPrimera.',
+    queNoDemuestra: 'No demuestra que TODO el video deba usar texto animado -- el propio uso ya moderado que hace la fábrica (rough-notation para destacar, no para todo el texto) es consistente con no abusar del recurso.',
+  },
 ];
