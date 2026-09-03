@@ -17,6 +17,7 @@ import {Grafico} from '../escenas/Grafico';
 import {Silueta} from '../escenas/Silueta';
 import {Torre3D} from '../tres/Torre3D';
 import {Golpe, TipoGolpe, Anticipo} from '../escenas/golpes';
+import {Vineta} from '../escenas/Vineta';
 import {PALETA} from '../identidad';
 
 // PUENTE DE RENDER de la nueva fabrica (fabrica/composicion/). Esto NO
@@ -92,8 +93,9 @@ export type EscenaFabrica = {
   transicionSalienteSeg?: number;
   /** Ronda 4: estrategia del Director de Edicion, si el generador la
    * calculo. Opcional -- un arbol viejo (demo_01..04) sigue siendo
-   * valido sin esto. */
-  estrategiaEdicion?: {microeventos?: MicroEventoFabrica[]};
+   * valido sin esto. `estilos` se agrega en R7-24 (antes solo se leia
+   * `microeventos` aca) -- ver Vineta abajo. */
+  estrategiaEdicion?: {microeventos?: MicroEventoFabrica[]; estilos?: string[]};
 };
 
 /** Traduce el microevento 'se_revela_comparacion' (si existe) al prop
@@ -199,6 +201,15 @@ export const FabricaVideo: React.FC<{arbol: ArbolFabrica}> = ({arbol}) => {
               <Golpe tipo={e.golpe} sonido={i > 0} sinEfectoVisual={sinEfectoVisualCSS}>
                 <Comp {...e.props} {...propsDesdeMicroeventos(e)} />
               </Golpe>
+              {/* R7-24: primera conexion real a produccion de
+                  @remotion/effects mas alla de lightLeak -- la vinieta
+                  ya se habia probado y confirmado en R6-9
+                  (pruebas-r6/PruebaVineta.tsx) pero nunca se conecto a
+                  ninguna escena real. Se dispara con el estilo
+                  'cinematico' que el Director de Edicion YA calcula
+                  (directores/edicion/estilos.ts) -- no es un campo
+                  nuevo que haya que decidir aparte. */}
+              {e.estrategiaEdicion?.estilos?.includes('cinematico') && <Vineta />}
               {/* ANTICIPO (Ronda 3): si la escena que sigue corta con un
                   golpe fuerte, los ultimos instantes de ESTA escena
                   muestran pulsos que se aceleran -- prepara el impacto

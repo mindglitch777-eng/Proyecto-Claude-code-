@@ -198,12 +198,13 @@
       "unidadId": "aceleracion",
       "desdeSeg": 15.656032,
       "duracionSeg": 3.77,
-      "componenteId": "cifra-se-cae",
+      "componenteId": "contador",
       "props": {
         "arriba": "Ventas por semana",
-        "de": "6",
-        "a": "40",
-        "abajo": "ventas/semana"
+        "desde": 6,
+        "hasta": 40,
+        "abajo": "ventas/semana",
+        "prefijo": ""
       },
       "audios": [
         {

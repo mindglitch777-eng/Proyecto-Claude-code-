@@ -87,12 +87,12 @@ nunca se re-investiga desde cero algo que ya está acá.
 ### CAPACIDAD: SFX (banco de efectos de sonido)
 **HERRAMIENTAS:** `@remotion/sfx` (oficial)
 **NUESTRA IMPLEMENTACIÓN:** biblioteca propia en `assets/sfx/` (impacto/campana/riser/tick/whoosh/sub)
-**MEJOR OPCIÓN ACTUAL:** sin decidir — no comparado banco contra banco todavía
-**ESTADO:** PROBAR
-**EVIDENCIA:** ninguna todavía — solo investigado, no probado
-**COSTO:** $0 (licencia por verificar, ver `fabrica/skills/registro.ts`)
-**COMPATIBILIDAD:** no evaluada
-**RIESGO:** bajo
+**MEJOR OPCIÓN ACTUAL:** la biblioteca propia — confirmado, no "sin decidir"
+**ESTADO:** PROBADO (R7-24) -- BLOQUEADO/NO CONFIRMADO en este sandbox, descartado para este proyecto por una razón de ARQUITECTURA real, no solo de sandbox
+**EVIDENCIA:** instalado de verdad (`@remotion/sfx@4.0.518`, versión exacta alineada, sin dependencias/peerDependencies -- a diferencia de `shapes`/`paths`/`motion-blur`, este SÍ instala limpio). Al inspeccionar `dist/index.d.ts` se encontró que el paquete NO trae los audios: cada export es una URL remota a `remotion.media` (ej. `whoosh: "https://remotion.media/whoosh.wav"`) -- Remotion la descarga en tiempo de RENDER, no es un asset local. Se confirmó con `curl` que `remotion.media` está bloqueado en este sandbox (mismo bloqueo que `remotion.dev`/`mcp.remotion.dev`), así que ni siquiera se pudo probar el sonido real acá. Se desinstaló limpio tras confirmar el hallazgo (mismo criterio que `@remotion/motion-blur`: no dejar una dependencia sin poder probarla de verdad).
+**COSTO:** $0, MIT confirmado
+**COMPATIBILIDAD:** version 4.0.518 exacta instala limpia -- el problema NO es de versión ni de licencia
+**RIESGO:** **arquitectónico, no solo de este sandbox**: aunque funcionaría en un runner de GitHub Actions (con internet real), depender de `remotion.media` en cada render agrega una llamada de red externa por cada SFX -- un punto de falla nuevo (¿qué pasa si Remotion cambia/retira esos archivos, o el CDN está lento/caído justo cuando corre el CI?) que la biblioteca propia (`assets/sfx/`, archivos committeados, cero red en render) no tiene. **Conclusión real: la biblioteca propia sigue siendo la mejor opción incluso sin el bloqueo de este sandbox** -- no es solo "no se pudo probar", es "se probó lo suficiente para confirmar que no conviene".
 
 ### CAPACIDAD: Buscar documentación oficial de Remotion desde el agente
 **HERRAMIENTAS:** `@remotion/mcp` (oficial) · `WebFetch` a remotion.dev (no funciona)

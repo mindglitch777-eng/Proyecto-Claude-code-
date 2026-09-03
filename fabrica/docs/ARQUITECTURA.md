@@ -264,9 +264,24 @@ documentar lo que ya se hizo bien.
   bloqueado cualquier generador futuro que ganara ese componente. Se
   agregó el caso (mismo contrato que `contador`: `{arriba, hasta,
   abajo, prefijo}`) con test dedicado en `test_adaptadores.ts`.
-- **`@remotion/effects` tiene ~60 efectos, se usó 1 solo**
-  (`lightLeak`) -- el resto del catálogo (glitch, chromatic
-  aberration, etc.) nunca se evaluó individualmente.
+- ~~**`@remotion/effects` tiene ~60 efectos, se usó 1 solo**~~ --
+  **PARCIALMENTE RESUELTO en R7-24.** Se conectó un segundo efecto a
+  producción: `vignette` (viñeta cinematográfica), ya probado y
+  validado en R6-9 (`pruebas-r6/PruebaVineta.tsx`, frame real) pero
+  nunca conectado a ninguna escena hasta ahora -- se agregó
+  `escenas/Vineta.tsx` y se dispara automáticamente cuando el Director
+  de Edición ya calculó el estilo `cinematico` para esa unidad (sin
+  campo nuevo que decidir aparte). Probado en `fabrica-demo-07`,
+  confirmado visualmente en frames reales (`salidas/demo07_frame_pausa_vineta.png`,
+  `demo07_frame_cierre_vineta.png`). También se probó `@remotion/sfx`
+  (banco oficial de SFX) y se descartó con evidencia real: no trae
+  audio local, cada sonido es una URL remota a `remotion.media`
+  (bloqueado en este sandbox, y aun sin el bloqueo, agrega una
+  dependencia de red en cada render que la biblioteca propia
+  `assets/sfx/` no tiene) -- ver `docs/ARSENAL_AUDIOVISUAL.md`.
+  Sigue habiendo ~58 efectos del catálogo oficial sin evaluar
+  individualmente (glitch, chromatic aberration ya probados en
+  aislado en R6-7 pero tampoco conectados a producción todavía).
 - **Componentes de la misma categoría con props semánticamente
   distintas** siguen siendo un bug recurrente del Director Visual
   (visto en Ronda 2, 4 y 5 -- ver `PENDIENTES.md` ítem 10) -- la

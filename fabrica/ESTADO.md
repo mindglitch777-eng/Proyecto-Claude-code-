@@ -8,7 +8,58 @@ después de cada bloque de trabajo real, como pide el "Prompt Maestro
 `PENDIENTES_OPERADOR.md`; para todo lo pendiente técnico,
 `PENDIENTES.md`.
 
-## Último bloque de trabajo: R7-23 (2026-09-03)
+## Último bloque de trabajo: R7-24 (2026-09-03)
+
+Pedido del operador: agotar la solución para la investigación de
+patrones antes de seguir, y después avanzar en los puntos visuales/
+gráficos del prompt.
+
+**Investigación (postura resolutiva, exhaustiva antes de reportar
+bloqueado):**
+- Se probó `WebFetch` (canal de red separado del proxy del sandbox,
+  usado ya con éxito para `WebSearch`) directo contra YouTube -- **sí
+  está bloqueado igual que el resto** (`EGRESS_BLOCKED`). Se probaron
+  además 6 espejos/alternativas sin cuenta (Invidious, Piped,
+  noembed.com, returnyoutubedislike.com) -- las 6 bloqueadas.
+- Se confirmó con una llamada real (no supuesta) que `googleapis.com`
+  **no está bloqueado por la red** -- el error real es de Google
+  ("Method doesn't allow unregistered callers"), un tema de
+  credencial, no de acceso. Confirma que R7-20 (cliente de YouTube
+  Data API) funcionaría apenas haya una API key -- no hay ningún
+  problema técnico de por medio, solo falta la clave del operador.
+  **No se buscó ni se usó ninguna clave ajena/compartida** -- usar una
+  credencial que no es del operador está fuera de lo que este proyecto
+  hace, sea o no "gratis" encontrarla.
+- Con eso genuinamente agotado, se sumó investigación cualitativa real
+  vía `WebSearch` (que sí funciona): un caso real con nombre y cifra
+  concreta (C.M. de la Vega, $13.322,71 en 7 días vendiendo un curso)
+  agregado al Knowledge Engine con nivel de confianza bajo y
+  limitaciones explícitas (un solo caso, no verificado, no se sabe qué
+  video/formato usó).
+
+**Visual/gráfico:**
+- **`vignette` (@remotion/effects) conectado a producción de verdad**
+  -- ya se había probado y confirmado en R6-9 pero nunca se conectó a
+  ninguna escena real. Ahora se dispara automáticamente cuando la
+  unidad tiene el estilo `cinematico` (que el Director de Edición YA
+  calculaba). Probado en `fabrica-demo-07`, confirmado visualmente en
+  2 frames reales.
+- **`@remotion/sfx` probado e instalado real** (versión exacta
+  alineada, sin conflicto de dependencias) -- descartado con evidencia
+  real, no solo por el bloqueo de este sandbox: cada sonido es una URL
+  remota a `remotion.media`, una dependencia de red en cada render que
+  nuestra biblioteca propia (`assets/sfx/`, archivos locales) no
+  necesita. Desinstalado limpio tras confirmar el hallazgo.
+
+**PRÓXIMO PASO:** con el patrón "resultado primero" (R7-23) y la
+viñeta (R7-24) ya conectados a producción, quedan ~58 efectos del
+catálogo de `@remotion/effects` sin evaluar individualmente
+(glitch/chromatic aberration ya probados aislados en R6-7, nunca
+conectados). El techo de fondo sigue siendo el mismo de siempre: sin
+datos reales de resultado, todo esto es teoría bien fundada aplicada,
+no verificada contra retención/ventas reales.
+
+## Bloque anterior: R7-23 (2026-09-03)
 
 Pedido explícito del operador: priorizar la investigación para
 detectar patrones virales, y que el sistema los use automáticamente

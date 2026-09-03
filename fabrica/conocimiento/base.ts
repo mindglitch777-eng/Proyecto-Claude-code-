@@ -334,4 +334,22 @@ export const CONOCIMIENTO: ItemConocimiento[] = [
     comoUtilizarlo: 'NO implica reescribir la fábrica -- queda registrado como riesgo/limitación conocida (ver ARQUITECTURA.md) y como candidato real para el día que haya datos propios (resultadoReal) que comparen contenido animado vs. metraje real de la fábrica.',
     queNoDemuestra: 'No demuestra que el contenido animado/editado de la fábrica retenga peor -- no hay ningún dato propio todavía que compare ambos formatos en igualdad de condiciones (mismo guion, misma audiencia).',
   },
+  {
+    id: 'caso-cm-de-la-vega-curso-7-dias',
+    concepto: 'Caso reportado: lanzamiento de curso online generó $13.322,71 en 7 días',
+    descripcion:
+      'Un creador (animador profesional, enseñando motion graphics) reportó $13.322,71 en ventas de un curso online en un lanzamiento de 7 días -- estructura de negocio análoga a la que usan los guiones de prueba de esta fábrica (Tomás/$89/curso online), aunque NO se sabe qué formato de video usó para promocionarlo.',
+    categoria: 'casos_reales',
+    tags: ['caso-real', 'productos-digitales', 'lanzamiento', 'curso-online'],
+    nivel: 'patron_observado',
+    confirmado: false,
+    fuente: 'jesselee.grooveblog.com, "Case Study: How YouTuber & Online Course Creator C.M. de la Vega Generated $13,322.71 in Thinkific Sales in 7 days" (encontrado por WebSearch, R7-23/24).',
+    fecha: '2026-09-03',
+    contexto: 'Venta de curso online, plataforma Thinkific -- no se confirma qué canal/formato de video (si alguno) se usó para la promoción.',
+    nivelConfianza: 'baja',
+    ejemplos: ['La cifra concreta ("$13.322,71 en 7 días", no "gané plata rápido") es en sí misma un ejemplo real del patrón "especificidad-numerica-vs-vaguedad" de este mismo archivo.'],
+    limitaciones: 'Un solo caso reportado por un tercero (un blog de afiliado/reseña), sin verificación independiente, sin acceso al video/campaña real usada, y sin saber si es representativo o un caso atípico. NO es un patrón que se repita en múltiples fuentes -- es un dato aislado.',
+    comoUtilizarlo: 'Referencia de orden de magnitud real para diseñar guiones de prueba de la fábrica (cifras creíbles, no inventadas al azar) -- NO como prueba de que un formato de video específico funcionó.',
+    queNoDemuestra: 'No demuestra qué hook/estructura/edición se usó para lograrlo, ni que sea replicable -- solo confirma que una cifra de ese orden de magnitud es real y reportada, no un ejemplo de técnica de video.',
+  },
 ];
