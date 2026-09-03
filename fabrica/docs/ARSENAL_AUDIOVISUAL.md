@@ -208,7 +208,14 @@ R7-18. Nuevas capacidades encontradas:
 **RIESGO:** bajo
 
 ### Hallazgo real: 2 paquetes standalone están DEPRECADOS (no duplicar)
-`@remotion/starburst` y `@remotion/light-leaks` **no tienen implementación propia** -- su propio código fuente (confirmado leyendo los `.d.ts` reales tras instalarlos) redirige a usar `@remotion/effects/starburst` y `@remotion/effects/light-leak` en su lugar, paquete que ya tenemos instalado. Se instalaron, se confirmó la redundancia, y se DESINSTALARON -- ningún efecto nuevo real, solo confirma que `@remotion/effects` (66 efectos reales confirmados en `node_modules/@remotion/effects/package.json`, exports reales, no una estimación) sigue siendo la fuente correcta para casi cualquier efecto visual nuevo. Candidatos reales sin probar todavía de esos 66: `glitch`-like (`tv-signal-off`, `scanlines`, `pixel-dissolve`), `zoom-blur`, `contour-lines`, `halftone`.
+`@remotion/starburst` y `@remotion/light-leaks` **no tienen implementación propia** -- su propio código fuente (confirmado leyendo los `.d.ts` reales tras instalarlos) redirige a usar `@remotion/effects/starburst` y `@remotion/effects/light-leak` en su lugar, paquete que ya tenemos instalado. Se instalaron, se confirmó la redundancia, y se DESINSTALARON -- ningún efecto nuevo real, solo confirma que `@remotion/effects` (66 efectos reales confirmados en `node_modules/@remotion/effects/package.json`, exports reales, no una estimación) sigue siendo la fuente correcta para casi cualquier efecto visual nuevo.
+
+### Hallazgo arquitectónico real: los 66 efectos se dividen en 2 familias, no todos sirven igual como overlay
+Probando 3 efectos más con render real (`shine`, `rings`, y releyendo `chromaticAberration`/`glow` de R6-7) se confirmó una distinción real que no estaba documentada:
+- **Generativos** (dibujan su PROPIO contenido, no leen los píxeles de abajo): `vignette`, `lightLeak`, `rings` -- confirmados con render real funcionando sobre un `<Solid color="transparent">`, con el contenido real DEBAJO perfectamente visible. Estos sirven como overlay universal en cualquier escena, sin tocar el componente de contenido.
+- **Moduladores** (necesitan píxeles reales para transformarlos -- blend, desplazamiento de canales, escaneo): `chromaticAberration`, `glow`, `scanlines`, `tvSignalOff`, `pixelDissolve`, y **`shine`** (probado esta ronda: sobre transparente NO produce ningún cambio visible, confirmado comparando 8 frames con hashes idénticos -- no es un bug de parámetros, es que el efecto necesita brillo real preexistente para "iluminar"). Estos SOLO funcionan aplicados directo a un componente con contenido visible real (Video/Solid/CanvasImage con color/imagen) -- exigiría tocar cada uno de los 28 componentes de `fabrica/componentes/` para exponer un prop `effects` pasante, cambio de arquitectura más grande, no se hace sin necesidad concreta.
+- **`rings` INTEGRADO a producción** (`escenas/PulsoRevelacion.tsx`): un pulso expansivo tipo onda de radar en el momento exacto de `intencion='revelar'` (ya calculado por el Director de Edición). Probado en `fabrica-demo-07`, confirmado visualmente, QA duro 100% limpio.
+- Candidatos generativos reales sin probar todavía (mismo patrón que rings, deberían funcionar igual): `gridlines`, `dot-grid`, `lines`.
 
 ### Otros paquetes descartados sin necesitar decisión del operador
 - `@remotion/canvas`: "headless primitives for Remotion authoring interfaces" -- es para construir una UI tipo Remotion Studio, no aplica a un pipeline de generación de video. DESCARTADO.
@@ -219,12 +226,13 @@ R7-18. Nuevas capacidades encontradas:
 
 ## Lectura rápida: dónde estamos parados
 
-- **10 capacidades con solución YA integrada y probada con render real** (+1 desde R7-25: cámara orgánica).
+- **11 capacidades con solución YA integrada y probada con render real** (+2 desde R7-25: cámara orgánica y pulso de revelación).
 - **4 capacidades probadas con evidencia real pero sin conectar a producción todavía** (rounded-text-box, GSAP -- sin caso de uso concreto que lo justifique) **o pendientes de un insumo externo** (Rive/Lottie necesitan un archivo de animación real que no tenemos).
 - **1 capacidad bloqueada por cuenta externa de pago no confirmado** (mapas/MapTiler) -- sin impacto real, ningún guion actual lo necesita.
 - **1 capacidad totalmente bloqueada por red** (documentación oficial vía MCP) -- sin impacto real porque `raw.githubusercontent.com` cubre casi lo mismo.
 - **1 capacidad bloqueada por modelo de IA no descargable** (subtítulos reales) -- el único bloqueo que sí duele, candidato a resolver en GitHub Actions.
 - **1 capacidad completamente vacía todavía**: saber qué contenido funciona de verdad en las plataformas -- depende 100% de que el operador consiga la clave gratis de YouTube o autorice vidIQ.
 - **2 paquetes confirmados redundantes/deprecados** (no duplicar): `@remotion/starburst`, `@remotion/light-leaks`.
-- **~58 de los 66 efectos reales de `@remotion/effects` siguen sin evaluar individualmente** -- catálogo grande, exploración lejos de agotada.
+- **Hallazgo arquitectónico real**: de los 66 efectos, solo los GENERATIVOS (dibujan su propio contenido: vignette, lightLeak, rings, y candidatos sin probar como gridlines/dot-grid/lines) sirven como overlay universal sin tocar componentes existentes. Los MODULADORES (chromaticAberration, glow, scanlines, shine, etc.) necesitan contenido visible real debajo -- confirmado que `shine` NO produce ningún cambio sobre transparente (8 frames idénticos). Usarlos exigiría exponer un prop `effects` en cada componente de contenido, cambio de arquitectura mayor sin necesidad concreta hoy.
+- **~61 de los 66 efectos reales de `@remotion/effects` siguen sin evaluar individualmente** -- catálogo grande, exploración lejos de agotada.
 - **Ninguna capacidad depende de un servicio pago activo.**

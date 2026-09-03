@@ -331,5 +331,88 @@
       ],
       "golpe": "negro"
     }
+  },
+  {
+    "videoId": "fabrica-demo-07",
+    "fecha": "2026-09-03T11:29:01.964Z",
+    "patron": {
+      "categoria": "texto",
+      "estilos": [
+        "agresivo",
+        "documental"
+      ],
+      "golpe": "ninguno"
+    }
+  },
+  {
+    "videoId": "fabrica-demo-07",
+    "fecha": "2026-09-03T11:29:01.965Z",
+    "patron": {
+      "categoria": "timeline",
+      "estilos": [
+        "storytelling",
+        "documental"
+      ],
+      "golpe": "fundido"
+    }
+  },
+  {
+    "videoId": "fabrica-demo-07",
+    "fecha": "2026-09-03T11:29:01.965Z",
+    "patron": {
+      "categoria": "cifra",
+      "estilos": [
+        "misterio",
+        "cinematico"
+      ],
+      "golpe": "fogonazo"
+    }
+  },
+  {
+    "videoId": "fabrica-demo-07",
+    "fecha": "2026-09-03T11:29:01.965Z",
+    "patron": {
+      "categoria": "texto",
+      "estilos": [
+        "cinematico"
+      ],
+      "golpe": "iris"
+    }
+  },
+  {
+    "videoId": "fabrica-demo-07",
+    "fecha": "2026-09-03T11:29:01.965Z",
+    "patron": {
+      "categoria": "comparacion",
+      "estilos": [
+        "misterio",
+        "agresivo"
+      ],
+      "golpe": "sacudon"
+    }
+  },
+  {
+    "videoId": "fabrica-demo-07",
+    "fecha": "2026-09-03T11:29:01.965Z",
+    "patron": {
+      "categoria": "lista",
+      "estilos": [
+        "agresivo",
+        "data"
+      ],
+      "golpe": "corte"
+    }
+  },
+  {
+    "videoId": "fabrica-demo-07",
+    "fecha": "2026-09-03T11:29:01.965Z",
+    "patron": {
+      "categoria": "texto",
+      "estilos": [
+        "cinematico",
+        "storytelling"
+      ],
+      "golpe": "negro"
+    }
   }
 ]

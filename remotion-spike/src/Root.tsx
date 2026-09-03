@@ -46,6 +46,8 @@ import {Torre3D} from './tres/Torre3D';
 import {PruebaEnfasis} from './pruebas-r6/PruebaEnfasis';
 import {PruebaRoundedTextBox, DUR_PRUEBA_ROUNDED_TEXT_BOX} from './pruebas-r7/PruebaRoundedTextBox';
 import {PruebaGsap, DUR_PRUEBA_GSAP} from './pruebas-r7/PruebaGsap';
+import {PruebaShine, DUR_PRUEBA_SHINE} from './pruebas-r7/PruebaShine';
+import {PruebaRings, DUR_PRUEBA_RINGS} from './pruebas-r7/PruebaRings';
 import {PruebaCaptions} from './subtitulos/PruebaCaptions';
 import {GraficoTorta} from './escenas/GraficoTorta';
 
@@ -273,6 +275,8 @@ export const Root: React.FC = () => {
           ninguno usado en produccion todavia, ver docs/ARSENAL_AUDIOVISUAL.md. */}
       <Composition id="prueba-rounded-text-box" component={PruebaRoundedTextBox} durationInFrames={DUR_PRUEBA_ROUNDED_TEXT_BOX} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="prueba-gsap" component={PruebaGsap} durationInFrames={DUR_PRUEBA_GSAP} fps={FPS} width={ANCHO} height={ALTO} />
+      <Composition id="prueba-shine" component={PruebaShine} durationInFrames={DUR_PRUEBA_SHINE} fps={FPS} width={ANCHO} height={ALTO} />
+      <Composition id="prueba-rings" component={PruebaRings} durationInFrames={DUR_PRUEBA_RINGS} fps={FPS} width={ANCHO} height={ALTO} />
       {/* R7-16: subtitulos estilo TikTok reales (@remotion/captions) sobre
           audio REAL de fabrica_demo_05, con una fixture SINTETICA de
           Caption[] (whisper.cpp compila real en este sandbox pero la

@@ -19,6 +19,7 @@ import {Torre3D} from '../tres/Torre3D';
 import {Golpe, TipoGolpe, Anticipo} from '../escenas/golpes';
 import {Vineta} from '../escenas/Vineta';
 import {CamaraOrganica} from '../escenas/CamaraOrganica';
+import {PulsoRevelacion} from '../escenas/PulsoRevelacion';
 import {PALETA} from '../identidad';
 
 // PUENTE DE RENDER de la nueva fabrica (fabrica/composicion/). Esto NO
@@ -96,8 +97,9 @@ export type EscenaFabrica = {
    * calculo. Opcional -- un arbol viejo (demo_01..04) sigue siendo
    * valido sin esto. `estilos` se agrega en R7-24 (antes solo se leia
    * `microeventos` aca) -- ver Vineta abajo. `energia` se agrega en
-   * R7-25 -- ver CamaraOrganica abajo. */
-  estrategiaEdicion?: {microeventos?: MicroEventoFabrica[]; estilos?: string[]; energia?: string};
+   * R7-25 -- ver CamaraOrganica abajo. `intencion` tambien se agrega
+   * en R7-25 -- ver PulsoRevelacion abajo. */
+  estrategiaEdicion?: {microeventos?: MicroEventoFabrica[]; estilos?: string[]; energia?: string; intencion?: string};
 };
 
 /** Traduce el microevento 'se_revela_comparacion' (si existe) al prop
@@ -228,6 +230,12 @@ export const FabricaVideo: React.FC<{arbol: ArbolFabrica}> = ({arbol}) => {
                   (directores/edicion/estilos.ts) -- no es un campo
                   nuevo que haya que decidir aparte. */}
               {e.estrategiaEdicion?.estilos?.includes('cinematico') && <Vineta />}
+              {/* R7-25: segundo efecto real conectado (`rings`, ver
+                  PulsoRevelacion.tsx) -- se dispara con
+                  intencion='revelar', que el Director de Edicion YA
+                  calcula, mismo principio que la vinieta con
+                  'cinematico'. */}
+              {e.estrategiaEdicion?.intencion === 'revelar' && <PulsoRevelacion />}
               {/* ANTICIPO (Ronda 3): si la escena que sigue corta con un
                   golpe fuerte, los ultimos instantes de ESTA escena
                   muestran pulsos que se aceleran -- prepara el impacto

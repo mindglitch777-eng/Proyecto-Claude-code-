@@ -40,6 +40,21 @@ segunda pasada más profunda que R7-18.
   nuevas documentadas (cámara, texto redondeado, timelines, mapas,
   Rive/Lottie, motor gráfico Skia, emojis animados) con el criterio
   INTEGRAR/PROBAR/REFERENCIA/DESCARTAR/BLOQUEADO pedido.
+- **Segundo efecto real integrado a producción**: `PulsoRevelacion.tsx`
+  (`@remotion/effects/rings`) -- un pulso expansivo tipo onda de radar
+  en el momento exacto de `intencion='revelar'` (ya calculado por el
+  Director de Edición). Probado en `fabrica-demo-07`, confirmado
+  visualmente, QA duro 100% limpio.
+- **Hallazgo arquitectónico real** (probando `shine`, comparado contra
+  `rings`/`vignette`): los 66 efectos de `@remotion/effects` se
+  dividen en GENERATIVOS (dibujan su propio contenido, sirven como
+  overlay universal -- vignette/lightLeak/rings, confirmados) y
+  MODULADORES (necesitan píxeles reales debajo para transformarlos --
+  chromaticAberration/glow/scanlines/shine, confirmado que `shine`
+  sobre transparente no produce ningún cambio, 8 frames idénticos).
+  Usar los moduladores exigiría tocar cada componente de contenido
+  para exponer un prop `effects` -- cambio de arquitectura mayor, no
+  se hace sin necesidad concreta.
 
 **BLOQUEADO/NO CONFIRMADO:** mapas (`@remotion/maptiler`, necesita
 cuenta de MapTiler Cloud); Rive/Lottie (necesitan un archivo de
