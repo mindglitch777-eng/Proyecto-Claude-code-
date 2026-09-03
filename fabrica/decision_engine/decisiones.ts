@@ -54,4 +54,39 @@ export const DECISIONES_ARQUITECTURA: DecisionArquitectura[] = [
     justificacion:
       'El objetivo declarado del proyecto (CLAUDE.md, Fase 1) es "1 producto digital vendible en Hotmart", no "un motor de video más pulido" -- ninguna mejora técnica de video o carrusel genera una venta por sí sola. Dicho esto, esta opción está BLOQUEADA por una decisión/información que solo el operador puede dar (no se puede inventar una audiencia o un precio). Recomendación práctica: preguntarle al operador esa información (registrado en PENDIENTES.md), y MIENTRAS se espera respuesta, seguir con "expandir el Carousel Engine" (opción B) como trabajo autónomo de más impacto que "profundizar video" (opción A), porque genera un canal de contenido más barato de iterar una vez que haya un producto real que promocionar.',
   },
+  {
+    id: 'beat-sync-cuando-conectar',
+    pregunta: '¿Conectar ya el timing de golpes de directores/audio.ts a la grilla de BPM real de musicaFondo (beat-sync editing), o esperar a un video de prueba dedicado antes de tocar ese código?',
+    fecha: '2026-09-03',
+    estado: 'abierta',
+    opciones: [
+      {
+        id: 'conectar-ahora',
+        nombre: 'Conectar el beat-sync ahora mismo en directores/audio.ts',
+        queHace: 'Usar `framesPerBeat = (60/BPM)*fps` (técnica real de la skill `beat-sync-editing`, iart-ai/motion-design-skills, MIT) para redondear el frame de cada golpe de una unidad al beat más cercano del track de `musicaFondo` ya elegido.',
+        ventajas: ['El dato que faltaba (bpm real, no null) ya está medido con librosa desde R7-26 -- no hay dependencia externa pendiente.', 'Es la pieza que le falta a la música de fondo (R7-22) para dejar de ser solo un fondo pasivo y pasar a reforzar el ritmo de corte real.'],
+        desventajas: ['El dato de BPM tiene una limitación real conocida y no verificada de oído (octave error, ver medir_bpm.py) -- redondear a una grilla equivocada podría sonar PEOR que el timing actual (que ya pasó QA en demo_06/07), no solo neutral.', 'No hay todavía un video de prueba que aísle esta variable sola (A/B real) -- se estaría cambiando un sistema que funciona sin evidencia de que la versión nueva es mejor.'],
+        dependencias: ['Ninguna nueva -- bpm ya está en biblioteca.json.'],
+        costos: '$0.',
+        riesgos: ['Romper el timing de golpes ya validado en demo_06/07 por una hipótesis (que sincronizar a BPM se ve/siente mejor) todavía no probada con un render real comparado.'],
+        potencial: 'Alto SI el BPM medido es correcto -- pero no confirmado todavía.',
+        complejidad: 'media',
+      },
+      {
+        id: 'esperar-video-dedicado',
+        nombre: 'Esperar a un video de prueba dedicado (A/B real) antes de tocar directores/audio.ts',
+        queHace: 'Dejar el beat-sync documentado como pendiente real (ya está, en fabrica/musica/README.md) y generar primero un demo_08 que sea *igual* a demo_07 salvo por el timing de golpes (con vs. sin grilla de BPM), comparando ambos con Critico Audiovisual antes de decidir si se integra de forma permanente.',
+        ventajas: ['Sigue el mismo patrón ya usado con éxito en este proyecto (demo_07 fue un A/B deliberado contra demo_06) -- decisiones de "esto se ve/siente mejor" se toman con evidencia comparada, no por intuición.', 'No arriesga romper timing ya validado sin necesidad.'],
+        desventajas: ['Un video de prueba más consume tiempo de render/tokens antes de saber si vale la pena.', 'Requiere que el operador escuche al menos un track para confirmar que el BPM medido no tiene octave error, si el resultado se ve raro.'],
+        dependencias: ['Ninguna nueva.'],
+        costos: '$0.',
+        riesgos: ['Ninguno técnico -- el único costo es tiempo de la próxima ronda.'],
+        potencial: 'Mismo potencial que la opción A, pero con la certeza de no degradar lo que ya funciona.',
+        complejidad: 'baja',
+      },
+    ],
+    recomendacionId: 'esperar-video-dedicado',
+    justificacion:
+      'La "postura resolutiva" de CLAUDE.md pide no paralizarse, pero también pide no romper sistemas que funcionan sin evidencia -- y acá el propio dato de entrada (BPM automático) tiene una limitación conocida y explícitamente no verificada ("aceleracion-planificando" a 178.2 BPM es plausible pero no confirmado de oído). Cambiar el timing de golpes en el sistema de producción real sin un A/B que lo respalde repetiría el error que este proyecto ya evitó antes (Ronda 6, decisión de @remotion/transitions se tomó DESPUÉS de comparar, no antes). Recomendación: generar el video de prueba dedicado en la próxima ronda de trabajo activo sobre la fábrica, no en esta capa de exploración.',
+  },
 ];

@@ -8,7 +8,64 @@ después de cada bloque de trabajo real, como pide el "Prompt Maestro
 `PENDIENTES_OPERADOR.md`; para todo lo pendiente técnico,
 `PENDIENTES.md`.
 
-## Último bloque de trabajo: R7-26 (2026-09-03)
+## Último bloque de trabajo: R7-27 (2026-09-03) -- cierre de la capa de exploración agresiva
+
+Pedido del operador: terminar TODOS los puntos del prompt "CAPA DE
+EXPLORACIÓN AGRESIVA DE SKILLS, REMOTION, MCP Y ARSENAL AUDIOVISUAL"
+(31 secciones) -- este bloque cierra los puntos que quedaban abiertos
+de R7-22 a R7-26 (sección 5 del prompt: MCP de investigación de
+contenido; sección 15: Decision Engine; sección 22: informe final
+formato A-P).
+
+**HECHO:**
+- **Sección 5 (MCP de contenido real)**: investigados 2 candidatos
+  nuevos con el mismo rigor que los ya registrados (fuente citada,
+  costo/límites/riesgo reales, no supuestos):
+  - **SocialCrawl MCP** (`socialcrawl.dev`) -- 42-48 plataformas, 381
+    endpoints, 3 de 4 tools funcionan SIN api key (documentación/lista
+    de endpoints local). Confirmado vía su propia página de pricing:
+    100 créditos gratis, **sin tarjeta, sin vencimiento, sin
+    conversión automática a plan pago** -- el perfil de riesgo más
+    bajo de todos los MCP evaluados hasta ahora. Decisión: `probar`.
+  - **Trend Intel (actor sobre Apify)** -- $5 USD/mes de crédito
+    gratis sin tarjeta, pero facturado en "compute units" (no en
+    requests simples como SocialCrawl), más difícil de predecir el
+    rendimiento real del crédito gratis. Decisión:
+    `esperar_autorizacion_operador` (no por costo confirmado, sino por
+    la ambigüedad real de cuánto rinde el crédito gratis).
+  - Ambos registrados en `fabrica/mcp/registro.ts` con el mismo
+    template que `vidiq`/`trends-mcp` -- `test_mcp.ts` sigue pasando
+    sin cambios (el registro es genérico).
+- **Sección 15 (Decision Engine)**: agregada una decisión real y
+  abierta -- "¿conectar el beat-sync (BPM medido en R7-26) al timing
+  de golpes de `directores/audio.ts` ya mismo, o esperar un video de
+  prueba dedicado?" -- comparando ambas opciones con ventajas/riesgos
+  reales (incluye la limitación conocida del BPM automático). Recomendación:
+  esperar un A/B real antes de tocar un sistema de producción que ya
+  funciona, mismo patrón que la decisión de Ronda 6 sobre
+  `@remotion/transitions`.
+- Suite completa verificada antes de cerrar: `npm run test-todo`
+  (32/32 suites OK) + `npx tsc --noEmit` limpio en `fabrica/` y en
+  `remotion-spike/`.
+- Entregado al operador el informe final formato A-P (sección 22 del
+  prompt) resumiendo todo el arco R7-22 a R7-27 -- ver el mensaje de
+  cierre de esta sesión (no se duplica el contenido acá para no
+  desincronizar; este ESTADO.md es el resumen técnico operativo).
+
+**BLOQUEADO -- NO CONFIRMADO (ninguno nuevo, ya documentados antes):**
+YouTube Data API sigue esperando `YOUTUBE_API_KEY` del operador
+(R7-20); `vidiq`/Apify Trend Intel siguen esperando autorización de
+cuenta/costo; Jamendo sigue esperando `JAMENDO_CLIENT_ID`.
+
+**PRÓXIMO PASO real, ya registrado**: el más claro y de más impacto de
+negocio (no técnico) sigue siendo el de la decisión "prioridad-post-
+ronda-7" ya registrada: conseguir del operador la info real de
+audiencia/oferta para el Sales Engine. En paralelo, técnicamente, el
+candidato más concreto es generar el video de prueba dedicado
+(demo_08) que compare timing de golpes con/sin grilla de BPM antes de
+integrar beat-sync a producción.
+
+## Bloque anterior: R7-26 (2026-09-03)
 
 Pedido del operador: seguir profundizando la exploración agresiva
 (skills de Claude Code + MCP), tomándose el tiempo necesario.
