@@ -520,6 +520,56 @@ entorno / qué reemplazaría o mejoraría / riesgos / recomendación.
   ronda con un caso de uso real concreto (no instalar preventivamente
   sin necesidad, mismo principio de siempre).
 
+## 16. Búsqueda amplia real (marketing skills + MCP de contenido + chuk-motion) — R7-19
+
+- **Contexto:** el operador señaló, correctamente, que la investigación
+  venía siendo demasiado literal -- se evaluaron 3 skills de Remotion
+  y se paró ahí, sin ir a buscar el universo mucho más amplio de
+  skills/MCP/comunidades que existen (el pedido explícito mencionaba
+  cientos investigados por el operador con otra IA). Se corrigió el
+  comportamiento: en vez de reportar "bloqueado" ante el primer
+  `WebFetch` fallido, se usó `WebSearch` (sin restricción) + lectura
+  directa de código fuente real vía `raw.githubusercontent.com` para
+  ir mucho más profundo.
+- **`coreyhaines31/marketingskills`** (MIT, confirmado leyendo el
+  LICENSE real) -- 50 Agent Skills de marketing en el mismo formato
+  que ya usa este entorno (`remotion-markup`/etc). Se instalaron 10
+  directamente relevantes al objetivo de Fase 1 (CLAUDE.md: vender un
+  producto digital en Hotmart): `product-marketing`, `offers`,
+  `pricing`, `copywriting`, `cro`, `lead-magnets`, `launch`,
+  `marketing-psychology`, `customer-research`, `marketing-plan`.
+  Copiadas a `.claude/skills/` (mismo lugar que las skills de
+  Remotion), invocables con la herramienta Skill. Esto es la primera
+  vez que la fábrica tiene criterio experto real del lado de VENTAS
+  (hasta ahora `fabrica/ventas/` tenía la arquitectura pero cero guía
+  de cómo escribir una oferta/precio/lead-magnet reales).
+- **`chuk-motion` (chrishayuk/chuk-mcp-remotion)** (Apache-2.0,
+  confirmado) -- servidor MCP en Python que genera código Remotion con
+  su propio sistema de diseño (51 componentes: 6 tipos de gráfico,
+  17 layouts multi-plataforma con márgenes seguros ya calculados para
+  TikTok/Instagram/LinkedIn). No tiene ninguna dependencia de API
+  paga (confirmado leyendo `pyproject.toml` completo). Es una
+  arquitectura PARALELA completa -- se clasifica PROBAR (referencia de
+  diseño, ej. sus layouts multi-cámara/HUD/mosaico), NO se adopta como
+  reemplazo del Director Visual (mismo criterio que descartó "Twick"
+  en Ronda 6: reescribir la fábrica entera sin una limitación real que
+  lo justifique).
+- **`tiktok-trends-mcp` / trendsmcp.ai** -- confirmado con el README
+  real (no solo un resumen de búsqueda): MIT, tier gratis declarado de
+  100 req/mes, botón de instalación directa a Claude. Sigue pendiente
+  de que el operador lo conecte (implica cuenta en un tercero).
+- **`viral-app-mcp`** -- DEPRECADO (el propio README lo dice
+  explícitamente), descartado.
+- **`video-url-analyzer-mcp`** -- real, MIT el código, pero usa la API
+  de Google Gemini (paga más allá de un tier gratis limitado) --
+  requiere autorización del operador antes de activar, registrado en
+  `PENDIENTES_OPERADOR.md`.
+- **Lección para sesiones futuras:** antes de declarar algo
+  "bloqueado" o "no investigado en profundidad", agotar `WebSearch` +
+  `raw.githubusercontent.com`/`git clone --sparse` + `registry.npmjs.org`
+  -- ver la decisión formal en `fabrica/decisions/DECISIONES.md`
+  ("Estrategia de investigación mejorada tras bloqueos de red").
+
 ---
 
 ## Resumen de recomendaciones
@@ -542,7 +592,12 @@ entorno / qué reemplazaría o mejoraría / riesgos / recomendación.
 | Remotion Agent Skills del entorno (`remotion-markup`/`render`/`captions`) | **USAR — confirmadas reales, gratis (2026-09-03)** | Alta, referencia constante |
 | `@remotion/shapes` + `@remotion/paths` | **USAR — integrado y probado con render real, bug encontrado y corregido (2026-09-03)** | Alta, gráfico de torta ya en el registro de componentes |
 | `@remotion/mcp` (oficial) | PROBAR -- real pero bloqueado en este sandbox | Baja acá, útil en otro entorno |
-| Resto del ecosistema oficial @remotion/* (32 paquetes catalogados) | PROBAR selectivamente (motion-blur/lottie/gsap primero) | Media |
+| Resto del ecosistema oficial @remotion/* (32 paquetes catalogados) | PROBAR selectivamente (lottie/gsap primero) | Media |
+| `coreyhaines31/marketingskills` (10 de 50 instaladas) | **USAR — instaladas, MIT confirmado (2026-09-03)** | Alta, primer criterio experto de ventas de la fábrica |
+| `chuk-motion` (MCP de Remotion, Apache-2.0) | PROBAR como referencia de diseño, NO como reemplazo | Baja -- arquitectura paralela |
+| `tiktok-trends-mcp` (trendsmcp.ai) | PROBAR -- MIT, tier gratis declarado, pendiente que el operador lo conecte | Media |
+| `viral-app-mcp` | DESCARTAR -- deprecado por su propio autor | — |
+| `video-url-analyzer-mcp` | Pendiente autorización del operador (usa Gemini, no 100% gratis) | — |
 
 **Evidencia real de las 4 confirmaciones de arriba:**
 `remotion-spike/src/pruebas-r6/README.md` — 4 composiciones aisladas

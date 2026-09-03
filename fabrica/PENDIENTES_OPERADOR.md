@@ -32,6 +32,10 @@ conectándolo -- si te interesa, implicaría crear una cuenta en un
 servicio externo (`trendsmcp.io` o similar) y agregarlo vos como
 conector personalizado. Detalle completo en `fabrica/mcp/registro.ts`.
 
+### ¿Autorizamos usar Google Gemini para analizar videos reales de la competencia?
+
+Encontré un MCP (`video-url-analyzer-mcp`) que transcribe y analiza con IA cualquier video de YouTube/TikTok/Instagram por URL -- sería una forma real de estudiar qué hace la competencia. Pero usa la API de Google Gemini, que tiene un plan gratis con límites reales (no "gratis sin condiciones"). No lo activé porque implica una cuenta de Google Cloud y gestionar una clave que podría generar costo. Si querés probarlo, decime y lo dejamos listo -- mientras tanto queda solo documentado.
+
 ### Herramientas descartadas sin preguntarte (no requieren tu decisión)
 
 OpusClip, Tella, Cloudinary, Adobe for creativity, HyperFrames y
