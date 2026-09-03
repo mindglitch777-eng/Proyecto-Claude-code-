@@ -38,6 +38,7 @@ import {Prueba3D, DUR_PRUEBA_3D} from './pruebas-r6/Prueba3D';
 import {PruebaHighlights, DUR_PRUEBA_HIGHLIGHTS} from './pruebas-r6/PruebaHighlights';
 import {PruebaVineta, DUR_PRUEBA_VINETA} from './pruebas-r6/PruebaVineta';
 import {PruebaLightLeak, DUR_PRUEBA_LIGHTLEAK} from './pruebas-r6/PruebaLightLeak';
+import {CarruselSlide, ANCHO_CARRUSEL, ALTO_CARRUSEL} from './carrusel/CarruselSlide';
 import {PruebaCortina, DUR_PRUEBA_CORTINA} from './pruebas-r6/PruebaCortina';
 import {Torre3D} from './tres/Torre3D';
 import {PruebaEnfasis} from './pruebas-r6/PruebaEnfasis';
@@ -232,6 +233,37 @@ export const Root: React.FC = () => {
       <Composition id="prueba-lightleak" component={PruebaLightLeak} durationInFrames={DUR_PRUEBA_LIGHTLEAK} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="prueba-cortina" component={PruebaCortina} durationInFrames={DUR_PRUEBA_CORTINA} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="prueba-enfasis" component={PruebaEnfasis} durationInFrames={Math.round(6 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
+      {/* R7-10: Carousel Engine -- primer render REAL (still, no
+          video) de 3 slides de un carrusel de prueba
+          (fabrica/carrusel/test_carrusel.ts, carrusel "c1"). Se
+          renderiza con `npx remotion still`, no `render`. */}
+      <Composition
+        id="carrusel-slide-portada"
+        component={CarruselSlide}
+        durationInFrames={1}
+        fps={FPS}
+        width={ANCHO_CARRUSEL}
+        height={ALTO_CARRUSEL}
+        defaultProps={{tipo: 'portada', texto: '¿Sabías que podés vender un curso sin gastar un peso en ads?', numero: 1, total: 8}}
+      />
+      <Composition
+        id="carrusel-slide-desarrollo"
+        component={CarruselSlide}
+        durationInFrames={1}
+        fps={FPS}
+        width={ANCHO_CARRUSEL}
+        height={ALTO_CARRUSEL}
+        defaultProps={{tipo: 'desarrollo', texto: 'Paso 1: definir el problema real que resuelve tu curso', numero: 3, total: 8}}
+      />
+      <Composition
+        id="carrusel-slide-cta"
+        component={CarruselSlide}
+        durationInFrames={1}
+        fps={FPS}
+        width={ANCHO_CARRUSEL}
+        height={ALTO_CARRUSEL}
+        defaultProps={{tipo: 'cta', texto: 'Mirá el link en la bio para el mini-curso completo', numero: 8, total: 8}}
+      />
       <Composition
         id="prueba-torre3d"
         component={Torre3D}
