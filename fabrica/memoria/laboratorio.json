@@ -58,5 +58,15 @@
     "conclusion": null,
     "estado": "esperando_datos",
     "fechaCreacion": "2026-09-02T20:53:35.270Z"
+  },
+  {
+    "id": "fabrica-demo-06-1788408154486",
+    "hipotesis": "El Director de Retencion 2.0 (mapa narrativo del video completo) + el Critico Audiovisual (formato Problema/Evidencia/Severidad/Tipo/Propuesta) permiten detectar problemas de arco narrativo que las rondas anteriores no podian ver (solo miraban unidad por unidad).",
+    "experimento": "fabrica-demo-06: Ronda 5, guion nuevo (Tomás, curso online), voz real de Qwen3-TTS, Director de Retencion 2.0 + Critico Audiovisual corridos de verdad sobre el arbol real.",
+    "videoId": "fabrica-demo-06",
+    "resultadoReal": null,
+    "conclusion": null,
+    "estado": "esperando_datos",
+    "fechaCreacion": "2026-09-03T04:02:34.487Z"
   }
 ]

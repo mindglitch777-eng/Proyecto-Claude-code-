@@ -38,7 +38,7 @@ export type DatosProgresion = {
   esDinero?: boolean; // si true, los valores se formatean y tratan como moneda
 };
 
-const COMPONENTES_CIFRA_SOPORTADOS = ['grafico', 'recibo', 'contador', 'cifra-se-cae'] as const;
+const COMPONENTES_CIFRA_SOPORTADOS = ['grafico', 'recibo', 'contador', 'cifra-se-cae', 'torre-3d'] as const;
 
 export function propsParaCifra(componenteId: string, datos: DatosProgresion): Record<string, unknown> {
   if (datos.puntos.length < 2) {
@@ -89,6 +89,20 @@ export function propsParaCifra(componenteId: string, datos: DatosProgresion): Re
       const fmt = (v: number) => (datos.esDinero ? formatearPlata(v) : String(v));
       return {arriba: datos.titulo, de: fmt(primero.valor), a: fmt(ultimo.valor), abajo: datos.etiqueta};
     }
+
+    // R7-21: bug real encontrado generando fabrica-demo-06 -- Torre3D
+    // (R6-10, primer componente 3D real de la fabrica, categoria
+    // 'cifra') nunca se conecto a este adaptador. Mismo contrato que
+    // 'contador' (cuenta desde 0 real hasta un valor final unico, no
+    // "desde/hasta" como cifra-se-cae) -- ver Torre3D.tsx, props
+    // {arriba?, hasta, abajo?, prefijo?}.
+    case 'torre-3d':
+      return {
+        arriba: datos.titulo,
+        hasta: ultimo.valor,
+        abajo: datos.etiqueta,
+        prefijo: datos.esDinero ? '$' : '',
+      };
 
     default:
       throw new Error(

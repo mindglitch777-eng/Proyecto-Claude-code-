@@ -242,11 +242,28 @@ documentar lo que ya se hizo bien.
   de "aprendizaje" es arquitectura probada con datos sintéticos,
   nunca ejercitada de verdad. Es el techo más grande del proyecto, y
   no es técnico: depende de publicar algo real.
-- **La elección automática de patrones de retención (R7-15) nunca se
-  ejercitó en un video real** -- se probó con tests, no se regeneró
-  ningún `demo_0N` con el Director de Edición ya conectado al
-  catálogo. No se sabe si la elección automática se "siente" bien en
-  un video completo.
+- ~~**La elección automática de patrones de retención (R7-15) nunca se
+  ejercitó en un video real**~~ -- **RESUELTO en R7-21.** Se regeneró
+  `fabrica-demo-06` (7 unidades) llamando a
+  `directorEdicion.planificar(ctx, golpe, evitarPatrones)` con
+  anti-repetición real (mismo patrón que ya usaba
+  `DirectorAudio.decidirParaUnidad`). Resultado real, sin curar a
+  mano: 7 patrones distintos, uno por unidad
+  (`contexto-parcial` en el hook, `estructura-problema-agitacion-solucion`
+  en el desarrollo, `loop-abierto` en la aceleración, etc.), mapa de
+  retención coherente (`hook -> desarrollo -> escalada(climax) ->
+  pausa -> revelacion -> escalada -> cierre`). Render completo
+  (1150/1150 frames, 38.4s, 1080x1920) y QA duro 100% limpio (sin
+  `problemas` ni `alertas`, silencio/pantalla-negra sospechosos
+  vacíos). Evidencia visual: `salidas/demo06_frame_hook.png`,
+  `demo06_frame_torre3d.png`, `demo06_frame_cierre.png`.
+  Bonus (postura resolutiva, no estaba en el plan): al ejercitar esto
+  con datos reales se encontró que `Torre3D` (R6-10, componente 3D de
+  categoría `cifra`) nunca tenía caso en `propsParaCifra()`
+  (`composicion/adaptadores.ts`) -- bug real, no teórico, que hubiera
+  bloqueado cualquier generador futuro que ganara ese componente. Se
+  agregó el caso (mismo contrato que `contador`: `{arriba, hasta,
+  abajo, prefijo}`) con test dedicado en `test_adaptadores.ts`.
 - **`@remotion/effects` tiene ~60 efectos, se usó 1 solo**
   (`lightLeak`) -- el resto del catálogo (glitch, chromatic
   aberration, etc.) nunca se evaluó individualmente.

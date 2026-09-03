@@ -16,6 +16,7 @@ import demo02 from './fabrica_bridge/demo_02.json';
 import demo03 from './fabrica_bridge/demo_03.json';
 import demo04 from './fabrica_bridge/demo_04.json';
 import demo05 from './fabrica_bridge/demo_05.json';
+import demo06 from './fabrica_bridge/demo_06.json';
 import pruebaR68 from './fabrica_bridge/prueba_r6_8.json';
 import pruebaR610 from './fabrica_bridge/prueba_r6_10.json';
 import {Video} from './receta/Video';
@@ -152,6 +153,20 @@ export const Root: React.FC = () => {
         width={ANCHO}
         height={ALTO}
         defaultProps={{arbol: demo05 as ArbolFabrica}}
+      />
+      {/* R7-21: primer video real que ejercita la eleccion AUTOMATICA
+          de patrones de retencion (R7-15) -- generar_demo_06.ts ya no
+          pasa patronesRetencion a mano, el Director de Edicion los
+          elige solo con anti-repeticion real entre las 7 unidades.
+          Ver fabrica/ejemplos/generar_demo_06.ts. */}
+      <Composition
+        id="fabrica-demo-06"
+        component={FabricaVideo}
+        durationInFrames={Math.round((demo06 as ArbolFabrica).duracionTotalSeg * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{arbol: demo06 as ArbolFabrica}}
       />
       {/* R6-8: prueba de punta a punta de la transicion real
           (@remotion/transitions) con 2 audios REALES -- ver

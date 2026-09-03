@@ -116,16 +116,24 @@ export function generarArbol(params: ParametrosGeneracion, log: boolean = true):
   const usadosEnEsteVideo: string[] = [];
   const evitarComponentes = () => [...componentesUsadosRecientes(5), ...usadosEnEsteVideo, ...params.evitarComponentesExtra];
   const golpesUsadosEnEsteVideo: TipoGolpe[] = [...params.evitarGolpesExtra];
+  // R7-21: primer ejercicio REAL de la eleccion automatica de patrones
+  // de retencion (R7-15) sobre un video completo -- mismo principio
+  // que golpesUsadosEnEsteVideo: el llamador (este generador) es quien
+  // conoce el historial real del video, el Director de Edicion no lee
+  // memoria por si mismo.
+  const patronesRetencionUsadosEnEsteVideo: string[] = [];
   let valoresEstablecidos: ValorEstablecido[] = [];
   const unidades: UnidadResuelta[] = [];
   const TOTAL = 7;
 
   function planificarEdicion(ctx: Omit<ContextoUnidad, 'unidadId'> & {unidadId: string}, golpe: TipoGolpe) {
-    const estrategia = directorEdicion.planificar(ctx, golpe);
+    const estrategia = directorEdicion.planificar(ctx, golpe, patronesRetencionUsadosEnEsteVideo);
+    if (estrategia.patronRetencionId) patronesRetencionUsadosEnEsteVideo.push(estrategia.patronRetencionId);
     imprimir(`   [edicion] intencion=${estrategia.intencion} energia=${estrategia.energia} ` +
       `densidad=${estrategia.densidadVisual} estilos=[${estrategia.estilos.join('+')}] ` +
       `respiracion=${estrategia.respiracion}`);
     imprimir(`   [edicion] transicion: ${estrategia.transicion.motivo}`);
+    if (estrategia.patronRetencionId) imprimir(`   [patron_retencion] ${estrategia.patronRetencionId} (elegido automaticamente, R7-15)`);
     for (const m of estrategia.microeventos) {
       imprimir(`   [microevento] +${m.enSegRelativo.toFixed(2)}s ${m.tipo}: ${m.descripcion}`);
     }

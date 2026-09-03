@@ -8,7 +8,60 @@ después de cada bloque de trabajo real, como pide el "Prompt Maestro
 `PENDIENTES_OPERADOR.md`; para todo lo pendiente técnico,
 `PENDIENTES.md`.
 
-## Último bloque de trabajo: R7-19 (2026-09-03)
+## Último bloque de trabajo: R7-21 (2026-09-03)
+
+Pedido del operador: buscar una solución 100% gratis para investigación
+de contenido, y seguir con la línea de "exploración agresiva" -- se
+priorizó cerrar el hallazgo más grande de la auditoría R7-19 (ver
+`ARQUITECTURA.md` > PUNTOS DÉBILES): R7-15 nunca se había ejercitado en
+un video real.
+
+**HECHO:**
+- `fabrica-demo-06` (7 unidades) regenerado con
+  `directorEdicion.planificar(ctx, golpe, evitarPatrones)` real (antes
+  el generador no pasaba el 3er parámetro) -- anti-repetición de
+  patrones de retención confirmada con datos reales: 7 patrones
+  distintos, uno por unidad, mapa coherente
+  (hook->desarrollo->escalada(climax)->pausa->revelacion->escalada->cierre).
+- Render completo real (1150/1150 frames, 38.4s) + QA duro 100% limpio
+  (`problemas: []`, `alertas: []`) + 3 frames extraídos e inspeccionados
+  visualmente (hook, Torre3D a los 18s, cierre) -- confirmados
+  correctos.
+- Bug real encontrado y arreglado en el camino (postura resolutiva,
+  no estaba planeado): `Torre3D` (R6-10) nunca tenía caso en
+  `propsParaCifra()` -- se agregó, con test dedicado.
+- Video registrado en memoria (`--confirmar`, primera vez que
+  `patronesRetencionUsadosEnEsteVideo` se persiste de verdad en
+  `patrones_usados.json` desde un video completo, no un test).
+- Detalle completo de R7-20 (cliente real de YouTube Data API v3,
+  confirmado 100% gratis sin tarjeta ni tope de pago, sin necesidad de
+  vidIQ/Gemini) en el bloque siguiente.
+
+**PRÓXIMO PASO:** con R7-15 ya probado en video real, el techo más
+grande que queda es el de siempre: cero dato de resultado real
+(ninguna publicación todavía). El resto son mejoras incrementales
+(probar más efectos de `@remotion/effects`, música de fondo real).
+
+## Bloque anterior: R7-20 (2026-09-03)
+
+**HECHO:**
+- `fabrica/research/youtube_api.ts` -- cliente real de YouTube Data
+  API v3 (`buscarVideos`, `estadisticasDeVideos`), confirmado con
+  `WebSearch` (múltiples fuentes 2026) que es 100% gratis: no pide
+  tarjeta para generar la key, y a diferencia de vidIQ/Gemini NO EXISTE
+  un tier pago -- solo un formulario gratis para pedir más cuota.
+  Reemplaza la ambigüedad de costo de vidIQ/Gemini con una opción de
+  costo cero verificado.
+- Tests con `fetch` mockeado, fixtures iguales a la forma real
+  documentada de la API.
+- Guía de 5 pasos para que el operador saque su key gratis, agregada a
+  `PENDIENTES_OPERADOR.md`.
+
+**BLOQUEADO (requiere al operador):** la key de YouTube Data API v3
+(`FABRICA_YOUTUBE_API_KEY`) -- el cliente nunca inventa datos si falta,
+tira error explícito.
+
+## Bloque anterior: R7-19 (2026-09-03)
 
 El operador señaló (correctamente) que la investigación venía siendo
 demasiado literal: se reportaba "bloqueado" ante el primer `WebFetch`

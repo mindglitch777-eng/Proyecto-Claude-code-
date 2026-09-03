@@ -85,6 +85,13 @@ check('cifra-se-cae: "de" y "a" formateados como plata', propsCifraSeCae.de === 
 const propsCifraSeCaeSinDinero = propsParaCifra('cifra-se-cae', datosEscalada) as any;
 check('cifra-se-cae sin dinero: numeros crudos, sin "$" inventado', propsCifraSeCaeSinDinero.de === '0' && propsCifraSeCaeSinDinero.a === '100');
 
+// R7-21: torre-3d (R6-10) nunca tuvo adaptador -- bug real encontrado
+// generando fabrica-demo-06 (categoria 'cifra' sin caso en el switch).
+const propsTorre3D = propsParaCifra('torre-3d', datosIngresos) as any;
+check('torre-3d: "hasta" es el valor final (mismo contrato que Torre3D.tsx)', propsTorre3D.hasta === 900);
+check('torre-3d: prefijo $ cuando esDinero', propsTorre3D.prefijo === '$');
+check('torre-3d: arriba viene del titulo', propsTorre3D.arriba === datosIngresos.titulo);
+
 check('cifra: componente desconocido tira error explicito, no props vacias', (() => {
   try {
     propsParaCifra('componente-inventado-que-no-existe', datosEscalada);

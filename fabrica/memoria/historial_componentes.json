@@ -65,5 +65,17 @@
       "antes-despues",
       "ranking"
     ]
+  },
+  {
+    "videoId": "fabrica-demo-06",
+    "fecha": "2026-09-03T04:02:34.484Z",
+    "componentesUsados": [
+      "punch",
+      "cronologia",
+      "torre-3d",
+      "silueta",
+      "antes-despues",
+      "lista-tachada"
+    ]
   }
 ]
