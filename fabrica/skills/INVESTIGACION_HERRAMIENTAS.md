@@ -412,6 +412,53 @@ entorno / qué reemplazaría o mejoraría / riesgos / recomendación.
   copiar componentes completos a la fábrica salvo que se audite y
   adapte cada uno individualmente al estilo/convenciones propias.
 
+## 14. Remotion Agent Skills disponibles en ESTE entorno (`remotion-markup`, `remotion-render`, `remotion-captions`) — **USAR (ya confirmadas, gratis, sin instalar nada)**
+
+- **Fuente:** `.claude/skills/remotion-markup/` y
+  `.claude/skills/remotion-render/` (ya presentes en este entorno,
+  invocadas de verdad en Ronda 7 vía la herramienta Skill, 2026-09-03)
+  -- documentación oficial de Remotion empaquetada como Agent Skill,
+  no un repositorio de terceros.
+- **Qué hacen:** `remotion-markup` da buenas prácticas de animación
+  (`useCurrentFrame()`+`interpolate()`, `Easing.bezier()`/`spring()`,
+  componentes `<Interactive.Div>`/`<CanvasImage>`/`<AnimatedImage>`,
+  `@remotion/media` para `<Video>`/`<Audio>` con `trimBefore`,
+  transiciones, 3D, mapas, SFX, visualización de audio, medición de
+  texto/DOM, `calculateMetadata` para props dinámicas).
+  `remotion-render` documenta las opciones reales de
+  `npx remotion render`/`still` y video transparente.
+  `remotion-captions` (no invocada esta ronda, ya cubierta por R7-16)
+  documenta el mismo flujo de whisper.cpp + `@remotion/captions` que
+  ya se probó de verdad.
+- **Confirmado real, no asumido:** se verificó que `Interactive`,
+  `CanvasImage` y `AnimatedImage` -- símbolos que la skill usa en sus
+  ejemplos -- EXISTEN de verdad en la versión instalada
+  (`remotion@4.0.518`, confirmado con
+  `node -e "require('remotion')"`), a pesar de que la skill describe
+  una API que podría parecer más nueva que la versión fijada en el
+  proyecto.
+- **Gratis:** sí, viene con el entorno, no agrega ninguna dependencia
+  nueva por sí sola (la guía referencia paquetes `@remotion/*`
+  opcionales, cada uno evaluado individualmente si hace falta).
+- **Qué aprovechar:** la guía de "Text highlights" (ya usada en R6-11,
+  `@remotion/rough-notation`), "Transitions" (ya usada en R6-8), la
+  técnica de detección de silencios con FFmpeg (relevante para
+  `fabrica/qa/`), y `calculateMetadata` como alternativa más prolija
+  a hardcodear `durationInFrames` en cada `Composition` de `Root.tsx`.
+- **Qué NO se adoptó todavía:** migrar `<Audio>`/`<Video>` del puente
+  de render (`FabricaVideo.tsx`) al paquete `@remotion/media` que la
+  skill recomienda -- cambio de mayor riesgo sobre un puente de render
+  que ya funciona bien con los componentes base de `remotion`; se dejó
+  como PROBAR, no se ejecuta sin necesidad concreta.
+- **Riesgos:** ninguno de costo/licencia (es documentación oficial).
+  El único riesgo real es de tiempo: la guía cubre mucho más de lo que
+  la fábrica usa hoy (mapas, Lottie, GIFs, visualización de audio) --
+  no vale la pena adoptar nada de eso sin un caso de uso real primero
+  (mismo principio de "no sobreingeniería" de siempre).
+- **Recomendación:** **USAR** como referencia constante al tocar
+  `remotion-spike/` -- ya está disponible, cuesta $0, y evita
+  reinventar patrones que Remotion ya documentó oficialmente.
+
 ---
 
 ## Resumen de recomendaciones
@@ -431,6 +478,7 @@ entorno / qué reemplazaría o mejoraría / riesgos / recomendación.
 | `@remotion/sfx` | PROBAR | Media (próxima vez que se toque Director de Audio) |
 | Modelos de video/imagen de HuggingFace | DESCARTAR — bloqueado por hardware (no hay GPU) | — |
 | Librerías comunitarias (`remocn`, `remotion-animated`, etc.) | PROBAR solo como inspiración de diseño | Baja |
+| Remotion Agent Skills del entorno (`remotion-markup`/`render`/`captions`) | **USAR — confirmadas reales, gratis (2026-09-03)** | Alta, referencia constante |
 
 **Evidencia real de las 4 confirmaciones de arriba:**
 `remotion-spike/src/pruebas-r6/README.md` — 4 composiciones aisladas

@@ -150,6 +150,29 @@ a partir de UNA fuente del Knowledge Engine sin inventar contenido, y
 se probó de punta a punta generando y renderizando 7 slides reales
 desde el item `brunson-value-ladder` (`fabrica/salidas/carrusel_001/`).
 
+## "Prompt Maestro 3" NO crea `fabrica/inteligencia/` paralelo (R7-17)
+
+**Decisión:** el pedido de una "capa de inteligencia" con carpetas
+`fuentes/patrones/hooks/estructuras/edicion/carruseles/skills/mcp/
+herramientas/estudios/hipotesis/decisiones/pendientes/` NO se
+construye como árbol nuevo -- 11 de esas 13 carpetas ya existen con
+otro nombre y el mismo propósito (`fabrica/conocimiento/`,
+`fabrica/hooks/`, `fabrica/directores/edicion/`, `fabrica/carrusel/`,
+`fabrica/skills/`, `fabrica/memoria/`, `fabrica/decision_engine/`,
+`fabrica/research/`, `fabrica/PENDIENTES.md`). Ver
+`fabrica/docs/AUDITORIA_PROMPT_MAESTRO_3.md` para el mapeo completo.
+
+**Por qué:** construir una segunda jerarquía que duplica lo que ya
+funciona viola la misma regla que ya se aplicó en Ronda 4 ("El Crítico
+Audiovisual unifica presentación, no duplica análisis") y en Ronda 6
+("Knowledge Engine y Hook Engine como módulos separados pero cruzados
+por id" -- nunca dos fuentes de verdad del mismo concepto). Cada
+sección del prompt se resolvió EXTENDIENDO el módulo existente
+correspondiente.
+
+**Lo único genuinamente nuevo:** `fabrica/mcp/` (no existía ningún
+registro de conectores MCP antes de esta ronda).
+
 ## Pendientes de decisión (requieren probar antes de decidir)
 
 - `@remotion/install-whisper-cpp` + `@remotion/captions` — clasificados

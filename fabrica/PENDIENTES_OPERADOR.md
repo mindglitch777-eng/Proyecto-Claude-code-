@@ -3,6 +3,44 @@
 Solo lo que de verdad necesita que vos hagas algo o decidas algo. El
 detalle técnico completo de cada tema está en `fabrica/PENDIENTES.md`.
 
+## Ronda 7 (R7-17) — conectores MCP, decisión de cuenta/costo
+
+### ¿Habilitamos el conector vidIQ?
+
+Ya está instalado a nivel de tu organización en claude.ai (lo
+encontré al revisar qué conectores existen), pero está DESCONECTADO
+en esta conversación. vidIQ da herramientas reales de investigación
+de YouTube/Instagram/TikTok: qué videos son "outliers" (mucho mejor
+que el promedio del canal), qué está en tendencia, estadísticas de
+canal, estimación de ganancias. Sería la primera forma real de ver
+qué contenido funciona de verdad en el nicho -- hoy la fábrica no
+tiene ningún acceso a eso.
+
+**Por qué no lo conecté solo:** no puedo confirmar si tu plan de
+vidIQ tiene costo, ni si funciones como "outliers" o "estimación de
+ganancias" están en el plan gratuito o requieren pago -- conectarlo
+sin saber eso podría violar la regla de $0. Si querés probarlo,
+habilitalo en la configuración de conectores de este chat y avisame
+si tu plan es gratuito o pago.
+
+### ¿Agregamos "Trends MCP" como conector nuevo?
+
+Encontrado por búsqueda (no es un conector tuyo existente): declara
+un plan gratuito de 20 consultas/día sin tarjeta, con tendencias de
+Google/YouTube/TikTok/Reddit/X unificadas. No lo verifiqué
+conectándolo -- si te interesa, implicaría crear una cuenta en un
+servicio externo (`trendsmcp.io` o similar) y agregarlo vos como
+conector personalizado. Detalle completo en `fabrica/mcp/registro.ts`.
+
+### Herramientas descartadas sin preguntarte (no requieren tu decisión)
+
+OpusClip, Tella, Cloudinary, Adobe for creativity, HyperFrames y
+Riverside aparecieron en el catálogo de conectores -- las descarté
+directamente porque son servicios de edición/grabación con costo real
+y ninguna resuelve algo que Remotion (ya integrado, gratis) no
+resuelva para nuestro caso de uso (generamos video desde cero, no
+editamos grabaciones existentes). No hace falta que decidas nada acá.
+
 ## Ronda 4 (Director de Edición)
 
 ### Escuchar/ver `fabrica-demo-05.mp4` (la entrega de esta ronda)

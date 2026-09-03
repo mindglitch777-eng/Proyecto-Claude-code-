@@ -283,3 +283,6 @@ operativo de contenido + ventas, no producir contenido nuevo.
 | `fabrica/carrusel/` | Carousel Engine (Ronda 7) -- estructura y validación de carruseles |
 | `fabrica/datos/` | Data Engine (Ronda 7) -- esquemas de métricas de video/producto para carga manual |
 | `remotion-spike/src/subtitulos/README.md` | Subtítulos reales (R7-16) -- build de whisper.cpp confirmado, descarga de modelo bloqueada, evidencia real de render de captions |
+| `fabrica/docs/AUDITORIA_PROMPT_MAESTRO_3.md` | Mapeo del pedido de "capa de inteligencia" (R7-17) contra el estado real -- por qué NO se creó `fabrica/inteligencia/` |
+| `fabrica/mcp/` | Registro MCP (R7-17, nuevo) -- conectores investigados (vidIQ, Trends MCP, SaaS de video descartados) |
+| `fabrica/ESTADO.md` | Estado vivo del proyecto, actualizado por bloque de trabajo (distinto de `ESTADO_ACTUAL.md`, histórico y congelado) |
