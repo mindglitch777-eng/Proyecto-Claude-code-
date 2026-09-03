@@ -115,6 +115,10 @@ export type ArbolFabrica = {
   fps: number;
   escenas: EscenaFabrica[];
   duracionTotalSeg: number;
+  /** R7-22: espejo de ArbolComposicion.musicaFondo (ver
+   * fabrica/composicion/tipos.ts) -- una sola musica de fondo para
+   * TODO el video, no por escena. */
+  musicaFondo?: {archivo: string; volumen: number};
 };
 
 const seg = (s: number, fps: number) => Math.round(s * fps);
@@ -150,6 +154,21 @@ export const FabricaVideo: React.FC<{arbol: ArbolFabrica}> = ({arbol}) => {
   const {fps} = useVideoConfig();
   return (
     <AbsoluteFill style={{backgroundColor: PALETA.fondo}}>
+      {/* R7-22: musica de fondo, UNA sola vez para todo el video, fuera
+          del TransitionSeries para que no se corte ni se reinicie con
+          cada escena. `trimAfter` recorta al largo real del video en
+          vez de loopear -- simplificacion real y documentada: los 9
+          tracks del catalogo (~90-100s) ya cubren cualquier video corto
+          de la fabrica hasta hoy, ver fabrica/musica/README.md. Si
+          algun dia un video supera la duracion del track, esto se
+          corta en seco -- todavia no hay loop real, queda anotado. */}
+      {arbol.musicaFondo && (
+        <Audio
+          src={staticFile(arbol.musicaFondo.archivo)}
+          volume={arbol.musicaFondo.volumen}
+          trimAfter={seg(arbol.duracionTotalSeg, fps)}
+        />
+      )}
       <TransitionSeries>
         {arbol.escenas.map((e, i) => {
           const Comp = IMPLEMENTACIONES[e.componenteId];

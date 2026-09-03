@@ -8,7 +8,52 @@ después de cada bloque de trabajo real, como pide el "Prompt Maestro
 `PENDIENTES_OPERADOR.md`; para todo lo pendiente técnico,
 `PENDIENTES.md`.
 
-## Último bloque de trabajo: R7-21 (2026-09-03)
+## Último bloque de trabajo: R7-22 (2026-09-03)
+
+Tras archivar "El Corte" (Fase 1 original, decisión del operador) y
+confirmar que `fabrica/` pasa a ser la prioridad explícita del
+proyecto (ver CLAUDE.md), se siguió con el segundo hallazgo más
+importante de la auditoría de puntos débiles (R7-19): música de fondo
+en `null` desde Ronda 1.
+
+**HECHO:**
+- `fabrica/musica/biblioteca.json` poblado con 9 tracks reales CC0 1.0
+  Universal (repo público `effacestudios/Royalty-Free-Music-Pack`,
+  clonado con `git clone` -- canal de red confirmado funcional en este
+  sandbox -- y licencia verificada leyendo el `LICENSE` real del repo,
+  no solo la descripción). Postura resolutiva real: la vía "oficial"
+  (GitHub Actions + Jamendo/FMA, ya preparada desde antes) había
+  fallado (FMA cambió de API, Jamendo pide una key que el operador no
+  configuró) -- en vez de reportar bloqueado, se buscó y verificó una
+  alternativa real con las herramientas disponibles en esta sesión.
+  Metadata de mood/intensidad marcada honestamente como "primer pase"
+  (inferido de nombre + volumen real medido con ffmpeg, no de
+  escuchar el track completo) -- mismo patrón que ya se usa para voz.
+- `directores/audio.ts`: `intensidadMusicaPromedio()` nuevo (escala
+  separada de `VOLUMEN_POR_NIVEL`, que es para SFX). `composicion/tipos.ts`:
+  campo `musicaFondo` nuevo en `ArbolComposicion`.
+- `fabrica-demo-07` generado: MISMO guion/voz/edición que
+  `fabrica-demo-06` (experimento A/B real, única variable: música) --
+  render completo, QA duro 100% limpio, y evidencia cuantitativa real
+  de que la música se escucha en los huecos de silencio (-42.6dB)
+  sin competir con la narración (volumen medio del video casi
+  idéntico a demo_06: -17.1dB vs -17.2dB).
+- `remotion-spike/src/fabrica_bridge/FabricaVideo.tsx`: `<Audio>` de
+  fondo nuevo, fuera del `TransitionSeries`, volumen fijo 0.12.
+
+**LIMITACIÓN REAL, no resuelta (documentada en ARQUITECTURA.md):** sin
+loop de audio (se corta si un video supera la duración del track,
+~90-100s) y sin ducking dinámico (volumen fijo, no baja solo durante
+la narración) -- suficiente para los videos cortos de hoy, no para un
+formato más largo.
+
+**PRÓXIMO PASO:** con retención (R7-15) y música ya probadas en video
+real, el techo que queda es siempre el mismo: cero dato de resultado
+real (nada publicado todavía). Candidatos incrementales: probar más
+efectos de `@remotion/effects` (solo se usó 1 de ~60), o resolver el
+bug recurrente de props por categoría de raíz.
+
+## Bloque anterior: R7-21 (2026-09-03)
 
 Pedido del operador: buscar una solución 100% gratis para investigación
 de contenido, y seguir con la línea de "exploración agresiva" -- se

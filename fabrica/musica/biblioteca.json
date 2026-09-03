@@ -1,1 +1,92 @@
-[]
+[
+  {
+    "id": "calma-inventos",
+    "archivo": "biblioteca/calma-inventos.mp3",
+    "mood": ["calma", "curioso", "suave"],
+    "intensidad": 0.15,
+    "bpm": null,
+    "duracionSeg": 90.78,
+    "licencia": "CC0 1.0 Universal (dominio publico)",
+    "atribucion": null
+  },
+  {
+    "id": "calma-vida-feliz",
+    "archivo": "biblioteca/calma-vida-feliz.mp3",
+    "mood": ["calma", "positivo", "liviano"],
+    "intensidad": 0.25,
+    "bpm": null,
+    "duracionSeg": 90.86,
+    "licencia": "CC0 1.0 Universal (dominio publico)",
+    "atribucion": null
+  },
+  {
+    "id": "tension-misterioso",
+    "archivo": "biblioteca/tension-misterioso.mp3",
+    "mood": ["tenso", "suspenso", "misterioso"],
+    "intensidad": 0.45,
+    "bpm": null,
+    "duracionSeg": 91.14,
+    "licencia": "CC0 1.0 Universal (dominio publico)",
+    "atribucion": null
+  },
+  {
+    "id": "tension-alarmante",
+    "archivo": "biblioteca/tension-alarmante.mp3",
+    "mood": ["tenso", "urgente"],
+    "intensidad": 0.5,
+    "bpm": null,
+    "duracionSeg": 91.01,
+    "licencia": "CC0 1.0 Universal (dominio publico)",
+    "atribucion": null
+  },
+  {
+    "id": "aceleracion-planificando",
+    "archivo": "biblioteca/aceleracion-planificando.mp3",
+    "mood": ["motivacional", "corporativo", "en-movimiento"],
+    "intensidad": 0.6,
+    "bpm": null,
+    "duracionSeg": 91.14,
+    "licencia": "CC0 1.0 Universal (dominio publico)",
+    "atribucion": null
+  },
+  {
+    "id": "aceleracion-gira",
+    "archivo": "biblioteca/aceleracion-gira.mp3",
+    "mood": ["motivacional", "energico", "en-movimiento"],
+    "intensidad": 0.65,
+    "bpm": null,
+    "duracionSeg": 90.54,
+    "licencia": "CC0 1.0 Universal (dominio publico)",
+    "atribucion": null
+  },
+  {
+    "id": "revelacion-campeon",
+    "archivo": "biblioteca/revelacion-campeon.mp3",
+    "mood": ["triunfal", "motivacional", "epico"],
+    "intensidad": 0.75,
+    "bpm": null,
+    "duracionSeg": 90.96,
+    "licencia": "CC0 1.0 Universal (dominio publico)",
+    "atribucion": null
+  },
+  {
+    "id": "impacto-fiesta",
+    "archivo": "biblioteca/impacto-fiesta.mp3",
+    "mood": ["energico", "festivo", "intenso"],
+    "intensidad": 0.85,
+    "bpm": null,
+    "duracionSeg": 102.72,
+    "licencia": "CC0 1.0 Universal (dominio publico)",
+    "atribucion": null
+  },
+  {
+    "id": "impacto-furia",
+    "archivo": "biblioteca/impacto-furia.mp3",
+    "mood": ["intenso", "dramatico", "accion"],
+    "intensidad": 0.9,
+    "bpm": null,
+    "duracionSeg": 101.70,
+    "licencia": "CC0 1.0 Universal (dominio publico)",
+    "atribucion": null
+  }
+]

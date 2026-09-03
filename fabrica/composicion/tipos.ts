@@ -85,4 +85,16 @@ export type ArbolComposicion = {
    * Audiovisual (fabrica/qa/critico_audiovisual.py) lo lee para la
    * categoría "Retención". */
   analisisRetencion?: MapaRetencion;
+  /** R7-22: musica de fondo para TODO el video (una sola eleccion, no
+   * por unidad -- ver fabrica/musica/README.md, seccion "Conectado al
+   * Director de Audio"). Opcional: un generador que no llama al
+   * resolver de musica (o que lo llama y no encuentra nada, catalogo
+   * vacio o intensidad sin match) sigue produciendo un ArbolComposicion
+   * valido sin este campo -- mismo principio que analisisRetencion. */
+  musicaFondo?: {
+    archivo: string; // relativo a remotion-spike/public/, ej. "musica/calma-inventos.mp3"
+    volumen: number; // 0-1, fijo y bajo (no hay ducking dinamico todavia, ver PENDIENTES.md)
+    licencia: string;
+    atribucion: string | null;
+  };
 };

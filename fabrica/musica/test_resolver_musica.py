@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
-"""Tests reales del resolver de musica. La biblioteca real
-(biblioteca.json) esta vacia a proposito -- no hay musica todavia --
-asi que estos tests prueban DOS cosas por separado:
-  1. Que con la biblioteca real (vacia) el resolver devuelve FALTANTE
-     explicito, nunca un track inventado.
+"""Tests reales del resolver de musica.
+
+Desde R7-22 la biblioteca real (biblioteca.json) YA NO esta vacia: 9
+tracks CC0 reales (ver README.md para procedencia/licencia). Estos
+tests prueban DOS cosas por separado:
+  1. Que la biblioteca REAL de hoy resuelve tracks de verdad (no
+     FALTANTE) para un rango normal de intensidad, y que los archivos
+     mp3 que declara existen de verdad en disco.
   2. Que la logica de scoring/seleccion funciona de verdad, usando un
      fixture temporal con tracks de mentira (no assets reales
      inventados en el repo -- un archivo temporal que se borra al
-     terminar el test)."""
+     terminar el test) -- esto sigue probando el motor de scoring en
+     aislamiento, independiente de que cambie el catalogo real."""
 import json
 import sys
 import tempfile
@@ -24,11 +28,26 @@ def check(desc, cond):
         FALLOS.append(f"FALLO: {desc}")
 
 
-def test_biblioteca_real_vacia_devuelve_faltante():
-    r = resolver_musica(intensidad_deseada=0.7)
-    check("biblioteca real (vacia): FALTANTE, no inventa un track", r.encontrado is False)
-    check("razon explica por que (bloqueado por internet, no un bug)",
-          "internet" in r.razon or "vacio" in r.razon)
+def test_biblioteca_real_resuelve_un_track_de_verdad():
+    r = resolver_musica(intensidad_deseada=0.5)
+    check("biblioteca real (9 tracks CC0): encuentra un track, no FALTANTE", r.encontrado is True)
+    check("el track resuelto trae licencia CC0 real", r.licencia is not None and "CC0" in r.licencia)
+    check("CC0 no exige atribucion", r.atribucion is None)
+
+
+def test_biblioteca_real_extremos_de_intensidad_devuelven_algo_coherente():
+    bajo = resolver_musica(intensidad_deseada=0.1)
+    alto = resolver_musica(intensidad_deseada=0.95)
+    check("intensidad baja pedida -> resuelve un track calmo real", bajo.encontrado and "calma" in bajo.id)
+    check("intensidad alta pedida -> resuelve un track de impacto real", alto.encontrado and "impacto" in alto.id)
+
+
+def test_biblioteca_real_todos_los_archivos_mp3_existen():
+    biblioteca = json.loads((Path(__file__).parent / "biblioteca.json").read_text(encoding="utf-8"))
+    check("catalogo real no esta vacio", len(biblioteca) > 0)
+    for track in biblioteca:
+        ruta = Path(__file__).parent / track["archivo"]
+        check(f"archivo real de '{track['id']}' existe en disco", ruta.exists())
 
 
 def _con_fixture(fn):

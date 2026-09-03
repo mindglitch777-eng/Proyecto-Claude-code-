@@ -68,5 +68,15 @@
     "conclusion": null,
     "estado": "esperando_datos",
     "fechaCreacion": "2026-09-03T04:02:34.487Z"
+  },
+  {
+    "id": "fabrica-demo-07-1788429863060",
+    "hipotesis": "Agregar musica de fondo real (biblioteca CC0, una eleccion por video segun la intensidad promedio del Director de Audio, volumen fijo bajo sin ducking) al mismo guion/voz/edicion que fabrica-demo-06 no debería empeorar el perfil de audio medido por QA duro (silencios/pantallas negras/volumen) -- es la unica variable que cambia respecto de demo_06 (experimento A/B real).",
+    "experimento": "fabrica-demo-07: mismo guion/voz que fabrica-demo-06 (Tomás, curso online), UNICA variable nueva: musica de fondo real resuelta por fabrica/musica/resolver_musica.py (R7-22).",
+    "videoId": "fabrica-demo-07",
+    "resultadoReal": null,
+    "conclusion": null,
+    "estado": "esperando_datos",
+    "fechaCreacion": "2026-09-03T10:04:23.060Z"
   }
 ]

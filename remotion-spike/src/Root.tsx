@@ -17,6 +17,7 @@ import demo03 from './fabrica_bridge/demo_03.json';
 import demo04 from './fabrica_bridge/demo_04.json';
 import demo05 from './fabrica_bridge/demo_05.json';
 import demo06 from './fabrica_bridge/demo_06.json';
+import demo07 from './fabrica_bridge/demo_07.json';
 import pruebaR68 from './fabrica_bridge/prueba_r6_8.json';
 import pruebaR610 from './fabrica_bridge/prueba_r6_10.json';
 import {Video} from './receta/Video';
@@ -167,6 +168,21 @@ export const Root: React.FC = () => {
         width={ANCHO}
         height={ALTO}
         defaultProps={{arbol: demo06 as ArbolFabrica}}
+      />
+      {/* R7-22: MISMO guion/voz/edicion que fabrica-demo-06 -- la unica
+          variable nueva es musica de fondo real (arbol.musicaFondo),
+          resuelta por fabrica/musica/resolver_musica.py contra la
+          biblioteca CC0 real. Experimento A/B a proposito: comparar el
+          perfil de audio (QA duro) de este video contra demo_06. Ver
+          fabrica/ejemplos/generar_demo_07.ts. */}
+      <Composition
+        id="fabrica-demo-07"
+        component={FabricaVideo}
+        durationInFrames={Math.round((demo07 as ArbolFabrica).duracionTotalSeg * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{arbol: demo07 as ArbolFabrica}}
       />
       {/* R6-8: prueba de punta a punta de la transicion real
           (@remotion/transitions) con 2 audios REALES -- ver

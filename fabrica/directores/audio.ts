@@ -69,6 +69,33 @@ const VOLUMEN_POR_NIVEL: Record<NivelIntensidad, number> = {
   revelacion: 0.85,
 };
 
+/** R7-22: escala DISTINTA de VOLUMEN_POR_NIVEL -- esa es volumen de
+ * SFX de un golpe puntual (calma=0, sin sonido); esta es que tan
+ * "intensa" tiene que sentirse la MUSICA DE FONDO del video en ese
+ * tramo, para consultar fabrica/musica/resolver_musica.py (escala
+ * 0-1, ver fabrica/musica/biblioteca.json). calma/pausa no son 0 aca
+ * porque un video sin musica de fondo en absoluto durante una pausa se
+ * siente vacio, no tranquilo -- solo el volumen SFX de un golpe
+ * puntual tiene sentido en 0. */
+const NIVEL_A_INTENSIDAD_MUSICA: Record<NivelIntensidad, number> = {
+  calma: 0.15,
+  pausa: 0.25,
+  tension: 0.45,
+  aceleracion: 0.6,
+  revelacion: 0.75,
+  impacto: 0.85,
+};
+
+/** Musica de fondo se elige UNA sola vez para todo el video (ver
+ * fabrica/musica/README.md) -- no tiene sentido cambiar de track cada
+ * pocos segundos. El generador junta todas las `DecisionAudio` reales
+ * de decidirParaUnidad() y le pasa el promedio a resolver_musica.py. */
+export function intensidadMusicaPromedio(decisiones: DecisionAudio[]): number {
+  if (!decisiones.length) return 0.5;
+  const suma = decisiones.reduce((acc, d) => acc + NIVEL_A_INTENSIDAD_MUSICA[d.nivel], 0);
+  return suma / decisiones.length;
+}
+
 export class DirectorAudio {
   /** Deriva un nivel de intensidad para la unidad `indice` de `total`,
    * a partir de la intensidad visual que ya decidio el Director Visual

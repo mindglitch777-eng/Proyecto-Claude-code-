@@ -5,61 +5,67 @@ librería de música por suscripción (Epidemic Sound, Artlist, etc.)
 como dependencia obligatoria — quedan documentadas más abajo como
 opción futura, no como parte del sistema.
 
-## Qué existe hoy
+## Qué existe hoy (R7-22 — catálogo real, ya no vacío)
 
-- **`biblioteca.json`** — el catálogo de tracks reales. **Está vacío a
-  propósito.** No se inventó ni un solo track falso para "completar"
-  esto — sería peor que no tener nada, porque un córdigo que confía en
-  esa lista rompería en producción de una forma más difícil de
-  detectar que un `FALTANTE` explícito.
-- **`resolver_musica.py`** — dado (intensidad deseada, duración
-  mínima, mood opcional), elige el mejor track del catálogo por
-  puntaje (misma filosofía que `fabrica/assets/resolver.py`: preferible
-  FALTANTE explícito a "lo más parecido aunque sea malo"). Con el
-  catálogo vacío de hoy, **siempre** devuelve FALTANTE — es el
-  comportamiento correcto, no un bug (probado en
-  `test_resolver_musica.py`, incluyendo un fixture con tracks de
-  mentira que prueba que el scoring en sí funciona).
-- **`.github/workflows/investigar-musica-fabrica.yml`** — busca
-  candidatos reales de música libre de derechos (Free Music Archive,
-  sin necesitar API key; Jamendo, si el operador registra una API key
-  gratis) desde un runner de GitHub Actions (Jamendo/FMA están
-  bloqueados desde este sandbox, igual que huggingface.co para
-  Qwen3-TTS). Escribe `fabrica/musica/CANDIDATOS.md` con los
-  resultados y su licencia — el operador escucha y decide cuáles bajar
-  y agregar de verdad al catálogo.
+- **`biblioteca.json`** — 9 tracks reales, con audio de verdad en
+  `biblioteca/*.mp3` (~38MB en total). Vienen de
+  [`effacestudios/Royalty-Free-Music-Pack`](https://github.com/effacestudios/Royalty-Free-Music-Pack)
+  (GitHub), que declara **CC0 1.0 Universal (dominio público)** en su
+  propio `LICENSE` — copiado acá como
+  `biblioteca/LICENSE-effacestudios-royalty-free-music-pack.txt` para
+  trazabilidad. CC0 no exige atribución (`atribucion: null` en las 9
+  entradas es correcto, no un faltante).
+  - Cómo se llegó a este repo: bloqueado usar Jamendo/Free Music
+    Archive directo desde este sandbox (ver más abajo) y la corrida ya
+    hecha del workflow de GitHub Actions falló (FMA cambió su API,
+    404; Jamendo necesita un `JAMENDO_CLIENT_ID` que el operador
+    todavía no configuró) — en vez de reportar "bloqueado", se buscó
+    con `WebSearch` (canal de red que sí funciona en este sandbox, ver
+    `fabrica/decisions/DECISIONES.md`) un repositorio de GitHub con
+    música real ya licenciada CC0, y se verificó `git clone` +
+    lectura directa del `LICENSE` del repo (no se confió en la
+    descripción de la búsqueda sola).
+  - **Honestidad sobre `mood`/`intensidad`**: estos 9 valores son un
+    PRIMER PASE, inferido del nombre de archivo + el volumen medio/pico
+    real medido con `ffmpeg -af volumedetect` (dato real, no
+    inventado) + inspección visual de espectrograma — NO de escuchar
+    el track de principio a fin. Mismo patrón honesto que ya se usa
+    para voz ("necesito que lo escuches vos para confirmar") — ver
+    `PENDIENTES_OPERADOR.md`. `bpm` se dejó en `null` a propósito: no
+    hay una forma confiable de medirlo en este sandbox sin
+    herramientas de detección de tempo real, y `resolver_musica.py`
+    no lo usa para puntuar hoy — mejor `null` explícito que un numero
+    inventado.
+- **`resolver_musica.py`** — sin cambios en su lógica (dado intensidad
+  deseada + mood opcional + duración mínima, elige el mejor track por
+  puntaje). Con el catálogo ahora poblado, deja de devolver siempre
+  FALTANTE — los tests de "biblioteca vacía" se separaron de los de
+  "biblioteca real" en `test_resolver_musica.py`.
+- **`.github/workflows/investigar-musica-fabrica.yml`** — sigue
+  disponible para sumar MÁS candidatos (Jamendo, una vez que el
+  operador configure `JAMENDO_CLIENT_ID`) — no es la única vía, como
+  demuestra este mismo catálogo.
 
-## Cómo se agrega un track real
+## Cómo se agrega un track nuevo
 
 1. Bajar el archivo (mp3, licencia verificada) a
    `fabrica/musica/biblioteca/<id>.mp3`.
-2. Agregar una entrada a `biblioteca.json`:
-   ```json
-   {
-     "id": "<id>",
-     "archivo": "biblioteca/<id>.mp3",
-     "mood": ["motivacional", "energico"],
-     "intensidad": 0.7,
-     "bpm": 120,
-     "duracionSeg": 95.0,
-     "licencia": "CC-BY 4.0",
-     "atribucion": "Nombre del autor (si la licencia lo exige; null si no)"
-   }
-   ```
-3. Correr `python3 fabrica/musica/test_resolver_musica.py` — no debería
-   romper nada (los tests de biblioteca vacía dejan de aplicar
-   automáticamente en cuanto agregues el primer track real, hay que
-   ajustarlos entonces).
+2. Agregar una entrada a `biblioteca.json` (mismo formato que las 9
+   entradas actuales).
+3. Correr `python3 fabrica/musica/test_resolver_musica.py`.
 
-## Por qué no está conectado todavía al Director de Audio
+## Conectado al Director de Audio (R7-22)
 
-`fabrica/directores/audio.ts` decide **golpes** (duro/suave/ninguno) y
-volumen de SFX por unidad — nunca tocó música de fondo porque no había
-ninguna disponible. Conectar `resolver_musica` como una consulta más
-del Director de Audio (elegir un track para todo el video según la
-intensidad promedio, no por unidad) es agregar ~10 líneas una vez que
-el catálogo tenga al menos un track real — no tiene sentido cablear
-esa decisión hoy contra un catálogo vacío.
+`directores/audio.ts` sigue decidiendo únicamente **golpes** y volumen
+de SFX por unidad — la música de fondo se resuelve UNA sola vez por
+video (no por unidad, sería un cambio de track constante y ruidoso),
+a partir de la intensidad promedio de todas las decisiones de audio
+del video. Ver `ejemplos/generar_demo_07.ts` para el ejemplo real
+end-to-end: llama a `resolver_musica.py` con la intensidad promedio,
+guarda el resultado en `ArbolFabrica.musicaFondo` (tipo nuevo en
+`composicion/tipos.ts`), y el puente de render
+(`remotion-spike/src/FabricaVideo.tsx`) agrega un `<Audio>` en loop a
+volumen bajo (0.12) si ese campo no es null.
 
 ## Opciones de pago para más adelante (NO parte del sistema hoy)
 

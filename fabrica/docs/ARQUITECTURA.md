@@ -272,9 +272,31 @@ documentar lo que ya se hizo bien.
   (visto en Ronda 2, 4 y 5 -- ver `PENDIENTES.md` ítem 10) -- la
   limitación de fondo (elegir por categoría/intensidad sin entender
   la forma real de los datos) nunca se resolvió de raíz.
-- **Música de fondo sigue en `null`** desde Ronda 1
-  (`directores/audio.ts`, campo `musicaSugerida`) -- ningún video de
-  la fábrica tiene música, solo SFX puntuales.
+- ~~**Música de fondo sigue en `null`** desde Ronda 1~~ -- **RESUELTO
+  en R7-22.** `fabrica/musica/biblioteca.json` tiene 9 tracks reales
+  CC0 1.0 Universal (repo `effacestudios/Royalty-Free-Music-Pack`,
+  licencia verificada leyendo su `LICENSE` real). `resolver_musica.py`
+  se conecta desde el generador (una sola elección por video, según la
+  intensidad promedio real de `DirectorAudio` -- ver
+  `intensidadMusicaPromedio()` en `directores/audio.ts`), y el puente
+  de render agrega la música como `<Audio>` de fondo a volumen bajo
+  (0.12). Probado en `fabrica-demo-07` (mismo guion/voz que
+  `fabrica-demo-06`, único cambio: música) como experimento A/B real:
+  QA duro 100% limpio, volumen medio casi idéntico (-17.1dB vs
+  -17.2dB), y evidencia cuantitativa de que la música SÍ está presente
+  y audible en los huecos de silencio entre líneas (-42.6dB medidos
+  ahí, contra -91dB de silencio digital real en demo_06 sin música).
+  `musicaSugerida` (per-unidad, en `DecisionAudio`) sigue en `null` a
+  propósito -- la música es una decisión de TODO el video, no por
+  unidad, ver `fabrica/musica/README.md`.
+  Limitación real que queda documentada, no resuelta: no hay loop de
+  audio todavía si un video algún día supera la duración del track
+  elegido (~90-100s) -- se corta en seco (`trimAfter`). No importa
+  para los videos cortos de hoy, pero hay que resolverlo antes de un
+  formato más largo. Tampoco hay ducking dinámico (bajar la música
+  automáticamente cuando hay narración) -- el volumen fijo bajo (0.12)
+  es lo que evita hoy que compita con la voz, verificado con datos
+  reales, no solo supuesto.
 - **Reglas de golpe/transición son tablas fijas escritas a mano**
   (`GOLPES_POR_NIVEL` en `directores/audio.ts`) -- no aprenden de qué
   combinación funcionó mejor, solo tienen anti-repetición. Candidato
