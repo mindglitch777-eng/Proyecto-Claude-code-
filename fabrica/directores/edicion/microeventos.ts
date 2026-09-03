@@ -112,5 +112,29 @@ export function construirMicroeventos(
     });
   }
 
+  // R7-31 (diagnostico real: unidades de un solo clip de audio no
+  // tenian NINGUN punto interno donde anclar un cambio visual, quedaban
+  // estaticas toda su duracion). Si el llamador midio una pausa REAL
+  // dentro del audio (fabrica/composicion/pausas.ts) y el estilo
+  // combinado prefiere `cambia_encuadre` (hoy declarado en estilos.ts
+  // pero nunca emitido -- ver ESTILOS.agresivo.tiposMicroEventoPreferidos)
+  // O la unidad ya es de intensidad alta, anclar un cambio real ahi.
+  // NUNCA se ancla si no hay offsets propios (offsets.length>1 ya cubre
+  // eso arriba) Y la pausa medida cae fuera del rango de la escena.
+  if (
+    ctx.pausaInternaSeg !== undefined &&
+    offsets.length <= 1 &&
+    ctx.pausaInternaSeg > 0 &&
+    ctx.pausaInternaSeg < ctx.duracionSegTotal &&
+    (combinacion.tiposMicroEventoPreferidos.includes('cambia_encuadre') || ctx.intensidadComponente >= 0.55)
+  ) {
+    eventos.push({
+      enSegRelativo: ctx.pausaInternaSeg,
+      tipo: 'cambia_encuadre',
+      descripcion: 'cambio de encuadre real en la pausa de voz medida dentro de esta unidad',
+      razon: `pausa real detectada por ffmpeg silencedetect en el audio de "${ctx.unidadId}" a los ${ctx.pausaInternaSeg.toFixed(2)}s -- unica forma de anclar un cambio real en una unidad de un solo clip de audio`,
+    });
+  }
+
   return eventos;
 }

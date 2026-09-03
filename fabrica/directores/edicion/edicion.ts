@@ -20,6 +20,7 @@ import type {TipoGolpe} from '../audio';
 import {combinarEstilos} from './estilos';
 import {construirMicroeventos} from './microeventos';
 import {patronesCompatibles} from '../../hooks/consultar';
+import {empujarHaciaCurva, nivelObjetivoEnProgreso, type CurvaEnergia} from './curva_energia';
 import type {
   ContextoUnidad, ElementoDestacado, EstiloId, EstrategiaEdicion, EstrategiaEntrada,
   EstrategiaSalida, FuncionTransicion, IntencionEdicion, NivelEnergia,
@@ -65,15 +66,26 @@ export class DirectorEdicion {
    * DirectorAudio.decidirParaUnidad) -- el llamador es quien conoce el
    * historial real, este método no lee memoria por sí mismo (mismo
    * principio arquitectónico que el resto de los Directores).
+   * @param curvaEnergia (R7-31) objetivo de energía para todo el video
+   * (curva_energia.ts) -- opcional y retrocompatible (sin esto, el
+   * comportamiento es IDÉNTICO al de antes de R7-31). Cuando se pasa,
+   * SOLO puede empujar la energía calculada hacia ARRIBA en sus picos
+   * declarados, nunca hacia abajo ni contradice una unidad de
+   * respiración real -- ver docstring de curva_energia.ts.
    */
-  planificar(ctx: ContextoUnidad, golpeDecidido: TipoGolpe, evitarPatrones: string[] = []): EstrategiaEdicion {
+  planificar(ctx: ContextoUnidad, golpeDecidido: TipoGolpe, evitarPatrones: string[] = [], curvaEnergia?: CurvaEnergia): EstrategiaEdicion {
     const intencion = this.decidirIntencion(ctx);
     const respiracion = intencion === 'dejar_respirar';
 
     const idsEstilos = this.decidirEstilos(intencion, ctx.estilosSugeridos);
     const combinacion = combinarEstilos(idsEstilos);
 
-    const energia = this.decidirEnergia(ctx, intencion, combinacion.ajusteEnergia);
+    let energia = this.decidirEnergia(ctx, intencion, combinacion.ajusteEnergia);
+    if (curvaEnergia && !respiracion) {
+      const progreso = ctx.total > 1 ? ctx.indice / (ctx.total - 1) : 0;
+      const punto = nivelObjetivoEnProgreso(curvaEnergia, progreso);
+      energia = empujarHaciaCurva(energia, punto.nivelObjetivo);
+    }
     const densidadVisual = respiracion ? 'minima' : combinacion.densidadVisual;
 
     const elementoPrincipal = this.decidirElementoPrincipal(ctx);

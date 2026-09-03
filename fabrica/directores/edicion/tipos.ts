@@ -176,4 +176,13 @@ export type ContextoUnidad = {
    * no una orden directa (mismo principio que `evitar` en
    * DirectorVisual: pesa, no dicta). */
   estilosSugeridos?: EstiloId[];
+  /** R7-31: un punto de pausa REAL medido dentro del audio de esta
+   * unidad (fabrica/composicion/pausas.ts, detección real con ffmpeg
+   * silencedetect sobre el .wav -- nunca un número inventado, mismo
+   * estándar que `offsetsAudioSeg`). Sirve para anclar un microevento
+   * `cambia_encuadre` real en unidades de un solo clip de audio, que
+   * hoy no tienen NINGÚN punto interno donde anclar un cambio visual
+   * (hallazgo real del diagnóstico R7-31: esas unidades quedan
+   * visualmente estáticas toda su duración). */
+  pausaInternaSeg?: number;
 };

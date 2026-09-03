@@ -20,6 +20,7 @@ import {Golpe, TipoGolpe, Anticipo} from '../escenas/golpes';
 import {Vineta} from '../escenas/Vineta';
 import {CamaraOrganica} from '../escenas/CamaraOrganica';
 import {PulsoRevelacion} from '../escenas/PulsoRevelacion';
+import {CambioEncuadre} from '../escenas/CambioEncuadre';
 import {PALETA} from '../identidad';
 
 // PUENTE DE RENDER de la nueva fabrica (fabrica/composicion/). Esto NO
@@ -116,6 +117,18 @@ function propsDesdeMicroeventos(e: EscenaFabrica): Record<string, unknown> {
   return revelacion ? {momentoCambioSeg: revelacion.enSegRelativo} : {};
 }
 
+/** R7-31: busca un microevento 'cambia_encuadre' real (anclado a una
+ * pausa de voz medida o a un offset real, ver
+ * fabrica/directores/edicion/microeventos.ts) -- devuelve su frame
+ * DENTRO de esta escena, o undefined si no hay ninguno. Genérico para
+ * cualquier componente (a diferencia de propsDesdeMicroeventos, que es
+ * puntual a 'antes-despues'): CambioEncuadre envuelve, no necesita que
+ * el componente sepa nada de esto. */
+function frameCambioEncuadre(e: EscenaFabrica, fps: number): number | undefined {
+  const evento = e.estrategiaEdicion?.microeventos?.find((m) => m.tipo === 'cambia_encuadre');
+  return evento ? seg(evento.enSegRelativo, fps) : undefined;
+}
+
 export type ArbolFabrica = {
   id: string;
   fps: number;
@@ -202,25 +215,39 @@ export const FabricaVideo: React.FC<{arbol: ArbolFabrica}> = ({arbol}) => {
             </AbsoluteFill>
           ) : (
             <>
-              {/* R7-25: tecnica de "camara" (nunca investigada antes,
-                  ver docstring de CamaraOrganica.tsx) -- temblor
-                  organico sutil solo en unidades de energia muy_alta
-                  (el Director de Edicion ya calcula esto), simulando
-                  una camara en mano en el momento de mas urgencia
-                  narrativa. Envuelve el golpe entero para que el
-                  temblor se sienta en el contenido real, no en un
-                  overlay separado. */}
-              {e.estrategiaEdicion?.energia === 'muy_alta' ? (
-                <CamaraOrganica>
+              {/* R7-31: microevento 'cambia_encuadre' (declarado desde
+                  hace rondas en estilos.ts/tipos.ts pero nunca antes
+                  emitido ni consumido -- ver hallazgo real en
+                  fabrica/directores/edicion/microeventos.ts). Envuelve
+                  SOLO al componente (no al Golpe/CamaraOrganica de
+                  afuera) para que el pulso de encuadre sea visible
+                  incluso si esos otros efectos no aplican esta vez. */}
+              {(() => {
+                const compReal = <Comp {...e.props} {...propsDesdeMicroeventos(e)} />;
+                const frameEncuadre = frameCambioEncuadre(e, fps);
+                const compConEncuadre = frameEncuadre !== undefined
+                  ? <CambioEncuadre enFrame={frameEncuadre}>{compReal}</CambioEncuadre>
+                  : compReal;
+                // R7-25: tecnica de "camara" (nunca investigada antes,
+                // ver docstring de CamaraOrganica.tsx) -- temblor
+                // organico sutil solo en unidades de energia muy_alta
+                // (el Director de Edicion ya calcula esto), simulando
+                // una camara en mano en el momento de mas urgencia
+                // narrativa. Envuelve el golpe entero para que el
+                // temblor se sienta en el contenido real, no en un
+                // overlay separado.
+                return e.estrategiaEdicion?.energia === 'muy_alta' ? (
+                  <CamaraOrganica>
+                    <Golpe tipo={e.golpe} sonido={i > 0} sinEfectoVisual={sinEfectoVisualCSS}>
+                      {compConEncuadre}
+                    </Golpe>
+                  </CamaraOrganica>
+                ) : (
                   <Golpe tipo={e.golpe} sonido={i > 0} sinEfectoVisual={sinEfectoVisualCSS}>
-                    <Comp {...e.props} {...propsDesdeMicroeventos(e)} />
+                    {compConEncuadre}
                   </Golpe>
-                </CamaraOrganica>
-              ) : (
-                <Golpe tipo={e.golpe} sonido={i > 0} sinEfectoVisual={sinEfectoVisualCSS}>
-                  <Comp {...e.props} {...propsDesdeMicroeventos(e)} />
-                </Golpe>
-              )}
+                );
+              })()}
               {/* R7-24: primera conexion real a produccion de
                   @remotion/effects mas alla de lightLeak -- la vinieta
                   ya se habia probado y confirmado en R6-9

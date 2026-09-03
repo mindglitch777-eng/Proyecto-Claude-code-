@@ -63,6 +63,32 @@ function main() {
   const eventosSinSfx = construirMicroeventos(ctxBase, combi, principal, undefined, false);
   check('estilo cinematico (densidad minima) no agrega SFX de entrada', !eventosSinSfx.some((e) => e.tipo === 'entra_sfx'));
 
+  // R7-31: cambia_encuadre real, anclado a una pausa medida -- solo
+  // cuando hay UN solo clip de audio (si hubiera 2+, ya hay un offset
+  // real donde anclar algo, no hace falta este mecanismo) y el estilo
+  // combinado prefiere cambia_encuadre (agresivo lo declara).
+  const ctxConPausa: ContextoUnidad = {...ctxBase, offsetsAudioSeg: [0], pausaInternaSeg: 4.2, duracionSegTotal: 8};
+  const eventosConPausa = construirMicroeventos(ctxConPausa, combiAgresivo, principal, undefined, false);
+  const cambioEncuadre = eventosConPausa.find((e) => e.tipo === 'cambia_encuadre');
+  check('con pausaInternaSeg real + estilo agresivo (prefiere cambia_encuadre): aparece el microevento', !!cambioEncuadre);
+  check('cambia_encuadre esta anclado EXACTAMENTE a la pausa real medida, no a una fraccion inventada', cambioEncuadre?.enSegRelativo === 4.2);
+
+  // Sin pausaInternaSeg: nunca aparece cambia_encuadre inventado.
+  const eventosSinPausa = construirMicroeventos(ctxBase, combiAgresivo, principal, undefined, false);
+  check('sin pausaInternaSeg medida, no aparece cambia_encuadre inventado', !eventosSinPausa.some((e) => e.tipo === 'cambia_encuadre'));
+
+  // Pausa fuera de rango (>= duracionSegTotal): no se usa (evita un
+  // microevento fuera de los limites reales de la escena).
+  const ctxPausaFueraDeRango: ContextoUnidad = {...ctxBase, offsetsAudioSeg: [0], pausaInternaSeg: 99, duracionSegTotal: 8};
+  const eventosPausaFueraDeRango = construirMicroeventos(ctxPausaFueraDeRango, combiAgresivo, principal, undefined, false);
+  check('pausa fuera del rango de la escena: no se usa', !eventosPausaFueraDeRango.some((e) => e.tipo === 'cambia_encuadre'));
+
+  // Estilo que NO prefiere cambia_encuadre pero intensidad alta (>=0.55):
+  // igual se usa (regla real: alta energia tambien justifica el cambio).
+  const ctxIntensidadAlta: ContextoUnidad = {...ctxBase, categoria: 'texto', intensidadComponente: 0.6, offsetsAudioSeg: [0], pausaInternaSeg: 4.2, duracionSegTotal: 8};
+  const eventosIntensidadAlta = construirMicroeventos(ctxIntensidadAlta, combi /* cinematico, no prefiere cambia_encuadre */, principal, undefined, false);
+  check('intensidad alta (>=0.55) tambien dispara cambia_encuadre aunque el estilo no lo prefiera', eventosIntensidadAlta.some((e) => e.tipo === 'cambia_encuadre'));
+
   if (FALLOS.length) {
     console.log(`\n${FALLOS.length} FALLO(S):\n`);
     for (const f of FALLOS) console.log(f);
