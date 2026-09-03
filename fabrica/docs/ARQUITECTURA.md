@@ -230,6 +230,42 @@ operativo de contenido + ventas, no producir contenido nuevo.
   sin afectar" casi no se distinguía). No se usó; documentado como
   necesita-más-ajuste, no descartado del todo.
 
+## PUNTOS DÉBILES REALES DE LA FÁBRICA (auditoría R7-19)
+
+Pedido explícito del operador: encontrar los techos actuales, no solo
+documentar lo que ya se hizo bien.
+
+- **Cero dato real de resultado en todo el sistema.** El Knowledge
+  Engine, la anti-repetición inteligente y el Decision Engine están
+  listos para aprender de `resultadoReal`, pero NINGÚN video/carrusel
+  de la fábrica se publicó nunca con métricas reales -- toda la capa
+  de "aprendizaje" es arquitectura probada con datos sintéticos,
+  nunca ejercitada de verdad. Es el techo más grande del proyecto, y
+  no es técnico: depende de publicar algo real.
+- **La elección automática de patrones de retención (R7-15) nunca se
+  ejercitó en un video real** -- se probó con tests, no se regeneró
+  ningún `demo_0N` con el Director de Edición ya conectado al
+  catálogo. No se sabe si la elección automática se "siente" bien en
+  un video completo.
+- **`@remotion/effects` tiene ~60 efectos, se usó 1 solo**
+  (`lightLeak`) -- el resto del catálogo (glitch, chromatic
+  aberration, etc.) nunca se evaluó individualmente.
+- **Componentes de la misma categoría con props semánticamente
+  distintas** siguen siendo un bug recurrente del Director Visual
+  (visto en Ronda 2, 4 y 5 -- ver `PENDIENTES.md` ítem 10) -- la
+  limitación de fondo (elegir por categoría/intensidad sin entender
+  la forma real de los datos) nunca se resolvió de raíz.
+- **Música de fondo sigue en `null`** desde Ronda 1
+  (`directores/audio.ts`, campo `musicaSugerida`) -- ningún video de
+  la fábrica tiene música, solo SFX puntuales.
+- **Reglas de golpe/transición son tablas fijas escritas a mano**
+  (`GOLPES_POR_NIVEL` en `directores/audio.ts`) -- no aprenden de qué
+  combinación funcionó mejor, solo tienen anti-repetición. Candidato
+  real para conectar al Knowledge Engine cuando haya datos.
+- **Sales Engine y Data Engine (R7-8/R7-11) siguen 100% vacíos** --
+  arquitectura probada, cero fila de negocio real, bloqueado en el
+  operador (`PENDIENTES.md` ítem 15).
+
 ## QUÉ NO SABEMOS
 
 - Si alguna de las heurísticas de retención/edición de esta fábrica
@@ -292,3 +328,4 @@ operativo de contenido + ventas, no producir contenido nuevo.
 | `fabrica/docs/AUDITORIA_PROMPT_MAESTRO_3.md` | Mapeo del pedido de "capa de inteligencia" (R7-17) contra el estado real -- por qué NO se creó `fabrica/inteligencia/` |
 | `fabrica/mcp/` | Registro MCP (R7-17, nuevo) -- conectores investigados (vidIQ, Trends MCP, SaaS de video descartados) |
 | `fabrica/ESTADO.md` | Estado vivo del proyecto, actualizado por bloque de trabajo (distinto de `ESTADO_ACTUAL.md`, histórico y congelado) |
+| `fabrica/docs/ARSENAL_AUDIOVISUAL.md` | Mapa por CAPACIDAD (no por herramienta) de qué existe afuera, qué usamos, evidencia, costo y riesgo (R7-19) |
