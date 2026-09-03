@@ -8,7 +8,47 @@ después de cada bloque de trabajo real, como pide el "Prompt Maestro
 `PENDIENTES_OPERADOR.md`; para todo lo pendiente técnico,
 `PENDIENTES.md`.
 
-## Último bloque de trabajo: R7-25 (2026-09-03)
+## Último bloque de trabajo: R7-26 (2026-09-03)
+
+Pedido del operador: seguir profundizando la exploración agresiva
+(skills de Claude Code + MCP), tomándose el tiempo necesario.
+
+**HECHO:**
+- Investigados 4 repos reales nuevos vía WebSearch + lectura directa
+  de README/LICENSE (`raw.githubusercontent.com`):
+  - **`iart-ai/motion-design-skills`** (MIT) -- **PROBAR/INTEGRADO
+    parcialmente**: se instaló de verdad la skill `beat-sync-editing`
+    en `.claude/skills/` (ya activa, visible en el listado de skills
+    de esta sesión). Trae una técnica real y accionable: cortar en la
+    grilla del BPM (`framesPerBeat = (60/BPM)*fps`) -- justo lo que le
+    faltaba a `directores/audio.ts`.
+  - **`haidrrrry/claude-remotion-skill`** (MIT) -- DESCARTADO: su regla
+    principal (loop render->inspeccionar->corregir) ya es exactamente
+    la disciplina que esta fábrica sigue desde Ronda 2, sin aporte
+    nuevo real.
+  - **`Vincentwei1021/video-shotcraft`** (Apache-2.0, libre) y
+    **`video-talkcraft`** (**PolyForm Noncommercial -- prohíbe uso
+    comercial**, DESCARTADO para código, esta fábrica es 100%
+    comercial) -- el segundo, aunque no usable, corrobora
+    independientemente que forced-alignment de 20-40ms (lo mismo que
+    ya midió nuestro propio prototipo P3-3) es el estándar real de la
+    industria para sincronizar movimiento a la voz.
+- **Postura resolutiva real**: se instaló `librosa` (`pip install`,
+  MIT/BSD, $0 -- PyPI SÍ es alcanzable desde este sandbox, canal nuevo
+  confirmado) y se midió el **BPM real** de los 9 tracks de
+  `musica/biblioteca.json` (antes en `null`) con detección de tempo
+  estándar (`medir_bpm.py`, reproducible, no un número tipeado a
+  mano). Limitación real documentada: el método puede confundir el
+  doble/mitad del tempo real (`aceleracion-planificando` dio 178.2
+  BPM, plausible pero no verificado de oído).
+
+**PRÓXIMO PASO real, ya registrado**: conectar el BPM real recién
+medido con la técnica de `beat-sync-editing` -- ajustar el timing de
+los golpes de `directores/audio.ts` a la grilla de beats del track de
+`musicaFondo` elegido. No implementado todavía (necesita un video de
+prueba dedicado para validar que se sienta bien, no solo que compile).
+
+## Bloque anterior: R7-25 (2026-09-03)
 
 Pedido explícito del operador: seguir paso a paso la "capa de
 exploración agresiva" (skills/Remotion/MCP/arsenal audiovisual),

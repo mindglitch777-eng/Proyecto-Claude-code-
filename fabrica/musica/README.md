@@ -31,11 +31,16 @@ opción futura, no como parte del sistema.
     inventado) + inspección visual de espectrograma — NO de escuchar
     el track de principio a fin. Mismo patrón honesto que ya se usa
     para voz ("necesito que lo escuches vos para confirmar") — ver
-    `PENDIENTES_OPERADOR.md`. `bpm` se dejó en `null` a propósito: no
-    hay una forma confiable de medirlo en este sandbox sin
-    herramientas de detección de tempo real, y `resolver_musica.py`
-    no lo usa para puntuar hoy — mejor `null` explícito que un numero
-    inventado.
+    `PENDIENTES_OPERADOR.md`.
+  - **`bpm` medido de verdad en R7-26** (antes en `null`): se instaló
+    `librosa` (`pip install librosa`, MIT/BSD, $0) y se midió el tempo
+    real de los 9 tracks con detección de beat estándar (onset-strength
+    + programación dinámica) -- ver `medir_bpm.py`. Limitación real y
+    conocida del método (no un bug): puede confundir el doble/mitad
+    del tempo real ("octave error") -- `aceleracion-planificando` dio
+    178.2 BPM, plausible pero no verificado de oído. `resolver_musica.py`
+    todavía no usa `bpm` para puntuar (ver "Conectado al Director de
+    Audio" más abajo, motivado por la skill real `beat-sync-editing`).
 - **`resolver_musica.py`** — sin cambios en su lógica (dado intensidad
   deseada + mood opcional + duración mínima, elige el mejor track por
   puntaje). Con el catálogo ahora poblado, deja de devolver siempre
@@ -66,6 +71,19 @@ guarda el resultado en `ArbolFabrica.musicaFondo` (tipo nuevo en
 `composicion/tipos.ts`), y el puente de render
 (`remotion-spike/src/FabricaVideo.tsx`) agrega un `<Audio>` en loop a
 volumen bajo (0.12) si ese campo no es null.
+
+## Pendiente real (R7-26): sincronizar cortes al BPM de la música
+
+La skill real `beat-sync-editing` (de
+[`iart-ai/motion-design-skills`](https://github.com/iart-ai/motion-design-skills),
+MIT -- ver `fabrica/skills/registro.ts`) formaliza una técnica real que
+la fábrica no usa: cortar en la grilla del compás
+(`framesPerBeat = (60/BPM)*fps`), no en tiempos arbitrarios. Ahora que
+`bpm` es un dato real (no `null`), el candidato concreto para una
+próxima ronda es: que `directores/audio.ts` ajuste el timing de los
+golpes de una unidad para caer sobre la grilla de beats del track de
+`musicaFondo` elegido -- no implementado todavía, registrado como
+pendiente real, no forzado sin un video de prueba que lo justifique.
 
 ## Opciones de pago para más adelante (NO parte del sistema hoy)
 
