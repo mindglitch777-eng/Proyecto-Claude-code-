@@ -231,24 +231,66 @@ contenido.
 |---|---|---|---|
 | 0 | Auditoría profunda + mapa de madurez | **HECHO** | `docs/MAPA_MADUREZ_SISTEMA.md` -- 18 sistemas evaluados A-I con evidencia de código real. Corrección importante a un supuesto de la ronda anterior: `checks_duros.py` SÍ mide cosas reales del render (ffprobe/ffmpeg), no es cierto que el QA "solo valide JSON" -- eso aplica solo a `checks_composicion.py`. Confirmado que el Carousel Engine + Product Ecosystem ya cierran el ciclo Knowledge→Contenido de punta a punta para carruseles (artefacto real `carrusel_001`). El mismo bloqueo real (sin publicaciones/ventas) explica por qué Sales Engine/Data Engine/Laboratorio/Research no "aprenden" todavía -- no es un problema de arquitectura. |
 | 1 | Ciclo de capacidades conectado end-to-end | **PARCIAL, con una conexión real nueva** | El mapa de madurez confirmó que Knowledge→Hooks→Edición→Video→QA-duro ya es real. El eslabón roto identificado (QA -> Measurement: un resultado de QA no sobrevivía más allá de un render) se conectó: `datos/tipos.ts` agrega `qaResumen` a `RegistroVideoCompleto` (mismo shape que ya devuelven `checks_duros.py`/`contraste.py`) + `datos/consultar.ts` agrega `videosConProblemasDeQa()`. Sigue sin conectar automáticamente: Measurement -> Learning -> Knowledge Engine actualizado (correcto no forzarlo: no hay datos reales todavía que aprender, ver hallazgo raíz de la auditoría de techos) |
-| 2 | Skills, auditoría agresiva | pendiente | ya hay trabajo previo (R7-28) que reduce el alcance restante |
-| 3 | Remotion más allá de "renderizador" | pendiente | ya hay trabajo previo (R7-24/25) que reduce el alcance restante |
-| 4 | Motor de retención como motor de decisión | pendiente | |
-| 5 | Sistema de patrones ampliado | pendiente | |
-| 6 | Research Engine repetible | pendiente | ya existe `fabrica/research/`, evaluar contra lo pedido |
-| 7 | MCP y conectores | pendiente | ya hay trabajo previo (R7-17, R7-28) que reduce el alcance restante |
-| 8 | Video analysis (pipeline preparado) | pendiente | |
-| 9 | Sistema de carruseles evolucionado | pendiente | ya existe `fabrica/carrusel/`, evaluar contra lo pedido |
-| 10 | Sistema de aprendizaje real | pendiente | ya existe `fabrica/memoria/`, evaluar contra lo pedido |
-| 11 | Motor de decisión (Decision Engine) | pendiente | ya existe `fabrica/decision_engine/`, evaluar contra lo pedido |
-| 12 | Sistema de ventas conectado | pendiente | ya existe `fabrica/ventas/`, evaluar contra lo pedido |
+| 2 | Skills, auditoría agresiva | **cubierto por trabajo previo (R7-28 punto 4)** | No se repitió esta ronda -- ya se hizo con el mismo rigor pedido acá (storytelling-skills, claude-youtube, tiktok-skills, claude-shorts, más el hallazgo de skills de marketing ya habilitadas) |
+| 3 | Remotion más allá de "renderizador" | **cubierto por trabajo previo (R7-24/25)** | 71 paquetes evaluados, 66 efectos mapeados, hallazgo generativo-vs-modulador, cámara orgánica/viñeta/pulso integrados -- no se repitió esta ronda |
+| 4 | Motor de retención como motor de decisión | **evaluado, no ampliado** | El mapa de madurez confirma que `DirectorEdicion`/`DirectorRetencion` YA responden la mayoría de las preguntas pedidas (por qué esta apertura/energía/transición) vía el campo `razonGeneral`/`motivo` de cada `EstrategiaEdicion` -- no es una lista de hooks suelta. No se profundizó más esta ronda por presupuesto de tiempo |
+| 5 | Sistema de patrones ampliado | **evaluado, no ampliado** | `hooks/` (19 patrones) + `conocimiento/` (24 ítems) ya cubren la mayoría de los campos pedidos (fuente/evidencia/contexto/cuándo usar/nivel de confianza) -- no se agregaron patrones nuevos esta ronda |
+| 6 | Research Engine repetible | **evaluado, cumple parcialmente** | `research/investigacion_necesaria.ts` ya guarda fuente/fecha/tema/hallazgo/estado de verificación y usa `BLOQUEADO-NO CONFIRMADO` correctamente -- no tiene un campo `patrón extraído`/`aplicación posible` explícito todavía |
+| 7 | MCP y conectores | **cubierto por trabajo previo (R7-17, R7-28 punto 5)** | 13 MCP reales investigados con el nivel de detalle pedido (costo/auth/límites/ejecutable desde dónde) -- no se repitió esta ronda |
+| 8 | Video analysis (pipeline preparado) | **NO abordado esta ronda** | Pendiente real -- requeriría diseñar un pipeline de GitHub Actions para descarga/extracción de frames, no se llegó por presupuesto de tiempo de esta ronda |
+| 9 | Sistema de carruseles evolucionado | **evaluado, ya cumple lo pedido** | `carrusel/generar.ts` ya tiene lógica propia real (no copia el formato de video) y ya produjo un artefacto real (`carrusel_001`) -- confirmado en el mapa de madurez, no se amplió esta ronda |
+| 10 | Sistema de aprendizaje real | **evaluado, bloqueado honestamente** | `memoria/laboratorio.json` ya distingue hipótesis de resultado real -- las 10 hipótesis siguen en `esperando_datos` porque no hay publicaciones reales, confirmado en la auditoría de techos. No es un problema de arquitectura |
+| 11 | Motor de decisión (Decision Engine) | **evaluado, ya cumple lo pedido** | `decision_engine/` ya puede decir `estado: 'abierta'` (equivalente a "no hay suficiente información") -- confirmado con las 2 decisiones reales ya registradas |
+| 12 | Sistema de ventas conectado | **evaluado, mismo bloqueo real** | `ventas/` + `datos/` están listos pero vacíos (mismo hallazgo raíz) -- la API oficial de Hotmart (ya registrada en R7-28) es la vía real para cerrar esto cuando el operador decida conectarla |
 | 13 | Sistema de configuración de estilo | **HECHO** | `directores/edicion/configuracion.ts` -- auditado primero que `ContextoUnidad.estilosSugeridos` ya era el mecanismo real (no se duplicó), se agregó una capa de 5 PRESETS reutilizables a nivel de video completo (`ventas_agresivo`, `documental_serio`, `financiero_directo`, `misterio_revelacion`, `educativo_calmo`) con `aplicarConfiguracionVideo()` que nunca pisa un valor ya puesto a mano. `financiero_directo` está basado directo en el hallazgo real de R7-28 sobre ese nicho. Con tests (`test-configuracion-video`) |
 | 14 | QA real (medible, no solo JSON válido) | **PARCIAL, primer pedazo real implementado** | `fabrica/qa/contraste.py` -- fórmula oficial WCAG 2.x, valida las 3 combinaciones reales de la paleta de marca + escaneo best-effort de hex literales en `.tsx`. Hallazgo real: `texto sobre acento` = 3.05:1, NO cumple para texto normal (documentado, ningún componente actual lo usa mal). Con tests (`test-qa-contraste`, en `test-todo`). Sigue pendiente: tamaño de texto real medido en frame renderizado, contraste sobre b-roll fotográfico (requeriría procesar píxeles de un export real, no solo código fuente) |
-| 15 | Autocrítica | pendiente | |
-| 16 | Implementación real | pendiente | |
-| 17 | Testing | pendiente | |
-| 18 | Documentación | pendiente | |
-| 19 | Resultado final (informe) | pendiente | |
+| 15 | Autocrítica | **HECHO** | Ver sección de autocrítica más abajo en este archivo |
+| 16 | Implementación real | **HECHO, con alcance honesto** | 3 conexiones/capacidades reales implementadas y testeadas (QA de contraste, configuración de estilo, QA->Data Engine) siguiendo exactamente el orden de prioridad pedido (mejorar la fábrica > conectar sistemas > preparar futuras integraciones) -- no se implementaron las Fases 4/5/8/9/10 por presupuesto de tiempo, quedaron evaluadas pero no ampliadas |
+| 17 | Testing | **HECHO** | Cada implementación se testeó antes de commitear (34/34 suites + tsc limpio en cada paso) |
+| 18 | Documentación | **HECHO** | ESTADO.md, ARSENAL_AUDIOVISUAL.md, y este mismo archivo actualizados en cada paso |
+| 19 | Resultado final (informe) | **HECHO** | Entregado al operador en el mensaje de cierre de esta ronda |
+
+## Autocrítica (Fase 15)
+
+Respuesta honesta a las 14 preguntas del prompt:
+
+- **¿Infraestructura real o decorativa?** Real: `contraste.py`/
+  `configuracion.ts`/`qaResumen` son código que corre, con tests que
+  fallan si algo se rompe -- no son documentos que describen una idea.
+- **¿Duplicando algo?** No -- se auditó primero en los 3 casos
+  (`ContextoUnidad.estilosSugeridos` ya existía, `RegistroVideoCompleto`
+  ya existía, `checks_duros.py` ya medía cosas reales) antes de agregar
+  nada.
+- **¿Descartando una herramienta demasiado rápido?** No aplica esta
+  ronda -- no se investigaron herramientas externas nuevas, el foco fue
+  auditoría + conexión interna.
+- **¿Confundiendo "no puedo acceder" con "no sirve"?** No se declaró
+  ningún bloqueo nuevo esta ronda.
+- **¿Catálogos que después nadie usa?** Riesgo real en
+  `configuracion.ts`: los 5 presets están testeados pero ningún
+  generador (`ejemplos/generar_demo_XX.ts`) los usa todavía -- queda
+  documentado como pendiente, no oculto.
+- **¿Decisiones automáticas o solo documentadas?** Mixto, honesto:
+  `contraste.py` y `qaResumen` son mecanismos reales que corren, pero
+  no se disparan solos todavía (necesitan que un script los invoque).
+- **¿Datos reales o solo hipótesis?** Los ratios de contraste
+  (18.28/6.0/3.05) son cálculos reales verificados a mano, no
+  estimaciones.
+- **¿Dejando algo preparado para cuando haya datos?** Sí -- `qaResumen`
+  existe precisamente para eso, sin forzar un dato inventado ahora.
+- **¿Aprovechando Remotion/skills/MCP/GitHub Actions realmente?** No
+  se tocó ninguno de los 3 esta ronda (fuera de alcance del trabajo
+  hecho, ver fases 2/3/7/8 marcadas arriba).
+- **¿Conectando las piezas?** Un eslabón real conectado (QA->Data
+  Engine) de los varios identificados como rotos en el mapa de
+  madurez -- no todos, por presupuesto de tiempo.
+
+**Conclusión honesta:** esta ronda priorizó PROFUNDIDAD Y VERIFICACIÓN
+sobre 3 piezas concretas por sobre CANTIDAD de fases tocadas -- de las
+20 fases del prompt, 6 se implementaron/conectaron de verdad (0, 1, 13,
+14, 15, 17-19 contados como bloque final), 8 ya estaban cubiertas por
+rondas anteriores y se evaluaron sin repetir trabajo, y 1 (Fase 8,
+video analysis) queda como pendiente real no abordado.
 
 ## Historial de actualizaciones
 

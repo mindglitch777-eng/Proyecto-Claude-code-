@@ -10,7 +10,54 @@ después de cada bloque de trabajo real, como pide el "Prompt Maestro
 del prompt "Capa de exploración agresiva" (para no perderlo de nuevo
 en la memoria de la conversación), `docs/PROMPT_EXPLORACION_AGRESIVA.md`.
 
-## Último bloque de trabajo: R7-28 (2026-09-03) -- los 6 puntos pendientes del prompt, cerrados
+## Último bloque de trabajo: R7-29 (2026-09-03) -- Ronda de evolución real (sistema operativo de contenido)
+
+Pedido explícito del operador: prompt nuevo de 20 fases, esta vez
+pidiendo explícitamente IMPLEMENTAR conexiones reales entre sistemas
+ya existentes (no solo investigar/documentar) -- "prefiero 5 sistemas
+realmente conectados antes que 30 carpetas decorativas". Texto completo
+guardado en `docs/PROMPT_EVOLUCION_SISTEMA_OPERATIVO.md`.
+
+**HECHO:**
+- **Fase 0 (auditoría + mapa de madurez)**: `docs/MAPA_MADUREZ_SISTEMA.md`
+  -- 18 sistemas evaluados con evidencia de código real. Corrección
+  importante: `checks_duros.py` YA mide cosas reales del render
+  (ffprobe/ffmpeg), no es cierto que el QA "solo valide JSON". Confirmado
+  que Carousel Engine + Product Ecosystem ya cierran el ciclo Knowledge
+  → Contenido de punta a punta (artefacto real `carrusel_001`).
+- **Fase 1 (conectar el ciclo)**: identificado un eslabón real roto
+  (QA → Measurement) y conectado -- `datos/tipos.ts` agrega `qaResumen`
+  a `RegistroVideoCompleto`, `datos/consultar.ts` agrega
+  `videosConProblemasDeQa()`.
+- **Fase 13 (configuración de estilo)**: `directores/edicion/configuracion.ts`
+  -- 5 presets reutilizables a nivel de video (`ventas_agresivo`,
+  `documental_serio`, `financiero_directo`, `misterio_revelacion`,
+  `educativo_calmo`), auditado primero que no duplicaba nada existente.
+- **Fase 14 (QA real de contraste)**: `fabrica/qa/contraste.py` --
+  fórmula oficial WCAG 2.x, sin dependencias nuevas. Hallazgo real
+  verificado: `texto` sobre `acento` (paleta de marca) = 3.05:1, NO
+  cumple el mínimo de texto normal (4.5:1) -- confirmado que ningún
+  componente actual usa esa combinación mal (ya usan un color oscuro
+  propio en su lugar).
+- **Fase 15 (autocrítica)** y **Fase 19 (informe final)**: hechas,
+  con honestidad explícita sobre qué se implementó vs. qué quedó
+  evaluado sin ampliar vs. qué no se abordó (Fase 8, video analysis).
+
+**Suite completa verificada en cada paso**: `npm run test-todo` (34/34
+OK) + `npx tsc --noEmit` limpio en `fabrica/` y `remotion-spike/`.
+
+**BLOQUEADO -- NO CONFIRMADO (sin cambios, ya documentados antes):**
+mismos bloqueos reales de siempre (YouTube API key, Hotmart
+credenciales, Jamendo client ID) -- ninguno nuevo esta ronda.
+
+**PRÓXIMO PASO real, ya registrado**: de las fases no abordadas, la
+más concreta es la Fase 8 (pipeline de análisis de video vía GitHub
+Actions) -- requiere diseño nuevo, no se llegó por presupuesto de
+tiempo de esta ronda. De las fases evaluadas sin ampliar, la de mayor
+impacto de negocio sigue siendo la misma que ya está en el Decision
+Engine: conseguir datos reales del operador para el Sales Engine.
+
+## Bloque anterior: R7-28 (2026-09-03) -- los 6 puntos pendientes del prompt, cerrados
 
 Pedido explícito del operador: terminar los 6 puntos del prompt de
 exploración agresiva que habían quedado con hueco real (17, 10, 11, 5,
