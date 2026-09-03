@@ -7,9 +7,15 @@ function check(desc: string, cond: boolean) {
   if (!cond) FALLOS.push(`FALLO: ${desc}`);
 }
 
-check('REGISTROS_VIDEO real esta vacio (ningun video publicado todavia)', REGISTROS_VIDEO.length === 0);
+// R7-30: REGISTROS_VIDEO ya no esta vacio -- tiene 1 entrada real
+// (fabrica-demo-08, generado y renderizado de verdad, QA real corrido
+// por el Orquestador) -- sigue sin ningun video PUBLICADO (metricas
+// null en todos), eso es lo que valida el resto de este bloque.
+check('REGISTROS_VIDEO tiene la entrada real de fabrica-demo-08', REGISTROS_VIDEO.some((r) => r.videoId === 'fabrica-demo-08'));
+check('REGISTROS_VIDEO: ningun registro tiene metricas reales todavia (nada publicado)', REGISTROS_VIDEO.every((r) => r.metricas === null));
+check('REGISTROS_VIDEO: fabrica-demo-08 tiene qaResumen real con ok=true', REGISTROS_VIDEO.find((r) => r.videoId === 'fabrica-demo-08')?.qaResumen?.ok === true);
 check('REGISTROS_PRODUCTO real esta vacio', REGISTROS_PRODUCTO.length === 0);
-check('retencionPromedioPorHook sobre almacen vacio da objeto vacio (sin inventar un promedio)', Object.keys(retencionPromedioPorHook()).length === 0);
+check('retencionPromedioPorHook sobre el almacen real da objeto vacio (sin metricas reales, sin inventar un promedio)', Object.keys(retencionPromedioPorHook()).length === 0);
 
 const registroBase: RegistroVideoCompleto = {
   videoId: 'v-test', idea: 'test', tema: 'test', angulo: 'test',

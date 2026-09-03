@@ -18,6 +18,7 @@ import demo04 from './fabrica_bridge/demo_04.json';
 import demo05 from './fabrica_bridge/demo_05.json';
 import demo06 from './fabrica_bridge/demo_06.json';
 import demo07 from './fabrica_bridge/demo_07.json';
+import demo08 from './fabrica_bridge/demo_08.json';
 import pruebaR68 from './fabrica_bridge/prueba_r6_8.json';
 import pruebaR610 from './fabrica_bridge/prueba_r6_10.json';
 import {Video} from './receta/Video';
@@ -187,6 +188,20 @@ export const Root: React.FC = () => {
         width={ANCHO}
         height={ALTO}
         defaultProps={{arbol: demo07 as ArbolFabrica}}
+      />
+      {/* R7-30: PRUEBA REAL del Orquestador -- mismo guion/voz que
+          fabrica-demo-07, UNICA variable nueva: perfil de estilo
+          "financiero_directo" (directores/edicion/configuracion.ts,
+          R7-29) aplicado uniformemente por primera vez por un
+          generador real. Ver fabrica/ejemplos/generar_demo_08.ts. */}
+      <Composition
+        id="fabrica-demo-08"
+        component={FabricaVideo}
+        durationInFrames={Math.round((demo08 as ArbolFabrica).duracionTotalSeg * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{arbol: demo08 as ArbolFabrica}}
       />
       {/* R6-8: prueba de punta a punta de la transicion real
           (@remotion/transitions) con 2 audios REALES -- ver
