@@ -132,6 +132,16 @@ el Carousel Engine (opción B), no seguir profundizando el motor de
 video (opción A) — ninguna mejora técnica de video genera una venta
 por sí sola.
 
+## Seguimiento de la decisión Ronda 7: opción B ejecutada (R7-14)
+
+Mientras se espera la respuesta del operador a `PENDIENTES.md` ítem 15
+(opción C, bloqueada), se ejecutó la opción B recomendada: el Carousel
+Engine ahora tiene un generador completo (`fabrica/carrusel/generar.ts`),
+no solo un componente aislado. Genera un carrusel real (6-10 slides)
+a partir de UNA fuente del Knowledge Engine sin inventar contenido, y
+se probó de punta a punta generando y renderizando 7 slides reales
+desde el item `brunson-value-ladder` (`fabrica/salidas/carrusel_001/`).
+
 ## Pendientes de decisión (requieren probar antes de decidir)
 
 - `@remotion/install-whisper-cpp` + `@remotion/captions` — clasificados

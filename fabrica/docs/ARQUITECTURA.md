@@ -139,10 +139,11 @@ operativo de contenido + ventas, no producir contenido nuevo.
   (Ronda 7) -- arquitectura completa y testeada, pero vacía de negocio
   real hasta que el operador responda `PENDIENTES.md` ítem 15
   (audiencia, oferta, precio, datos existentes).
-- Carousel Engine sin generador completo (Ronda 7) -- solo 1 componente
-  real probado (portada/desarrollo/cta aislados); construir el
-  generador de 8-10 slides desde un tema queda para la próxima ronda
-  (recomendación del Decision Engine, opción B).
+- ~~Carousel Engine sin generador completo~~ RESUELTO (R7-14):
+  `fabrica/carrusel/generar.ts` arma un carrusel completo (6-10
+  slides) desde una sola fuente del Knowledge Engine, sin inventar
+  contenido. Carrusel real de 7 slides generado y renderizado de
+  punta a punta (`fabrica/salidas/carrusel_001/`).
 
 ## QUÉ PROBAMOS Y QUÉ FUNCIONÓ
 
@@ -174,6 +175,11 @@ operativo de contenido + ventas, no producir contenido nuevo.
 - Information Emphasis Engine real, `<Enfasis>` con rough-notation
   (Ronda 6) -- funcionó, conectado como opt-in a `Contador` sin romper
   ningún video existente.
+- Generador completo de carruseles, `generarCarrusel()` (R7-14) --
+  funcionó de punta a punta: desde una sola fuente real del Knowledge
+  Engine armó un carrusel de 7 slides (dentro del rango 6-10 del
+  patrón observado), sin inventar contenido, y los 7 PNG se
+  renderizaron de verdad (`fabrica/salidas/carrusel_001/`).
 
 ## QUÉ NO FUNCIONÓ / QUÉ SE ENCONTRÓ ROTO
 

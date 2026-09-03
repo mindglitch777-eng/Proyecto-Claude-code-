@@ -7,8 +7,10 @@ function check(desc: string, cond: boolean) {
   if (!cond) FALLOS.push(`FALLO: ${desc}`);
 }
 
-check('DERIVACIONES real esta vacio (ningun contenido nuevo generado esta ronda)', DERIVACIONES.length === 0);
-check('validarDerivaciones no lanza sobre el almacen vacio', (() => {
+check('DERIVACIONES tiene la primera derivacion real (R7-14: carrusel generado de verdad)', DERIVACIONES.length === 1 && DERIVACIONES[0].formato === 'carrusel');
+check('la derivacion real cita una fuente real del Knowledge Engine', DERIVACIONES[0].fuenteConocimientoId === 'brunson-value-ladder');
+check('la derivacion real tiene un artefactoRef -- no es solo un plan', !!DERIVACIONES[0].artefactoRef);
+check('validarDerivaciones no lanza sobre el almacen real', (() => {
   try {
     validarDerivaciones();
     return true;

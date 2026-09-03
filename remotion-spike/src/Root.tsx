@@ -264,6 +264,20 @@ export const Root: React.FC = () => {
         height={ALTO_CARRUSEL}
         defaultProps={{tipo: 'cta', texto: 'Mirá el link en la bio para el mini-curso completo', numero: 8, total: 8}}
       />
+      {/* R7-14: composicion GENERICA para el generador completo
+          (fabrica/carrusel/generar.ts) -- a diferencia de las 3 de
+          arriba (fijas, solo para la evidencia de R7-10), esta se
+          renderiza N veces por carrusel con `--props=<archivo.json>`
+          distinto en cada llamada, una por slide real generado. */}
+      <Composition
+        id="carrusel-slide"
+        component={CarruselSlide}
+        durationInFrames={1}
+        fps={FPS}
+        width={ANCHO_CARRUSEL}
+        height={ALTO_CARRUSEL}
+        defaultProps={{tipo: 'portada', texto: '(prop de ejemplo -- se pisa con --props en cada render real)', numero: 1, total: 1}}
+      />
       <Composition
         id="prueba-torre3d"
         component={Torre3D}
