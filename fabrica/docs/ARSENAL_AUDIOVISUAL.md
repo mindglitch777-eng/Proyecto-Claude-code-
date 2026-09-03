@@ -104,15 +104,15 @@ nunca se re-investiga desde cero algo que ya está acá.
 **COMPATIBILIDAD:** N/A en este sandbox; podría funcionar en la computadora del operador o en GitHub Actions
 **RIESGO:** ninguno de costo
 
-### CAPACIDAD: Descubrir qué contenido funciona de verdad (YouTube/TikTok/Instagram)
-**HERRAMIENTAS:** vidIQ (conector ya instalado en la org, desconectado) · Trends MCP (trendsmcp.ai) · video-url-analyzer-mcp (usa Gemini)
-**NUESTRA IMPLEMENTACIÓN:** ninguna — hoy la fábrica no tiene ningún dato real de qué funciona, solo evidencia académica/de industria (Knowledge Engine)
-**MEJOR OPCIÓN ACTUAL:** vidIQ, si el plan conectado no tiene costo (no confirmado)
-**ESTADO:** ESPERANDO AUTORIZACIÓN DEL OPERADOR (los 3 requieren cuenta/costo no confirmado)
-**EVIDENCIA:** conector real confirmado con `ListConnectors`; READMEs reales de los otros 2 leídos vía `raw.githubusercontent.com`
-**COSTO:** no confirmado (vidIQ/Trends MCP), confirmado NO 100% gratis (Gemini)
-**COMPATIBILIDAD:** N/A, son conectores, no código
-**RIESGO:** ninguno técnico -- el riesgo es de cuenta/costo, por eso se registró y no se activó solo
+### CAPACIDAD: Descubrir qué contenido funciona de verdad (YouTube)
+**HERRAMIENTAS:** **YouTube Data API v3 (oficial de Google)** · vidIQ (conector ya instalado en la org, desconectado) · Trends MCP (trendsmcp.ai) · video-url-analyzer-mcp (usa Gemini)
+**NUESTRA IMPLEMENTACIÓN:** `fabrica/research/youtube_api.ts` (R7-20) -- cliente real, `buscarVideos()`/`estadisticasDeVideos()`, listo para usar en cuanto haya una API key
+**MEJOR OPCIÓN ACTUAL:** **YouTube Data API v3** -- es la ÚNICA de las 4 confirmada 100% gratis SIN AMBIGÜEDAD (sin tarjeta, sin plan pago que exista siquiera, 10.000 unidades/día). vidIQ/Trends MCP tienen costo no confirmado; Gemini tiene costo confirmado más allá de un tier limitado.
+**ESTADO:** INTEGRADO (código listo) -- BLOQUEADO solo por la API key, que el operador puede sacar gratis en ~10 minutos (ver `PENDIENTES_OPERADOR.md`)
+**EVIDENCIA:** confirmado con una llamada real desde este sandbox (`googleapis.com` no está bloqueado, a diferencia de `youtube.com`) -- la API devolvió el error real de Google ("API key not valid"), no un bloqueo de proxy. Costo/condiciones del tier gratis confirmados por búsqueda (múltiples fuentes independientes, 2026). Cliente probado con tests que parsean la forma REAL y documentada de la respuesta de `videos.list`/`search.list` (fixtures fieles al formato oficial, fetch simulado porque no hay key real todavía).
+**COSTO:** $0, confirmado sin ambigüedad, sin plan pago que exista
+**COMPATIBILIDAD:** confirmada -- Node 22 (`fetch` nativo, sin dependencia nueva)
+**RIESGO:** ninguno de costo (no hay forma de que esto genere un cargo). Cubre solo YouTube -- TikTok/Instagram no tienen un equivalente oficial tan simple, siguen bloqueados/sin resolver
 
 ### CAPACIDAD: Criterio experto de marketing/ventas (ofertas, precio, copy)
 **HERRAMIENTAS:** `coreyhaines31/marketingskills` (50 skills, MIT)

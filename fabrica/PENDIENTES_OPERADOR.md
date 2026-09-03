@@ -3,6 +3,29 @@
 Solo lo que de verdad necesita que vos hagas algo o decidas algo. El
 detalle técnico completo de cada tema está en `fabrica/PENDIENTES.md`.
 
+## Ronda 7 (R7-20) — API de YouTube gratis, lista para usar (falta solo tu clave)
+
+Pediste una solución 100% gratis sin cargos para investigar contenido
+real -- la encontré: la **API oficial de YouTube** (no vidIQ, no
+Gemini). Confirmado con dos fuentes independientes: es gratis sin
+excepción, no pide tarjeta, y ni siquiera existe un plan pago que se
+pueda comprar (solo hay un límite diario gratis que alcanza de sobra
+para investigación manual). Ya escribí el código
+(`fabrica/research/youtube_api.ts`), probado y listo -- solo falta que
+generes la clave y me la pases.
+
+**Cómo conseguirla (gratis, ~10 minutos, sin tarjeta):**
+1. Andá a https://console.cloud.google.com/ con tu cuenta de Google.
+2. Creá un proyecto nuevo (cualquier nombre).
+3. Buscá "YouTube Data API v3" en la biblioteca de APIs y activala.
+4. Andá a "Credenciales" → "Crear credenciales" → "Clave de API".
+5. Copiá esa clave y pasámela -- yo la guardo como variable de entorno
+   (`FABRICA_YOUTUBE_API_KEY`), nunca en el código.
+
+Con eso puedo buscar videos reales por tema y traer vistas/likes/
+comentarios/duración reales -- la primera fuente de datos real de qué
+funciona, sin gastar un peso.
+
 ## Ronda 7 (R7-17) — conectores MCP, decisión de cuenta/costo
 
 ### ¿Habilitamos el conector vidIQ?

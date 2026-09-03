@@ -564,6 +564,18 @@ entorno / qué reemplazaría o mejoraría / riesgos / recomendación.
   de Google Gemini (paga más allá de un tier gratis limitado) --
   requiere autorización del operador antes de activar, registrado en
   `PENDIENTES_OPERADOR.md`.
+- **YouTube Data API v3 (R7-20)** -- el operador pidió explícitamente
+  "una solución gratuita sin cargos" para investigar contenido real,
+  en vez de vidIQ (costo no confirmado) o Gemini (costo confirmado
+  más allá de un tier limitado). Se confirmó con una llamada real
+  desde este sandbox que `googleapis.com` NO está bloqueado (a
+  diferencia de `youtube.com`, el sitio) y que la API es 100% gratis
+  sin ambigüedad -- ni siquiera existe un plan pago para esta API en
+  particular, solo una cuota diaria gratuita. Se construyó el cliente
+  real (`fabrica/research/youtube_api.ts`), probado con fixtures
+  fieles a la forma real y documentada de la respuesta oficial --
+  queda listo para usar en cuanto el operador genere su API key
+  (gratis, sin tarjeta, ver `PENDIENTES_OPERADOR.md`).
 - **Lección para sesiones futuras:** antes de declarar algo
   "bloqueado" o "no investigado en profundidad", agotar `WebSearch` +
   `raw.githubusercontent.com`/`git clone --sparse` + `registry.npmjs.org`
