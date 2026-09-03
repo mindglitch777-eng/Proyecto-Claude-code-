@@ -12,6 +12,21 @@ o publique contenido públicamente se ejecuta sin confirmación explícita
 del operador en esa sesión. Nada corre "solo" sin que un cron/GitHub Action
 lo dispare — no existe un proceso en segundo plano indefinido.
 
+## Postura resolutiva (regla permanente, agregada tras R7-21)
+Nunca paralizarse ante un bloqueo. Si algo falla o parece imposible:
+1. Buscar TODAS las soluciones alternativas antes de reportar "bloqueado"
+   (otro canal de red, otra herramienta, otro enfoque, leer el código
+   fuente en vez de asumir, probar en chico antes de descartar).
+2. Si de verdad no existe una solución lista, crearla (un adaptador, un
+   fix, un cliente propio) en vez de resignarse.
+3. Solo se reporta "BLOQUEADO — NO CONFIRMADO" cuando se agotaron esas
+   vías y el bloqueo depende de algo que solo el operador puede decidir
+   (plata, cuentas, credenciales) — nunca como primera respuesta.
+4. Siempre buscar sumar valor real al proyecto en el camino (un bug
+   encontrado se arregla ahí mismo, no solo se documenta), sin perder de
+   vista la Regla de oro (nunca gastar, publicar ni contactar terceros
+   sin confirmación explícita).
+
 ## Prioridad actual: Fase 1 — Productos Digitales
 Objetivo: 1 producto digital vendible en Hotmart en los primeros 7 días
 (se eligió Hotmart sobre Gumroad: mejor fit para pago en español/LatAm).
