@@ -46,6 +46,17 @@ export const CATALOGO_PATRONES: PatronRetencion[] = [
     respaldo: 'sin_evidencia_formal',
     compatibleConIntencion: ['enganchar'],
   },
+  {
+    id: 'resultado-primero',
+    categoria: 'apertura',
+    nombre: 'Resultado primero (abrir con el desenlace)',
+    descripcion:
+      'Muestra el DESENLACE de la historia (la cifra final, el antes-después completo) en el hook, antes de contar cómo se llegó ahí -- distinto de "cifra inmediata" (un número llamativo, no necesariamente el final de la historia) y opuesto a "clímax diferido" (que retiene la revelación para más adelante).',
+    ejemploAplicado: '"$3.560 en una semana" como primera línea del video, antes de explicar que viene de vender un curso de $89 cuarenta veces.',
+    evidenciaIds: ['hook-resultado-primero-2026'],
+    respaldo: 'patron_observado',
+    compatibleConIntencion: ['enganchar'],
+  },
 
   // ───────────────────────────── CURIOSIDAD (Ronda 7, nuevo)
   {

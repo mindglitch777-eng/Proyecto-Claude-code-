@@ -268,4 +268,70 @@ export const CONOCIMIENTO: ItemConocimiento[] = [
     comoUtilizarlo: 'Base directa del diseño de fabrica/carousel/ (Carousel Engine, Ronda 7) -- estructura de slides.',
     queNoDemuestra: 'No demuestra tasas de conversión/guardados reales -- es sobre estructura, no sobre resultados medidos de nuestro propio contenido.',
   },
+
+  // ───── Items 15-17: R7-23, investigación real (WebSearch, 2026-09-03)
+  // pedida explícitamente por el operador ("prioridad a la
+  // investigación para detectar patrones virales"). Mismo criterio que
+  // R7-2 (arriba): cifras puntuales sin fuente primaria verificable
+  // (ej. "top hook promedia 6.037 vistas, 2x el más bajo, sobre 34.635
+  // clips" de un blog de OpusClip; "1.3 segundos" atribuido a un
+  // estudio de Meta que no se pudo acceder directo; "UGC 4x más CTR",
+  // "VSL +138% conversión") NO se incorporan acá como hechos -- quedan
+  // registradas como descartadas en investigacion_necesaria.ts. Lo que
+  // SÍ se incorpora es el patrón CUALITATIVO que converge entre varias
+  // fuentes independientes, sin la cifra exacta.
+  {
+    id: 'hook-resultado-primero-2026',
+    concepto: 'Hook "resultado primero" (abrir con el desenlace, explicar después)',
+    descripcion:
+      'Abrir el video mostrando directamente el resultado/desenlace final (una cifra, un antes-después, un "así quedó") ANTES de explicar el proceso o el contexto -- inversión deliberada del orden cronológico, distinto de "cifra inmediata" (que es sobre destacar un número llamativo, no necesariamente el desenlace de la historia) y opuesto a "clímax diferido" (que retiene la revelación).',
+    categoria: 'hooks',
+    tags: ['hooks', 'apertura', 'resultado-primero', 'estructura-narrativa'],
+    nivel: 'patron_observado',
+    confirmado: false,
+    fuente: 'Convergencia de múltiples guías independientes de hooks de video corto 2026 (opus.pro, hookmafia.io, retiplex.com, greenfroglabs.com) -- ninguna es fuente primaria/académica, pero coinciden de forma independiente en "abrir con el payoff, explicar después".',
+    fecha: '2026-09-03',
+    contexto: 'Video corto vertical (TikTok/Reels/Shorts) para contenido de resultados/transformación -- el mismo tipo de guion que ya usa la fábrica (ej. "Tomás vendió 40 cursos").',
+    nivelConfianza: 'media',
+    ejemplos: ['Abrir con "$3.560 en una semana" (el resultado final del hook actual de demo_06/07) en vez de empezar por "Tomás vende un curso a $89" y llegar al resultado recién en la unidad de impacto.'],
+    limitaciones: 'Blogs de marketing de contenido SEO, no un estudio con metodología transparente -- la convergencia entre fuentes independientes es la única razón para tratarlo como patrón real, no una cifra de ninguna de ellas en particular.',
+    comoUtilizarlo: 'Nuevo patrón agregado a fabrica/hooks/catalogo.ts ("resultado-primero", categoría apertura, compatible con intención "enganchar") -- queda disponible de inmediato para que el Director de Edición lo elija automáticamente (R7-15), sin cablear nada más.',
+    queNoDemuestra: 'No demuestra que reordenar cronológicamente retenga mejor que "contexto parcial" (patrón ya existente) en NUESTRO contenido específico -- son dos formas válidas de abrir, no una reemplaza a la otra.',
+  },
+  {
+    id: 'especificidad-numerica-vs-vaguedad',
+    concepto: 'Especificidad numérica (cifra + plazo concretos) transmite más autenticidad que una afirmación vaga',
+    descripcion:
+      'Un número concreto con unidad y plazo (ej. "$4.200 en 3 días") se percibe como más creíble/auténtico que la misma afirmación en términos vagos (ej. "gané plata rápido") -- principio de especificidad, de uso extendido en copywriting de respuesta directa.',
+    categoria: 'narracion',
+    tags: ['especificidad', 'copywriting', 'credibilidad', 'cifras'],
+    nivel: 'buena_practica',
+    confirmado: false,
+    fuente: 'Principio clásico de copywriting de respuesta directa (Claude Hopkins, "Scientific Advertising", 1923: "la generalidad no vende"), re-observado en guías de hooks de video corto 2026 (opus.pro, greenfroglabs.com).',
+    fecha: '2026-09-03',
+    contexto: 'Copywriting/narración de contenido de ventas o resultados -- aplica tanto a guiones de video como a copy de oferta.',
+    nivelConfianza: 'media',
+    ejemplos: ['Los guiones ya usados en la fábrica ya siguen esto de hecho, sin que estuviera formalizado: "$89", "40 ventas", "$3.560 en total" -- nunca "barato" o "vendió mucho".'],
+    limitaciones: 'Es un principio de práctica de copywriting con décadas de uso, no un estudio con datos controlados sobre video corto específicamente.',
+    comoUtilizarlo: 'Formaliza una práctica que fabrica/guion/ ya sigue intuitivamente -- usar como CHECKLIST al escribir un guion nuevo: ¿toda cifra mencionada es concreta (monto + unidad + plazo), no vaga?',
+    queNoDemuestra: 'No demuestra que una cifra concreta FALSA o exagerada funcione igual -- el principio es sobre especificidad, no sobre inventar números (viola la regla de oro del proyecto si la cifra no es real).',
+  },
+  {
+    id: 'tension-crudo-vs-producido-2026',
+    concepto: 'Tensión real: contenido "crudo" (un celular, sin editar) vs. producción pulida',
+    descripcion:
+      'Varias fuentes de 2026 reportan que el contenido percibido como "crudo"/casero (filmado con un celular, sin edición visible) genera más engagement en feeds de TikTok/Reels que la producción pulida -- lo opuesto a la premisa de una fábrica que genera video animado/editado con Remotion.',
+    categoria: 'formatos',
+    tags: ['autenticidad', 'ugc', 'produccion', 'riesgo'],
+    nivel: 'patron_observado',
+    confirmado: false,
+    fuente: 'Guías de formato de video corto 2026 (greenfroglabs.com, virvid.ai) -- afirman una cifra puntual de "31% más engagement" sin metodología verificable (esa cifra específica NO se incorpora, ver investigacion_necesaria.ts), pero la dirección cualitativa (crudo > pulido en percepción de autenticidad) aparece en múltiples fuentes independientes.',
+    fecha: '2026-09-03',
+    contexto: 'Feeds de TikTok/Reels/Shorts, especialmente para contenido de "prueba"/resultados -- no necesariamente aplica a todo tipo de contenido.',
+    nivelConfianza: 'baja',
+    ejemplos: [],
+    limitaciones: 'Ningún estudio con datos propios -- y es una tensión real sin resolver para esta fábrica específicamente (motor de animación/composición), no un hallazgo que se pueda aplicar directo hoy.',
+    comoUtilizarlo: 'NO implica reescribir la fábrica -- queda registrado como riesgo/limitación conocida (ver ARQUITECTURA.md) y como candidato real para el día que haya datos propios (resultadoReal) que comparen contenido animado vs. metraje real de la fábrica.',
+    queNoDemuestra: 'No demuestra que el contenido animado/editado de la fábrica retenga peor -- no hay ningún dato propio todavía que compare ambos formatos en igualdad de condiciones (mismo guion, misma audiencia).',
+  },
 ];

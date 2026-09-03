@@ -33,7 +33,7 @@ check('validarCatalogo no lanza (todos los ids de evidencia citados existen de v
 check('porId encuentra un patron real', porId('contexto-parcial')?.nombre === 'Contexto parcial');
 check('porId con id inexistente devuelve undefined', porId('esto-no-existe') === undefined);
 
-check('porCategoria("apertura") trae los 4 patrones de siempre', porCategoria('apertura').length === 4);
+check('porCategoria("apertura") trae los 5 patrones (4 de siempre + "resultado-primero" de R7-23)', porCategoria('apertura').length === 5);
 check('porCategoria("cta") trae el patron de CTA', porCategoria('cta').some((p) => p.id === 'cta-especifico-accionable'));
 
 check('patronesCompatibles("enganchar") incluye los patrones de apertura', patronesCompatibles('enganchar').length >= 4);

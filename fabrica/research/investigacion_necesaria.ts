@@ -47,4 +47,23 @@ export const INVESTIGACION_NECESARIA: InvestigacionNecesaria[] = [
     fecha: '2026-09-03',
     estado: 'pendiente',
   },
+  {
+    id: 'patrones-virales-datos-reales-vistas-engagement',
+    pregunta: '¿Qué patrones de hook/estructura/edición correlacionan REALMENTE con más vistas/engagement en video corto (TikTok/YouTube Shorts/Reels), medido sobre videos reales, no sobre lo que blogs de marketing dicen que funciona?',
+    fuentePropuesta: 'YouTube Data API v3 (fabrica/research/youtube_api.ts, R7-20 -- ya construido y probado, 100% gratis, solo falta la clave del operador) o el conector vidIQ (instalado a nivel de organización, desconectado, costo del plan sin confirmar -- fabrica/mcp/registro.ts).',
+    queFalta: 'Datos reales de vistas/engagement de videos reales -- ninguna de las dos fuentes está activada todavía.',
+    bloqueo: 'Ambos caminos requieren una acción del operador (generar la clave gratis de YouTube, o confirmar el costo del plan de vidIQ y habilitarlo) -- no hay ningún canal de red alternativo en este sandbox: TikTok, Social Blade, Google Trends, Exploding Topics y vidIQ se probaron directo con curl (2026-09-03) y los 5 devuelven connect_rejected. Mientras tanto, se avanzó con la parte SÍ disponible sin esa clave: WebSearch para encontrar patrones CUALITATIVOS que convergen entre múltiples fuentes independientes (ver fabrica/conocimiento/base.ts, items "hook-resultado-primero-2026", "especificidad-numerica-vs-vaguedad", "tension-crudo-vs-producido-2026") -- esto NO reemplaza tener datos reales de views/engagement, es la investigación secundaria que sí se puede hacer hoy.',
+    fecha: '2026-09-03',
+    estado: 'pendiente',
+  },
+  {
+    id: 'cifras-puntuales-blogs-hooks-2026-no-verificables',
+    pregunta: '¿Son reales las cifras específicas de la ronda de investigación de hooks 2026 (ej. "1.3 segundos" atribuido a un estudio de Meta de 2025 sobre 12 millones de impresiones; "34.635 clips analizados, el hook top promedia 6.037 vistas, 2x el más bajo" de un dataset propio de OpusClip; "contenido crudo genera 31% más engagement"; "UGC 4x más CTR"; "VSL +138% conversión"; "case studies +41% tráfico orgánico, +27% CTR, +34% conversión")?',
+    fuentePropuesta: 'Blogs de marketing de video (opus.pro, greenfroglabs.com, virvid.ai, digitalapplied.com, martechcube.com y similares, encontrados por WebSearch en R7-23).',
+    queFalta: 'Ninguno de estos sitios enlaza ni cita de forma verificable el estudio/dataset primario (el supuesto "estudio de Meta 2025" y el "dataset de 34.635 clips" no tienen un link a una publicación o metodología real accesible).',
+    bloqueo: 'Mismo patrón que "estadisticas-tiktok-blogs-no-verificables" (Ronda 7, arriba) -- cifras puntuales de sitios de contenido SEO sin metodología transparente.',
+    fecha: '2026-09-03',
+    estado: 'descartada',
+    resolucion: 'NO se incorporaron al Knowledge Engine como hechos ni como cifras -- solo la DIRECCIÓN cualitativa que converge entre fuentes independientes se incorporó (ver conocimiento/base.ts, mismos 3 items citados arriba), siguiendo el mismo criterio que la directiva pide (no tratar publicaciones de blogs como verdad científica). Si se necesita el número real, hace falta el estudio o dato de plataforma primario -- o datos propios reales (YouTube Data API / vidIQ, ver ítem "patrones-virales-datos-reales-vistas-engagement").',
+  },
 ];

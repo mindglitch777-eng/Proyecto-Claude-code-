@@ -8,7 +8,51 @@ después de cada bloque de trabajo real, como pide el "Prompt Maestro
 `PENDIENTES_OPERADOR.md`; para todo lo pendiente técnico,
 `PENDIENTES.md`.
 
-## Último bloque de trabajo: R7-22 (2026-09-03)
+## Último bloque de trabajo: R7-23 (2026-09-03)
+
+Pedido explícito del operador: priorizar la investigación para
+detectar patrones virales, y que el sistema los use automáticamente
+("que detecte patrones... y luego haga todo").
+
+**HECHO:**
+- Verificado (de nuevo, con curl real, no de memoria) que TikTok,
+  Social Blade, Google Trends, Exploding Topics y vidIQ siguen
+  bloqueados desde este sandbox -- los datos REALES de vistas/
+  engagement de contenido real siguen dependiendo de que el operador
+  consiga la clave gratis de YouTube Data API (R7-20, ya lista) o
+  habilite vidIQ. Registrado explícitamente en
+  `research/investigacion_necesaria.ts` como bloqueo real, no
+  abandonado.
+- Mientras tanto, investigación SÍ posible con `WebSearch`: 3 patrones
+  cualitativos que convergen en múltiples fuentes independientes de
+  2026 se agregaron al Knowledge Engine (`conocimiento/base.ts`,
+  items 15-17) -- "resultado primero" (abrir con el desenlace),
+  "especificidad numérica" (formaliza algo que la fábrica ya hacía
+  intuitivamente), y una tensión real sin resolver (crudo vs.
+  producido). Las cifras puntuales sin fuente primaria verificable
+  (ej. "1.3 segundos", "34.635 clips", "+138% conversión") se
+  descartaron explícitamente, mismo criterio que Ronda 7 original.
+- **"Resultado primero" agregado como patrón nuevo real a
+  `hooks/catalogo.ts`** -- no quedó solo documentado: se verificó que
+  el Director de Edición ya puede elegirlo de verdad (probado forzando
+  la elección, evitando los otros 4 patrones de apertura) sin cablear
+  nada más, gracias a que R7-15 ya conecta el catálogo completo a la
+  elección automática.
+- **Bug de cobertura real encontrado y arreglado**: 13 archivos de
+  test de Ronda 7 (`hooks/`, `conocimiento/`, `research/`, `skills/`,
+  `ventas/`, `carrusel/`, `datos/`, `decision_engine/`,
+  `ecosistema_producto/`, `mcp/`, `directores/edicion/test_tecnicas.ts`)
+  nunca se habían agregado a `package.json`/`test-todo` -- corrían
+  bien sueltos pero jamás como parte de la batería estándar. Ahora
+  `npm run test-todo` corre las 32 suites reales del proyecto, no 19.
+
+**PRÓXIMO PASO:** con el patrón nuevo ya disponible, ejercitarlo en un
+video real (mismo patrón que R7-21) cuando se genere el próximo demo.
+El techo de fondo sigue siendo el mismo: sin la clave de YouTube o
+vidIQ, no hay forma de saber si estos patrones correlacionan con
+retención/ventas reales -- son teoría bien fundada, no datos propios.
+
+## Bloque anterior: R7-22 (2026-09-03)
 
 Tras archivar "El Corte" (Fase 1 original, decisión del operador) y
 confirmar que `fabrica/` pasa a ser la prioridad explícita del
