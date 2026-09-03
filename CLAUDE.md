@@ -27,11 +27,17 @@ Nunca paralizarse ante un bloqueo. Si algo falla o parece imposible:
    vista la Regla de oro (nunca gastar, publicar ni contactar terceros
    sin confirmación explícita).
 
-## Prioridad actual: Fase 1 — Productos Digitales
-Objetivo: 1 producto digital vendible en Hotmart en los primeros 7 días
-(se eligió Hotmart sobre Gumroad: mejor fit para pago en español/LatAm).
-No empezar YouTube, ropa, ni agencia hasta que Fase 1 tenga al menos
-una venta real o 30 días de intento documentado.
+## Prioridad actual: La Nueva Fábrica Audiovisual (`fabrica/`)
+"El Corte" (producto de Hotmart de la Fase 1 original, publicado el
+20/08) queda **archivado por decisión explícita del operador (03/09):
+no se vuelve a tocar ni a mencionar como próximo paso.** No borrar su
+código sin que el operador lo pida aparte -- solo se dejó de priorizar.
+
+La prioridad actual es seguir desarrollando `fabrica/` (motor de
+generación de video con Remotion + directores de Voz/Visual/Audio/
+Edición/Retención + memoria/laboratorio de experimentos) -- ver
+`fabrica/ESTADO.md` (estado vivo, se lee al iniciar sesión) y
+`fabrica/docs/ARQUITECTURA.md` (puntos débiles reales conocidos).
 
 ## Principios de diseño
 - Modularidad: cada módulo falla independiente, no tumba el resto.
@@ -42,15 +48,19 @@ una venta real o 30 días de intento documentado.
   (`.env`, nunca commiteado).
 
 ## Estado del proyecto
-El estado vivo del sistema (tareas, proyectos activos, métricas) vive en
-`state/state.json`, gestionado por `orchestrator.py`. Cada sesión nueva de
-Claude Code debe leer ese archivo antes de proponer next steps.
+El estado vivo real vive en `fabrica/ESTADO.md` (ver "Cómo debe
+comportarse" más abajo). `state/state.json` + `orchestrator.py` fueron
+el sistema de la Fase 1 original (El Corte) y quedaron congelados sin
+uso real desde que el trabajo se mudó a `fabrica/`.
 
 ## Cómo debe comportarse Claude Code en este proyecto
-1. Al iniciar sesión: correr `python orchestrator.py status` primero.
+1. Al iniciar sesión: leer `fabrica/ESTADO.md` primero (estado vivo real
+   del proyecto). `orchestrator.py status`/`state/state.json` quedaron
+   obsoletos desde que el trabajo real se mudó a `fabrica/` (Ronda 2+)
+   -- no reflejan el estado real, no confiar en ellos.
 2. Proponer un solo siguiente paso concreto, no un rediseño completo.
 3. Antes de cualquier integración con API externa (Hotmart, YouTube, etc.),
    confirmar con el operador qué cuenta/credenciales usar.
-4. Documentar en `state/log.md` cada decisión importante y su resultado
-   (esto reemplaza la idea de "motor de metacognición": es simplemente
-   un log que la siguiente sesión lee antes de decidir).
+4. Documentar en `fabrica/ESTADO.md` (bloque nuevo arriba de todo) cada
+   bloque de trabajo real y su resultado -- reemplaza a `state/log.md`,
+   que quedó como historial congelado de la era pre-`fabrica/`.
