@@ -10,7 +10,73 @@ después de cada bloque de trabajo real, como pide el "Prompt Maestro
 del prompt "Capa de exploración agresiva" (para no perderlo de nuevo
 en la memoria de la conversación), `docs/PROMPT_EXPLORACION_AGRESIVA.md`.
 
-## Último bloque de trabajo: R7-27 (2026-09-03) -- cierre de la capa de exploración agresiva
+## Último bloque de trabajo: R7-28 (2026-09-03) -- los 6 puntos pendientes del prompt, cerrados
+
+Pedido explícito del operador: terminar los 6 puntos del prompt de
+exploración agresiva que habían quedado con hueco real (17, 10, 11, 5,
+4, 15), con investigación exhaustiva y sin bloquearse -- ANTES de irse
+a dormir, esperando un resultado positivo a la vuelta. Instrucción de
+proceso importante a mitad de ronda: NO paralelizar con varios agentes
+de investigación a la vez (el operador lo pidió explícitamente al ver
+4 agentes lanzados en simultáneo) -- se rehizo todo el bloque punto por
+punto, en serie, cada uno investigado y cerrado antes de pasar al
+siguiente.
+
+**HECHO (los 6 puntos, en orden de cierre):**
+- **Punto 17 (auditoría de techos)**: `docs/AUDITORIA_TECHOS_FABRICA.md`
+  -- hallazgo raíz con evidencia de código real: toda la fábrica es
+  heurística declarada (tablas fijas, umbrales mágicos en los 4
+  Directores), y el sistema de aprendizaje real (`memoria/laboratorio.json`)
+  tiene sus 10 hipótesis en `estado="esperando_datos"` -- cero feedback
+  real cerró el loop todavía porque no hubo publicación/venta real. Más
+  7 techos específicos citando líneas de código concretas.
+- **Punto 10 (técnicas sin herramienta)**: 6 entradas nuevas al
+  Knowledge Engine con fuentes reales -- contraste WCAG (única marcada
+  `evidencia`, estándar oficial W3C), tipografía en video vertical,
+  pacing/duración de plano (con respaldo de un estudio peer-reviewed de
+  eye-tracking), silencio como énfasis, capas/parallax, edición por
+  nicho financiero.
+- **Punto 11 (referencias reales)**: 3 entradas nuevas, con la
+  limitación real del sandbox declarada explícitamente (TikTok/YouTube/
+  Instagram bloqueados, no se pudo transcribir un video real) --
+  identidad visual de Cleo Abram (entrevista directa, no analizada por
+  terceros), estructura "Hook-Error-Solución" de nicho financiero,
+  ventana de atención de texto animado.
+- **Punto 5 (MCP restantes)**: 4 MCP nuevos verificados con WebFetch
+  directo a cada README real -- GoogleTrendsMCP (único de 3 candidatos
+  de Trends genuinamente $0, los otros 2 dependen de una API paga),
+  Reddit Research MCP (el más limpio de toda la exploración: sin
+  cuenta, sin clave, sin límite), Zapier MCP (esperar autorización NO
+  por costo sino porque ejecuta acciones reales en apps de terceros),
+  **API oficial de Hotmart** (hallazgo de alto valor: es la pieza que
+  le falta al Sales Engine, hoy vacío).
+- **Punto 4 (skills restantes)**: hallazgo clave -- gran parte de
+  "marketing/ventas/productos digitales" ya estaba resuelta sin buscar
+  nada (esta cuenta de Claude Code ya tiene copywriting/cro/
+  customer-research/offers/pricing/product-marketing/marketing-plan/
+  launch/lead-magnets/marketing-psychology habilitadas). Sumadas 4
+  skills externas reales (storytelling-skills, claude-youtube,
+  tiktok-skills sin Publora, claude-shorts como referencia).
+- **Punto 15 (priorización P0-P3)**: `docs/PRIORIZACION_P0_P3.md` --
+  17 ítems priorizados + lista concreta de qué implementar YA con $0.
+
+**Corrección de proceso permanente**: creado `docs/PROMPT_EXPLORACION_AGRESIVA.md`
+con el texto COMPLETO del prompt de 31 puntos + checklist de estado por
+punto -- el operador señaló que el prompt se venía perdiendo entre
+compactaciones de la conversación (el resumen automático solo guarda un
+parafraseo, no el texto literal). Este archivo vive en el repo, no en
+la memoria del chat, y se actualiza incrementalmente.
+
+Suite completa verificada antes de cerrar: `npm run test-todo` (32/32
+OK) + `npx tsc --noEmit` limpio en `fabrica/` y `remotion-spike/`.
+
+**PRÓXIMO PASO real, ya registrado**: de la lista P0 de
+`PRIORIZACION_P0_P3.md`, el más concreto para código real (no solo
+investigación) es el QA de contraste/legibilidad sobre frames
+renderizados (motivado por el hallazgo #7 de la auditoría de techos) --
+implementable con $0, sin depender de ninguna decisión del operador.
+
+## Bloque anterior: R7-27 (2026-09-03) -- cierre de la capa de exploración agresiva
 
 Pedido del operador: terminar TODOS los puntos del prompt "CAPA DE
 EXPLORACIÓN AGRESIVA DE SKILLS, REMOTION, MCP Y ARSENAL AUDIOVISUAL"
