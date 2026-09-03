@@ -118,10 +118,15 @@ operativo de contenido + ventas, no producir contenido nuevo.
 - Publicación real y datos reales (`resultadoReal`) -- sin esto, todo
   el sistema de anti-repetición por patrón y de experimentos A/B tiene
   su mecanismo más importante sin ejercitar en producción todavía.
-- Subtítulos (nunca se generaron en ningún video de la fábrica) --
-  candidato identificado: `@remotion/install-whisper-cpp` +
-  `@remotion/captions` (ver `fabrica/skills/INVESTIGACION_HERRAMIENTAS.md`),
-  todavía en PROBAR, no se tocó en Ronda 6.
+- Subtítulos reales con transcripción real (nunca se generaron en
+  ningún video de la fábrica) -- R7-16 confirmó que
+  `installWhisperCpp()` funciona (build real de whisper.cpp) y que el
+  componente de render (`TikTokCaptions.tsx`) renderiza `Caption[]`
+  real, pero `downloadWhisperModel()` está BLOQUEADO en este sandbox
+  (huggingface.co y su mirror ambos denegados por política de red).
+  Sin modelo no hay transcripción real todavía -- ver
+  `fabrica/research/`, id `whisper-cpp-modelo-descarga-bloqueada`, y
+  `remotion-spike/src/subtitulos/README.md`.
 - Motor de composiciones en capas -- deliberadamente NO construido
   (prohibido como sistema paralelo, ver `MEJORAS_RONDA4.md`).
 - Cinematic Director (capa de coordinación de cámara/profundidad/
@@ -192,6 +197,13 @@ operativo de contenido + ventas, no producir contenido nuevo.
   y que la anti-repetición evita repetir el primer candidato cuando ya
   se usó en el mismo video, sin romper ningún test previo del Director
   de Edición ni de `armarComposicion()`.
+- Build real de whisper.cpp + render real de subtítulos estilo TikTok
+  (R7-16) -- funcionó: `installWhisperCpp()` compila el binario de
+  verdad (`whisper-cli` corre) y `TikTokCaptions.tsx` renderiza
+  `Caption[]` real sobre audio real de la fábrica, con la palabra
+  activa resaltada en sincronía con los timestamps (evidencia real en
+  `fabrica/salidas/captions_001/`). NO funcionó (bloqueo de red, no de
+  código): descargar el modelo real -- ver `QUÉ NO SABEMOS`.
 
 ## QUÉ NO FUNCIONÓ / QUÉ SE ENCONTRÓ ROTO
 
@@ -217,10 +229,12 @@ operativo de contenido + ventas, no producir contenido nuevo.
 - Si alguna de las heurísticas de retención/edición de esta fábrica
   correlaciona con retención REAL -- no hay ningún video publicado con
   métricas todavía.
-- Si `@remotion/install-whisper-cpp`/`@remotion/captions` funcionan
-  bien en nuestro entorno real (GitHub Actions, sin GPU) -- evaluados
-  por investigación, NO probados en código todavía (ver
-  `fabrica/skills/INVESTIGACION_HERRAMIENTAS.md`).
+- Si la transcripción REAL de whisper.cpp sobre un audio de la
+  fábrica es precisa -- R7-16 confirmó que el binario compila y que
+  el componente de captions renderiza bien, pero la descarga del
+  modelo está bloqueada en este sandbox (huggingface.co y su mirror
+  ambos denegados) y no se pudo correr la transcripción real todavía.
+  Candidato para probarlo: GitHub Actions.
 - Si `@remotion/effects`/`@remotion/three` (confirmados con render real
   en el sandbox de esta sesión, Ronda 6) se comportan igual en el
   runner REAL de GitHub Actions -- usa un Chrome Headless Shell
@@ -268,3 +282,4 @@ operativo de contenido + ventas, no producir contenido nuevo.
 | `fabrica/ecosistema_producto/` | Product Ecosystem (Ronda 7) -- una fuente de conocimiento -> múltiples formatos, sin duplicar |
 | `fabrica/carrusel/` | Carousel Engine (Ronda 7) -- estructura y validación de carruseles |
 | `fabrica/datos/` | Data Engine (Ronda 7) -- esquemas de métricas de video/producto para carga manual |
+| `remotion-spike/src/subtitulos/README.md` | Subtítulos reales (R7-16) -- build de whisper.cpp confirmado, descarga de modelo bloqueada, evidencia real de render de captions |

@@ -41,9 +41,9 @@ export const SKILLS_INVESTIGADAS: SkillInvestigada[] = [
     licencia: 'whisper.cpp es MIT.',
     queAprovechar: 'toCaptions() + createTikTokStyleCaptions() para subtítulos reales, nunca generados en ningún video de la fábrica todavía.',
     queNoNecesitamos: 'N/A.',
-    riesgo: 'Tiempo de build/descarga en CI, no confirmado tiempo real en GitHub Actions.',
+    riesgo: 'R7-16 (2026-09-03): CONFIRMADO -- installWhisperCpp() funciona de verdad (build manual real, whisper-cli compila y corre) y TikTokCaptions.tsx renderiza Caption[] real (ver remotion-spike/src/subtitulos/, evidencia en fabrica/salidas/captions_001/). BLOQUEADO -- downloadWhisperModel() no puede descargar el modelo: huggingface.co Y su mirror ggml.ggerganov.com estan ambos denegados por la política de red de este sandbox (403, confirmado). Sin modelo no hay transcripción real todavía -- ver fabrica/research/, id whisper-cpp-modelo-descarga-bloqueada. Candidato para destrabarlo: GitHub Actions (salida a internet normalmente abierta).',
     decision: 'probar',
-    fecha: '2026-09-02',
+    fecha: '2026-09-03',
     detalleSeccion: 3,
   },
   {

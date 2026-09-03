@@ -1,0 +1,13 @@
+{
+  "_advertencia": "FIXTURE SINTETICA -- NO es una transcripcion real de whisper.cpp. Los timestamps son estimados a mano, espaciados uniformemente sobre la duracion real de fabrica_demo_05/hook_0.wav (3.52s), solo para probar que TikTokCaptions.tsx renderiza Caption[] correctamente. La descarga del modelo real de whisper.cpp esta bloqueada en este sandbox (ver README.md de esta carpeta y fabrica/research/) -- por eso no hay todavia ninguna transcripcion real en la fabrica.",
+  "captions": [
+    {"text": "Mica", "startMs": 0, "endMs": 500, "timestampMs": 250, "confidence": null},
+    {"text": "cobra", "startMs": 500, "endMs": 1000, "timestampMs": 750, "confidence": null},
+    {"text": "$340.", "startMs": 1000, "endMs": 1700, "timestampMs": 1350, "confidence": null},
+    {"text": "Le", "startMs": 1900, "endMs": 2100, "timestampMs": 2000, "confidence": null},
+    {"text": "llevaba", "startMs": 2100, "endMs": 2600, "timestampMs": 2350, "confidence": null},
+    {"text": "tres", "startMs": 2600, "endMs": 2900, "timestampMs": 2750, "confidence": null},
+    {"text": "horas", "startMs": 2900, "endMs": 3250, "timestampMs": 3075, "confidence": null},
+    {"text": "terminarlo.", "startMs": 3250, "endMs": 3520, "timestampMs": 3385, "confidence": null}
+  ]
+}

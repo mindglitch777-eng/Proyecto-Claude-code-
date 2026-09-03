@@ -63,6 +63,28 @@ del sistema o no.
   fabrica-demo-02/03). Palabra por palabra es una mejora, no un
   requisito para operar, y ahora hay una prueba real de que el camino
   es viable.
+- **R7-16 (2026-09-03) — probado el camino oficial de Remotion, mismo
+  resultado de fondo (viable pero bloqueado, ahora con más detalle):**
+  `@remotion/install-whisper-cpp` + `@remotion/captions` es el camino
+  OFICIALMENTE soportado por Remotion (mejor integración con
+  componentes de render que el prototipo casero de `faster-whisper`).
+  Confirmado real: `installWhisperCpp()` compila whisper.cpp de verdad
+  (build manual idéntico, `whisper-cli` corre) y el componente de
+  render `TikTokCaptions.tsx` (remotion-spike/src/subtitulos/)
+  renderiza subtítulos reales sobre audio real de la fábrica
+  (evidencia en `fabrica/salidas/captions_001/`). BLOQUEADO:
+  `downloadWhisperModel()` no puede bajar el modelo -- tanto
+  `huggingface.co` como su mirror `ggml.ggerganov.com` están
+  denegados por la política de red de este sandbox (403, confirmado
+  con curl). Sin modelo, no hay transcripción real todavía en NINGÚN
+  camino (ni whisper.cpp ni el prototipo de faster-whisper -- ambos
+  necesitan descargar un modelo de un host que este sandbox bloquea).
+  Registrado formalmente en `fabrica/research/`, id
+  `whisper-cpp-modelo-descarga-bloqueada`. Próximo paso real: probar
+  `remotion-spike/src/subtitulos/transcribir.ts` en un runner de
+  GitHub Actions (salida a internet normalmente abierta, mismo
+  razonamiento que WebGL2 en Ronda 6) -- si el modelo se descarga ahí,
+  reemplazar la fixture sintética por una transcripción real.
 
 ## 2. Licencia comercial de Qwen3-TTS (motor + modelo) — RESUELTO (2026-09-02)
 

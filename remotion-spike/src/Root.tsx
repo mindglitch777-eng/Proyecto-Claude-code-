@@ -42,6 +42,7 @@ import {CarruselSlide, ANCHO_CARRUSEL, ALTO_CARRUSEL} from './carrusel/CarruselS
 import {PruebaCortina, DUR_PRUEBA_CORTINA} from './pruebas-r6/PruebaCortina';
 import {Torre3D} from './tres/Torre3D';
 import {PruebaEnfasis} from './pruebas-r6/PruebaEnfasis';
+import {PruebaCaptions} from './subtitulos/PruebaCaptions';
 
 const cuadros = Math.round(DUR_TOTAL * FPS);
 
@@ -233,6 +234,12 @@ export const Root: React.FC = () => {
       <Composition id="prueba-lightleak" component={PruebaLightLeak} durationInFrames={DUR_PRUEBA_LIGHTLEAK} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="prueba-cortina" component={PruebaCortina} durationInFrames={DUR_PRUEBA_CORTINA} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="prueba-enfasis" component={PruebaEnfasis} durationInFrames={Math.round(6 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
+      {/* R7-16: subtitulos estilo TikTok reales (@remotion/captions) sobre
+          audio REAL de fabrica_demo_05, con una fixture SINTETICA de
+          Caption[] (whisper.cpp compila real en este sandbox pero la
+          descarga del modelo esta bloqueada por politica de red -- ver
+          remotion-spike/src/subtitulos/README.md). */}
+      <Composition id="prueba-captions" component={PruebaCaptions} durationInFrames={Math.round(3.52 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       {/* R7-10: Carousel Engine -- primer render REAL (still, no
           video) de 3 slides de un carrusel de prueba
           (fabrica/carrusel/test_carrusel.ts, carrusel "c1"). Se

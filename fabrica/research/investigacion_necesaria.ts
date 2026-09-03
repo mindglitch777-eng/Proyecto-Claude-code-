@@ -38,4 +38,13 @@ export const INVESTIGACION_NECESARIA: InvestigacionNecesaria[] = [
     fecha: '2026-09-02',
     estado: 'pendiente',
   },
+  {
+    id: 'whisper-cpp-modelo-descarga-bloqueada',
+    pregunta: '¿Se puede transcribir un audio real de la fábrica con whisper.cpp (vía @remotion/install-whisper-cpp) para producir subtítulos reales palabra-por-palabra?',
+    fuentePropuesta: 'downloadWhisperModel() de @remotion/install-whisper-cpp, que descarga desde https://huggingface.co/ggerganov/whisper.cpp -- y su mirror alternativo https://ggml.ggerganov.com (comentado en models/download-ggml-model.sh del propio repo de whisper.cpp).',
+    queFalta: 'El modelo ggml (ej. "tiny", ~75MB) -- sin él, transcribe() no tiene con qué correr.',
+    bloqueo: 'AMBOS dominios (huggingface.co y ggml.ggerganov.com) devuelven 403 "connect_rejected" por política de red de este sandbox (confirmado con curl directo y con el endpoint de estado del proxy, 2026-09-03) -- no es un error transitorio ni de configuración, es una denegación explícita de organización. En cambio, installWhisperCpp() SÍ funciona (usa git clone a github.com, permitido): se confirmó un build manual real de whisper.cpp (whisper-cli compila y corre).',
+    fecha: '2026-09-03',
+    estado: 'pendiente',
+  },
 ];
