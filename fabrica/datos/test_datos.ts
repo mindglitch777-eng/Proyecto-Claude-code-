@@ -1,5 +1,5 @@
 import {REGISTROS_VIDEO, REGISTROS_PRODUCTO} from './datos';
-import {validarRegistroVideo, registrarVideo, registrarProducto, videosConMetricasReales, retencionPromedioPorHook} from './consultar';
+import {validarRegistroVideo, registrarVideo, registrarProducto, videosConMetricasReales, retencionPromedioPorHook, videosConProblemasDeQa} from './consultar';
 import type {RegistroVideoCompleto} from './tipos';
 
 const FALLOS: string[] = [];
@@ -65,6 +65,15 @@ check('videosConMetricasReales incluye uno con metricas reales', videosConMetric
 
 const promedio = retencionPromedioPorHook([conMetricas]);
 check('retencionPromedioPorHook calcula el promedio real sobre datos con metricas', promedio['contexto-parcial'] === 55);
+
+// R7-29: qaResumen conecta QA -> Data Engine (antes de esto, un
+// resultado de QA no sobrevivia mas alla de un solo render).
+check('videosConProblemasDeQa sobre almacen vacio da vacio', videosConProblemasDeQa(destinoTest).length === 0);
+const conQaLimpio: RegistroVideoCompleto = {...registroBase, videoId: 'v-qa-limpio', qaResumen: {ok: true, problemas: [], fuente: 'qa/checks_duros.py'}};
+const conQaConProblema: RegistroVideoCompleto = {...registroBase, videoId: 'v-qa-con-problema', qaResumen: {ok: false, problemas: ['contraste texto/acento 3.05:1'], fuente: 'qa/contraste.py'}};
+check('videosConProblemasDeQa excluye el que tiene qaResumen.ok=true', videosConProblemasDeQa([conQaLimpio]).length === 0);
+check('videosConProblemasDeQa incluye el que tiene qaResumen.ok=false', videosConProblemasDeQa([conQaLimpio, conQaConProblema]).length === 1);
+check('videosConProblemasDeQa no confunde "sin qaResumen" con "ok=false"', videosConProblemasDeQa([registroBase]).length === 0);
 
 const destinoProductoTest: import('./tipos').RegistroProducto[] = [];
 registrarProducto({productoId: 'p1', ofertaId: 'o1', fuenteTrafico: 'organico', fuente: 'test', fecha: '2026-09-03'}, destinoProductoTest);

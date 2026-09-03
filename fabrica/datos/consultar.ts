@@ -34,6 +34,18 @@ export function videosConMetricasReales(registros: RegistroVideoCompleto[] = REG
 }
 
 /**
+ * R7-29: videos cuyo QA real (guardado en `qaResumen`, ver tipos.ts)
+ * encontró al menos un problema -- conecta QA -> Data Engine, el
+ * eslabón que la auditoría de madurez (docs/MAPA_MADUREZ_SISTEMA.md)
+ * marcó como roto: antes de esto, ningún resultado de QA sobrevivía
+ * más allá de un solo render. Devuelve vacío si no hay ningún registro
+ * con QA corrido todavía -- no confunde "sin dato" con "sin problemas".
+ */
+export function videosConProblemasDeQa(registros: RegistroVideoCompleto[] = REGISTROS_VIDEO): RegistroVideoCompleto[] {
+  return registros.filter((r) => r.qaResumen !== undefined && r.qaResumen.ok === false);
+}
+
+/**
  * Retención promedio agrupada por patrón de hook -- SOLO sobre videos
  * con `metricas.retencionPct` real. Devuelve un mapa vacío si no hay
  * ningún dato real todavía (honesto: sin datos, no hay promedio que

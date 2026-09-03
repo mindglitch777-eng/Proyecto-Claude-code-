@@ -41,6 +41,23 @@ export type RegistroVideoCompleto = {
    * usa memoria/tipos.ts, nunca un score interno disfrazado de métrica. */
   metricas: ResultadoReal | null;
   fecha: string;
+  /**
+   * R7-29 (Fase 1 del prompt "Ronda de evolución real"): conecta el QA
+   * (fabrica/qa/*.py) con el Data Engine -- antes de esto, el resultado
+   * de correr QA sobre un render era efímero (se imprimía por stdout y
+   * se perdía). `ok`/`problemas` son EXACTAMENTE lo que ya devuelven
+   * `checks_duros.py`/`checks_composicion.py`/`contraste.py` en su JSON
+   * de salida -- este campo no inventa un dato nuevo, solo le da un
+   * lugar para persistir. Opcional porque no todo registro histórico
+   * tiene un QA real corrido y guardado.
+   */
+  qaResumen?: {
+    ok: boolean;
+    problemas: string[];
+    /** ej. "qa/checks_duros.py", "qa/contraste.py" -- de dónde salió
+     * este resumen, para poder volver a correrlo si hace falta. */
+    fuente: string;
+  };
 };
 
 /**
