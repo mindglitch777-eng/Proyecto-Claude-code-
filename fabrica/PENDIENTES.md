@@ -393,3 +393,25 @@ del sistema o no.
   (confirmado con tests de que ningún generador de demo anterior
   cambió de comportamiento); lo pendiente queda como trabajo futuro
   explícito.
+
+## 15. PREGUNTA REAL AL OPERADOR (Decision Engine, R7-12) — necesita respuesta humana
+
+El Decision Engine (`fabrica/decision_engine/decisiones.ts`, id
+`prioridad-post-ronda-7`) analizó formalmente dónde conviene poner el
+esfuerzo después de Ronda 7 (profundizar video / expandir carruseles /
+validar el Sales Engine) y concluyó que la opción de MÁS impacto real
+(validar el Sales Engine) está bloqueada por información que **solo el
+operador puede dar**:
+
+1. ¿Quién es la audiencia real del producto de Fase 1 (CLAUDE.md)?
+   ¿Qué problema concreto resuelve?
+2. ¿Cuál es el producto/oferta que se quiere probar primero, y qué
+   precio (aunque sea una hipótesis a validar, no un número final)?
+3. ¿Hay ya algún dato de tráfico/leads/ventas, aunque sea informal,
+   para cargar en `fabrica/ventas/` y `fabrica/datos/` (hoy vacíos a
+   propósito)?
+
+**No se inventó ninguna respuesta** -- los almacenes de
+`fabrica/ventas/` y `fabrica/datos/` siguen vacíos hasta tener esto.
+Mientras se espera, el trabajo autónomo continúa por la opción B
+(expandir el Carousel Engine), según la misma decisión.

@@ -111,6 +111,27 @@ completo de cada una:
   un generador viejo que no pasa `hookId` se comporta exactamente
   igual que antes de R6-5.
 
+## Decision Engine (Ronda 7) — primera decisión formal aplicada
+
+`fabrica/decision_engine/decisiones.ts` (id `prioridad-post-ronda-7`)
+aplica la plantilla Opción A/B/C que pide la directiva a la pregunta
+real que queda abierta al cerrar Ronda 7: ¿profundizar el motor de
+video, expandir el Carousel Engine, o enfocarse en validar el Sales
+Engine con datos reales del operador? Comparación completa
+(ventajas/desventajas/dependencias/costos/riesgos/potencial/
+complejidad) en el código, con tests que confirman que nunca queda una
+opción sin ventajas Y desventajas declaradas.
+
+**Recomendación:** validar el Sales Engine con datos reales — es la
+única opción que avanza el objetivo real del proyecto (CLAUDE.md, Fase
+1: "1 producto digital vendible en Hotmart"), pero requiere información
+que solo el operador puede dar (audiencia, problema, oferta real) —
+registrado como pregunta abierta en `PENDIENTES.md`. Mientras se
+espera esa respuesta, el trabajo autónomo de mayor impacto es expandir
+el Carousel Engine (opción B), no seguir profundizando el motor de
+video (opción A) — ninguna mejora técnica de video genera una venta
+por sí sola.
+
 ## Pendientes de decisión (requieren probar antes de decidir)
 
 - `@remotion/install-whisper-cpp` + `@remotion/captions` — clasificados
