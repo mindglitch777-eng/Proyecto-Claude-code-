@@ -10,7 +10,46 @@ después de cada bloque de trabajo real, como pide el "Prompt Maestro
 del prompt "Capa de exploración agresiva" (para no perderlo de nuevo
 en la memoria de la conversación), `docs/PROMPT_EXPLORACION_AGRESIVA.md`.
 
-## Último bloque de trabajo: R7-29 (2026-09-03) -- Ronda de evolución real (sistema operativo de contenido)
+## Último bloque de trabajo: R7-30 (2026-09-03) -- Orquestador real + video real generado
+
+Pedido explícito del operador: "no más piezas sueltas, construí una
+máquina" -- Orquestador real que conecte todo el pipeline y termine en
+un video real, con cada decisión registrada. Texto completo en
+`docs/PROMPT_MAQUINA_CONECTADA.md`.
+
+**HECHO:**
+- **Orquestador** (`fabrica/orquestador/orquestador.ts`): corre QA real
+  (`checks_duros.py` + `checks_composicion.py`) sobre un render real y
+  arma un `RegistroVideoCompleto` con log de decisiones explícito.
+- **Video real generado**: `fabrica-demo-08.mp4` (38.32s) -- mismo
+  guion/voz que demo_07 (A/B real), única variable nueva: preset de
+  estilo `financiero_directo` (R7-29) aplicado por primera vez por un
+  generador real. QA real 100% limpio, inspección visual real
+  confirmó texto legible y el efecto de revelación disparando bien.
+  Entregado al operador.
+- **Bloqueo real resuelto**: Remotion intentó descargar su propio
+  Chromium (bloqueado, mismo dominio `remotion.media` ya conocido) --
+  se resolvió apuntando `--browser-executable` al binario de
+  Playwright ya preinstalado en el entorno (`/opt/pw-browsers/`), $0,
+  sin depender de nada bloqueado.
+- **Hallazgo real de proceso**: `fabrica/datos/datos.ts` es código TS
+  literal (no un archivo JSON respaldado como `memoria/laboratorio.json`)
+  -- la primera entrada real (`fabrica-demo-08`, con `qaResumen` real)
+  se agregó a mano, mismo patrón que `ecosistema_producto/datos.ts`.
+- **Hallazgo real sobre `configuracion.ts`**: al usarlo por primera vez
+  en un generador real, se confirmó que `decidirEstilos()` combina
+  (une) los estilos del preset con los de la intención narrativa, no
+  los reemplaza -- documentado tal cual salió, no maquillado.
+
+**Suite completa verificada**: `npm run test-todo` (35/35 OK) + `tsc
+--noEmit` limpio en `fabrica/` y `remotion-spike/`.
+
+**PRÓXIMO PASO real, ya registrado**: anti-repetición perceptual por
+familias (sección 11 del prompt, no abordada esta ronda) y generalizar
+el Orquestador a un comando único parametrizable ("crear video sobre
+X") en vez de un script por guion.
+
+## Bloque anterior: R7-29 (2026-09-03) -- Ronda de evolución real (sistema operativo de contenido)
 
 Pedido explícito del operador: prompt nuevo de 20 fases, esta vez
 pidiendo explícitamente IMPLEMENTAR conexiones reales entre sistemas

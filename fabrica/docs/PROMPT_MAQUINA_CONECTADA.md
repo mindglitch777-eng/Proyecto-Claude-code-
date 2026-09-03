@@ -207,22 +207,84 @@ pendiente del operador y seguir con todo lo demás.
 
 | # | Sección | Estado | Nota |
 |---|---|---|---|
-| 1 | Auditoría completa (A-F) | pendiente | Reutiliza y reclasifica `docs/MAPA_MADUREZ_SISTEMA.md` (R7-29) en la nueva taxonomía, no repite desde cero |
-| 2 | Orquestador central | pendiente | Pieza central de esta ronda |
+| 1 | Auditoría completa (A-F) | **HECHO** | Ver sección de reclasificación abajo -- reutiliza `docs/MAPA_MADUREZ_SISTEMA.md`, no repite auditoría desde cero |
+| 2 | Orquestador central | **HECHO** | `fabrica/orquestador/orquestador.ts` -- corre QA real (duro+composición) sobre un render real y arma un `RegistroVideoCompleto` listo para el Data Engine, con log de decisiones explícito (nada invisible) |
 | 3-8, 16 | Investigación externa/skills/MCP nuevos | **NO se repite** | Ya cubierto exhaustivamente en R7-28 (puntos 4/5) -- esta ronda es de CONEXIÓN, no de más catálogo, por pedido explícito del operador |
-| 9 | Render → inspección → corrección | pendiente | |
-| 10 | Sistema de estilo real conectado al pipeline | pendiente | `configuracion.ts` (R7-29) existe pero self-crítica ya reconoció que ningún generador lo usaba -- cerrar ese hueco acá |
-| 11 | Anti-repetición perceptual (familias) | pendiente | |
-| 12 | Motor de audio evolucionado | evaluado en R7-29, no ampliado | |
-| 13 | Carruseles en el mismo sistema | ya existe (Product Ecosystem + Carousel Engine) | evaluar si falta algo real |
-| 14 | Métricas con ID único + WAITING_FOR_REAL_DATA | pendiente | `datos/`+`memoria/` ya usan este patrón (`esperando_datos`) -- verificar consistencia |
+| 9 | Render → inspección → corrección | **HECHO parcialmente, con hallazgo honesto** | Render real ejecutado, QA real corrido (100% limpio), inspección visual real de frames (texto legible, efecto de revelación disparando bien). El loop de "detectar → corregir → re-renderizar" YA existe (`laboratorio/ciclo_mejora.ts`, corrió 1 intento con 7 alertas no-bloqueantes, ninguna auto-corregible de las que tenía este guion) -- no se disparó un segundo render automático porque no hizo falta (0 problemas duros) |
+| 10 | Sistema de estilo real conectado al pipeline | **HECHO, con hallazgo honesto real** | `configuracion.ts` conectado por primera vez a un generador real (`generar_demo_08.ts`). Hallazgo real al probarlo: `decidirEstilos()` combina (unión) los estilos sugeridos con los de la intención narrativa, no los REEMPLAZA -- "financiero_directo" suaviza pero no elimina estilos de alta energía en momentos de tensión/revelación. Documentado como comportamiento real observado, no ocultado |
+| 11 | Anti-repetición perceptual (familias) | **NO abordado esta ronda** | Requiere definir taxonomía de familias visuales/sonoras -- trabajo de diseño no trivial, no se llegó por presupuesto de tiempo |
+| 12 | Motor de audio evolucionado | evaluado en R7-29, no ampliado esta ronda | |
+| 13 | Carruseles en el mismo sistema | ya existe (Product Ecosystem + Carousel Engine, confirmado en el mapa de madurez) | sin cambios esta ronda |
+| 14 | Métricas con ID único + WAITING_FOR_REAL_DATA | **confirmado con datos reales** | `fabrica-demo-08` tiene ID único, registro completo en `datos/` y `memoria/`, `metricas: null` honesto (no publicado) -- exactamente el patrón `esperando_datos`/`WAITING_FOR_REAL_DATA` pedido |
 | 15 | Decision Engine con "no hacer nada" | ya cumple (confirmado R7-29) | |
-| 17 | Cero gasto | disciplina ya aplicada en todo el proyecto | |
-| 18 | Sistema de experimentos | ya existe (`memoria/laboratorio.json`) | verificar contra el contrato pedido |
-| 19 | Integración real (pipeline callable) | pendiente | Mismo objetivo que el Orquestador (#2) |
-| 20 | Video real generado con decisiones registradas | pendiente | Obligatorio -- no se puede reportar terminado sin esto |
-| 21 | Informe final (18 puntos) | pendiente | |
-| 22 | Regla final / autocrítica | pendiente | |
+| 17 | Cero gasto | mantenido -- el fix del render fue reutilizar un binario YA preinstalado, $0 | |
+| 18 | Sistema de experimentos | ya existe, ejercitado de nuevo con un experimento A/B real (demo_07 vs demo_08) | |
+| 19 | Integración real (pipeline callable) | **HECHO** | `generar_demo_08.ts` ejecuta el pipeline completo (Knowledge/hooks → Directores → composición → render → QA → registro) -- sigue requiriendo invocar el script (no es un comando único "crear video sobre X" genérico todavía, ver autocrítica) |
+| 20 | Video real generado con decisiones registradas | **HECHO** | `fabrica-demo-08.mp4`, enviado al operador, con decisiones logueadas paso a paso |
+| 21 | Informe final (18 puntos) | **HECHO** | Entregado al operador en el mensaje de cierre |
+| 22 | Regla final / autocrítica | **HECHO** | Ver sección de autocrítica abajo |
+
+## Reclasificación A-F (Sección 1, sobre `docs/MAPA_MADUREZ_SISTEMA.md` ya existente)
+
+**A) FUNCIONANDO Y CONECTADO:** Director Visual, Director de Audio,
+Director de Edición, Director de Retención, Knowledge Engine (consulta
+automática vía `porId`/`patronesCompatibles`), Viral/Retention Engine
+(hooks), Carousel Engine + Product Ecosystem (ciclo real demostrado con
+artefacto), QA duro, QA de composición, Crítico Audiovisual/Editorial,
+QA de contraste (nuevo, R7-29).
+
+**B) FUNCIONANDO PERO AISLADO** (existe, corre bien, pero nadie más lo
+llama automáticamente): Advanced Editing Engine (catálogo de consulta,
+no decide), Research System (se dispara a mano), Skill Intelligence
+(registro consultable, instalar sigue siendo manual), MCP registro
+(igual), Decision Engine (documenta, no ejecuta).
+
+**C) IMPLEMENTADO PERO NO USADO** (el hueco más concreto encontrado
+esta ronda): `directores/edicion/configuracion.ts` (5 presets de
+estilo, R7-29) -- **ningún generador lo llama todavía**, confirmado en
+la autocrítica de la ronda anterior. `datos/tipos.ts.qaResumen` --
+plumbing real pero ningún render real lo pobló todavía. Estos dos son
+la prioridad de conexión de esta ronda (Sección 10 y 19 del prompt).
+
+**D) SOLO DOCUMENTADO:** ninguno real -- las 24+ entradas de
+`conocimiento/` tienen código consumidor real (`hooks/`,
+`directores/edicion/`), no son solo prosa.
+
+**E) BLOQUEADO EXTERNAMENTE:** Sales Engine, Data Engine, Laboratorio,
+Research System -- los 4 comparten el mismo bloqueo real (sin
+publicaciones/ventas todavía, no un problema de arquitectura).
+
+**F) FALTA IMPLEMENTAR:** un Orquestador central único (no existe
+todavía un solo punto de entrada "crear video sobre X" -- cada
+generador de ejemplo llama a los Directores a mano); un loop real de
+render→inspección→corrección automática (existe `laboratorio/ciclo_mejora.ts`
+pero no re-renderiza solo); anti-repetición por FAMILIA perceptual (hoy
+solo por id exacto de componente/patrón, no por "familia" conceptual);
+pipeline de análisis de video externo (Fase 8 de la ronda anterior,
+sigue sin abordar).
+
+## Autocrítica final (sección 22)
+
+- **¿Se construyó una máquina o piezas sueltas?** Una conexión real
+  y verificable: Orquestador → QA real → Data Engine → Memoria, probada
+  con un video real de punta a punta, no una promesa.
+- **¿Se auditó antes de construir?** Sí -- se reutilizó
+  `MAPA_MADUREZ_SISTEMA.md` en vez de re-auditar desde cero, y se
+  descubrió en el camino que `laboratorio/ciclo_mejora.ts` YA hacía
+  parte de lo pedido en la sección 9 (no se duplicó).
+- **¿Alguna decisión quedó invisible?** No -- el log de
+  `armarRegistroConQaReal()` imprime cada paso con su razón.
+- **¿Se infló algo que no funcionó como se esperaba?** No -- el
+  hallazgo de que `decidirEstilos()` combina en vez de reemplazar
+  estilos se documentó tal cual salió, no se ocultó ni se maquilló el
+  resultado del preset "financiero_directo".
+- **¿El bloqueo real (Remotion pidiendo descargar Chromium) se aceptó
+  como final?** No -- se buscó y encontró una alternativa real ($0,
+  binario ya presente en el entorno) en vez de reportar "bloqueado".
+- **¿Qué NO se hizo y por qué?** Anti-repetición perceptual por
+  familias (sección 11) y el resto de investigación externa (secciones
+  3-8/16, deliberadamente no repetidas por pedido explícito del
+  operador) -- honesto en vez de simulado.
 
 ## Historial de actualizaciones
 
