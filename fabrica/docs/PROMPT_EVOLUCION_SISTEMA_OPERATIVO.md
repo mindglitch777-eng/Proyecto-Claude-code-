@@ -229,7 +229,7 @@ contenido.
 
 | # | Fase | Estado | Nota |
 |---|---|---|---|
-| 0 | Auditoría profunda + mapa de madurez | pendiente | |
+| 0 | Auditoría profunda + mapa de madurez | **HECHO** | `docs/MAPA_MADUREZ_SISTEMA.md` -- 18 sistemas evaluados A-I con evidencia de código real. Corrección importante a un supuesto de la ronda anterior: `checks_duros.py` SÍ mide cosas reales del render (ffprobe/ffmpeg), no es cierto que el QA "solo valide JSON" -- eso aplica solo a `checks_composicion.py`. Confirmado que el Carousel Engine + Product Ecosystem ya cierran el ciclo Knowledge→Contenido de punta a punta para carruseles (artefacto real `carrusel_001`). El mismo bloqueo real (sin publicaciones/ventas) explica por qué Sales Engine/Data Engine/Laboratorio/Research no "aprenden" todavía -- no es un problema de arquitectura. |
 | 1 | Ciclo de capacidades conectado end-to-end | pendiente | |
 | 2 | Skills, auditoría agresiva | pendiente | ya hay trabajo previo (R7-28) que reduce el alcance restante |
 | 3 | Remotion más allá de "renderizador" | pendiente | ya hay trabajo previo (R7-24/25) que reduce el alcance restante |
