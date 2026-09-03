@@ -6,7 +6,9 @@ después de cada bloque de trabajo real, como pide el "Prompt Maestro
 3" (sección 28). Para el detalle técnico completo de cada ronda, ver
 `MEJORAS_RONDA*.md`; para lo que necesita al operador,
 `PENDIENTES_OPERADOR.md`; para todo lo pendiente técnico,
-`PENDIENTES.md`.
+`PENDIENTES.md`; para el texto completo y el checklist punto-por-punto
+del prompt "Capa de exploración agresiva" (para no perderlo de nuevo
+en la memoria de la conversación), `docs/PROMPT_EXPLORACION_AGRESIVA.md`.
 
 ## Último bloque de trabajo: R7-27 (2026-09-03) -- cierre de la capa de exploración agresiva
 
