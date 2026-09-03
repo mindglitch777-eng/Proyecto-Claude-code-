@@ -136,10 +136,95 @@ nunca se re-investiga desde cero algo que ya está acá.
 
 ---
 
+## R7-25: segunda pasada de exploración agresiva (2026-09-03)
+
+Pedido explícito del operador ("seguí paso a paso el prompt de
+exploración agresiva"). `registry.npmjs.org` devuelve **71 paquetes
+oficiales `@remotion/*`** -- más del doble de los 32 evaluados en
+R7-18. Nuevas capacidades encontradas:
+
+### CAPACIDAD: Cámara (temblor/movimiento orgánico) -- nunca investigada antes
+**HERRAMIENTAS:** `@remotion/noise` (oficial, MIT)
+**NUESTRA IMPLEMENTACIÓN:** `remotion-spike/src/escenas/CamaraOrganica.tsx` (NUEVO)
+**MEJOR OPCIÓN ACTUAL:** `@remotion/noise` -- funciones puras de ruido tipo Perlin, cero dependencias
+**ESTADO:** INTEGRADO (R7-25)
+**EVIDENCIA:** wrapper que aplica un `translate`+`rotate` CSS continuo (no aleatorio frame-a-frame, que se vería como video roto) a las unidades con `energia='muy_alta'` que el Director de Edición ya calcula. Conectado a `fabrica-demo-07`, verificado con una resta real entre 2 frames (9.16% de píxeles cambiaron >5 niveles) -- confirma movimiento real, no solo teoría. QA duro sigue 100% limpio.
+**COSTO:** $0
+**COMPATIBILIDAD:** confirmada, versión exacta `4.0.518`
+**RIESGO:** ninguno -- amplitud deliberadamente baja (6px), solo en momentos de máxima energía
+
+### CAPACIDAD: Texto con fondo redondeado estilo TikTok
+**HERRAMIENTAS:** `@remotion/rounded-text-box` (oficial, MIT)
+**NUESTRA IMPLEMENTACIÓN:** ninguna todavía (nuestros textos no tienen caja de fondo ajustada al contenido)
+**MEJOR OPCIÓN ACTUAL:** `@remotion/rounded-text-box` -- genera el `path` SVG exacto ajustado al texto real medido (`@remotion/layout-utils`)
+**ESTADO:** PROBAR -- render real confirmado (`pruebas-r7/PruebaRoundedTextBox.tsx`, funciona perfecto), pero no conectado a ningún componente de producción todavía porque requiere tocar componentes de texto existentes (Punch.tsx y similares) para decidir CUÁNDO usar caja de fondo vs texto suelto -- decisión de diseño, no solo técnica, mejor no forzarla sin un caso de uso concreto (sección 7 del prompt: "no hace falta integrar inmediatamente")
+**COSTO:** $0
+**COMPATIBILIDAD:** confirmada
+**RIESGO:** ninguno de costo -- riesgo de diseño si se usa en TODOS los textos (satura visualmente)
+
+### CAPACIDAD: Animación por timeline (secuencias complejas de muchas propiedades)
+**HERRAMIENTAS:** `@remotion/gsap` (oficial, MIT) + `gsap` (licencia "no charge" de GreenSock/Webflow desde 2024 -- gratis para este uso, no es OSI-open-source pero sí gratis, no exige compra) · interpolate()/spring() nativos de Remotion (ya usado en todo el proyecto)
+**NUESTRA IMPLEMENTACIÓN:** `interpolate()`/`spring()` a mano en cada componente (golpes.tsx, etc.)
+**MEJOR OPCIÓN ACTUAL:** seguir con lo nativo para lo que ya tenemos (funciona bien, es más simple) -- GSAP es candidato SOLO si algún día necesitamos coreografiar MUCHOS elementos con timing relativo complejo (stagger, secuencias encadenadas) donde `interpolate()` a mano se vuelve difícil de mantener
+**ESTADO:** PROBAR -- confirmado que `useGsapTimeline()` construye un timeline PAUSADO y lo sincroniza al frame de Remotion (determinista, seguro para render, nunca corre en tiempo real) -- render real confirmado (`pruebas-r7/PruebaGsap.tsx`, rotación+escala funcionando). No integrado a producción: no hay hoy un componente real cuya animación sea tan compleja que justifique el cambio.
+**COSTO:** $0 (licencia "no charge", confirmado que GSAP quitó TODOS sus plugins de pago en 2024)
+**COMPATIBILIDAD:** confirmada
+**RIESGO:** ninguno de costo -- agregar una segunda forma de animar (GSAP + nativo) sin necesidad real fragmentaría el código, por eso queda en PROBAR y no en INTEGRAR
+
+### CAPACIDAD: Mapas / visualización geográfica -- nunca investigada antes
+**HERRAMIENTAS:** `@remotion/maptiler` (oficial, Remotion License) + `@maptiler/sdk` (servicio externo MapTiler Cloud)
+**NUESTRA IMPLEMENTACIÓN:** ninguna
+**MEJOR OPCIÓN ACTUAL:** sin decidir -- no hay ningún guion de la fábrica hasta hoy que necesite un mapa real
+**ESTADO:** BLOQUEADO/NO CONFIRMADO -- el paquete pide `apiKey: string` de MapTiler Cloud (cuenta externa, plan gratis existe pero sus límites exactos no se confirmaron todavía). No instalado.
+**COSTO:** $0 si el plan gratis alcanza (NO CONFIRMADO); requeriría cuenta del operador
+**COMPATIBILIDAD:** no evaluada (no instalado)
+**RIESGO:** bajo prioridad -- ningún caso de uso real en el nicho actual (venta de productos digitales) pide un mapa
+
+### CAPACIDAD: Animaciones vectoriales de diseñador (Rive/Lottie)
+**HERRAMIENTAS:** `@remotion/rive` (oficial, Remotion License, usa `@rive-app/canvas-advanced`) · `@remotion/lottie` (oficial, Remotion License, usa `lottie-web`)
+**NUESTRA IMPLEMENTACIÓN:** ninguna
+**MEJOR OPCIÓN ACTUAL:** sin decidir -- ambos son motores REALES y gratis para nuestro uso (Remotion License, individuos/empresas chicas), pero ambos necesitan un ARCHIVO de animación (`.riv` o Lottie JSON) hecho por un diseñador o descargado de un banco de assets (ej. LottieFiles.com tiene muchos gratis) -- no tenemos ninguno todavía, y fabricar uno sintético solo para probar el pipeline no demuestra nada útil sobre la CALIDAD real de la técnica
+**ESTADO:** PROBAR -- pendiente de un archivo `.riv`/Lottie real y gratis para la primera prueba de render
+**COSTO:** $0 (librerías); el archivo de animación puede ser gratis (bancos de assets) o pago (diseñador a medida) -- no confirmado cuál usaríamos
+**COMPATIBILIDAD:** no evaluada (no instalado -- requiere el asset primero para que la prueba tenga sentido)
+**RIESGO:** ninguno de costo
+
+### CAPACIDAD: Motor gráfico 2D avanzado (shaders, dibujo custom, partículas reales)
+**HERRAMIENTAS:** `@remotion/skia` (oficial, MIT, usa `@shopify/react-native-skia`)
+**NUESTRA IMPLEMENTACIÓN:** SVG/CSS a mano (`@remotion/shapes`, `@remotion/paths`, CSS)
+**MEJOR OPCIÓN ACTUAL:** SVG/CSS actual para todo lo que ya hacemos bien -- Skia es MUCHO más potente (shaders, partículas reales, dibujo por píxel) pero es una dependencia pesada (bindings nativos de React Native, corre via WASM en el navegador) que no se justifica sin un caso de uso concreto que SVG/CSS no puedan resolver
+**ESTADO:** PROBAR -- no instalado todavía, candidato real si algún día se necesita un sistema de partículas de verdad (sección 3 del prompt) que `@remotion/noise` (aplicado a CSS) no alcance a resolver
+**COSTO:** $0
+**COMPATIBILIDAD:** NO CONFIRMADA -- riesgo real de que el WASM de Skia no arranque limpio en el `headless_shell` de este sandbox (no probado)
+**RIESGO:** medio -- dependencia pesada, mejor no instalar sin necesidad concreta
+
+### CAPACIDAD: Emojis animados (micro-detalle de personalidad)
+**HERRAMIENTAS:** `@remotion/animated-emoji` (oficial, MIT, usa emojis animados de Google Fonts)
+**NUESTRA IMPLEMENTACIÓN:** ninguna
+**MEJOR OPCIÓN ACTUAL:** sin decidir -- es un detalle menor (P2/P3), no una capacidad estructural
+**ESTADO:** PROBAR -- no instalado, candidato de bajo esfuerzo para un remate/reacción puntual (ej. un emoji reaccionando a una cifra grande)
+**COSTO:** $0
+**COMPATIBILIDAD:** no evaluada -- probablemente necesita descargar el emoji real de Google Fonts en tiempo de render (revisar si el dominio está bloqueado en este sandbox antes de asumir que funciona)
+**RIESGO:** bajo
+
+### Hallazgo real: 2 paquetes standalone están DEPRECADOS (no duplicar)
+`@remotion/starburst` y `@remotion/light-leaks` **no tienen implementación propia** -- su propio código fuente (confirmado leyendo los `.d.ts` reales tras instalarlos) redirige a usar `@remotion/effects/starburst` y `@remotion/effects/light-leak` en su lugar, paquete que ya tenemos instalado. Se instalaron, se confirmó la redundancia, y se DESINSTALARON -- ningún efecto nuevo real, solo confirma que `@remotion/effects` (66 efectos reales confirmados en `node_modules/@remotion/effects/package.json`, exports reales, no una estimación) sigue siendo la fuente correcta para casi cualquier efecto visual nuevo. Candidatos reales sin probar todavía de esos 66: `glitch`-like (`tv-signal-off`, `scanlines`, `pixel-dissolve`), `zoom-blur`, `contour-lines`, `halftone`.
+
+### Otros paquetes descartados sin necesitar decisión del operador
+- `@remotion/canvas`: "headless primitives for Remotion authoring interfaces" -- es para construir una UI tipo Remotion Studio, no aplica a un pipeline de generación de video. DESCARTADO.
+- `@remotion/timeline-utils`: "internal utilities for rendering Remotion timelines" -- utilidad interna de Remotion Studio, no API pública pensada para consumidores. DESCARTADO.
+- `@remotion/media`: API experimental basada en WebCodecs para reemplazar `<Video>`/`<Audio>` -- ya registrado desde R6-2 como "probar" sin urgencia (cambiar el puente de render que ya funciona bien es riesgo innecesario sin necesidad concreta).
+
+---
+
 ## Lectura rápida: dónde estamos parados
 
-- **9 capacidades con solución YA integrada y probada con render real.**
+- **10 capacidades con solución YA integrada y probada con render real** (+1 desde R7-25: cámara orgánica).
+- **4 capacidades probadas con evidencia real pero sin conectar a producción todavía** (rounded-text-box, GSAP -- sin caso de uso concreto que lo justifique) **o pendientes de un insumo externo** (Rive/Lottie necesitan un archivo de animación real que no tenemos).
+- **1 capacidad bloqueada por cuenta externa de pago no confirmado** (mapas/MapTiler) -- sin impacto real, ningún guion actual lo necesita.
 - **1 capacidad totalmente bloqueada por red** (documentación oficial vía MCP) -- sin impacto real porque `raw.githubusercontent.com` cubre casi lo mismo.
 - **1 capacidad bloqueada por modelo de IA no descargable** (subtítulos reales) -- el único bloqueo que sí duele, candidato a resolver en GitHub Actions.
-- **1 capacidad completamente vacía todavía**: saber qué contenido funciona de verdad en las plataformas -- depende 100% de que el operador autorice una cuenta externa.
+- **1 capacidad completamente vacía todavía**: saber qué contenido funciona de verdad en las plataformas -- depende 100% de que el operador consiga la clave gratis de YouTube o autorice vidIQ.
+- **2 paquetes confirmados redundantes/deprecados** (no duplicar): `@remotion/starburst`, `@remotion/light-leaks`.
+- **~58 de los 66 efectos reales de `@remotion/effects` siguen sin evaluar individualmente** -- catálogo grande, exploración lejos de agotada.
 - **Ninguna capacidad depende de un servicio pago activo.**

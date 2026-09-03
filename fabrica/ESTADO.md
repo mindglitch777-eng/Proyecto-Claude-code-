@@ -8,7 +8,53 @@ después de cada bloque de trabajo real, como pide el "Prompt Maestro
 `PENDIENTES_OPERADOR.md`; para todo lo pendiente técnico,
 `PENDIENTES.md`.
 
-## Último bloque de trabajo: R7-24 (2026-09-03)
+## Último bloque de trabajo: R7-25 (2026-09-03)
+
+Pedido explícito del operador: seguir paso a paso la "capa de
+exploración agresiva" (skills/Remotion/MCP/arsenal audiovisual),
+segunda pasada más profunda que R7-18.
+
+**HECHO:**
+- `registry.npmjs.org` devuelve **71 paquetes oficiales `@remotion/*`**
+  (antes solo se habían evaluado 32) -- se investigaron todos los
+  nuevos: `noise`, `starburst`, `rounded-text-box`, `gsap`, `maptiler`,
+  `rive`, `lottie`, `skia`, `canvas`, `timeline-utils`,
+  `animated-emoji`, `light-leaks`, `media`.
+- **Integrado a producción**: `CamaraOrganica.tsx` (`@remotion/noise`,
+  MIT, cero dependencias) -- temblor de cámara orgánico y sutil para
+  momentos de máxima energía, técnica nunca antes investigada
+  ("cámaras" era un hueco explícito del prompt). Verificado con una
+  resta real entre 2 frames del video renderizado (9.16% de píxeles
+  cambiaron), no solo supuesto.
+- **Probado y confirmado con render real, sin forzar integración sin
+  necesidad concreta**: `@remotion/rounded-text-box` (cajas de texto
+  TikTok-style) y `@remotion/gsap` (timelines complejos, licencia
+  gratis confirmada desde 2024) -- ambos funcionan, ninguno reemplaza
+  algo que ya funciona bien hoy.
+- **Hallazgo real de "no duplicar"**: `@remotion/starburst` y
+  `@remotion/light-leaks` son paquetes standalone DEPRECADOS -- su
+  propio código fuente redirige a `@remotion/effects`, que ya
+  tenemos. Se confirmó instalándolos y leyendo el código, no
+  asumiendo por el nombre.
+- `fabrica/docs/ARSENAL_AUDIOVISUAL.md` actualizado con 7 capacidades
+  nuevas documentadas (cámara, texto redondeado, timelines, mapas,
+  Rive/Lottie, motor gráfico Skia, emojis animados) con el criterio
+  INTEGRAR/PROBAR/REFERENCIA/DESCARTAR/BLOQUEADO pedido.
+
+**BLOQUEADO/NO CONFIRMADO:** mapas (`@remotion/maptiler`, necesita
+cuenta de MapTiler Cloud); Rive/Lottie (necesitan un archivo de
+animación real que no tenemos, fabricar uno sintético no demuestra
+nada útil); Skia (dependencia pesada, WASM no probado en este sandbox,
+sin necesidad concreta que lo justifique).
+
+**PRÓXIMO PASO:** de los 66 efectos reales de `@remotion/effects`
+confirmados, siguen sin evaluar ~58 (glitch/scanlines/zoom-blur/
+halftone son candidatos reales para momentos de "impacto"/
+"contradicción"). El techo de fondo sigue siendo el mismo: sin datos
+reales de resultado, todo esto es capacidad técnica probada, no
+verificada contra retención/ventas reales.
+
+## Bloque anterior: R7-24 (2026-09-03)
 
 Pedido del operador: agotar la solución para la investigación de
 patrones antes de seguir, y después avanzar en los puntos visuales/
