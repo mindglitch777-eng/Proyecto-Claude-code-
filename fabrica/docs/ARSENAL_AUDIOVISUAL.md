@@ -224,6 +224,54 @@ Probando 3 efectos más con render real (`shine`, `rings`, y releyendo `chromati
 
 ---
 
+## R7-29: QA de contraste/legibilidad real (2026-09-03)
+
+**CAPACIDAD:** Contraste de texto medible (WCAG).
+
+**HERRAMIENTAS:** Ninguna librería nueva -- formula oficial de WCAG 2.x
+implementada directo en Python (`fabrica/qa/contraste.py`), sin
+dependencias.
+
+**NUESTRA IMPLEMENTACIÓN:** `validar_paleta_base()` calcula el ratio de
+contraste real (luminancia relativa oficial WCAG) de las 3
+combinaciones de la paleta de marca (`identidad.ts`): texto/fondo,
+acento/fondo, texto/acento. `escanear_tsx_hex_literal()` (best-effort,
+limitación declarada en el propio docstring) escanea además hex
+literales declarados directo en los `.tsx` de `remotion-spike/src`.
+
+**MEJOR OPCIÓN ACTUAL:** La implementación propia -- no hace falta
+ninguna librería externa para esto, es una fórmula matemática oficial y
+pública.
+
+**ESTADO:** INTEGRADO (con tests, `npm run test-qa-contraste`).
+
+**EVIDENCIA:** Hallazgo real, verificado con la fórmula oficial: `texto`
+(#F6F6F4) sobre `fondo` (#0A0A0C) = 18.28:1 (sobra). `acento` (#FF4E24)
+sobre `fondo` = 6.0:1 (cumple). **`texto` sobre `acento` = 3.05:1 --
+NO cumple el mínimo de texto normal (4.5:1), solo el de texto grande
+(3:1).** El escaneo de `.tsx` confirmó que ningún componente actual usa
+esa combinación arriesgada para texto chico -- los componentes que
+ponen texto sobre un fondo de `acento` ya usan un color oscuro propio
+(`#1a0a04`, ratio real 5.85:1) en vez de `PALETA.texto`, buena práctica
+ya presente sin que estuviera formalizada.
+
+**COSTO:** $0.
+
+**COMPATIBILIDAD:** Total -- es Python puro, mismo lenguaje que el
+resto de `fabrica/qa/`.
+
+**RIESGO:** El escaneo de `.tsx` es deliberadamente limitado (solo hex
+literales en una misma línea de `style={{...}}`, no resuelve
+`PALETA.x` como variable ni ternarios multilínea) -- documentado como
+tal, no se pretende que sea un análisis exhaustivo. Cierra parcialmente
+el hallazgo #7 de `fabrica/docs/AUDITORIA_TECHOS_FABRICA.md` (QA sin
+medición perceptual real) -- el resto de ese hallazgo (tamaño de texto
+real medido en frame renderizado, contraste sobre b-roll fotográfico)
+sigue pendiente, requeriría procesar píxeles de un frame exportado, no
+solo código fuente.
+
+---
+
 ## Lectura rápida: dónde estamos parados
 
 - **11 capacidades con solución YA integrada y probada con render real** (+2 desde R7-25: cámara orgánica y pulso de revelación).

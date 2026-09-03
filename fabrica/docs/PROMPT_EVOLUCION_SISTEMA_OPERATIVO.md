@@ -243,7 +243,7 @@ contenido.
 | 11 | Motor de decisión (Decision Engine) | pendiente | ya existe `fabrica/decision_engine/`, evaluar contra lo pedido |
 | 12 | Sistema de ventas conectado | pendiente | ya existe `fabrica/ventas/`, evaluar contra lo pedido |
 | 13 | Sistema de configuración de estilo | pendiente | |
-| 14 | QA real (medible, no solo JSON válido) | pendiente | ya existe `fabrica/qa/`, evaluar contra lo pedido |
+| 14 | QA real (medible, no solo JSON válido) | **PARCIAL, primer pedazo real implementado** | `fabrica/qa/contraste.py` -- fórmula oficial WCAG 2.x, valida las 3 combinaciones reales de la paleta de marca + escaneo best-effort de hex literales en `.tsx`. Hallazgo real: `texto sobre acento` = 3.05:1, NO cumple para texto normal (documentado, ningún componente actual lo usa mal). Con tests (`test-qa-contraste`, en `test-todo`). Sigue pendiente: tamaño de texto real medido en frame renderizado, contraste sobre b-roll fotográfico (requeriría procesar píxeles de un export real, no solo código fuente) |
 | 15 | Autocrítica | pendiente | |
 | 16 | Implementación real | pendiente | |
 | 17 | Testing | pendiente | |
