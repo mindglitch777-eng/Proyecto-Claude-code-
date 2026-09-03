@@ -137,5 +137,22 @@
       "antes-despues",
       "ranking"
     ]
+  },
+  {
+    "videoId": "fabrica-demo-10",
+    "fecha": "2026-09-03T23:22:58.668Z",
+    "componentesUsados": [
+      "punch",
+      "silueta",
+      "rafaga",
+      "balanza",
+      "logos-herramientas",
+      "antes-despues",
+      "buscador",
+      "chat",
+      "notificaciones",
+      "diagrama",
+      "remate"
+    ]
   }
 ]

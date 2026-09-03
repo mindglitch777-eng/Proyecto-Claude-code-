@@ -20,6 +20,7 @@ import demo06 from './fabrica_bridge/demo_06.json';
 import demo07 from './fabrica_bridge/demo_07.json';
 import demo08 from './fabrica_bridge/demo_08.json';
 import demo09 from './fabrica_bridge/demo_09.json';
+import demo10 from './fabrica_bridge/demo_10.json';
 import pruebaR68 from './fabrica_bridge/prueba_r6_8.json';
 import pruebaR610 from './fabrica_bridge/prueba_r6_10.json';
 import {Video} from './receta/Video';
@@ -220,6 +221,24 @@ export const Root: React.FC = () => {
         width={ANCHO}
         height={ALTO}
         defaultProps={{arbol: demo09 as ArbolFabrica}}
+      />
+      {/* R7-32: "Benchmark audiovisual agresivo" -- guion NUEVO ("La IA
+          no es el negocio") y direccion visual escena-por-escena
+          entregados explicitamente por el operador (no interpretados
+          libremente), 14 unidades (una por linea de guion), Rhythm
+          Engine con curva propia (CURVA_BENCHMARK_AGRESIVO), pausas
+          reales + forced-alignment real (palabra "no" del hook) para
+          anclar cambios visuales sin inventar timing. Ver
+          fabrica/ejemplos/generar_demo_10.ts y
+          fabrica/docs/PROMPT_BENCHMARK_AGRESIVO.md. */}
+      <Composition
+        id="fabrica-demo-10"
+        component={FabricaVideo}
+        durationInFrames={Math.round((demo10 as ArbolFabrica).duracionTotalSeg * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{arbol: demo10 as ArbolFabrica}}
       />
       {/* R6-8: prueba de punta a punta de la transicion real
           (@remotion/transitions) con 2 audios REALES -- ver

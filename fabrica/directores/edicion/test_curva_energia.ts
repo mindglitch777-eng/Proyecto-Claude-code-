@@ -1,4 +1,4 @@
-import {CURVA_HOOK_ESCALADA_PAYOFF, empujarHaciaCurva, nivelObjetivoEnProgreso} from './curva_energia';
+import {CURVA_HOOK_ESCALADA_PAYOFF, CURVA_BENCHMARK_AGRESIVO, empujarHaciaCurva, nivelObjetivoEnProgreso} from './curva_energia';
 import {DirectorEdicion} from './edicion';
 import type {ContextoUnidad} from './tipos';
 
@@ -44,6 +44,16 @@ function main() {
   // pide "alta", asi que con o sin curva el resultado debe ser el mismo aca
   // (la curva no tiene nada nuevo que empujar en este caso puntual).
   check('sin curva y con curva alineada dan el mismo resultado en el hook (no hay contradiccion real)', sinCurva.energia === conCurva.energia);
+
+  // R7-32: curva con un punto EXACTO por unidad (14 unidades, progreso
+  // = indice/13) -- nearest-neighbor da distancia 0 en cada indice
+  // real, ninguna unidad hereda el objetivo de una vecina.
+  check('CURVA_BENCHMARK_AGRESIVO tiene 14 puntos (uno por unidad)', CURVA_BENCHMARK_AGRESIVO.puntos.length === 14);
+  check('CURVA_BENCHMARK_AGRESIVO: hook_0 (progreso 0) -> muy_alta', nivelObjetivoEnProgreso(CURVA_BENCHMARK_AGRESIVO, 0 / 13).nivelObjetivo === 'muy_alta');
+  check('CURVA_BENCHMARK_AGRESIVO: hook_1 (progreso 1/13) -> baja (contraste inmediato)', nivelObjetivoEnProgreso(CURVA_BENCHMARK_AGRESIVO, 1 / 13).nivelObjetivo === 'baja');
+  check('CURVA_BENCHMARK_AGRESIVO: giro_3/culminacion (progreso 9/13) -> muy_alta', nivelObjetivoEnProgreso(CURVA_BENCHMARK_AGRESIVO, 9 / 13).nivelObjetivo === 'muy_alta');
+  check('CURVA_BENCHMARK_AGRESIVO: revelacion_0/pausa (progreso 10/13) -> baja', nivelObjetivoEnProgreso(CURVA_BENCHMARK_AGRESIVO, 10 / 13).nivelObjetivo === 'baja');
+  check('CURVA_BENCHMARK_AGRESIVO: cada punto tiene una razon explicada', CURVA_BENCHMARK_AGRESIVO.puntos.every((p) => p.razon.trim().length > 0));
 
   if (FALLOS.length) {
     console.log(`\n${FALLOS.length} FALLO(S):\n`);

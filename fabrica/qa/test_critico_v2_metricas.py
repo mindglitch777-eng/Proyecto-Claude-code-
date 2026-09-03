@@ -13,6 +13,8 @@ ARBOL_REAL = RAIZ / "remotion-spike" / "src" / "fabrica_bridge" / "demo_08.json"
 MP4_REAL = RAIZ / "fabrica" / "salidas" / "fabrica-demo-08.mp4"
 ARBOL_09 = RAIZ / "remotion-spike" / "src" / "fabrica_bridge" / "demo_09.json"
 MP4_09 = RAIZ / "fabrica" / "salidas" / "fabrica-demo-09.mp4"
+ARBOL_10 = RAIZ / "remotion-spike" / "src" / "fabrica_bridge" / "demo_10.json"
+MP4_10 = RAIZ / "fabrica" / "salidas" / "fabrica-demo-10.mp4"
 
 FALLOS = []
 
@@ -61,6 +63,23 @@ def main() -> int:
               m.cantidad_microeventos_cambia_encuadre == 0)
         check("demo_09 reduce (o iguala) la duracion media de bloque visual respecto de demo_08",
               m3.duracion_media_bloque_visual_seg <= m.duracion_media_bloque_visual_seg)
+
+    # R7-32 ("Benchmark audiovisual agresivo"): guion y estructura
+    # COMPLETAMENTE distintos de demo_08/09 (14 unidades cortas en vez
+    # de 7 mas largas) -- una comparacion "mejor/peor" 1:1 de conteos
+    # crudos seria enganosa (mas escenas != mas rapido por definicion).
+    # Se testea que demo_10 es objetivamente MAS VARIADO en catalogo
+    # (mas componentes distintos, densidad visual que realmente varia)
+    # sin afirmar una mejora de retencion que ningun dato respalda.
+    if ARBOL_10.exists():
+        m4 = calcular_metricas(str(ARBOL_10), str(MP4_10) if MP4_10.exists() else None)
+        check("demo_10 tiene 14 escenas (una por linea de guion, guion nuevo)", m4.cantidad_escenas == 14)
+        check("demo_10 usa mas componentes DISTINTOS del catalogo que demo_08 (11 vs 6)",
+              m4.componentes_distintos > m.componentes_distintos)
+        check("demo_10: la densidad visual SI varia en el tiempo (a diferencia de demo_09)",
+              m4.densidad_visual_varia is True)
+        check("demo_10: todos los timestamps caen dentro de la duracion total",
+              all(0 <= t <= m4.duracion_total_seg for t in m4.timestamps_eventos_de_cambio_seg))
 
     if FALLOS:
         print(f"{len(FALLOS)} FALLO(S):")

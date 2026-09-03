@@ -65,5 +65,31 @@ export const REGISTROS_VIDEO: RegistroVideoCompleto[] = [
       fuente: 'orquestador.ts (checks_duros.py + checks_composicion.py)',
     },
   },
+  {
+    // R7-32 ("Nueva prueba de estrés de la fábrica -- Benchmark
+    // audiovisual agresivo"): guion NUEVO ("La IA no es el negocio"),
+    // 14 unidades (una por línea de guion), dirección visual
+    // escena-por-escena entregada explícitamente por el operador (ver
+    // docs/PROMPT_BENCHMARK_AGRESIVO.md), forced-alignment real
+    // (faster-whisper) para anclar la jerarquía del hook a la palabra
+    // real "no". Mismo hallazgo de no-persistencia que arriba.
+    videoId: 'fabrica-demo-10',
+    idea: 'La IA no es el negocio: primero problema y oferta, después IA para multiplicar.',
+    tema: 'IA aplicada a negocios digitales',
+    angulo: 'contrarian -- producción no es lo mismo que venta',
+    hookPatronId: 'contexto-parcial',
+    estructura: 'hook-desarrollo-giro-triada-revelacion-payoff',
+    duracionSeg: 43.838049,
+    voz: 'Qwen3-TTS',
+    componentesUsados: ['punch', 'silueta', 'rafaga', 'balanza', 'logos-herramientas', 'antes-despues', 'buscador', 'chat', 'notificaciones', 'diagrama', 'remate'],
+    formato: 'vertical 1080x1920, benchmark audiovisual agresivo (R7-32)',
+    fecha: '2026-09-03',
+    metricas: null,
+    qaResumen: {
+      ok: true,
+      problemas: [],
+      fuente: 'orquestador.ts (checks_duros.py + checks_composicion.py)',
+    },
+  },
 ];
 export const REGISTROS_PRODUCTO: RegistroProducto[] = [];

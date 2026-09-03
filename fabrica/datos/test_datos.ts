@@ -14,9 +14,11 @@ function check(desc: string, cond: boolean) {
 // null en todos), eso es lo que valida el resto de este bloque.
 check('REGISTROS_VIDEO tiene la entrada real de fabrica-demo-08', REGISTROS_VIDEO.some((r) => r.videoId === 'fabrica-demo-08'));
 check('REGISTROS_VIDEO tiene la entrada real de fabrica-demo-09', REGISTROS_VIDEO.some((r) => r.videoId === 'fabrica-demo-09'));
+check('REGISTROS_VIDEO tiene la entrada real de fabrica-demo-10', REGISTROS_VIDEO.some((r) => r.videoId === 'fabrica-demo-10'));
 check('REGISTROS_VIDEO: ningun registro tiene metricas reales todavia (nada publicado)', REGISTROS_VIDEO.every((r) => r.metricas === null));
 check('REGISTROS_VIDEO: fabrica-demo-08 tiene qaResumen real con ok=true', REGISTROS_VIDEO.find((r) => r.videoId === 'fabrica-demo-08')?.qaResumen?.ok === true);
 check('REGISTROS_VIDEO: fabrica-demo-09 tiene qaResumen real con ok=true', REGISTROS_VIDEO.find((r) => r.videoId === 'fabrica-demo-09')?.qaResumen?.ok === true);
+check('REGISTROS_VIDEO: fabrica-demo-10 tiene qaResumen real con ok=true', REGISTROS_VIDEO.find((r) => r.videoId === 'fabrica-demo-10')?.qaResumen?.ok === true);
 check('REGISTROS_PRODUCTO real esta vacio', REGISTROS_PRODUCTO.length === 0);
 check('retencionPromedioPorHook sobre el almacen real da objeto vacio (sin metricas reales, sin inventar un promedio)', Object.keys(retencionPromedioPorHook()).length === 0);
 

@@ -118,5 +118,15 @@
     "conclusion": null,
     "estado": "esperando_datos",
     "fechaCreacion": "2026-09-03T22:41:59.135Z"
+  },
+  {
+    "id": "fabrica-demo-10-1788477778671",
+    "hipotesis": "Un guion + direccion visual escena-por-escena + curva de energia explicitos, entregados por el operador y traducidos 1:1 a la infraestructura existente (Director Visual/Audio/Edicion, Rhythm Engine, pausas reales, forced-alignment), produce un video objetivamente mas variado y menos predecible que fabrica-demo-09 (mas componentes distintos del catalogo, mas eventos de cambio, menos dependencia de cifras) -- sin que eso implique una mejora de RETENCION real (ninguna publicacion existe).",
+    "experimento": "fabrica-demo-10: guion nuevo (\"La IA no es el negocio\"), 14 unidades (una por linea), brief de director completo (docs/PROMPT_BENCHMARK_AGRESIVO.md) vs. fabrica-demo-09 (guion de Tomas, 7 unidades).",
+    "videoId": "fabrica-demo-10",
+    "resultadoReal": null,
+    "conclusion": null,
+    "estado": "esperando_datos",
+    "fechaCreacion": "2026-09-03T23:22:58.671Z"
   }
 ]

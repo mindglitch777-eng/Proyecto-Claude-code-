@@ -10,7 +10,94 @@ después de cada bloque de trabajo real, como pide el "Prompt Maestro
 del prompt "Capa de exploración agresiva" (para no perderlo de nuevo
 en la memoria de la conversación), `docs/PROMPT_EXPLORACION_AGRESIVA.md`.
 
-## Último bloque de trabajo: R7-31 (2026-09-03) -- que la fábrica PIENSE la edición
+## Último bloque de trabajo: R7-32 (2026-09-03) -- Benchmark audiovisual agresivo
+
+Pedido explícito del operador: a diferencia de todas las rondas anteriores
+("hacelo más agresivo"), esta vez entregó un brief de director completo
+-- guion nuevo de 14 líneas exactas ("La IA no es el negocio"), dirección
+visual escena por escena, curva de energía, dirección de transiciones y
+de audio, regla de oro ("agresivo = contraste, no más efectos") -- y pidió
+un render real, no otra ronda de documentación. Texto completo en
+`docs/PROMPT_BENCHMARK_AGRESIVO.md`.
+
+**HECHO (real, testeado, video renderizado y entregado):**
+- **Guion nuevo + voz real**: 14 líneas exactas (sin cambiar ni una,
+  sin estadísticas agregadas), voz Qwen3-TTS con la MISMA configuración
+  de producción (voz clonada `librivox-11`, mismo instruct, mismo rate
+  1.25 -- única variable de esta prueba es guion+dirección+edición, no
+  el motor de voz, tal como pidió el operador). Generada vía
+  `.github/workflows/generar-voz-demo-10.yml` (mismo patrón ya probado
+  en rondas anteriores).
+- **Forced-alignment real usado por primera vez en producción**:
+  `fabrica/voz/alineacion.ts` (nuevo, envuelve el prototipo YA
+  EXISTENTE de R6-2/P3-3) lee el resultado real de faster-whisper
+  (corrido en GitHub Actions, bloqueado en este sandbox por política de
+  red hacia Hugging Face) para anclar la jerarquía visual del hook
+  ("LA IA" / "NO" / "TE VA A HACER GANAR PLATA") a la palabra real "no"
+  medida en el audio (1.80s-2.16s) -- confirmado visualmente en frames
+  extraídos del render.
+- **Plan de dirección real, no interpretación libre**: 14 unidades (una
+  por línea de guion) mapeadas explícitamente a categorías/componentes
+  reales del catálogo según la intención de cada escena del brief (tabla
+  completa en `docs/PROMPT_BENCHMARK_AGRESIVO.md`), sin inventar ningún
+  componente nuevo ni ningún dato/número no narrado.
+- **Curva de energía propia** (`CURVA_BENCHMARK_AGRESIVO`, nueva
+  configuración en el MISMO `curva_energia.ts` de R7-31 -- conexión, no
+  duplicación): un punto exacto por unidad (14 puntos, no 7-8 gruesos)
+  para que unidades consecutivas con objetivos opuestos (hook muy_alta
+  seguido de un valle deliberado) no se contaminen entre sí.
+- **Video real generado y renderizado**: `fabrica-demo-10.mp4` (43.84s).
+  QA duro y de composición 100% limpios (`ok: true`). **11 componentes
+  distintos del catálogo usados en 14 unidades** (punch, silueta,
+  rafaga, balanza, logos-herramientas, antes-despues, buscador, chat,
+  notificaciones, diagrama, remate) -- contra los ~6 componentes que se
+  repetían siempre en demos anteriores. Inspección visual real confirmó
+  variedad de lenguaje visual genuina (b-roll+ráfaga para abundancia,
+  balanza sin números para el frenazo, aro pulsante en antes-despues
+  para el colapso, mockups de búsqueda/chat/notificaciones para la
+  tríada, diagrama con iconos reales para la convergencia).
+- **Hallazgo honesto real (documentado, no escondido)**: el mecanismo
+  `cambia_encuadre` de R7-31 (pausas reales dentro de un clip) dio 0
+  resultados esta ronda -- los clips de este guion son más cortos que
+  los de demo_06 donde se validó la técnica, y `detectarPausaInterna()`
+  no encontró ninguna pausa útil en la ventana [15%,85%]. Se documenta
+  como límite real de la técnica con audio corto, no se fuerza un
+  resultado falso.
+- **Otro hallazgo honesto**: la unidad "desarrollo_2" (automatización)
+  quedó clasificada como `dejar_respirar` (pausa) en vez de la
+  "aceleración" que pedía el brief -- el componente ganador real
+  (`logos-herramientas`) tiene intensidad intrínseca baja (0.35) y el
+  clip es corto, y la anti-repetición cross-video penaliza a las
+  alternativas de mayor intensidad (`ranking`/`lista-tachada`, ya
+  usados en demo-08/09). El Rhythm Engine respeta esa clasificación
+  (nunca fuerza energía sobre una pausa real, R7-31) -- se documenta la
+  tensión real entre mi intención de dirección y la decisión honesta
+  del sistema, en vez de forzar un componente peor solo para que
+  coincida con el plan.
+- **Comparación objetiva vs. fabrica-demo-09** (Crítico v2, con
+  advertencia explícita de que la estructura es distinta -- 14 unidades
+  cortas vs. 7 más largas, así que los conteos crudos no son 1:1):
+  demo-10 usa **11 componentes distintos vs. 6** de demo-09/08, y su
+  densidad visual **SÍ varía en el tiempo** (`densidad_visual_varia:
+  true`) a diferencia de demo-09 (`false`, por el efecto colateral de
+  memoria documentado en el bloque anterior). QA duro limpio en ambos,
+  0 silencios/negros sospechosos en los dos.
+- **Registrado con datos reales**: `memoria/laboratorio.json`
+  (hipótesis `esperando_datos`) + `datos/datos.ts` (tercera entrada
+  real, `qaResumen.ok=true`, `metricas: null`, nunca publicado).
+
+**Suite completa verificada**: `npm run test-todo` (39/39 OK, incluye
+tests nuevos de forced-alignment y de la comparación objetiva) + `tsc
+--noEmit` limpio en `fabrica/` y `remotion-spike/`.
+
+**PRÓXIMO PASO real, ya registrado**: si se repite este benchmark, usar
+clips de audio más largos (o textos con más pausas naturales) para que
+`cambia_encuadre` tenga con qué trabajar; y considerar un mecanismo que
+permita a un director "reservar" intencionalmente un componente de baja
+intensidad para una franja donde SÍ se quiere aceleración, sin pelear
+contra la clasificación honesta de `decidirIntencion()`.
+
+## Bloque anterior: R7-31 (2026-09-03) -- que la fábrica PIENSE la edición
 
 Pedido explícito del operador: diagnóstico propio sobre `fabrica-demo-08`
 (cambios estructurales fuertes solo en ~15.7s/21.7s/30.4s/34.3s, tramos
