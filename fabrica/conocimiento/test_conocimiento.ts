@@ -36,7 +36,7 @@ check('porCategoria("ofertas") trae la escalera de valor', porCategoria('ofertas
 check('porTag("hooks") trae items reales', porTag('hooks').length > 0);
 check('porTag con tag inexistente trae array vacio', porTag('esto-no-es-un-tag-real').length === 0);
 
-check('porNivel("evidencia") trae Loewenstein, Zeigarnik, YouTube oficial y Silvia (4 items)', porNivel('evidencia').length === 4);
+check('porNivel("evidencia") trae Loewenstein, Zeigarnik, YouTube oficial, Silvia y WCAG contraste (5 items)', porNivel('evidencia').length === 5);
 check('porNivel("patron_observado") NUNCA queda marcado confirmado', porNivel('patron_observado').every((i) => !i.confirmado));
 check('porNivel("buena_practica") NUNCA queda marcado confirmado', porNivel('buena_practica').every((i) => !i.confirmado));
 
