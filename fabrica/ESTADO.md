@@ -10,6 +10,60 @@ después de cada bloque de trabajo real, como pide el "Prompt Maestro
 del prompt "Capa de exploración agresiva" (para no perderlo de nuevo
 en la memoria de la conversación), `docs/PROMPT_EXPLORACION_AGRESIVA.md`.
 
+## Último bloque de trabajo: Orden de auditoría + reestructuración (2026-09-04, en curso)
+
+Orden explícita del operador tras ver que el lote de 10 videos de venta
+salió con calidad visual muy por debajo del benchmark R7-32
+("demasiada locura" el guion, video "deteriorado"). Dos partes: (1)
+auditar qué motores de la fábrica están conectados de verdad vs
+aislados, y (2) declarar el Director Visual/scoring automático
+DEPRECADO para producción (sin borrarlo) y construir un orquestador
+script-driven donde el guionista elige el componente a mano.
+
+**HECHO (real, testeado):**
+- **Auditoría punto 1 (motores conectados vs aislados)**: confirmado
+  con `grep` real sobre los 13 generadores de `fabrica/ejemplos/` --
+  `DirectorEdicion`/`DirectorRetencion`/`correrCicloMejora` se usan en
+  `generar_demo_05.ts` a `12.ts` (8 de 13), forced-alignment solo en
+  `demo_10`. `generar_lote_ventas.ts` (el que produjo los 10 videos de
+  venta) no usa NINGUNO de los cuatro -- causa real confirmada de la
+  caída de calidad. Sales Engine, Research System, Carousel Engine,
+  ecosistema_producto, Skill Intelligence, Decision Engine y el
+  registro MCP: cero imports desde cualquier otro módulo, están
+  totalmente aislados. Data Engine tiene un solo consumidor real
+  (`orquestador/orquestador.ts`).
+- **Auditoría punto 2 (obsoleto/duplicado)**: `generar_demo_11.ts` y
+  `generar_demo_12.ts` son ~95% el mismo archivo (diff de imports/
+  constantes only). De los 51 componentes de `registro.json`, 19 nunca
+  se usaron en ningún `ArbolComposicion` real generado hasta hoy (7
+  legacy + 12 de los 23 efectos nuevos de esta ronda) -- medido
+  recorriendo los 24 JSON reales de `fabrica_bridge/`. Dos workflows
+  (`pexels-automatico.yml`, `probar-render.yml`) nunca fueron
+  registrados por GitHub como Action válida (0 corridas, ni siquiera
+  aparecen en `list_workflows`).
+- **Nuevo orquestador `fabrica/composicion/renderizador_por_guion.ts`**:
+  recibe `EscenaGuion[]` con `componenteId`/`props` explícitos (sin
+  Director Visual/scoring), pero SÍ corre `DirectorEdicion` (+ curva de
+  energía opcional), `DirectorAudio` (salvo `transicionSalida`
+  explícito, que gana siempre), forced-alignment real vía
+  `palabraClave` (nunca inventa un timestamp), y `DirectorRetencion`
+  sobre el árbol completo -- exactamente las cuatro piezas que
+  `generar_lote_ventas.ts` se saltó. Rechaza con error explícito un
+  `componenteId` inexistente o un `transicionSalida.tipo` inventado
+  (ej. confundir un golpe real con el id de un efecto visual como
+  "pixel-burst"). Probado de punta a punta en
+  `test_renderizador_por_guion.ts` con audio real ya grabado (9
+  verificaciones + 2 casos de rechazo, todos en verde) y `tsc --noEmit`
+  limpio sobre toda `fabrica/`.
+
+**PENDIENTE de esta misma orden:**
+- Puntos 3 (plan de conexión escrito) y 4 (archivar código muerto a
+  `archivado/`, limpiar TODOs huérfanos) de la Parte 1 -- investigación
+  ya hecha, informe y limpieza todavía no.
+- Ejercitar `renderizador_por_guion.ts` en un guion real completo (no
+  solo la prueba de humo de 2 escenas) para tener el primer video de
+  producción con este orquestador nuevo.
+
 ## Último bloque de trabajo: R7-32 (2026-09-03) -- Benchmark audiovisual agresivo
 
 Pedido explícito del operador: a diferencia de todas las rondas anteriores
