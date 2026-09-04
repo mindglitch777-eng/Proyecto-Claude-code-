@@ -763,5 +763,144 @@
       ],
       "golpe": "negro"
     }
+  },
+  {
+    "videoId": "fabrica-demo-11",
+    "fecha": "2026-09-04T01:02:18.304Z",
+    "patron": {
+      "categoria": "texto",
+      "estilos": [
+        "agresivo",
+        "documental"
+      ],
+      "golpe": "ninguno"
+    }
+  },
+  {
+    "videoId": "fabrica-demo-11",
+    "fecha": "2026-09-04T01:02:18.305Z",
+    "patron": {
+      "categoria": "montaje",
+      "estilos": [
+        "misterio",
+        "cinematico"
+      ],
+      "golpe": "fogonazo"
+    }
+  },
+  {
+    "videoId": "fabrica-demo-11",
+    "fecha": "2026-09-04T01:02:18.305Z",
+    "patron": {
+      "categoria": "texto",
+      "estilos": [
+        "misterio",
+        "agresivo"
+      ],
+      "golpe": "sacudon"
+    }
+  },
+  {
+    "videoId": "fabrica-demo-11",
+    "fecha": "2026-09-04T01:02:18.305Z",
+    "patron": {
+      "categoria": "comparacion",
+      "estilos": [
+        "data",
+        "documental"
+      ],
+      "golpe": "raya"
+    }
+  },
+  {
+    "videoId": "fabrica-demo-11",
+    "fecha": "2026-09-04T01:02:18.305Z",
+    "patron": {
+      "categoria": "diagrama",
+      "estilos": [
+        "documental"
+      ],
+      "golpe": "fundido"
+    }
+  },
+  {
+    "videoId": "fabrica-demo-11",
+    "fecha": "2026-09-04T01:02:18.306Z",
+    "patron": {
+      "categoria": "timeline",
+      "estilos": [
+        "documental"
+      ],
+      "golpe": "iris"
+    }
+  },
+  {
+    "videoId": "fabrica-demo-11",
+    "fecha": "2026-09-04T01:02:18.306Z",
+    "patron": {
+      "categoria": "texto",
+      "estilos": [
+        "documental"
+      ],
+      "golpe": "fundido"
+    }
+  },
+  {
+    "videoId": "fabrica-demo-11",
+    "fecha": "2026-09-04T01:02:18.306Z",
+    "patron": {
+      "categoria": "texto",
+      "estilos": [
+        "agresivo",
+        "data"
+      ],
+      "golpe": "fogonazo"
+    }
+  },
+  {
+    "videoId": "fabrica-demo-11",
+    "fecha": "2026-09-04T01:02:18.306Z",
+    "patron": {
+      "categoria": "lista",
+      "estilos": [
+        "documental"
+      ],
+      "golpe": "fundido"
+    }
+  },
+  {
+    "videoId": "fabrica-demo-11",
+    "fecha": "2026-09-04T01:02:18.307Z",
+    "patron": {
+      "categoria": "texto",
+      "estilos": [
+        "agresivo",
+        "data"
+      ],
+      "golpe": "corte"
+    }
+  },
+  {
+    "videoId": "fabrica-demo-11",
+    "fecha": "2026-09-04T01:02:18.307Z",
+    "patron": {
+      "categoria": "diagrama",
+      "estilos": [
+        "documental"
+      ],
+      "golpe": "fundido"
+    }
+  },
+  {
+    "videoId": "fabrica-demo-11",
+    "fecha": "2026-09-04T01:02:18.307Z",
+    "patron": {
+      "categoria": "texto",
+      "estilos": [
+        "cinematico",
+        "storytelling"
+      ],
+      "golpe": "negro"
+    }
   }
 ]

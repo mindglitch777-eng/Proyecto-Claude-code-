@@ -160,11 +160,18 @@ export function generarArbol(params: ParametrosGeneracion, log: boolean = true):
   // 6. giro_1 -- cadena idea->producto->contenido->personas
   const audiosGiro1 = [clipReal('giro_1')];
   const {elegido: elGiro1, golpe: golpeGiro1} = elegir(5, {categorias: ['timeline'], intensidadDeseada: 0.4, capacidadTextoNecesaria: 'media', assetsDisponibles: [], duracionDisponibleSeg: duracionTotalDeAudios(audiosGiro1), requiereAudioSincronizado: true}, {});
-  agregar('giro_1', 5, elGiro1, golpeGiro1, audiosGiro1, {titulo: 'La cadena', hitos: [
-    {cuando: '1', que: 'Una idea se convierte en producto'},
-    {cuando: '2', que: 'El producto genera contenido'},
-    {cuando: '3', que: 'El contenido atrae personas', acento: true},
-  ]});
+  agregar('giro_1', 5, elGiro1, golpeGiro1, audiosGiro1,
+    elGiro1.componente.id === 'crecimiento'
+      ? {titulo: 'La cadena', puntos: [
+          {cuando: 'Idea', etiqueta: 'Se convierte en producto', valor: 1},
+          {cuando: 'Producto', etiqueta: 'Genera contenido', valor: 2},
+          {cuando: 'Contenido', etiqueta: 'Atrae personas', valor: 3},
+        ]}
+      : {titulo: 'La cadena', hitos: [
+          {cuando: '1', que: 'Una idea se convierte en producto'},
+          {cuando: '2', que: 'El producto genera contenido'},
+          {cuando: '3', que: 'El contenido atrae personas', acento: true},
+        ]});
 
   // 7. pausa_0 -- "Y ahi dejas de usar la IA para jugar..." PAUSA
   const audiosPausa0 = [clipReal('pausa_0')];
@@ -210,7 +217,13 @@ export function generarArbol(params: ParametrosGeneracion, log: boolean = true):
   // 12. cierre_0 -- "Seguime y mira como lo hago." CTA
   const audiosCierre0 = [clipReal('cierre_0')];
   const {elegido: elCierre0, golpe: golpeCierre0} = elegir(11, {categorias: ['texto'], intensidadDeseada: 0.7, capacidadTextoNecesaria: 'corta', assetsDisponibles: ['video'], duracionDisponibleSeg: duracionTotalDeAudios(audiosCierre0), requiereAudioSincronizado: false}, {esCierre: true});
-  agregar('cierre_0', 11, elCierre0, golpeCierre0, audiosCierre0, {d: {lineas: ['Idea.', 'Producto.', 'Sistema.'], grande: 'SEGUIME', pie: 'Y mirá cómo lo hago.'}, clip: 'freelance-05.mp4'}, {esCierre: true});
+  agregar('cierre_0', 11, elCierre0, golpeCierre0, audiosCierre0,
+    elCierre0.componente.id === 'remate'
+      ? {d: {lineas: ['Idea.', 'Producto.', 'Sistema.'], grande: 'SEGUIME', pie: 'Y mirá cómo lo hago.'}, clip: 'freelance-05.mp4'}
+      : elCierre0.componente.id === 'silueta'
+        ? {idea: {texto: 'Seguime.', pie: 'Y mirá cómo lo hago.'}}
+        : {lineas: ['SEGUIME.', 'Y MIRÁ CÓMO LO HAGO.'], entra: [0, audiosCierre0[0].duracionSeg * 0.5], clip: 'freelance-05.mp4'},
+    {esCierre: true});
 
   const arbol = armarComposicion(VIDEO_ID, unidades);
   const musicaFondo = resolverMusicaFondo(decisionesAudio, arbol.duracionTotalSeg);

@@ -128,5 +128,15 @@
     "conclusion": null,
     "estado": "esperando_datos",
     "fechaCreacion": "2026-09-03T23:22:58.671Z"
+  },
+  {
+    "id": "fabrica-demo-11-1788483738307",
+    "hipotesis": "Guion + direccion visual escena-por-escena entregados por el operador, traducidos a la infraestructura existente, producen un video coherente con la intencion narrativa dada -- sin afirmar mejora de retencion real (sin publicacion).",
+    "experimento": "fabrica-demo-11: guion nuevo (\"La mayoria usa la IA mal\"), 12 unidades.",
+    "videoId": "fabrica-demo-11",
+    "resultadoReal": null,
+    "conclusion": null,
+    "estado": "esperando_datos",
+    "fechaCreacion": "2026-09-04T01:02:18.308Z"
   }
 ]

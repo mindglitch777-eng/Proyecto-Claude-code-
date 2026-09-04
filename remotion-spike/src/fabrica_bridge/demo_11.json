@@ -1,0 +1,1177 @@
+{
+  "id": "fabrica-demo-11",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "hook_0",
+      "desdeSeg": 0,
+      "duracionSeg": 2.361995,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "USÁS LA IA",
+          "MAL."
+        ],
+        "entra": [
+          0,
+          1.16159725
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_11/hook_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.111995
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0,
+      "estrategiaEdicion": {
+        "unidadId": "hook_0",
+        "intencion": "enganchar",
+        "energia": "muy_alta",
+        "densidadVisual": "densa",
+        "estilos": [
+          "agresivo",
+          "documental"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "primera unidad del video (hook): capturar atencion desde el frame 0"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "ninguno",
+          "funcion": "dirigir_atencion",
+          "intensidad": "muy_alta",
+          "motivo": "golpe \"ninguno\" acompana una unidad con intencion \"enganchar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"hook_0\""
+          },
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_sfx",
+            "descripcion": "SFX de entrada acompanando el elemento principal",
+            "razon": "estilo combinado incluye enfasis sonoro en la entrada (ver estilos.ts, tiposMicroEventoPreferidos)"
+          }
+        ],
+        "relacionConAnterior": "abre el video -- no hay escena anterior con la cual relacionarse",
+        "respiracion": false,
+        "patronRetencionId": "contexto-parcial",
+        "razonGeneral": "unidad \"hook_0\" (1/12, categoria=texto): intencion=enganchar (energia=muy_alta, densidad=densa), estilos=[agresivo+documental], patron_retencion=contexto-parcial"
+      },
+      "patronesRetencion": [
+        "contexto-parcial"
+      ]
+    },
+    {
+      "unidadId": "desarrollo_0",
+      "desdeSeg": 2.361995,
+      "duracionSeg": 3.898005,
+      "componenteId": "rafaga",
+      "props": {
+        "clips": [
+          "freelance-01.mp4",
+          "celular-01.mp4",
+          "freelance-03.mp4",
+          "celular-03.mp4"
+        ],
+        "sello": "ACUMULANDO"
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_11/desarrollo_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.648005
+        }
+      ],
+      "golpe": "fogonazo",
+      "volumenSfx": 0.9,
+      "estrategiaEdicion": {
+        "unidadId": "desarrollo_0",
+        "intencion": "construir_tension",
+        "energia": "alta",
+        "densidadVisual": "minima",
+        "estilos": [
+          "misterio",
+          "cinematico"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "fogonazo",
+          "funcion": "preparar_impacto",
+          "intensidad": "alta",
+          "motivo": "golpe \"fogonazo\" acompana una unidad con intencion \"construir_tension\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"desarrollo_0\""
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "loop-abierto",
+        "razonGeneral": "unidad \"desarrollo_0\" (2/12, categoria=montaje): intencion=construir_tension (energia=alta, densidad=minima), estilos=[misterio+cinematico], patron_retencion=loop-abierto"
+      },
+      "patronesRetencion": [
+        "loop-abierto"
+      ]
+    },
+    {
+      "unidadId": "desarrollo_1",
+      "desdeSeg": 6.26,
+      "duracionSeg": 2.234014,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "NO CONSTRUYEN NADA."
+        ],
+        "entra": [
+          0
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_11/desarrollo_1.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 1.984014
+        }
+      ],
+      "golpe": "sacudon",
+      "volumenSfx": 0.85,
+      "estrategiaEdicion": {
+        "unidadId": "desarrollo_1",
+        "intencion": "revelar",
+        "energia": "muy_alta",
+        "densidadVisual": "minima",
+        "estilos": [
+          "misterio",
+          "agresivo"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "sacudon",
+          "funcion": "preparar_impacto",
+          "intensidad": "muy_alta",
+          "motivo": "golpe \"sacudon\" acompana una unidad con intencion \"revelar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"desarrollo_1\""
+          }
+        ],
+        "relacionConAnterior": "contrasta deliberadamente con la tension construida en las unidades anteriores",
+        "respiracion": false,
+        "patronRetencionId": "expectativa-violada",
+        "razonGeneral": "unidad \"desarrollo_1\" (3/12, categoria=texto): intencion=revelar (energia=muy_alta, densidad=minima), estilos=[misterio+agresivo] [combinar \"misterio\" + \"agresivo\" no es una combinacion tipica declarada en estilos.ts -- revisar si tiene sentido para esta unidad o si conviene elegir otro estilo secundario], patron_retencion=expectativa-violada"
+      },
+      "patronesRetencion": [
+        "expectativa-violada"
+      ]
+    },
+    {
+      "unidadId": "desarrollo_2",
+      "desdeSeg": 8.494014,
+      "duracionSeg": 3.351995,
+      "componenteId": "antes-despues",
+      "props": {
+        "antes": {
+          "rotulo": "Herramientas",
+          "txt": "Herramientas"
+        },
+        "despues": {
+          "rotulo": "Resultados",
+          "txt": "Resultados"
+        }
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_11/desarrollo_2.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.751995
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55,
+      "transicionSalienteSeg": 0.6,
+      "estrategiaEdicion": {
+        "unidadId": "desarrollo_2",
+        "intencion": "comparar",
+        "energia": "media",
+        "densidadVisual": "moderada",
+        "estilos": [
+          "data",
+          "documental"
+        ],
+        "elementoPrincipal": {
+          "tipo": "comparacion",
+          "descripcion": "los dos lados de la comparacion"
+        },
+        "entrada": {
+          "tipo": "progresiva",
+          "razon": "entrada gradual, coherente con una energia media/baja"
+        },
+        "salida": {
+          "tipo": "se_desvanece",
+          "razon": "transicion suave hacia la unidad siguiente, sin necesidad de un ancla visual"
+        },
+        "transicion": {
+          "golpe": "raya",
+          "funcion": "crear_contraste",
+          "intensidad": "media",
+          "motivo": "golpe \"raya\" acompana una unidad con intencion \"comparar\" (elemento principal: los dos lados de la comparacion)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra los dos lados de la comparacion",
+            "razon": "elemento principal de la unidad \"desarrollo_2\""
+          }
+        ],
+        "relacionConAnterior": "retoma un valor/concepto ya establecido antes para ponerlo en relacion con uno nuevo",
+        "respiracion": false,
+        "patronRetencionId": "contraste-antes-despues",
+        "razonGeneral": "unidad \"desarrollo_2\" (4/12, categoria=comparacion): intencion=comparar (energia=media, densidad=moderada), estilos=[data+documental], patron_retencion=contraste-antes-despues"
+      },
+      "patronesRetencion": [
+        "contraste-antes-despues"
+      ]
+    },
+    {
+      "unidadId": "giro_0",
+      "desdeSeg": 11.246009,
+      "duracionSeg": 3.258005,
+      "componenteId": "diagrama",
+      "props": {
+        "d": {
+          "nodos": [
+            {
+              "fig": "foco",
+              "x": 0.2,
+              "y": 0.3,
+              "tam": 60,
+              "rotulo": "Idea",
+              "t": 0.2
+            },
+            {
+              "fig": "carpeta",
+              "x": 0.5,
+              "y": 0.3,
+              "tam": 60,
+              "rotulo": "Producto",
+              "t": 0.9
+            },
+            {
+              "fig": "documento",
+              "x": 0.8,
+              "y": 0.3,
+              "tam": 60,
+              "rotulo": "Contenido",
+              "t": 1.6
+            },
+            {
+              "fig": "billete",
+              "x": 0.5,
+              "y": 0.7,
+              "tam": 60,
+              "rotulo": "Ventas",
+              "t": 2.3,
+              "acento": true
+            }
+          ],
+          "flechas": [
+            {
+              "de": 0,
+              "a": 1,
+              "t": 0.9
+            },
+            {
+              "de": 1,
+              "a": 2,
+              "t": 1.6
+            },
+            {
+              "de": 2,
+              "a": 3,
+              "t": 2.3
+            }
+          ]
+        }
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_11/giro_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.008005
+        }
+      ],
+      "golpe": "fundido",
+      "volumenSfx": 0,
+      "estrategiaEdicion": {
+        "unidadId": "giro_0",
+        "intencion": "contextualizar",
+        "energia": "alta",
+        "densidadVisual": "moderada",
+        "estilos": [
+          "documental"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "fundido",
+          "funcion": "sin_funcion_especial",
+          "intensidad": "alta",
+          "motivo": "golpe \"fundido\" acompana una unidad con intencion \"contextualizar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"giro_0\""
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "estructura-problema-agitacion-solucion",
+        "razonGeneral": "unidad \"giro_0\" (5/12, categoria=diagrama): intencion=contextualizar (energia=alta, densidad=moderada), estilos=[documental], patron_retencion=estructura-problema-agitacion-solucion"
+      },
+      "patronesRetencion": [
+        "estructura-problema-agitacion-solucion"
+      ]
+    },
+    {
+      "unidadId": "giro_1",
+      "desdeSeg": 14.504014000000002,
+      "duracionSeg": 5.528004999999999,
+      "componenteId": "cronologia",
+      "props": {
+        "titulo": "La cadena",
+        "hitos": [
+          {
+            "cuando": "1",
+            "que": "Una idea se convierte en producto"
+          },
+          {
+            "cuando": "2",
+            "que": "El producto genera contenido"
+          },
+          {
+            "cuando": "3",
+            "que": "El contenido atrae personas",
+            "acento": true
+          }
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_11/giro_1.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.928005
+        }
+      ],
+      "golpe": "iris",
+      "volumenSfx": 0,
+      "transicionSalienteSeg": 0.6,
+      "estrategiaEdicion": {
+        "unidadId": "giro_1",
+        "intencion": "contextualizar",
+        "energia": "alta",
+        "densidadVisual": "moderada",
+        "estilos": [
+          "documental"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "la progresion completa que se esta contando"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "iris",
+          "funcion": "sin_funcion_especial",
+          "intensidad": "alta",
+          "motivo": "golpe \"iris\" acompana una unidad con intencion \"contextualizar\" (elemento principal: la progresion completa que se esta contando)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra la progresion completa que se esta contando",
+            "razon": "elemento principal de la unidad \"giro_1\""
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "estructura-problema-agitacion-solucion",
+        "razonGeneral": "unidad \"giro_1\" (6/12, categoria=timeline): intencion=contextualizar (energia=alta, densidad=moderada), estilos=[documental], patron_retencion=estructura-problema-agitacion-solucion"
+      },
+      "patronesRetencion": [
+        "estructura-problema-agitacion-solucion"
+      ]
+    },
+    {
+      "unidadId": "pausa_0",
+      "desdeSeg": 19.432019,
+      "duracionSeg": 3.194014,
+      "componenteId": "silueta",
+      "props": {
+        "idea": {
+          "texto": "Dejás de jugar.",
+          "pie": ""
+        }
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_11/pausa_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.944014
+        }
+      ],
+      "golpe": "fundido",
+      "volumenSfx": 0,
+      "estrategiaEdicion": {
+        "unidadId": "pausa_0",
+        "intencion": "contextualizar",
+        "energia": "baja",
+        "densidadVisual": "moderada",
+        "estilos": [
+          "documental"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "progresiva",
+          "razon": "entrada gradual, coherente con una energia media/baja"
+        },
+        "salida": {
+          "tipo": "se_desvanece",
+          "razon": "transicion suave hacia la unidad siguiente, sin necesidad de un ancla visual"
+        },
+        "transicion": {
+          "golpe": "fundido",
+          "funcion": "sin_funcion_especial",
+          "intensidad": "baja",
+          "motivo": "golpe \"fundido\" acompana una unidad con intencion \"contextualizar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"pausa_0\""
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "estructura-problema-agitacion-solucion",
+        "razonGeneral": "unidad \"pausa_0\" (7/12, categoria=texto): intencion=contextualizar (energia=baja, densidad=moderada), estilos=[documental], patron_retencion=estructura-problema-agitacion-solucion"
+      },
+      "patronesRetencion": [
+        "estructura-problema-agitacion-solucion"
+      ]
+    },
+    {
+      "unidadId": "giro_2",
+      "desdeSeg": 22.626033,
+      "duracionSeg": 2.904014,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "CONSTRUIR."
+        ],
+        "entra": [
+          0
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_11/giro_2.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.304014
+        }
+      ],
+      "golpe": "fogonazo",
+      "volumenSfx": 0.9,
+      "transicionSalienteSeg": 0.6,
+      "estrategiaEdicion": {
+        "unidadId": "giro_2",
+        "intencion": "acelerar",
+        "energia": "muy_alta",
+        "densidadVisual": "densa",
+        "estilos": [
+          "agresivo",
+          "data"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "fogonazo",
+          "funcion": "marcar_cambio",
+          "intensidad": "muy_alta",
+          "motivo": "golpe \"fogonazo\" acompana una unidad con intencion \"acelerar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"giro_2\""
+          },
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_sfx",
+            "descripcion": "SFX de entrada acompanando el elemento principal",
+            "razon": "estilo combinado incluye enfasis sonoro en la entrada (ver estilos.ts, tiposMicroEventoPreferidos)"
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "pregunta-sin-resolver-intermedia",
+        "razonGeneral": "unidad \"giro_2\" (8/12, categoria=texto): intencion=acelerar (energia=muy_alta, densidad=densa), estilos=[agresivo+data], patron_retencion=pregunta-sin-resolver-intermedia"
+      },
+      "patronesRetencion": [
+        "pregunta-sin-resolver-intermedia"
+      ]
+    },
+    {
+      "unidadId": "desarrollo_3",
+      "desdeSeg": 24.930047,
+      "duracionSeg": 3.258005,
+      "componenteId": "pasos",
+      "props": {
+        "titulo": "Cien herramientas",
+        "pasos": [
+          {
+            "fig": "chip",
+            "txt": "Chat"
+          },
+          {
+            "fig": "nube",
+            "txt": "Imagen"
+          },
+          {
+            "fig": "telefono",
+            "txt": "Video"
+          }
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_11/desarrollo_3.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.008005
+        }
+      ],
+      "golpe": "fundido",
+      "volumenSfx": 0,
+      "estrategiaEdicion": {
+        "unidadId": "desarrollo_3",
+        "intencion": "contextualizar",
+        "energia": "muy_alta",
+        "densidadVisual": "moderada",
+        "estilos": [
+          "documental"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "la progresion completa que se esta contando"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "fundido",
+          "funcion": "sin_funcion_especial",
+          "intensidad": "muy_alta",
+          "motivo": "golpe \"fundido\" acompana una unidad con intencion \"contextualizar\" (elemento principal: la progresion completa que se esta contando)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra la progresion completa que se esta contando",
+            "razon": "elemento principal de la unidad \"desarrollo_3\""
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "estructura-problema-agitacion-solucion",
+        "razonGeneral": "unidad \"desarrollo_3\" (9/12, categoria=lista): intencion=contextualizar (energia=muy_alta, densidad=moderada), estilos=[documental], patron_retencion=estructura-problema-agitacion-solucion"
+      },
+      "patronesRetencion": [
+        "estructura-problema-agitacion-solucion"
+      ]
+    },
+    {
+      "unidadId": "payoff_0",
+      "desdeSeg": 28.188052,
+      "duracionSeg": 3.096009,
+      "componenteId": "tres-verdades",
+      "props": {
+        "frases": [
+          "NO ES LA HERRAMIENTA.",
+          "ES LO QUE HACÉS CON ELLA."
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_11/payoff_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.496009
+        }
+      ],
+      "golpe": "corte",
+      "volumenSfx": 0.6,
+      "transicionSalienteSeg": 0.6,
+      "estrategiaEdicion": {
+        "unidadId": "payoff_0",
+        "intencion": "acelerar",
+        "energia": "alta",
+        "densidadVisual": "densa",
+        "estilos": [
+          "agresivo",
+          "data"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "corte",
+          "funcion": "marcar_cambio",
+          "intensidad": "alta",
+          "motivo": "golpe \"corte\" acompana una unidad con intencion \"acelerar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"payoff_0\""
+          },
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_sfx",
+            "descripcion": "SFX de entrada acompanando el elemento principal",
+            "razon": "estilo combinado incluye enfasis sonoro en la entrada (ver estilos.ts, tiposMicroEventoPreferidos)"
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "tension-creciente",
+        "razonGeneral": "unidad \"payoff_0\" (10/12, categoria=texto): intencion=acelerar (energia=alta, densidad=densa), estilos=[agresivo+data], patron_retencion=tension-creciente"
+      },
+      "patronesRetencion": [
+        "tension-creciente"
+      ]
+    },
+    {
+      "unidadId": "payoff_1",
+      "desdeSeg": 30.684061,
+      "duracionSeg": 2.746009,
+      "componenteId": "diagrama",
+      "props": {
+        "d": {
+          "nodos": [
+            {
+              "fig": "foco",
+              "x": 0.15,
+              "y": 0.25,
+              "tam": 55,
+              "rotulo": "Idea",
+              "t": 0.2
+            },
+            {
+              "fig": "carpeta",
+              "x": 0.4,
+              "y": 0.25,
+              "tam": 55,
+              "rotulo": "Producto",
+              "t": 0.7
+            },
+            {
+              "fig": "documento",
+              "x": 0.65,
+              "y": 0.25,
+              "tam": 55,
+              "rotulo": "Contenido",
+              "t": 1.2
+            },
+            {
+              "fig": "gente",
+              "x": 0.85,
+              "y": 0.5,
+              "tam": 55,
+              "rotulo": "Audiencia",
+              "t": 1.7
+            },
+            {
+              "fig": "billete",
+              "x": 0.5,
+              "y": 0.78,
+              "tam": 70,
+              "rotulo": "Venta",
+              "t": 2.2,
+              "acento": true
+            }
+          ],
+          "flechas": [
+            {
+              "de": 0,
+              "a": 1,
+              "t": 0.7
+            },
+            {
+              "de": 1,
+              "a": 2,
+              "t": 1.2
+            },
+            {
+              "de": 2,
+              "a": 3,
+              "t": 1.7
+            },
+            {
+              "de": 3,
+              "a": 4,
+              "t": 2.2
+            }
+          ]
+        }
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_11/payoff_1.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.496009
+        }
+      ],
+      "golpe": "fundido",
+      "volumenSfx": 0,
+      "estrategiaEdicion": {
+        "unidadId": "payoff_1",
+        "intencion": "contextualizar",
+        "energia": "alta",
+        "densidadVisual": "moderada",
+        "estilos": [
+          "documental"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "fundido",
+          "funcion": "sin_funcion_especial",
+          "intensidad": "alta",
+          "motivo": "golpe \"fundido\" acompana una unidad con intencion \"contextualizar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"payoff_1\""
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "estructura-problema-agitacion-solucion",
+        "razonGeneral": "unidad \"payoff_1\" (11/12, categoria=diagrama): intencion=contextualizar (energia=alta, densidad=moderada), estilos=[documental], patron_retencion=estructura-problema-agitacion-solucion"
+      },
+      "patronesRetencion": [
+        "estructura-problema-agitacion-solucion"
+      ]
+    },
+    {
+      "unidadId": "cierre_0",
+      "desdeSeg": 33.43007,
+      "duracionSeg": 2.746009,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "SEGUIME.",
+          "Y MIRÁ CÓMO LO HAGO."
+        ],
+        "entra": [
+          0,
+          1.2480045
+        ],
+        "clip": "freelance-05.mp4"
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_demo_11/cierre_0.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.496009
+        }
+      ],
+      "golpe": "negro",
+      "volumenSfx": 0.5,
+      "estrategiaEdicion": {
+        "unidadId": "cierre_0",
+        "intencion": "cerrar",
+        "energia": "alta",
+        "densidadVisual": "minima",
+        "estilos": [
+          "cinematico",
+          "storytelling"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "cierre del video: no debe quedar nada pendiente despues"
+        },
+        "transicion": {
+          "golpe": "negro",
+          "funcion": "marcar_cambio",
+          "intensidad": "alta",
+          "motivo": "golpe \"negro\" acompana una unidad con intencion \"cerrar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"cierre_0\""
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "pago-de-la-promesa",
+        "razonGeneral": "unidad \"cierre_0\" (12/12, categoria=texto): intencion=cerrar (energia=alta, densidad=minima), estilos=[cinematico+storytelling], patron_retencion=pago-de-la-promesa"
+      },
+      "patronesRetencion": [
+        "pago-de-la-promesa"
+      ]
+    }
+  ],
+  "duracionTotalSeg": 36.676079,
+  "musicaFondo": {
+    "archivo": "musica/tension-misterioso.mp3",
+    "volumen": 0.12,
+    "licencia": "CC0 1.0 Universal (dominio publico)",
+    "atribucion": null
+  },
+  "analisisRetencion": {
+    "mapa": [
+      {
+        "unidadId": "hook_0",
+        "fase": "hook",
+        "energia": "muy_alta",
+        "duracionSeg": 2.361995,
+        "esClimax": false
+      },
+      {
+        "unidadId": "desarrollo_0",
+        "fase": "escalada",
+        "energia": "alta",
+        "duracionSeg": 3.898005,
+        "esClimax": false
+      },
+      {
+        "unidadId": "desarrollo_1",
+        "fase": "revelacion",
+        "energia": "muy_alta",
+        "duracionSeg": 2.234014,
+        "esClimax": true
+      },
+      {
+        "unidadId": "desarrollo_2",
+        "fase": "desarrollo",
+        "energia": "media",
+        "duracionSeg": 3.351995,
+        "esClimax": false
+      },
+      {
+        "unidadId": "giro_0",
+        "fase": "desarrollo",
+        "energia": "alta",
+        "duracionSeg": 3.258005,
+        "esClimax": false
+      },
+      {
+        "unidadId": "giro_1",
+        "fase": "desarrollo",
+        "energia": "alta",
+        "duracionSeg": 5.528004999999999,
+        "esClimax": false
+      },
+      {
+        "unidadId": "pausa_0",
+        "fase": "desarrollo",
+        "energia": "baja",
+        "duracionSeg": 3.194014,
+        "esClimax": false
+      },
+      {
+        "unidadId": "giro_2",
+        "fase": "escalada",
+        "energia": "muy_alta",
+        "duracionSeg": 2.904014,
+        "esClimax": false
+      },
+      {
+        "unidadId": "desarrollo_3",
+        "fase": "desarrollo",
+        "energia": "muy_alta",
+        "duracionSeg": 3.258005,
+        "esClimax": false
+      },
+      {
+        "unidadId": "payoff_0",
+        "fase": "escalada",
+        "energia": "alta",
+        "duracionSeg": 3.096009,
+        "esClimax": false
+      },
+      {
+        "unidadId": "payoff_1",
+        "fase": "desarrollo",
+        "energia": "alta",
+        "duracionSeg": 2.746009,
+        "esClimax": false
+      },
+      {
+        "unidadId": "cierre_0",
+        "fase": "cierre",
+        "energia": "alta",
+        "duracionSeg": 2.746009,
+        "esClimax": false
+      }
+    ],
+    "alertas": [
+      {
+        "tipo": "promesa_poco_clara",
+        "severidad": "media",
+        "descripcion": "el video pasa del hook directo a la escalada/revelación sin ninguna unidad de desarrollo/contexto en el medio",
+        "razon": "unidad \"desarrollo_0\" (fase \"escalada\") sigue inmediatamente al hook"
+      },
+      {
+        "tipo": "tramo_sin_evolucion",
+        "severidad": "media",
+        "descripcion": "4 unidades seguidas en la misma fase narrativa (\"desarrollo\") sin avanzar el arco",
+        "razon": "unidades: desarrollo_2, giro_0, giro_1, pausa_0"
+      }
+    ],
+    "patronesUsados": [
+      {
+        "patronId": "contexto-parcial",
+        "nombre": "Contexto parcial",
+        "categoria": "apertura",
+        "porQue": "Da un dato concreto (un nombre, una cifra) sin explicar todavia el resto -- el espectador entiende que hay una historia pero no la historia completa. Maxima curiosidad con ALGO de contexto, no con cero.",
+        "evidencia": [
+          {
+            "id": "loewenstein-1994-brecha-curiosidad",
+            "concepto": "Brecha de curiosidad (curiosity gap)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "hook_0"
+      },
+      {
+        "patronId": "loop-abierto",
+        "nombre": "Loop abierto / pregunta sin resolver",
+        "categoria": "apertura",
+        "porQue": "Plantea una pregunta o situación de tensión en el hook y la deja explícitamente sin resolver hasta el cierre -- la tensión cognitiva de \"algo incompleto\" mantiene la atención.",
+        "evidencia": [
+          {
+            "id": "zeigarnik-1927-tareas-incompletas",
+            "concepto": "Efecto Zeigarnik (tareas incompletas)",
+            "nivel": "evidencia"
+          },
+          {
+            "id": "heuristica-cliffhanger-aplicado-vertical",
+            "concepto": "Cliffhanger aplicado a video vertical corto",
+            "nivel": "patron_observado"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "desarrollo_0"
+      },
+      {
+        "patronId": "expectativa-violada",
+        "nombre": "Expectativa violada",
+        "categoria": "contradiccion",
+        "porQue": "Afirma algo que contradice lo que la audiencia probablemente cree cierto (\"no es lo que pensás\") -- la novedad/incongruencia percibida es lo que genera interés, según la teoría de apreciación del interés, aunque esa teoría no habla específicamente de \"contradicción\" como técnica retórica.",
+        "evidencia": [
+          {
+            "id": "silvia-2005-apraisal-interes",
+            "concepto": "Teoría de apreciación del interés (Silvia)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "desarrollo_1"
+      },
+      {
+        "patronId": "contraste-antes-despues",
+        "nombre": "Contraste antes/después",
+        "categoria": "comparacion",
+        "porQue": "Presenta dos estados opuestos (antes de X / después de X) uno al lado del otro -- ya existe como componente real en el catálogo (AntesDespues), esto documenta el patrón narrativo detrás de esa elección visual.",
+        "evidencia": [],
+        "esHipotesisUObservado": "sin_respaldo_formal",
+        "dependeDe": "desarrollo_2"
+      },
+      {
+        "patronId": "estructura-problema-agitacion-solucion",
+        "nombre": "Problema → Agitación → Solución (PAS)",
+        "categoria": "storytelling",
+        "porQue": "Identifica un problema concreto, amplifica el malestar/costo real de no resolverlo, y presenta la solución -- fórmula clásica de copywriting/storytelling de marca.",
+        "evidencia": [
+          {
+            "id": "storytelling-storybrand-pas-pixar",
+            "concepto": "Frameworks de storytelling de marca (StoryBrand, PAS, Pixar Story Spine)",
+            "nivel": "buena_practica"
+          }
+        ],
+        "esHipotesisUObservado": "patron_observado_o_buena_practica",
+        "dependeDe": "giro_0, giro_1, pausa_0, desarrollo_3, payoff_1"
+      },
+      {
+        "patronId": "pregunta-sin-resolver-intermedia",
+        "nombre": "Micro-loop a mitad de video",
+        "categoria": "curiosidad",
+        "porQue": "Reabre un loop chico (una pregunta nueva, más pequeña que la del hook) a mitad del video para \"reenganchar\" antes de que la atención decaiga -- la misma tensión cognitiva de Zeigarnik, aplicada varias veces en vez de una sola.",
+        "evidencia": [
+          {
+            "id": "zeigarnik-1927-tareas-incompletas",
+            "concepto": "Efecto Zeigarnik (tareas incompletas)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "giro_2"
+      },
+      {
+        "patronId": "tension-creciente",
+        "nombre": "Tensión creciente hacia un clímax",
+        "categoria": "escalada",
+        "porQue": "Estructura clásica de acción ascendente: cada unidad narrativa aumenta la complicación/expectativa hasta un punto de máxima tensión (clímax), en vez de mantener una energía plana.",
+        "evidencia": [
+          {
+            "id": "freytag-1863-piramide-narrativa",
+            "concepto": "Pirámide de Freytag (estructura dramática de 5 actos)",
+            "nivel": "buena_practica"
+          }
+        ],
+        "esHipotesisUObservado": "patron_observado_o_buena_practica",
+        "dependeDe": "payoff_0"
+      },
+      {
+        "patronId": "pago-de-la-promesa",
+        "nombre": "Pago explícito de la promesa del hook",
+        "categoria": "recompensa",
+        "porQue": "Cuando el hook prometió algo (una respuesta, un resultado), el video debe entregarlo explícitamente y de forma reconocible -- cerrar el loop es lo que da la \"recompensa\" cognitiva de la tensión generada, según Zeigarnik.",
+        "evidencia": [
+          {
+            "id": "zeigarnik-1927-tareas-incompletas",
+            "concepto": "Efecto Zeigarnik (tareas incompletas)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "cierre_0"
+      }
+    ]
+  }
+}

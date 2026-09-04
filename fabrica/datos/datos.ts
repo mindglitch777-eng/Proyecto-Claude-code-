@@ -91,5 +91,24 @@ export const REGISTROS_VIDEO: RegistroVideoCompleto[] = [
       fuente: 'orquestador.ts (checks_duros.py + checks_composicion.py)',
     },
   },
+  {
+    videoId: 'fabrica-demo-11',
+    idea: 'La mayoria usa la IA mal: coleccionar herramientas no es construir un sistema.',
+    tema: 'IA aplicada a negocios digitales',
+    angulo: 'contrarian -- herramientas vs sistema',
+    hookPatronId: 'contexto-parcial',
+    estructura: 'hook-desarrollo-giro-pausa-giro-payoff-cierre',
+    duracionSeg: 36.676079,
+    voz: 'Qwen3-TTS',
+    componentesUsados: ['punch', 'rafaga', 'antes-despues', 'diagrama', 'cronologia', 'silueta', 'pasos', 'tres-verdades'],
+    formato: 'vertical 1080x1920',
+    fecha: '2026-09-04',
+    metricas: null,
+    qaResumen: {
+      ok: true,
+      problemas: [],
+      fuente: 'orquestador.ts (checks_duros.py + checks_composicion.py)',
+    },
+  },
 ];
 export const REGISTROS_PRODUCTO: RegistroProducto[] = [];
