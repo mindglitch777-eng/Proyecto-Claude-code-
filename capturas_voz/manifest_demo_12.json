@@ -1,0 +1,114 @@
+[
+  {
+    "index": 0,
+    "unidad": "hook",
+    "idx_en_unidad": 0,
+    "id": "hook_0",
+    "texto_crudo": "El 98% de las personas pierde dinero todos los días.",
+    "texto": "El noventa y ocho por ciento de las personas pierde dinero todos los días."
+  },
+  {
+    "index": 1,
+    "unidad": "hook",
+    "idx_en_unidad": 1,
+    "id": "hook_1",
+    "texto_crudo": "Y no vas a querer saber por qué.",
+    "texto": "Y no vas a querer saber por qué."
+  },
+  {
+    "index": 2,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 0,
+    "id": "desarrollo_0",
+    "texto_crudo": "Porque no venden productos digitales.",
+    "texto": "Porque no venden productos digitales."
+  },
+  {
+    "index": 3,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 1,
+    "id": "desarrollo_1",
+    "texto_crudo": "Un negocio digital que mueve más de 60 mil millones de dólares al año.",
+    "texto": "Un negocio digital que mueve más de sesenta mil millones de dólares al año."
+  },
+  {
+    "index": 4,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 2,
+    "id": "desarrollo_2",
+    "texto_crudo": "Y la inteligencia artificial lo está multiplicando.",
+    "texto": "Y la inteligencia artificial lo está multiplicando."
+  },
+  {
+    "index": 5,
+    "unidad": "casos",
+    "idx_en_unidad": 0,
+    "id": "casos_0",
+    "texto_crudo": "Hay casos documentados de creadores que pasaron de 0 a 5.000, 10.000 y hasta 50.000 dólares al mes.",
+    "texto": "Hay casos documentados de creadores que pasaron de cero a cinco mil, diez mil y hasta cincuenta mil dólares al mes."
+  },
+  {
+    "index": 6,
+    "unidad": "critica",
+    "idx_en_unidad": 0,
+    "id": "critica_0",
+    "texto_crudo": "Pero el 98% sigue usando la IA para jugar.",
+    "texto": "Pero el noventa y ocho por ciento sigue usando la IA para jugar."
+  },
+  {
+    "index": 7,
+    "unidad": "critica",
+    "idx_en_unidad": 1,
+    "id": "critica_1",
+    "texto_crudo": "Cuando deberían usarla para construir activos.",
+    "texto": "Cuando deberían usarla para construir activos."
+  },
+  {
+    "index": 8,
+    "unidad": "sistema",
+    "idx_en_unidad": 0,
+    "id": "sistema_0",
+    "texto_crudo": "El sistema es simple: idea, producto digital, contenido, venta automatizada.",
+    "texto": "El sistema es simple: idea, producto digital, contenido, venta automatizada."
+  },
+  {
+    "index": 9,
+    "unidad": "sistema",
+    "idx_en_unidad": 1,
+    "id": "sistema_1",
+    "texto_crudo": "Y no necesitas cámara, no necesitas edición, necesitas sistema.",
+    "texto": "Y no necesitas cámara, no necesitas edición, necesitas sistema."
+  },
+  {
+    "index": 10,
+    "unidad": "prueba",
+    "idx_en_unidad": 0,
+    "id": "prueba_0",
+    "texto_crudo": "Por eso estoy documentando el proceso completo.",
+    "texto": "Por eso estoy documentando el proceso completo."
+  },
+  {
+    "index": 11,
+    "unidad": "prueba",
+    "idx_en_unidad": 1,
+    "id": "prueba_1",
+    "texto_crudo": "Con casos reales, cifras exactas y errores que aprendí.",
+    "texto": "Con casos reales, cifras exactas y errores que aprendí."
+  },
+  {
+    "index": 12,
+    "unidad": "payoff",
+    "idx_en_unidad": 0,
+    "id": "payoff_0",
+    "texto_crudo": "Para que dejes de perder plata y empieces a generar activos.",
+    "texto": "Para que dejes de perder plata y empieces a generar activos."
+  },
+  {
+    "index": 13,
+    "unidad": "cierre",
+    "idx_en_unidad": 0,
+    "id": "cierre_0",
+    "texto_crudo": "Seguime. Esta semana te muestro el sistema aplicado.",
+    "texto": "Seguime. Esta semana te muestro el sistema aplicado."
+  }
+]

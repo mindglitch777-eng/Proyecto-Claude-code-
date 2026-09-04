@@ -1,0 +1,106 @@
+name: generar-voz-demo-12
+
+# Genera la voz REAL (Qwen3-TTS) para fabrica-demo-12
+# ("El 98% pierde dinero porque no vende productos digitales con IA").
+# Mismo patron EXACTO que generar-voz-demo-06.yml -- MISMA voz clonada
+# (librivox-11), MISMO instruct, MISMO rate (1.25). El operador fue
+# explicito: "UTILIZA EXACTAMENTE LA MISMA VOZ QWEN3-TTS... No cambies
+# modelo/voz/configuracion/personalidad vocal" -- la unica variable de
+# esta prueba es guion+direccion+edicion, nunca el motor de voz.
+
+on:
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths: [".github/workflows/generar-voz-demo-12.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  generar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clonar y compilar el motor C
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libopenblas-dev ffmpeg
+          git clone --depth 1 https://github.com/gabriele-mastrapasqua/qwen3-tts /tmp/qwen3-tts
+          cd /tmp/qwen3-tts
+          make blas
+
+      - name: Descargar el modelo Base 1.7B
+        run: |
+          cd /tmp/qwen3-tts
+          ./download_model.sh --model base-large --dir /tmp/qwen3-tts-modelo
+
+      - name: Preparar el audio de referencia (voz real de produccion, librivox-11)
+        run: |
+          ffmpeg -y -loglevel error -i \
+            "muestras_voz/referencias-candidatas/librivox-11.mp3" \
+            -ar 24000 -ac 1 /tmp/referencia.wav
+
+      - name: Generar cada linea del guion nuevo con la voz real
+        run: |
+          mkdir -p capturas_voz/audio_demo_12
+          cd /tmp/qwen3-tts
+          INSTRUCT="Speak in a serious, elegant, composed and confident tone, clear and articulate -- not aggressive, not menacing, not overly deep"
+          RATE="1.25"
+
+          python3 -c "
+          import json
+          m = json.load(open('$GITHUB_WORKSPACE/capturas_voz/manifest_demo_12.json', encoding='utf-8'))
+          for item in m:
+              print(f\"{item['id']}\t{item['texto']}\")
+          " > /tmp/lineas.tsv
+
+          mapfile -t LINEAS < /tmp/lineas.tsv
+          for linea in "${LINEAS[@]}"; do
+            IFS=$'\t' read -r id texto <<< "$linea"
+            echo "=== [$id] ==="
+            echo "  texto: $texto"
+            ./qwen_tts -d /tmp/qwen3-tts-modelo --ref-audio /tmp/referencia.wav \
+              --text "$texto" --language Spanish \
+              --instruct "$INSTRUCT" --rate "$RATE" \
+              -o "/tmp/demo12-$id.wav" < /dev/null || echo "AVISO: $id fallo"
+            if [ -f "/tmp/demo12-$id.wav" ]; then
+              duracion_real=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "/tmp/demo12-$id.wav")
+              echo "  duracion real: ${duracion_real}s"
+            fi
+          done
+
+      - name: Realzar con la cadena de voz_piper.py (misma que produccion)
+        run: |
+          pip install --quiet numpy
+          python3 -c "
+          import sys
+          sys.path.insert(0, '.')
+          from pathlib import Path
+          from voz_piper import realzar
+          for wav in sorted(Path('/tmp').glob('demo12-*.wav')):
+              nombre = wav.stem.replace('demo12-', '')
+              destino = Path(f'capturas_voz/audio_demo_12/{nombre}.wav')
+              if realzar(wav, destino, semitonos=0):
+                  print(f'realzado -> {destino}')
+              else:
+                  print(f'ERROR realzando {nombre}, copio el crudo')
+                  import shutil; shutil.copy(wav, destino)
+          "
+
+      - name: Guardar en el repo
+        if: always()
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain capturas_voz/audio_demo_12)" ]; then
+            git add capturas_voz/audio_demo_12
+            git commit -m "Voz real (Qwen3-TTS) del guion del benchmark audiovisual agresivo (R7-32)"
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          else
+            echo "Sin cambios -- ninguna linea se genero, revisar el log del paso anterior."
+            exit 1
+          fi
