@@ -5,6 +5,16 @@ name: generar-voz-lote-ventas
 # patron EXACTO que generar-voz-demo-10.yml -- MISMA voz clonada
 # (librivox-11), MISMO instruct, MISMO rate (1.25). Nunca se cambia el
 # motor de voz entre pruebas, solo el guion/contenido.
+#
+# R8: la primera corrida (60 lineas, 4x mas que demo_10) se quedo sin
+# tiempo a los 30 min -- el timeout mato el job A MITAD del loop, y
+# como el realce + commit corrian recien DESPUES de todo el loop, se
+# perdieron los ~27 minutos de progreso: cero lineas quedaron
+# guardadas. Fix real, no solo "subir el timeout": cada linea se
+# realza y se escribe a su destino final DENTRO del mismo loop (no en
+# un paso aparte), y se commitea+pushea cada 6 lineas (una tanda por
+# video) -- si el job se corta de nuevo, lo generado hasta ese punto ya
+# esta en el repo.
 
 on:
   push:
@@ -18,7 +28,7 @@ permissions:
 jobs:
   generar:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 150
     steps:
       - uses: actions/checkout@v4
 
@@ -41,54 +51,74 @@ jobs:
             "muestras_voz/referencias-candidatas/librivox-11.mp3" \
             -ar 24000 -ac 1 /tmp/referencia.wav
 
-      - name: Generar cada linea del lote de ventas con la voz real
+      - name: Instalar dependencias del realce (voz_piper.py)
+        run: pip install --quiet numpy
+
+      - name: Generar, realzar y guardar cada linea (commit incremental cada 6)
         run: |
           mkdir -p capturas_voz/audio_lote_ventas
-          cd /tmp/qwen3-tts
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+
           INSTRUCT="Speak in a serious, elegant, composed and confident tone, clear and articulate -- not aggressive, not menacing, not overly deep"
           RATE="1.25"
 
           python3 -c "
           import json
-          m = json.load(open('$GITHUB_WORKSPACE/capturas_voz/manifest_lote_ventas.json', encoding='utf-8'))
+          m = json.load(open('capturas_voz/manifest_lote_ventas.json', encoding='utf-8'))
           for item in m:
               print(f\"{item['id']}\t{item['texto']}\")
           " > /tmp/lineas.tsv
 
+          YA_GENERADAS=0
           mapfile -t LINEAS < /tmp/lineas.tsv
           for linea in "${LINEAS[@]}"; do
             IFS=$'\t' read -r id texto <<< "$linea"
+            destino="capturas_voz/audio_lote_ventas/${id}.wav"
+
+            if [ -f "$destino" ]; then
+              echo "=== [$id] ya existe (corrida anterior), salteo ==="
+              continue
+            fi
+
             echo "=== [$id] ==="
             echo "  texto: $texto"
-            ./qwen_tts -d /tmp/qwen3-tts-modelo --ref-audio /tmp/referencia.wav \
+            (cd /tmp/qwen3-tts && ./qwen_tts -d /tmp/qwen3-tts-modelo --ref-audio /tmp/referencia.wav \
               --text "$texto" --language Spanish \
               --instruct "$INSTRUCT" --rate "$RATE" \
-              -o "/tmp/venta-$id.wav" < /dev/null || echo "AVISO: $id fallo"
+              -o "/tmp/venta-$id.wav" < /dev/null) || echo "AVISO: $id fallo la generacion"
+
             if [ -f "/tmp/venta-$id.wav" ]; then
               duracion_real=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "/tmp/venta-$id.wav")
               echo "  duracion real: ${duracion_real}s"
-            fi
-          done
 
-      - name: Realzar con la cadena de voz_piper.py (misma que produccion)
-        run: |
-          pip install --quiet numpy
-          python3 -c "
+              python3 -c "
           import sys
           sys.path.insert(0, '.')
           from pathlib import Path
           from voz_piper import realzar
-          for wav in sorted(Path('/tmp').glob('venta-*.wav')):
-              nombre = wav.stem.replace('venta-', '')
-              destino = Path(f'capturas_voz/audio_lote_ventas/{nombre}.wav')
-              if realzar(wav, destino, semitonos=0):
-                  print(f'realzado -> {destino}')
-              else:
-                  print(f'ERROR realzando {nombre}, copio el crudo')
-                  import shutil; shutil.copy(wav, destino)
+          origen = Path('/tmp/venta-$id.wav')
+          destino = Path('$destino')
+          if not realzar(origen, destino, semitonos=0):
+              print('ERROR realzando $id, copio el crudo')
+              import shutil; shutil.copy(origen, destino)
           "
+              rm -f "/tmp/venta-$id.wav"
+              YA_GENERADAS=$((YA_GENERADAS + 1))
+            fi
 
-      - name: Guardar en el repo
+            if [ $((YA_GENERADAS % 6)) -eq 0 ] && [ "$YA_GENERADAS" -gt 0 ]; then
+              if [ -n "$(git status --porcelain capturas_voz/audio_lote_ventas)" ]; then
+                git add capturas_voz/audio_lote_ventas
+                git commit -m "Voz real (Qwen3-TTS) del lote de ventas -- avance parcial ($YA_GENERADAS lineas)"
+                git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+                git push origin "HEAD:$GITHUB_REF_NAME"
+                YA_GENERADAS=0
+              fi
+            fi
+          done
+
+      - name: Guardar el resto en el repo (si quedo algo sin commitear)
         if: always()
         run: |
           git config user.name  "productor-bot"
@@ -99,6 +129,5 @@ jobs:
             git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
             git push origin "HEAD:$GITHUB_REF_NAME"
           else
-            echo "Sin cambios -- ninguna linea se genero, revisar el log del paso anterior."
-            exit 1
+            echo "Nada pendiente de commitear (todo se subio incrementalmente, o no se genero nada nuevo)."
           fi
