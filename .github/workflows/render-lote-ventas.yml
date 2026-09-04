@@ -73,7 +73,15 @@ jobs:
         working-directory: remotion-spike
         run: npx remotion browser ensure
 
-      - name: Copiar audio real a public/ (no versionado, .gitignore)
+      - name: Armar public/ (fuentes, fotos, metraje, SFX de golpes)
+        if: steps.check.outputs.listo == 'true'
+        run: ./remotion-spike/preparar-public.sh
+
+      - name: Copiar audio real del lote de ventas a public/
+        # preparar-public.sh arma fuentes/fotos/video/sfx/audio_documental
+        # pero no sabe nada de fabrica_venta/ (no existia cuando se
+        # escribio) -- por eso va DESPUES, para que el rm -rf de ese
+        # script no se lleve puesto este audio.
         if: steps.check.outputs.listo == 'true'
         run: |
           mkdir -p remotion-spike/public/fabrica_venta
