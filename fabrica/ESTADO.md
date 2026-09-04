@@ -38,9 +38,24 @@ script-driven donde el guionista elige el componente a mano.
   se usaron en ningún `ArbolComposicion` real generado hasta hoy (7
   legacy + 12 de los 23 efectos nuevos de esta ronda) -- medido
   recorriendo los 24 JSON reales de `fabrica_bridge/`. Dos workflows
-  (`pexels-automatico.yml`, `probar-render.yml`) nunca fueron
-  registrados por GitHub como Action válida (0 corridas, ni siquiera
-  aparecen en `list_workflows`).
+  (`pexels-automatico.yml`, `probar-render.yml`) no tienen corridas
+  registradas en la API -- diagnóstico verificado, NO están rotos: su
+  propio encabezado ya documenta que `workflow_dispatch` solo funciona
+  una vez mergeado a `main` (misma limitación que obligó a disparar
+  `render-lote-ventas.yml` por push a un centinela). No se tocaron.
+- **Punto 4 ejecutado**: archivado (`git mv`, reversible) a
+  `archivado/fase1-orquestador-original/` de `orchestrator.py`,
+  `state/state.json`, `state/fabrica.json` y
+  `.github/workflows/orquestador-diario.yml` -- los cuatro son,
+  literalmente, el sistema de Fase 1 que `CLAUDE.md` ya declaraba
+  congelado. Hallazgo no pedido pero real, encontrado en el camino:
+  `orquestador-diario.yml` seguía CORRIENDO TODOS LOS DÍAS a las 9am,
+  gastando uso real de Claude Code del operador contra
+  `orchestrator.py status` -- su última corrida antes de este archivado
+  falló. `producto/` (código real de "El Corte") no se tocó, por
+  instrucción explícita de `CLAUDE.md`. TODOs/"por si acaso" huérfanos:
+  se buscaron en toda `fabrica/`, no hay ninguno real (las coincidencias
+  eran la palabra española "todo/todos" dentro de comentarios normales).
 - **Nuevo orquestador `fabrica/composicion/renderizador_por_guion.ts`**:
   recibe `EscenaGuion[]` con `componenteId`/`props` explícitos (sin
   Director Visual/scoring), pero SÍ corre `DirectorEdicion` (+ curva de
