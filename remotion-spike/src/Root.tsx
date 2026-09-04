@@ -61,6 +61,22 @@ import {
   CataclismoDatos,
   DevoradorRealidad,
   MercurioRevelador,
+  GlitchShatter,
+  SlotMachine,
+  HeartbeatPulse,
+  MindMapConnect,
+  TextRevealFire,
+  CircleOfTruth,
+  PixelBurst,
+  GoldRush,
+  LiquidMetal,
+  SpotlightReveal,
+  ChromaticShift,
+  WaveDistortion,
+  StarbustFlare,
+  VortexTransport,
+  AuroraShine,
+  NeonRipple,
 } from './effects';
 
 const cuadros = Math.round(DUR_TOTAL * FPS);
@@ -516,6 +532,224 @@ export const Root: React.FC = () => {
           logoImage: '',
           highlightColor: '#FFD700',
           duration: 2.2,
+        }}
+      />
+
+      {/* FASE 2: 15+ EFECTOS ADICIONALES CINEMATOGRAFICOS */}
+      <Composition
+        id="efecto-glitch-shatter"
+        component={GlitchShatter as any}
+        durationInFrames={Math.round(1.2 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          text: '¡CRASH!',
+          glitchColor: '#FF00FF',
+          fragmentCount: 50,
+          duration: 1.2,
+        }}
+      />
+      <Composition
+        id="efecto-slot-machine"
+        component={SlotMachine as any}
+        durationInFrames={Math.round(1.8 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          finalNumber: '7777',
+          metalColor: '#FFD700',
+          duration: 1.8,
+        }}
+      />
+      <Composition
+        id="efecto-heartbeat-pulse"
+        component={HeartbeatPulse as any}
+        durationInFrames={Math.round(2.0 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          text: 'GANASTE',
+          pulseColor: '#FF0055',
+          beats: 3,
+          duration: 2.0,
+        }}
+      />
+      <Composition
+        id="efecto-mindmap-connect"
+        component={MindMapConnect as any}
+        durationInFrames={Math.round(2.5 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          items: ['Idea', 'Acción', 'Resultado', 'Éxito'],
+          lineColor: '#00FFFF',
+          nodeGlow: '#FF00FF',
+          duration: 2.5,
+        }}
+      />
+      <Composition
+        id="efecto-text-reveal-fire"
+        component={TextRevealFire as any}
+        durationInFrames={Math.round(2.0 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          text: '¡REVELADO!',
+          fireColor: '#FF6B35',
+          textColor: '#FFFFFF',
+          duration: 2.0,
+        }}
+      />
+      <Composition
+        id="efecto-circle-of-truth"
+        component={CircleOfTruth as any}
+        durationInFrames={Math.round(1.8 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          content: '✓',
+          circleColor: '#00FF00',
+          duration: 1.8,
+        }}
+      />
+      <Composition
+        id="efecto-pixel-burst"
+        component={PixelBurst as any}
+        durationInFrames={Math.round(1.2 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          pixelSize: 20,
+          burstColor: '#00FFFF',
+          duration: 1.2,
+        }}
+      />
+      <Composition
+        id="efecto-gold-rush"
+        component={GoldRush as any}
+        durationInFrames={Math.round(2.5 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          achievementText: 'LOGRO',
+          goldColor: '#FFD700',
+          coinCount: 100,
+          duration: 2.5,
+        }}
+      />
+      <Composition
+        id="efecto-liquid-metal"
+        component={LiquidMetal as any}
+        durationInFrames={Math.round(1.5 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          text: 'FORMANDO',
+          metalColor: '#C0C0C0',
+          glowColor: '#00FFFF',
+          duration: 1.5,
+        }}
+      />
+      <Composition
+        id="efecto-spotlight-reveal"
+        component={SpotlightReveal as any}
+        durationInFrames={Math.round(1.8 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          text: 'FOCO',
+          spotColor: '#FFFF00',
+          textColor: '#FFFFFF',
+          duration: 1.8,
+        }}
+      />
+      <Composition
+        id="efecto-chromatic-shift"
+        component={ChromaticShift as any}
+        durationInFrames={Math.round(1.6 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          text: 'CAMBIO',
+          duration: 1.6,
+        }}
+      />
+      <Composition
+        id="efecto-wave-distortion"
+        component={WaveDistortion as any}
+        durationInFrames={Math.round(1.9 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          text: 'ONDAS',
+          waveColor: '#00FFFF',
+          duration: 1.9,
+        }}
+      />
+      <Composition
+        id="efecto-starburst-flare"
+        component={StarbustFlare as any}
+        durationInFrames={Math.round(2.0 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          text: '⭐',
+          starColor: '#FFFF00',
+          duration: 2.0,
+        }}
+      />
+      <Composition
+        id="efecto-vortex-transport"
+        component={VortexTransport as any}
+        durationInFrames={Math.round(2.2 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          text: 'PORTAL',
+          vortexColor: '#FF00FF',
+          duration: 2.2,
+        }}
+      />
+      <Composition
+        id="efecto-aurora-shine"
+        component={AuroraShine as any}
+        durationInFrames={Math.round(2.3 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          text: 'AURORA',
+          auroraColor1: '#00FF88',
+          auroraColor2: '#FF00FF',
+          duration: 2.3,
+        }}
+      />
+      <Composition
+        id="efecto-neon-ripple"
+        component={NeonRipple as any}
+        durationInFrames={Math.round(1.7 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          text: 'ONDA',
+          rippleColor: '#00FFFF',
+          coreColor: '#FF00FF',
+          duration: 1.7,
         }}
       />
     </>
