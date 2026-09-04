@@ -196,3 +196,149 @@ export function propsParaComparacion(componenteId: string, datos: DatosComparaci
       );
   }
 }
+
+// R8: adaptador de categoria 'texto' -- el mas concurrido del catalogo
+// (17 componentes). Todos comparten el MISMO concepto neutral: una
+// frase corta de impacto (mas 1-2 colores de acento opcionales), asi
+// que un solo modelo de datos alcanza. 'remate' queda afuera a
+// proposito: requiere video obligatorio (nunca gana si
+// assetsDisponibles no trae 'video', pero si algun dia lo trae, su
+// forma de props -- d.lineas/d.grande/d.pie con video obligatorio -- es
+// bastante distinta de "una frase" como para forzarla aca). 'silueta'
+// tiene el mismo acoplamiento a `Idea` de ../guion.ts (motor viejo)
+// documentado en componentes/README.md -- se mapea igual porque en la
+// practica el arbol viaja como JSON sin chequeo de tipo estricto, pero
+// queda anotado por si el tipo real de Idea exige mas campos.
+export type DatosTexto = {
+  frase: string;
+  colorPrincipal?: string;
+  colorSecundario?: string;
+};
+
+const COMPONENTES_TEXTO_SOPORTADOS = [
+  'tres-verdades', 'punch', 'silueta',
+  'arquitectura-neon', 'glitch-shatter', 'heartbeat-pulse', 'text-reveal-fire',
+  'circle-of-truth', 'gold-rush', 'liquid-metal', 'chromatic-shift',
+  'wave-distortion', 'starburst-flare', 'vortex-transport', 'aurora-shine', 'neon-ripple',
+] as const;
+
+export function propsParaTexto(componenteId: string, datos: DatosTexto): Record<string, unknown> {
+  const c1 = datos.colorPrincipal ?? '#FFFFFF';
+  const c2 = datos.colorSecundario ?? c1;
+
+  switch (componenteId) {
+    case 'tres-verdades':
+      return {frases: [datos.frase]};
+
+    case 'punch':
+      return {lineas: [datos.frase], entra: [0.3]};
+
+    case 'silueta':
+      return {idea: {tipo: 'silueta', texto: datos.frase, pie: ''}};
+
+    case 'arquitectura-neon':
+      return {text: datos.frase, mainColor: c1, sparkColor: c2};
+
+    case 'glitch-shatter':
+      return {text: datos.frase, glitchColor: c1};
+
+    case 'heartbeat-pulse':
+      return {text: datos.frase, pulseColor: c1};
+
+    case 'text-reveal-fire':
+      return {text: datos.frase, fireColor: c1, textColor: c2};
+
+    case 'circle-of-truth':
+      return {content: datos.frase, circleColor: c1};
+
+    case 'gold-rush':
+      return {achievementText: datos.frase, goldColor: c1};
+
+    case 'liquid-metal':
+      return {text: datos.frase, metalColor: c1, glowColor: c2};
+
+    case 'chromatic-shift':
+      return {text: datos.frase};
+
+    case 'wave-distortion':
+      return {text: datos.frase, waveColor: c1};
+
+    case 'starburst-flare':
+      return {text: datos.frase, starColor: c1};
+
+    case 'vortex-transport':
+      return {text: datos.frase, vortexColor: c1};
+
+    case 'aurora-shine':
+      return {text: datos.frase, auroraColor1: c1, auroraColor2: c2};
+
+    case 'neon-ripple':
+      return {text: datos.frase, rippleColor: c1, coreColor: c2};
+
+    default:
+      throw new Error(
+        `propsParaTexto: no hay adaptador para "${componenteId}" -- componentes soportados: ${COMPONENTES_TEXTO_SOPORTADOS.join(', ')}. ` +
+          `'remate' queda afuera (requiere video obligatorio, forma de props d.lineas/d.grande/d.pie distinta de "una frase").`
+      );
+  }
+}
+
+// R8: adaptador de categoria 'lista' -- solo cubre los componentes que
+// de verdad representan "varios items cortos, en fila/cascada", NO
+// TODOS los de la categoria: 'pasos'/'logos-herramientas' requieren
+// iconos obligatorios (quedan afuera del Director si no hay
+// assetsDisponibles con 'icono'), y 'ranking' necesita un VALOR
+// numerico por fila -- forzar nombres de pasos ahi como si fueran
+// puntajes representaria mal el concepto (seccion 7 del principio de
+// adaptadores). 'lista-tachada' tampoco entra: su narrativa es
+// "varios items se tachan, uno queda en pie", no "N pasos secuenciales".
+export type DatosLista = {
+  items: string[]; // 2 a 5 items cortos
+  color?: string;
+};
+
+const COMPONENTES_LISTA_SOPORTADOS = ['flip-cards'] as const;
+
+export function propsParaLista(componenteId: string, datos: DatosLista): Record<string, unknown> {
+  switch (componenteId) {
+    case 'flip-cards':
+      return {items: datos.items, cardColor: datos.color ?? '#003366'};
+
+    default:
+      throw new Error(
+        `propsParaLista: no hay adaptador para "${componenteId}" -- componentes soportados: ${COMPONENTES_LISTA_SOPORTADOS.join(', ')}. ` +
+          `'lista-tachada' (tachar items) y 'ranking' (valor numerico por fila) representan otro concepto -- no forzarlos aca.`
+      );
+  }
+}
+
+// R8: adaptador de categoria 'logos' -- reveal de marca/logo/cuenta al
+// cierre de un video. Ambos componentes reales aceptan imagen Y color
+// de acento; solo spotlight-reveal tambien acepta texto/nombre de
+// cuenta por separado de la imagen.
+export type DatosLogo = {
+  texto?: string;
+  imagenUrl?: string; // opcional -- nunca inventar una URL real si no la dio el operador
+  colorDestacado: string;
+};
+
+const COMPONENTES_LOGOS_SOPORTADOS = ['mercurio-revelador', 'spotlight-reveal'] as const;
+
+export function propsParaLogos(componenteId: string, datos: DatosLogo): Record<string, unknown> {
+  switch (componenteId) {
+    case 'mercurio-revelador':
+      return {logoImage: datos.imagenUrl ?? '', highlightColor: datos.colorDestacado};
+
+    case 'spotlight-reveal':
+      return {
+        text: datos.texto,
+        logoImage: datos.imagenUrl,
+        spotColor: datos.colorDestacado,
+      };
+
+    default:
+      throw new Error(
+        `propsParaLogos: no hay adaptador para "${componenteId}" -- componentes soportados: ${COMPONENTES_LOGOS_SOPORTADOS.join(', ')}.`
+      );
+  }
+}
