@@ -22,6 +22,7 @@ import demo08 from './fabrica_bridge/demo_08.json';
 import demo09 from './fabrica_bridge/demo_09.json';
 import demo10 from './fabrica_bridge/demo_10.json';
 import demo11 from './fabrica_bridge/demo_11.json';
+import demo12 from './fabrica_bridge/demo_12.json';
 import pruebaR68 from './fabrica_bridge/prueba_r6_8.json';
 import pruebaR610 from './fabrica_bridge/prueba_r6_10.json';
 import {Video} from './receta/Video';
@@ -249,6 +250,24 @@ export const Root: React.FC = () => {
         width={ANCHO}
         height={ALTO}
         defaultProps={{arbol: demo11 as ArbolFabrica}}
+      />
+      <Composition
+        id="fabrica-demo-12"
+        component={FabricaVideo}
+        durationInFrames={Math.round((demo12 as ArbolFabrica).duracionTotalSeg * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{arbol: demo12 as ArbolFabrica}}
+      />
+      <Composition
+        id="fabrica-demo-12-horizontal"
+        component={FabricaVideo}
+        durationInFrames={Math.round((demo12 as ArbolFabrica).duracionTotalSeg * FPS)}
+        fps={FPS}
+        width={ALTO}
+        height={ANCHO}
+        defaultProps={{arbol: demo12 as ArbolFabrica}}
       />
       {/* R6-8: prueba de punta a punta de la transicion real
           (@remotion/transitions) con 2 audios REALES -- ver
