@@ -1,8 +1,10 @@
 import React from 'react';
-import { useVideoConfig, AbsoluteFill, useCurrentFrame } from 'remotion';
+import { useVideoConfig, AbsoluteFill, useCurrentFrame, Img } from 'remotion';
 
 interface SpotlightRevealProps {
-  text: string;
+  text?: string;
+  logoImage?: string;
+  accountName?: string;
   spotColor?: string;
   textColor?: string;
   duration?: number;
@@ -10,6 +12,8 @@ interface SpotlightRevealProps {
 
 const SpotlightReveal: React.FC<SpotlightRevealProps> = ({
   text,
+  logoImage,
+  accountName,
   spotColor = '#FFFF00',
   textColor = '#FFFFFF',
   duration = 1.8,
@@ -87,29 +91,67 @@ const SpotlightReveal: React.FC<SpotlightRevealProps> = ({
         />
       </svg>
 
-      {/* Texto revelado */}
+      {/* Logo y/o texto revelados */}
       <div
         style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
-          fontSize: '100px',
-          fontWeight: 'bold',
-          color: textColor,
-          opacity: Math.min(1, sweepProgress * 1.5),
-          textShadow: `
-            0 0 20px ${spotColor},
-            0 0 40px ${spotColor},
-            0 0 60px ${spotColor}
-          `,
-          fontFamily: 'Arial, sans-serif',
-          letterSpacing: '2px',
-          filter: `drop-shadow(0 0 ${glowProgress * 30}px ${spotColor})`,
           transform: `translate(-50%, -50%) scale(${1 + glowProgress * 0.1})`,
-          transition: 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '20px',
+          opacity: Math.min(1, sweepProgress * 1.5),
+          filter: `drop-shadow(0 0 ${glowProgress * 30}px ${spotColor})`,
         }}
       >
-        {text}
+        {logoImage && (
+          <Img
+            src={logoImage}
+            style={{
+              width: '260px',
+              height: '260px',
+              objectFit: 'contain',
+              borderRadius: '24px',
+            }}
+          />
+        )}
+
+        {text && (
+          <div
+            style={{
+              fontSize: '100px',
+              fontWeight: 'bold',
+              color: textColor,
+              textShadow: `
+                0 0 20px ${spotColor},
+                0 0 40px ${spotColor},
+                0 0 60px ${spotColor}
+              `,
+              fontFamily: 'Arial, sans-serif',
+              letterSpacing: '2px',
+              textAlign: 'center',
+            }}
+          >
+            {text}
+          </div>
+        )}
+
+        {accountName && (
+          <div
+            style={{
+              fontSize: '48px',
+              fontWeight: 'bold',
+              color: spotColor,
+              textShadow: `0 0 15px ${spotColor}`,
+              fontFamily: 'Arial, sans-serif',
+              letterSpacing: '1px',
+            }}
+          >
+            {accountName}
+          </div>
+        )}
       </div>
 
       {/* Destello final */}

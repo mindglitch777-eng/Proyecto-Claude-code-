@@ -21,6 +21,14 @@ export { default as StarbustFlare } from './StarbustFlare';
 export { default as VortexTransport } from './VortexTransport';
 export { default as AuroraShine } from './AuroraShine';
 export { default as NeonRipple } from './NeonRipple';
+export { default as BarBrawl } from './BarBrawl';
+export { default as FlipCards } from './FlipCards';
+
+// Alias: nombres usados en guiones de producción para los componentes de
+// Fase 1 (misma implementación, sin duplicar código).
+export { default as NeonArchitecture } from './ArquitecturaNeon';
+export { default as MercuryReveal } from './MercurioRevelador';
+export { default as HologramCase } from './CapsulaHolografica';
 
 // Props interfaces
 export interface ArquitecturaNeonProps {
@@ -118,8 +126,26 @@ export interface LiquidMetalProps {
 }
 
 export interface SpotlightRevealProps {
-  text: string;
+  text?: string;
+  logoImage?: string;
+  accountName?: string;
   spotColor?: string;
+  textColor?: string;
+  duration?: number;
+}
+
+export interface BarBrawlProps {
+  labelA: string;
+  labelB: string;
+  winner: 'A' | 'B';
+  colorA?: string;
+  colorB?: string;
+  duration?: number;
+}
+
+export interface FlipCardsProps {
+  items: string[];
+  cardColor?: string;
   textColor?: string;
   duration?: number;
 }

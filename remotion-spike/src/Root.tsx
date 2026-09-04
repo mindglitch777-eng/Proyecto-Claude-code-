@@ -77,6 +77,8 @@ import {
   VortexTransport,
   AuroraShine,
   NeonRipple,
+  BarBrawl,
+  FlipCards,
 } from './effects';
 
 const cuadros = Math.round(DUR_TOTAL * FPS);
@@ -750,6 +752,36 @@ export const Root: React.FC = () => {
           rippleColor: '#00FFFF',
           coreColor: '#FF00FF',
           duration: 1.7,
+        }}
+      />
+      <Composition
+        id="efecto-bar-brawl"
+        component={BarBrawl as any}
+        durationInFrames={Math.round(1.8 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          labelA: 'TIEMPO',
+          labelB: 'ACTIVOS',
+          winner: 'B',
+          colorA: '#FF0044',
+          colorB: '#00FF88',
+          duration: 1.8,
+        }}
+      />
+      <Composition
+        id="efecto-flip-cards"
+        component={FlipCards as any}
+        durationInFrames={Math.round(2.0 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          items: ['IDEA', 'PRODUCTO', 'CONTENIDO', 'VENTA'],
+          cardColor: '#003366',
+          textColor: '#FFFFFF',
+          duration: 2.0,
         }}
       />
     </>
