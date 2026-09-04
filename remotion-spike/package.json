@@ -8,6 +8,10 @@
     "render": "remotion render"
   },
   "dependencies": {
+    "@react-spring/core": "^10.1.2",
+    "@react-spring/three": "^10.1.2",
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.7.0",
     "@remotion/captions": "^4.0.518",
     "@remotion/cli": "4.0.518",
     "@remotion/effects": "4.0.518",
@@ -20,10 +24,12 @@
     "@remotion/shapes": "4.0.518",
     "@remotion/three": "4.0.518",
     "@remotion/transitions": "4.0.518",
+    "framer-motion": "^13.2.0",
     "gsap": "3.15.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "remotion": "4.0.518"
+    "remotion": "4.0.518",
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@lobehub/icons-static-svg": "^1.94.0",

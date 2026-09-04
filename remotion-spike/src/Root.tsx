@@ -55,6 +55,13 @@ import {PruebaShine, DUR_PRUEBA_SHINE} from './pruebas-r7/PruebaShine';
 import {PruebaRings, DUR_PRUEBA_RINGS} from './pruebas-r7/PruebaRings';
 import {PruebaCaptions} from './subtitulos/PruebaCaptions';
 import {GraficoTorta} from './escenas/GraficoTorta';
+import {
+  ArquitecturaNeon,
+  CapsulaHolografica,
+  CataclismoDatos,
+  DevoradorRealidad,
+  MercurioRevelador,
+} from './effects';
 
 const cuadros = Math.round(DUR_TOTAL * FPS);
 
@@ -439,6 +446,77 @@ export const Root: React.FC = () => {
         width={ANCHO}
         height={ALTO}
         defaultProps={{conVideo: true}}
+      />
+
+      {/* EFECTOS AVANZADOS CINEMATOGRAFICOS (R8) */}
+      <Composition
+        id="efecto-arquitectura-neon"
+        component={ArquitecturaNeon as any}
+        durationInFrames={Math.round(2.0 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          text: 'ACTIVOS',
+          mainColor: '#FF0055',
+          sparkColor: '#FFD700',
+          duration: 2.0,
+        }}
+      />
+      <Composition
+        id="efecto-capsula-holografica"
+        component={CapsulaHolografica as any}
+        durationInFrames={Math.round(2.0 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          caseName: 'Juan Pérez',
+          finalAmount: '$10,000',
+          hologramColor: '#00BFFF',
+          duration: 2.0,
+        }}
+      />
+      <Composition
+        id="efecto-cataclismo-datos"
+        component={CataclismoDatos as any}
+        durationInFrames={Math.round(1.5 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          oldNumber: '98%',
+          newNumber: '2%',
+          explosionColor: '#FFD700',
+          duration: 1.5,
+        }}
+      />
+      <Composition
+        id="efecto-devorador-realidad"
+        component={DevoradorRealidad as any}
+        durationInFrames={Math.round(1.8 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          loserObject: 'Tiempo',
+          winnerObject: 'Activos',
+          neonColor: '#00FFFF',
+          duration: 1.8,
+        }}
+      />
+      <Composition
+        id="efecto-mercurio-revelador"
+        component={MercurioRevelador as any}
+        durationInFrames={Math.round(2.2 * FPS)}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+        defaultProps={{
+          logoImage: '',
+          highlightColor: '#FFD700',
+          duration: 2.2,
+        }}
       />
     </>
   );
