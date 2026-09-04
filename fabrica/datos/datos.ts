@@ -110,5 +110,24 @@ export const REGISTROS_VIDEO: RegistroVideoCompleto[] = [
       fuente: 'orquestador.ts (checks_duros.py + checks_composicion.py)',
     },
   },
+  {
+    videoId: 'fabrica-demo-12',
+    idea: 'El 98% pierde dinero por no vender productos digitales con IA.',
+    tema: 'IA aplicada a negocios digitales',
+    angulo: 'datos duros + casos documentados',
+    hookPatronId: 'contexto-parcial',
+    estructura: 'hook-desarrollo-casos-critica-sistema-prueba-payoff-cierre',
+    duracionSeg: 51.896008,
+    voz: 'Qwen3-TTS',
+    componentesUsados: ['torre-3d', 'punch', 'duelo', 'cifra-se-cae', 'diagrama', 'lista-tachada', 'buscador', 'logos-herramientas', 'silueta', 'tres-verdades', 'antes-despues'],
+    formato: 'vertical 1080x1920 (+ horizontal 1920x1080, mismo arbol reencuadrado)',
+    fecha: '2026-09-04',
+    metricas: null,
+    qaResumen: {
+      ok: true,
+      problemas: [],
+      fuente: 'orquestador.ts (checks_duros.py + checks_composicion.py)',
+    },
+  },
 ];
 export const REGISTROS_PRODUCTO: RegistroProducto[] = [];

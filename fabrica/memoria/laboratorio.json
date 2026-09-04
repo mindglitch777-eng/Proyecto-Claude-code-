@@ -138,5 +138,25 @@
     "conclusion": null,
     "estado": "esperando_datos",
     "fechaCreacion": "2026-09-04T01:02:18.308Z"
+  },
+  {
+    "id": "fabrica-demo-12-1788489205315",
+    "hipotesis": "Guion largo (60s, 14 unidades) con datos reales dados por el operador ($60B, 98%, casos de $5k/$10k/$50k) y direccion visual detallada, sin musica de fondo (solo SFX), traducido a la infraestructura existente, produce un video coherente y variado -- sin afirmar mejora de retencion real (sin publicacion).",
+    "experimento": "fabrica-demo-12: guion nuevo (\"98% pierde dinero\"), 14 unidades, 60s objetivo.",
+    "videoId": "fabrica-demo-12",
+    "resultadoReal": null,
+    "conclusion": null,
+    "estado": "esperando_datos",
+    "fechaCreacion": "2026-09-04T02:33:25.315Z"
+  },
+  {
+    "id": "fabrica-demo-12-1788489223203",
+    "hipotesis": "Guion largo (60s, 14 unidades) con datos reales dados por el operador ($60B, 98%, casos de $5k/$10k/$50k) y direccion visual detallada, sin musica de fondo (solo SFX), traducido a la infraestructura existente, produce un video coherente y variado -- sin afirmar mejora de retencion real (sin publicacion).",
+    "experimento": "fabrica-demo-12: guion nuevo (\"98% pierde dinero\"), 14 unidades, 60s objetivo.",
+    "videoId": "fabrica-demo-12",
+    "resultadoReal": null,
+    "conclusion": null,
+    "estado": "esperando_datos",
+    "fechaCreacion": "2026-09-04T02:33:43.203Z"
   }
 ]

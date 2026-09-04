@@ -168,5 +168,39 @@
       "pasos",
       "tres-verdades"
     ]
+  },
+  {
+    "videoId": "fabrica-demo-12",
+    "fecha": "2026-09-04T02:33:25.309Z",
+    "componentesUsados": [
+      "torre-3d",
+      "punch",
+      "duelo",
+      "cifra-se-cae",
+      "diagrama",
+      "lista-tachada",
+      "buscador",
+      "logos-herramientas",
+      "silueta",
+      "tres-verdades",
+      "antes-despues"
+    ]
+  },
+  {
+    "videoId": "fabrica-demo-12",
+    "fecha": "2026-09-04T02:33:43.196Z",
+    "componentesUsados": [
+      "torre-3d",
+      "punch",
+      "duelo",
+      "cifra-se-cae",
+      "diagrama",
+      "lista-tachada",
+      "buscador",
+      "logos-herramientas",
+      "silueta",
+      "tres-verdades",
+      "antes-despues"
+    ]
   }
 ]

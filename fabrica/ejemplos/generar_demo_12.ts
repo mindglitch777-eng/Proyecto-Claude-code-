@@ -122,7 +122,10 @@ export function generarArbol(params: ParametrosGeneracion, log: boolean = true):
   // 4. desarrollo_1 -- "$60.000.000.000 al año." LLUVIA DE CEROS
   const audiosDesarrollo1 = [clipReal('desarrollo_1')];
   const {elegido: elDesarrollo1, golpe: golpeDesarrollo1} = elegir(3, {categorias: ['cifra'], intensidadDeseada: 0.75, capacidadTextoNecesaria: 'corta', assetsDisponibles: [], duracionDisponibleSeg: duracionTotalDeAudios(audiosDesarrollo1), requiereAudioSincronizado: true}, {});
-  agregar('desarrollo_1', 3, elDesarrollo1, golpeDesarrollo1, audiosDesarrollo1, {arriba: 'Mercado digital', hasta: 60000000000, prefijo: '$', abajo: 'al año'});
+  const propsDesarrollo1 = elDesarrollo1.componente.id === 'cifra-se-cae'
+    ? {arriba: 'Mercado digital', de: '$0', a: '$60.000.000.000', abajo: 'al año'}
+    : {arriba: 'Mercado digital', hasta: 60000000000, prefijo: '$', abajo: 'al año'};
+  agregar('desarrollo_1', 3, elDesarrollo1, golpeDesarrollo1, audiosDesarrollo1, propsDesarrollo1);
 
   // 5. desarrollo_2 -- "La IA lo esta multiplicando." IA ORBITANDO
   const audiosDesarrollo2 = [clipReal('desarrollo_2')];
@@ -148,7 +151,12 @@ export function generarArbol(params: ParametrosGeneracion, log: boolean = true):
   // 7. critica_0 -- "El 98% sigue usando la IA para jugar." PROMPTS RIDICULOS
   const audiosCritica0 = [clipReal('critica_0')];
   const {elegido: elCritica0, golpe: golpeCritica0} = elegir(6, {categorias: ['otro'], intensidadDeseada: 0.4, capacidadTextoNecesaria: 'corta', assetsDisponibles: [], duracionDisponibleSeg: duracionTotalDeAudios(audiosCritica0), requiereAudioSincronizado: false}, {});
-  agregar('critica_0', 6, elCritica0, golpeCritica0, audiosCritica0, {consulta: 'receta de pizza', sugerencias: [{txt: 'poema', t: 1.0}, {txt: 'resúmeme esto', t: 1.6, acento: true}]});
+  const propsCritica0 = elCritica0.componente.id === 'buscador'
+    ? {consulta: 'receta de pizza', sugerencias: [{txt: 'poema', t: 1.0}, {txt: 'resúmeme esto', t: 1.6, acento: true}]}
+    : elCritica0.componente.id === 'chat'
+      ? {titulo: 'Prompts del 98%', mensajes: [{de: 'vos' as const, txt: 'hazme un poema', t: 0.3}, {de: 'vos' as const, txt: 'receta de pizza', t: 1.1}, {de: 'vos' as const, txt: 'resúmeme esto', t: 1.7, acento: true}]}
+      : {titulo: 'Prompts del 98%', items: [{app: 'IA', txt: 'poema', t: 0.3}, {app: 'IA', txt: 'receta de pizza', t: 1.1}, {app: 'IA', txt: 'resúmeme esto', t: 1.7, acento: true}]};
+  agregar('critica_0', 6, elCritica0, golpeCritica0, audiosCritica0, propsCritica0);
 
   // 8. critica_1 -- "...para construir activos." LADRILLOS
   const audiosCritica1 = [clipReal('critica_1')];
