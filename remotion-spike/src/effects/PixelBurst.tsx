@@ -7,7 +7,7 @@ interface PixelBurstProps {
   duration?: number;
 }
 
-const PixelBurst: React.FC<PixelBurstProps> = ({
+export const PixelBurst: React.FC<PixelBurstProps> = ({
   pixelSize = 20,
   burstColor = '#00FFFF',
   duration = 1.2,

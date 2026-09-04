@@ -8,7 +8,7 @@ interface LiquidMetalProps {
   duration?: number;
 }
 
-const LiquidMetal: React.FC<LiquidMetalProps> = ({
+export const LiquidMetal: React.FC<LiquidMetalProps> = ({
   text,
   metalColor = '#C0C0C0',
   glowColor = '#00FFFF',

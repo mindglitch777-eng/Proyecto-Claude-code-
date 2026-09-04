@@ -8,9 +8,18 @@
     "intensidad": 0.35,
     "ritmo": "dinamico",
     "capacidadTexto": "media",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [4, 20],
-    "compatibleCon": ["texto", "cifra"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      4,
+      20
+    ],
+    "compatibleCon": [
+      "texto",
+      "cifra"
+    ],
     "soportaAudioSincronizado": true,
     "props": {
       "titulo": "string, opcional",
@@ -28,9 +37,18 @@
     "intensidad": 0.5,
     "ritmo": "dinamico",
     "capacidadTexto": "media",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [4, 15],
-    "compatibleCon": ["texto", "cifra"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      4,
+      15
+    ],
+    "compatibleCon": [
+      "texto",
+      "cifra"
+    ],
     "soportaAudioSincronizado": true,
     "props": {
       "titulo": "string, opcional",
@@ -49,9 +67,17 @@
     "intensidad": 0.4,
     "ritmo": "dinamico",
     "capacidadTexto": "corta",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [3, 8],
-    "compatibleCon": ["texto"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      3,
+      8
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
     "soportaAudioSincronizado": true,
     "props": {
       "titulo": "string, opcional",
@@ -71,9 +97,17 @@
     "intensidad": 0.55,
     "ritmo": "dinamico",
     "capacidadTexto": "corta",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [3, 10],
-    "compatibleCon": ["texto"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      3,
+      10
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
     "soportaAudioSincronizado": true,
     "props": {
       "antes": "{rotulo: string, txt: string}",
@@ -93,9 +127,18 @@
     "intensidad": 0.3,
     "ritmo": "dinamico",
     "capacidadTexto": "media",
-    "requiereAssets": {"tipo": "icono", "obligatorio": true},
-    "duracionMinMaxSeg": [4, 20],
-    "compatibleCon": ["texto", "diagrama"],
+    "requiereAssets": {
+      "tipo": "icono",
+      "obligatorio": true
+    },
+    "duracionMinMaxSeg": [
+      4,
+      20
+    ],
+    "compatibleCon": [
+      "texto",
+      "diagrama"
+    ],
     "soportaAudioSincronizado": false,
     "props": {
       "titulo": "string, opcional",
@@ -113,9 +156,17 @@
     "intensidad": 0.7,
     "ritmo": "dinamico",
     "capacidadTexto": "corta",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [2, 8],
-    "compatibleCon": ["texto"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      2,
+      8
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
     "soportaAudioSincronizado": true,
     "props": {
       "arriba": "string, opcional",
@@ -137,9 +188,17 @@
     "intensidad": 0.75,
     "ritmo": "dinamico",
     "capacidadTexto": "corta",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [3, 8],
-    "compatibleCon": ["texto"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      3,
+      8
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
     "soportaAudioSincronizado": true,
     "props": {
       "arriba": "string, opcional",
@@ -159,9 +218,17 @@
     "intensidad": 0.65,
     "ritmo": "dinamico",
     "capacidadTexto": "corta",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [3, 10],
-    "compatibleCon": ["texto"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      3,
+      10
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
     "soportaAudioSincronizado": false,
     "props": {
       "arriba": "string",
@@ -182,9 +249,18 @@
     "intensidad": 0.45,
     "ritmo": "dinamico",
     "capacidadTexto": "media",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [4, 15],
-    "compatibleCon": ["texto", "cifra"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      4,
+      15
+    ],
+    "compatibleCon": [
+      "texto",
+      "cifra"
+    ],
     "soportaAudioSincronizado": false,
     "props": {
       "titulo": "string, opcional",
@@ -203,9 +279,17 @@
     "intensidad": 0.5,
     "ritmo": "dinamico",
     "capacidadTexto": "media",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [3, 8],
-    "compatibleCon": ["texto"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      3,
+      8
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
     "soportaAudioSincronizado": false,
     "props": {
       "pregunta": "string",
@@ -225,8 +309,14 @@
     "intensidad": 0.6,
     "ritmo": "muy_dinamico",
     "capacidadTexto": "corta",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [3, 15],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      3,
+      15
+    ],
     "compatibleCon": [],
     "soportaAudioSincronizado": false,
     "props": {
@@ -244,9 +334,18 @@
     "intensidad": 0.4,
     "ritmo": "dinamico",
     "capacidadTexto": "corta",
-    "requiereAssets": {"tipo": "icono", "obligatorio": true},
-    "duracionMinMaxSeg": [4, 20],
-    "compatibleCon": ["texto", "timeline"],
+    "requiereAssets": {
+      "tipo": "icono",
+      "obligatorio": true
+    },
+    "duracionMinMaxSeg": [
+      4,
+      20
+    ],
+    "compatibleCon": [
+      "texto",
+      "timeline"
+    ],
     "soportaAudioSincronizado": true,
     "props": {
       "d.nodos": "{fig: NombreFigura, x: number(0-1), y: number(0-1), tam: number, rotulo?: string, t: number(seg en que se dibuja), acento?: boolean, tachar?: number, seVuelve?: {fig, t}}[]",
@@ -264,9 +363,17 @@
     "intensidad": 0.35,
     "ritmo": "dinamico",
     "capacidadTexto": "media",
-    "requiereAssets": {"tipo": "icono", "obligatorio": true},
-    "duracionMinMaxSeg": [4, 15],
-    "compatibleCon": ["texto"],
+    "requiereAssets": {
+      "tipo": "icono",
+      "obligatorio": true
+    },
+    "duracionMinMaxSeg": [
+      4,
+      15
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
     "soportaAudioSincronizado": true,
     "props": {
       "titulo": "string, opcional",
@@ -285,9 +392,17 @@
     "intensidad": 0.5,
     "ritmo": "dinamico",
     "capacidadTexto": "media",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [4, 12],
-    "compatibleCon": ["texto"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      4,
+      12
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
     "soportaAudioSincronizado": false,
     "props": {
       "titulo": "string",
@@ -307,9 +422,17 @@
     "intensidad": 0.6,
     "ritmo": "dinamico",
     "capacidadTexto": "corta",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [3, 8],
-    "compatibleCon": ["texto"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      3,
+      8
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
     "soportaAudioSincronizado": false,
     "props": {
       "izq": "{rotulo: string, valor: string, detalle?: string}",
@@ -329,9 +452,18 @@
     "intensidad": 0.5,
     "ritmo": "dinamico",
     "capacidadTexto": "media",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [4, 15],
-    "compatibleCon": ["texto", "cifra"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      4,
+      15
+    ],
+    "compatibleCon": [
+      "texto",
+      "cifra"
+    ],
     "soportaAudioSincronizado": false,
     "props": {
       "titulo": "string, opcional",
@@ -350,9 +482,18 @@
     "intensidad": 0.5,
     "ritmo": "dinamico",
     "capacidadTexto": "media",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [4, 15],
-    "compatibleCon": ["texto", "cifra"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      4,
+      15
+    ],
+    "compatibleCon": [
+      "texto",
+      "cifra"
+    ],
     "soportaAudioSincronizado": false,
     "props": {
       "titulo": "string, opcional",
@@ -371,9 +512,17 @@
     "intensidad": 0.75,
     "ritmo": "muy_dinamico",
     "capacidadTexto": "corta",
-    "requiereAssets": {"tipo": "video", "obligatorio": false},
-    "duracionMinMaxSeg": [3, 12],
-    "compatibleCon": ["texto"],
+    "requiereAssets": {
+      "tipo": "video",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      3,
+      12
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
     "soportaAudioSincronizado": true,
     "props": {
       "lineas": "string[]",
@@ -396,8 +545,14 @@
     "intensidad": 0.8,
     "ritmo": "muy_dinamico",
     "capacidadTexto": "ninguna",
-    "requiereAssets": {"tipo": "video", "obligatorio": true},
-    "duracionMinMaxSeg": [3, 10],
+    "requiereAssets": {
+      "tipo": "video",
+      "obligatorio": true
+    },
+    "duracionMinMaxSeg": [
+      3,
+      10
+    ],
     "compatibleCon": [],
     "soportaAudioSincronizado": false,
     "props": {
@@ -416,9 +571,17 @@
     "intensidad": 0.55,
     "ritmo": "dinamico",
     "capacidadTexto": "media",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [5, 12],
-    "compatibleCon": ["texto"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      5,
+      12
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
     "soportaAudioSincronizado": false,
     "props": {
       "d.titulo": "string",
@@ -440,9 +603,17 @@
     "intensidad": 0.7,
     "ritmo": "dinamico",
     "capacidadTexto": "corta",
-    "requiereAssets": {"tipo": "video", "obligatorio": true},
-    "duracionMinMaxSeg": [4, 10],
-    "compatibleCon": ["texto"],
+    "requiereAssets": {
+      "tipo": "video",
+      "obligatorio": true
+    },
+    "duracionMinMaxSeg": [
+      4,
+      10
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
     "soportaAudioSincronizado": false,
     "props": {
       "d.lineas": "string[]",
@@ -462,9 +633,17 @@
     "intensidad": 0.45,
     "ritmo": "dinamico",
     "capacidadTexto": "media",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [4, 12],
-    "compatibleCon": ["texto"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      4,
+      12
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
     "soportaAudioSincronizado": false,
     "props": {
       "titulo": "string, opcional",
@@ -482,9 +661,17 @@
     "intensidad": 0.4,
     "ritmo": "dinamico",
     "capacidadTexto": "corta",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [3, 8],
-    "compatibleCon": ["texto"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      3,
+      8
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
     "soportaAudioSincronizado": false,
     "props": {
       "consulta": "string -- lo que se tipea (se anima solo, 1.4s fijos)",
@@ -503,9 +690,17 @@
     "intensidad": 0.45,
     "ritmo": "dinamico",
     "capacidadTexto": "corta",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [3, 10],
-    "compatibleCon": ["texto"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      3,
+      10
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
     "soportaAudioSincronizado": false,
     "props": {
       "titulo": "string, opcional",
@@ -524,9 +719,18 @@
     "intensidad": 0.5,
     "ritmo": "dinamico",
     "capacidadTexto": "media",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [4, 10],
-    "compatibleCon": ["texto", "cifra"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      4,
+      10
+    ],
+    "compatibleCon": [
+      "texto",
+      "cifra"
+    ],
     "soportaAudioSincronizado": false,
     "props": {
       "idea.titulo": "string",
@@ -546,9 +750,18 @@
     "intensidad": 0.55,
     "ritmo": "dinamico",
     "capacidadTexto": "media",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [4, 10],
-    "compatibleCon": ["cifra", "comparacion"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      4,
+      10
+    ],
+    "compatibleCon": [
+      "cifra",
+      "comparacion"
+    ],
     "soportaAudioSincronizado": false,
     "props": {
       "titulo": "string",
@@ -566,9 +779,17 @@
     "intensidad": 0.35,
     "ritmo": "dinamico",
     "capacidadTexto": "corta",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [3, 7],
-    "compatibleCon": ["texto"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      3,
+      7
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
     "soportaAudioSincronizado": false,
     "props": {
       "idea.texto": "string",
@@ -586,9 +807,17 @@
     "intensidad": 0.85,
     "ritmo": "dinamico",
     "capacidadTexto": "corta",
-    "requiereAssets": {"tipo": "ninguno", "obligatorio": false},
-    "duracionMinMaxSeg": [3, 9],
-    "compatibleCon": ["texto"],
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      3,
+      9
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
     "soportaAudioSincronizado": true,
     "props": {
       "arriba": "string, opcional",
@@ -599,5 +828,679 @@
     },
     "estado": "validado",
     "notas": "R6-10 (Ronda 6): primer componente realmente 3D del catalogo, confirmado con render real en el headless_shell sin GPU dedicada (ver remotion-spike/src/pruebas-r6/README.md y fabrica/skills/INVESTIGACION_HERRAMIENTAS.md item 9). La animacion del conteo usa la MISMA curva que Contador (escenas/plata.tsx) para que el aterrizaje del numero coincida con el ultimo bloque asentandose. Mas caro de renderizar que un componente CSS/Canvas 2D (WebGL) -- no medido en tiempo de render a escala de produccion todavia, anotado como pendiente antes de usarlo en muchas escenas seguidas."
+  },
+  {
+    "id": "arquitectura-neon",
+    "archivo": "effects/ArquitecturaNeon.tsx",
+    "exportacion": "ArquitecturaNeon",
+    "categoria": "texto",
+    "funcion": "Construye una palabra/frase corta letra por letra con andamiaje wireframe y placas de neon, remata con chispas -- hook o momento de impacto puro.",
+    "intensidad": 0.75,
+    "ritmo": "muy_dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.5,
+      2.5
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "text": "string",
+      "mainColor": "string",
+      "sparkColor": "string",
+      "duration": "number, opcional (segundos, default 2.0)"
+    },
+    "estado": "sin_validar",
+    "notas": "R8: parte de la biblioteca de 23 efectos cinematograficos de remotion-spike/effects/, integrada al catalogo real de la fabrica por primera vez (antes vivian sueltos, sin Director Visual). Formato vertical 9:16, sin acoplamiento a ../guion.ts."
+  },
+  {
+    "id": "capsula-holografica",
+    "archivo": "effects/CapsulaHolografica.tsx",
+    "exportacion": "CapsulaHolografica",
+    "categoria": "cifra",
+    "funcion": "Capsula holografica 3D (silueta girando + barra de progreso + sello de verificacion) para mostrar un caso puntual: nombre de caso + monto/resultado final.",
+    "intensidad": 0.6,
+    "ritmo": "dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.5,
+      2.5
+    ],
+    "compatibleCon": [
+      "cifra"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "caseName": "string",
+      "finalAmount": "string",
+      "hologramColor": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar",
+    "notas": "No encaja en el adaptador propsParaCifra existente (DatosProgresion, 2+ puntos numericos) -- es un caso/resultado unico (nombre + monto), no una progresion. Requiere su propio caso en el generador si el Director lo elige."
+  },
+  {
+    "id": "cataclismo-datos",
+    "archivo": "effects/CataclimoData.tsx",
+    "exportacion": "CataclismoDatos",
+    "categoria": "cifra",
+    "funcion": "Un numero implosiona gravitacionalmente a un punto negro, explota en particulas doradas y recompone un numero nuevo -- transicion violenta entre dos cifras (ANTES vs DESPUES).",
+    "intensidad": 0.85,
+    "ritmo": "muy_dinamico",
+    "capacidadTexto": "ninguna",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.0,
+      2.0
+    ],
+    "compatibleCon": [
+      "cifra"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "oldNumber": "string",
+      "newNumber": "string",
+      "explosionColor": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar",
+    "notas": "Encaja en el concepto de propsParaCifra (DatosProgresion con exactamente 2 puntos: primero y ultimo) -- agregar un caso 'cataclismo-datos' al adaptador existente en composicion/adaptadores.ts en vez de tratarlo aislado."
+  },
+  {
+    "id": "devorador-realidad",
+    "archivo": "effects/DevoradorRealidad.tsx",
+    "exportacion": "DevoradorRealidad",
+    "categoria": "comparacion",
+    "funcion": "Vortice de metal liquido en el centro absorbe un objeto/concepto 'perdedor' (izquierda) mientras el 'ganador' (derecha) se solidifica con glow pulsante y particulas orbitando.",
+    "intensidad": 0.8,
+    "ritmo": "muy_dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.3,
+      2.3
+    ],
+    "compatibleCon": [
+      "comparacion"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "loserObject": "string",
+      "winnerObject": "string",
+      "neonColor": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar",
+    "notas": "Encaja en propsParaComparacion (DatosComparacion: izquierda=perdedor, derecha=ganador) -- agregar caso 'devorador-realidad' al adaptador existente."
+  },
+  {
+    "id": "mercurio-revelador",
+    "archivo": "effects/MercurioRevelador.tsx",
+    "exportacion": "MercurioRevelador",
+    "categoria": "logos",
+    "funcion": "Imagen/logo en blanco y negro barrido por liquido metalico que revela el color; el liquido explota en gotas congeladas al final -- reveal de marca/logo.",
+    "intensidad": 0.55,
+    "ritmo": "dinamico",
+    "capacidadTexto": "ninguna",
+    "requiereAssets": {
+      "tipo": "foto",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.8,
+      2.6
+    ],
+    "compatibleCon": [
+      "logos"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "logoImage": "string, opcional (URL o vacio)",
+      "highlightColor": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar",
+    "notas": "logoImage es opcional -- sin el, el componente igual corre (solo el barrido de mercurio, sin imagen debajo). No fabricar una URL/logo falso si el operador no dio uno real."
+  },
+  {
+    "id": "glitch-shatter",
+    "archivo": "effects/GlitchShatter.tsx",
+    "exportacion": "GlitchShatter",
+    "categoria": "texto",
+    "funcion": "Pantalla tiembla con lineas de glitch VHS, luego se hace anicos en fragmentos poligonales que vuelan hacia camara -- hook agresivo, choque/error/ruptura.",
+    "intensidad": 0.85,
+    "ritmo": "muy_dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.0,
+      1.6
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "text": "string",
+      "glitchColor": "string",
+      "fragmentCount": "number, opcional (default 50)",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar"
+  },
+  {
+    "id": "slot-machine",
+    "archivo": "effects/SlotMachine.tsx",
+    "exportacion": "SlotMachine",
+    "categoria": "cifra",
+    "funcion": "Ruedas de digitos tipo tragamonedas giran rapido y frenan en el numero final con chispas metalicas -- revelacion de una cifra unica con suspenso.",
+    "intensidad": 0.7,
+    "ritmo": "muy_dinamico",
+    "capacidadTexto": "ninguna",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.5,
+      2.2
+    ],
+    "compatibleCon": [
+      "cifra"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "finalNumber": "string",
+      "metalColor": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar",
+    "notas": "Mismo contrato de valor unico que 'contador'/'torre-3d' (propsParaCifra) pero recibe el numero ya formateado como string (finalNumber), no desde/hasta numericos -- agregar caso propio al adaptador si hace falta, formateando con formatearPlata() cuando esDinero."
+  },
+  {
+    "id": "heartbeat-pulse",
+    "archivo": "effects/HeartbeatPulse.tsx",
+    "exportacion": "HeartbeatPulse",
+    "categoria": "texto",
+    "funcion": "Una palabra late como un corazon (crece/encoge) un numero de veces configurable; el ultimo latido dispara un zoom violento hacia camara con motion blur -- climax/enfasis.",
+    "intensidad": 0.75,
+    "ritmo": "muy_dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.6,
+      2.4
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "text": "string",
+      "pulseColor": "string",
+      "beats": "number, opcional (default 3)",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar"
+  },
+  {
+    "id": "mindmap-connect",
+    "archivo": "effects/MindMapConnect.tsx",
+    "exportacion": "MindMapConnect",
+    "categoria": "diagrama",
+    "funcion": "Varias palabras/conceptos dispersos se conectan con rayos de neon y luego se reorganizan en una linea -- mapa mental de un sistema/proceso de N pasos.",
+    "intensidad": 0.5,
+    "ritmo": "dinamico",
+    "capacidadTexto": "media",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      2.0,
+      3.0
+    ],
+    "compatibleCon": [
+      "diagrama"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "items": "string[] -- 2 a 5 palabras/pasos cortos",
+      "lineColor": "string",
+      "nodeGlow": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar",
+    "notas": "Con menos de ~4 items y radio de nodo default (40px) el resultado puede verse chico en un canvas 1080x1920 si los items caen aleatoriamente cerca entre si -- ver remotion-spike/src/effects/README o el historial de esta ronda para el hallazgo real."
+  },
+  {
+    "id": "text-reveal-fire",
+    "archivo": "effects/TextRevealFire.tsx",
+    "exportacion": "TextRevealFire",
+    "categoria": "texto",
+    "funcion": "Texto inicialmente borroso/humeante, una linea de fuego lo barre de izquierda a derecha revelandolo nitido, caen cenizas -- revelacion con textura organica.",
+    "intensidad": 0.6,
+    "ritmo": "dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.6,
+      2.4
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "text": "string",
+      "fireColor": "string",
+      "textColor": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar"
+  },
+  {
+    "id": "circle-of-truth",
+    "archivo": "effects/CircleOfTruth.tsx",
+    "exportacion": "CircleOfTruth",
+    "categoria": "texto",
+    "funcion": "Un circulo se dibuja con animacion de trazo (stroke-dasharray), el contenido (palabra corta o simbolo) aparece adentro con glow pulsante -- confirmacion/verificacion.",
+    "intensidad": 0.45,
+    "ritmo": "dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.4,
+      2.2
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "content": "string -- palabra corta o simbolo (ej. checkmark)",
+      "circleColor": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar"
+  },
+  {
+    "id": "pixel-burst",
+    "archivo": "effects/PixelBurst.tsx",
+    "exportacion": "PixelBurst",
+    "categoria": "montaje",
+    "funcion": "La pantalla se pixela en bloques, los pixeles explotan radialmente desde el centro y luego se reensamblan -- transicion de impacto pura, sin texto.",
+    "intensidad": 0.65,
+    "ritmo": "muy_dinamico",
+    "capacidadTexto": "ninguna",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.0,
+      1.5
+    ],
+    "compatibleCon": [
+      "montaje"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "pixelSize": "number, opcional (default 20)",
+      "burstColor": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar",
+    "notas": "Sin capacidad de texto -- pensado como transicion/golpe visual entre dos unidades, no como portador de un mensaje propio. No aparece en compatibleCon de otras categorias todavia porque no se probo combinado."
+  },
+  {
+    "id": "gold-rush",
+    "archivo": "effects/GoldRush.tsx",
+    "exportacion": "GoldRush",
+    "categoria": "texto",
+    "funcion": "Monedas de oro caen en cascada, rebotan y se acumulan en pilas en la base; un texto de logro aparece con glow -- momento de reward/resultado positivo.",
+    "intensidad": 0.7,
+    "ritmo": "dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      2.0,
+      3.0
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "achievementText": "string",
+      "goldColor": "string",
+      "coinCount": "number, opcional (default 100)",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar",
+    "notas": "Ronda de esta sesion: el fondo original (radial-gradient de dos stops con alpha muy distinto) se renderizaba mucho mas saturado de lo esperado, tapando la escena -- corregido a backgroundColor solido + destello de impacto breve. Verificado con still real antes/despues."
+  },
+  {
+    "id": "liquid-metal",
+    "archivo": "effects/LiquidMetal.tsx",
+    "exportacion": "LiquidMetal",
+    "categoria": "texto",
+    "funcion": "Texto de metal liquido que se forma en ondas y luego solidifica con pulso final -- formacion/construccion de un concepto.",
+    "intensidad": 0.55,
+    "ritmo": "dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.2,
+      2.0
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "text": "string",
+      "metalColor": "string",
+      "glowColor": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar"
+  },
+  {
+    "id": "spotlight-reveal",
+    "archivo": "effects/SpotlightReveal.tsx",
+    "exportacion": "SpotlightReveal",
+    "categoria": "logos",
+    "funcion": "Un foco de luz barre la pantalla y se detiene revelando texto y/o logo y/o nombre de cuenta con brillo -- cierre/CTA tipico de reflector de teatro.",
+    "intensidad": 0.5,
+    "ritmo": "dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "foto",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.5,
+      2.2
+    ],
+    "compatibleCon": [
+      "logos",
+      "texto"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "text": "string, opcional",
+      "logoImage": "string, opcional (URL)",
+      "accountName": "string, opcional",
+      "spotColor": "string",
+      "textColor": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar",
+    "notas": "text/logoImage/accountName son todos opcionales e independientes -- se puede usar solo con text (sin logo ni cuenta) cuando esos datos todavia no existen, sin inventarlos."
+  },
+  {
+    "id": "chromatic-shift",
+    "archivo": "effects/ChromaticShift.tsx",
+    "exportacion": "ChromaticShift",
+    "categoria": "texto",
+    "funcion": "Texto con aberracion cromatica (3 capas RGB desfasadas vibrando) que se estabiliza en blanco nitido -- efecto de 'sintonizacion'/cambio de estado.",
+    "intensidad": 0.6,
+    "ritmo": "dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.3,
+      2.0
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "text": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar"
+  },
+  {
+    "id": "wave-distortion",
+    "archivo": "effects/WaveDistortion.tsx",
+    "exportacion": "WaveDistortion",
+    "categoria": "texto",
+    "funcion": "Ondas (SVG turbulence/displacement) barren el cuadro distorsionando el texto, que luego se solidifica con glow -- transicion/cambio de estado con textura liquida.",
+    "intensidad": 0.55,
+    "ritmo": "dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.5,
+      2.3
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "text": "string",
+      "waveColor": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar"
+  },
+  {
+    "id": "starburst-flare",
+    "archivo": "effects/StarbustFlare.tsx",
+    "exportacion": "StarbustFlare",
+    "categoria": "texto",
+    "funcion": "Rayos estelares explotan desde el centro junto con particulas volando, el texto aparece en el pico de brillo -- momento de maximo impacto/celebracion.",
+    "intensidad": 0.75,
+    "ritmo": "muy_dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.6,
+      2.4
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "text": "string",
+      "starColor": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar"
+  },
+  {
+    "id": "vortex-transport",
+    "archivo": "effects/VortexTransport.tsx",
+    "exportacion": "VortexTransport",
+    "categoria": "texto",
+    "funcion": "Un vortice giratorio absorbe el texto (rotando y encogiendose) y luego lo expulsa/emite del otro lado -- transporte/transformacion de un concepto a otro.",
+    "intensidad": 0.6,
+    "ritmo": "dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.8,
+      2.6
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "text": "string",
+      "vortexColor": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar"
+  },
+  {
+    "id": "aurora-shine",
+    "archivo": "effects/AuroraShine.tsx",
+    "exportacion": "AuroraShine",
+    "categoria": "texto",
+    "funcion": "Aurora boreal (ondas de dos colores fluyendo) se eleva detras del texto, que brilla en el pico -- tono aspiracional/magico.",
+    "intensidad": 0.55,
+    "ritmo": "dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.9,
+      2.7
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "text": "string",
+      "auroraColor1": "string",
+      "auroraColor2": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar"
+  },
+  {
+    "id": "neon-ripple",
+    "archivo": "effects/NeonRipple.tsx",
+    "exportacion": "NeonRipple",
+    "categoria": "texto",
+    "funcion": "Ondas de neon concentricas explotan desde un nucleo pulsante hacia afuera mientras el texto se solidifica en el centro -- energia/impacto con anillo de luz.",
+    "intensidad": 0.6,
+    "ritmo": "dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.4,
+      2.0
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "text": "string",
+      "rippleColor": "string",
+      "coreColor": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar"
+  },
+  {
+    "id": "bar-brawl",
+    "archivo": "effects/BarBrawl.tsx",
+    "exportacion": "BarBrawl",
+    "categoria": "comparacion",
+    "funcion": "Dos barras horizontales con etiqueta entran, chocan al centro con destello, y la ganadora crece mientras la perdedora se rompe y se desvanece -- comparacion de dos opciones con un ganador claro.",
+    "intensidad": 0.55,
+    "ritmo": "dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.5,
+      2.2
+    ],
+    "compatibleCon": [
+      "comparacion"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "labelA": "string",
+      "labelB": "string",
+      "winner": "'A' | 'B'",
+      "colorA": "string",
+      "colorB": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar",
+    "notas": "Encaja en propsParaComparacion (DatosComparacion: izquierda/derecha + remate opcional) -- agregar caso 'bar-brawl' al adaptador existente, mapeando winner segun cual lado tiene mas 'peso'/prioridad narrativa."
+  },
+  {
+    "id": "flip-cards",
+    "archivo": "effects/FlipCards.tsx",
+    "exportacion": "FlipCards",
+    "categoria": "lista",
+    "funcion": "Tarjetas entran en cascada girando en 3D (perfil a frente) y se acomodan en fila horizontal -- lista de N pasos/items cortos revelados uno por uno.",
+    "intensidad": 0.5,
+    "ritmo": "dinamico",
+    "capacidadTexto": "media",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.6,
+      2.5
+    ],
+    "compatibleCon": [
+      "lista"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "items": "string[] -- 2 a 5 palabras/pasos cortos",
+      "cardColor": "string",
+      "textColor": "string",
+      "duration": "number, opcional"
+    },
+    "estado": "sin_validar"
   }
 ]

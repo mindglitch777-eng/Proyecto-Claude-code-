@@ -8,7 +8,7 @@ interface GlitchShatterProps {
   duration?: number;
 }
 
-const GlitchShatter: React.FC<GlitchShatterProps> = ({
+export const GlitchShatter: React.FC<GlitchShatterProps> = ({
   text,
   glitchColor,
   fragmentCount = 50,

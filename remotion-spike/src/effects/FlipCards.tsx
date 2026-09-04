@@ -8,7 +8,7 @@ interface FlipCardsProps {
   duration?: number;
 }
 
-const FlipCards: React.FC<FlipCardsProps> = ({
+export const FlipCards: React.FC<FlipCardsProps> = ({
   items,
   cardColor = '#003366',
   textColor = '#FFFFFF',

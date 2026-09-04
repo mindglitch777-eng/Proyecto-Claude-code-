@@ -7,7 +7,7 @@ interface StarbustFlareProps {
   duration?: number;
 }
 
-const StarbustFlare: React.FC<StarbustFlareProps> = ({
+export const StarbustFlare: React.FC<StarbustFlareProps> = ({
   text,
   starColor = '#FFFF00',
   duration = 2.0,

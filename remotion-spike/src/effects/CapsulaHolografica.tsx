@@ -8,7 +8,7 @@ interface CapsulaHolograficaProps {
   duration?: number;
 }
 
-const CapsulaHolografica: React.FC<CapsulaHolograficaProps> = ({
+export const CapsulaHolografica: React.FC<CapsulaHolograficaProps> = ({
   caseName,
   finalAmount,
   hologramColor,

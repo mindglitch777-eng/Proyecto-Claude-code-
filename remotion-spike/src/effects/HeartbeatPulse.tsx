@@ -8,7 +8,7 @@ interface HeartbeatPulseProps {
   duration?: number;
 }
 
-const HeartbeatPulse: React.FC<HeartbeatPulseProps> = ({
+export const HeartbeatPulse: React.FC<HeartbeatPulseProps> = ({
   text,
   pulseColor,
   beats = 3,

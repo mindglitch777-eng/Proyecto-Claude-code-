@@ -7,7 +7,7 @@ interface SlotMachineProps {
   duration?: number;
 }
 
-const SlotMachine: React.FC<SlotMachineProps> = ({
+export const SlotMachine: React.FC<SlotMachineProps> = ({
   finalNumber,
   metalColor = '#FFD700',
   duration = 1.8,

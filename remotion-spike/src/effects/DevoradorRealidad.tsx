@@ -8,7 +8,7 @@ interface DevoradorRealidadProps {
   duration?: number;
 }
 
-const DevoradorRealidad: React.FC<DevoradorRealidadProps> = ({
+export const DevoradorRealidad: React.FC<DevoradorRealidadProps> = ({
   loserObject,
   winnerObject,
   neonColor,

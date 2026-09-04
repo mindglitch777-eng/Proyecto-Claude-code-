@@ -7,7 +7,7 @@ interface VortexTransportProps {
   duration?: number;
 }
 
-const VortexTransport: React.FC<VortexTransportProps> = ({
+export const VortexTransport: React.FC<VortexTransportProps> = ({
   text,
   vortexColor = '#FF00FF',
   duration = 2.2,

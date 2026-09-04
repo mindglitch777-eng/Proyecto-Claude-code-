@@ -9,7 +9,7 @@ interface ArquitecturaNeonProps {
   duration?: number;
 }
 
-const ArquitecturaNeon: React.FC<ArquitecturaNeonProps> = ({
+export const ArquitecturaNeon: React.FC<ArquitecturaNeonProps> = ({
   text,
   mainColor,
   sparkColor,

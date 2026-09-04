@@ -10,7 +10,7 @@ interface BarBrawlProps {
   duration?: number;
 }
 
-const BarBrawl: React.FC<BarBrawlProps> = ({
+export const BarBrawl: React.FC<BarBrawlProps> = ({
   labelA,
   labelB,
   winner,

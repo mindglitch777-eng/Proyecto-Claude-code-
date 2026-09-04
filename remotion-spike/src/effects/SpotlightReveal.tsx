@@ -10,7 +10,7 @@ interface SpotlightRevealProps {
   duration?: number;
 }
 
-const SpotlightReveal: React.FC<SpotlightRevealProps> = ({
+export const SpotlightReveal: React.FC<SpotlightRevealProps> = ({
   text,
   logoImage,
   accountName,

@@ -6,7 +6,7 @@ interface ChromaticShiftProps {
   duration?: number;
 }
 
-const ChromaticShift: React.FC<ChromaticShiftProps> = ({
+export const ChromaticShift: React.FC<ChromaticShiftProps> = ({
   text,
   duration = 1.6,
 }) => {

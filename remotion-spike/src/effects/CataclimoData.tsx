@@ -8,7 +8,7 @@ interface CataclismoDatosProps {
   duration?: number;
 }
 
-const CataclismoDatos: React.FC<CataclismoDatosProps> = ({
+export const CataclismoDatos: React.FC<CataclismoDatosProps> = ({
   oldNumber,
   newNumber,
   explosionColor,

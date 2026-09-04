@@ -8,7 +8,7 @@ interface MindMapConnectProps {
   duration?: number;
 }
 
-const MindMapConnect: React.FC<MindMapConnectProps> = ({
+export const MindMapConnect: React.FC<MindMapConnectProps> = ({
   items,
   lineColor = '#00FFFF',
   nodeGlow = '#FF00FF',

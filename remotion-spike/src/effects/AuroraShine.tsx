@@ -8,7 +8,7 @@ interface AuroraShineProps {
   duration?: number;
 }
 
-const AuroraShine: React.FC<AuroraShineProps> = ({
+export const AuroraShine: React.FC<AuroraShineProps> = ({
   text,
   auroraColor1 = '#00FF88',
   auroraColor2 = '#FF00FF',

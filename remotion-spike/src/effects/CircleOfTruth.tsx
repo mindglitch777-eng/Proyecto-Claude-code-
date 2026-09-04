@@ -7,7 +7,7 @@ interface CircleOfTruthProps {
   duration?: number;
 }
 
-const CircleOfTruth: React.FC<CircleOfTruthProps> = ({
+export const CircleOfTruth: React.FC<CircleOfTruthProps> = ({
   content,
   circleColor = '#00FF00',
   duration = 1.8,

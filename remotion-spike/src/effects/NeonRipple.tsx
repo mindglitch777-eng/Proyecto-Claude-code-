@@ -8,7 +8,7 @@ interface NeonRippleProps {
   duration?: number;
 }
 
-const NeonRipple: React.FC<NeonRippleProps> = ({
+export const NeonRipple: React.FC<NeonRippleProps> = ({
   text,
   rippleColor = '#00FFFF',
   coreColor = '#FF00FF',

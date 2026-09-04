@@ -8,7 +8,7 @@ interface GoldRushProps {
   duration?: number;
 }
 
-const GoldRush: React.FC<GoldRushProps> = ({
+export const GoldRush: React.FC<GoldRushProps> = ({
   achievementText,
   goldColor = '#FFD700',
   coinCount = 100,

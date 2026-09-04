@@ -22,6 +22,29 @@ import {CamaraOrganica} from '../escenas/CamaraOrganica';
 import {PulsoRevelacion} from '../escenas/PulsoRevelacion';
 import {CambioEncuadre} from '../escenas/CambioEncuadre';
 import {PALETA} from '../identidad';
+import {ArquitecturaNeon} from '../effects/ArquitecturaNeon';
+import {CapsulaHolografica} from '../effects/CapsulaHolografica';
+import {CataclismoDatos} from '../effects/CataclimoData';
+import {DevoradorRealidad} from '../effects/DevoradorRealidad';
+import {MercurioRevelador} from '../effects/MercurioRevelador';
+import {GlitchShatter} from '../effects/GlitchShatter';
+import {SlotMachine} from '../effects/SlotMachine';
+import {HeartbeatPulse} from '../effects/HeartbeatPulse';
+import {MindMapConnect} from '../effects/MindMapConnect';
+import {TextRevealFire} from '../effects/TextRevealFire';
+import {CircleOfTruth} from '../effects/CircleOfTruth';
+import {PixelBurst} from '../effects/PixelBurst';
+import {GoldRush} from '../effects/GoldRush';
+import {LiquidMetal} from '../effects/LiquidMetal';
+import {SpotlightReveal} from '../effects/SpotlightReveal';
+import {ChromaticShift} from '../effects/ChromaticShift';
+import {WaveDistortion} from '../effects/WaveDistortion';
+import {StarbustFlare} from '../effects/StarbustFlare';
+import {VortexTransport} from '../effects/VortexTransport';
+import {AuroraShine} from '../effects/AuroraShine';
+import {NeonRipple} from '../effects/NeonRipple';
+import {BarBrawl} from '../effects/BarBrawl';
+import {FlipCards} from '../effects/FlipCards';
 
 // PUENTE DE RENDER de la nueva fabrica (fabrica/composicion/). Esto NO
 // es el Director Visual -- esa decision (que componente usar para
@@ -64,6 +87,29 @@ const IMPLEMENTACIONES: Record<string, React.FC<any>> = {
   grafico: Grafico,
   silueta: Silueta,
   'torre-3d': Torre3D,
+  'arquitectura-neon': ArquitecturaNeon,
+  'capsula-holografica': CapsulaHolografica,
+  'cataclismo-datos': CataclismoDatos,
+  'devorador-realidad': DevoradorRealidad,
+  'mercurio-revelador': MercurioRevelador,
+  'glitch-shatter': GlitchShatter,
+  'slot-machine': SlotMachine,
+  'heartbeat-pulse': HeartbeatPulse,
+  'mindmap-connect': MindMapConnect,
+  'text-reveal-fire': TextRevealFire,
+  'circle-of-truth': CircleOfTruth,
+  'pixel-burst': PixelBurst,
+  'gold-rush': GoldRush,
+  'liquid-metal': LiquidMetal,
+  'spotlight-reveal': SpotlightReveal,
+  'chromatic-shift': ChromaticShift,
+  'wave-distortion': WaveDistortion,
+  'starburst-flare': StarbustFlare,
+  'vortex-transport': VortexTransport,
+  'aurora-shine': AuroraShine,
+  'neon-ripple': NeonRipple,
+  'bar-brawl': BarBrawl,
+  'flip-cards': FlipCards,
 };
 
 /** Forma MINIMA de un microevento, duck-tipada a proposito (Ronda 4):

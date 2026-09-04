@@ -7,7 +7,7 @@ interface MercurioReveladorProps {
   duration?: number;
 }
 
-const MercurioRevelador: React.FC<MercurioReveladorProps> = ({
+export const MercurioRevelador: React.FC<MercurioReveladorProps> = ({
   logoImage,
   highlightColor,
   duration = 2.2,

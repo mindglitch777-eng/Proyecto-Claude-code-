@@ -38,7 +38,10 @@ export type DatosProgresion = {
   esDinero?: boolean; // si true, los valores se formatean y tratan como moneda
 };
 
-const COMPONENTES_CIFRA_SOPORTADOS = ['grafico', 'recibo', 'contador', 'cifra-se-cae', 'torre-3d'] as const;
+const COMPONENTES_CIFRA_SOPORTADOS = [
+  'grafico', 'recibo', 'contador', 'cifra-se-cae', 'torre-3d',
+  'cataclismo-datos', 'slot-machine',
+] as const;
 
 export function propsParaCifra(componenteId: string, datos: DatosProgresion): Record<string, unknown> {
   if (datos.puntos.length < 2) {
@@ -104,6 +107,22 @@ export function propsParaCifra(componenteId: string, datos: DatosProgresion): Re
         prefijo: datos.esDinero ? '$' : '',
       };
 
+    // R8: cataclismo-datos (remotion-spike/effects/CataclimoData.tsx) es
+    // una transicion violenta ANTES->DESPUES entre exactamente dos
+    // cifras -- toma el primer y ultimo punto de la progresion, ignora
+    // los intermedios si los hubiera (igual que cifra-se-cae).
+    case 'cataclismo-datos': {
+      const fmt = (v: number) => (datos.esDinero ? formatearPlata(v) : String(v));
+      return {oldNumber: fmt(primero.valor), newNumber: fmt(ultimo.valor)};
+    }
+
+    // slot-machine muestra un UNICO valor final (mismo contrato de
+    // "contador"/"torre-3d": desde/hasta no aplica, solo el resultado).
+    case 'slot-machine': {
+      const fmt = (v: number) => (datos.esDinero ? formatearPlata(v) : String(v));
+      return {finalNumber: fmt(ultimo.valor)};
+    }
+
     default:
       throw new Error(
         `propsParaCifra: no hay adaptador para "${componenteId}" -- componentes soportados: ${COMPONENTES_CIFRA_SOPORTADOS.join(', ')}. ` +
@@ -120,7 +139,9 @@ export type DatosComparacion = {
   remate?: string;
 };
 
-const COMPONENTES_COMPARACION_SOPORTADOS = ['antes-despues', 'balanza', 'duelo'] as const;
+const COMPONENTES_COMPARACION_SOPORTADOS = [
+  'antes-despues', 'balanza', 'duelo', 'devorador-realidad', 'bar-brawl',
+] as const;
 
 export function propsParaComparacion(componenteId: string, datos: DatosComparacion): Record<string, unknown> {
   switch (componenteId) {
@@ -143,6 +164,30 @@ export function propsParaComparacion(componenteId: string, datos: DatosComparaci
         der: {rotulo: datos.derecha.rotulo, valor: datos.derecha.texto},
         remate: datos.remate,
       };
+
+    // R8: devorador-realidad y bar-brawl (remotion-spike/effects/) SI
+    // tienen un ganador explicito (uno "pierde" contra el otro), a
+    // diferencia de antes-despues/balanza/duelo que solo contrastan sin
+    // declarar vencedor. El ganador sale del peso declarado -- mayor
+    // peso gana; si no hay peso o estan empatados, gana la derecha
+    // (misma convencion que balanza: el lado derecho es el destino/lo
+    // deseado en la mayoria de los guiones de venta).
+    case 'devorador-realidad': {
+      const derechaGana = (datos.derecha.peso ?? 0) >= (datos.izquierda.peso ?? 0);
+      return {
+        loserObject: derechaGana ? datos.izquierda.texto : datos.derecha.texto,
+        winnerObject: derechaGana ? datos.derecha.texto : datos.izquierda.texto,
+      };
+    }
+
+    case 'bar-brawl': {
+      const derechaGana = (datos.derecha.peso ?? 0) >= (datos.izquierda.peso ?? 0);
+      return {
+        labelA: datos.izquierda.rotulo,
+        labelB: datos.derecha.rotulo,
+        winner: derechaGana ? 'B' : 'A',
+      };
+    }
 
     default:
       throw new Error(

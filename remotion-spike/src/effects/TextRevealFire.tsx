@@ -8,7 +8,7 @@ interface TextRevealFireProps {
   duration?: number;
 }
 
-const TextRevealFire: React.FC<TextRevealFireProps> = ({
+export const TextRevealFire: React.FC<TextRevealFireProps> = ({
   text,
   fireColor = '#FF6B35',
   textColor = '#FFFFFF',

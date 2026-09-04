@@ -7,7 +7,7 @@ interface WaveDistortionProps {
   duration?: number;
 }
 
-const WaveDistortion: React.FC<WaveDistortionProps> = ({
+export const WaveDistortion: React.FC<WaveDistortionProps> = ({
   text,
   waveColor = '#00FFFF',
   duration = 1.9,
