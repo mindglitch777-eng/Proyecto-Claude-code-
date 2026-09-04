@@ -1,0 +1,98 @@
+[
+  {
+    "index": 0,
+    "unidad": "hook",
+    "idx_en_unidad": 0,
+    "id": "hook_0",
+    "texto_crudo": "La mayoría usa la IA mal.",
+    "texto": "La mayoría usa la IA mal."
+  },
+  {
+    "index": 1,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 0,
+    "id": "desarrollo_0",
+    "texto_crudo": "Abren ChatGPT, prueban otra herramienta, guardan veinte prompts...",
+    "texto": "Abren ChatGPT, prueban otra herramienta, guardan veinte prompts..."
+  },
+  {
+    "index": 2,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 1,
+    "id": "desarrollo_1",
+    "texto_crudo": "...y al final no construyen nada.",
+    "texto": "...y al final no construyen nada."
+  },
+  {
+    "index": 3,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 2,
+    "id": "desarrollo_2",
+    "texto_crudo": "Porque tener herramientas no es tener un negocio.",
+    "texto": "Porque tener herramientas no es tener un negocio."
+  },
+  {
+    "index": 4,
+    "unidad": "giro",
+    "idx_en_unidad": 0,
+    "id": "giro_0",
+    "texto_crudo": "El juego cambia cuando conectás todo.",
+    "texto": "El juego cambia cuando conectás todo."
+  },
+  {
+    "index": 5,
+    "unidad": "giro",
+    "idx_en_unidad": 1,
+    "id": "giro_1",
+    "texto_crudo": "Una idea se convierte en producto. El producto genera contenido. El contenido atrae personas.",
+    "texto": "Una idea se convierte en producto. El producto genera contenido. El contenido atrae personas."
+  },
+  {
+    "index": 6,
+    "unidad": "pausa",
+    "idx_en_unidad": 0,
+    "id": "pausa_0",
+    "texto_crudo": "Y ahí dejás de usar la IA para jugar...",
+    "texto": "Y ahí dejás de usar la IA para jugar..."
+  },
+  {
+    "index": 7,
+    "unidad": "giro",
+    "idx_en_unidad": 2,
+    "id": "giro_2",
+    "texto_crudo": "...y empezás a usarla para construir.",
+    "texto": "...y empezás a usarla para construir."
+  },
+  {
+    "index": 8,
+    "unidad": "desarrollo",
+    "idx_en_unidad": 3,
+    "id": "desarrollo_3",
+    "texto_crudo": "Porque la ventaja no está en conocer cien herramientas.",
+    "texto": "Porque la ventaja no está en conocer cien herramientas."
+  },
+  {
+    "index": 9,
+    "unidad": "payoff",
+    "idx_en_unidad": 0,
+    "id": "payoff_0",
+    "texto_crudo": "Está en saber qué hacer con ellas.",
+    "texto": "Está en saber qué hacer con ellas."
+  },
+  {
+    "index": 10,
+    "unidad": "payoff",
+    "idx_en_unidad": 1,
+    "id": "payoff_1",
+    "texto_crudo": "Y estoy construyendo ese sistema desde cero.",
+    "texto": "Y estoy construyendo ese sistema desde cero."
+  },
+  {
+    "index": 11,
+    "unidad": "cierre",
+    "idx_en_unidad": 0,
+    "id": "cierre_0",
+    "texto_crudo": "Seguime y mirá cómo lo hago.",
+    "texto": "Seguime y mirá cómo lo hago."
+  }
+]
