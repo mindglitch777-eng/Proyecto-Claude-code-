@@ -1,0 +1,141 @@
+{
+  "id": "venta_09",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "v9_s1",
+      "desdeSeg": 0,
+      "duracionSeg": 4.538005,
+      "componenteId": "slot-machine",
+      "props": {
+        "finalNumber": "99%",
+        "metalColor": "#FFD700",
+        "duration": 4.288005
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v9_s1.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.288005
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "v9_s2",
+      "desdeSeg": 4.538005,
+      "duracionSeg": 3.514014,
+      "componenteId": "flip-cards",
+      "props": {
+        "items": [
+          "PRODUCTO",
+          "AUTOMATIZACIÓN",
+          "IA",
+          "VENTA"
+        ],
+        "cardColor": "#003366",
+        "textColor": "#00FF88",
+        "duration": 3.264014
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v9_s2.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.264014
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v9_s3",
+      "desdeSeg": 8.052019,
+      "duracionSeg": 4.474014,
+      "componenteId": "mindmap-connect",
+      "props": {
+        "items": [
+          "ESCRIBIR",
+          "EDITAR",
+          "PUBLICAR",
+          "RESPONDER"
+        ],
+        "lineColor": "#00BFFF",
+        "nodeGlow": "#0088FF",
+        "duration": 4.224014
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v9_s3.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.224014
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v9_s4",
+      "desdeSeg": 12.526033,
+      "duracionSeg": 3.706009,
+      "componenteId": "text-reveal-fire",
+      "props": {
+        "text": "VENDIENDO MIENTRAS DORMÍS",
+        "fireColor": "#FF6600",
+        "textColor": "#FFFFFF",
+        "duration": 3.456009
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v9_s4.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.456009
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v9_s5",
+      "desdeSeg": 16.232042,
+      "duracionSeg": 3.13,
+      "componenteId": "gold-rush",
+      "props": {
+        "achievementText": "SOCIO IA",
+        "goldColor": "#FFD700",
+        "coinCount": 120,
+        "duration": 2.88
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v9_s5.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.88
+        }
+      ],
+      "golpe": "sacudon",
+      "volumenSfx": 0.85
+    },
+    {
+      "unidadId": "v9_s6",
+      "desdeSeg": 19.362042,
+      "duracionSeg": 2.426009,
+      "componenteId": "mercurio-revelador",
+      "props": {
+        "logoImage": "",
+        "highlightColor": "#FFD700",
+        "duration": 2.176009
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v9_s6.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.176009
+        }
+      ],
+      "golpe": "negro",
+      "volumenSfx": 0.5
+    }
+  ],
+  "duracionTotalSeg": 22.288051
+}

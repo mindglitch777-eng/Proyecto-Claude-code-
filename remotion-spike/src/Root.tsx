@@ -33,6 +33,8 @@ import venta05 from './fabrica_bridge/venta_05.json';
 import venta06 from './fabrica_bridge/venta_06.json';
 import venta07 from './fabrica_bridge/venta_07.json';
 import venta08 from './fabrica_bridge/venta_08.json';
+import venta09 from './fabrica_bridge/venta_09.json';
+import venta10 from './fabrica_bridge/venta_10.json';
 import {Video} from './receta/Video';
 import {GUIONES} from './receta/guiones';
 import {compilar} from './receta/compilar';
@@ -342,6 +344,8 @@ export const Root: React.FC = () => {
       <Composition id="venta-06" component={FabricaVideo} durationInFrames={Math.round((venta06 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: venta06 as ArbolFabrica}} />
       <Composition id="venta-07" component={FabricaVideo} durationInFrames={Math.round((venta07 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: venta07 as ArbolFabrica}} />
       <Composition id="venta-08" component={FabricaVideo} durationInFrames={Math.round((venta08 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: venta08 as ArbolFabrica}} />
+      <Composition id="venta-09" component={FabricaVideo} durationInFrames={Math.round((venta09 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: venta09 as ArbolFabrica}} />
+      <Composition id="venta-10" component={FabricaVideo} durationInFrames={Math.round((venta10 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: venta10 as ArbolFabrica}} />
       <Composition id="rebecca-beach" component={RebeccaBeach} durationInFrames={Math.round(DUR_REBECCA * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       {/* Casos 2 a 20 de la serie documental: uno por entrada en
           casos.ts, todos sobre el mismo motor generico (CasoGenerico). */}

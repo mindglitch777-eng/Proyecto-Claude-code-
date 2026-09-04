@@ -1,0 +1,138 @@
+{
+  "id": "venta_10",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "v10_s1",
+      "desdeSeg": 0,
+      "duracionSeg": 3.898005,
+      "componenteId": "heartbeat-pulse",
+      "props": {
+        "text": "SISTEMA",
+        "pulseColor": "#00FFFF",
+        "beats": 3,
+        "duration": 3.648005
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v10_s1.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.648005
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "v10_s2",
+      "desdeSeg": 3.898005,
+      "duracionSeg": 4.41,
+      "componenteId": "mindmap-connect",
+      "props": {
+        "items": [
+          "IDEA",
+          "PRODUCTO"
+        ],
+        "lineColor": "#00BFFF",
+        "nodeGlow": "#0088FF",
+        "duration": 4.16
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v10_s2.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.16
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v10_s3",
+      "desdeSeg": 8.308005,
+      "duracionSeg": 3.194014,
+      "componenteId": "mindmap-connect",
+      "props": {
+        "items": [
+          "CONTENIDO",
+          "VENTA"
+        ],
+        "lineColor": "#00FF88",
+        "nodeGlow": "#00FF44",
+        "duration": 2.944014
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v10_s3.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.944014
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v10_s4",
+      "desdeSeg": 11.502019,
+      "duracionSeg": 3.514014,
+      "componenteId": "arquitectura-neon",
+      "props": {
+        "text": "SISTEMA COMPLETO",
+        "mainColor": "#00FFFF",
+        "sparkColor": "#FFD700",
+        "duration": 3.264014
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v10_s4.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.264014
+        }
+      ],
+      "golpe": "fogonazo",
+      "volumenSfx": 0.9
+    },
+    {
+      "unidadId": "v10_s5",
+      "desdeSeg": 15.016033,
+      "duracionSeg": 3.898005,
+      "componenteId": "gold-rush",
+      "props": {
+        "achievementText": "TRABAJA PARA VOS",
+        "goldColor": "#FFD700",
+        "coinCount": 120,
+        "duration": 3.648005
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v10_s5.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.648005
+        }
+      ],
+      "golpe": "sacudon",
+      "volumenSfx": 0.85
+    },
+    {
+      "unidadId": "v10_s6",
+      "desdeSeg": 18.914038,
+      "duracionSeg": 3.194014,
+      "componenteId": "spotlight-reveal",
+      "props": {
+        "text": "SEGUIME",
+        "spotColor": "#FFD700",
+        "duration": 2.944014
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v10_s6.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.944014
+        }
+      ],
+      "golpe": "negro",
+      "volumenSfx": 0.5
+    }
+  ],
+  "duracionTotalSeg": 22.608052
+}
