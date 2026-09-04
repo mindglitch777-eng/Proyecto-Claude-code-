@@ -1,0 +1,144 @@
+{
+  "id": "venta_07",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "v7_s1",
+      "desdeSeg": 0,
+      "duracionSeg": 4.281995,
+      "componenteId": "text-reveal-fire",
+      "props": {
+        "text": "PÉRDIDA DE TIEMPO",
+        "fireColor": "#FF4400",
+        "textColor": "#FFFFFF",
+        "duration": 4.031995
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v7_s1.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.031995
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "v7_s2",
+      "desdeSeg": 4.281995,
+      "duracionSeg": 3.641995,
+      "componenteId": "flip-cards",
+      "props": {
+        "items": [
+          "RESUELVE",
+          "CREA",
+          "GENERA",
+          "AUTOMATIZA"
+        ],
+        "cardColor": "#003366",
+        "textColor": "#00FF88",
+        "duration": 3.391995
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v7_s2.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.391995
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v7_s3",
+      "desdeSeg": 7.92399,
+      "duracionSeg": 4.154014,
+      "componenteId": "bar-brawl",
+      "props": {
+        "labelA": "100 HERRAMIENTAS",
+        "labelB": "1 SISTEMA",
+        "winner": "B",
+        "colorA": "#FF0044",
+        "colorB": "#00FF88",
+        "duration": 3.904014
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v7_s3.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.904014
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v7_s4",
+      "desdeSeg": 12.078004,
+      "duracionSeg": 4.09,
+      "componenteId": "mindmap-connect",
+      "props": {
+        "items": [
+          "IDEA",
+          "PRODUCTO",
+          "CONTENIDO",
+          "VENTA"
+        ],
+        "lineColor": "#00BFFF",
+        "nodeGlow": "#0088FF",
+        "duration": 3.84
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v7_s4.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.84
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v7_s5",
+      "desdeSeg": 16.168004,
+      "duracionSeg": 3.386009,
+      "componenteId": "gold-rush",
+      "props": {
+        "achievementText": "PLATA ENTRA SOLA",
+        "goldColor": "#FFD700",
+        "coinCount": 120,
+        "duration": 3.136009
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v7_s5.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.136009
+        }
+      ],
+      "golpe": "sacudon",
+      "volumenSfx": 0.85
+    },
+    {
+      "unidadId": "v7_s6",
+      "desdeSeg": 19.554013,
+      "duracionSeg": 1.85,
+      "componenteId": "mercurio-revelador",
+      "props": {
+        "logoImage": "",
+        "highlightColor": "#FFD700",
+        "duration": 1.6
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v7_s6.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 1.6
+        }
+      ],
+      "golpe": "negro",
+      "volumenSfx": 0.5
+    }
+  ],
+  "duracionTotalSeg": 21.904013000000003
+}

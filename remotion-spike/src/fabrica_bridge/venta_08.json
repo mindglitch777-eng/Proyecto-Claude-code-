@@ -1,0 +1,143 @@
+{
+  "id": "venta_08",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "v8_s1",
+      "desdeSeg": 0,
+      "duracionSeg": 4.666009,
+      "componenteId": "glitch-shatter",
+      "props": {
+        "text": "NO VENDE NADA",
+        "glitchColor": "#FF0044",
+        "fragmentCount": 50,
+        "duration": 4.416009
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v8_s1.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.416009
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "v8_s2",
+      "desdeSeg": 4.666009,
+      "duracionSeg": 3.13,
+      "componenteId": "bar-brawl",
+      "props": {
+        "labelA": "ENTRETENIMIENTO",
+        "labelB": "CONVERSIÓN",
+        "winner": "B",
+        "colorA": "#FF0044",
+        "colorB": "#00FF88",
+        "duration": 2.88
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v8_s2.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.88
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v8_s3",
+      "desdeSeg": 7.796009,
+      "duracionSeg": 4.026009,
+      "componenteId": "flip-cards",
+      "props": {
+        "items": [
+          "HOOK",
+          "RETENCIÓN",
+          "REWARD"
+        ],
+        "cardColor": "#003366",
+        "textColor": "#FFD700",
+        "duration": 3.776009
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v8_s3.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.776009
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v8_s4",
+      "desdeSeg": 11.822018,
+      "duracionSeg": 2.81,
+      "componenteId": "mindmap-connect",
+      "props": {
+        "items": [
+          "HOOK",
+          "RETENCIÓN",
+          "REWARD",
+          "VENTA"
+        ],
+        "lineColor": "#00BFFF",
+        "nodeGlow": "#0088FF",
+        "duration": 2.56
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v8_s4.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.56
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v8_s5",
+      "desdeSeg": 14.632018,
+      "duracionSeg": 3.321995,
+      "componenteId": "gold-rush",
+      "props": {
+        "achievementText": "CONVIERTE",
+        "goldColor": "#FFD700",
+        "coinCount": 120,
+        "duration": 3.071995
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v8_s5.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.071995
+        }
+      ],
+      "golpe": "sacudon",
+      "volumenSfx": 0.85
+    },
+    {
+      "unidadId": "v8_s6",
+      "desdeSeg": 17.954013,
+      "duracionSeg": 2.618005,
+      "componenteId": "spotlight-reveal",
+      "props": {
+        "text": "SEGUIME",
+        "spotColor": "#00FF88",
+        "duration": 2.368005
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v8_s6.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.368005
+        }
+      ],
+      "golpe": "negro",
+      "volumenSfx": 0.5
+    }
+  ],
+  "duracionTotalSeg": 21.072018
+}

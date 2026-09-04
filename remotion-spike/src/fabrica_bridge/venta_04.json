@@ -1,0 +1,150 @@
+{
+  "id": "venta_04",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "v4_s1",
+      "desdeSeg": 0,
+      "duracionSeg": 3.641995,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "ERROR"
+        ],
+        "entra": [
+          0.3
+        ],
+        "duration": 3.391995
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v4_s1.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.391995
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "v4_s2",
+      "desdeSeg": 3.641995,
+      "duracionSeg": 4.474014,
+      "componenteId": "antes-despues",
+      "props": {
+        "antes": {
+          "rotulo": "CONTENIDO",
+          "txt": "CONTENIDO"
+        },
+        "despues": {
+          "rotulo": "VENTAS",
+          "txt": "VENTAS"
+        },
+        "duration": 4.224014
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v4_s2.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.224014
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v4_s3",
+      "desdeSeg": 8.116009,
+      "duracionSeg": 4.858005,
+      "componenteId": "mindmap-connect",
+      "props": {
+        "items": [
+          "CONTENIDO",
+          "PRODUCTO",
+          "IA"
+        ],
+        "lineColor": "#00BFFF",
+        "nodeGlow": "#0088FF",
+        "duration": 4.608005
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v4_s3.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.608005
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v4_s4",
+      "desdeSeg": 12.974014,
+      "duracionSeg": 4.346009,
+      "componenteId": "flip-cards",
+      "props": {
+        "items": [
+          "CONTENIDO",
+          "PRODUCTO",
+          "PLATA"
+        ],
+        "cardColor": "#003366",
+        "duration": 4.096009
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v4_s4.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.096009
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v4_s5",
+      "desdeSeg": 17.320023,
+      "duracionSeg": 4.09,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "PLATA LLEGA SOLA"
+        ],
+        "entra": [
+          0.3
+        ],
+        "duration": 3.84
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v4_s5.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.84
+        }
+      ],
+      "golpe": "sacudon",
+      "volumenSfx": 0.85
+    },
+    {
+      "unidadId": "v4_s6",
+      "desdeSeg": 21.410023,
+      "duracionSeg": 2.49,
+      "componenteId": "spotlight-reveal",
+      "props": {
+        "text": "SEGUIME",
+        "spotColor": "#FFD700",
+        "duration": 2.24
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v4_s6.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.24
+        }
+      ],
+      "golpe": "negro",
+      "volumenSfx": 0.5
+    }
+  ],
+  "duracionTotalSeg": 24.400022999999997
+}

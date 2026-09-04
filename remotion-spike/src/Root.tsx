@@ -25,6 +25,14 @@ import demo11 from './fabrica_bridge/demo_11.json';
 import demo12 from './fabrica_bridge/demo_12.json';
 import pruebaR68 from './fabrica_bridge/prueba_r6_8.json';
 import pruebaR610 from './fabrica_bridge/prueba_r6_10.json';
+import venta01 from './fabrica_bridge/venta_01.json';
+import venta02 from './fabrica_bridge/venta_02.json';
+import venta03 from './fabrica_bridge/venta_03.json';
+import venta04 from './fabrica_bridge/venta_04.json';
+import venta05 from './fabrica_bridge/venta_05.json';
+import venta06 from './fabrica_bridge/venta_06.json';
+import venta07 from './fabrica_bridge/venta_07.json';
+import venta08 from './fabrica_bridge/venta_08.json';
 import {Video} from './receta/Video';
 import {GUIONES} from './receta/guiones';
 import {compilar} from './receta/compilar';
@@ -321,6 +329,19 @@ export const Root: React.FC = () => {
         height={ALTO}
         defaultProps={{arbol: pruebaR610 as ArbolFabrica}}
       />
+      {/* R8: lote de 10 videos de venta ("sistema de ingresos con IA").
+          venta_01 a venta_05: Director Visual real eligiendo componente
+          por escena (guion en texto plano). venta_06 a venta_10:
+          componentes fijos del guion original de DeepSeek. Ver
+          fabrica/ejemplos/generar_lote_ventas.ts. */}
+      <Composition id="venta-01" component={FabricaVideo} durationInFrames={Math.round((venta01 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: venta01 as ArbolFabrica}} />
+      <Composition id="venta-02" component={FabricaVideo} durationInFrames={Math.round((venta02 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: venta02 as ArbolFabrica}} />
+      <Composition id="venta-03" component={FabricaVideo} durationInFrames={Math.round((venta03 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: venta03 as ArbolFabrica}} />
+      <Composition id="venta-04" component={FabricaVideo} durationInFrames={Math.round((venta04 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: venta04 as ArbolFabrica}} />
+      <Composition id="venta-05" component={FabricaVideo} durationInFrames={Math.round((venta05 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: venta05 as ArbolFabrica}} />
+      <Composition id="venta-06" component={FabricaVideo} durationInFrames={Math.round((venta06 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: venta06 as ArbolFabrica}} />
+      <Composition id="venta-07" component={FabricaVideo} durationInFrames={Math.round((venta07 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: venta07 as ArbolFabrica}} />
+      <Composition id="venta-08" component={FabricaVideo} durationInFrames={Math.round((venta08 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: venta08 as ArbolFabrica}} />
       <Composition id="rebecca-beach" component={RebeccaBeach} durationInFrames={Math.round(DUR_REBECCA * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       {/* Casos 2 a 20 de la serie documental: uno por entrada en
           casos.ts, todos sobre el mismo motor generico (CasoGenerico). */}

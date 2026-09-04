@@ -1,0 +1,148 @@
+{
+  "id": "venta_02",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "v2_s1",
+      "desdeSeg": 0,
+      "duracionSeg": 4.538005,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "ES UN MARTILLO"
+        ],
+        "entra": [
+          0.3
+        ],
+        "duration": 4.288005
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v2_s1.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.288005
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "v2_s2",
+      "desdeSeg": 4.538005,
+      "duracionSeg": 3.961995,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "DECORA LA PARED"
+        ],
+        "entra": [
+          0.3
+        ],
+        "duration": 3.711995
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v2_s2.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.711995
+        }
+      ],
+      "golpe": "fogonazo",
+      "volumenSfx": 0.9
+    },
+    {
+      "unidadId": "v2_s3",
+      "desdeSeg": 8.5,
+      "duracionSeg": 3.45,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "CONSTRUYE UN NEGOCIO"
+        ],
+        "entra": [
+          0.3
+        ],
+        "duration": 3.2
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v2_s3.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.2
+        }
+      ],
+      "golpe": "fogonazo",
+      "volumenSfx": 0.9
+    },
+    {
+      "unidadId": "v2_s4",
+      "desdeSeg": 11.95,
+      "duracionSeg": 4.666009,
+      "componenteId": "flip-cards",
+      "props": {
+        "items": [
+          "IDEA",
+          "PRODUCTO",
+          "CONTENIDO",
+          "VENTA"
+        ],
+        "cardColor": "#003366",
+        "duration": 4.416009
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v2_s4.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.416009
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v2_s5",
+      "desdeSeg": 16.616009,
+      "duracionSeg": 3.706009,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "MEJOR EMPLEADO"
+        ],
+        "entra": [
+          0.3
+        ],
+        "duration": 3.456009
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v2_s5.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.456009
+        }
+      ],
+      "golpe": "sacudon",
+      "volumenSfx": 0.85
+    },
+    {
+      "unidadId": "v2_s6",
+      "desdeSeg": 20.322018,
+      "duracionSeg": 2.681995,
+      "componenteId": "spotlight-reveal",
+      "props": {
+        "text": "SEGUIME",
+        "spotColor": "#FFD700",
+        "duration": 2.431995
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v2_s6.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.431995
+        }
+      ],
+      "golpe": "negro",
+      "volumenSfx": 0.5
+    }
+  ],
+  "duracionTotalSeg": 23.504013
+}

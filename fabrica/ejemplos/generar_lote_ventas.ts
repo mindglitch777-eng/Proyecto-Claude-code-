@@ -267,7 +267,7 @@ function main() {
     const elecciones: {escena: number; id: string; score: number}[] = [];
 
     video.escenas.forEach((escena, i) => {
-      const clipId = `${video.id.replace('venta_', 'v')}_s${i + 1}`;
+      const clipId = `v${parseInt(video.id.replace('venta_', ''), 10)}_s${i + 1}`;
       const clip = clipReal(clipId);
 
       const consulta: ConsultaVisual = {
@@ -347,7 +347,7 @@ function main() {
     const unidades: UnidadResuelta[] = [];
 
     video.escenas.forEach((escena, i) => {
-      const clipId = `${video.id.replace('venta_', 'v')}_s${i + 1}`;
+      const clipId = `v${parseInt(video.id.replace('venta_', ''), 10)}_s${i + 1}`;
       const clip = clipReal(clipId);
 
       const componente = registro.find((c) => c.id === escena.componenteId);

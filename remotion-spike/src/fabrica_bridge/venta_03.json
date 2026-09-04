@@ -1,0 +1,149 @@
+{
+  "id": "venta_03",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "v3_s1",
+      "desdeSeg": 0,
+      "duracionSeg": 4.41,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "MERCADO GIGANTE"
+        ],
+        "entra": [
+          0.3
+        ],
+        "duration": 4.16
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v3_s1.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.16
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "v3_s2",
+      "desdeSeg": 4.41,
+      "duracionSeg": 5.05,
+      "componenteId": "flip-cards",
+      "props": {
+        "items": [
+          "EBOOKS",
+          "PLANTILLAS",
+          "CURSOS",
+          "EMBUDOS"
+        ],
+        "cardColor": "#003366",
+        "duration": 4.8
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v3_s2.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.8
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v3_s3",
+      "desdeSeg": 9.46,
+      "duracionSeg": 4.794014,
+      "componenteId": "antes-despues",
+      "props": {
+        "antes": {
+          "rotulo": "EQUIPO",
+          "txt": "EQUIPO"
+        },
+        "despues": {
+          "rotulo": "IA",
+          "txt": "IA"
+        },
+        "duration": 4.544014
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v3_s3.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.544014
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v3_s4",
+      "desdeSeg": 14.254014000000002,
+      "duracionSeg": 4.41,
+      "componenteId": "mindmap-connect",
+      "props": {
+        "items": [
+          "PRODUCTO",
+          "CONTENIDO",
+          "VENTA"
+        ],
+        "lineColor": "#00FF88",
+        "nodeGlow": "#00FF44",
+        "duration": 4.16
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v3_s4.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.16
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v3_s5",
+      "desdeSeg": 18.664014,
+      "duracionSeg": 5.114014,
+      "componenteId": "cifra-se-cae",
+      "props": {
+        "arriba": "RESULTADOS",
+        "de": "$0",
+        "a": "$10.000",
+        "abajo": "en 90 días",
+        "duration": 4.864014
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v3_s5.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.864014
+        }
+      ],
+      "golpe": "sacudon",
+      "volumenSfx": 0.85
+    },
+    {
+      "unidadId": "v3_s6",
+      "desdeSeg": 23.778028000000003,
+      "duracionSeg": 2.298005,
+      "componenteId": "spotlight-reveal",
+      "props": {
+        "text": "SEGUIME",
+        "spotColor": "#00FF88",
+        "duration": 2.048005
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v3_s6.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.048005
+        }
+      ],
+      "golpe": "negro",
+      "volumenSfx": 0.5
+    }
+  ],
+  "duracionTotalSeg": 26.576033000000002
+}

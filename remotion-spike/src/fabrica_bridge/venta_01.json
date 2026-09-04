@@ -1,0 +1,148 @@
+{
+  "id": "venta_01",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "v1_s1",
+      "desdeSeg": 0,
+      "duracionSeg": 3.514014,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "98% PIERDE"
+        ],
+        "entra": [
+          0.3
+        ],
+        "duration": 3.264014
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v1_s1.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.264014
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "v1_s2",
+      "desdeSeg": 3.514014,
+      "duracionSeg": 2.618005,
+      "componenteId": "text-reveal-fire",
+      "props": {
+        "text": "NO SABEN POR QUÉ",
+        "fireColor": "#FF4400",
+        "textColor": "#FF4400",
+        "duration": 2.368005
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v1_s2.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.368005
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v1_s3",
+      "desdeSeg": 6.132019,
+      "duracionSeg": 5.498005,
+      "componenteId": "antes-despues",
+      "props": {
+        "antes": {
+          "rotulo": "TIEMPO",
+          "txt": "TIEMPO"
+        },
+        "despues": {
+          "rotulo": "ACTIVOS",
+          "txt": "ACTIVOS"
+        },
+        "duration": 5.248005
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v1_s3.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 5.248005
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v1_s4",
+      "desdeSeg": 11.630023999999999,
+      "duracionSeg": 6.778005,
+      "componenteId": "mindmap-connect",
+      "props": {
+        "items": [
+          "IDEA",
+          "PRODUCTO",
+          "CONTENIDO",
+          "VENTA"
+        ],
+        "lineColor": "#00BFFF",
+        "nodeGlow": "#0088FF",
+        "duration": 6.528005
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v1_s4.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 6.528005
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v1_s5",
+      "desdeSeg": 18.408029,
+      "duracionSeg": 5.561995,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "RESULTADOS"
+        ],
+        "entra": [
+          0.3
+        ],
+        "duration": 5.311995
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v1_s5.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 5.311995
+        }
+      ],
+      "golpe": "sacudon",
+      "volumenSfx": 0.85
+    },
+    {
+      "unidadId": "v1_s6",
+      "desdeSeg": 23.970024,
+      "duracionSeg": 3.641995,
+      "componenteId": "spotlight-reveal",
+      "props": {
+        "text": "SEGUIME",
+        "spotColor": "#FFD700",
+        "duration": 3.391995
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v1_s6.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.391995
+        }
+      ],
+      "golpe": "negro",
+      "volumenSfx": 0.5
+    }
+  ],
+  "duracionTotalSeg": 28.112019
+}

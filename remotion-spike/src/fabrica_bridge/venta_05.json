@@ -1,0 +1,149 @@
+{
+  "id": "venta_05",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "v5_s1",
+      "desdeSeg": 0,
+      "duracionSeg": 3.961995,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "MIEDO"
+        ],
+        "entra": [
+          0.3
+        ],
+        "duration": 3.711995
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v5_s1.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.711995
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "v5_s2",
+      "desdeSeg": 3.961995,
+      "duracionSeg": 4.154014,
+      "componenteId": "antes-despues",
+      "props": {
+        "antes": {
+          "rotulo": "MIEDO",
+          "txt": "MIEDO"
+        },
+        "despues": {
+          "rotulo": "PRODUCTO",
+          "txt": "PRODUCTO"
+        },
+        "duration": 3.904014
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v5_s2.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.904014
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v5_s3",
+      "desdeSeg": 8.116009,
+      "duracionSeg": 4.154014,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "EL ACTIVO MÁS VALIOSO"
+        ],
+        "entra": [
+          0.3
+        ],
+        "duration": 3.904014
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v5_s3.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.904014
+        }
+      ],
+      "golpe": "fogonazo",
+      "volumenSfx": 0.9
+    },
+    {
+      "unidadId": "v5_s4",
+      "desdeSeg": 12.270023,
+      "duracionSeg": 4.09,
+      "componenteId": "mindmap-connect",
+      "props": {
+        "items": [
+          "IDEA",
+          "PRODUCTO"
+        ],
+        "lineColor": "#00BFFF",
+        "nodeGlow": "#0088FF",
+        "duration": 3.84
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v5_s4.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.84
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v5_s5",
+      "desdeSeg": 16.360022999999998,
+      "duracionSeg": 3.386009,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "PLATA FLUYE"
+        ],
+        "entra": [
+          0.3
+        ],
+        "duration": 3.136009
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v5_s5.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.136009
+        }
+      ],
+      "golpe": "sacudon",
+      "volumenSfx": 0.85
+    },
+    {
+      "unidadId": "v5_s6",
+      "desdeSeg": 19.746032,
+      "duracionSeg": 2.554014,
+      "componenteId": "spotlight-reveal",
+      "props": {
+        "text": "SEGUIME",
+        "spotColor": "#FFD700",
+        "duration": 2.304014
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v5_s6.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.304014
+        }
+      ],
+      "golpe": "negro",
+      "volumenSfx": 0.5
+    }
+  ],
+  "duracionTotalSeg": 22.800046
+}

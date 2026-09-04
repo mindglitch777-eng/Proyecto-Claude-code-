@@ -1,0 +1,145 @@
+{
+  "id": "venta_06",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "v6_s1",
+      "desdeSeg": 0,
+      "duracionSeg": 5.434014,
+      "componenteId": "slot-machine",
+      "props": {
+        "finalNumber": "$5.000",
+        "metalColor": "#FFD700",
+        "duration": 5.184014
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v6_s1.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 5.184014
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0
+    },
+    {
+      "unidadId": "v6_s2",
+      "desdeSeg": 5.434014,
+      "duracionSeg": 5.05,
+      "componenteId": "flip-cards",
+      "props": {
+        "items": [
+          "PRODUCTO",
+          "IDEA",
+          "EJECUCIÓN"
+        ],
+        "cardColor": "#003366",
+        "textColor": "#FFD700",
+        "duration": 4.8
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v6_s2.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.8
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v6_s3",
+      "desdeSeg": 10.484014,
+      "duracionSeg": 3.834014,
+      "componenteId": "mindmap-connect",
+      "props": {
+        "items": [
+          "EMPEZAR",
+          "DEJAR",
+          "EMPEZAR",
+          "DEJAR",
+          "TERMINAR"
+        ],
+        "lineColor": "#FF0044",
+        "nodeGlow": "#FF0088",
+        "duration": 3.584014
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v6_s3.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.584014
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v6_s4",
+      "desdeSeg": 14.318028,
+      "duracionSeg": 4.858005,
+      "componenteId": "mindmap-connect",
+      "props": {
+        "items": [
+          "PRODUCTO",
+          "CONTENIDO",
+          "VENTA"
+        ],
+        "lineColor": "#00FF88",
+        "nodeGlow": "#00FF44",
+        "duration": 4.608005
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v6_s4.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.608005
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55
+    },
+    {
+      "unidadId": "v6_s5",
+      "desdeSeg": 19.176033,
+      "duracionSeg": 3.13,
+      "componenteId": "gold-rush",
+      "props": {
+        "achievementText": "DUEÑO DE NEGOCIO",
+        "goldColor": "#FFD700",
+        "coinCount": 120,
+        "duration": 2.88
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v6_s5.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.88
+        }
+      ],
+      "golpe": "sacudon",
+      "volumenSfx": 0.85
+    },
+    {
+      "unidadId": "v6_s6",
+      "desdeSeg": 22.306033,
+      "duracionSeg": 3.514014,
+      "componenteId": "spotlight-reveal",
+      "props": {
+        "text": "SEGUIME",
+        "spotColor": "#FFD700",
+        "duration": 3.264014
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_venta/v6_s6.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.264014
+        }
+      ],
+      "golpe": "negro",
+      "volumenSfx": 0.5
+    }
+  ],
+  "duracionTotalSeg": 26.320047
+}
