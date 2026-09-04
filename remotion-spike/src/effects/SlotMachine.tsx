@@ -52,50 +52,50 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
         <div
           style={{
             position: 'absolute',
-            width: '600px',
-            height: '300px',
+            width: '980px',
+            height: '480px',
             background: `linear-gradient(135deg, ${metalColor}40, ${metalColor}20)`,
-            border: `4px solid ${metalColor}`,
-            borderRadius: '20px',
-            boxShadow: `0 0 40px ${metalColor}, inset 0 0 30px ${metalColor}20`,
+            border: `6px solid ${metalColor}`,
+            borderRadius: '32px',
+            boxShadow: `0 0 60px ${metalColor}, inset 0 0 45px ${metalColor}20`,
             opacity: 0.7,
           }}
         />
 
         {/* Dígitos rodando */}
-        <div style={{ position: 'relative', display: 'flex', gap: '30px' }}>
+        <div style={{ position: 'relative', display: 'flex', gap: '40px' }}>
           {digits.map((digit, i) => (
             <div
               key={i}
               style={{
-                width: '100px',
-                height: '150px',
+                width: '160px',
+                height: '240px',
                 overflow: 'hidden',
-                border: `3px solid ${metalColor}`,
-                borderRadius: '10px',
+                border: `4px solid ${metalColor}`,
+                borderRadius: '16px',
                 background: 'rgba(0, 0, 0, 0.8)',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                boxShadow: `inset 0 0 20px rgba(0, 0, 0, 0.9), 0 0 15px ${metalColor}`,
+                boxShadow: `inset 0 0 30px rgba(0, 0, 0, 0.9), 0 0 20px ${metalColor}`,
               }}
             >
               <div
                 style={{
-                  fontSize: '120px',
+                  fontSize: '190px',
                   fontWeight: 'bold',
                   color: metalColor,
                   transform: `translateY(${
                     progress < 0.7 ? -rollingOffset + i * 30 : -Math.min(i * 50, 150)
                   }px)`,
                   transition: progress > 0.7 ? 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)' : 'none',
-                  textShadow: `0 0 20px ${metalColor}`,
+                  textShadow: `0 0 30px ${metalColor}`,
                   fontFamily: 'monospace',
                 }}
               >
                 {/* Simular rueda: números del 0-9 */}
                 {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((n, idx) => (
-                  <div key={idx} style={{ height: '120px', lineHeight: '120px' }}>
+                  <div key={idx} style={{ height: '190px', lineHeight: '190px' }}>
                     {n}
                   </div>
                 ))}
@@ -108,20 +108,20 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
         {sparkProgress > 0 &&
           Array.from({ length: 12 }).map((_, i) => {
             const angle = (i / 12) * Math.PI * 2;
-            const distance = 80 * sparkProgress;
+            const distance = 200 * sparkProgress;
             return (
               <div
                 key={`spark-${i}`}
                 style={{
                   position: 'absolute',
-                  width: '6px',
-                  height: '6px',
+                  width: '10px',
+                  height: '10px',
                   background: metalColor,
                   borderRadius: '50%',
                   left: `calc(50% + ${Math.cos(angle) * distance}px)`,
                   top: `calc(50% + ${Math.sin(angle) * distance}px)`,
                   opacity: Math.max(0, 1 - sparkProgress),
-                  boxShadow: `0 0 10px ${metalColor}`,
+                  boxShadow: `0 0 16px ${metalColor}`,
                 }}
               />
             );

@@ -25,7 +25,7 @@ const VortexTransport: React.FC<VortexTransportProps> = ({
   const circles = useMemo(() => {
     return Array.from({ length: 16 }).map((_, i) => ({
       id: i,
-      radius: 50 + (i / 16) * 200,
+      radius: 120 + (i / 16) * 480,
       initialRotation: (i / 16) * Math.PI * 2,
     }));
   }, []);
@@ -34,8 +34,8 @@ const VortexTransport: React.FC<VortexTransportProps> = ({
     return Array.from({ length: 60 }).map((_, i) => ({
       id: i,
       angle: Math.random() * Math.PI * 2,
-      radius: Math.random() * 150 + 50,
-      size: Math.random() * 6 + 2,
+      radius: Math.random() * 400 + 120,
+      size: Math.random() * 10 + 3,
     }));
   }, []);
 
@@ -108,7 +108,7 @@ const VortexTransport: React.FC<VortexTransportProps> = ({
         <circle
           cx={width / 2}
           cy={height / 2}
-          r={Math.max(10, 80 * (1 - vortexProgress))}
+          r={Math.max(20, 180 * (1 - vortexProgress))}
           fill="url(#vortexGrad)"
           opacity={vortexProgress}
         />

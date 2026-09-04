@@ -33,7 +33,7 @@ const PixelBurst: React.FC<PixelBurstProps> = ({
           x,
           y,
           angle: Math.random() * Math.PI * 2,
-          speed: 100 + Math.random() * 200,
+          speed: 180 + Math.random() * 420,
         });
       }
     }

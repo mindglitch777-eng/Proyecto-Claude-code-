@@ -35,7 +35,7 @@ const GoldRush: React.FC<GoldRushProps> = ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        background: 'radial-gradient(ellipse, rgba(255,215,0,0.1) 0%, rgba(0,0,0,0.95) 100%)',
+        backgroundColor: '#0a0a0a',
       }}
     >
       <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
@@ -115,8 +115,8 @@ const GoldRush: React.FC<GoldRushProps> = ({
           {achievementText}
         </div>
 
-        {/* Destello de impacto */}
-        {progress > 0.7 && (
+        {/* Destello de impacto (breve, solo al tocar la base) */}
+        {progress > 0.7 && progress < 0.78 && (
           <div
             style={{
               position: 'absolute',
@@ -124,7 +124,7 @@ const GoldRush: React.FC<GoldRushProps> = ({
               left: 0,
               width: '100%',
               height: '100%',
-              background: `rgba(255, 215, 0, ${Math.max(0, 0.3 - (progress - 0.7) * 0.5)})`,
+              background: `rgba(255, 215, 0, ${Math.max(0, 0.12 - (progress - 0.7) * 1.5)})`,
             }}
           />
         )}
