@@ -10,6 +10,63 @@ después de cada bloque de trabajo real, como pide el "Prompt Maestro
 del prompt "Capa de exploración agresiva" (para no perderlo de nuevo
 en la memoria de la conversación), `docs/PROMPT_EXPLORACION_AGRESIVA.md`.
 
+## Bloque: carta técnica "efectos virales" (2026-09-05)
+
+4 componentes nuevos pedidos por carta técnica externa (5 efectos
+pedidos, 1 ya existía -- ver más abajo), integrados al catálogo real y
+verificados con still real (no solo compilación):
+
+- **`punch-in`** (texto): zoom digital 1.0→1.8x con sobregiro sobre UNA
+  palabra/cifra ya en pantalla, mantiene y vuelve con rebote. Distinto
+  de `punch` (agresivo/Punch.tsx), que es una SECUENCIA de frases
+  entrando una tras otra -- mecánica distinta, ids distintos a
+  propósito.
+- **`split-screen`** (comparación): dos mitades verticales simultáneas
+  antes/después con línea neón central, el lado "después" gana terreno
+  con el tiempo. Distinto de `antes-despues` (cortina que revela una
+  sola cara a la vez) -- mecánica visual distinta aunque el rol
+  narrativo se superponga.
+- **`kinetic-text`** (texto): hasta 3 líneas entran desde arriba a alta
+  velocidad, chocan con rebote + glitch/chispa de impacto (chromatic
+  aberration manual, sin libreria nueva), se congelan.
+- **`tap-to-cut`** (montaje, no golpe): destello que se expande desde
+  el centro y se desvanece -- mismo patrón que `pixel-burst` (escena
+  autocontenida entre dos unidades). La carta lo pedía como componente
+  `<TapToCut/>`; se documentó por qué NO es un `TipoGolpe` nuevo de
+  `golpes.tsx` (son sistemas distintos: golpe = transición ENTRE
+  escenas resuelta por el puente de render; esto es una escena propia).
+
+**3 correcciones a la carta, aplicadas y documentadas en el código para
+llevar de vuelta a la discusión**:
+1. El 5to efecto pedido ("Contador Dinámico", slot-machine style) **ya
+   existe** como `slot-machine` (agregado la ronda pasada) con props
+   casi idénticas (`finalNumber`, `metalColor`). No se construyó un
+   componente duplicado (`Counter`) -- eso hubiera repetido el mismo
+   patrón de duplicación que la auditoría de esta misma ronda encontró
+   en `generar_demo_11.ts`/`demo_12.ts`.
+2. La carta pedía `@react-spring/three` para las animaciones de
+   rebote. No se agregó -- esa librería no está en `package.json` de
+   `remotion-spike` (sería LA dependencia no estándar que la carta
+   misma pide evitar). Se usó una función `easeOutBack` de 4 líneas
+   (mismo resultado visual: overshoot + settle), cero dependencias
+   nuevas.
+3. La carta pedía marcar los 4 componentes como `estado: "validado"`
+   "ya que se van a usar en producción inmediatamente". Se dejaron
+   como `"sin_validar"` (igual que TODOS los demás efectos nunca antes
+   ejercitados en un video real) -- `validado` significa, en todo el
+   resto del catálogo, "confirmado con un render de producción real",
+   no "intención de uso". Cambiar ese significado solo para estos 4
+   corrompería la señal que el propio scoring del Director Visual usa
+   (aunque esté deprecado para producción, sigue siendo la fuente de
+   verdad de qué está realmente probado). No tiene costo funcional:
+   `renderizador_por_guion.ts` (el flujo de producción actual) no lee
+   `estado` para nada.
+
+Verificado con render de still real (`prueba-efectos-virales`, 6
+frames en puntos clave de cada efecto) -- los 4 se ven como se
+describieron, sin errores. `tsc --noEmit` limpio en `fabrica/` y
+`remotion-spike/`, suite completa de tests de `fabrica/` en verde.
+
 ## Último bloque de trabajo: Orden de auditoría + reestructuración (2026-09-04, en curso)
 
 Orden explícita del operador tras ver que el lote de 10 videos de venta

@@ -45,6 +45,10 @@ import {AuroraShine} from '../effects/AuroraShine';
 import {NeonRipple} from '../effects/NeonRipple';
 import {BarBrawl} from '../effects/BarBrawl';
 import {FlipCards} from '../effects/FlipCards';
+import {PunchIn} from '../effects/PunchIn';
+import {SplitScreen} from '../effects/SplitScreen';
+import {KineticText} from '../effects/KineticText';
+import {TapToCut} from '../effects/TapToCut';
 
 // PUENTE DE RENDER de la nueva fabrica (fabrica/composicion/). Esto NO
 // es el Director Visual -- esa decision (que componente usar para
@@ -110,6 +114,10 @@ const IMPLEMENTACIONES: Record<string, React.FC<any>> = {
   'neon-ripple': NeonRipple,
   'bar-brawl': BarBrawl,
   'flip-cards': FlipCards,
+  'punch-in': PunchIn,
+  'split-screen': SplitScreen,
+  'kinetic-text': KineticText,
+  'tap-to-cut': TapToCut,
 };
 
 /** Forma MINIMA de un microevento, duck-tipada a proposito (Ronda 4):

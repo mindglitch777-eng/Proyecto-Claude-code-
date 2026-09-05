@@ -24,6 +24,12 @@ export { default as NeonRipple } from './NeonRipple';
 export { default as BarBrawl } from './BarBrawl';
 export { default as FlipCards } from './FlipCards';
 
+// Carta tecnica "efectos virales" (2026-09-04)
+export { default as PunchIn } from './PunchIn';
+export { default as SplitScreen } from './SplitScreen';
+export { default as KineticText } from './KineticText';
+export { default as TapToCut } from './TapToCut';
+
 // Alias: nombres usados en guiones de producción para los componentes de
 // Fase 1 (misma implementación, sin duplicar código).
 export { default as NeonArchitecture } from './ArquitecturaNeon';
@@ -185,4 +191,32 @@ export interface NeonRippleProps {
   rippleColor?: string;
   coreColor?: string;
   duration?: number;
+}
+
+export interface PunchInProps {
+  text: string;
+  scale?: number;
+  color?: string;
+  duration?: number;
+  holdDuration?: number;
+}
+
+export interface SplitScreenProps {
+  beforeText: string;
+  afterText: string;
+  beforeColor?: string;
+  afterColor?: string;
+  duration?: number;
+}
+
+export interface KineticTextProps {
+  lines: string[];
+  color?: string;
+  impactColor?: string;
+  duration?: number;
+}
+
+export interface TapToCutProps {
+  duration?: number;
+  flashColor?: string;
 }

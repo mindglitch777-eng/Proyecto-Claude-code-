@@ -1502,5 +1502,125 @@
       "duration": "number, opcional"
     },
     "estado": "sin_validar"
+  },
+  {
+    "id": "punch-in",
+    "archivo": "effects/PunchIn.tsx",
+    "exportacion": "PunchIn",
+    "categoria": "texto",
+    "funcion": "Zoom digital violento sobre una palabra o cifra clave (escala 1.0 -> hasta 1.8x con sobregiro), se mantiene y vuelve con un pequeno rebote -- enfasis puntual sobre UNA palabra, no una secuencia de frases (para eso ya existe 'punch').",
+    "intensidad": 0.8,
+    "ritmo": "muy_dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1,
+      2
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "text": "string",
+      "scale": "number, opcional (default 1.8)",
+      "color": "string, opcional (default #FF4E24)",
+      "duration": "number, opcional -- segundos del zoom de entrada (default 0.3)",
+      "holdDuration": "number, opcional -- segundos que se mantiene arriba antes de volver (default 0.5)"
+    },
+    "estado": "sin_validar",
+    "notas": "Carta tecnica 'efectos virales' (2026-09-04). NO es lo mismo que 'punch' (agresivo/Punch.tsx): ese es una secuencia de VARIAS frases entrando una tras otra sobre un fondo; este es un zoom sobre UNA sola palabra/cifra ya en pantalla. IDs distintos a proposito para no pisar el catalogo existente."
+  },
+  {
+    "id": "split-screen",
+    "archivo": "effects/SplitScreen.tsx",
+    "exportacion": "SplitScreen",
+    "categoria": "comparacion",
+    "funcion": "Pantalla dividida en dos mitades verticales simultaneas (antes a la izquierda, despues a la derecha) con una linea neon central que crece de arriba a abajo; el lado 'despues' gana terreno sobre el 'antes' en la segunda mitad.",
+    "intensidad": 0.55,
+    "ritmo": "dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1.5,
+      3
+    ],
+    "compatibleCon": [
+      "comparacion"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "beforeText": "string",
+      "afterText": "string",
+      "beforeColor": "string, opcional (default #FF0044)",
+      "afterColor": "string, opcional (default #00FF88)",
+      "duration": "number, opcional (default 2.0)"
+    },
+    "estado": "sin_validar",
+    "notas": "Carta tecnica 'efectos virales' (2026-09-04). Distinto de 'antes-despues' (escenas/explica.tsx): ese es una cortina que revela un despues (una sola cara visible a la vez); este muestra las DOS caras simultaneas todo el tiempo. Mecanica visual distinta aunque el rol narrativo se superponga -- ver AUDITORIA_FABRICA.md."
+  },
+  {
+    "id": "kinetic-text",
+    "archivo": "effects/KineticText.tsx",
+    "exportacion": "KineticText",
+    "categoria": "texto",
+    "funcion": "Texto (hasta 3 lineas) entra desde arriba a alta velocidad, choca contra el centro con un rebote y un glitch/chispa de impacto, y se congela quieto -- pensado para hooks y frases de cierre.",
+    "intensidad": 0.85,
+    "ritmo": "muy_dinamico",
+    "capacidadTexto": "media",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      1,
+      1.5
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "lines": "string[] -- hasta 3 lineas",
+      "color": "string, opcional (default #F6F6F4)",
+      "impactColor": "string, opcional (default #FF4E24)",
+      "duration": "number, opcional (default 1.0)"
+    },
+    "estado": "sin_validar",
+    "notas": "Carta tecnica 'efectos virales' (2026-09-04)."
+  },
+  {
+    "id": "tap-to-cut",
+    "archivo": "effects/TapToCut.tsx",
+    "exportacion": "TapToCut",
+    "categoria": "montaje",
+    "funcion": "Destello que se expande desde el centro hasta cubrir toda la pantalla y despues se desvanece -- transicion de impacto pura, sin texto, misma logica que 'pixel-burst' (escena breve autocontenida, no una superposicion literal de la escena anterior).",
+    "intensidad": 0.6,
+    "ritmo": "muy_dinamico",
+    "capacidadTexto": "ninguna",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      0.4,
+      0.7
+    ],
+    "compatibleCon": [
+      "montaje"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "duration": "number, opcional (default 0.5)",
+      "flashColor": "string, opcional (default #FFFFFF)"
+    },
+    "estado": "sin_validar",
+    "notas": "Carta tecnica 'efectos virales' (2026-09-04), pedido originalmente como <TapToCut/> insertable en cualquier punto -- categorizado 'montaje' (como pixel-burst), NO como un TipoGolpe nuevo de golpes.tsx: son sistemas distintos (golpe = transicion ENTRE escenas resuelta por el puente de render; esto es una escena propia). Ver docstring de renderizador_por_guion.ts sobre la misma distincion."
   }
 ]

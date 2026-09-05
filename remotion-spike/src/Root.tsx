@@ -51,6 +51,7 @@ import {Muestrario7, DUR_M7} from './escenas/Muestrario7';
 import {Muestrario8, DUR_M8} from './escenas/Muestrario8';
 import {PruebaTransiciones, DUR_PRUEBA_TRANSICIONES} from './pruebas-r6/PruebaTransiciones';
 import {PruebaEfectos, DUR_PRUEBA_EFECTOS} from './pruebas-r6/PruebaEfectos';
+import {PruebaEfectosVirales, DUR_PRUEBA_EFECTOS_VIRALES} from './pruebas-r6/PruebaEfectosVirales';
 import {Prueba3D, DUR_PRUEBA_3D} from './pruebas-r6/Prueba3D';
 import {PruebaHighlights, DUR_PRUEBA_HIGHLIGHTS} from './pruebas-r6/PruebaHighlights';
 import {PruebaVineta, DUR_PRUEBA_VINETA} from './pruebas-r6/PruebaVineta';
@@ -395,6 +396,7 @@ export const Root: React.FC = () => {
           Ninguna de estas 4 composiciones se usa en produccion todavia. */}
       <Composition id="prueba-transiciones" component={PruebaTransiciones} durationInFrames={DUR_PRUEBA_TRANSICIONES} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="prueba-efectos" component={PruebaEfectos} durationInFrames={DUR_PRUEBA_EFECTOS} fps={FPS} width={ANCHO} height={ALTO} />
+      <Composition id="prueba-efectos-virales" component={PruebaEfectosVirales} durationInFrames={DUR_PRUEBA_EFECTOS_VIRALES} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="prueba-3d" component={Prueba3D} durationInFrames={DUR_PRUEBA_3D} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="prueba-highlights" component={PruebaHighlights} durationInFrames={DUR_PRUEBA_HIGHLIGHTS} fps={FPS} width={ANCHO} height={ALTO} />
       <Composition id="prueba-vineta" component={PruebaVineta} durationInFrames={DUR_PRUEBA_VINETA} fps={FPS} width={ANCHO} height={ALTO} />
