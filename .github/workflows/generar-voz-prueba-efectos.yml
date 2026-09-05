@@ -1,0 +1,119 @@
+name: generar-voz-prueba-efectos
+
+# Voz real (Qwen3-TTS) para el guion de prueba de los efectos nuevos
+# (punch-in, split-screen, kinetic-text, tap-to-cut, mindmap-connect,
+# spotlight-reveal) -- mismo patron exacto que
+# generar-voz-lote-ventas.yml (misma voz clonada librivox-11, mismo
+# instruct/rate), solo 5 lineas cortas esta vez. Cada linea se realza
+# y se escribe a su destino final DENTRO del mismo loop (leccion de
+# generar-voz-lote-ventas.yml R8: nunca dejar el guardado para
+# despues de todo el loop).
+
+on:
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths: [".github/workflows/generar-voz-prueba-efectos.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  generar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clonar y compilar el motor C
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libopenblas-dev ffmpeg
+          git clone --depth 1 https://github.com/gabriele-mastrapasqua/qwen3-tts /tmp/qwen3-tts
+          cd /tmp/qwen3-tts
+          make blas
+
+      - name: Descargar el modelo Base 1.7B
+        run: |
+          cd /tmp/qwen3-tts
+          ./download_model.sh --model base-large --dir /tmp/qwen3-tts-modelo
+
+      - name: Preparar el audio de referencia (voz real de produccion, librivox-11)
+        run: |
+          ffmpeg -y -loglevel error -i \
+            "muestras_voz/referencias-candidatas/librivox-11.mp3" \
+            -ar 24000 -ac 1 /tmp/referencia.wav
+
+      - name: Instalar dependencias del realce (voz_piper.py)
+        run: pip install --quiet numpy
+
+      - name: Generar, realzar y guardar cada linea (commit incremental)
+        run: |
+          mkdir -p capturas_voz/audio_prueba_efectos
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+
+          INSTRUCT="Speak in a serious, elegant, composed and confident tone, clear and articulate -- not aggressive, not menacing, not overly deep"
+          RATE="1.25"
+
+          python3 -c "
+          import json
+          m = json.load(open('capturas_voz/manifest_prueba_efectos.json', encoding='utf-8'))
+          for item in m:
+              print(f\"{item['id']}\t{item['texto']}\")
+          " > /tmp/lineas.tsv
+
+          mapfile -t LINEAS < /tmp/lineas.tsv
+          for linea in "${LINEAS[@]}"; do
+            IFS=$'\t' read -r id texto <<< "$linea"
+            destino="capturas_voz/audio_prueba_efectos/${id}.wav"
+
+            if [ -f "$destino" ]; then
+              echo "=== [$id] ya existe (corrida anterior), salteo ==="
+              continue
+            fi
+
+            echo "=== [$id] ==="
+            echo "  texto: $texto"
+            (cd /tmp/qwen3-tts && ./qwen_tts -d /tmp/qwen3-tts-modelo --ref-audio /tmp/referencia.wav \
+              --text "$texto" --language Spanish \
+              --instruct "$INSTRUCT" --rate "$RATE" \
+              -o "/tmp/prueba-$id.wav" < /dev/null) || echo "AVISO: $id fallo la generacion"
+
+            if [ -f "/tmp/prueba-$id.wav" ]; then
+              duracion_real=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "/tmp/prueba-$id.wav")
+              echo "  duracion real: ${duracion_real}s"
+
+              python3 -c "
+          import sys
+          sys.path.insert(0, '.')
+          from pathlib import Path
+          from voz_piper import realzar
+          origen = Path('/tmp/prueba-$id.wav')
+          destino = Path('$destino')
+          if not realzar(origen, destino, semitonos=0):
+              print('ERROR realzando $id, copio el crudo')
+              import shutil; shutil.copy(origen, destino)
+          "
+              rm -f "/tmp/prueba-$id.wav"
+
+              git add capturas_voz/audio_prueba_efectos
+              git commit -m "Voz real (Qwen3-TTS) prueba de efectos: $id"
+              git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+              git push origin "HEAD:$GITHUB_REF_NAME"
+            fi
+          done
+
+      - name: Guardar el resto en el repo (si quedo algo sin commitear)
+        if: always()
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain capturas_voz/audio_prueba_efectos)" ]; then
+            git add capturas_voz/audio_prueba_efectos
+            git commit -m "Voz real (Qwen3-TTS) prueba de efectos -- resto"
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          else
+            echo "Nada pendiente de commitear."
+          fi

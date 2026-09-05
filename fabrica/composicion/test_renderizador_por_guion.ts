@@ -50,6 +50,13 @@ function correr() {
         esPrimera: true,
       },
       {
+        id: 'transicion_tap',
+        textoVoz: '',
+        componenteId: 'tap-to-cut',
+        props: {},
+        intensidad: 6,
+      },
+      {
         id: 'escena_2',
         textoVoz: 'Antes perdias horas. Ahora es automatico.',
         componenteId: 'antes-despues',
@@ -64,11 +71,14 @@ function correr() {
       carpetaPublica: CARPETA_PUBLICA,
     }, RAIZ);
 
-    assert(resultado.arbol.escenas.length === 2, 'el arbol tiene las 2 escenas del guion');
+    assert(resultado.arbol.escenas.length === 3, 'el arbol tiene las 3 escenas del guion (incluida la transicion sin narracion)');
     assert(resultado.arbol.escenas[0].componenteId === 'punch', 'escena 1 uso el componente EXACTO del guion (punch), no uno elegido por scoring');
-    assert(resultado.arbol.escenas[1].componenteId === 'antes-despues', 'escena 2 uso el componente EXACTO del guion (antes-despues)');
+    assert(resultado.arbol.escenas[1].componenteId === 'tap-to-cut', 'la transicion uso tap-to-cut como escena propia (no un golpe)');
+    assert(resultado.arbol.escenas[1].audios.length === 0, 'la escena sin narracion NO tiene audio (no exigio un .wav que no existe)');
+    assert(resultado.arbol.escenas[1].duracionSeg > 0, 'la escena sin narracion igual tiene una duracion real (del rango del componente)');
+    assert(resultado.arbol.escenas[2].componenteId === 'antes-despues', 'escena final uso el componente EXACTO del guion (antes-despues)');
     assert(resultado.resumen[0].golpe === 'fogonazo' && resultado.resumen[0].golpeExplicito, 'escena 1 respeto el golpe explicito del guion (fogonazo), no el que hubiera sugerido DirectorAudio');
-    assert(!resultado.resumen[1].golpeExplicito, 'escena 2 (sin transicionSalida) uso el golpe automatico de DirectorAudio');
+    assert(!resultado.resumen[2].golpeExplicito, 'escena final (sin transicionSalida) uso el golpe automatico de DirectorAudio');
     assert(resultado.arbol.escenas[0].estrategiaEdicion !== undefined, 'DirectorEdicion SI corrio (estrategiaEdicion presente) -- pipeline completo, no el basico de generar_lote_ventas.ts');
     assert(resultado.arbol.analisisRetencion !== undefined, 'DirectorRetencion SI corrio sobre el arbol completo');
     assert(resultado.arbol.duracionTotalSeg > 0, 'duracion total real calculada a partir del audio real');

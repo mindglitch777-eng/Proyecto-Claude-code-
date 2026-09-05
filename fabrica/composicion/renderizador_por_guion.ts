@@ -42,6 +42,13 @@
  *     (patron AudioCentro de `armar.ts`), no usar este orquestador
  *     todavia -- usar `armarComposicion` directo como hacen los
  *     generadores viejos.
+ *   - Una escena con `textoVoz: ''` (string vacio) se trata como escena
+ *     SIN narracion -- no busca ni exige un .wav para ese id, y la
+ *     duracion sale del punto medio de `duracionMinMaxSeg` del
+ *     componente (misma fuente de verdad que usa `armarComposicion`
+ *     para unidades sin audio). Pensado para escenas de transicion
+ *     puras (ej. "tap-to-cut" como su propia escena breve entre dos
+ *     unidades con narracion) -- ver seccion siguiente.
  *   - `transicionSalida.tipo` tiene que ser un TipoGolpe REAL de
  *     `golpes.tsx` (fogonazo/sacudon/corte/negro/raya/fundido/desliza/
  *     iris/cortina/ninguno) -- NO el id de un efecto visual como
@@ -235,7 +242,10 @@ export function renderizarPorGuion(
 
   escenas.forEach((escena, indice) => {
     const componente = componenteRegistrado(escena.componenteId);
-    const clip = prepararAudio(raiz, opciones.audioOrigenDir, opciones.carpetaPublica, escena.id);
+    const tieneNarracion = escena.textoVoz.trim().length > 0;
+    const clip = tieneNarracion
+      ? prepararAudio(raiz, opciones.audioOrigenDir, opciones.carpetaPublica, escena.id)
+      : null;
     const intensidadNorm = Math.max(0, Math.min(1, escena.intensidad / 10));
     const esPrimera = escena.esPrimera ?? indice === 0;
     const esCierre = escena.esCierre ?? indice === escenas.length - 1;
@@ -253,7 +263,12 @@ export function renderizarPorGuion(
     golpesUsados.push(golpe);
 
     let palabraAncla: PalabraAlineada | undefined;
-    if (escena.palabraClave) {
+    if (escena.palabraClave && !tieneNarracion) {
+      console.warn(
+        `[renderizador_por_guion] "${escena.id}": palabraClave="${escena.palabraClave}" pedida en una ` +
+        `escena sin narracion (textoVoz vacio) -- no tiene audio para alinear, se ignora.`
+      );
+    } else if (escena.palabraClave) {
       if (!opciones.rutaAlineacionDir) {
         console.warn(
           `[renderizador_por_guion] "${escena.id}": palabraClave="${escena.palabraClave}" pedida pero ` +
@@ -271,14 +286,17 @@ export function renderizarPorGuion(
       }
     }
 
+    const [minSeg, maxSeg] = componente.duracionMinMaxSeg;
+    const duracionEstimadaSeg = clip ? clip.duracionSeg : (minSeg + maxSeg) / 2;
+
     const ctx: ContextoUnidad = {
       unidadId: escena.id,
       categoria: componente.categoria,
       intensidadComponente: intensidadNorm,
       indice,
       total: escenas.length,
-      duracionSegTotal: clip.duracionSeg,
-      offsetsAudioSeg: [0],
+      duracionSegTotal: duracionEstimadaSeg,
+      offsetsAudioSeg: clip ? [0] : [],
       esPrimera,
       esRevelacion: escena.esRevelacion,
       esCierre,
@@ -292,7 +310,7 @@ export function renderizarPorGuion(
       id: escena.id,
       componente,
       props: escena.props,
-      audios: [clip],
+      audios: clip ? [clip] : null,
       golpe,
       volumenSfx: decisionAudio.volumenSfxSugerido,
       estrategiaEdicion: estrategia,
