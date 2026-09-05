@@ -10,6 +10,39 @@ después de cada bloque de trabajo real, como pide el "Prompt Maestro
 del prompt "Capa de exploración agresiva" (para no perderlo de nuevo
 en la memoria de la conversación), `docs/PROMPT_EXPLORACION_AGRESIVA.md`.
 
+## Bloque: sacar `slot-machine` del catálogo (2026-09-05, feedback directo del operador)
+
+El operador vio el resultado real (usado en `venta-06.mp4`/`venta-09.mp4`)
+y lo pidió sacar por mala calidad visual. Removido de TODO lugar activo,
+no solo `estado`:
+- `remotion-spike/src/effects/SlotMachine.tsx` -- borrado (no archivado:
+  a diferencia del orquestador de Fase 1, esto no tiene valor futuro
+  como referencia, es simplemente un componente que no cumplió).
+- `registro.json` -- entrada eliminada (55→54 componentes).
+- `FabricaVideo.tsx`, `effects/index.ts`, `Root.tsx` (import, mapa de
+  implementaciones, `efecto-slot-machine`) -- todas las referencias
+  sacadas.
+- `adaptadores.ts` -- el caso `'slot-machine'` de `propsParaCifra()` y
+  su entrada en `COMPONENTES_CIFRA_SOPORTADOS` sacados (referencia
+  colgando a un componente que ya no existe).
+
+**Lo que se dejó a propósito sin tocar**: `generar_lote_ventas.ts`
+(script histórico ya corrido, referencia `slot-machine` dos veces) y
+`fabrica_bridge/venta_06.json`/`venta_09.json` (árboles de composición
+ya renderizados) -- son registro histórico de lo que efectivamente se
+generó, no código vivo. Consecuencia real y aceptada: si alguien
+intenta volver a correr `generar_lote_ventas.ts` desde cero hoy, esas
+dos escenas fallarían (`componenteId` inexistente) -- ese script ya
+está superado por `renderizador_por_guion.ts` de todos modos.
+
+Categoría `cifra` queda sin un efecto de "número único revelado estilo
+tragamonedas" hasta que se construya una versión mejor (pendiente, si
+se pide).
+
+Verificado: `validar_registro.ts`, `tsc --noEmit` en `fabrica/` y
+`remotion-spike/`, y la suite completa de tests de `fabrica/` -- todo
+en verde después de la remoción completa.
+
 ## Bloque: carta técnica "efectos virales" (2026-09-05)
 
 4 componentes nuevos pedidos por carta técnica externa (5 efectos

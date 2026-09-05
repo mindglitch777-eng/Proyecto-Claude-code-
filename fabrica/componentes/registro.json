@@ -903,8 +903,8 @@
       "obligatorio": false
     },
     "duracionMinMaxSeg": [
-      1.0,
-      2.0
+      1,
+      2
     ],
     "compatibleCon": [
       "cifra"
@@ -992,7 +992,7 @@
       "obligatorio": false
     },
     "duracionMinMaxSeg": [
-      1.0,
+      1,
       1.6
     ],
     "compatibleCon": [
@@ -1006,35 +1006,6 @@
       "duration": "number, opcional"
     },
     "estado": "sin_validar"
-  },
-  {
-    "id": "slot-machine",
-    "archivo": "effects/SlotMachine.tsx",
-    "exportacion": "SlotMachine",
-    "categoria": "cifra",
-    "funcion": "Ruedas de digitos tipo tragamonedas giran rapido y frenan en el numero final con chispas metalicas -- revelacion de una cifra unica con suspenso.",
-    "intensidad": 0.7,
-    "ritmo": "muy_dinamico",
-    "capacidadTexto": "ninguna",
-    "requiereAssets": {
-      "tipo": "ninguno",
-      "obligatorio": false
-    },
-    "duracionMinMaxSeg": [
-      1.5,
-      2.2
-    ],
-    "compatibleCon": [
-      "cifra"
-    ],
-    "soportaAudioSincronizado": true,
-    "props": {
-      "finalNumber": "string",
-      "metalColor": "string",
-      "duration": "number, opcional"
-    },
-    "estado": "sin_validar",
-    "notas": "Mismo contrato de valor unico que 'contador'/'torre-3d' (propsParaCifra) pero recibe el numero ya formateado como string (finalNumber), no desde/hasta numericos -- agregar caso propio al adaptador si hace falta, formateando con formatearPlata() cuando esDinero."
   },
   {
     "id": "heartbeat-pulse",
@@ -1079,8 +1050,8 @@
       "obligatorio": false
     },
     "duracionMinMaxSeg": [
-      2.0,
-      3.0
+      2,
+      3
     ],
     "compatibleCon": [
       "diagrama"
@@ -1166,7 +1137,7 @@
       "obligatorio": false
     },
     "duracionMinMaxSeg": [
-      1.0,
+      1,
       1.5
     ],
     "compatibleCon": [
@@ -1195,8 +1166,8 @@
       "obligatorio": false
     },
     "duracionMinMaxSeg": [
-      2.0,
-      3.0
+      2,
+      3
     ],
     "compatibleCon": [
       "texto"
@@ -1226,7 +1197,7 @@
     },
     "duracionMinMaxSeg": [
       1.2,
-      2.0
+      2
     ],
     "compatibleCon": [
       "texto"
@@ -1288,7 +1259,7 @@
     },
     "duracionMinMaxSeg": [
       1.3,
-      2.0
+      2
     ],
     "compatibleCon": [
       "texto"
@@ -1428,7 +1399,7 @@
     },
     "duracionMinMaxSeg": [
       1.4,
-      2.0
+      2
     ],
     "compatibleCon": [
       "texto"

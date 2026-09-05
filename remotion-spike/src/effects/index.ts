@@ -6,7 +6,6 @@ export { default as MercurioRevelador } from './MercurioRevelador';
 
 // Phase 2 - Efectos adicionales
 export { default as GlitchShatter } from './GlitchShatter';
-export { default as SlotMachine } from './SlotMachine';
 export { default as HeartbeatPulse } from './HeartbeatPulse';
 export { default as MindMapConnect } from './MindMapConnect';
 export { default as TextRevealFire } from './TextRevealFire';
@@ -75,12 +74,6 @@ export interface GlitchShatterProps {
   text: string;
   glitchColor?: string;
   fragmentCount?: number;
-  duration?: number;
-}
-
-export interface SlotMachineProps {
-  finalNumber: string;
-  metalColor?: string;
   duration?: number;
 }
 

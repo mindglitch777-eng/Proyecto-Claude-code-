@@ -92,7 +92,7 @@ export interface EscenaGuion {
    * se conserva en el resultado para que el llamador pueda armar
    * manifests/QA sin tener que volver a buscar el guion original. */
   textoVoz: string;
-  /** El ID EXACTO del componente en registro.json (ej. "slot-machine").
+  /** El ID EXACTO del componente en registro.json (ej. "punch-in").
    * Si no existe, tira error explicito -- este orquestador no elige
    * componentes por vos. */
   componenteId: string;

@@ -28,7 +28,6 @@ import {CataclismoDatos} from '../effects/CataclimoData';
 import {DevoradorRealidad} from '../effects/DevoradorRealidad';
 import {MercurioRevelador} from '../effects/MercurioRevelador';
 import {GlitchShatter} from '../effects/GlitchShatter';
-import {SlotMachine} from '../effects/SlotMachine';
 import {HeartbeatPulse} from '../effects/HeartbeatPulse';
 import {MindMapConnect} from '../effects/MindMapConnect';
 import {TextRevealFire} from '../effects/TextRevealFire';
@@ -97,7 +96,6 @@ const IMPLEMENTACIONES: Record<string, React.FC<any>> = {
   'devorador-realidad': DevoradorRealidad,
   'mercurio-revelador': MercurioRevelador,
   'glitch-shatter': GlitchShatter,
-  'slot-machine': SlotMachine,
   'heartbeat-pulse': HeartbeatPulse,
   'mindmap-connect': MindMapConnect,
   'text-reveal-fire': TextRevealFire,

@@ -73,7 +73,6 @@ import {
   DevoradorRealidad,
   MercurioRevelador,
   GlitchShatter,
-  SlotMachine,
   HeartbeatPulse,
   MindMapConnect,
   TextRevealFire,
@@ -577,19 +576,6 @@ export const Root: React.FC = () => {
           glitchColor: '#FF00FF',
           fragmentCount: 50,
           duration: 1.2,
-        }}
-      />
-      <Composition
-        id="efecto-slot-machine"
-        component={SlotMachine as any}
-        durationInFrames={Math.round(1.8 * FPS)}
-        fps={FPS}
-        width={ANCHO}
-        height={ALTO}
-        defaultProps={{
-          finalNumber: '7777',
-          metalColor: '#FFD700',
-          duration: 1.8,
         }}
       />
       <Composition

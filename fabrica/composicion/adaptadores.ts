@@ -40,7 +40,7 @@ export type DatosProgresion = {
 
 const COMPONENTES_CIFRA_SOPORTADOS = [
   'grafico', 'recibo', 'contador', 'cifra-se-cae', 'torre-3d',
-  'cataclismo-datos', 'slot-machine',
+  'cataclismo-datos',
 ] as const;
 
 export function propsParaCifra(componenteId: string, datos: DatosProgresion): Record<string, unknown> {
@@ -114,13 +114,6 @@ export function propsParaCifra(componenteId: string, datos: DatosProgresion): Re
     case 'cataclismo-datos': {
       const fmt = (v: number) => (datos.esDinero ? formatearPlata(v) : String(v));
       return {oldNumber: fmt(primero.valor), newNumber: fmt(ultimo.valor)};
-    }
-
-    // slot-machine muestra un UNICO valor final (mismo contrato de
-    // "contador"/"torre-3d": desde/hasta no aplica, solo el resultado).
-    case 'slot-machine': {
-      const fmt = (v: number) => (datos.esDinero ? formatearPlata(v) : String(v));
-      return {finalNumber: fmt(ultimo.valor)};
     }
 
     default:
