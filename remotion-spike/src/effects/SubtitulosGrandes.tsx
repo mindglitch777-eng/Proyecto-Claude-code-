@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react';
-import {AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {createTikTokStyleCaptions, type Caption} from '@remotion/captions';
 import {PALETA, GROTESCA} from '../identidad';
 
@@ -79,12 +79,6 @@ export const SubtitulosGrandes: React.FC<{
         {bloqueActivo.map((token, i) => {
           if (tMs < token.fromMs) return null; // todavia no se dijo -- no aparece
           const activo = tMs >= token.fromMs && tMs < token.toMs;
-          // entrada: cae desde arriba mientras aparece -- escala + opacidad
-          // + un desplazamiento vertical, en los ~150ms desde que arranca la palabra
-          const entrada = interpolate(tMs, [token.fromMs, token.fromMs + 150], [0, 1], {
-            extrapolateLeft: 'clamp',
-            extrapolateRight: 'clamp',
-          });
           return (
             <span
               key={i}
@@ -95,8 +89,6 @@ export const SubtitulosGrandes: React.FC<{
                 lineHeight: 1.05,
                 color: activo ? colorActivo : color,
                 textShadow: '0 4px 24px rgba(0,0,0,0.85)',
-                opacity: entrada,
-                transform: `translateY(${-40 * (1 - entrada)}px) scale(${0.8 + 0.2 * entrada})`,
               }}
             >
               {token.text}
