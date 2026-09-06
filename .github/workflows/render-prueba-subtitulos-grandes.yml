@@ -55,9 +55,19 @@ jobs:
           npx remotion render prueba-subtitulos-grandes out/prueba-subtitulos-grandes.mp4 \
             --concurrency=2 --log=info
 
-      - name: Subir el video como artefacto (no se commitea, es solo de verificacion)
-        uses: actions/upload-artifact@v4
-        with:
-          name: prueba-subtitulos-grandes
-          path: remotion-spike/out/prueba-subtitulos-grandes.mp4
-          retention-days: 7
+      - name: Commitear el clip de prueba (la cuota de artefactos de Actions esta llena)
+        run: |
+          mkdir -p videos/pruebas
+          cp remotion-spike/out/prueba-subtitulos-grandes.mp4 videos/pruebas/
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add videos/pruebas/prueba-subtitulos-grandes.mp4
+          if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
+          git commit -m "Clip de prueba: SubtitulosGrandes (verificacion visual, R7-34)"
+          for i in 1 2 3 4 5 6; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && \
+            git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
+            echo "reintento $i"
+            sleep $((RANDOM % 8 + 2 * i))
+          done
+          exit 1
