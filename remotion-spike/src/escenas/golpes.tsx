@@ -1,6 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, Audio, Solid, interpolate, random, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
-import {lightLeak} from '@remotion/effects/light-leak';
+import {AbsoluteFill, Audio, interpolate, random, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {PALETA} from '../identidad';
 
 // GOLPES DE CORTE
@@ -50,7 +49,7 @@ export const Golpe: React.FC<{
   children: React.ReactNode;
 }> = ({tipo = 'fogonazo', largo = 0.14, sonido = true, sinEfectoVisual = false, children}) => {
   const frame = useCurrentFrame();
-  const {fps, width, height} = useVideoConfig();
+  const {fps} = useVideoConfig();
   const t = frame / fps;
   const p = t / largo; // 0 al empezar, 1 cuando termina el golpe
 
@@ -125,24 +124,26 @@ export const Golpe: React.FC<{
   }
 
   if (tipo === 'cortina') {
-    // R6-9: lavado calido "light leak de camara analogica" real, con
-    // @remotion/effects (WebGL2) en vez del gradiente+clip-path en CSS
-    // de antes -- confirmado con render real que lightLeak() funciona
-    // como capa decorativa TRANSPARENTE encima del contenido (ver
-    // remotion-spike/src/pruebas-r6/PruebaLightLeak.tsx), a diferencia
-    // de vignette() que resulto demasiado opaco para este uso (mismo
-    // README). El `progress` de lightLeak ya hace su propio ciclo
-    // revela/retrae en 0..1, igual forma que `p` de este componente.
+    // R9: lavado calido "light leak" con CSS puro (radial-gradient +
+    // mix-blend-mode screen) -- @remotion/effects/light-leak (WebGL2,
+    // usado hasta R6-9) se saco: un guion real con varias escenas de
+    // estilo 'cinematico' (que ya monta su propia vinieta WebGL, ver
+    // Vineta.tsx) combinadas con un golpe 'cortina' agoto el limite de
+    // contextos WebGL2 por pestaña de Chrome y el render fallo de
+    // forma determinística. Mismo lavado calido, mismo ciclo de
+    // intensidad (`k`, decae de 1 a 0 en `largo` segundos, igual que
+    // 'negro'/'sacudon' de aca arriba), cero WebGL.
     return (
       <AbsoluteFill>
         {efecto}
         {children}
-        <Solid
-          width={width}
-          height={height}
-          color="transparent"
-          style={{position: 'absolute', top: 0, left: 0}}
-          effects={[lightLeak({progress: p, hueShift: 20})]}
+        <AbsoluteFill
+          style={{
+            pointerEvents: 'none',
+            mixBlendMode: 'screen',
+            opacity: k,
+            background: 'radial-gradient(circle at 30% 40%, rgba(255,190,110,0.9), rgba(255,120,40,0.35) 40%, transparent 70%)',
+          }}
         />
       </AbsoluteFill>
     );

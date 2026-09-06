@@ -1,40 +1,48 @@
 import React from 'react';
-import {AbsoluteFill, Solid, interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
-import {rings} from '@remotion/effects/rings';
+import {AbsoluteFill, interpolate, useCurrentFrame} from 'remotion';
 import {PALETA} from '../identidad';
 
 /**
- * R7-25: segundo efecto real de @remotion/effects conectado a
- * produccion (despues de vignette). `rings` (a diferencia de `shine`,
- * probado y descartado el mismo dia -- ver PruebaShine.tsx) es
- * GENERATIVO de verdad: dibuja sus propios anillos, no necesita
- * pixeles reales debajo (confirmado con render real,
- * pruebas-r7/PruebaRings.tsx). Un pulso expansivo tipo "onda de
- * radar" en el momento exacto de una revelacion -- refuerza
- * visualmente el mismo instante que ya marca `intencion='revelar'`
- * del Director de Edicion, sin inventar un campo nuevo.
+ * R7-25: pulso expansivo tipo "onda de radar" en el momento exacto de
+ * una revelacion -- refuerza visualmente el mismo instante que ya
+ * marca `intencion='revelar'` del Director de Edicion.
+ *
+ * Reescrito en esta ronda (2026-09-06): usaba `@remotion/effects/rings`
+ * (WebGL2). Se saco por el mismo motivo real que Vineta.tsx y
+ * golpes.tsx ('cortina'): un video con varios efectos WebGL2 activos
+ * puede agotar el limite de contextos por pestaña de Chrome. 3 anillos
+ * concentricos de CSS puro (border-radius:50%, escalando y
+ * desvaneciendose) dan el mismo efecto de "onda expansiva", cero WebGL.
  */
+const ANILLOS = 3;
+const RETRASO_FRAMES = 6; // stagger entre anillos, misma sensacion de onda que 'offset' del rings() original
+
 export const PulsoRevelacion: React.FC = () => {
   const frame = useCurrentFrame();
-  const {durationInFrames, width, height} = useVideoConfig();
-  // Un solo pulso a lo largo de la escena, no un loop continuo -- se
-  // apaga (opacity a 0) al llegar al final para no dejar un anillo
-  // enorme congelado en pantalla el resto de la escena.
-  const progreso = interpolate(frame, [0, Math.min(durationInFrames - 1, 45)], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-  const opacidad = interpolate(frame, [0, 10, 35, 45], [0, 1, 1, 0], {extrapolateRight: 'clamp'});
 
   return (
-    <AbsoluteFill style={{pointerEvents: 'none', opacity: opacidad}}>
-      <Solid
-        width={width}
-        height={height}
-        color="transparent"
-        style={{position: 'absolute', top: 0, left: 0}}
-        effects={[rings({colors: [PALETA.acento, 'transparent'], thickness: 6, gap: 60, offset: progreso * 700})]}
-      />
+    <AbsoluteFill style={{pointerEvents: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      {Array.from({length: ANILLOS}).map((_, i) => {
+        const f = frame - i * RETRASO_FRAMES;
+        const tamano = interpolate(f, [0, 45], [0, 700], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+        const opacidad = interpolate(f, [0, 10, 35, 45], [0, 1, 1, 0], {
+          extrapolateLeft: 'clamp',
+          extrapolateRight: 'clamp',
+        });
+        return (
+          <div
+            key={i}
+            style={{
+              position: 'absolute',
+              width: tamano,
+              height: tamano,
+              borderRadius: '50%',
+              border: `6px solid ${PALETA.acento}`,
+              opacity: opacidad,
+            }}
+          />
+        );
+      })}
     </AbsoluteFill>
   );
 };
