@@ -304,7 +304,7 @@
     {
       "unidadId": "solucion",
       "desdeSeg": 9.628004,
-      "duracionSeg": 6.871995,
+      "duracionSeg": 6.521995,
       "componenteId": "mindmap-connect",
       "props": {
         "items": [
@@ -324,7 +324,6 @@
       ],
       "golpe": "corte",
       "volumenSfx": 0.6,
-      "transicionSalienteSeg": 0.6,
       "estrategiaEdicion": {
         "unidadId": "solucion",
         "intencion": "acelerar",
@@ -377,7 +376,7 @@
     },
     {
       "unidadId": "transicion_3",
-      "desdeSeg": 15.899999000000001,
+      "desdeSeg": 16.149999,
       "duracionSeg": 0.55,
       "componenteId": "tap-to-cut",
       "props": {},
@@ -436,7 +435,7 @@
     },
     {
       "unidadId": "prueba",
-      "desdeSeg": 16.449999000000002,
+      "desdeSeg": 16.699999000000002,
       "duracionSeg": 6.296009,
       "componenteId": "split-screen",
       "props": {
@@ -501,7 +500,7 @@
     },
     {
       "unidadId": "cierre",
-      "desdeSeg": 22.146008000000002,
+      "desdeSeg": 22.396008000000002,
       "duracionSeg": 5.561995,
       "componenteId": "spotlight-reveal",
       "props": {
@@ -562,7 +561,7 @@
       ]
     }
   ],
-  "duracionTotalSeg": 28.208003,
+  "duracionTotalSeg": 28.458003,
   "analisisRetencion": {
     "mapa": [
       {
@@ -604,7 +603,7 @@
         "unidadId": "solucion",
         "fase": "escalada",
         "energia": "media",
-        "duracionSeg": 6.871995,
+        "duracionSeg": 6.521995,
         "esClimax": false
       },
       {

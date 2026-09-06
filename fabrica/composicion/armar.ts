@@ -82,7 +82,19 @@ export function armarComposicion(id: string, unidades: UnidadResuelta[], fps = 3
     // Sin estas dos condiciones, la escena se comporta exactamente
     // igual que antes de R6-8 (ver test_armar.ts para el arbol viejo
     // demo_01..06, que no debe cambiar ni un cuadro).
-    const puedeTransicionReal = (u.audios?.length ?? 0) > 0 && !!siguiente && GOLPES_TRANSICION_REAL.includes(siguiente.golpe);
+    //
+    // Bug real encontrado con renderizador_por_guion.ts (escenas sin
+    // narracion, ej. 'tap-to-cut' como transicion propia): (c) la
+    // unidad SIGUIENTE tiene que durar al menos AIRE_TRANSICION_SEG --
+    // @remotion/transitions tira un error real en render ("la
+    // Sequence es mas corta que la Transition que la precede") si no.
+    // Antes de esta ronda esto nunca se disparaba porque la unidad
+    // siguiente siempre tenia narracion real (varios segundos), nunca
+    // una escena muda de ~0.5s.
+    const duracionSiguiente = siguiente ? resolverAudios(siguiente).duracionSeg : 0;
+    const puedeTransicionReal = (u.audios?.length ?? 0) > 0 && !!siguiente
+      && GOLPES_TRANSICION_REAL.includes(siguiente.golpe)
+      && duracionSiguiente >= AIRE_TRANSICION_SEG;
     // duracionSeg (lo que se declara para ESTA escena, y lo que el
     // puente de render usa como duracion de su TransitionSeries.Sequence)
     // estira la cola de AIRE_SEG a AIRE_TRANSICION_SEG para darle
