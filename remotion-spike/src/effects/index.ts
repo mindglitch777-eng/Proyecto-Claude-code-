@@ -7,7 +7,6 @@ export { default as MercurioRevelador } from './MercurioRevelador';
 // Phase 2 - Efectos adicionales
 export { default as GlitchShatter } from './GlitchShatter';
 export { default as HeartbeatPulse } from './HeartbeatPulse';
-export { default as MindMapConnect } from './MindMapConnect';
 export { default as TextRevealFire } from './TextRevealFire';
 export { default as CircleOfTruth } from './CircleOfTruth';
 export { default as PixelBurst } from './PixelBurst';
@@ -81,13 +80,6 @@ export interface HeartbeatPulseProps {
   text: string;
   pulseColor?: string;
   beats?: number;
-  duration?: number;
-}
-
-export interface MindMapConnectProps {
-  items: string[];
-  lineColor?: string;
-  nodeGlow?: string;
   duration?: number;
 }
 

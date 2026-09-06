@@ -1037,36 +1037,6 @@
     "estado": "sin_validar"
   },
   {
-    "id": "mindmap-connect",
-    "archivo": "effects/MindMapConnect.tsx",
-    "exportacion": "MindMapConnect",
-    "categoria": "diagrama",
-    "funcion": "Varias palabras/conceptos dispersos se conectan con rayos de neon y luego se reorganizan en una linea -- mapa mental de un sistema/proceso de N pasos.",
-    "intensidad": 0.5,
-    "ritmo": "dinamico",
-    "capacidadTexto": "media",
-    "requiereAssets": {
-      "tipo": "ninguno",
-      "obligatorio": false
-    },
-    "duracionMinMaxSeg": [
-      2,
-      3
-    ],
-    "compatibleCon": [
-      "diagrama"
-    ],
-    "soportaAudioSincronizado": true,
-    "props": {
-      "items": "string[] -- 2 a 5 palabras/pasos cortos",
-      "lineColor": "string",
-      "nodeGlow": "string",
-      "duration": "number, opcional"
-    },
-    "estado": "sin_validar",
-    "notas": "Con menos de ~4 items y radio de nodo default (40px) el resultado puede verse chico en un canvas 1080x1920 si los items caen aleatoriamente cerca entre si -- ver remotion-spike/src/effects/README o el historial de esta ronda para el hallazgo real."
-  },
-  {
     "id": "text-reveal-fire",
     "archivo": "effects/TextRevealFire.tsx",
     "exportacion": "TextRevealFire",

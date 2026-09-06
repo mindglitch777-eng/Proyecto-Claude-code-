@@ -29,7 +29,6 @@ import {DevoradorRealidad} from '../effects/DevoradorRealidad';
 import {MercurioRevelador} from '../effects/MercurioRevelador';
 import {GlitchShatter} from '../effects/GlitchShatter';
 import {HeartbeatPulse} from '../effects/HeartbeatPulse';
-import {MindMapConnect} from '../effects/MindMapConnect';
 import {TextRevealFire} from '../effects/TextRevealFire';
 import {CircleOfTruth} from '../effects/CircleOfTruth';
 import {PixelBurst} from '../effects/PixelBurst';
@@ -97,7 +96,6 @@ const IMPLEMENTACIONES: Record<string, React.FC<any>> = {
   'mercurio-revelador': MercurioRevelador,
   'glitch-shatter': GlitchShatter,
   'heartbeat-pulse': HeartbeatPulse,
-  'mindmap-connect': MindMapConnect,
   'text-reveal-fire': TextRevealFire,
   'circle-of-truth': CircleOfTruth,
   'pixel-burst': PixelBurst,

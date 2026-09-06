@@ -75,7 +75,6 @@ import {
   MercurioRevelador,
   GlitchShatter,
   HeartbeatPulse,
-  MindMapConnect,
   TextRevealFire,
   CircleOfTruth,
   PixelBurst,
@@ -592,20 +591,6 @@ export const Root: React.FC = () => {
           pulseColor: '#FF0055',
           beats: 3,
           duration: 2.0,
-        }}
-      />
-      <Composition
-        id="efecto-mindmap-connect"
-        component={MindMapConnect as any}
-        durationInFrames={Math.round(2.5 * FPS)}
-        fps={FPS}
-        width={ANCHO}
-        height={ALTO}
-        defaultProps={{
-          items: ['Idea', 'Acción', 'Resultado', 'Éxito'],
-          lineColor: '#00FFFF',
-          nodeGlow: '#FF00FF',
-          duration: 2.5,
         }}
       />
       <Composition
