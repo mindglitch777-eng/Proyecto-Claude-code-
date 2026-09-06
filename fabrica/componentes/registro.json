@@ -1563,5 +1563,36 @@
     },
     "estado": "sin_validar",
     "notas": "Carta tecnica 'efectos virales' (2026-09-04), pedido originalmente como <TapToCut/> insertable en cualquier punto -- categorizado 'montaje' (como pixel-burst), NO como un TipoGolpe nuevo de golpes.tsx: son sistemas distintos (golpe = transicion ENTRE escenas resuelta por el puente de render; esto es una escena propia). Ver docstring de renderizador_por_guion.ts sobre la misma distincion."
+  },
+  {
+    "id": "subtitulos-grandes",
+    "archivo": "effects/SubtitulosGrandes.tsx",
+    "exportacion": "SubtitulosGrandes",
+    "categoria": "texto",
+    "funcion": "Subtitulos palabra por palabra en tipografia gigante y centrada, que van apareciendo a medida que la voz las dice -- no una barra de subtitulos chica, texto que ocupa la pantalla. Reusa @remotion/captions (createTikTokStyleCaptions), mismo paquete real que subtitulos/TikTokCaptions.tsx.",
+    "intensidad": 0.7,
+    "ritmo": "dinamico",
+    "capacidadTexto": "media",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      2,
+      8
+    ],
+    "compatibleCon": [
+      "texto"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "captions": "Caption[] (paquete @remotion/captions) -- timestamps REALES por palabra, medidos por forced-alignment (faster-whisper/whisper.cpp) sobre el audio ya generado de esta escena, nunca inventados a mano",
+      "combinarPalabrasDentroDeMs": "number, opcional (default 350) -- ventana para agrupar palabras en una misma 'pagina' antes de cortarla en pantallas chicas",
+      "maxPalabrasPorPantalla": "number, opcional (default 3)",
+      "color": "string, opcional (default PALETA.texto)",
+      "colorActivo": "string, opcional (default PALETA.acento)"
+    },
+    "estado": "sin_validar",
+    "notas": "R7-34: pedido explicito del operador para reemplazar GlitchShatter en un hook ('se ve bastante mal'). A diferencia de TikTokCaptions.tsx (que muestra la pagina/frase entera resaltando la palabra activa, pensado para subtitulos de pie de pantalla), este recorta en bloques de pocas palabras y las va revelando una a una -- pensado para dominar la pantalla, no acompañar. Requiere Caption[] real: sin una transcripcion medida (ver remotion-spike/src/subtitulos/README.md sobre el bloqueo de descarga del modelo en este sandbox y el camino via GitHub Actions), no hay con que llenar el prop -- no se debe rellenar con timestamps estimados a mano."
   }
 ]

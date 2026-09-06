@@ -66,6 +66,7 @@ import {PruebaGsap, DUR_PRUEBA_GSAP} from './pruebas-r7/PruebaGsap';
 import {PruebaShine, DUR_PRUEBA_SHINE} from './pruebas-r7/PruebaShine';
 import {PruebaRings, DUR_PRUEBA_RINGS} from './pruebas-r7/PruebaRings';
 import {PruebaCaptions} from './subtitulos/PruebaCaptions';
+import {PruebaSubtitulosGrandes} from './subtitulos/PruebaSubtitulosGrandes';
 import {GraficoTorta} from './escenas/GraficoTorta';
 import {
   ArquitecturaNeon,
@@ -416,6 +417,11 @@ export const Root: React.FC = () => {
           descarga del modelo esta bloqueada por politica de red -- ver
           remotion-spike/src/subtitulos/README.md). */}
       <Composition id="prueba-captions" component={PruebaCaptions} durationInFrames={Math.round(3.52 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
+      {/* R7-34: misma fixture/audio, componente nuevo SubtitulosGrandes
+          (recorte en bloques chicos + revelacion palabra por palabra en
+          tipografia gigante -- reemplazo de GlitchShatter pedido por el
+          operador). */}
+      <Composition id="prueba-subtitulos-grandes" component={PruebaSubtitulosGrandes} durationInFrames={Math.round(3.52 * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       {/* R7-18: primer grafico de torta/donut real de la fabrica,
           usando @remotion/shapes (MIT, oficial de Remotion) -- tipo de
           dato que Grafico.tsx (barras) nunca cubrio. */}

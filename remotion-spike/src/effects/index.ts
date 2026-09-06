@@ -27,6 +27,7 @@ export { default as PunchIn } from './PunchIn';
 export { default as SplitScreen } from './SplitScreen';
 export { default as KineticText } from './KineticText';
 export { default as TapToCut } from './TapToCut';
+export { default as SubtitulosGrandes } from './SubtitulosGrandes';
 
 // Alias: nombres usados en guiones de producción para los componentes de
 // Fase 1 (misma implementación, sin duplicar código).
@@ -204,4 +205,12 @@ export interface KineticTextProps {
 export interface TapToCutProps {
   duration?: number;
   flashColor?: string;
+}
+
+export interface SubtitulosGrandesProps {
+  captions: {text: string; startMs: number; endMs: number; timestampMs: number | null; confidence: number | null}[];
+  combinarPalabrasDentroDeMs?: number;
+  maxPalabrasPorPantalla?: number;
+  color?: string;
+  colorActivo?: string;
 }

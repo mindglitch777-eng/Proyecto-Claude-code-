@@ -47,6 +47,7 @@ import {PunchIn} from '../effects/PunchIn';
 import {SplitScreen} from '../effects/SplitScreen';
 import {KineticText} from '../effects/KineticText';
 import {TapToCut} from '../effects/TapToCut';
+import {SubtitulosGrandes} from '../effects/SubtitulosGrandes';
 
 // PUENTE DE RENDER de la nueva fabrica (fabrica/composicion/). Esto NO
 // es el Director Visual -- esa decision (que componente usar para
@@ -114,6 +115,7 @@ const IMPLEMENTACIONES: Record<string, React.FC<any>> = {
   'split-screen': SplitScreen,
   'kinetic-text': KineticText,
   'tap-to-cut': TapToCut,
+  'subtitulos-grandes': SubtitulosGrandes,
 };
 
 /** Forma MINIMA de un microevento, duck-tipada a proposito (Ronda 4):

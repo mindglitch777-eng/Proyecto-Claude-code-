@@ -1,0 +1,58 @@
+name: render-prueba-subtitulos-grandes
+
+# Verificacion visual de SubtitulosGrandes.tsx (R7-34, reemplazo de
+# GlitchShatter pedido por el operador) -- misma fixture/audio que
+# prueba-captions (TikTokCaptions.tsx, R7-16). Renderiza el clip corto
+# de prueba (3.52s) para inspeccionar frames antes de usarlo en un
+# guion real. El sandbox local bloquea la descarga del navegador de
+# Remotion (remotion.media no esta en el allowlist de red) -- por eso
+# esto corre en un runner de GitHub Actions, mismo patron que el resto
+# de los renders reales del proyecto.
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths:
+      - ".github/workflows/render-prueba-subtitulos-grandes.yml"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: remotion-spike/package-lock.json
+
+      - name: Dependencias
+        working-directory: remotion-spike
+        run: npm ci --no-audit --no-fund
+
+      - name: Navegador para Remotion
+        working-directory: remotion-spike
+        run: npx remotion browser ensure
+
+      - name: Armar public/ (fuentes, fotos, metraje, SFX de golpes)
+        run: ./remotion-spike/preparar-public.sh
+
+      - name: Renderizar prueba-subtitulos-grandes
+        working-directory: remotion-spike
+        run: |
+          mkdir -p out
+          npx remotion render prueba-subtitulos-grandes out/prueba-subtitulos-grandes.mp4 \
+            --concurrency=2 --log=info
+
+      - name: Subir el video como artefacto (no se commitea, es solo de verificacion)
+        uses: actions/upload-artifact@v4
+        with:
+          name: prueba-subtitulos-grandes
+          path: remotion-spike/out/prueba-subtitulos-grandes.mp4
+          retention-days: 7
