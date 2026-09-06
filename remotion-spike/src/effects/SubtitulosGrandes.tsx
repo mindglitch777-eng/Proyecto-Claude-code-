@@ -68,10 +68,10 @@ export const SubtitulosGrandes: React.FC<{
       <div
         style={{
           display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
+          flexDirection: 'column',
           alignItems: 'center',
-          gap: '0.3em',
+          justifyContent: 'center',
+          gap: '0.1em',
           maxWidth: '92%',
           textAlign: 'center',
         }}
@@ -79,7 +79,8 @@ export const SubtitulosGrandes: React.FC<{
         {bloqueActivo.map((token, i) => {
           if (tMs < token.fromMs) return null; // todavia no se dijo -- no aparece
           const activo = tMs >= token.fromMs && tMs < token.toMs;
-          // pop de entrada: escala + opacidad en los ~150ms desde que arranca la palabra
+          // entrada: cae desde arriba mientras aparece -- escala + opacidad
+          // + un desplazamiento vertical, en los ~150ms desde que arranca la palabra
           const entrada = interpolate(tMs, [token.fromMs, token.fromMs + 150], [0, 1], {
             extrapolateLeft: 'clamp',
             extrapolateRight: 'clamp',
@@ -90,12 +91,12 @@ export const SubtitulosGrandes: React.FC<{
               style={{
                 fontFamily: GROTESCA,
                 fontWeight: 900,
-                fontSize: '130px',
+                fontSize: tamanoFuente(token.text),
                 lineHeight: 1.05,
                 color: activo ? colorActivo : color,
                 textShadow: '0 4px 24px rgba(0,0,0,0.85)',
                 opacity: entrada,
-                transform: `scale(${0.8 + 0.2 * entrada})`,
+                transform: `translateY(${-40 * (1 - entrada)}px) scale(${0.8 + 0.2 * entrada})`,
               }}
             >
               {token.text}
@@ -106,5 +107,18 @@ export const SubtitulosGrandes: React.FC<{
     </AbsoluteFill>
   );
 };
+
+// tamano dinamico segun largo de palabra -- "mucho mas grande" (pedido
+// del operador) para palabras cortas, pero sin desbordar el 92% de
+// ancho seguro del canvas (1080px) con una palabra larga tipo
+// "inteligencia" o "artificial".
+function tamanoFuente(texto: string): number {
+  const largo = texto.length;
+  if (largo <= 4) return 220;
+  if (largo <= 7) return 185;
+  if (largo <= 10) return 155;
+  if (largo <= 14) return 125;
+  return 100;
+}
 
 export default SubtitulosGrandes;
