@@ -43,6 +43,11 @@ jobs:
       - name: Armar public/ (fuentes, fotos, metraje, SFX de golpes)
         run: ./remotion-spike/preparar-public.sh
 
+      - name: Copiar audio real de fabrica_demo_05 a public/ (no esta trackeado, ver capturas_voz/)
+        run: |
+          mkdir -p remotion-spike/public/fabrica_demo_05
+          cp capturas_voz/audio_demo_05/hook_0.wav remotion-spike/public/fabrica_demo_05/
+
       - name: Renderizar prueba-subtitulos-grandes
         working-directory: remotion-spike
         run: |
