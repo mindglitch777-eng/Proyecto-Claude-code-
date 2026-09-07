@@ -47,7 +47,16 @@ def extraer_meta(pagina) -> dict:
     }
 
 
+PLACEHOLDERS_GENERICOS = {'instagram', 'tiktok'}
+
+
 def tiene_contenido_util(meta: dict) -> bool:
+    """og:title/description reales, no el placeholder generico que la
+    plataforma sirve cuando el pedido no logro renderizar contenido real
+    (ej. og_title == "Instagram" a secas, sin descripcion)."""
+    titulo = (meta.get('og_title') or '').strip().lower()
+    if titulo in PLACEHOLDERS_GENERICOS and not meta.get('og_description'):
+        return False
     return bool(meta.get('og_title') or meta.get('og_description'))
 
 
