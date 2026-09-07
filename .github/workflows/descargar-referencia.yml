@@ -10,14 +10,19 @@ permissions:
   contents: write
 
 on:
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths: [".github/workflows/descargar-referencia.yml"]
   workflow_dispatch:
     inputs:
       url:
         description: "URL publica del video (YouTube Shorts/TikTok/Instagram)"
-        required: true
+        required: false
+        default: "https://www.youtube.com/shorts/Au9Gnos64O8"
       id:
         description: "Nombre corto para archivar (ej. hormozi-01)"
-        required: true
+        required: false
+        default: "hormozi-01"
 
 jobs:
   descargar:
@@ -37,8 +42,8 @@ jobs:
 
       - name: Descargar el video + metadata real
         env:
-          URL: ${{ inputs.url }}
-          ID: ${{ inputs.id }}
+          URL: ${{ inputs.url || 'https://www.youtube.com/shorts/Au9Gnos64O8' }}
+          ID: ${{ inputs.id || 'hormozi-01' }}
         run: |
           mkdir -p fabrica/research/referencias/${ID}
           yt-dlp -f "best[height<=1080]" \
@@ -49,7 +54,7 @@ jobs:
 
       - name: Analizar cortes reales + extraer solo frames de referencia (no el video completo)
         env:
-          ID: ${{ inputs.id }}
+          ID: ${{ inputs.id || 'hormozi-01' }}
         run: |
           cd fabrica/research/referencias/${ID}
           ARCHIVO=$(ls video.* | grep -v json | grep -v jpg | grep -v webp | head -1)
@@ -73,7 +78,7 @@ jobs:
           git config user.name  "productor-bot"
           git config user.email "actions@github.com"
           git add fabrica/research/referencias
-          git commit -m "Analisis de referencia (solo frames+data, sin video): ${{ inputs.id }}"
+          git commit -m "Analisis de referencia (solo frames+data, sin video): ${{ inputs.id || 'hormozi-01' }}"
           for i in 1 2 3 4 5 6; do
             git pull --rebase origin "$GITHUB_REF_NAME" && \
             git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
