@@ -54,7 +54,7 @@ jobs:
           # check (workaround real y documentado de yt-dlp, no requiere
           # cookies ni login).
           yt-dlp -f "best[height<=1080]" \
-            --extractor-args "youtube:player_client=android" \
+            --extractor-args "youtube:player_client=ios" \
             --write-info-json --write-thumbnail \
             -o "fabrica/research/referencias/${ID}/video.%(ext)s" \
             "$URL"
