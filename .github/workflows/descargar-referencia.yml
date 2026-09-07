@@ -1,0 +1,84 @@
+name: descargar-referencia
+
+# Descarga un video corto de referencia (yt-dlp, real y mantenido --
+# los repos "iamstane-ai-content-extractor" / "omni-media-extractor" /
+# "social-video-archiver" que sugirio Copilot NO EXISTEN en GitHub,
+# verificado por busqueda antes de usar nada) para analizar edicion/
+# estructura -- estudio de referencia, no redistribucion.
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "URL publica del video (YouTube Shorts/TikTok/Instagram)"
+        required: true
+      id:
+        description: "Nombre corto para archivar (ej. hormozi-01)"
+        required: true
+
+jobs:
+  descargar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar yt-dlp + ffmpeg
+        run: |
+          pip install --quiet yt-dlp
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Descargar el video + metadata real
+        env:
+          URL: ${{ inputs.url }}
+          ID: ${{ inputs.id }}
+        run: |
+          mkdir -p fabrica/research/referencias/${ID}
+          yt-dlp -f "best[height<=1080]" \
+            --write-info-json --write-thumbnail \
+            -o "fabrica/research/referencias/${ID}/video.%(ext)s" \
+            "$URL"
+          mv fabrica/research/referencias/${ID}/video.*.json fabrica/research/referencias/${ID}/info.json 2>/dev/null || true
+
+      - name: Analizar cortes reales + extraer solo frames de referencia (no el video completo)
+        env:
+          ID: ${{ inputs.id }}
+        run: |
+          cd fabrica/research/referencias/${ID}
+          ARCHIVO=$(ls video.* | grep -v json | grep -v jpg | grep -v webp | head -1)
+          # deteccion real de cortes/cambios de escena (umbral 0.3, estandar de ffmpeg) --
+          # esto es DATA (timestamps), no reproduce contenido
+          ffmpeg -i "$ARCHIVO" -vf "select='gt(scene,0.3)',showinfo" -f null - 2> cortes_detectados.txt || true
+          grep -o "pts_time:[0-9.]*" cortes_detectados.txt | sed 's/pts_time://' > timestamps_cortes.txt || true
+          echo "Cortes detectados: $(wc -l < timestamps_cortes.txt)"
+          ffprobe -v error -show_entries format=duration -of csv=p=0 "$ARCHIVO" > duracion.txt
+          # SOLO 10 frames de referencia, chicos (480px) -- para estudio visual
+          # puntual (tipografia/colores/encuadre), no una reproduccion del video.
+          # El archivo de video en si NO se commitea (solo se uso localmente en
+          # este job efimero para medir/mirar, se descarta despues).
+          mkdir -p frames
+          ffmpeg -y -i "$ARCHIVO" -vf "fps=10/$(cat duracion.txt),scale=480:-1" frames/ref_%02d.jpg
+          rm -f "$ARCHIVO"
+          rm -f *.webp *.jpg.info.json
+
+      - name: Guardar en el repo (solo metadata, cortes y frames de referencia -- nunca el video)
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add fabrica/research/referencias
+          git commit -m "Analisis de referencia (solo frames+data, sin video): ${{ inputs.id }}"
+          for i in 1 2 3 4 5 6; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && \
+            git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
+            echo "reintento $i"
+            git rebase --abort || true
+            sleep $((RANDOM % 8 + 2 * i))
+          done
+          exit 1
