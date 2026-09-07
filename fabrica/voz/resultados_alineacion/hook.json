@@ -1,0 +1,91 @@
+{
+  "audio": "capturas_voz/audio_guion_v4/hook.wav",
+  "texto_esperado": "El 90% de la gente usa la inteligencia artificial mal. Y te está costando caro.",
+  "texto_transcripto": "El 90% de la gente usa la inteligencia artificial mal y te está costando caro.",
+  "idioma_detectado": "es",
+  "probabilidad_idioma": 1,
+  "duracion_audio_seg": 4.864,
+  "palabras_con_timestamp": [
+    {
+      "palabra": "El",
+      "inicio": 0.0,
+      "fin": 0.18
+    },
+    {
+      "palabra": "90",
+      "inicio": 0.18,
+      "fin": 0.54
+    },
+    {
+      "palabra": "%",
+      "inicio": 0.54,
+      "fin": 0.84
+    },
+    {
+      "palabra": "de",
+      "inicio": 0.84,
+      "fin": 1.14
+    },
+    {
+      "palabra": "la",
+      "inicio": 1.14,
+      "fin": 1.24
+    },
+    {
+      "palabra": "gente",
+      "inicio": 1.24,
+      "fin": 1.48
+    },
+    {
+      "palabra": "usa",
+      "inicio": 1.48,
+      "fin": 1.88
+    },
+    {
+      "palabra": "la",
+      "inicio": 1.88,
+      "fin": 2.02
+    },
+    {
+      "palabra": "inteligencia",
+      "inicio": 2.02,
+      "fin": 2.5
+    },
+    {
+      "palabra": "artificial",
+      "inicio": 2.5,
+      "fin": 2.78
+    },
+    {
+      "palabra": "mal",
+      "inicio": 2.78,
+      "fin": 3.16
+    },
+    {
+      "palabra": "y",
+      "inicio": 3.16,
+      "fin": 3.72
+    },
+    {
+      "palabra": "te",
+      "inicio": 3.72,
+      "fin": 3.86
+    },
+    {
+      "palabra": "está",
+      "inicio": 3.86,
+      "fin": 4.08
+    },
+    {
+      "palabra": "costando",
+      "inicio": 4.08,
+      "fin": 4.48
+    },
+    {
+      "palabra": "caro.",
+      "inicio": 4.48,
+      "fin": 4.8
+    }
+  ],
+  "cantidad_palabras_alineadas": 16
+}
