@@ -1,0 +1,8 @@
+{
+  "url": "https://www.instagram.com/vent.asilenciosa/",
+  "fecha_utc": "2026-09-07T22:45:55.850580+00:00",
+  "metodo": null,
+  "exito": false,
+  "meta": {},
+  "error": "fetcher_simple: pagina sin meta tags utiles (posible bloqueo/redirect a login) | stealthy_fetcher: tampoco trajo meta tags utiles"
+}
