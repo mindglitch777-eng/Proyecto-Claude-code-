@@ -97,8 +97,14 @@ jobs:
 
               git add capturas_voz/audio_guion_v4
               git commit -m "Voz real (Qwen3-TTS) guion V4: $id"
-              git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
-              git push origin "HEAD:$GITHUB_REF_NAME"
+              for i in 1 2 3 4 5 6; do
+                git pull --rebase --autostash origin "$GITHUB_REF_NAME" && \
+                git push origin "HEAD:$GITHUB_REF_NAME" && break
+                echo "reintento push $id: $i"
+                git rebase --abort || true
+                sleep $((RANDOM % 8 + 2 * i))
+                if [ "$i" = "6" ]; then echo "AVISO: no se pudo pushear $id tras 6 intentos"; exit 1; fi
+              done
             fi
           done
 
