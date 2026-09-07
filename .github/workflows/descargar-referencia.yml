@@ -65,7 +65,10 @@ jobs:
             REAL_URL=$(yt-dlp --flat-playlist --playlist-items 1 --print "url" "$URL" | tail -1)
             echo "Perfil detectado, video resuelto: $REAL_URL"
           fi
-          yt-dlp -f "best[height<=1080]" \
+          # "best[height<=1080]" no matcheaba nada en Instagram sin login
+          # (log real: "Requested format is not available") -- fallback
+          # generico bv*+ba/b que no depende de metadata de altura.
+          yt-dlp -f "bv*+ba/b" \
             --write-info-json --write-thumbnail \
             -o "fabrica/research/referencias/${ID}/video.%(ext)s" \
             "$REAL_URL"
