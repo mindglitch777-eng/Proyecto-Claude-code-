@@ -29,7 +29,7 @@ jobs:
       fail-fast: false
       max-parallel: 4
       matrix:
-        include: ${{ fromJson(inputs.matriz || '[{"id":"hormozi-01","url":"https://www.youtube.com/shorts/Au9Gnos64O8"}]') }}
+        include: ${{ fromJson(inputs.matriz || '[{"id":"hormozi-01","url":"https://www.tiktok.com/@ahormozi"}]') }}
     steps:
       - uses: actions/checkout@v4
 
@@ -49,15 +49,22 @@ jobs:
         run: |
           mkdir -p fabrica/research/referencias/${ID}
           # YouTube bloquea las IPs de datacenter de GitHub Actions con
-          # "Sign in to confirm you're not a bot" en el cliente web
-          # default -- el cliente "android" de la API no dispara ese
-          # check (workaround real y documentado de yt-dlp, no requiere
-          # cookies ni login).
+          # "Sign in to confirm you're not a bot" en TODOS los clientes
+          # probados (web, android, android+web_safari, ios) -- bloqueo
+          # sistematico verificado con logs reales, no solucionable desde
+          # este runner. Pivot: TikTok, que no dispara el mismo check.
+          #
+          # Si la URL es un perfil (no un video puntual), resolvemos el
+          # primer video real del perfil antes de descargar.
+          REAL_URL="$URL"
+          if echo "$URL" | grep -qE '/@[^/]+/?$'; then
+            REAL_URL=$(yt-dlp --flat-playlist --playlist-items 1 --print "url" "$URL" | tail -1)
+            echo "Perfil detectado, video resuelto: $REAL_URL"
+          fi
           yt-dlp -f "best[height<=1080]" \
-            --extractor-args "youtube:player_client=ios" \
             --write-info-json --write-thumbnail \
             -o "fabrica/research/referencias/${ID}/video.%(ext)s" \
-            "$URL"
+            "$REAL_URL"
           mv fabrica/research/referencias/${ID}/video.*.json fabrica/research/referencias/${ID}/info.json 2>/dev/null || true
 
       - name: Analizar cortes reales + extraer solo frames de referencia (no el video completo)
