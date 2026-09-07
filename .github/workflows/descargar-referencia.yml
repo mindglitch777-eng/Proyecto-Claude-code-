@@ -1,10 +1,11 @@
 name: descargar-referencia
 
-# Descarga un video corto de referencia (yt-dlp, real y mantenido --
+# Descarga videos cortos de referencia (yt-dlp, real y mantenido --
 # los repos "iamstane-ai-content-extractor" / "omni-media-extractor" /
 # "social-video-archiver" que sugirio Copilot NO EXISTEN en GitHub,
 # verificado por busqueda antes de usar nada) para analizar edicion/
-# estructura -- estudio de referencia, no redistribucion.
+# estructura -- estudio de referencia, no redistribucion. Soporta una
+# matriz de varios videos en paralelo (un input JSON con {id,url}[]).
 
 permissions:
   contents: write
@@ -15,19 +16,20 @@ on:
     paths: [".github/workflows/descargar-referencia.yml"]
   workflow_dispatch:
     inputs:
-      url:
-        description: "URL publica del video (YouTube Shorts/TikTok/Instagram)"
+      matriz:
+        description: 'JSON [{"id":"...", "url":"..."}] -- uno o varios videos'
         required: false
-        default: "https://www.youtube.com/shorts/Au9Gnos64O8"
-      id:
-        description: "Nombre corto para archivar (ej. hormozi-01)"
-        required: false
-        default: "hormozi-01"
+        default: '[{"id":"hormozi-01","url":"https://www.youtube.com/shorts/Au9Gnos64O8"}]'
 
 jobs:
   descargar:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        include: ${{ fromJson(inputs.matriz || '[{"id":"hormozi-01","url":"https://www.youtube.com/shorts/Au9Gnos64O8"}]') }}
     steps:
       - uses: actions/checkout@v4
 
@@ -42,11 +44,17 @@ jobs:
 
       - name: Descargar el video + metadata real
         env:
-          URL: ${{ inputs.url || 'https://www.youtube.com/shorts/Au9Gnos64O8' }}
-          ID: ${{ inputs.id || 'hormozi-01' }}
+          URL: ${{ matrix.url }}
+          ID: ${{ matrix.id }}
         run: |
           mkdir -p fabrica/research/referencias/${ID}
+          # YouTube bloquea las IPs de datacenter de GitHub Actions con
+          # "Sign in to confirm you're not a bot" en el cliente web
+          # default -- el cliente "android" de la API no dispara ese
+          # check (workaround real y documentado de yt-dlp, no requiere
+          # cookies ni login).
           yt-dlp -f "best[height<=1080]" \
+            --extractor-args "youtube:player_client=android,web_safari" \
             --write-info-json --write-thumbnail \
             -o "fabrica/research/referencias/${ID}/video.%(ext)s" \
             "$URL"
@@ -54,7 +62,7 @@ jobs:
 
       - name: Analizar cortes reales + extraer solo frames de referencia (no el video completo)
         env:
-          ID: ${{ inputs.id || 'hormozi-01' }}
+          ID: ${{ matrix.id }}
         run: |
           cd fabrica/research/referencias/${ID}
           ARCHIVO=$(ls video.* | grep -v json | grep -v jpg | grep -v webp | head -1)
@@ -74,16 +82,18 @@ jobs:
           rm -f *.webp *.jpg.info.json
 
       - name: Guardar en el repo (solo metadata, cortes y frames de referencia -- nunca el video)
+        env:
+          ID: ${{ matrix.id }}
         run: |
           git config user.name  "productor-bot"
           git config user.email "actions@github.com"
           git add fabrica/research/referencias
-          git commit -m "Analisis de referencia (solo frames+data, sin video): ${{ inputs.id || 'hormozi-01' }}"
-          for i in 1 2 3 4 5 6; do
+          git commit -m "Analisis de referencia (solo frames+data, sin video): ${ID}"
+          for i in $(seq 1 10); do
             git pull --rebase origin "$GITHUB_REF_NAME" && \
             git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
             echo "reintento $i"
             git rebase --abort || true
-            sleep $((RANDOM % 8 + 2 * i))
+            sleep $((RANDOM % 10 + 2 * i))
           done
           exit 1
