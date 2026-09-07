@@ -1,0 +1,75 @@
+name: scrapear-perfil-tiktok
+
+# Segundo intento, mas resolutivo, de investigar perfiles de TikTok:
+# en vez de solo meta tags Open Graph (que no traen la lista de
+# videos), lee el script de rehidratacion (__UNIVERSAL_DATA_FOR_REHYDRATION__)
+# que TikTok manda en el HTML crudo del perfil -- data real y publica,
+# sin login ni JS.
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths: [".github/workflows/scrapear-perfil-tiktok.yml"]
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "URL de perfil de TikTok a scrapear"
+        required: false
+        default: "https://www.tiktok.com/@venta.silenciosa"
+
+jobs:
+  scrapear:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar Scrapling + navegadores
+        run: |
+          pip install --quiet "scrapling[all]"
+          scrapling install
+
+      - name: Scrapear el perfil
+        id: scrapear
+        env:
+          URL: ${{ inputs.url || 'https://www.tiktok.com/@venta.silenciosa' }}
+        run: |
+          mkdir -p fabrica/research/scraped_tiktok
+          SLUG=$(python3 -c "
+          import re, time
+          u = '''$URL'''
+          partes = [p for p in u.split('/') if p and 'http' not in p and '.' not in p]
+          slug = partes[-1] if partes else 'perfil'
+          slug = re.sub(r'[^a-zA-Z0-9_-]', '', slug)[:40] or 'perfil'
+          print(f'{slug}-{int(time.time())}')
+          ")
+          echo "slug=$SLUG" >> "$GITHUB_OUTPUT"
+          python3 fabrica/research/scraper_tiktok_perfil.py "$URL" "fabrica/research/scraped_tiktok/${SLUG}.json"
+
+      - name: Guardar el resultado en el repo
+        if: always()
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -z "$(git status --porcelain fabrica/research/scraped_tiktok)" ]; then
+            echo "Sin cambios."
+            exit 0
+          fi
+          git add fabrica/research/scraped_tiktok
+          git commit -m "Scraping de perfil TikTok: ${{ steps.scrapear.outputs.slug }}"
+          for i in 1 2 3 4 5 6; do
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" && \
+            git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
+            echo "reintento push: $i"
+            git rebase --abort || true
+            sleep $((RANDOM % 8 + 2 * i))
+          done
+          echo "AVISO: no se pudo pushear tras 6 intentos"
+          exit 1
