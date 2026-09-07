@@ -39,7 +39,11 @@ jobs:
 
       - name: Instalar yt-dlp + ffmpeg
         run: |
-          pip install --quiet yt-dlp
+          # curl_cffi habilita "impersonation" (imitar la huella TLS de un
+          # navegador real) -- sin esto el extractor de TikTok de yt-dlp
+          # falla con "Unexpected response from webpage request" (verificado
+          # con log real, no es bot-check sino dependencia faltante).
+          pip install --quiet "yt-dlp[default,curl-cffi]"
           sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
 
       - name: Descargar el video + metadata real
