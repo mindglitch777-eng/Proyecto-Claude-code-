@@ -1,0 +1,186 @@
+{
+  "url": "https://www.tiktok.com/@venta.silenciosa",
+  "fecha_utc": "2026-09-07T23:04:21.486598+00:00",
+  "metodo": null,
+  "exito": false,
+  "videos": [],
+  "error": " | fetcher_simple: JSON encontrado pero sin lista de videos reconocible | stealthy_fetcher: JSON encontrado pero sin lista de videos reconocible",
+  "debug_claves_scope": [
+    "webapp.app-context",
+    "webapp.biz-context",
+    "webapp.i18n-translation",
+    "seo.abtest",
+    "webapp.user-detail",
+    "webapp.a-b"
+  ],
+  "debug_subclaves": {
+    "webapp.app-context": [
+      "language",
+      "region",
+      "appId",
+      "appType",
+      "wid",
+      "webIdCreatedTime",
+      "odinId",
+      "nonce",
+      "botType",
+      "requestId",
+      "clusterRegion",
+      "abTestVersion",
+      "csrfToken",
+      "userAgent",
+      "encryptedWebid",
+      "host"
+    ],
+    "webapp.biz-context": [
+      "cookieConsent",
+      "os",
+      "isMobile",
+      "isAndroid",
+      "isIOS",
+      "jumpType",
+      "navList",
+      "kapLinks",
+      "config",
+      "domains",
+      "downloadLink",
+      "deviceLimitRegisterExpired",
+      "subdivisions",
+      "geo",
+      "geoCity",
+      "isGoogleBot",
+      "isBingBot",
+      "isBot",
+      "isSearchEngineBot",
+      "isTTP",
+      "dateFmtLocale",
+      "videoPlayerConfig",
+      "playbackNormalizePath",
+      "bitrateConfig",
+      "searchVideoForLoggedin",
+      "studioDownloadEntrance",
+      "liveSuggestConfig",
+      "liveAnchorEntrance",
+      "liveStudioEnable",
+      "xgplayerInitHost",
+      "videoOrder",
+      "searchLiveForLoggedin",
+      "canUseQuery",
+      "bitrateSelectorConfigs",
+      "idc",
+      "vregion",
+      "vgeo",
+      "videoCoverSettings",
+      "hevcRobustness",
+      "apiKeys",
+      "solariaPortrait",
+      "webStrategy",
+      "claConfig",
+      "upliftModelInfo",
+      "interestList",
+      "showApkTab",
+      "forceLoginSpecialRegions",
+      "hashedIP"
+    ],
+    "webapp.i18n-translation": [
+      "Webapp"
+    ],
+    "seo.abtest": [
+      "canonical",
+      "pageId",
+      "vidList",
+      "parameters"
+    ],
+    "webapp.user-detail": [
+      "userInfo",
+      "shareMeta",
+      "statusCode",
+      "statusMsg",
+      "needFix"
+    ],
+    "webapp.a-b": [
+      "b_c"
+    ]
+  },
+  "debug_userinfo_claves": [
+    "user",
+    "stats",
+    "statsV2",
+    "itemList"
+  ],
+  "debug_userinfo_muestra": {
+    "user": {
+      "id": "7498951259975877687",
+      "shortId": "",
+      "uniqueId": "venta.silenciosa",
+      "nickname": "Venta Silenciosa",
+      "avatarLarger": "https://p16-common-sign.tiktokcdn-us.com/tos-maliva-avt-0068/d29f6ea0485bebae8e3fac12c3b0cb79~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=9640&refresh_token=17391f50&x-expires=1788994800&x-signature=%2FmqGXp5Id4TLi9grTIPH%2Br0t8%2Fc%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=useast5",
+      "avatarMedium": "https://p16-common-sign.tiktokcdn-us.com/tos-maliva-avt-0068/d29f6ea0485bebae8e3fac12c3b0cb79~tplv-tiktokx-cropcenter:720:720.jpeg?dr=9640&refresh_token=70e81675&x-expires=1788994800&x-signature=sOwSLUbc9GFHgbc9t0cfi6wkIp4%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=useast5",
+      "avatarThumb": "https://p16-common-sign.tiktokcdn-us.com/tos-maliva-avt-0068/d29f6ea0485bebae8e3fac12c3b0cb79~tplv-tiktokx-cropcenter:100:100.jpeg?dr=9640&refresh_token=7eb6999f&x-expires=1788994800&x-signature=dc4tBv6ZYyAHXOLBjeMoqZ%2FfDyE%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=useast5",
+      "signature": "🔐 Descubre el secreto para vender sin vender en este video. ⬇️🔝",
+      "createTime": 1745986108,
+      "verified": false,
+      "secUid": "MS4wLjABAAAA79IdjUBNGjgSuy3yfcqvIpdmEGbAjkP9VyBTjw9dzWytre2u_R73TamwDX-6AJN-",
+      "ftc": false,
+      "relation": 0,
+      "openFavorite": false,
+      "bioLink": {
+        "link": "https://elusive-offer-flow.lovable.app",
+        "risk": 3
+      },
+      "commentSetting": 0,
+      "commerceUserInfo": {
+        "commerceUser": false
+      },
+      "duetSetting": 0,
+      "stitchSetting": 0,
+      "privateAccount": false,
+      "secret": false,
+      "isADVirtual": false,
+      "roomId": "",
+      "uniqueIdModifyTime": 0,
+      "ttSeller": false,
+      "downloadSetting": 0,
+      "profileTab": {
+        "showMusicTab": false,
+        "showQuestionTab": false,
+        "showPlayListTab": false
+      },
+      "followingVisibility": 1,
+      "recommendReason": "",
+      "nowInvitationCardUrl": "",
+      "nickNameModifyTime": 1745986132,
+      "isEmbedBanned": false,
+      "canExpPlaylist": true,
+      "profileEmbedPermission": 1,
+      "language": "es",
+      "eventList": [],
+      "suggestAccountBind": false,
+      "isOrganization": 0,
+      "UserStoryStatus": 0,
+      "shortDramaCreator": {}
+    },
+    "stats": {
+      "followerCount": 396900,
+      "followingCount": 0,
+      "heart": 5700000,
+      "heartCount": 5700000,
+      "videoCount": 154,
+      "diggCount": 0,
+      "friendCount": 0
+    },
+    "statsV2": {
+      "followerCount": "396934",
+      "followingCount": "0",
+      "heart": "5708389",
+      "heartCount": "5708389",
+      "videoCount": "154",
+      "diggCount": "0",
+      "friendCount": "0"
+    },
+    "itemList": []
+  },
+  "debug_vidlist": [
+    "75323602"
+  ]
+}
