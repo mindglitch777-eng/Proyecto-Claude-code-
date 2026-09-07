@@ -11,11 +11,15 @@ permissions:
   contents: write
 
 on:
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths: [".github/workflows/scrapear-post.yml"]
   workflow_dispatch:
     inputs:
       url:
         description: "URL publica a scrapear"
-        required: true
+        required: false
+        default: "https://www.instagram.com/p/Dc_64UfCu5o/"
 
 jobs:
   scrapear:
@@ -36,7 +40,7 @@ jobs:
       - name: Scrapear la URL
         id: scrapear
         env:
-          URL: ${{ inputs.url }}
+          URL: ${{ inputs.url || 'https://www.instagram.com/p/Dc_64UfCu5o/' }}
         run: |
           mkdir -p fabrica/research/scraped
           SLUG=$(python3 -c "
