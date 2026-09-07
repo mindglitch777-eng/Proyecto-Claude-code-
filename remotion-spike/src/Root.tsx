@@ -36,6 +36,7 @@ import venta08 from './fabrica_bridge/venta_08.json';
 import venta09 from './fabrica_bridge/venta_09.json';
 import venta10 from './fabrica_bridge/venta_10.json';
 import pruebaEfectosNuevos from './fabrica_bridge/prueba-efectos-nuevos.json';
+import guionV4 from './fabrica_bridge/guion-v4.json';
 import {Video} from './receta/Video';
 import {GUIONES} from './receta/guiones';
 import {compilar} from './receta/compilar';
@@ -348,6 +349,7 @@ export const Root: React.FC = () => {
       <Composition id="venta-09" component={FabricaVideo} durationInFrames={Math.round((venta09 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: venta09 as ArbolFabrica}} />
       <Composition id="venta-10" component={FabricaVideo} durationInFrames={Math.round((venta10 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: venta10 as ArbolFabrica}} />
       <Composition id="prueba-efectos-nuevos" component={FabricaVideo} durationInFrames={Math.round((pruebaEfectosNuevos as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: pruebaEfectosNuevos as ArbolFabrica}} />
+      <Composition id="guion-v4" component={FabricaVideo} durationInFrames={Math.round((guionV4 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: guionV4 as ArbolFabrica}} />
       <Composition id="rebecca-beach" component={RebeccaBeach} durationInFrames={Math.round(DUR_REBECCA * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       {/* Casos 2 a 20 de la serie documental: uno por entrada en
           casos.ts, todos sobre el mismo motor generico (CasoGenerico). */}

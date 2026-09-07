@@ -1,0 +1,69 @@
+name: render-guion-v4
+
+# Renderiza 'guion-v4' (GUION V4 - ARSENAL COMPLETO, adaptado en
+# fabrica/ejemplos/generar_guion_v4.ts) -- mismo patron que
+# render-prueba-efectos.yml, un solo video real de punta a punta.
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths:
+      - ".github/workflows/render-guion-v4.yml"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: remotion-spike/package-lock.json
+
+      - name: Dependencias
+        working-directory: remotion-spike
+        run: npm ci --no-audit --no-fund
+
+      - name: Navegador para Remotion
+        working-directory: remotion-spike
+        run: npx remotion browser ensure
+
+      - name: Armar public/ (fuentes, fotos, metraje, SFX de golpes)
+        run: ./remotion-spike/preparar-public.sh
+
+      - name: Copiar audio real del guion V4 a public/
+        run: |
+          mkdir -p remotion-spike/public/fabrica_guion_v4
+          cp capturas_voz/audio_guion_v4/*.wav remotion-spike/public/fabrica_guion_v4/
+
+      - name: Renderizar guion-v4
+        working-directory: remotion-spike
+        run: |
+          mkdir -p out
+          npx remotion render guion-v4 out/guion-v4.mp4 \
+            --concurrency=2 --log=info
+
+      - name: Commitear el video
+        run: |
+          mkdir -p videos/pruebas
+          cp remotion-spike/out/guion-v4.mp4 videos/pruebas/
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add videos/pruebas/guion-v4.mp4
+          if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
+          git commit -m "Video: GUION V4 - Arsenal Completo (7 escenas + transiciones, render real)"
+          for i in 1 2 3 4 5 6; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && \
+            git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
+            echo "reintento $i"
+            git rebase --abort || true
+            sleep $((RANDOM % 8 + 2 * i))
+          done
+          exit 1
