@@ -1,5 +1,37 @@
 # Estado vivo del proyecto
 
+## Bloque: investigación de "fórmula viral" en 16 videos reales + pipeline de descarga (2026-09-07)
+
+Pedido del operador: analizar creadores reales (primero 10 profesionales
+de productos digitales, luego ampliado a faceless/LatAm/casos famosos
+como Venta Silenciosa y 5-Minute Crafts) para encontrar patrones
+estructurales replicables en Taller de Activos. Informe completo con la
+fórmula adaptada entregado en el chat de esa sesión (no duplicado acá).
+
+**Infraestructura nueva que quedó funcionando** (`.github/workflows/`):
+- `descargar-referencia.yml` -- descarga reels de Instagram vía yt-dlp,
+  extrae SOLO frames+cortes+metadata (nunca el video), matriz paralela
+  de `{id,url}[]`. YouTube y TikTok quedaron confirmados como
+  bloqueados a nivel de IP de datacenter para descarga de video
+  (4 variantes de cliente probadas en YouTube, error explícito
+  "Your IP address is blocked" en TikTok) -- Instagram es el único
+  canal viable para bajar video real desde este runner. Requiere
+  `yt-dlp[default,curl-cffi]` (impersonation) y selector de formato
+  `bv*+ba/b` (no `best[height<=1080]`, que falla en Instagram sin login).
+- `scrapear-post.yml` + `fabrica/research/scraper.py` -- Scrapling para
+  meta tags públicos (bio, seguidores, likes, títulos de video) de
+  posts/perfiles de Instagram y TikTok. Confirmado que SÍ funciona en
+  perfiles de TikTok (dato real de @venta.silenciosa) aunque no pueda
+  bajar el video. Confirmado que NO funciona en perfiles de Instagram
+  sin login (sí en posts/reels individuales).
+- `fabrica/research/referencias/<id>/` -- 16 casos reales guardados
+  (frames + timestamps_cortes.txt + duracion.txt + info.json), nunca el
+  video en sí.
+
+Pendiente real: aplicar la fórmula documentada a guiones/render nuevos
+para la tanda de contenido de la semana.
+
+
 A diferencia de `fabrica/ESTADO_ACTUAL.md` (informe congelado de Ronda
 4, marcado explícitamente como histórico), este documento se actualiza
 después de cada bloque de trabajo real, como pide el "Prompt Maestro
