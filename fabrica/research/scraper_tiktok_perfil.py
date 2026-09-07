@@ -110,7 +110,12 @@ def main() -> int:
                 resultado.update(metodo=metodo, exito=True, videos=videos, error=None)
                 break
             else:
+                scope = datos.get('__DEFAULT_SCOPE__', {})
                 resultado['error'] = (resultado['error'] or '') + f' | {metodo}: JSON encontrado pero sin lista de videos reconocible'
+                resultado['debug_claves_scope'] = list(scope.keys())
+                for clave, valor in scope.items():
+                    if isinstance(valor, dict):
+                        resultado.setdefault('debug_subclaves', {})[clave] = list(valor.keys())
         except Exception as e:
             resultado['error'] = (resultado['error'] or '') + f' | {metodo} fallo: {e}'
 
