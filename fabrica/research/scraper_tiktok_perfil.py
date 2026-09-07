@@ -116,6 +116,16 @@ def main() -> int:
                 for clave, valor in scope.items():
                     if isinstance(valor, dict):
                         resultado.setdefault('debug_subclaves', {})[clave] = list(valor.keys())
+                # Un nivel mas de profundidad en los dos candidatos reales
+                # que aparecieron en el primer debug: userInfo (perfil) y
+                # seo.abtest.vidList (posible lista de IDs para SEO).
+                ud = scope.get('webapp.user-detail', {})
+                if isinstance(ud, dict) and isinstance(ud.get('userInfo'), dict):
+                    resultado['debug_userinfo_claves'] = list(ud['userInfo'].keys())
+                    resultado['debug_userinfo_muestra'] = json.loads(json.dumps(ud['userInfo']))
+                seo = scope.get('seo.abtest', {})
+                if isinstance(seo, dict):
+                    resultado['debug_vidlist'] = seo.get('vidList')
         except Exception as e:
             resultado['error'] = (resultado['error'] or '') + f' | {metodo} fallo: {e}'
 
