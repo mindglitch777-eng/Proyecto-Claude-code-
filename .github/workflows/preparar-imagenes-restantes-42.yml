@@ -42,29 +42,29 @@ jobs:
             fi
           done
 
-      - name: Logo de Hotmart (si falta)
-        run: |
-          if [ -z "$(ls -A assets/logos/hotmart/logo.* 2>/dev/null)" ]; then
-            python3 descargar_logo_empresa.py "Hotmart" hotmart "company"
-          else
-            echo "Ya existe, salteo."
-          fi
-
       - name: Logo de TikTok (si falta)
+        # No corta el job si Wikidata no tiene un logo confiable --
+        # mejor sin logo que el equivocado (mismo criterio que el
+        # resto del pipeline), y las 18 fotos de stock ya bajadas no
+        # se pueden perder por un logo que falte (BUGFIX real: la v1
+        # de este workflow SI cortaba aca y como el step de Commitear
+        # no tenia `if: always()`, las 18 fotos bajadas quedaban sin
+        # commitear -- se perdian en cada corrida que un logo fallara).
         run: |
           if [ -z "$(ls -A assets/logos/tiktok/logo.* 2>/dev/null)" ]; then
-            python3 descargar_logo_empresa.py "TikTok" tiktok "company"
+            python3 descargar_logo_empresa.py "TikTok" tiktok "company" || echo "Sin logo confiable de TikTok, sigue sin badge."
           else
             echo "Ya existe, salteo."
           fi
 
       - name: Commitear
+        if: always()
         run: |
           git config user.name  "productor-bot"
           git config user.email "actions@github.com"
           if [ -n "$(git status --porcelain assets/metraje assets/logos)" ]; then
             git add assets/metraje assets/logos
-            git commit -m "Fotos de stock + logos Hotmart/TikTok: lote de 42 (portadas restantes)"
+            git commit -m "Fotos de stock + logo TikTok: lote de 42 (portadas restantes)"
             git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
             git push origin "HEAD:$GITHUB_REF_NAME"
           else

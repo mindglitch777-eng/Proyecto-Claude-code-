@@ -55,8 +55,9 @@ const EXT_LOGO: Record<string, string> = {
   spacex: extLogo('spacex'),
   amazon: extLogo('amazon'),
   apple: extLogo('apple'),
-  hotmart: extLogo('hotmart'),
   tiktok: extLogo('tiktok'),
+  // Hotmart: sin logo confiable en Wikidata (P154) -- carrusel-09 usa
+  // solo la foto de stock, ver IMAGENES_STOCK en lote_42_datos.ts.
 };
 
 /** Resuelve un marcador `STOCK:<nicho>` (puesto por lote_42_datos.ts)

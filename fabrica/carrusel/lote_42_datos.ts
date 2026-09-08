@@ -663,7 +663,7 @@ const IMAGENES_STOCK: Record<number, {nicho: string; logoSlug?: string}> = {
   3: {nicho: 'boceto-producto'},
   6: {nicho: 'feed-social'},
   8: {nicho: 'joven-emprendedor'},
-  9: {nicho: 'pago-online', logoSlug: 'hotmart'},
+  9: {nicho: 'pago-online'}, // sin logo: Hotmart no tiene un logo confiable en Wikidata (P154)
   15: {nicho: 'alerta-error'},
   16: {nicho: 'trabajo-rapido'},
   18: {nicho: 'error-caro'},
