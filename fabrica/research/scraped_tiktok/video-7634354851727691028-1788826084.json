@@ -1,0 +1,23 @@
+{
+  "url": "https://www.tiktok.com/@venta.silenciosa/video/7634354851727691028",
+  "fecha_utc": "2026-09-08T00:08:04.714262+00:00",
+  "metodo": "fetcher_simple",
+  "exito": true,
+  "item": {
+    "id": "7634354851727691028",
+    "desc": "La estrategia que usan los mejores vendedores de celulares en el mundo! #celulares #iphone #negocios ##ventas",
+    "duracion_seg": 49,
+    "play_addr": "https://v16-webapp-prime.us.tiktok.com/video/tos/alisg/tos-alisg-ve-0068c800-sg/osIpjpcCYBqEugVGurEAMFEByjDgt8Q6jfeksU/?a=1988&bti=ODszNWYuMDE6&&bt=771&ft=aEeq8qT0mIoPD129FWKI3wUWKBAbMeF~O5&mime_type=video_mp4&rc=NDY4ZzQ3aWkzM2U0aDY5aEBpM3BwcnE5cjxkOjMzODgzNEAvM2I0L2MxNWExLzA0LS1eYSNzcG41MmQ0bW1hLS1kLzFzcw%3D%3D&expire=1788998934&l=202609080008054EFE6E46EA8205E9B684&ply_type=2&policy=2&signature=cc0aadabe11fb97d9d723b39a992e6a7&tk=tt_chain_token&btag=e00088000",
+    "download_addr": "https://v16-webapp-prime.us.tiktok.com/video/tos/alisg/tos-alisg-ve-0068c800-sg/osIpjpcCYBqEugVGurEAMFEByjDgt8Q6jfeksU/?a=1988&bti=ODszNWYuMDE6&&bt=771&ft=aEeq8qT0mIoPD129FWKI3wUWKBAbMeF~O5&mime_type=video_mp4&rc=NDY4ZzQ3aWkzM2U0aDY5aEBpM3BwcnE5cjxkOjMzODgzNEAvM2I0L2MxNWExLzA0LS1eYSNzcG41MmQ0bW1hLS1kLzFzcw%3D%3D&expire=1788998934&l=202609080008054EFE6E46EA8205E9B684&ply_type=2&policy=2&signature=cc0aadabe11fb97d9d723b39a992e6a7&tk=tt_chain_token&btag=e00088000",
+    "cover": "https://p19-common-sign.tiktokcdn-us.com/tos-alisg-p-0037/oYwjQeQWAJerSHG8GAALmyV5IeW6nfIJmAK2lA~tplv-tiktokx-origin.image?dr=9636&x-expires=1788998400&x-signature=L7lBcVy0GMVcbW%2B75ta%2BaXQqkFI%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast8",
+    "stats": {
+      "diggCount": 5819,
+      "shareCount": 438,
+      "commentCount": 21,
+      "playCount": 69300,
+      "collectCount": "1920"
+    },
+    "autor": "venta.silenciosa"
+  },
+  "error": null
+}
