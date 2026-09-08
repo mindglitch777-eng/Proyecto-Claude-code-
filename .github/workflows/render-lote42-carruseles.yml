@@ -1,0 +1,134 @@
+name: render-lote42-carruseles
+
+# Renderiza los 252 slides (42 carruseles x 6) del lote de carruseles
+# -- todo en UN job (a diferencia de los videos, un still de Remotion
+# tarda segundos, no minutos, asi que 252 stills secuenciales caben
+# comodos en un timeout generoso). Commits incrementales cada 12
+# slides (2 carruseles) para no perder nada si algo falla a mitad de
+# camino.
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths: [".github/workflows/render-lote42-carruseles.yml"]
+  workflow_dispatch: {}
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ver si los assets reales (fotos + logos) ya existen
+        id: check
+        run: |
+          faltan=0
+          for slug in elon-musk mrbeast jeff-bezos gary-vaynerchuk steve-jobs; do
+            [ -f "assets/personas/$slug/00.jpg" ] || { echo "AVISO: falta foto de $slug"; faltan=1; }
+          done
+          for slug in spacex amazon apple; do
+            ls assets/logos/$slug/logo.* >/dev/null 2>&1 || { echo "AVISO: falta logo de $slug"; faltan=1; }
+          done
+          if [ "$faltan" = "1" ]; then
+            echo "listo=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "listo=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.listo == 'true'
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: remotion-spike/package-lock.json
+
+      - name: Dependencias (remotion-spike + fabrica)
+        if: steps.check.outputs.listo == 'true'
+        run: |
+          cd remotion-spike && npm ci --no-audit --no-fund
+          cd ../fabrica && npm ci --no-audit --no-fund
+
+      - name: Navegador para Remotion
+        if: steps.check.outputs.listo == 'true'
+        working-directory: remotion-spike
+        run: npx remotion browser ensure
+
+      - name: Armar public/ (fuentes, fotos, logos, metraje, sfx)
+        if: steps.check.outputs.listo == 'true'
+        run: ./remotion-spike/preparar-public.sh
+
+      - name: Exportar los 252 props (42 carruseles)
+        if: steps.check.outputs.listo == 'true'
+        run: cd fabrica && npx tsx carrusel/exportar_lote_42.ts
+
+      - name: Renderizar los 252 slides (commit incremental cada 2 carruseles)
+        if: steps.check.outputs.listo == 'true'
+        working-directory: remotion-spike
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          contador=0
+          for carpeta in props_carrusel/lote42/*/; do
+            id=$(basename "$carpeta")
+            mkdir -p "../imagenes/lote42/$id"
+            for f in "$carpeta"slide-*.json; do
+              base=$(basename "$f" .json)
+              destino="../imagenes/lote42/$id/${base}.png"
+              if [ -f "$destino" ]; then continue; fi
+              npx remotion still carrusel-slide "out/${id}-${base}.png" --props="$f" --log=warn
+              cp "out/${id}-${base}.png" "$destino"
+              rm -f "out/${id}-${base}.png"
+            done
+            contador=$((contador + 1))
+            if [ $((contador % 2)) -eq 0 ]; then
+              cd ..
+              if [ -n "$(git status --porcelain imagenes/lote42)" ]; then
+                git add imagenes/lote42
+                git commit -m "Carruseles renderizados: avance parcial ($contador/42)"
+                for i in 1 2 3 4 5 6; do
+                  git pull --rebase --autostash origin "$GITHUB_REF_NAME" && \
+                  git push origin "HEAD:$GITHUB_REF_NAME" && break
+                  echo "reintento push: $i"
+                  git rebase --abort || true
+                  sleep $((RANDOM % 8 + 2 * i))
+                done
+              fi
+              cd remotion-spike
+            fi
+          done
+
+      - name: Guardar el resto (si quedo algo sin commitear)
+        if: always() && steps.check.outputs.listo == 'true'
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain imagenes/lote42)" ]; then
+            git add imagenes/lote42
+            git commit -m "Carruseles renderizados: resto"
+            for i in 1 2 3 4 5 6; do
+              git pull --rebase --autostash origin "$GITHUB_REF_NAME" && \
+              git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
+              echo "reintento push: $i"
+              git rebase --abort || true
+              sleep $((RANDOM % 8 + 2 * i))
+            done
+            exit 1
+          else
+            echo "Nada pendiente."
+          fi
+
+      - name: Commitear el resumen de publicacion (metadata)
+        if: always() && steps.check.outputs.listo == 'true'
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain fabrica/carrusel/lote_42_resumen.json)" ]; then
+            git add fabrica/carrusel/lote_42_resumen.json
+            git commit -m "Metadata de publicacion del lote de 42"
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          fi
