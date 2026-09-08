@@ -1,0 +1,434 @@
+{
+  "id": "lote21-v19",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "v19-hook",
+      "desdeSeg": 0,
+      "duracionSeg": 4.281995,
+      "componenteId": "tres-verdades",
+      "props": {
+        "frases": [
+          "Mito #3.",
+          "\"El algoritmo me odia.\"",
+          "Tu producto, invisible."
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_lote21_v19/v19-hook.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.031995
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0,
+      "estrategiaEdicion": {
+        "unidadId": "v19-hook",
+        "intencion": "enganchar",
+        "energia": "muy_alta",
+        "densidadVisual": "densa",
+        "estilos": [
+          "agresivo",
+          "documental"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "primera unidad del video (hook): capturar atencion desde el frame 0"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "ninguno",
+          "funcion": "dirigir_atencion",
+          "intensidad": "muy_alta",
+          "motivo": "golpe \"ninguno\" acompana una unidad con intencion \"enganchar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"v19-hook\""
+          },
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_sfx",
+            "descripcion": "SFX de entrada acompanando el elemento principal",
+            "razon": "estilo combinado incluye enfasis sonoro en la entrada (ver estilos.ts, tiposMicroEventoPreferidos)"
+          }
+        ],
+        "relacionConAnterior": "abre el video -- no hay escena anterior con la cual relacionarse",
+        "respiracion": false,
+        "patronRetencionId": "contexto-parcial",
+        "razonGeneral": "unidad \"v19-hook\" (1/4, categoria=texto): intencion=enganchar (energia=muy_alta, densidad=densa), estilos=[agresivo+documental], patron_retencion=contexto-parcial"
+      },
+      "patronesRetencion": [
+        "contexto-parcial"
+      ]
+    },
+    {
+      "unidadId": "v19-giro",
+      "desdeSeg": 4.281995,
+      "duracionSeg": 7.674014,
+      "componenteId": "balanza",
+      "props": {
+        "titulo": "¿Qué pesa más?",
+        "izq": {
+          "txt": "ALGORITMO",
+          "peso": 3
+        },
+        "der": {
+          "txt": "TU SISTEMA",
+          "peso": 7
+        },
+        "pie": "La culpa pesa menos que la solución."
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_lote21_v19/v19-giro.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 7.424014
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55,
+      "estrategiaEdicion": {
+        "unidadId": "v19-giro",
+        "intencion": "comparar",
+        "energia": "media",
+        "densidadVisual": "moderada",
+        "estilos": [
+          "data",
+          "documental"
+        ],
+        "elementoPrincipal": {
+          "tipo": "comparacion",
+          "descripcion": "los dos lados de la comparacion"
+        },
+        "entrada": {
+          "tipo": "progresiva",
+          "razon": "entrada gradual, coherente con una energia media/baja"
+        },
+        "salida": {
+          "tipo": "se_desvanece",
+          "razon": "transicion suave hacia la unidad siguiente, sin necesidad de un ancla visual"
+        },
+        "transicion": {
+          "golpe": "raya",
+          "funcion": "crear_contraste",
+          "intensidad": "media",
+          "motivo": "golpe \"raya\" acompana una unidad con intencion \"comparar\" (elemento principal: los dos lados de la comparacion)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra los dos lados de la comparacion",
+            "razon": "elemento principal de la unidad \"v19-giro\""
+          }
+        ],
+        "relacionConAnterior": "retoma un valor/concepto ya establecido antes para ponerlo en relacion con uno nuevo",
+        "respiracion": false,
+        "patronRetencionId": "contraste-antes-despues",
+        "razonGeneral": "unidad \"v19-giro\" (2/4, categoria=comparacion): intencion=comparar (energia=media, densidad=moderada), estilos=[data+documental], patron_retencion=contraste-antes-despues"
+      },
+      "patronesRetencion": [
+        "contraste-antes-despues"
+      ]
+    },
+    {
+      "unidadId": "v19-prueba",
+      "desdeSeg": 11.956009,
+      "duracionSeg": 5.464014,
+      "componenteId": "diagrama",
+      "props": {
+        "d": {
+          "nodos": [
+            {
+              "fig": "foco",
+              "x": 0.5,
+              "y": 0.28,
+              "tam": 150,
+              "rotulo": "CREÁ",
+              "t": 0,
+              "acento": true
+            },
+            {
+              "fig": "telefono",
+              "x": 0.5,
+              "y": 0.44,
+              "tam": 150,
+              "rotulo": "PUBLICÁ",
+              "t": 0.9,
+              "acento": true
+            },
+            {
+              "fig": "lupa",
+              "x": 0.5,
+              "y": 0.6,
+              "tam": 150,
+              "rotulo": "MEDÍ",
+              "t": 1.8,
+              "acento": true
+            },
+            {
+              "fig": "engranaje",
+              "x": 0.5,
+              "y": 0.76,
+              "tam": 150,
+              "rotulo": "AJUSTÁ",
+              "t": 2.6,
+              "acento": true
+            }
+          ],
+          "flechas": [
+            {
+              "de": 0,
+              "a": 1,
+              "t": 1,
+              "acento": true
+            },
+            {
+              "de": 1,
+              "a": 2,
+              "t": 1.9,
+              "acento": true
+            },
+            {
+              "de": 2,
+              "a": 3,
+              "t": 2.8,
+              "acento": true
+            }
+          ]
+        }
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_lote21_v19/v19-prueba.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.864014
+        }
+      ],
+      "golpe": "corte",
+      "volumenSfx": 0.6,
+      "transicionSalienteSeg": 0.6,
+      "estrategiaEdicion": {
+        "unidadId": "v19-prueba",
+        "intencion": "acelerar",
+        "energia": "media",
+        "densidadVisual": "densa",
+        "estilos": [
+          "agresivo",
+          "data"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "progresiva",
+          "razon": "entrada gradual, coherente con una energia media/baja"
+        },
+        "salida": {
+          "tipo": "se_desvanece",
+          "razon": "transicion suave hacia la unidad siguiente, sin necesidad de un ancla visual"
+        },
+        "transicion": {
+          "golpe": "corte",
+          "funcion": "marcar_cambio",
+          "intensidad": "media",
+          "motivo": "golpe \"corte\" acompana una unidad con intencion \"acelerar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"v19-prueba\""
+          },
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_sfx",
+            "descripcion": "SFX de entrada acompanando el elemento principal",
+            "razon": "estilo combinado incluye enfasis sonoro en la entrada (ver estilos.ts, tiposMicroEventoPreferidos)"
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "pregunta-sin-resolver-intermedia",
+        "razonGeneral": "unidad \"v19-prueba\" (3/4, categoria=diagrama): intencion=acelerar (energia=media, densidad=densa), estilos=[agresivo+data], patron_retencion=pregunta-sin-resolver-intermedia"
+      },
+      "patronesRetencion": [
+        "pregunta-sin-resolver-intermedia"
+      ]
+    },
+    {
+      "unidadId": "v19-cta",
+      "desdeSeg": 16.820023,
+      "duracionSeg": 3.066009,
+      "componenteId": "remate",
+      "props": {
+        "d": {
+          "lineas": [
+            "No es el algoritmo.",
+            "Es el sistema.",
+            "Arreglá eso."
+          ],
+          "grande": "SÉ VISIBLE",
+          "pie": "Con sistema, no con suerte."
+        },
+        "clip": "comercio-02.mp4"
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_lote21_v19/v19-cta.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.816009
+        }
+      ],
+      "golpe": "fundido",
+      "volumenSfx": 0.5,
+      "estrategiaEdicion": {
+        "unidadId": "v19-cta",
+        "intencion": "cerrar",
+        "energia": "alta",
+        "densidadVisual": "minima",
+        "estilos": [
+          "cinematico",
+          "storytelling"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "cierre del video: no debe quedar nada pendiente despues"
+        },
+        "transicion": {
+          "golpe": "fundido",
+          "funcion": "marcar_cambio",
+          "intensidad": "alta",
+          "motivo": "golpe \"fundido\" acompana una unidad con intencion \"cerrar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"v19-cta\""
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "pago-de-la-promesa",
+        "razonGeneral": "unidad \"v19-cta\" (4/4, categoria=texto): intencion=cerrar (energia=alta, densidad=minima), estilos=[cinematico+storytelling], patron_retencion=pago-de-la-promesa"
+      },
+      "patronesRetencion": [
+        "pago-de-la-promesa"
+      ]
+    }
+  ],
+  "duracionTotalSeg": 20.386032,
+  "analisisRetencion": {
+    "mapa": [
+      {
+        "unidadId": "v19-hook",
+        "fase": "hook",
+        "energia": "muy_alta",
+        "duracionSeg": 4.281995,
+        "esClimax": false
+      },
+      {
+        "unidadId": "v19-giro",
+        "fase": "desarrollo",
+        "energia": "media",
+        "duracionSeg": 7.674014,
+        "esClimax": true
+      },
+      {
+        "unidadId": "v19-prueba",
+        "fase": "escalada",
+        "energia": "media",
+        "duracionSeg": 5.464014,
+        "esClimax": false
+      },
+      {
+        "unidadId": "v19-cta",
+        "fase": "cierre",
+        "energia": "alta",
+        "duracionSeg": 3.066009,
+        "esClimax": false
+      }
+    ],
+    "alertas": [],
+    "patronesUsados": [
+      {
+        "patronId": "contexto-parcial",
+        "nombre": "Contexto parcial",
+        "categoria": "apertura",
+        "porQue": "Da un dato concreto (un nombre, una cifra) sin explicar todavia el resto -- el espectador entiende que hay una historia pero no la historia completa. Maxima curiosidad con ALGO de contexto, no con cero.",
+        "evidencia": [
+          {
+            "id": "loewenstein-1994-brecha-curiosidad",
+            "concepto": "Brecha de curiosidad (curiosity gap)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "v19-hook"
+      },
+      {
+        "patronId": "contraste-antes-despues",
+        "nombre": "Contraste antes/después",
+        "categoria": "comparacion",
+        "porQue": "Presenta dos estados opuestos (antes de X / después de X) uno al lado del otro -- ya existe como componente real en el catálogo (AntesDespues), esto documenta el patrón narrativo detrás de esa elección visual.",
+        "evidencia": [],
+        "esHipotesisUObservado": "sin_respaldo_formal",
+        "dependeDe": "v19-giro"
+      },
+      {
+        "patronId": "pregunta-sin-resolver-intermedia",
+        "nombre": "Micro-loop a mitad de video",
+        "categoria": "curiosidad",
+        "porQue": "Reabre un loop chico (una pregunta nueva, más pequeña que la del hook) a mitad del video para \"reenganchar\" antes de que la atención decaiga -- la misma tensión cognitiva de Zeigarnik, aplicada varias veces en vez de una sola.",
+        "evidencia": [
+          {
+            "id": "zeigarnik-1927-tareas-incompletas",
+            "concepto": "Efecto Zeigarnik (tareas incompletas)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "v19-prueba"
+      },
+      {
+        "patronId": "pago-de-la-promesa",
+        "nombre": "Pago explícito de la promesa del hook",
+        "categoria": "recompensa",
+        "porQue": "Cuando el hook prometió algo (una respuesta, un resultado), el video debe entregarlo explícitamente y de forma reconocible -- cerrar el loop es lo que da la \"recompensa\" cognitiva de la tensión generada, según Zeigarnik.",
+        "evidencia": [
+          {
+            "id": "zeigarnik-1927-tareas-incompletas",
+            "concepto": "Efecto Zeigarnik (tareas incompletas)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "v19-cta"
+      }
+    ]
+  }
+}

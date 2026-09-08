@@ -1,0 +1,404 @@
+{
+  "id": "lote21-v21",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "v21-hook",
+      "desdeSeg": 0,
+      "duracionSeg": 4.858005,
+      "componenteId": "duelo",
+      "props": {
+        "izq": {
+          "rotulo": "Curso de 6 meses",
+          "valor": "6 meses"
+        },
+        "der": {
+          "rotulo": "Este video",
+          "valor": "40 min"
+        },
+        "ganador": "der",
+        "remate": "No importa la duración."
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_lote21_v21/v21-hook.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.608005
+        }
+      ],
+      "golpe": "fogonazo",
+      "volumenSfx": 0,
+      "estrategiaEdicion": {
+        "unidadId": "v21-hook",
+        "intencion": "enganchar",
+        "energia": "muy_alta",
+        "densidadVisual": "densa",
+        "estilos": [
+          "agresivo",
+          "documental"
+        ],
+        "elementoPrincipal": {
+          "tipo": "comparacion",
+          "descripcion": "los dos lados de la comparacion"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "primera unidad del video (hook): capturar atencion desde el frame 0"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "fogonazo",
+          "funcion": "dirigir_atencion",
+          "intensidad": "muy_alta",
+          "motivo": "golpe \"fogonazo\" acompana una unidad con intencion \"enganchar\" (elemento principal: los dos lados de la comparacion)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra los dos lados de la comparacion",
+            "razon": "elemento principal de la unidad \"v21-hook\""
+          },
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_sfx",
+            "descripcion": "SFX de entrada acompanando el elemento principal",
+            "razon": "estilo combinado incluye enfasis sonoro en la entrada (ver estilos.ts, tiposMicroEventoPreferidos)"
+          }
+        ],
+        "relacionConAnterior": "abre el video -- no hay escena anterior con la cual relacionarse",
+        "respiracion": false,
+        "patronRetencionId": "contexto-parcial",
+        "razonGeneral": "unidad \"v21-hook\" (1/4, categoria=comparacion): intencion=enganchar (energia=muy_alta, densidad=densa), estilos=[agresivo+documental], patron_retencion=contexto-parcial"
+      },
+      "patronesRetencion": [
+        "contexto-parcial"
+      ]
+    },
+    {
+      "unidadId": "v21-giro",
+      "desdeSeg": 4.858005,
+      "duracionSeg": 6.521995,
+      "componenteId": "ranking",
+      "props": {
+        "titulo": "Lo que de verdad vende",
+        "filas": [
+          {
+            "txt": "Resolver un problema real",
+            "valor": 92,
+            "acento": true
+          },
+          {
+            "txt": "Duración del contenido",
+            "valor": 8
+          }
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_lote21_v21/v21-giro.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 6.271995
+        }
+      ],
+      "golpe": "sacudon",
+      "volumenSfx": 0.9,
+      "estrategiaEdicion": {
+        "unidadId": "v21-giro",
+        "intencion": "construir_tension",
+        "energia": "alta",
+        "densidadVisual": "minima",
+        "estilos": [
+          "misterio",
+          "cinematico"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "la progresion completa que se esta contando"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "sacudon",
+          "funcion": "preparar_impacto",
+          "intensidad": "alta",
+          "motivo": "golpe \"sacudon\" acompana una unidad con intencion \"construir_tension\" (elemento principal: la progresion completa que se esta contando)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra la progresion completa que se esta contando",
+            "razon": "elemento principal de la unidad \"v21-giro\""
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "loop-abierto",
+        "razonGeneral": "unidad \"v21-giro\" (2/4, categoria=lista): intencion=construir_tension (energia=alta, densidad=minima), estilos=[misterio+cinematico], patron_retencion=loop-abierto"
+      },
+      "patronesRetencion": [
+        "loop-abierto"
+      ]
+    },
+    {
+      "unidadId": "v21-prueba",
+      "desdeSeg": 11.38,
+      "duracionSeg": 4.951994999999999,
+      "componenteId": "contador",
+      "props": {
+        "arriba": "Generado por 40 minutos de trabajo",
+        "hasta": 40,
+        "sufijo": " min",
+        "prefijo": "",
+        "abajo": "más que un curso de 6 meses"
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_lote21_v21/v21-prueba.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.351995
+        }
+      ],
+      "golpe": "fogonazo",
+      "volumenSfx": 0.9,
+      "transicionSalienteSeg": 0.6,
+      "estrategiaEdicion": {
+        "unidadId": "v21-prueba",
+        "intencion": "acelerar",
+        "energia": "alta",
+        "densidadVisual": "densa",
+        "estilos": [
+          "agresivo",
+          "data"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "fogonazo",
+          "funcion": "marcar_cambio",
+          "intensidad": "alta",
+          "motivo": "golpe \"fogonazo\" acompana una unidad con intencion \"acelerar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"v21-prueba\""
+          },
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_sfx",
+            "descripcion": "SFX de entrada acompanando el elemento principal",
+            "razon": "estilo combinado incluye enfasis sonoro en la entrada (ver estilos.ts, tiposMicroEventoPreferidos)"
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "pregunta-sin-resolver-intermedia",
+        "razonGeneral": "unidad \"v21-prueba\" (3/4, categoria=cifra): intencion=acelerar (energia=alta, densidad=densa), estilos=[agresivo+data], patron_retencion=pregunta-sin-resolver-intermedia"
+      },
+      "patronesRetencion": [
+        "pregunta-sin-resolver-intermedia"
+      ]
+    },
+    {
+      "unidadId": "v21-cta",
+      "desdeSeg": 15.731995000000001,
+      "duracionSeg": 4.026009,
+      "componenteId": "remate",
+      "props": {
+        "d": {
+          "lineas": [
+            "No hace falta",
+            "un curso largo.",
+            "Hace falta resolver algo."
+          ],
+          "grande": "RESOLVÉ, NO ALARGUES",
+          "pie": "Eso es lo que vende."
+        },
+        "clip": "comercio-04.mp4"
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_lote21_v21/v21-cta.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.776009
+        }
+      ],
+      "golpe": "fundido",
+      "volumenSfx": 0.5,
+      "estrategiaEdicion": {
+        "unidadId": "v21-cta",
+        "intencion": "cerrar",
+        "energia": "alta",
+        "densidadVisual": "minima",
+        "estilos": [
+          "cinematico",
+          "storytelling"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "cierre del video: no debe quedar nada pendiente despues"
+        },
+        "transicion": {
+          "golpe": "fundido",
+          "funcion": "marcar_cambio",
+          "intensidad": "alta",
+          "motivo": "golpe \"fundido\" acompana una unidad con intencion \"cerrar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"v21-cta\""
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "pago-de-la-promesa",
+        "razonGeneral": "unidad \"v21-cta\" (4/4, categoria=texto): intencion=cerrar (energia=alta, densidad=minima), estilos=[cinematico+storytelling], patron_retencion=pago-de-la-promesa"
+      },
+      "patronesRetencion": [
+        "pago-de-la-promesa"
+      ]
+    }
+  ],
+  "duracionTotalSeg": 20.258004,
+  "analisisRetencion": {
+    "mapa": [
+      {
+        "unidadId": "v21-hook",
+        "fase": "hook",
+        "energia": "muy_alta",
+        "duracionSeg": 4.858005,
+        "esClimax": false
+      },
+      {
+        "unidadId": "v21-giro",
+        "fase": "escalada",
+        "energia": "alta",
+        "duracionSeg": 6.521995,
+        "esClimax": true
+      },
+      {
+        "unidadId": "v21-prueba",
+        "fase": "escalada",
+        "energia": "alta",
+        "duracionSeg": 4.951994999999999,
+        "esClimax": false
+      },
+      {
+        "unidadId": "v21-cta",
+        "fase": "cierre",
+        "energia": "alta",
+        "duracionSeg": 4.026009,
+        "esClimax": false
+      }
+    ],
+    "alertas": [
+      {
+        "tipo": "promesa_poco_clara",
+        "severidad": "media",
+        "descripcion": "el video pasa del hook directo a la escalada/revelación sin ninguna unidad de desarrollo/contexto en el medio",
+        "razon": "unidad \"v21-giro\" (fase \"escalada\") sigue inmediatamente al hook"
+      }
+    ],
+    "patronesUsados": [
+      {
+        "patronId": "contexto-parcial",
+        "nombre": "Contexto parcial",
+        "categoria": "apertura",
+        "porQue": "Da un dato concreto (un nombre, una cifra) sin explicar todavia el resto -- el espectador entiende que hay una historia pero no la historia completa. Maxima curiosidad con ALGO de contexto, no con cero.",
+        "evidencia": [
+          {
+            "id": "loewenstein-1994-brecha-curiosidad",
+            "concepto": "Brecha de curiosidad (curiosity gap)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "v21-hook"
+      },
+      {
+        "patronId": "loop-abierto",
+        "nombre": "Loop abierto / pregunta sin resolver",
+        "categoria": "apertura",
+        "porQue": "Plantea una pregunta o situación de tensión en el hook y la deja explícitamente sin resolver hasta el cierre -- la tensión cognitiva de \"algo incompleto\" mantiene la atención.",
+        "evidencia": [
+          {
+            "id": "zeigarnik-1927-tareas-incompletas",
+            "concepto": "Efecto Zeigarnik (tareas incompletas)",
+            "nivel": "evidencia"
+          },
+          {
+            "id": "heuristica-cliffhanger-aplicado-vertical",
+            "concepto": "Cliffhanger aplicado a video vertical corto",
+            "nivel": "patron_observado"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "v21-giro"
+      },
+      {
+        "patronId": "pregunta-sin-resolver-intermedia",
+        "nombre": "Micro-loop a mitad de video",
+        "categoria": "curiosidad",
+        "porQue": "Reabre un loop chico (una pregunta nueva, más pequeña que la del hook) a mitad del video para \"reenganchar\" antes de que la atención decaiga -- la misma tensión cognitiva de Zeigarnik, aplicada varias veces en vez de una sola.",
+        "evidencia": [
+          {
+            "id": "zeigarnik-1927-tareas-incompletas",
+            "concepto": "Efecto Zeigarnik (tareas incompletas)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "v21-prueba"
+      },
+      {
+        "patronId": "pago-de-la-promesa",
+        "nombre": "Pago explícito de la promesa del hook",
+        "categoria": "recompensa",
+        "porQue": "Cuando el hook prometió algo (una respuesta, un resultado), el video debe entregarlo explícitamente y de forma reconocible -- cerrar el loop es lo que da la \"recompensa\" cognitiva de la tensión generada, según Zeigarnik.",
+        "evidencia": [
+          {
+            "id": "zeigarnik-1927-tareas-incompletas",
+            "concepto": "Efecto Zeigarnik (tareas incompletas)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "v21-cta"
+      }
+    ]
+  }
+}

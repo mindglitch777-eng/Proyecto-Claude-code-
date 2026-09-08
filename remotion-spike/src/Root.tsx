@@ -40,6 +40,27 @@ import guionV4 from './fabrica_bridge/guion-v4.json';
 import piloto1 from './fabrica_bridge/piloto-1.json';
 import piloto2 from './fabrica_bridge/piloto-2.json';
 import piloto3 from './fabrica_bridge/piloto-3.json';
+import lote21v01 from './fabrica_bridge/lote21-v01.json';
+import lote21v02 from './fabrica_bridge/lote21-v02.json';
+import lote21v03 from './fabrica_bridge/lote21-v03.json';
+import lote21v04 from './fabrica_bridge/lote21-v04.json';
+import lote21v05 from './fabrica_bridge/lote21-v05.json';
+import lote21v06 from './fabrica_bridge/lote21-v06.json';
+import lote21v07 from './fabrica_bridge/lote21-v07.json';
+import lote21v08 from './fabrica_bridge/lote21-v08.json';
+import lote21v09 from './fabrica_bridge/lote21-v09.json';
+import lote21v10 from './fabrica_bridge/lote21-v10.json';
+import lote21v11 from './fabrica_bridge/lote21-v11.json';
+import lote21v12 from './fabrica_bridge/lote21-v12.json';
+import lote21v13 from './fabrica_bridge/lote21-v13.json';
+import lote21v14 from './fabrica_bridge/lote21-v14.json';
+import lote21v15 from './fabrica_bridge/lote21-v15.json';
+import lote21v16 from './fabrica_bridge/lote21-v16.json';
+import lote21v17 from './fabrica_bridge/lote21-v17.json';
+import lote21v18 from './fabrica_bridge/lote21-v18.json';
+import lote21v19 from './fabrica_bridge/lote21-v19.json';
+import lote21v20 from './fabrica_bridge/lote21-v20.json';
+import lote21v21 from './fabrica_bridge/lote21-v21.json';
 import {Video} from './receta/Video';
 import {GUIONES} from './receta/guiones';
 import {compilar} from './receta/compilar';
@@ -332,6 +353,27 @@ export const Root: React.FC = () => {
       <Composition id="piloto-1" component={FabricaVideo} durationInFrames={Math.round((piloto1 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: piloto1 as ArbolFabrica}} />
       <Composition id="piloto-2" component={FabricaVideo} durationInFrames={Math.round((piloto2 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: piloto2 as ArbolFabrica}} />
       <Composition id="piloto-3" component={FabricaVideo} durationInFrames={Math.round((piloto3 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: piloto3 as ArbolFabrica}} />
+      <Composition id="lote21-v01" component={FabricaVideo} durationInFrames={Math.round((lote21v01 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v01 as ArbolFabrica}} />
+      <Composition id="lote21-v02" component={FabricaVideo} durationInFrames={Math.round((lote21v02 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v02 as ArbolFabrica}} />
+      <Composition id="lote21-v03" component={FabricaVideo} durationInFrames={Math.round((lote21v03 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v03 as ArbolFabrica}} />
+      <Composition id="lote21-v04" component={FabricaVideo} durationInFrames={Math.round((lote21v04 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v04 as ArbolFabrica}} />
+      <Composition id="lote21-v05" component={FabricaVideo} durationInFrames={Math.round((lote21v05 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v05 as ArbolFabrica}} />
+      <Composition id="lote21-v06" component={FabricaVideo} durationInFrames={Math.round((lote21v06 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v06 as ArbolFabrica}} />
+      <Composition id="lote21-v07" component={FabricaVideo} durationInFrames={Math.round((lote21v07 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v07 as ArbolFabrica}} />
+      <Composition id="lote21-v08" component={FabricaVideo} durationInFrames={Math.round((lote21v08 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v08 as ArbolFabrica}} />
+      <Composition id="lote21-v09" component={FabricaVideo} durationInFrames={Math.round((lote21v09 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v09 as ArbolFabrica}} />
+      <Composition id="lote21-v10" component={FabricaVideo} durationInFrames={Math.round((lote21v10 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v10 as ArbolFabrica}} />
+      <Composition id="lote21-v11" component={FabricaVideo} durationInFrames={Math.round((lote21v11 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v11 as ArbolFabrica}} />
+      <Composition id="lote21-v12" component={FabricaVideo} durationInFrames={Math.round((lote21v12 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v12 as ArbolFabrica}} />
+      <Composition id="lote21-v13" component={FabricaVideo} durationInFrames={Math.round((lote21v13 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v13 as ArbolFabrica}} />
+      <Composition id="lote21-v14" component={FabricaVideo} durationInFrames={Math.round((lote21v14 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v14 as ArbolFabrica}} />
+      <Composition id="lote21-v15" component={FabricaVideo} durationInFrames={Math.round((lote21v15 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v15 as ArbolFabrica}} />
+      <Composition id="lote21-v16" component={FabricaVideo} durationInFrames={Math.round((lote21v16 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v16 as ArbolFabrica}} />
+      <Composition id="lote21-v17" component={FabricaVideo} durationInFrames={Math.round((lote21v17 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v17 as ArbolFabrica}} />
+      <Composition id="lote21-v18" component={FabricaVideo} durationInFrames={Math.round((lote21v18 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v18 as ArbolFabrica}} />
+      <Composition id="lote21-v19" component={FabricaVideo} durationInFrames={Math.round((lote21v19 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v19 as ArbolFabrica}} />
+      <Composition id="lote21-v20" component={FabricaVideo} durationInFrames={Math.round((lote21v20 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v20 as ArbolFabrica}} />
+      <Composition id="lote21-v21" component={FabricaVideo} durationInFrames={Math.round((lote21v21 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v21 as ArbolFabrica}} />
       <Composition id="rebecca-beach" component={RebeccaBeach} durationInFrames={Math.round(DUR_REBECCA * FPS)} fps={FPS} width={ANCHO} height={ALTO} />
       {/* Casos 2 a 20 de la serie documental: uno por entrada en
           casos.ts, todos sobre el mismo motor generico (CasoGenerico). */}

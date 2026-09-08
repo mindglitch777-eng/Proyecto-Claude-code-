@@ -1,0 +1,307 @@
+{
+  "id": "lote21-v20",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "v20-hook",
+      "desdeSeg": 0,
+      "duracionSeg": 4.73,
+      "componenteId": "recibo",
+      "props": {
+        "titulo": "Lo que te cobran",
+        "entra": [
+          {
+            "txt": "Precio de venta",
+            "monto": 100,
+            "t": 0.3
+          }
+        ],
+        "sale": [
+          {
+            "txt": "Comisión + impuestos",
+            "monto": 20,
+            "t": 1.2
+          }
+        ],
+        "total": {
+          "txt": "Lo que te llega, 30 días después",
+          "t": 2.2
+        }
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_lote21_v20/v20-hook.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.48
+        }
+      ],
+      "golpe": "corte",
+      "volumenSfx": 0,
+      "estrategiaEdicion": {
+        "unidadId": "v20-hook",
+        "intencion": "enganchar",
+        "energia": "muy_alta",
+        "densidadVisual": "densa",
+        "estilos": [
+          "agresivo",
+          "documental"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "primera unidad del video (hook): capturar atencion desde el frame 0"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "corte",
+          "funcion": "dirigir_atencion",
+          "intensidad": "muy_alta",
+          "motivo": "golpe \"corte\" acompana una unidad con intencion \"enganchar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"v20-hook\""
+          },
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_sfx",
+            "descripcion": "SFX de entrada acompanando el elemento principal",
+            "razon": "estilo combinado incluye enfasis sonoro en la entrada (ver estilos.ts, tiposMicroEventoPreferidos)"
+          }
+        ],
+        "relacionConAnterior": "abre el video -- no hay escena anterior con la cual relacionarse",
+        "respiracion": false,
+        "patronRetencionId": "contexto-parcial",
+        "razonGeneral": "unidad \"v20-hook\" (1/3, categoria=cifra): intencion=enganchar (energia=muy_alta, densidad=densa), estilos=[agresivo+documental], patron_retencion=contexto-parcial"
+      },
+      "patronesRetencion": [
+        "contexto-parcial"
+      ]
+    },
+    {
+      "unidadId": "v20-giro",
+      "desdeSeg": 4.73,
+      "duracionSeg": 7.448004999999999,
+      "componenteId": "duelo",
+      "props": {
+        "izq": {
+          "rotulo": "La que usa todo el mundo",
+          "valor": "30 días"
+        },
+        "der": {
+          "rotulo": "La que me conviene",
+          "valor": "Antes"
+        },
+        "ganador": "der",
+        "remate": "Elegí por conveniencia, no por costumbre."
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_lote21_v20/v20-giro.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 6.848005
+        }
+      ],
+      "golpe": "fogonazo",
+      "volumenSfx": 0.9,
+      "transicionSalienteSeg": 0.6,
+      "estrategiaEdicion": {
+        "unidadId": "v20-giro",
+        "intencion": "comparar",
+        "energia": "alta",
+        "densidadVisual": "moderada",
+        "estilos": [
+          "data",
+          "documental"
+        ],
+        "elementoPrincipal": {
+          "tipo": "comparacion",
+          "descripcion": "los dos lados de la comparacion"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "fogonazo",
+          "funcion": "crear_contraste",
+          "intensidad": "alta",
+          "motivo": "golpe \"fogonazo\" acompana una unidad con intencion \"comparar\" (elemento principal: los dos lados de la comparacion)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra los dos lados de la comparacion",
+            "razon": "elemento principal de la unidad \"v20-giro\""
+          }
+        ],
+        "relacionConAnterior": "retoma un valor/concepto ya establecido antes para ponerlo en relacion con uno nuevo",
+        "respiracion": false,
+        "patronRetencionId": "contraste-antes-despues",
+        "razonGeneral": "unidad \"v20-giro\" (2/3, categoria=comparacion): intencion=comparar (energia=alta, densidad=moderada), estilos=[data+documental], patron_retencion=contraste-antes-despues"
+      },
+      "patronesRetencion": [
+        "contraste-antes-despues"
+      ]
+    },
+    {
+      "unidadId": "v20-cta",
+      "desdeSeg": 11.578005000000001,
+      "duracionSeg": 2.681995,
+      "componenteId": "remate",
+      "props": {
+        "d": {
+          "lineas": [
+            "Leé la letra chica.",
+            "Comparás.",
+            "Elegís mejor."
+          ],
+          "grande": "NO USES LA DEFAULT",
+          "pie": "Usá la que te conviene."
+        },
+        "clip": "comercio-03.mp4"
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_lote21_v20/v20-cta.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.431995
+        }
+      ],
+      "golpe": "fundido",
+      "volumenSfx": 0.5,
+      "estrategiaEdicion": {
+        "unidadId": "v20-cta",
+        "intencion": "cerrar",
+        "energia": "alta",
+        "densidadVisual": "minima",
+        "estilos": [
+          "cinematico",
+          "storytelling"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "cierre del video: no debe quedar nada pendiente despues"
+        },
+        "transicion": {
+          "golpe": "fundido",
+          "funcion": "marcar_cambio",
+          "intensidad": "alta",
+          "motivo": "golpe \"fundido\" acompana una unidad con intencion \"cerrar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"v20-cta\""
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "pago-de-la-promesa",
+        "razonGeneral": "unidad \"v20-cta\" (3/3, categoria=texto): intencion=cerrar (energia=alta, densidad=minima), estilos=[cinematico+storytelling], patron_retencion=pago-de-la-promesa"
+      },
+      "patronesRetencion": [
+        "pago-de-la-promesa"
+      ]
+    }
+  ],
+  "duracionTotalSeg": 14.760000000000002,
+  "analisisRetencion": {
+    "mapa": [
+      {
+        "unidadId": "v20-hook",
+        "fase": "hook",
+        "energia": "muy_alta",
+        "duracionSeg": 4.73,
+        "esClimax": false
+      },
+      {
+        "unidadId": "v20-giro",
+        "fase": "desarrollo",
+        "energia": "alta",
+        "duracionSeg": 7.448004999999999,
+        "esClimax": true
+      },
+      {
+        "unidadId": "v20-cta",
+        "fase": "cierre",
+        "energia": "alta",
+        "duracionSeg": 2.681995,
+        "esClimax": false
+      }
+    ],
+    "alertas": [
+      {
+        "tipo": "sin_escalada_visible",
+        "severidad": "baja",
+        "descripcion": "ninguna unidad del video está clasificada como escalada -- si hay una revelación, puede llegar sin suficiente tensión construida antes",
+        "razon": "fases presentes: hook, desarrollo, cierre"
+      }
+    ],
+    "patronesUsados": [
+      {
+        "patronId": "contexto-parcial",
+        "nombre": "Contexto parcial",
+        "categoria": "apertura",
+        "porQue": "Da un dato concreto (un nombre, una cifra) sin explicar todavia el resto -- el espectador entiende que hay una historia pero no la historia completa. Maxima curiosidad con ALGO de contexto, no con cero.",
+        "evidencia": [
+          {
+            "id": "loewenstein-1994-brecha-curiosidad",
+            "concepto": "Brecha de curiosidad (curiosity gap)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "v20-hook"
+      },
+      {
+        "patronId": "contraste-antes-despues",
+        "nombre": "Contraste antes/después",
+        "categoria": "comparacion",
+        "porQue": "Presenta dos estados opuestos (antes de X / después de X) uno al lado del otro -- ya existe como componente real en el catálogo (AntesDespues), esto documenta el patrón narrativo detrás de esa elección visual.",
+        "evidencia": [],
+        "esHipotesisUObservado": "sin_respaldo_formal",
+        "dependeDe": "v20-giro"
+      },
+      {
+        "patronId": "pago-de-la-promesa",
+        "nombre": "Pago explícito de la promesa del hook",
+        "categoria": "recompensa",
+        "porQue": "Cuando el hook prometió algo (una respuesta, un resultado), el video debe entregarlo explícitamente y de forma reconocible -- cerrar el loop es lo que da la \"recompensa\" cognitiva de la tensión generada, según Zeigarnik.",
+        "evidencia": [
+          {
+            "id": "zeigarnik-1927-tareas-incompletas",
+            "concepto": "Efecto Zeigarnik (tareas incompletas)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "v20-cta"
+      }
+    ]
+  }
+}

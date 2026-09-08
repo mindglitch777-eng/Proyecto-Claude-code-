@@ -1,0 +1,312 @@
+{
+  "id": "lote21-v16",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "v16-transformacion",
+      "desdeSeg": 0,
+      "duracionSeg": 4.921995,
+      "componenteId": "antes-despues",
+      "props": {
+        "antes": {
+          "rotulo": "37 carpetas",
+          "txt": "Caos total"
+        },
+        "despues": {
+          "rotulo": "3 carpetas",
+          "txt": "Un producto nuevo"
+        }
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_lote21_v16/v16-transformacion.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 4.671995
+        }
+      ],
+      "golpe": "corte",
+      "volumenSfx": 0,
+      "estrategiaEdicion": {
+        "unidadId": "v16-transformacion",
+        "intencion": "enganchar",
+        "energia": "muy_alta",
+        "densidadVisual": "densa",
+        "estilos": [
+          "agresivo",
+          "documental"
+        ],
+        "elementoPrincipal": {
+          "tipo": "comparacion",
+          "descripcion": "los dos lados de la comparacion"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "primera unidad del video (hook): capturar atencion desde el frame 0"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "corte",
+          "funcion": "dirigir_atencion",
+          "intensidad": "muy_alta",
+          "motivo": "golpe \"corte\" acompana una unidad con intencion \"enganchar\" (elemento principal: los dos lados de la comparacion)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra los dos lados de la comparacion",
+            "razon": "elemento principal de la unidad \"v16-transformacion\""
+          },
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_sfx",
+            "descripcion": "SFX de entrada acompanando el elemento principal",
+            "razon": "estilo combinado incluye enfasis sonoro en la entrada (ver estilos.ts, tiposMicroEventoPreferidos)"
+          }
+        ],
+        "relacionConAnterior": "abre el video -- no hay escena anterior con la cual relacionarse",
+        "respiracion": false,
+        "patronRetencionId": "contexto-parcial",
+        "razonGeneral": "unidad \"v16-transformacion\" (1/3, categoria=comparacion): intencion=enganchar (energia=muy_alta, densidad=densa), estilos=[agresivo+documental], patron_retencion=contexto-parcial"
+      },
+      "patronesRetencion": [
+        "contexto-parcial"
+      ]
+    },
+    {
+      "unidadId": "v16-giro",
+      "desdeSeg": 4.921995,
+      "duracionSeg": 9.624013999999999,
+      "componenteId": "pasos",
+      "props": {
+        "titulo": "Cómo salió el producto del caos",
+        "pasos": [
+          {
+            "fig": "carpeta",
+            "txt": "Junté todo lo disperso"
+          },
+          {
+            "fig": "lupa",
+            "txt": "Identifiqué lo que servía"
+          },
+          {
+            "fig": "documento",
+            "txt": "Armé el producto"
+          }
+        ]
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_lote21_v16/v16-giro.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 9.024014
+        }
+      ],
+      "golpe": "raya",
+      "volumenSfx": 0.55,
+      "transicionSalienteSeg": 0.6,
+      "estrategiaEdicion": {
+        "unidadId": "v16-giro",
+        "intencion": "construir_tension",
+        "energia": "media",
+        "densidadVisual": "minima",
+        "estilos": [
+          "misterio",
+          "cinematico"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "la progresion completa que se esta contando"
+        },
+        "entrada": {
+          "tipo": "progresiva",
+          "razon": "entrada gradual, coherente con una energia media/baja"
+        },
+        "salida": {
+          "tipo": "se_desvanece",
+          "razon": "transicion suave hacia la unidad siguiente, sin necesidad de un ancla visual"
+        },
+        "transicion": {
+          "golpe": "raya",
+          "funcion": "preparar_impacto",
+          "intensidad": "media",
+          "motivo": "golpe \"raya\" acompana una unidad con intencion \"construir_tension\" (elemento principal: la progresion completa que se esta contando)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra la progresion completa que se esta contando",
+            "razon": "elemento principal de la unidad \"v16-giro\""
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "loop-abierto",
+        "razonGeneral": "unidad \"v16-giro\" (2/3, categoria=lista): intencion=construir_tension (energia=media, densidad=minima), estilos=[misterio+cinematico], patron_retencion=loop-abierto"
+      },
+      "patronesRetencion": [
+        "loop-abierto"
+      ]
+    },
+    {
+      "unidadId": "v16-cta",
+      "desdeSeg": 13.946009,
+      "duracionSeg": 4.09,
+      "componenteId": "remate",
+      "props": {
+        "d": {
+          "lineas": [
+            "Tu producto",
+            "ya existe.",
+            "Está desordenado."
+          ],
+          "grande": "ORDENÁ EL CAOS",
+          "pie": "Ahí está tu producto."
+        },
+        "clip": "celular-05.mp4"
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_lote21_v16/v16-cta.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.84
+        }
+      ],
+      "golpe": "fundido",
+      "volumenSfx": 0.5,
+      "estrategiaEdicion": {
+        "unidadId": "v16-cta",
+        "intencion": "cerrar",
+        "energia": "alta",
+        "densidadVisual": "minima",
+        "estilos": [
+          "cinematico",
+          "storytelling"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "cierre del video: no debe quedar nada pendiente despues"
+        },
+        "transicion": {
+          "golpe": "fundido",
+          "funcion": "marcar_cambio",
+          "intensidad": "alta",
+          "motivo": "golpe \"fundido\" acompana una unidad con intencion \"cerrar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"v16-cta\""
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "pago-de-la-promesa",
+        "razonGeneral": "unidad \"v16-cta\" (3/3, categoria=texto): intencion=cerrar (energia=alta, densidad=minima), estilos=[cinematico+storytelling], patron_retencion=pago-de-la-promesa"
+      },
+      "patronesRetencion": [
+        "pago-de-la-promesa"
+      ]
+    }
+  ],
+  "duracionTotalSeg": 18.536009,
+  "analisisRetencion": {
+    "mapa": [
+      {
+        "unidadId": "v16-transformacion",
+        "fase": "hook",
+        "energia": "muy_alta",
+        "duracionSeg": 4.921995,
+        "esClimax": false
+      },
+      {
+        "unidadId": "v16-giro",
+        "fase": "escalada",
+        "energia": "media",
+        "duracionSeg": 9.624013999999999,
+        "esClimax": true
+      },
+      {
+        "unidadId": "v16-cta",
+        "fase": "cierre",
+        "energia": "alta",
+        "duracionSeg": 4.09,
+        "esClimax": false
+      }
+    ],
+    "alertas": [
+      {
+        "tipo": "promesa_poco_clara",
+        "severidad": "media",
+        "descripcion": "el video pasa del hook directo a la escalada/revelación sin ninguna unidad de desarrollo/contexto en el medio",
+        "razon": "unidad \"v16-giro\" (fase \"escalada\") sigue inmediatamente al hook"
+      }
+    ],
+    "patronesUsados": [
+      {
+        "patronId": "contexto-parcial",
+        "nombre": "Contexto parcial",
+        "categoria": "apertura",
+        "porQue": "Da un dato concreto (un nombre, una cifra) sin explicar todavia el resto -- el espectador entiende que hay una historia pero no la historia completa. Maxima curiosidad con ALGO de contexto, no con cero.",
+        "evidencia": [
+          {
+            "id": "loewenstein-1994-brecha-curiosidad",
+            "concepto": "Brecha de curiosidad (curiosity gap)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "v16-transformacion"
+      },
+      {
+        "patronId": "loop-abierto",
+        "nombre": "Loop abierto / pregunta sin resolver",
+        "categoria": "apertura",
+        "porQue": "Plantea una pregunta o situación de tensión en el hook y la deja explícitamente sin resolver hasta el cierre -- la tensión cognitiva de \"algo incompleto\" mantiene la atención.",
+        "evidencia": [
+          {
+            "id": "zeigarnik-1927-tareas-incompletas",
+            "concepto": "Efecto Zeigarnik (tareas incompletas)",
+            "nivel": "evidencia"
+          },
+          {
+            "id": "heuristica-cliffhanger-aplicado-vertical",
+            "concepto": "Cliffhanger aplicado a video vertical corto",
+            "nivel": "patron_observado"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "v16-giro"
+      },
+      {
+        "patronId": "pago-de-la-promesa",
+        "nombre": "Pago explícito de la promesa del hook",
+        "categoria": "recompensa",
+        "porQue": "Cuando el hook prometió algo (una respuesta, un resultado), el video debe entregarlo explícitamente y de forma reconocible -- cerrar el loop es lo que da la \"recompensa\" cognitiva de la tensión generada, según Zeigarnik.",
+        "evidencia": [
+          {
+            "id": "zeigarnik-1927-tareas-incompletas",
+            "concepto": "Efecto Zeigarnik (tareas incompletas)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "v16-cta"
+      }
+    ]
+  }
+}
