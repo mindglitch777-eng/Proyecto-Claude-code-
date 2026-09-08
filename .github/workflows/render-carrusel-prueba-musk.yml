@@ -1,0 +1,89 @@
+name: render-carrusel-prueba-musk
+
+# Carrusel de PRUEBA (pedido del operador antes del lote de 42):
+# "El sistema de Elon Musk", 6 slides, con foto real (Wikimedia
+# Commons/Wikidata, ver assets/personas/elon-musk/CREDITOS.md).
+# Genera los 6 props JSON con generar_carrusel_prueba_musk.ts y
+# renderiza cada slide como imagen fija (`npx remotion still`, no
+# `render` -- un carrusel es estatico).
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths: [".github/workflows/render-carrusel-prueba-musk.yml"]
+  workflow_dispatch: {}
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ver si la foto real ya existe
+        id: check
+        run: |
+          if [ -f "assets/personas/elon-musk/00.jpg" ]; then
+            echo "listo=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "listo=false" >> "$GITHUB_OUTPUT"
+            echo "AVISO: assets/personas/elon-musk/00.jpg todavia no existe -- correr foto-persona.yml primero."
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.listo == 'true'
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: remotion-spike/package-lock.json
+
+      - name: Dependencias (remotion-spike + fabrica)
+        if: steps.check.outputs.listo == 'true'
+        run: |
+          cd remotion-spike && npm ci --no-audit --no-fund
+          cd ../fabrica && npm ci --no-audit --no-fund
+
+      - name: Navegador para Remotion
+        if: steps.check.outputs.listo == 'true'
+        working-directory: remotion-spike
+        run: npx remotion browser ensure
+
+      - name: Armar public/ (fuentes, fotos, metraje, sfx)
+        if: steps.check.outputs.listo == 'true'
+        run: ./remotion-spike/preparar-public.sh
+
+      - name: Exportar los props de los 6 slides
+        if: steps.check.outputs.listo == 'true'
+        run: |
+          cd fabrica && npx tsx ejemplos/generar_carrusel_prueba_musk.ts
+
+      - name: Renderizar los 6 slides (stills)
+        if: steps.check.outputs.listo == 'true'
+        working-directory: remotion-spike
+        run: |
+          mkdir -p out/carrusel-prueba-musk
+          for f in props_carrusel/prueba-musk/slide-*.json; do
+            base=$(basename "$f" .json)
+            npx remotion still carrusel-slide "out/carrusel-prueba-musk/${base}.png" --props="$f" --log=info
+          done
+
+      - name: Commitear los 6 PNG
+        if: steps.check.outputs.listo == 'true'
+        run: |
+          mkdir -p imagenes/carrusel-prueba-musk
+          cp remotion-spike/out/carrusel-prueba-musk/*.png imagenes/carrusel-prueba-musk/
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add imagenes/carrusel-prueba-musk/
+          if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
+          git commit -m "Carrusel de prueba: El sistema de Elon Musk (6 slides, foto real con credito)"
+          for i in 1 2 3 4 5 6; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && \
+            git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
+            echo "reintento $i"
+            sleep $((RANDOM % 8 + 2 * i))
+          done
+          exit 1

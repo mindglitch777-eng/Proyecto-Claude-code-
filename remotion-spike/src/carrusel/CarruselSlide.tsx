@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill} from 'remotion';
+import {AbsoluteFill, Img, staticFile} from 'remotion';
 import {PALETA, GROTESCA} from '../identidad';
 
 // R7-10: primer render REAL del Carousel Engine (fabrica/carrusel/) --
@@ -18,7 +18,17 @@ export const CarruselSlide: React.FC<{
   subtexto?: string;
   numero: number;
   total: number;
-}> = ({tipo, texto, subtexto, numero, total}) => {
+  /** Ruta relativa a public/ (ej. "fotos/elon-musk.jpg"), opcional --
+   * cuando el slide necesita mostrar una figura publica real (ver
+   * assets/personas/, bajado por descargar_foto_persona.py con
+   * licencia verificada). Se muestra como retrato circular, nunca de
+   * fondo completo, para que quede claro que es una referencia/cita
+   * visual y no una foto de marca propia. */
+  imagen?: string;
+  /** Credito real de la foto (fuente/autor/licencia), obligatorio si
+   * hay `imagen` -- nunca se usa una imagen real sin su atribucion. */
+  credito?: string;
+}> = ({tipo, texto, subtexto, numero, total, imagen, credito}) => {
   const esPortadaOCta = tipo === 'portada' || tipo === 'cta';
   return (
     <AbsoluteFill
@@ -31,11 +41,26 @@ export const CarruselSlide: React.FC<{
         padding: '10% 8%',
       }}
     >
+      {imagen ? (
+        <div
+          style={{
+            width: 260,
+            height: 260,
+            borderRadius: '50%',
+            overflow: 'hidden',
+            marginBottom: 40,
+            border: `4px solid ${esPortadaOCta ? PALETA.fondo : PALETA.texto}`,
+            flexShrink: 0,
+          }}
+        >
+          <Img src={staticFile(imagen)} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+        </div>
+      ) : null}
       <div
         style={{
           fontFamily: GROTESCA,
           fontWeight: 800,
-          fontSize: tipo === 'portada' ? 92 : 62,
+          fontSize: tipo === 'portada' ? (imagen ? 72 : 92) : 62,
           lineHeight: 1.15,
           letterSpacing: '-0.02em',
           color: esPortadaOCta ? PALETA.fondo : PALETA.texto,
@@ -73,6 +98,22 @@ export const CarruselSlide: React.FC<{
       >
         {numero} / {total}
       </div>
+      {credito ? (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '2.2%',
+            fontFamily: GROTESCA,
+            fontWeight: 500,
+            fontSize: 16,
+            color: esPortadaOCta ? PALETA.fondo : PALETA.texto,
+            opacity: 0.4,
+            letterSpacing: '0.02em',
+          }}
+        >
+          {credito}
+        </div>
+      ) : null}
     </AbsoluteFill>
   );
 };
