@@ -1,0 +1,96 @@
+name: render-lote21
+
+# Renderiza los 21 videos del LOTE (lote21-v01 .. lote21-v21,
+# remotion-spike/src/fabrica_bridge/lote21-vNN.json) -- mismo patron
+# que render-lote-ventas.yml / render-pilotos.yml. Cada job salta con
+# aviso si su bridge todavia no existe (voz sin terminar o Composition
+# sin registrar) -- no tira abajo el resto del lote.
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      videos:
+        description: "Ids separados por coma (vacio = los 21)"
+        required: false
+        default: ""
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths:
+      - ".github/workflows/render-lote21.yml"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        video: [v01, v02, v03, v04, v05, v06, v07, v08, v09, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ver si el bridge de este video ya existe
+        id: check
+        run: |
+          if [ -f "remotion-spike/src/fabrica_bridge/lote21-${{ matrix.video }}.json" ]; then
+            echo "listo=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "listo=false" >> "$GITHUB_OUTPUT"
+            echo "AVISO: lote21-${{ matrix.video }}.json todavia no existe -- salteo este job."
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.listo == 'true'
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: remotion-spike/package-lock.json
+
+      - name: Dependencias
+        if: steps.check.outputs.listo == 'true'
+        working-directory: remotion-spike
+        run: npm ci --no-audit --no-fund
+
+      - name: Navegador para Remotion
+        if: steps.check.outputs.listo == 'true'
+        working-directory: remotion-spike
+        run: npx remotion browser ensure
+
+      - name: Armar public/ (fuentes, fotos, metraje, SFX de golpes)
+        if: steps.check.outputs.listo == 'true'
+        run: ./remotion-spike/preparar-public.sh
+
+      - name: Copiar audio real de este video del lote a public/
+        if: steps.check.outputs.listo == 'true'
+        run: |
+          mkdir -p "remotion-spike/public/fabrica_lote21_${{ matrix.video }}"
+          cp capturas_voz/audio_lote21/${{ matrix.video }}-*.wav "remotion-spike/public/fabrica_lote21_${{ matrix.video }}/" 2>/dev/null || true
+
+      - name: Renderizar lote21-${{ matrix.video }}
+        if: steps.check.outputs.listo == 'true'
+        working-directory: remotion-spike
+        run: |
+          mkdir -p out
+          npx remotion render lote21-${{ matrix.video }} out/lote21-${{ matrix.video }}.mp4 \
+            --concurrency=2 --log=info
+
+      - name: Commitear lote21-${{ matrix.video }}
+        if: steps.check.outputs.listo == 'true'
+        run: |
+          mkdir -p videos/lote21
+          cp remotion-spike/out/lote21-${{ matrix.video }}.mp4 videos/lote21/
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add videos/lote21/lote21-${{ matrix.video }}.mp4
+          if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
+          git commit -m "Video Remotion lote21-${{ matrix.video }} (Taller de Activos)"
+          for i in 1 2 3 4 5 6; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && \
+            git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
+            echo "reintento $i"
+            sleep $((RANDOM % 8 + 2 * i))
+          done
+          exit 1

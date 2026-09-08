@@ -1,0 +1,326 @@
+[
+  {
+    "id": "v01-hook",
+    "texto": "El que más vende productos digitales no sabe ni abrir un editor de video. Y esa es su ventaja."
+  },
+  {
+    "id": "v01-giro",
+    "texto": "Mirá a Elon Musk: no arma un cohete con las manos, arma el equipo que sí puede. Vos tampoco necesitás saber editar. Necesitás sistema."
+  },
+  {
+    "id": "v01-prueba",
+    "texto": "Diez mil dólares por mes. Cero minutos de edición."
+  },
+  {
+    "id": "v01-cta",
+    "texto": "Seguime y te muestro cómo construir tu sistema sin saber editar."
+  },
+  {
+    "id": "v02-hook",
+    "texto": "¿Todavía \"aprendiendo marketing\" en 2026? Mientras vos estudiás, otros cobran."
+  },
+  {
+    "id": "v02-giro",
+    "texto": "Los que cobran no estudiaron marketing. Estudiaron a la gente. Mirá a Gary Vaynerchuk: nunca estudió marketing formal, estudió a las personas."
+  },
+  {
+    "id": "v02-prueba",
+    "texto": "Un curso vendido usando solo IA para entender qué quiere comprar la gente. Sin un solo diploma de marketing."
+  },
+  {
+    "id": "v02-cta",
+    "texto": "Seguime y te muestro cómo vender sin estudiar marketing."
+  },
+  {
+    "id": "v03-hook",
+    "texto": "Tu primer producto digital tiene que ser una basura. Y ese es tu mayor activo."
+  },
+  {
+    "id": "v03-giro",
+    "texto": "Lanzá algo imperfecto, ajustalo con datos reales, y mejorá en el camino. Así se construye de verdad."
+  },
+  {
+    "id": "v03-prueba",
+    "texto": "El primer iPhone no tenía copiar y pegar, ni siquiera 3G. Hoy es el estándar que todos copian."
+  },
+  {
+    "id": "v03-cta",
+    "texto": "Seguime y te muestro cómo lanzar tu primera basura que vende."
+  },
+  {
+    "id": "v04-hook",
+    "texto": "El 99% de los gurús te vende el curso que ellos nunca terminaron. Y vos lo sabés."
+  },
+  {
+    "id": "v04-giro",
+    "texto": "Pasa seguido con los gurús financieros: venden cursos de inversión, pero nunca invirtieron un peso. Vos no necesitás un gurú. Necesitás un sistema."
+  },
+  {
+    "id": "v04-prueba",
+    "texto": "Pagás quinientos dólares por un curso. Comisión de la plataforma: cien. Valor real que el gurú probó antes de venderlo: cero."
+  },
+  {
+    "id": "v04-cta",
+    "texto": "Seguime y te muestro el sistema que usé, sin gurús ni promesas vacías."
+  },
+  {
+    "id": "v05-hook",
+    "texto": "El contenido es el nuevo café de la esquina. Los activos son el edificio entero. Construí."
+  },
+  {
+    "id": "v05-giro",
+    "texto": "De cien creadores, casi ninguno construye algo que le quede. Mr Beast no es youtuber: es dueño de un imperio que usa YouTube como puerta de entrada."
+  },
+  {
+    "id": "v05-prueba",
+    "texto": "Contenido, audiencia, activo, imperio. En ese orden."
+  },
+  {
+    "id": "v05-cta",
+    "texto": "Seguime y te muestro cómo construir activos, no contenido."
+  },
+  {
+    "id": "v06-hook",
+    "texto": "Una tarde. Cuatro horas. Un producto que me pagó el alquiler."
+  },
+  {
+    "id": "v06-montaje",
+    "texto": "Esto es lo que nadie muestra: la idea, el armado, la primera venta, todo en la misma tarde. Elon Musk construye en días lo que otros tardan meses. Es sistema, no magia."
+  },
+  {
+    "id": "v06-prueba",
+    "texto": "Cuatro horas de trabajo real. El alquiler del mes, cubierto."
+  },
+  {
+    "id": "v06-cta",
+    "texto": "Seguime y te muestro cómo hacer tu primer producto en una tarde."
+  },
+  {
+    "id": "v07-hook",
+    "texto": "La cara oculta de vender online: pantallazos que duelen y una cuenta que no miente."
+  },
+  {
+    "id": "v07-problema",
+    "texto": "Veintisiete días en cero. La diferencia no fue la suerte: fue aguantar esos mismos veintisiete días."
+  },
+  {
+    "id": "v07-prueba",
+    "texto": "Tesla casi quiebra en sus primeros meses. No abandonaron. Las gráficas que duelen son las que enseñan."
+  },
+  {
+    "id": "v07-cta",
+    "texto": "Seguime y te muestro cómo leer las gráficas que duelen."
+  },
+  {
+    "id": "v08-hook",
+    "texto": "El error que me costó mil dólares y cómo lo convertí en mi mejor venta."
+  },
+  {
+    "id": "v08-giro",
+    "texto": "Un cliente se fue por una oferta mal planteada. Ese mensaje me enseñó lo que ningún curso enseña."
+  },
+  {
+    "id": "v08-prueba",
+    "texto": "Un error de lanzamiento de Elon Musk terminó convertido en la mejor estrategia de marketing de la marca. El error no te hunde. Te informa."
+  },
+  {
+    "id": "v08-cta",
+    "texto": "Seguime y te muestro cómo convertir tus errores en ventas."
+  },
+  {
+    "id": "v09-hook",
+    "texto": "Tres segundos de automatización, cincuenta dólares en tu bolsillo. Así se escala."
+  },
+  {
+    "id": "v09-giro",
+    "texto": "Un correo automático, una respuesta automática. Tres segundos de configuración, y queda trabajando solo."
+  },
+  {
+    "id": "v09-prueba",
+    "texto": "Las empresas de IA automatizan procesos que antes llevaban horas. La escalabilidad está en la automatización, no en trabajar más."
+  },
+  {
+    "id": "v09-cta",
+    "texto": "Seguime y te muestro cómo automatizar y escalar."
+  },
+  {
+    "id": "v10-hook",
+    "texto": "Mientras dormías, tu activo digital trabajó. Acá la prueba, en crudo."
+  },
+  {
+    "id": "v10-giro",
+    "texto": "El 90% no cree que un activo digital funcione solo. Cuando Elon Musk duerme, sus empresas no paran. Un activo real hace lo mismo."
+  },
+  {
+    "id": "v10-prueba",
+    "texto": "Noventa y cuatro dólares en una noche, sin tocar el teléfono."
+  },
+  {
+    "id": "v10-cta",
+    "texto": "Seguime y te muestro cómo construir un activo que trabaje por vos."
+  },
+  {
+    "id": "v11-hook",
+    "texto": "Tres IA que te ahorran dos sueldos y trabajan las veinticuatro horas. Las uso y no vuelvo atrás."
+  },
+  {
+    "id": "v11-giro",
+    "texto": "Una escribe, otra diseña, otra organiza. Las empresas más grandes del mundo ya reemplazan equipos enteros con esto."
+  },
+  {
+    "id": "v11-prueba",
+    "texto": "Un equipo tradicional cuesta miles por mes. Estas tres herramientas, una fracción de eso."
+  },
+  {
+    "id": "v11-cta",
+    "texto": "Seguime y te muestro las tres IA que uso."
+  },
+  {
+    "id": "v12-hook",
+    "texto": "¿Diseñar? Yo ni sé poner un filtro. Así creo productos que se venden solos."
+  },
+  {
+    "id": "v12-giro",
+    "texto": "Elegís una plantilla, cambiás textos y colores, y publicás. El diseño no vende: vende la idea."
+  },
+  {
+    "id": "v12-prueba",
+    "texto": "De un mockup improvisado a un producto con plantilla lista. Los mejores productos digitales no son los más lindos: son los más funcionales."
+  },
+  {
+    "id": "v12-cta",
+    "texto": "Seguime y te muestro cómo crear productos sin saber diseñar."
+  },
+  {
+    "id": "v13-hook",
+    "texto": "Este sitio me hizo olvidar que los diseñadores existen. Y es gratis."
+  },
+  {
+    "id": "v13-giro",
+    "texto": "El 99% paga por lo que podría tener gratis. Los que de verdad ganan no gastan en lo que consiguen gratis: invierten en lo que escala."
+  },
+  {
+    "id": "v13-prueba",
+    "texto": "Cero pesos contra quinientos dólares de diseñador. La diferencia se siente en el bolsillo, no en el resultado."
+  },
+  {
+    "id": "v13-cta",
+    "texto": "Seguime y te muestro el sitio que uso."
+  },
+  {
+    "id": "v14-hook",
+    "texto": "Backend abierto: así configuré mi curso para que se venda mientras yo como."
+  },
+  {
+    "id": "v14-giro",
+    "texto": "Vender no es complicado, es un flujo bien configurado. Amazon no vendía productos: vendía un sistema."
+  },
+  {
+    "id": "v14-prueba",
+    "texto": "Tres ventas automáticas mientras como. El costo de la herramienta, casi nada al lado de eso."
+  },
+  {
+    "id": "v14-cta",
+    "texto": "Seguime y te muestro cómo configurar tu backend."
+  },
+  {
+    "id": "v15-transformacion",
+    "texto": "Cinco minutos. De un mockup de PowerPoint a un producto que vende. Sin cortes."
+  },
+  {
+    "id": "v15-prueba",
+    "texto": "Los emprendedores más exitosos no esperan a que sea perfecto: lo lanzan y lo mejoran en el camino."
+  },
+  {
+    "id": "v15-cta",
+    "texto": "Seguime y te muestro cómo hacer tu producto en cinco minutos."
+  },
+  {
+    "id": "v16-transformacion",
+    "texto": "Abro mi caos. Organizo treinta y siete carpetas en tres. Y aparece un producto nuevo."
+  },
+  {
+    "id": "v16-giro",
+    "texto": "No necesitás más ideas. Necesitás ordenar las que ya tenés. Los que más ganan no tienen más ideas que vos: tienen un sistema para ordenarlas."
+  },
+  {
+    "id": "v16-cta",
+    "texto": "Seguime y te muestro cómo organizar tu caos en un producto."
+  },
+  {
+    "id": "v17-hook",
+    "texto": "Mito uno: \"necesito diez mil seguidores\". Falso. Yo vendí con cero."
+  },
+  {
+    "id": "v17-giro",
+    "texto": "No necesitás audiencia, necesitás producto. Los primeros clientes de Apple no eran seguidores: eran personas que necesitaban una computadora."
+  },
+  {
+    "id": "v17-prueba",
+    "texto": "De diez mil seguidores imaginarios a cero seguidores reales. Y la primera venta llegó igual."
+  },
+  {
+    "id": "v17-cta",
+    "texto": "Seguime y te muestro cómo vender sin seguidores."
+  },
+  {
+    "id": "v18-hook",
+    "texto": "Mito dos: \"soy un experto\". Mentira. Los que venden son los que empiezan."
+  },
+  {
+    "id": "v18-giro",
+    "texto": "SpaceX explotó tres cohetes seguidos antes de llegar a órbita. Hoy es la empresa espacial más grande del mundo. La experiencia no se estudia: se construye."
+  },
+  {
+    "id": "v18-prueba",
+    "texto": "No hacía falta el título de experto. Hacía falta el primer intento."
+  },
+  {
+    "id": "v18-cta",
+    "texto": "Seguime y te muestro cómo empezar sin ser experto."
+  },
+  {
+    "id": "v19-hook",
+    "texto": "Mito tres: \"el algoritmo me odia\". No. Tu producto es invisible."
+  },
+  {
+    "id": "v19-giro",
+    "texto": "La mayoría culpa al algoritmo cuando debería culpar a su sistema. Los mejores creadores no dependen del algoritmo: dependen de su sistema de creación."
+  },
+  {
+    "id": "v19-prueba",
+    "texto": "Creá, publicá, medí, ajustá. Ese ciclo importa más que cualquier algoritmo."
+  },
+  {
+    "id": "v19-cta",
+    "texto": "Seguime y te muestro cómo hacer que tu producto sea visible."
+  },
+  {
+    "id": "v20-hook",
+    "texto": "Hotmart te cobra comisión y te paga a los treinta días. Acá lo que nadie te dice."
+  },
+  {
+    "id": "v20-giro",
+    "texto": "La mayoría no sabe que hay alternativas mejores. Los que de verdad ganan no usan la plataforma que usa todo el mundo: usan la que les conviene a ellos."
+  },
+  {
+    "id": "v20-cta",
+    "texto": "Seguime y te muestro las plataformas que uso."
+  },
+  {
+    "id": "v21-hook",
+    "texto": "Este video de cuarenta minutos me generó más ingresos que un curso de seis meses. Duelo."
+  },
+  {
+    "id": "v21-giro",
+    "texto": "No importa la duración: importa el sistema. Los mejores cursos no son los más largos, son los que resuelven un problema real."
+  },
+  {
+    "id": "v21-prueba",
+    "texto": "Cuarenta minutos de trabajo real, más resultado que seis meses de clases."
+  },
+  {
+    "id": "v21-cta",
+    "texto": "Seguime y te muestro cómo crear un video que venda más que un curso."
+  }
+]
