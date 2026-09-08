@@ -12,3 +12,8 @@ previews/
 # Archivos temporales del ciclo de mejora controlado (fabrica/laboratorio/):
 # el arbol de cada intento se escribe ahi para pasarlo a los scripts de QA.
 fabrica/laboratorio/.tmp_*.json
+
+# Props de render del lote de 42 carruseles y su resumen de publicacion:
+# los genera y commitea el workflow render-lote42-carruseles, no la sesion local.
+remotion-spike/props_carrusel/
+fabrica/carrusel/lote_42_resumen.json
