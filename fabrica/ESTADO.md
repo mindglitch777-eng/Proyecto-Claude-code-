@@ -1,5 +1,94 @@
 # Estado vivo del proyecto
 
+## Bloque: 3 pilotos + lote de 21 videos + lote de 42 carruseles (Taller de Activos, 2026-09-08)
+
+Tanda larga de producción real (no solo motor), pedida en varias etapas
+por el operador. Todo entregado y confirmado, no queda nada corriendo.
+
+**1) 3 videos piloto** (`fabrica/ejemplos/generar_piloto_1/2/3.ts`) --
+primera prueba real de `renderizador_por_guion.ts` con componentes
+100% faceless del registro actual (nunca cámara/rostro-hablando).
+Producidos, entregados, feedback del operador: golpes más agresivos y
+contenido más concreto (no plantitudes genéricas) -- aplicado en el
+lote de 21.
+
+**2) Lote de 21 videos** (`fabrica/ejemplos/lote_21_datos.ts` +
+`.github/workflows/generar-voz-lote21.yml` + `render-lote21.yml`) --
+ángulos mejorados (pasados por el operador desde DeepSeek), producción
+nocturna autónoma pedida explícitamente ("no frenes cada operación...
+revisa cada 10 minutos"). Los 21 completados y entregados
+incrementalmente (uno por uno, no en bloque, para no perder trabajo si
+algo fallaba a mitad de camino). Único incidente real: v11 falló el
+`git push` por carrera entre 21 jobs simultáneos (no bug de código) --
+resuelto con `rerun_failed_jobs` una vez bajó la contención.
+
+**3) Carousel Engine ejercitado por primera vez con datos reales** --
+`fabrica/carrusel/` ya existía (Ronda 7) pero nunca se había usado con
+copy real del operador. Se agregó a `tipos.ts` soporte de imagen real
+(`imagen`, `estiloImagen: 'circular'|'fondo'`, `credito`, `resaltar`,
+`logo`) y en `remotion-spike/src/carrusel/CarruselSlide.tsx` el
+tratamiento "fondo" (foto full-bleed + duotono marca + degradé para
+legibilidad) y `ConResaltado` (resalta substrings en `PALETA.acento`).
+**Bug real encontrado y corregido dos veces** en `ConResaltado`: el
+early-return para slides sin `resaltar` no aplicaba `colorBase`,
+dejando texto sin estilo (se veía invisible sobre fondo del mismo
+color) -- encontrado recién al abrir el PNG renderizado con la
+herramienta Read, no releyendo el código fuente y asumiendo. Probado
+primero con un carrusel de prueba (Elon Musk/SpaceX) iterado 4 veces
+hasta quedar bien.
+
+**4) Infraestructura de fotos/logos reales** (nueva, vía Wikidata/
+Commons -- Pexels y Wikidata están bloqueados desde el sandbox, todo
+corre en GitHub Actions):
+- `descargar_foto_persona.py` / `descargar_fotos_lote.py` -- fotos de
+  personas reales (P18 de Wikidata), filosofía "mejor sin foto que con
+  la persona equivocada".
+- `descargar_logo_empresa.py` (nuevo) -- logos de empresas (P154), con
+  parámetro `pista` para desambiguar (ej. "Amazon" río vs. empresa).
+- `foto-persona.yml` -- **bug real corregido**: el step de lote corría
+  igual aunque el trigger fuera un pedido suelto por `workflow_dispatch`,
+  por un `pedido-lote.json` viejo que había quedado de otro batch --
+  ahora el pedido suelto explícito siempre gana.
+- `descargar_metraje.py` -- bug real corregido: un nicho custom llamado
+  en la forma `nicho cantidad` (2 args) usaba el dígito de cantidad
+  como query de Pexels si no estaba en el diccionario `NICHOS`.
+
+**5) Lote de 42 carruseles (252 imágenes)** -- pedido completo del
+operador ("42 carruseles... horario de subida en TikTok, hashtags,
+descripción, título, todo"). `fabrica/carrusel/lote_42_datos.ts`
+(datos + `horario()` que distribuye 7 días x 6 posteos, 3 franjas:
+Mañana 09:30/10:30, Tarde 14:30/16:00, Noche 20:30/21:30) +
+`exportar_lote_42.ts` (arma+valida+exporta 252 props). Los 5
+carruseles "el sistema de <persona>" (Musk/MrBeast/Bezos/Gary Vee/
+Jobs) usan historias reales concretas con tensión narrativa (no
+biografías genéricas), foto real full-bleed + logo de la empresa,
+crédito de Wikimedia Commons visible en el slide (uso editorial, nunca
+esponsoreo). Cada CTA dice explícitamente qué se manda a cambio del
+comentario (feedback directo del operador: "no da nada a cambio" tras
+la primera versión). Render completo vía
+`render-lote42-carruseles.yml` (252/252 slides, 0 advertencias de
+`validarEstructura`). Verificación visual con Read antes de entregar
+(las 5 fotos + los 3 logos reales, confirmados correctos).
+
+**Entrega**: calendario de contenido publicado como Artifact
+(agrupado por día, con miniatura, hora sugerida, hashtags, descripción,
+botón "Copiar" que copia descripción+hashtags al portapapeles del
+celular vía `navigator.clipboard`, y botón "Marcar publicado" que
+persiste en `localStorage` del celular del operador -- el almacén de
+assets de Artifact no estaba disponible en la sesión, así que las 42
+miniaturas van incrustadas como JPEG comprimido en base64, ~260KB en
+total). Las 252 imágenes en resolución completa se mandaron aparte, en
+7 tandas (una por día de publicación) vía archivo directo.
+
+**Pendiente real, no resuelto esta ronda**: cómo automatizar la
+publicación real a redes (el operador preguntó por conectar sus
+cuentas) -- la Regla de Oro exige confirmación explícita en la sesión
+antes de publicar contenido públicamente o tocar cuentas reales de
+terceros, así que no se construyó nada de eso; falta definir con el
+operador si el método sería un scheduler oficial (API) o automatización
+de sesión no oficial antes de tocar código.
+
+
 ## Bloque: investigación de "fórmula viral" en 16 videos reales + pipeline de descarga (2026-09-07)
 
 Pedido del operador: analizar creadores reales (primero 10 profesionales
