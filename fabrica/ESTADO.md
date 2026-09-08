@@ -1,5 +1,60 @@
 # Estado vivo del proyecto
 
+## Bloque: calendario interactivo del lote de 42 + portadas con imagen en los 37 restantes (2026-09-08, misma sesión que el bloque de abajo)
+
+Continuación directa del bloque de abajo, ya con los 252 slides renderizados
+y entregados. Dos pedidos nuevos del operador sobre la entrega:
+
+**1) Botón de descarga en el calendario.** El calendario (Artifact) no
+podía ofrecer un `<a download>` real (los Artifacts bloquean descargas
+disparadas por la propia página) y el almacén de assets del Artifact
+dio `store_unavailable` esa sesión. Se resolvió con las capacities
+`db` + `downloads`: las 252 imágenes en resolución completa se
+subieron a la base de datos del propio Artifact (`imagenes/<carrusel-id>/slides/sN`,
+252 documentos, base64) y cada tarjeta tiene un botón "Descargar 6"
+que lee esos documentos y llama a `downloads.save()` una vez por
+imagen (6 confirmaciones nativas, sin ZIP -- la extensión `.zip` no
+está en el allowlist de `downloads`). Límite real encontrado y resuelto:
+un `write_db` de más de ~8 imágenes por lote pasa el máximo de 1MB por
+request -- se subió de a 6 (una carpeta de carrusel) por llamada, y las
+5 portadas con foto de persona real (más pesadas como PNG, >256KB
+codificadas) se recomprimieron a JPEG calidad ~85 antes de subir.
+
+**2) Imagen en los otros 37 carruseles** (antes solo texto sobre
+color). Pedido explícito: "mitad genéricas/representativas, mitad
+exactas" -- el operador aclaró después que por "exactas" se refería a
+**fotos reales de personas famosas** (dinero/estatus/IA), no frames de
+película (se le explicó el riesgo real de copyright en una cuenta
+comercial y aceptó la alternativa). Resultado: 17 fotos reales de
+figuras públicas (Warren Buffett, Robert Kiyosaki, Grant Cardone,
+Cristiano Ronaldo, Tony Robbins, Dwayne Johnson, Mark Cuban, Bill
+Gates, Kevin O'Leary, Rihanna, LeBron James, Oprah Winfrey, Richard
+Branson, Jay-Z, Kim Kardashian, Sam Altman, Kylie Jenner, vía Wikidata
+P18 igual que los 5 de "sistema de X") + 18 fotos de stock genéricas
+por tema (Pexels, nichos nuevos en `descargar_metraje.py`) + logo real
+de TikTok como badge en el carrusel de plataformas (Wikidata P154).
+**Bug real encontrado y corregido**: el primer intento de bajar el
+logo de Hotmart no encontró un P154 confiable en Wikidata y el script
+cortó (por diseño, "mejor sin logo que el equivocado") -- pero el
+workflow no tenía `if: always()` en el paso de commit, así que las 18
+fotos de stock que SÍ se habían bajado bien en el mismo job se perdían
+enteras cada vez. Corregido (logo opcional que no corta el job +
+commit siempre) y carrusel-09 quedó con la foto genérica sin badge de
+marca. Todas las fotos y el logo verificados visualmente con Read
+antes de comprometerse al render.
+
+`fabrica/carrusel/lote_42_datos.ts`: `IMAGENES_PERSONA` extendido (17
+entradas nuevas) + `IMAGENES_STOCK` nuevo (20 entradas, con `logoSlug`
+opcional) -- placeholder `imagen: "STOCK:<nicho>"` resuelto a archivo
+real + crédito en `exportar_lote_42.ts` (`resolverStock()`, mismo
+patrón que ya usaba el carrusel de prueba de Musk para las fotos de
+cohete). Render de las 37 portadas nuevas: se borraron los 37
+`slide-01.png` viejos (el guard del workflow salta si el archivo ya
+existe) y se re-disparó `render-lote42-carruseles.yml`, que solo
+regeneró esos 37 sin tocar los otros 215 slides. Calendario
+republicado con las 42 miniaturas actualizadas.
+
+
 ## Bloque: 3 pilotos + lote de 21 videos + lote de 42 carruseles (Taller de Activos, 2026-09-08)
 
 Tanda larga de producción real (no solo motor), pedida en varias etapas
