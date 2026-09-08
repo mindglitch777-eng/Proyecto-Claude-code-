@@ -1,0 +1,56 @@
+name: preparar-assets-lote42
+
+# Baja los logos reales que faltan para el lote de 42 carruseles
+# (Amazon, Apple -- SpaceX ya se bajo para el carrusel de prueba de
+# Musk). Las fotos de personas (MrBeast, Bezos, Gary Vee, Jobs) las
+# baja foto-persona.yml en modo lote (se dispara solo al pushear
+# assets/personas/pedido-lote.json, ver ese workflow).
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths: [".github/workflows/preparar-assets-lote42.yml"]
+  workflow_dispatch: {}
+
+jobs:
+  bajar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Bajar logo de Amazon (si falta)
+        run: |
+          if [ -z "$(ls -A assets/logos/amazon/logo.* 2>/dev/null)" ]; then
+            python3 descargar_logo_empresa.py "Amazon" amazon "company"
+          else
+            echo "Ya existe, salteo."
+          fi
+
+      - name: Bajar logo de Apple (si falta)
+        run: |
+          if [ -z "$(ls -A assets/logos/apple/logo.* 2>/dev/null)" ]; then
+            python3 descargar_logo_empresa.py "Apple" apple "company"
+          else
+            echo "Ya existe, salteo."
+          fi
+
+      - name: Commitear
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain assets/logos)" ]; then
+            git add assets/logos
+            git commit -m "Logos reales: Amazon + Apple (Wikidata/Commons)"
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          else
+            echo "Sin cambios."
+          fi

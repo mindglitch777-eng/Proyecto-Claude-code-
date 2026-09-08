@@ -21,13 +21,19 @@ RAIZ = Path(__file__).parent
 DESTINO = RAIZ / "assets" / "logos"
 
 
-def buscar_logo_wikidata(nombre):
+def buscar_logo_wikidata(nombre, pista=None):
     parametros = {
         "action": "wbsearchentities", "search": nombre, "language": "en",
         "type": "item", "limit": "5", "format": "json",
     }
     datos = _get(f"https://www.wikidata.org/w/api.php?{urllib.parse.urlencode(parametros)}")
     candidatos = datos.get("search") or []
+    if pista:
+        # Desambigua nombres ambiguos (ej. "Amazon" rio vs empresa,
+        # "Apple" fruta vs empresa) -- mismo criterio que buscar_wikidata
+        # de buscar_foto.py para personas.
+        pista_baja = pista.lower()
+        candidatos.sort(key=lambda c: 0 if pista_baja in (c.get("description") or "").lower() else 1)
     for c in candidatos:
         qid = c["id"]
         claims = _get(f"https://www.wikidata.org/w/api.php?action=wbgetclaims&entity={qid}&property=P154&format=json")
@@ -48,11 +54,12 @@ def buscar_logo_wikidata(nombre):
 
 def main():
     if len(sys.argv) < 3:
-        print('Uso: python3 descargar_logo_empresa.py "Nombre de la empresa" slug')
+        print('Uso: python3 descargar_logo_empresa.py "Nombre de la empresa" slug ["pista para desambiguar"]')
         return 1
     nombre, slug = sys.argv[1], sys.argv[2]
+    pista = sys.argv[3] if len(sys.argv) > 3 else None
 
-    candidato = buscar_logo_wikidata(nombre)
+    candidato = buscar_logo_wikidata(nombre, pista)
     if not candidato:
         print(f"[{slug}] sin logo confiable en Wikidata (P154) para '{nombre}'. No se baja nada.")
         return 2

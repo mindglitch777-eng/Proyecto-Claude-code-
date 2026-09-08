@@ -22,6 +22,17 @@ export type Slide = {
    * particular ejecuta un patrón de retención concreto (ej. el slide
    * de portada usando 'cifra-inmediata'). */
   patronRetencionId?: string;
+  /** Espejo directo de los props visuales de CarruselSlide.tsx
+   * (remotion-spike/src/carrusel/CarruselSlide.tsx) -- se pasan tal
+   * cual al renderizar. Viven aca (no en un mapa aparte) para que un
+   * lote grande (ej. 42 carruseles) se escriba slide por slide sin
+   * indireccion extra. Ver CarruselSlide.tsx para el significado real
+   * de cada uno (fix real de contraste + resaltado aplicado ahi). */
+  imagen?: string;
+  estiloImagen?: 'circular' | 'fondo';
+  credito?: string;
+  resaltar?: string[];
+  logo?: string;
 };
 
 export type IdentidadMarca = {
