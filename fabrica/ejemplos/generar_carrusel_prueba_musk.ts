@@ -68,7 +68,7 @@ const slides: Slide[] = [
   {id: 's3', tipo: 'desarrollo', texto: 'Casi se quedan sin plata para el cuarto intento. Era ese o cerrar.'},
   {id: 's4', tipo: 'desarrollo', texto: 'El cuarto despegó. Y salvó la empresa entera.'},
   {id: 's5', tipo: 'desarrollo', texto: 'No fue más conocimiento técnico. Fue el mismo sistema, ajustado 3 veces.'},
-  {id: 's6', tipo: 'cta', texto: 'Tu primer producto también va a fallar. ¿Vas a tener un cuarto intento? Comentá "MUSK".'},
+  {id: 's6', tipo: 'cta', texto: 'Tu primer producto también va a fallar. Comentá "SISTEMA" y te mando los 5 pasos para llegar a tu cuarto intento.'},
 ];
 
 const carrusel = armarCarrusel('carrusel-prueba-musk', 'El sistema de Elon Musk', slides, IDENTIDAD_DEFECTO, []);
@@ -93,7 +93,7 @@ const porSlide: Record<string, Record<string, unknown>> = {
     resaltar: ['salvó la empresa entera'],
   },
   s5: {logo: logoSpaceX, resaltar: ['mismo sistema']},
-  s6: {resaltar: ['MUSK']},
+  s6: {resaltar: ['SISTEMA', '5 pasos']},
 };
 
 carrusel.slides.forEach((slide, i) => {

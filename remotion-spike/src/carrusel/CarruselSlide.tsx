@@ -27,7 +27,7 @@ function ConResaltado({
   colorBase: string;
   colorResaltado: string;
 }) {
-  if (!resaltar || resaltar.length === 0) return <>{texto}</>;
+  if (!resaltar || resaltar.length === 0) return <span style={{color: colorBase}}>{texto}</span>;
   const patron = resaltar
     .filter(Boolean)
     .sort((a, b) => b.length - a.length) // el mas largo primero, para no partir un match mas chico adentro de uno mas largo
