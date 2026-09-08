@@ -54,11 +54,18 @@ jobs:
           python-version: "3.11"
 
       - name: Lote (pedido-lote.json)
-        if: hashFiles('assets/personas/pedido-lote.json') != ''
+        # BUGFIX (2026-09-08): antes esto disparaba con solo que el
+        # archivo pedido-lote.json EXISTIERA en el checkout, sin
+        # importar si la corrida vino de un dispatch manual con nombre
+        # puntual -- un pedido-lote.json viejo (de una tanda anterior)
+        # quedaba comiteado y silenciosamente se comia CUALQUIER pedido
+        # suelto futuro por formulario. Ahora un dispatch con `nombre`
+        # explicito siempre gana, pase lo que pase con ese archivo.
+        if: hashFiles('assets/personas/pedido-lote.json') != '' && !(github.event_name == 'workflow_dispatch' && inputs.nombre != '')
         run: python3 descargar_fotos_lote.py
 
       - name: Pedido suelto (PEDIDO.json o formulario)
-        if: hashFiles('assets/personas/pedido-lote.json') == ''
+        if: (github.event_name == 'workflow_dispatch' && inputs.nombre != '') || hashFiles('assets/personas/pedido-lote.json') == ''
         run: |
           if [ -f assets/personas/PEDIDO.json ]; then
             nombre=$(python3 -c "import json;print(json.load(open('assets/personas/PEDIDO.json'))['nombre'])")
