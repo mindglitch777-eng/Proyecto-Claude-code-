@@ -66,13 +66,22 @@ jobs:
           print('duracion:', item.get('duracion_seg'), 'stats:', item.get('stats'))
           "
           PLAY_ADDR=$(cat /tmp/play_addr.txt)
-          curl -sL --fail \
+          HTTP_CODE=$(curl -sL \
             -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" \
             -e "https://www.tiktok.com/" \
+            -H "Range: bytes=0-" \
             -o "/tmp/video.mp4" \
-            "$PLAY_ADDR"
+            -w "%{http_code}" \
+            "$PLAY_ADDR")
+          echo "HTTP status: $HTTP_CODE"
           ls -la /tmp/video.mp4
+          head -c 500 /tmp/video.mp4 || true
+          echo ""
           file /tmp/video.mp4
+          if [ "$HTTP_CODE" -ge 400 ]; then
+            echo "FALLO: HTTP $HTTP_CODE"
+            exit 1
+          fi
           ffprobe -v error -show_entries format=duration -of csv=p=0 /tmp/video.mp4 > "fabrica/research/referencias/${ID}/duracion.txt"
           echo "duracion real del archivo: $(cat fabrica/research/referencias/${ID}/duracion.txt)"
 
