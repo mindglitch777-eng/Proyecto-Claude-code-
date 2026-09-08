@@ -1,0 +1,106 @@
+name: descargar-tiktok-directo
+
+# Pipeline completo para un video puntual de TikTok, evitando el
+# extractor de yt-dlp (bloqueado por IP): 1) Scrapling lee el JSON de
+# rehidratacion de la pagina del video y saca la URL firmada de
+# reproduccion (play_addr) + stats reales, 2) un curl directo a esa
+# URL (mismo pedido HTTP que haria un navegador viendo el video, no el
+# endpoint de extraccion de yt-dlp), 3) si el curl trae un MP4 valido,
+# se analizan cortes/frames igual que con Instagram y se borra el
+# video (nunca se commitea el archivo de video en si).
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths: [".github/workflows/descargar-tiktok-directo.yml"]
+  workflow_dispatch:
+    inputs:
+      matriz:
+        description: 'JSON [{"id":"...", "url":"..."}] -- uno o varios videos de TikTok'
+        required: false
+        default: '[{"id":"ventasilenciosa-tk-01","url":"https://www.tiktok.com/@venta.silenciosa/video/7634354851727691028"}]'
+
+jobs:
+  descargar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        include: ${{ fromJson(inputs.matriz || '[{"id":"ventasilenciosa-tk-01","url":"https://www.tiktok.com/@venta.silenciosa/video/7634354851727691028"}]') }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar Scrapling + ffmpeg
+        run: |
+          pip install --quiet "scrapling[all]"
+          scrapling install
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Scrapear el item + descargar el video con curl directo
+        id: paso
+        env:
+          URL: ${{ matrix.url }}
+          ID: ${{ matrix.id }}
+        run: |
+          mkdir -p "fabrica/research/referencias/${ID}"
+          python3 fabrica/research/scraper_tiktok_video.py "$URL" "/tmp/item.json"
+          python3 -c "
+          import json
+          d = json.load(open('/tmp/item.json'))
+          if not d['exito']:
+              raise SystemExit('scrape fallo: ' + str(d.get('error')))
+          item = d['item']
+          with open('/tmp/play_addr.txt', 'w') as f:
+              f.write(item['play_addr'])
+          with open('fabrica/research/referencias/${ID}/info.json', 'w', encoding='utf-8') as f:
+              json.dump(item, f, ensure_ascii=False, indent=2)
+          print('duracion:', item.get('duracion_seg'), 'stats:', item.get('stats'))
+          "
+          PLAY_ADDR=$(cat /tmp/play_addr.txt)
+          curl -sL --fail \
+            -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" \
+            -e "https://www.tiktok.com/" \
+            -o "/tmp/video.mp4" \
+            "$PLAY_ADDR"
+          ls -la /tmp/video.mp4
+          file /tmp/video.mp4
+          ffprobe -v error -show_entries format=duration -of csv=p=0 /tmp/video.mp4 > "fabrica/research/referencias/${ID}/duracion.txt"
+          echo "duracion real del archivo: $(cat fabrica/research/referencias/${ID}/duracion.txt)"
+
+      - name: Analizar cortes reales + extraer solo frames de referencia (no el video completo)
+        env:
+          ID: ${{ matrix.id }}
+        run: |
+          cd "fabrica/research/referencias/${ID}"
+          ffmpeg -i /tmp/video.mp4 -vf "select='gt(scene,0.3)',showinfo" -f null - 2> cortes_detectados.txt || true
+          grep -o "pts_time:[0-9.]*" cortes_detectados.txt | sed 's/pts_time://' > timestamps_cortes.txt || true
+          echo "Cortes detectados: $(wc -l < timestamps_cortes.txt)"
+          mkdir -p frames
+          ffmpeg -y -i /tmp/video.mp4 -vf "fps=10/$(cat duracion.txt),scale=480:-1" frames/ref_%02d.jpg
+          rm -f /tmp/video.mp4
+
+      - name: Guardar en el repo (solo metadata, cortes y frames de referencia -- nunca el video)
+        env:
+          ID: ${{ matrix.id }}
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add fabrica/research/referencias
+          git commit -m "Analisis de referencia TikTok (solo frames+data, sin video): ${ID}"
+          for i in $(seq 1 10); do
+            git pull --rebase origin "$GITHUB_REF_NAME" && \
+            git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
+            echo "reintento $i"
+            git rebase --abort || true
+            sleep $((RANDOM % 10 + 2 * i))
+          done
+          exit 1
