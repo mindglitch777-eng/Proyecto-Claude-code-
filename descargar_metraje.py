@@ -58,6 +58,30 @@ NICHOS = {
     # generico). Reutilizable para cualquier otro carrusel del lote
     # de 42 que necesite la misma idea.
     "cohete-lanzamiento": "rocket launch night sky smoke",
+    # Agregados para las portadas con foto de los 37 carruseles del
+    # lote de 42 que no llevan foto de una persona real (pedido del
+    # operador: "mitad genericas/representativas, mitad exactas") --
+    # cada uno mapea 1 a 1 a un carrusel puntual, ver
+    # fabrica/carrusel/lote_42_datos.ts (IMAGENES_COVER_37).
+    "video-confundido": "confused person laptop frustrated screen",
+    "boceto-producto": "messy notebook sketch rough draft desk",
+    "feed-social": "smartphone social media scroll feed hand",
+    "joven-emprendedor": "young entrepreneur working desk laptop",
+    "pago-online": "online payment ecommerce smartphone checkout",
+    "alerta-error": "warning sign red alert",
+    "trabajo-rapido": "laptop desk fast work clock deadline",
+    "error-caro": "frustrated person mistake money bills",
+    "pago-movil": "mobile payment checkout phone tap",
+    "red-datos": "network graph data connection technology",
+    "robot-ia": "robot artificial intelligence technology",
+    "piezas-sistema": "puzzle pieces system building",
+    "etiqueta-precio": "price tag shopping label",
+    "plantilla-doc": "template document checklist clean desk",
+    "checklist-clip": "checklist clipboard pen",
+    "lista-errores": "warning mistakes red list paper",
+    "detras-camara": "behind the scenes camera filming content",
+    "apps-celular": "social media apps smartphone screen icons",
+    "escalera-exito": "staircase steps success climbing up",
 }
 
 

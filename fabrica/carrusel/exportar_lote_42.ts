@@ -33,6 +33,13 @@ function extLogo(slug: string): string {
   return archivo.split('.').pop() as string;
 }
 
+const PERSONAS_RONDA2 = [
+  'robert-kiyosaki', 'grant-cardone', 'warren-buffett', 'cristiano-ronaldo',
+  'tony-robbins', 'sam-altman', 'dwayne-johnson', 'mark-cuban', 'bill-gates',
+  'kevin-oleary', 'rihanna', 'kylie-jenner', 'lebron-james', 'oprah-winfrey',
+  'richard-branson', 'jay-z', 'kim-kardashian',
+];
+
 const CREDITOS_PERSONA: Record<string, string> = {
   'fotos/elon-musk.jpg': leerCredito('elon-musk', 'assets/personas'),
   'fotos/mrbeast.jpg': leerCredito('mrbeast', 'assets/personas'),
@@ -40,12 +47,36 @@ const CREDITOS_PERSONA: Record<string, string> = {
   'fotos/gary-vaynerchuk.jpg': leerCredito('gary-vaynerchuk', 'assets/personas'),
   'fotos/steve-jobs.jpg': leerCredito('steve-jobs', 'assets/personas'),
 };
+for (const slug of PERSONAS_RONDA2) {
+  CREDITOS_PERSONA[`fotos/${slug}.jpg`] = leerCredito(slug, 'assets/personas');
+}
 
 const EXT_LOGO: Record<string, string> = {
   spacex: extLogo('spacex'),
   amazon: extLogo('amazon'),
   apple: extLogo('apple'),
+  hotmart: extLogo('hotmart'),
+  tiktok: extLogo('tiktok'),
 };
+
+/** Resuelve un marcador `STOCK:<nicho>` (puesto por lote_42_datos.ts)
+ * a la primera foto real que bajo descargar_metraje.py para ese nicho
+ * + su credito real, mismo patron que uso
+ * generar_carrusel_prueba_musk.ts para las fotos de cohete. */
+function resolverStock(nicho: string): {imagen: string; credito: string} {
+  const dir = path.join(RAIZ, 'assets/metraje', nicho);
+  if (!fs.existsSync(dir)) {
+    throw new Error(`Falta assets/metraje/${nicho}/ -- correr preparar-imagenes-restantes-42.yml primero.`);
+  }
+  const fotos = fs.readdirSync(dir).filter((f) => f.endsWith('.jpg')).sort();
+  if (fotos.length === 0) throw new Error(`No hay fotos en assets/metraje/${nicho}/`);
+  const archivo = fotos[0];
+  const creditosTxt = fs.readFileSync(path.join(dir, 'CREDITOS.md'), 'utf-8');
+  const linea = creditosTxt.split('\n').find((l) => l.includes(archivo));
+  const m = linea ? /foto de ([^(]+)\(/.exec(linea) : null;
+  const autor = m ? m[1].trim() : 'Pexels';
+  return {imagen: `fotos/${archivo}`, credito: `Foto: ${autor} · Pexels`};
+}
 
 const dirSalidaBase = path.join(RAIZ, 'remotion-spike/props_carrusel/lote42');
 const resumenSalida = path.join(RAIZ, 'fabrica/carrusel/lote_42_resumen.json');
@@ -74,7 +105,13 @@ for (const c of CARRUSELES_42) {
       total: carrusel.slides.length,
     };
     if (slide.resaltar) props.resaltar = slide.resaltar;
-    if (slide.imagen) {
+    if (slide.imagen?.startsWith('STOCK:')) {
+      const nicho = slide.imagen.slice('STOCK:'.length);
+      const resuelto = resolverStock(nicho);
+      props.imagen = resuelto.imagen;
+      props.estiloImagen = slide.estiloImagen;
+      props.credito = resuelto.credito;
+    } else if (slide.imagen) {
       props.imagen = slide.imagen;
       props.estiloImagen = slide.estiloImagen;
       const credito = CREDITOS_PERSONA[slide.imagen];

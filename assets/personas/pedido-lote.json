@@ -1,6 +1,19 @@
 [
-  {"nombre": "MrBeast", "slug": "mrbeast", "pista": "YouTuber"},
-  {"nombre": "Jeff Bezos", "slug": "jeff-bezos", "pista": "businessman"},
-  {"nombre": "Gary Vaynerchuk", "slug": "gary-vaynerchuk", "pista": "entrepreneur"},
-  {"nombre": "Steve Jobs", "slug": "steve-jobs", "pista": "Apple"}
+  {"nombre": "Warren Buffett", "slug": "warren-buffett", "pista": "investor"},
+  {"nombre": "Robert Kiyosaki", "slug": "robert-kiyosaki", "pista": "author"},
+  {"nombre": "Grant Cardone", "slug": "grant-cardone", "pista": "entrepreneur"},
+  {"nombre": "Cristiano Ronaldo", "slug": "cristiano-ronaldo", "pista": "footballer"},
+  {"nombre": "Tony Robbins", "slug": "tony-robbins", "pista": "author"},
+  {"nombre": "Dwayne Johnson", "slug": "dwayne-johnson", "pista": "actor"},
+  {"nombre": "Mark Cuban", "slug": "mark-cuban", "pista": "businessman"},
+  {"nombre": "Bill Gates", "slug": "bill-gates", "pista": "Microsoft"},
+  {"nombre": "Kevin O'Leary", "slug": "kevin-oleary", "pista": "businessman"},
+  {"nombre": "Rihanna", "slug": "rihanna", "pista": "singer"},
+  {"nombre": "LeBron James", "slug": "lebron-james", "pista": "basketball"},
+  {"nombre": "Oprah Winfrey", "slug": "oprah-winfrey", "pista": "television host"},
+  {"nombre": "Richard Branson", "slug": "richard-branson", "pista": "businessman"},
+  {"nombre": "Jay-Z", "slug": "jay-z", "pista": "rapper"},
+  {"nombre": "Kim Kardashian", "slug": "kim-kardashian", "pista": "television personality"},
+  {"nombre": "Sam Altman", "slug": "sam-altman", "pista": "OpenAI"},
+  {"nombre": "Kylie Jenner", "slug": "kylie-jenner", "pista": "businesswoman"}
 ]

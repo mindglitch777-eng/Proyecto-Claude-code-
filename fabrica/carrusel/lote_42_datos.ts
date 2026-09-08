@@ -628,6 +628,57 @@ const IMAGENES_PERSONA: Record<number, {imagen: string; credito: string; logo?: 
   33: {imagen: 'fotos/jeff-bezos.jpg', credito: 'CREDITO_BEZOS', logo: 'logos/amazon.EXT'},
   34: {imagen: 'fotos/gary-vaynerchuk.jpg', credito: 'CREDITO_GARY'},
   35: {imagen: 'fotos/steve-jobs.jpg', credito: 'CREDITO_JOBS', logo: 'logos/apple.EXT'},
+  // Ronda 2 (pedido del operador: "mitad genericas/representativas,
+  // mitad exactas" para los otros 37) -- mismo tratamiento full-bleed
+  // que #31-35, con foto real de una figura publica conocida por
+  // dinero/estatus/IA en vez de una historia "sistema de X" completa
+  // (estos 17 son solo portada con foto, no un relato de 6 slides).
+  2: {imagen: 'fotos/robert-kiyosaki.jpg', credito: 'CREDITO_KIYOSAKI'},
+  4: {imagen: 'fotos/grant-cardone.jpg', credito: 'CREDITO_CARDONE'},
+  5: {imagen: 'fotos/warren-buffett.jpg', credito: 'CREDITO_BUFFETT'},
+  7: {imagen: 'fotos/cristiano-ronaldo.jpg', credito: 'CREDITO_RONALDO'},
+  10: {imagen: 'fotos/tony-robbins.jpg', credito: 'CREDITO_ROBBINS'},
+  11: {imagen: 'fotos/sam-altman.jpg', credito: 'CREDITO_ALTMAN'},
+  12: {imagen: 'fotos/dwayne-johnson.jpg', credito: 'CREDITO_JOHNSON'},
+  13: {imagen: 'fotos/mark-cuban.jpg', credito: 'CREDITO_CUBAN'},
+  14: {imagen: 'fotos/bill-gates.jpg', credito: 'CREDITO_GATES'},
+  17: {imagen: 'fotos/kevin-oleary.jpg', credito: 'CREDITO_OLEARY'},
+  20: {imagen: 'fotos/rihanna.jpg', credito: 'CREDITO_RIHANNA'},
+  22: {imagen: 'fotos/kylie-jenner.jpg', credito: 'CREDITO_JENNER'},
+  23: {imagen: 'fotos/lebron-james.jpg', credito: 'CREDITO_LEBRON'},
+  25: {imagen: 'fotos/oprah-winfrey.jpg', credito: 'CREDITO_OPRAH'},
+  26: {imagen: 'fotos/richard-branson.jpg', credito: 'CREDITO_BRANSON'},
+  30: {imagen: 'fotos/jay-z.jpg', credito: 'CREDITO_JAYZ'},
+  36: {imagen: 'fotos/kim-kardashian.jpg', credito: 'CREDITO_KARDASHIAN'},
+};
+
+/** Los otros 20 (de los 37 sin persona): foto de stock generica
+ * (Pexels) elegida por tema del carrusel, con logo real como badge
+ * en los dos casos donde el texto nombra una marca puntual (Hotmart,
+ * TikTok). El nicho se resuelve a un archivo real + credito en
+ * exportar_lote_42.ts (mismo patron que generar_carrusel_prueba_musk.ts
+ * uso para las fotos de cohete). */
+const IMAGENES_STOCK: Record<number, {nicho: string; logoSlug?: string}> = {
+  1: {nicho: 'video-confundido'},
+  3: {nicho: 'boceto-producto'},
+  6: {nicho: 'feed-social'},
+  8: {nicho: 'joven-emprendedor'},
+  9: {nicho: 'pago-online', logoSlug: 'hotmart'},
+  15: {nicho: 'alerta-error'},
+  16: {nicho: 'trabajo-rapido'},
+  18: {nicho: 'error-caro'},
+  19: {nicho: 'pago-movil'},
+  21: {nicho: 'red-datos'},
+  24: {nicho: 'robot-ia'},
+  27: {nicho: 'piezas-sistema'},
+  28: {nicho: 'etiqueta-precio'},
+  29: {nicho: 'cohete-lanzamiento'},
+  37: {nicho: 'plantilla-doc'},
+  38: {nicho: 'checklist-clip'},
+  39: {nicho: 'lista-errores'},
+  40: {nicho: 'detras-camara'},
+  41: {nicho: 'apps-celular', logoSlug: 'tiktok'},
+  42: {nicho: 'escalera-exito'},
 };
 
 export const CARRUSELES_42: CarruselLote[] = CRUDOS.map((c) => {
@@ -635,6 +686,7 @@ export const CARRUSELES_42: CarruselLote[] = CRUDOS.map((c) => {
   const h = horario(idx0);
   const tipos: Slide['tipo'][] = ['portada', 'hook', 'desarrollo', 'desarrollo', 'desarrollo', 'cta'];
   const persona = IMAGENES_PERSONA[c.numero];
+  const stock = IMAGENES_STOCK[c.numero];
 
   const slides: Slide[] = c.textos.map((texto, i) => {
     const resaltar = c.resaltarPorSlide?.[i];
@@ -646,6 +698,12 @@ export const CARRUSELES_42: CarruselLote[] = CRUDOS.map((c) => {
     }
     if (persona?.logo && i === 4) {
       extra.logo = persona.logo;
+    }
+    if (stock && i === 0) {
+      extra.imagen = `STOCK:${stock.nicho}`; // resuelto a archivo real en exportar_lote_42.ts
+      extra.estiloImagen = 'fondo';
+      extra.credito = 'CREDITO_STOCK';
+      if (stock.logoSlug) extra.logo = `logos/${stock.logoSlug}.EXT`;
     }
     return slide(`c${c.numero}-s${i + 1}`, tipos[i], texto, resaltar, extra);
   });

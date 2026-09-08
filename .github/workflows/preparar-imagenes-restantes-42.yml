@@ -1,0 +1,72 @@
+name: preparar-imagenes-restantes-42
+
+# Baja las fotos que faltan para dar imagen a los 37 carruseles del
+# lote de 42 que no tienen foto de persona real (#1-30, #36-42):
+# 18 fotos de stock (Pexels, NICHOS nuevos en descargar_metraje.py)
+# + 2 logos reales (Hotmart, TikTok, Wikidata). Las 17 personas reales
+# (Buffett, Ronaldo, etc.) las baja foto-persona.yml en modo lote
+# (dispara solo al pushear assets/personas/pedido-lote.json).
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths: [".github/workflows/preparar-imagenes-restantes-42.yml"]
+  workflow_dispatch: {}
+
+jobs:
+  bajar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Fotos de stock (18 nichos nuevos)
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        run: |
+          for nicho in video-confundido boceto-producto feed-social joven-emprendedor \
+                       pago-online alerta-error trabajo-rapido error-caro pago-movil \
+                       red-datos robot-ia piezas-sistema etiqueta-precio plantilla-doc \
+                       checklist-clip lista-errores detras-camara apps-celular escalera-exito; do
+            if [ -z "$(ls -A assets/metraje/$nicho 2>/dev/null)" ]; then
+              python3 descargar_metraje.py "$nicho" 2
+            else
+              echo "[$nicho] ya existe, salteo."
+            fi
+          done
+
+      - name: Logo de Hotmart (si falta)
+        run: |
+          if [ -z "$(ls -A assets/logos/hotmart/logo.* 2>/dev/null)" ]; then
+            python3 descargar_logo_empresa.py "Hotmart" hotmart "company"
+          else
+            echo "Ya existe, salteo."
+          fi
+
+      - name: Logo de TikTok (si falta)
+        run: |
+          if [ -z "$(ls -A assets/logos/tiktok/logo.* 2>/dev/null)" ]; then
+            python3 descargar_logo_empresa.py "TikTok" tiktok "company"
+          else
+            echo "Ya existe, salteo."
+          fi
+
+      - name: Commitear
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain assets/metraje assets/logos)" ]; then
+            git add assets/metraje assets/logos
+            git commit -m "Fotos de stock + logos Hotmart/TikTok: lote de 42 (portadas restantes)"
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          else
+            echo "Sin cambios."
+          fi
