@@ -1,0 +1,74 @@
+name: scrapear-video-tiktok
+
+# Scraper de un video PUNTUAL de TikTok (no perfil) -- la pagina de
+# detalle de un item deberia traer el video completo embebido (a
+# diferencia del perfil, que trae el feed vacio y lo carga aparte via
+# API firmada). Sin login, sin JS necesario para el HTML crudo.
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths: [".github/workflows/scrapear-video-tiktok.yml"]
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "URL de video puntual de TikTok"
+        required: false
+        default: "https://www.tiktok.com/@venta.silenciosa/video/7634354851727691028"
+
+jobs:
+  scrapear:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar Scrapling + navegadores
+        run: |
+          pip install --quiet "scrapling[all]"
+          scrapling install
+
+      - name: Scrapear el video
+        id: scrapear
+        env:
+          URL: ${{ inputs.url || 'https://www.tiktok.com/@venta.silenciosa/video/7634354851727691028' }}
+        run: |
+          mkdir -p fabrica/research/scraped_tiktok
+          SLUG=$(python3 -c "
+          import re, time
+          u = '''$URL'''
+          partes = [p for p in u.split('/') if p and 'http' not in p and '.' not in p]
+          slug = partes[-1] if partes else 'video'
+          slug = re.sub(r'[^a-zA-Z0-9_-]', '', slug)[:40] or 'video'
+          print(f'video-{slug}-{int(time.time())}')
+          ")
+          echo "slug=$SLUG" >> "$GITHUB_OUTPUT"
+          python3 fabrica/research/scraper_tiktok_video.py "$URL" "fabrica/research/scraped_tiktok/${SLUG}.json"
+
+      - name: Guardar el resultado en el repo
+        if: always()
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -z "$(git status --porcelain fabrica/research/scraped_tiktok)" ]; then
+            echo "Sin cambios."
+            exit 0
+          fi
+          git add fabrica/research/scraped_tiktok
+          git commit -m "Scraping de video TikTok: ${{ steps.scrapear.outputs.slug }}"
+          for i in 1 2 3 4 5 6; do
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" && \
+            git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
+            echo "reintento push: $i"
+            git rebase --abort || true
+            sleep $((RANDOM % 8 + 2 * i))
+          done
+          echo "AVISO: no se pudo pushear tras 6 intentos"
+          exit 1
