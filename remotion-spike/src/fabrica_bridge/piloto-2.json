@@ -1,0 +1,395 @@
+{
+  "id": "piloto-2",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "p2-hook",
+      "desdeSeg": 0,
+      "duracionSeg": 3.45,
+      "componenteId": "punch",
+      "props": {
+        "lineas": [
+          "Esto lo armé",
+          "en una tarde.",
+          "Mirá."
+        ],
+        "entra": [
+          0,
+          1.1,
+          2.1
+        ],
+        "clip": "oficina-01.mp4",
+        "velo": 0.55
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_piloto_2/p2-hook.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.2
+        }
+      ],
+      "golpe": "ninguno",
+      "volumenSfx": 0,
+      "estrategiaEdicion": {
+        "unidadId": "p2-hook",
+        "intencion": "enganchar",
+        "energia": "muy_alta",
+        "densidadVisual": "densa",
+        "estilos": [
+          "agresivo",
+          "documental"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "primera unidad del video (hook): capturar atencion desde el frame 0"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "ninguno",
+          "funcion": "dirigir_atencion",
+          "intensidad": "muy_alta",
+          "motivo": "golpe \"ninguno\" acompana una unidad con intencion \"enganchar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"p2-hook\""
+          },
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_sfx",
+            "descripcion": "SFX de entrada acompanando el elemento principal",
+            "razon": "estilo combinado incluye enfasis sonoro en la entrada (ver estilos.ts, tiposMicroEventoPreferidos)"
+          }
+        ],
+        "relacionConAnterior": "abre el video -- no hay escena anterior con la cual relacionarse",
+        "respiracion": false,
+        "patronRetencionId": "contexto-parcial",
+        "razonGeneral": "unidad \"p2-hook\" (1/4, categoria=texto): intencion=enganchar (energia=muy_alta, densidad=densa), estilos=[agresivo+documental], patron_retencion=contexto-parcial"
+      },
+      "patronesRetencion": [
+        "contexto-parcial"
+      ]
+    },
+    {
+      "unidadId": "p2-montaje",
+      "desdeSeg": 3.45,
+      "duracionSeg": 6.5,
+      "componenteId": "rafaga",
+      "props": {
+        "clips": [
+          "oficina-00.mp4",
+          "freelance-03.mp4",
+          "oficina-04.mp4",
+          "freelance-05.mp4"
+        ],
+        "sello": "TALLER DE ACTIVOS"
+      },
+      "audios": [],
+      "golpe": "fogonazo",
+      "volumenSfx": 0.9,
+      "estrategiaEdicion": {
+        "unidadId": "p2-montaje",
+        "intencion": "construir_tension",
+        "energia": "alta",
+        "densidadVisual": "minima",
+        "estilos": [
+          "misterio",
+          "cinematico"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "ritmo acelerado: no hay tiempo narrativo para dejar un ancla visual"
+        },
+        "transicion": {
+          "golpe": "fogonazo",
+          "funcion": "preparar_impacto",
+          "intensidad": "alta",
+          "motivo": "golpe \"fogonazo\" acompana una unidad con intencion \"construir_tension\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"p2-montaje\""
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "loop-abierto",
+        "razonGeneral": "unidad \"p2-montaje\" (2/4, categoria=montaje): intencion=construir_tension (energia=alta, densidad=minima), estilos=[misterio+cinematico], patron_retencion=loop-abierto"
+      },
+      "patronesRetencion": [
+        "loop-abierto"
+      ]
+    },
+    {
+      "unidadId": "p2-revelacion",
+      "desdeSeg": 9.95,
+      "duracionSeg": 4.4399999999999995,
+      "componenteId": "contador",
+      "props": {
+        "arriba": "Tiempo real de armado",
+        "hasta": 4,
+        "sufijo": " horas",
+        "abajo": "Sin editor. Sin equipo.",
+        "prefijo": ""
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_piloto_2/p2-revelacion.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 3.84
+        }
+      ],
+      "golpe": "corte",
+      "volumenSfx": 0.6,
+      "transicionSalienteSeg": 0.6,
+      "estrategiaEdicion": {
+        "unidadId": "p2-revelacion",
+        "intencion": "acelerar",
+        "energia": "media",
+        "densidadVisual": "densa",
+        "estilos": [
+          "agresivo",
+          "data"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "progresiva",
+          "razon": "entrada gradual, coherente con una energia media/baja"
+        },
+        "salida": {
+          "tipo": "se_desvanece",
+          "razon": "transicion suave hacia la unidad siguiente, sin necesidad de un ancla visual"
+        },
+        "transicion": {
+          "golpe": "corte",
+          "funcion": "marcar_cambio",
+          "intensidad": "media",
+          "motivo": "golpe \"corte\" acompana una unidad con intencion \"acelerar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"p2-revelacion\""
+          },
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_sfx",
+            "descripcion": "SFX de entrada acompanando el elemento principal",
+            "razon": "estilo combinado incluye enfasis sonoro en la entrada (ver estilos.ts, tiposMicroEventoPreferidos)"
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "pregunta-sin-resolver-intermedia",
+        "razonGeneral": "unidad \"p2-revelacion\" (3/4, categoria=cifra): intencion=acelerar (energia=media, densidad=densa), estilos=[agresivo+data], patron_retencion=pregunta-sin-resolver-intermedia"
+      },
+      "patronesRetencion": [
+        "pregunta-sin-resolver-intermedia"
+      ]
+    },
+    {
+      "unidadId": "p2-cta",
+      "desdeSeg": 13.79,
+      "duracionSeg": 3.066009,
+      "componenteId": "remate",
+      "props": {
+        "d": {
+          "lineas": [
+            "Sin experiencia.",
+            "Sin plata.",
+            "Sin excusas."
+          ],
+          "grande": "TAMBIÉN PODÉS",
+          "pie": "Empezá con lo que tenés."
+        },
+        "clip": "freelance-00.mp4"
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_piloto_2/p2-cta.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 2.816009
+        }
+      ],
+      "golpe": "fundido",
+      "volumenSfx": 0.5,
+      "estrategiaEdicion": {
+        "unidadId": "p2-cta",
+        "intencion": "cerrar",
+        "energia": "alta",
+        "densidadVisual": "minima",
+        "estilos": [
+          "cinematico",
+          "storytelling"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "energia alta: sin demora, para no perder el momentum que trae la unidad anterior"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "cierre del video: no debe quedar nada pendiente despues"
+        },
+        "transicion": {
+          "golpe": "fundido",
+          "funcion": "marcar_cambio",
+          "intensidad": "alta",
+          "motivo": "golpe \"fundido\" acompana una unidad con intencion \"cerrar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"p2-cta\""
+          }
+        ],
+        "relacionConAnterior": "continua el desarrollo de la unidad anterior, sin quiebre deliberado de tono",
+        "respiracion": false,
+        "patronRetencionId": "pago-de-la-promesa",
+        "razonGeneral": "unidad \"p2-cta\" (4/4, categoria=texto): intencion=cerrar (energia=alta, densidad=minima), estilos=[cinematico+storytelling], patron_retencion=pago-de-la-promesa"
+      },
+      "patronesRetencion": [
+        "pago-de-la-promesa"
+      ]
+    }
+  ],
+  "duracionTotalSeg": 17.356009,
+  "analisisRetencion": {
+    "mapa": [
+      {
+        "unidadId": "p2-hook",
+        "fase": "hook",
+        "energia": "muy_alta",
+        "duracionSeg": 3.45,
+        "esClimax": false
+      },
+      {
+        "unidadId": "p2-montaje",
+        "fase": "escalada",
+        "energia": "alta",
+        "duracionSeg": 6.5,
+        "esClimax": true
+      },
+      {
+        "unidadId": "p2-revelacion",
+        "fase": "escalada",
+        "energia": "media",
+        "duracionSeg": 4.4399999999999995,
+        "esClimax": false
+      },
+      {
+        "unidadId": "p2-cta",
+        "fase": "cierre",
+        "energia": "alta",
+        "duracionSeg": 3.066009,
+        "esClimax": false
+      }
+    ],
+    "alertas": [
+      {
+        "tipo": "promesa_poco_clara",
+        "severidad": "media",
+        "descripcion": "el video pasa del hook directo a la escalada/revelación sin ninguna unidad de desarrollo/contexto en el medio",
+        "razon": "unidad \"p2-montaje\" (fase \"escalada\") sigue inmediatamente al hook"
+      }
+    ],
+    "patronesUsados": [
+      {
+        "patronId": "contexto-parcial",
+        "nombre": "Contexto parcial",
+        "categoria": "apertura",
+        "porQue": "Da un dato concreto (un nombre, una cifra) sin explicar todavia el resto -- el espectador entiende que hay una historia pero no la historia completa. Maxima curiosidad con ALGO de contexto, no con cero.",
+        "evidencia": [
+          {
+            "id": "loewenstein-1994-brecha-curiosidad",
+            "concepto": "Brecha de curiosidad (curiosity gap)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "p2-hook"
+      },
+      {
+        "patronId": "loop-abierto",
+        "nombre": "Loop abierto / pregunta sin resolver",
+        "categoria": "apertura",
+        "porQue": "Plantea una pregunta o situación de tensión en el hook y la deja explícitamente sin resolver hasta el cierre -- la tensión cognitiva de \"algo incompleto\" mantiene la atención.",
+        "evidencia": [
+          {
+            "id": "zeigarnik-1927-tareas-incompletas",
+            "concepto": "Efecto Zeigarnik (tareas incompletas)",
+            "nivel": "evidencia"
+          },
+          {
+            "id": "heuristica-cliffhanger-aplicado-vertical",
+            "concepto": "Cliffhanger aplicado a video vertical corto",
+            "nivel": "patron_observado"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "p2-montaje"
+      },
+      {
+        "patronId": "pregunta-sin-resolver-intermedia",
+        "nombre": "Micro-loop a mitad de video",
+        "categoria": "curiosidad",
+        "porQue": "Reabre un loop chico (una pregunta nueva, más pequeña que la del hook) a mitad del video para \"reenganchar\" antes de que la atención decaiga -- la misma tensión cognitiva de Zeigarnik, aplicada varias veces en vez de una sola.",
+        "evidencia": [
+          {
+            "id": "zeigarnik-1927-tareas-incompletas",
+            "concepto": "Efecto Zeigarnik (tareas incompletas)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "p2-revelacion"
+      },
+      {
+        "patronId": "pago-de-la-promesa",
+        "nombre": "Pago explícito de la promesa del hook",
+        "categoria": "recompensa",
+        "porQue": "Cuando el hook prometió algo (una respuesta, un resultado), el video debe entregarlo explícitamente y de forma reconocible -- cerrar el loop es lo que da la \"recompensa\" cognitiva de la tensión generada, según Zeigarnik.",
+        "evidencia": [
+          {
+            "id": "zeigarnik-1927-tareas-incompletas",
+            "concepto": "Efecto Zeigarnik (tareas incompletas)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "p2-cta"
+      }
+    ]
+  }
+}
