@@ -27,12 +27,12 @@ const licencia = /Licencia: (.+)/.exec(creditosTxt)?.[1]?.trim() ?? '';
 const credito = `Foto: ${autor}${licencia ? ` · ${licencia}` : ''} · Wikimedia Commons`;
 
 const slides: Slide[] = [
-  {id: 's1', tipo: 'portada', texto: 'El sistema de Elon Musk: construir rápido, fracasar rápido, aprender rápido.'},
-  {id: 's2', tipo: 'hook', texto: 'No sabía hacer cohetes. Aprendió en el camino.'},
-  {id: 's3', tipo: 'desarrollo', texto: 'Creó SpaceX con un sistema de iteración constante.'},
-  {id: 's4', tipo: 'desarrollo', texto: 'Vos no necesitás saber todo. Necesitás empezar.'},
-  {id: 's5', tipo: 'desarrollo', texto: 'El sistema > El conocimiento.'},
-  {id: 's6', tipo: 'cta', texto: 'Comentá "MUSK" y te mando el sistema que uso.'},
+  {id: 's1', tipo: 'portada', texto: 'SpaceX explotó sus primeros 3 cohetes. Uno tras otro.'},
+  {id: 's2', tipo: 'hook', texto: '2006. 2007. 2008. Tres lanzamientos. Tres fracasos en fila.'},
+  {id: 's3', tipo: 'desarrollo', texto: 'Casi se quedan sin plata para el cuarto intento. Era ese o cerrar.'},
+  {id: 's4', tipo: 'desarrollo', texto: 'El cuarto despegó. Y salvó la empresa entera.'},
+  {id: 's5', tipo: 'desarrollo', texto: 'No fue más conocimiento técnico. Fue el mismo sistema, ajustado 3 veces.'},
+  {id: 's6', tipo: 'cta', texto: 'Tu primer producto también va a fallar. ¿Vas a tener un cuarto intento? Comentá "MUSK".'},
 ];
 
 const carrusel = armarCarrusel('carrusel-prueba-musk', 'El sistema de Elon Musk', slides, IDENTIDAD_DEFECTO, []);
@@ -50,6 +50,7 @@ carrusel.slides.forEach((slide, i) => {
   };
   if (slide.tipo === 'portada') {
     props.imagen = 'fotos/elon-musk.jpg';
+    props.estiloImagen = 'fondo';
     props.credito = credito;
   }
   fs.writeFileSync(path.join(dirSalida, `slide-${String(i + 1).padStart(2, '0')}.json`), JSON.stringify(props, null, 2));
