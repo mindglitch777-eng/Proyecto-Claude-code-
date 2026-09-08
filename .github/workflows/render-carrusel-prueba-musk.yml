@@ -33,6 +33,45 @@ jobs:
             echo "AVISO: assets/personas/elon-musk/00.jpg todavia no existe -- correr foto-persona.yml primero."
           fi
 
+      - uses: actions/setup-python@v5
+        if: steps.check.outputs.listo == 'true'
+        with:
+          python-version: "3.11"
+
+      - name: Bajar foto representativa de cohete (Pexels) si falta
+        if: steps.check.outputs.listo == 'true'
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        run: |
+          if [ ! -d "assets/metraje/cohete-lanzamiento" ] || [ -z "$(ls -A assets/metraje/cohete-lanzamiento/*.jpg 2>/dev/null)" ]; then
+            python3 descargar_metraje.py cohete-lanzamiento 3
+          else
+            echo "Ya existe, salteo."
+          fi
+
+      - name: Bajar logo real de SpaceX (Wikidata/Commons) si falta
+        if: steps.check.outputs.listo == 'true'
+        run: |
+          if [ -z "$(ls -A assets/logos/spacex/logo.* 2>/dev/null)" ]; then
+            python3 descargar_logo_empresa.py "SpaceX" spacex
+          else
+            echo "Ya existe, salteo."
+          fi
+
+      - name: Commitear los assets nuevos (foto de cohete + logo)
+        if: steps.check.outputs.listo == 'true'
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain assets/metraje/cohete-lanzamiento assets/logos)" ]; then
+            git add assets/metraje/cohete-lanzamiento assets/logos
+            git commit -m "Assets reales: foto de cohete (Pexels) + logo de SpaceX (Wikidata/Commons)"
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          else
+            echo "Sin assets nuevos."
+          fi
+
       - uses: actions/setup-node@v4
         if: steps.check.outputs.listo == 'true'
         with:

@@ -4,7 +4,7 @@
 set -euo pipefail
 raiz="$(cd "$(dirname "$0")/.." && pwd)"
 dst="$raiz/remotion-spike/public"
-rm -rf "$dst"; mkdir -p "$dst/fuentes" "$dst/fotos" "$dst/video" "$dst/sfx" "$dst/audio_documental"
+rm -rf "$dst"; mkdir -p "$dst/fuentes" "$dst/fotos" "$dst/video" "$dst/sfx" "$dst/audio_documental" "$dst/logos"
 
 cp "$raiz/assets/fuentes/PlayfairDisplay-Variable.ttf" "$dst/fuentes/"
 cp "$raiz/assets/fuentes/PlayfairDisplay-Italic.ttf"   "$dst/fuentes/"
@@ -29,6 +29,27 @@ done
 for f in "$raiz"/assets/metraje_video/*/*.mp4; do
   [ -e "$f" ] || continue
   cp "$f" "$dst/video/$(basename "$f")"
+done
+
+# Metraje de banco (Pexels, fotos): assets/metraje/<nicho>/*.jpg
+# (descargar_metraje.py), en vez de assets/biblioteca/. El nombre de
+# archivo ya viene con el nicho como prefijo ("<nicho>-00.jpg" etc,
+# ver bajar_nicho()), asi que se copia el basename tal cual.
+for f in "$raiz"/assets/metraje/*/*.jpg; do
+  [ -e "$f" ] || continue
+  cp "$f" "$dst/fotos/$(basename "$f")"
+done
+
+# Logos reales de empresas/marcas citadas (Wikidata P154 + Commons via
+# descargar_logo_empresa.py) -- para identificacion editorial en un
+# slide, nunca a tamano dominante.
+for d in "$raiz"/assets/logos/*/; do
+  n="$(basename "$d")"
+  for f in "$d"logo.*; do
+    [ -e "$f" ] || continue
+    ext="${f##*.}"
+    cp "$f" "$dst/logos/${n}.${ext}"
+  done
 done
 
 # Efectos de sonido: sintetizados con sfx.py, sin problema de licencia

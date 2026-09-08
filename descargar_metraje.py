@@ -51,6 +51,13 @@ NICHOS = {
     "freelance": "freelancer working desk laptop",
     "celular": "young person using smartphone studying",
     "comercio": "small shop owner serving customer",
+    # Agregado para el carrusel de prueba "El sistema de Elon Musk"
+    # (fabrica/ejemplos/generar_carrusel_prueba_musk.ts) -- foto
+    # representativa generica de cohete, no una foto real de un evento
+    # puntual de SpaceX (esa distincion no la tiene Pexels, es banco
+    # generico). Reutilizable para cualquier otro carrusel del lote
+    # de 42 que necesite la misma idea.
+    "cohete-lanzamiento": "rocket launch night sky smoke",
 }
 
 
@@ -260,7 +267,12 @@ def main():
     # no, se toma el texto tal cual como busqueda. Asi el workflow solo
     # necesita pasar el nombre y no tiene que resolver la consulta.
     nicho = a[0]
-    consulta = NICHOS.get(nicho, a[1] if len(a) > 1 else nicho)
+    # Bugfix real: antes, con un nicho custom llamado por el workflow
+    # (que solo pasa nicho+cantidad, sin query aparte), a[1] terminaba
+    # siendo la CANTIDAD ("3") y se usaba como termino de busqueda en
+    # Pexels -- ahora solo se toma a[1] como query si de verdad no es
+    # un numero.
+    consulta = NICHOS.get(nicho, a[1] if len(a) > 1 and not a[1].isdigit() else nicho)
     cantidad = int(a[-1]) if a[-1].isdigit() else 12
     bajar_nicho(nicho, consulta, cantidad, k)
     return 0
