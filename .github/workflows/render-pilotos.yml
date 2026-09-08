@@ -1,0 +1,101 @@
+name: render-pilotos
+
+# Renderiza los 3 PILOTOS de validacion (piloto-1/2/3,
+# remotion-spike/src/fabrica_bridge/piloto-N.json) en runners de
+# GitHub -- mismo patron que render-lote-ventas.yml.
+#
+# Cada job salta con un aviso si su piloto-N.json todavia no existe en
+# el checkout (bridge sin generar todavia, ej. falta la voz real o
+# todavia no se registro la Composition en Root.tsx) -- no falla el
+# resto del lote.
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      videos:
+        description: "Ids separados por coma (vacio = los 3)"
+        required: false
+        default: ""
+  push:
+    branches: ["claude/organize-repo-duplicates-xl042t"]
+    paths:
+      - ".github/workflows/render-pilotos.yml"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        video: [piloto-1, piloto-2, piloto-3]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ver si el bridge de este video ya existe
+        id: check
+        run: |
+          if [ -f "remotion-spike/src/fabrica_bridge/${{ matrix.video }}.json" ]; then
+            echo "listo=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "listo=false" >> "$GITHUB_OUTPUT"
+            echo "AVISO: ${{ matrix.video }}.json todavia no existe (falta voz real o generador) -- salteo este job."
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.listo == 'true'
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: remotion-spike/package-lock.json
+
+      - name: Dependencias
+        if: steps.check.outputs.listo == 'true'
+        working-directory: remotion-spike
+        run: npm ci --no-audit --no-fund
+
+      - name: Navegador para Remotion
+        if: steps.check.outputs.listo == 'true'
+        working-directory: remotion-spike
+        run: npx remotion browser ensure
+
+      - name: Armar public/ (fuentes, fotos, metraje, SFX de golpes)
+        if: steps.check.outputs.listo == 'true'
+        run: ./remotion-spike/preparar-public.sh
+
+      - name: Copiar audio real de los pilotos a public/
+        if: steps.check.outputs.listo == 'true'
+        run: |
+          mkdir -p remotion-spike/public/fabrica_piloto_1 remotion-spike/public/fabrica_piloto_2 remotion-spike/public/fabrica_piloto_3
+          cp capturas_voz/audio_pilotos/p1-*.wav remotion-spike/public/fabrica_piloto_1/ 2>/dev/null || true
+          cp capturas_voz/audio_pilotos/p2-*.wav remotion-spike/public/fabrica_piloto_2/ 2>/dev/null || true
+          cp capturas_voz/audio_pilotos/p3-*.wav remotion-spike/public/fabrica_piloto_3/ 2>/dev/null || true
+
+      - name: Renderizar ${{ matrix.video }}
+        if: steps.check.outputs.listo == 'true'
+        working-directory: remotion-spike
+        run: |
+          mkdir -p out
+          npx remotion render ${{ matrix.video }} out/${{ matrix.video }}.mp4 \
+            --concurrency=2 --log=info
+
+      - name: Commitear ${{ matrix.video }}
+        if: steps.check.outputs.listo == 'true'
+        run: |
+          mkdir -p videos/pilotos
+          cp remotion-spike/out/${{ matrix.video }}.mp4 videos/pilotos/
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add videos/pilotos/${{ matrix.video }}.mp4
+          if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
+          git commit -m "Video Remotion ${{ matrix.video }} (pilotos de validacion, Taller de Activos)"
+          for i in 1 2 3 4 5 6; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && \
+            git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
+            echo "reintento $i"
+            sleep $((RANDOM % 8 + 2 * i))
+          done
+          exit 1

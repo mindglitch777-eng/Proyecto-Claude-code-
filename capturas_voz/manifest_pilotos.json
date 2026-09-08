@@ -1,0 +1,14 @@
+[
+  {"id": "p1-hook", "texto": "La gente que gana plata con productos digitales no sabe editar video. No tiene equipo caro. No sale en cámara."},
+  {"id": "p1-contradiccion", "texto": "Vos pensás que necesitás saber editar. Lo que necesitás es saber vender."},
+  {"id": "p1-prueba", "texto": "Guión: una hora. Grabación en cámara: cero minutos. El producto ya está armado."},
+  {"id": "p1-sistema", "texto": "El sistema real es: idea, oferta, contenido, venta. En ese orden. No en el que te vendieron."},
+  {"id": "p1-cta", "texto": "Sin cámara. Sin equipo. Sin excusas. Empezá hoy."},
+  {"id": "p2-hook", "texto": "Esto lo armé en una tarde. Mirá."},
+  {"id": "p2-revelacion", "texto": "Tiempo real de armado: cuatro horas. Sin editor. Sin equipo."},
+  {"id": "p2-cta", "texto": "Si yo pude en una tarde, vos también podés."},
+  {"id": "p3-hook", "texto": "Tres herramientas. Cero empleados. Mismo resultado."},
+  {"id": "p3-herramientas", "texto": "Una escribe. Otra diseña. Otra organiza. Las tres juntas reemplazan a un equipo entero."},
+  {"id": "p3-comparacion", "texto": "Un equipo tradicional cuesta miles de dólares por mes. Estas tres herramientas, apenas unos dólares."},
+  {"id": "p3-cta", "texto": "No necesitás un equipo. Necesitás las herramientas correctas."}
+]
