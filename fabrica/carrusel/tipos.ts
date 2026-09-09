@@ -33,6 +33,15 @@ export type Slide = {
   credito?: string;
   resaltar?: string[];
   logo?: string;
+  /** Color de acento (hex) que reemplaza a PALETA.acento SOLO en este
+   * slide -- pedido del operador (08/09 R2: "colores que hagan un gran
+   * impacto visual"): cada carrusel tiene una categoria de contenido
+   * (dinero/ia/alerta/exito/regalo, ver CATEGORIAS en lote_42_datos.ts)
+   * y ese color tiñe el resaltado + fondo de portada/cta + duotono de
+   * la foto, sin tocar PALETA (identidad de marca compartida con video,
+   * ver identidad.ts) -- si no se pasa, CarruselSlide.tsx cae a
+   * PALETA.acento como siempre. */
+  colorAcento?: string;
 };
 
 export type IdentidadMarca = {

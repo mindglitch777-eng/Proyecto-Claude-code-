@@ -13,19 +13,23 @@ export const ANCHO_CARRUSEL = 1080;
 export const ALTO_CARRUSEL = 1350; // 4:5, formato estandar de carrusel
 
 /** Parte `texto` por las substrings de `resaltar` (si hay) y devuelve
- * los tramos coincidentes en `colorResaltado` -- la forma real de
- * "que haya colores que llamen la atencion" sin depender de que TODOS
- * los slides tengan una foto. */
+ * los tramos coincidentes como un "chip" tipo marcador fluo (fondo
+ * solido + texto invertido) en vez de solo texto de color -- pedido
+ * del operador (R2 08/09: "colores que hagan un gran impacto visual" /
+ * "edicion un poco mas avanzada, un poco mas compleja"). Antes solo
+ * pintaba el texto; el chip se lee mucho mas fuerte a tamano de feed. */
 function ConResaltado({
   texto,
   resaltar,
   colorBase,
-  colorResaltado,
+  chipFondo,
+  chipTexto,
 }: {
   texto: string;
   resaltar?: string[];
   colorBase: string;
-  colorResaltado: string;
+  chipFondo: string;
+  chipTexto: string;
 }) {
   if (!resaltar || resaltar.length === 0) return <span style={{color: colorBase}}>{texto}</span>;
   const patron = resaltar
@@ -40,7 +44,17 @@ function ConResaltado({
     <>
       {partes.map((parte, i) =>
         esResaltado.has(parte) ? (
-          <span key={i} style={{color: colorResaltado}}>
+          <span
+            key={i}
+            style={{
+              color: chipTexto,
+              background: chipFondo,
+              borderRadius: 10,
+              padding: '0.02em 0.2em',
+              boxDecorationBreak: 'clone',
+              WebkitBoxDecorationBreak: 'clone',
+            }}
+          >
             {parte}
           </span>
         ) : (
@@ -73,17 +87,31 @@ export const CarruselSlide: React.FC<{
   /** Credito real de la foto (fuente/autor/licencia), obligatorio si
    * hay `imagen` -- nunca se usa una imagen real sin su atribucion. */
   credito?: string;
-  /** Palabras/frases exactas de `texto` que se pintan en
-   * PALETA.acento en vez del color base -- para que un slide de solo
-   * texto tambien tenga un punto de color que llame la atencion. */
+  /** Palabras/frases exactas de `texto` que se pintan como chip
+   * (fondo solido en `colorAcento`/PALETA.acento) en vez del color
+   * base -- para que un slide de solo texto tambien tenga un punto de
+   * color que llame la atencion. */
   resaltar?: string[];
   /** Logo/marca chica opcional (ej. logo real de una empresa citada,
    * con su propio credito si hace falta) -- badge en una esquina, NUNCA
    * a tamano dominante, para que no lea como co-branding/auspicio. */
   logo?: string;
-}> = ({tipo, texto, subtexto, numero, total, imagen, estiloImagen = 'circular', credito, resaltar, logo}) => {
+  /** Color hex que reemplaza a PALETA.acento SOLO en este slide (ver
+   * tipos.ts) -- categoria de contenido del carrusel (dinero/ia/alerta/
+   * exito/regalo). Si no se pasa, cae a PALETA.acento (identidad de
+   * marca de siempre) para no romper renders viejos. */
+  colorAcento?: string;
+}> = ({tipo, texto, subtexto, numero, total, imagen, estiloImagen = 'circular', credito, resaltar, logo, colorAcento}) => {
+  const acento = colorAcento ?? PALETA.acento;
   const esPortadaOCta = tipo === 'portada' || tipo === 'cta';
   const imagenDeFondo = Boolean(imagen) && estiloImagen === 'fondo';
+
+  // Barra de acento arriba de TODO slide -- firma visual consistente
+  // que a la vez varia de color por categoria (pedido: "impacto
+  // visual" + "edicion mas avanzada" sin perder la identidad de marca).
+  const barraAcento = (
+    <div style={{position: 'absolute', top: 0, left: 0, right: 0, height: 12, background: acento, zIndex: 5}} />
+  );
 
   if (imagenDeFondo) {
     return (
@@ -99,11 +127,11 @@ export const CarruselSlide: React.FC<{
             filter: 'grayscale(1) contrast(1.15) brightness(0.85)',
           }}
         />
-        {/* duotono real en la paleta de marca -- multiply tiñe las
-            sombras de naranja/negro, no un filtro generico de stock */}
+        {/* duotono real en la paleta de la categoria -- multiply tiñe las
+            sombras del color de acento, no un filtro generico de stock */}
         <AbsoluteFill
           style={{
-            background: `linear-gradient(180deg, ${PALETA.acento}55 0%, transparent 35%, transparent 55%, rgba(10,10,12,0.55) 78%, rgba(10,10,12,0.96) 100%)`,
+            background: `linear-gradient(180deg, ${acento}55 0%, transparent 35%, transparent 55%, rgba(10,10,12,0.55) 78%, rgba(10,10,12,0.96) 100%)`,
             mixBlendMode: 'multiply',
           }}
         />
@@ -112,6 +140,7 @@ export const CarruselSlide: React.FC<{
             background: 'linear-gradient(0deg, rgba(10,10,12,0.98) 0%, rgba(10,10,12,0.55) 32%, transparent 58%)',
           }}
         />
+        {barraAcento}
         <AbsoluteFill
           style={{
             display: 'flex',
@@ -130,7 +159,7 @@ export const CarruselSlide: React.FC<{
               textShadow: '0 4px 24px rgba(0,0,0,0.6)',
             }}
           >
-            <ConResaltado texto={texto} resaltar={resaltar} colorBase={PALETA.texto} colorResaltado={PALETA.acento} />
+            <ConResaltado texto={texto} resaltar={resaltar} colorBase={PALETA.texto} chipFondo={acento} chipTexto={PALETA.fondo} />
           </div>
           {subtexto ? (
             <div
@@ -199,11 +228,16 @@ export const CarruselSlide: React.FC<{
   }
 
   const colorBase = esPortadaOCta ? PALETA.fondo : PALETA.texto;
+  const chipFondo = esPortadaOCta ? PALETA.texto : acento;
+  const chipTexto = esPortadaOCta ? acento : PALETA.fondo;
 
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: esPortadaOCta ? PALETA.acento : PALETA.fondo,
+        backgroundColor: esPortadaOCta ? acento : PALETA.fondo,
+        backgroundImage: esPortadaOCta
+          ? `radial-gradient(circle at 15% 8%, rgba(255,255,255,0.16) 0%, transparent 45%)`
+          : undefined,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -211,6 +245,7 @@ export const CarruselSlide: React.FC<{
         padding: '10% 8%',
       }}
     >
+      {!esPortadaOCta ? barraAcento : null}
       {imagen ? (
         <div
           style={{
@@ -244,7 +279,7 @@ export const CarruselSlide: React.FC<{
           textAlign: 'center',
         }}
       >
-        <ConResaltado texto={texto} resaltar={resaltar} colorBase={colorBase} colorResaltado={esPortadaOCta ? PALETA.texto : PALETA.acento} />
+        <ConResaltado texto={texto} resaltar={resaltar} colorBase={colorBase} chipFondo={chipFondo} chipTexto={chipTexto} />
       </div>
       {subtexto ? (
         <div

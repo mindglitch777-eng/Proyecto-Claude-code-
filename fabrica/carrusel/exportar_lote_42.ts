@@ -106,6 +106,7 @@ for (const c of CARRUSELES_42) {
       total: carrusel.slides.length,
     };
     if (slide.resaltar) props.resaltar = slide.resaltar;
+    if (slide.colorAcento) props.colorAcento = slide.colorAcento;
     if (slide.imagen?.startsWith('STOCK:')) {
       const nicho = slide.imagen.slice('STOCK:'.length);
       const resuelto = resolverStock(nicho);

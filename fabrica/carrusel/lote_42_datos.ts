@@ -28,6 +28,8 @@
  */
 import type {Slide} from './tipos';
 
+export type Categoria = 'dinero' | 'ia' | 'alerta' | 'exito' | 'regalo';
+
 export type CarruselLote = {
   numero: number;
   id: string;
@@ -38,6 +40,12 @@ export type CarruselLote = {
   dia: number; // 1-7
   horario: 'Mañana' | 'Tarde' | 'Noche';
   horaSugerida: string;
+  categoria: Categoria;
+  /** Estilo de audio SUGERIDO para el video/reel del carrusel al
+   * publicarlo (tono, no un track real puntual -- el operador elige
+   * el sonido/trend real de la plataforma al momento de publicar,
+   * pedido explicito 08/09: "organizado... con musica"). */
+  musica: string;
 };
 
 const TAGS_BASE = ['#TallerDeActivos', '#ProductosDigitales', '#Emprendimiento', '#InfoProductos', '#DineroOnline'];
@@ -74,7 +82,7 @@ const CRUDOS: Crudo[] = [
       '...él está usando IA para hacerlo en segundos.',
       'La habilidad que necesitás no es técnica. Es estratégica.',
       'El sistema > el talento. Siempre.',
-      'Comentá "SISTEMA" y te mando la guía para construir el tuyo.',
+      'Comentá "VENTAJA" y te mando la guía para construir el tuyo.',
     ],
     tagsExtra: ['#MarketingDigital', '#IA'],
     descripcion: 'La ventaja real no es saber editar. Es tener sistema. 👇',
@@ -87,7 +95,7 @@ const CRUDOS: Crudo[] = [
       'Estudiaron psicología del comprador. Y usaron IA para entender qué vende.',
       'El marketing no se estudia. Se aplica.',
       'Los que cobran no esperan a ser expertos. Empiezan.',
-      'Comentá "EMPEZAR" y te mando el primer paso para vender sin estudiar.',
+      'Comentá "APLICAR" y te mando el primer paso para vender sin estudiar.',
     ],
     tagsExtra: ['#MarketingDigital', '#VentasOnline'],
     descripcion: 'Dejá de estudiar marketing. Empezá a aplicarlo.',
@@ -245,7 +253,7 @@ const CRUDOS: Crudo[] = [
       'Los activos digitales no descansan. Vos sí.',
       'La pregunta no es cuánto. Es cómo.',
       'Construí el sistema. La plata llega sola.',
-      'Comentá "SISTEMA" y te mando la guía para construir el tuyo.',
+      'Comentá "FACTURA" y te mando la guía para construir el tuyo.',
     ],
     tagsExtra: ['#IngresoPasivo', '#ActivosDigitales'],
     descripcion: 'Mientras dormís, un activo real sigue trabajando.',
@@ -330,134 +338,144 @@ const CRUDOS: Crudo[] = [
     descripcion: 'Tu activo no descansa cuando vos sí.',
   },
   {
-    numero: 21, titulo: 'Mito: el algoritmo te esconde',
+    numero: 21, titulo: 'El algoritmo no te esconde nada',
     textos: [
-      'Mito: "el algoritmo me odia".',
-      'No, tu producto es invisible.',
-      'El algoritmo no te esconde. Tu contenido no es relevante.',
-      'Los mejores creadores no dependen del algoritmo.',
-      'Dependen de su sistema de creación.',
-      'Comentá "VISIBLE" y te mando la guía para hacer contenido visible.',
+      'El algoritmo no te esconde. Te expone tal cual sos.',
+      'Y lo que muestra es un producto que todavía nadie necesita.',
+      '¿Cuántas veces revisaste el alcance esta semana? ¿Y el producto?',
+      'El alcance es un síntoma. El producto es la causa.',
+      'Arreglá lo que vendés. El alcance se ordena solo.',
+      'Comentá "INVISIBLE" y te mando la guía para dejar de ser invisible.',
     ],
     tagsExtra: ['#Mito', '#Algoritmo'],
-    descripcion: 'Mito #3: el algoritmo te esconde. Falso.',
+    descripcion: 'No es el algoritmo. Es lo que estás vendiendo.',
+    resaltarPorSlide: [['expone tal cual sos'], ['todavía nadie necesita'], ['el alcance', 'el producto'], ['síntoma', 'causa'], ['se ordena solo'], ['INVISIBLE']],
   },
   {
-    numero: 22, titulo: 'Mito: necesitás muchos seguidores',
+    numero: 22, titulo: 'Vendí sin un solo seguidor',
     textos: [
-      'Mito: "Necesito 10 mil seguidores".',
-      'Falso. Se puede vender con 0.',
-      'Los primeros clientes no eran seguidores. Eran personas con un problema.',
-      'Necesitás producto, no audiencia.',
-      'Creá, vendé, repetí.',
-      'Comentá "PRODUCTO" y te mando la guía para crear el tuyo.',
+      'Mi primera venta no tuvo ni un seguidor de testigo.',
+      'La hizo alguien que encontró el producto, no la cuenta.',
+      'Los seguidores miran. Los que buscan una solución, compran.',
+      'Podés tener 200 seguidores y vender más que uno con 200 mil.',
+      'Dejá de perseguir números. Empezá a resolver algo puntual.',
+      'Comentá "AUDIENCIA" y te mando la guía para vender sin ella.',
     ],
     tagsExtra: ['#Mito', '#VenderSinAudiencia'],
-    descripcion: 'Mito #4: necesitás muchos seguidores. Falso.',
+    descripcion: 'Vendí sin audiencia. Se puede.',
+    resaltarPorSlide: [['ni un seguidor'], ['no la cuenta'], ['compran'], ['200 seguidores', '200 mil'], ['resolver algo puntual'], ['AUDIENCIA']],
   },
   {
-    numero: 23, titulo: 'Mito: hay que ser experto',
+    numero: 23, titulo: 'Empecé sin saber nada del tema',
     textos: [
-      'Mito: "Soy un experto".',
-      'Mentira. Los que venden son los que empiezan.',
-      'La experiencia real se construye vendiendo, no antes de vender.',
-      'La experiencia no se estudia, se construye.',
-      'Empezá hoy. Aprendé en el camino.',
-      'Comentá "EMPEZAR" y te mando el primer paso.',
+      'Publiqué mi primer contenido sabiendo menos que la mitad de mi audiencia.',
+      'Y aun así generó la primera venta.',
+      'La gente no compra tu currículum. Compra que resuelvas SU problema hoy.',
+      'Vas a saber más en el mes 3 que en el día 1. Empezá igual en el día 1.',
+      'La experiencia se acumula publicando, nunca esperando.',
+      'Comentá "EXPERIENCIA" y te mando cómo empezar sin ser experto.',
     ],
     tagsExtra: ['#Mito', '#EmprenderSinExperiencia'],
-    descripcion: 'Mito #5: hay que ser experto. Falso.',
+    descripcion: 'No sabía nada del tema. Vendí igual.',
+    resaltarPorSlide: [['menos que la mitad'], ['la primera venta'], ['SU problema hoy'], ['mes 3', 'día 1'], ['se acumula publicando'], ['EXPERIENCIA']],
   },
   {
-    numero: 24, titulo: 'Mito: la IA es para jugar',
+    numero: 24, titulo: 'Un prompt no es un sistema',
     textos: [
-      'Mito: "la IA es para jugar".',
-      'El 90% usa IA para jugar. El 10% para construir sistemas.',
-      'La IA no es un juguete. Es una herramienta de escalabilidad.',
-      'El que entiende esto, gana.',
-      'Usá IA para construir, no para jugar.',
-      'Comentá "CONSTRUIR" y te mando la guía para usar IA en tu negocio.',
+      'El 90% le pide un post a la IA y se queda ahí.',
+      'El 10% le pide un sistema completo: guion, imagen, calendario, respuestas.',
+      'La diferencia entre esos dos no es la herramienta. Es cuántos pasos le delegás.',
+      'Un prompt suelto ahorra 5 minutos. Un sistema armado ahorra 5 horas por semana.',
+      'Dejá de pedirle frases. Empezá a pedirle procesos.',
+      'Comentá "HERRAMIENTA" y te mando cómo armar tu sistema con IA.',
     ],
     tagsExtra: ['#Mito', '#IA'],
-    descripcion: 'Mito #6: la IA es para jugar. Falso.',
+    descripcion: 'Casi nadie usa la IA como un sistema. Ahí está la ventaja.',
+    resaltarPorSlide: [['90%'], ['10%', 'sistema completo'], ['cuántos pasos'], ['5 minutos', '5 horas'], ['procesos'], ['HERRAMIENTA']],
   },
   {
-    numero: 25, titulo: 'Mito: el contenido es rey',
+    numero: 25, titulo: 'Ese carrusel no te paga el alquiler',
     textos: [
-      'Mito: "el contenido es rey".',
-      'El contenido es el nuevo café de la esquina.',
-      'Se consume y desaparece. Los activos quedan.',
-      'Construí activos, no contenido.',
-      'El contenido atrae. Los activos convierten.',
-      'Comentá "ACTIVOS" y te mando la guía para construir los tuyos.',
+      'Ese carrusel que hiciste ayer, en un mes ya no lo va a ver nadie.',
+      'El producto digital que armaste la semana pasada te puede seguir pagando en un año.',
+      'El contenido tiene fecha de vencimiento. El activo, no.',
+      'Publicá contenido para mostrar el activo. Nunca al revés.',
+      'Si todo tu esfuerzo es contenido y no tenés nada que vender, estás regalando tiempo.',
+      'Comentá "CONVIERTE" y te mando cómo pasar de contenido a activo.',
     ],
     tagsExtra: ['#Mito', '#ActivosDigitales'],
-    descripcion: 'Mito #7: el contenido es rey. Falso.',
+    descripcion: 'El contenido caduca. El activo no.',
+    resaltarPorSlide: [['ya no lo va a ver nadie'], ['seguir pagando en un año'], ['fecha de vencimiento'], ['Nunca al revés'], ['regalando tiempo'], ['CONVIERTE']],
   },
   {
-    numero: 26, titulo: 'Mito: vender es manipular',
+    numero: 26, titulo: 'El que no vende, no ayuda a nadie',
     textos: [
-      'Mito: "vender es manipular".',
-      'Vender es resolver. Resolver un problema.',
-      'El que vende, ayuda. El que no vende, no ayuda a nadie.',
-      'Tu producto cambia vidas. Vendelo.',
-      'El miedo a vender te está costando plata.',
-      'Comentá "VENDER" y te mando la guía para vender sin culpa.',
+      'Tenés algo que le resuelve un problema real a alguien. Y no se lo estás ofreciendo.',
+      'Eso no es humildad. Es dejar a esa persona con el problema.',
+      'Vender bien es avisarle a quien lo necesita que existe una solución.',
+      'Manipular es esconder lo malo. Vender es mostrar lo que sí funciona.',
+      'El miedo a "molestar" te está costando ayudar a gente real.',
+      'Comentá "AYUDA" y te mando cómo ofrecer sin sonar a vendedor.',
     ],
     tagsExtra: ['#Mito', '#VenderSinCulpa'],
-    descripcion: 'Mito #8: vender es manipular. Falso.',
+    descripcion: 'Vender no es manipular. Es avisar que existe una salida.',
+    resaltarPorSlide: [['no se lo estás ofreciendo'], ['con el problema'], ['avisarle'], ['lo que sí funciona'], ['gente real'], ['AYUDA']],
   },
   {
-    numero: 27, titulo: 'Mito: el sistema perfecto existe',
+    numero: 27, titulo: 'Mi sistema cambió 6 veces este año',
     textos: [
-      'Mito: "el sistema perfecto existe".',
-      'No existe. Solo existe el sistema que funciona hoy.',
-      'Los que ganan, iteran. Los que esperan, pierden.',
-      'Probá, medí, mejorá. Ese es el sistema.',
-      'No busques perfecto. Buscá funcional.',
-      'Comentá "FUNCIONAL" y te mando el sistema que uso.',
+      'El sistema que uso hoy no se parece en nada al que armé en enero.',
+      'Lo cambié 6 veces. Cada vez que algo dejó de funcionar.',
+      'Un sistema "perfecto" que no tocás hace 6 meses ya está viejo.',
+      'El objetivo no es armarlo una vez. Es revisarlo cada mes.',
+      'El que gana no tiene el mejor sistema. Tiene el que más rápido ajusta.',
+      'Comentá "ITERAR" y te mando cómo reviso el mío cada mes.',
     ],
     tagsExtra: ['#Mito', '#Iteracion'],
-    descripcion: 'Mito #9: el sistema perfecto existe. Falso.',
+    descripcion: 'Cambié mi sistema 6 veces este año. Por eso funciona.',
+    resaltarPorSlide: [['no se parece en nada'], ['6 veces'], ['ya está viejo'], ['cada mes'], ['más rápido ajusta'], ['ITERAR']],
   },
   {
-    numero: 28, titulo: 'Mito: el precio lo define el mercado',
+    numero: 28, titulo: 'Subí el precio y vendí más',
     textos: [
-      'Mito: "el precio lo define el mercado".',
-      'El precio lo define el valor que vos creás.',
-      'Si resolvés un problema grande, cobrá acorde.',
-      'El precio no es un número. Es una decisión.',
-      'Los que cobran caro, resuelven caro.',
-      'Comentá "PRECIO" y te mando la guía para poner precio a tu producto.',
+      'Dupliqué el precio de mi producto y las ventas no bajaron. Subieron.',
+      'Un precio bajo no atrae más gente. Atrae gente que desconfía de lo barato.',
+      'El precio también es información: le dice al comprador cuánto valés.',
+      'No cobres lo que "se estila". Cobrá lo que ese problema resuelto vale de verdad.',
+      'El que compra caro, valora más. Y reclama menos.',
+      'Comentá "PRECIO" y te mando cómo calculé el mío.',
     ],
     tagsExtra: ['#Mito', '#Precios'],
-    descripcion: 'Mito #10: el mercado define tu precio. Falso.',
+    descripcion: 'Subí el precio al doble. Vendí más, no menos.',
+    resaltarPorSlide: [['Dupliqué el precio'], ['desconfía de lo barato'], ['cuánto valés'], ['vale de verdad'], ['valora más'], ['PRECIO']],
   },
   {
-    numero: 29, titulo: 'Mito: el fracaso es malo',
+    numero: 29, titulo: 'Mi primer producto no vendió ni uno',
     textos: [
-      'Mito: "el fracaso es malo".',
-      'El fracaso es el primer paso del éxito.',
-      'Los que nunca fracasaron, nunca intentaron nada.',
-      'Tu primer producto va a ser malo. Y eso es bueno.',
-      'Aprendé, mejorá, volvé a intentar.',
-      'Comentá "INTENTAR" y te mando la guía para fracasar bien.',
+      'Mi primer producto digital vendió exactamente 0 unidades.',
+      'El segundo, con el mismo esfuerzo, vendió 40.',
+      'La diferencia no fue suerte. Fue todo lo que aprendí del primero que no vendió.',
+      'Ese fracaso me ahorró meses de errores en el segundo intento.',
+      'El que nunca lanza nada, nunca tiene ese ahorro.',
+      'Comentá "INTENTAR" y te mando qué cambié entre el producto 1 y el 2.',
     ],
     tagsExtra: ['#Mito', '#Resiliencia'],
-    descripcion: 'Mito #11: el fracaso es malo. Falso.',
+    descripcion: 'Mi primer producto vendió 0. El segundo, 40.',
+    resaltarPorSlide: [['0 unidades'], ['vendió 40'], ['aprendí del primero'], ['me ahorró meses'], ['nunca tiene ese ahorro'], ['INTENTAR']],
   },
   {
-    numero: 30, titulo: 'Mito: el éxito es cuestión de suerte',
+    numero: 30, titulo: 'La "suerte" fueron 200 publicaciones',
     textos: [
-      'Mito: "el éxito es cuestión de suerte".',
-      'El éxito es cuestión de sistema.',
-      'Los que ganan, tienen un sistema. Los que pierden, esperan suerte.',
-      'Creá el sistema. La suerte llega sola.',
-      'El sistema gana. Siempre.',
-      'Comentá "SISTEMA" y te mando la guía para construir el tuyo.',
+      'A la gente le sorprende que "tuve suerte" con un producto.',
+      'Lo que no ve son los 200 posts anteriores que nadie miró.',
+      'La suerte de la publicación 201 se construyó con las 200 que fallaron.',
+      'El que ve solo el resultado final, cree que fue casualidad.',
+      'No hay atajo. Hay volumen sostenido hasta que algo pega.',
+      'Comentá "SUERTE" y te mando cuántos intentos tuve antes de esa "suerte".',
     ],
     tagsExtra: ['#Mito', '#Sistema'],
-    descripcion: 'Mito #12: el éxito es suerte. Falso.',
+    descripcion: '200 posts que nadie vio, antes del que sí funcionó.',
+    resaltarPorSlide: [['tuve suerte'], ['200 posts'], ['200 que fallaron'], ['casualidad'], ['volumen sostenido'], ['SUERTE']],
   },
   {
     numero: 31, titulo: 'El sistema de Elon Musk',
@@ -576,7 +594,7 @@ const CRUDOS: Crudo[] = [
       'Error #1: producto confuso. Error #2: precio mal puesto...',
       '5 errores. 5 soluciones. Una guía.',
       'No cometás los mismos errores que todos.',
-      'Comentá "ERRORES" y te mando la guía ahora.',
+      'Comentá "EVITAR" y te mando la guía ahora.',
     ],
     tagsExtra: ['#Errores', '#RecursoGratis'],
     descripcion: 'Los 5 errores que matan ventas (y cómo evitarlos).',
@@ -602,7 +620,7 @@ const CRUDOS: Crudo[] = [
       'Cada plataforma tiene su comisión y sus tiempos de pago.',
       'Uso las que me convienen a mí, no las que usa todo el mundo.',
       'Comparalas antes de elegir una.',
-      'Comentá "PLATAFORMAS" y te mando la lista ahora.',
+      'Comentá "COMISIONES" y te mando la lista ahora.',
     ],
     tagsExtra: ['#Plataformas', '#VentasOnline'],
     descripcion: 'Las plataformas reales que uso para vender.',
@@ -615,7 +633,7 @@ const CRUDOS: Crudo[] = [
       'Paso 1: idea. Paso 2: producto. Paso 3: contenido...',
       'Paso 4: venta. Paso 5: escalabilidad.',
       'No es teoría. Es lo que uso todos los días.',
-      'Comentá "SISTEMA" y te lo mando ahora.',
+      'Comentá "PASOS" y te lo mando ahora.',
     ],
     tagsExtra: ['#Sistema', '#RecursoGratis'],
     descripcion: 'El sistema completo, en 5 pasos, gratis.',
@@ -681,16 +699,59 @@ const IMAGENES_STOCK: Record<number, {nicho: string; logoSlug?: string}> = {
   42: {nicho: 'escalera-exito'},
 };
 
+/** Categoria de contenido por numero de carrusel -- pedido del
+ * operador (R2 08/09: "colores que hagan un gran impacto visual"). Se
+ * eligio por tema real de cada carrusel (dinero/estatus, IA/algoritmo,
+ * mito-error-alerta, anecdota/sistema de exito, o CTA de recurso
+ * gratis en #37-42), no al azar -- asi el color realmente comunica
+ * de que trata el carrusel antes de leer el texto. */
+const CATEGORIA_POR_NUMERO: Record<number, Categoria> = {
+  1: 'exito', 2: 'dinero', 3: 'exito', 4: 'alerta', 5: 'dinero', 6: 'ia', 7: 'dinero', 8: 'exito',
+  9: 'dinero', 10: 'exito', 11: 'ia', 12: 'exito', 13: 'alerta', 14: 'dinero', 15: 'alerta', 16: 'exito',
+  17: 'alerta', 18: 'alerta', 19: 'ia', 20: 'dinero', 21: 'ia', 22: 'dinero', 23: 'exito', 24: 'ia',
+  25: 'dinero', 26: 'exito', 27: 'alerta', 28: 'alerta', 29: 'exito', 30: 'dinero', 31: 'exito', 32: 'exito',
+  33: 'dinero', 34: 'exito', 35: 'exito', 36: 'dinero', 37: 'regalo', 38: 'regalo', 39: 'regalo', 40: 'regalo',
+  41: 'regalo', 42: 'regalo',
+};
+
+/** Color hex por categoria -- 'exito' (la categoria mas grande, 13/42)
+ * NO tiene entrada a proposito: cae al fallback PALETA.acento de
+ * CarruselSlide.tsx (el naranja de marca de siempre), asi "el
+ * desarrollo con el que ya venimos" no cambia para la mayoria y el
+ * color extra queda reservado para las categorias que de verdad
+ * necesitan distinguirse (dinero/ia/alerta/regalo). */
+const COLOR_CATEGORIA: Partial<Record<Categoria, string>> = {
+  dinero: '#F2B705', // oro -- personas ricas, plataformas de venta, facturacion
+  ia: '#2F8CFF', // azul electrico -- IA/automatizacion/algoritmo
+  alerta: '#FF2D3D', // rojo alarma -- mitos, errores, advertencias
+  regalo: '#FF2E9F', // magenta -- CTAs de recurso gratis (#37-42)
+};
+
+/** Estilo de audio SUGERIDO por categoria -- tono/genero, no un track
+ * puntual (no existe forma de saber que sonido esta trending en la
+ * plataforma en el momento real de publicar; el operador elige el
+ * audio/trend concreto ahi, esto es la guia de que tipo buscar). */
+const MUSICA_CATEGORIA: Record<Categoria, string> = {
+  dinero: 'Beat trap/lujo (caja registradora o "money counter") — sensación riqueza/estatus',
+  ia: 'Synth futurista, pulso electrónico ascendente — sensación tech/escalar',
+  alerta: 'Sonido corto de tensión/glitch al inicio + beat seco — sensación de corte de mito',
+  exito: 'Beat motivacional que sube de intensidad hacia el CTA',
+  regalo: 'Audio pop/upbeat pegadizo y repetible — sensación de premio',
+};
+
 export const CARRUSELES_42: CarruselLote[] = CRUDOS.map((c) => {
   const idx0 = c.numero - 1;
   const h = horario(idx0);
   const tipos: Slide['tipo'][] = ['portada', 'hook', 'desarrollo', 'desarrollo', 'desarrollo', 'cta'];
   const persona = IMAGENES_PERSONA[c.numero];
   const stock = IMAGENES_STOCK[c.numero];
+  const categoria = CATEGORIA_POR_NUMERO[c.numero] ?? 'exito';
+  const colorAcento = COLOR_CATEGORIA[categoria];
 
   const slides: Slide[] = c.textos.map((texto, i) => {
     const resaltar = c.resaltarPorSlide?.[i];
     const extra: Partial<Slide> = {};
+    if (colorAcento) extra.colorAcento = colorAcento;
     if (persona && i === 0) {
       extra.imagen = persona.imagen;
       extra.estiloImagen = 'fondo';
@@ -718,5 +779,7 @@ export const CARRUSELES_42: CarruselLote[] = CRUDOS.map((c) => {
     dia: h.dia,
     horario: h.horario,
     horaSugerida: h.horaSugerida,
+    categoria,
+    musica: MUSICA_CATEGORIA[categoria],
   };
 });
