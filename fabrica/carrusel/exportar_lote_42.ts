@@ -135,6 +135,7 @@ for (const c of CARRUSELES_42) {
   resumen.push({
     numero: c.numero, id: c.id, titulo: c.titulo, hashtags: c.hashtags,
     descripcion: c.descripcion, dia: c.dia, horario: c.horario, horaSugerida: c.horaSugerida,
+    categoria: c.categoria, musica: c.musica,
     tieneImagenPersona: Boolean(IDENTIDAD_DEFECTO && c.slides[0].imagen),
   });
 }
