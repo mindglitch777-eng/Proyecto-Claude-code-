@@ -1,5 +1,34 @@
 # Estado vivo del proyecto
 
+## Bloque: calendario re-entregado como archivo descargable + reorganizado a 7 días (2026-09-09, misma sesión que el bloque de abajo)
+
+Dos ajustes reales pedidos por el operador sobre la entrega anterior, en la misma sesión:
+
+**1) El calendario interactivo (Artifact) se le trababa al scrollear en el
+celular.** En vez de seguir parcheando esa vía, se generó un PDF liviano de
+referencia (texto plano, sin JS ni imágenes de más de unos KB) con
+`generar_calendario_pdf.py` (scratchpad) -- pero el operador lo calificó de
+"muy malo" y pidió en cambio el `.html` interactivo original **como archivo
+para descargar y abrir localmente**, no como link de Artifact. Se le mandó
+`calendario_v2.html` (luego `v3.html`, ver punto 2) directo por chat con
+`SendUserFile`. Nota real, no oculta: el botón "Descargar 6 imágenes" de
+cada carrusel no funciona en el archivo local (depende de `claude.use()`,
+que solo existe dentro del visor de Artifact) -- no es un problema, porque
+las 252 imágenes y los 21 videos ya estaban entregados por chat aparte.
+
+**2) Reorganización real del cronograma**: el operador aclaró que la idea
+de los 42 carruseles era que entraran en **7 días** (6/día), no en 21, y
+pidió que los 21 videos entraran en la misma ventana (3/día) -- 9 piezas
+por día. Se rehízo `generar_calendario_v2.py` (scratchpad) para repartir
+`carruseles[6n:6n+6]` + `videos[3n:3n+3]` por día en vez de 2+1, usando las
+mismas 3 franjas horarias más fuertes ya investigadas (12:00 / 18:00 /
+20:00) pero ahora con 2 carruseles + 1 video por franja, escalonados 15 min
+(`:00`/`:15`/`:30`) para no pisarse en el feed sin salirse de la ventana de
+tráfico alto. Al ser 7 días corridos entran sábado y domingo, que los
+mismos estudios muestran algo más débiles -- se documentó la salvedad en el
+propio calendario en vez de callarla, ofreciendo recalcular a solo días de
+semana si el operador lo prefiere (quedaría ~10-11 piezas/día en 4 días).
+
 ## Bloque: calendario unificado (21 videos + 42 carruseles) con horarios investigados + descarga de carruseles arreglada de nuevo (2026-09-09, misma sesión que el bloque de abajo)
 
 Pedido explícito del operador: un calendario COMPLETO (hora/día/título/
