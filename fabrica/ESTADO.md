@@ -1,5 +1,38 @@
 # Estado vivo del proyecto
 
+## Bloque: aclarada la confusión real sobre "por qué la descarga nunca funciona" (2026-09-09, misma sesión que el bloque de abajo)
+
+El operador reportó, después de todo lo anterior, que la descarga seguía sin
+funcionar y preguntó directo "¿querés que lo hostee?" -- señal de que el
+verdadero problema no era un bug de código sino una confusión de canal, ya
+arrastrada por varias vueltas:
+
+**La causa real**: el botón "Descargar 6 imágenes" depende de una conexión
+(`window.claude`/`claude.use('db')`) que **solo existe cuando la página se
+abre desde el link en vivo del Artifact** -- nunca en un archivo `.html`
+guardado/descargado en el celular. Todas las vueltas anteriores en que se
+mandó el calendario por chat como archivo para "descargarlo" entregaron,
+sin darse cuenta, una versión en la que ese botón **no podía funcionar por
+diseño** -- no era un bug a repetir, era el canal equivocado para esa
+función puntual.
+
+**Resuelto**: se publicó un Artifact nuevo (el anterior tenía 1075 líneas
+y releerlo entero para poder republicarlo -- requisito de la plataforma
+antes de sobrescribir -- salía carísimo en contexto; más simple publicar
+uno nuevo) en `https://claude.ai/code/artifact/fa48493c-659b-405a-a784-eab5c6d41e74`
+con `calendario_v4.html` (la versión de 5 días de semana) y
+`capabilities: {db: {}, downloads: true}`, y se re-subieron las 252
+imágenes (42 tandas de 6, reusando los JSON ya preparados en
+`db_docs_v3/`, herramienta `ArtifactData` -- el nombre de la operación de
+base de datos del Artifact cambió de tool esta sesión, de `Artifact` a
+`ArtifactData`). El operador tiene que **abrir ese link** (no descargar el
+archivo) para que el botón de descarga funcione.
+
+**Pendiente real**: confirmar con el operador si, abriendo el link (no un
+archivo bajado), la descarga funciona esta vez -- es la primera vez en la
+sesión que se prueba el mecanismo correcto de punta a punta desde el lado
+del operador.
+
 ## Bloque: calendario recalculado a 5 días de semana (2026-09-09, misma sesión que el bloque de abajo)
 
 Tercer ajuste del mismo cronograma en la misma sesión: el operador pidió
