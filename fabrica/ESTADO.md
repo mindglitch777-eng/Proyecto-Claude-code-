@@ -1,5 +1,69 @@
 # Estado vivo del proyecto
 
+## Bloque: colores por categoría + hooks sin duplicar + calendario día-por-día del lote de 42 (2026-09-09)
+
+Continuación directa del bloque de abajo. El operador reportó dos problemas reales
+sobre la entrega anterior y pidió, para la mañana siguiente, todo terminado con
+más impacto visual, sin supervisión intermedia ("hace una registración cada 8
+minutos... me voy a dormir"). Se resolvió todo en la misma sesión, sin pausar.
+
+**1) El botón de descarga del calendario no guardaba nada en el dispositivo**
+(reporte real del operador). Causa raíz: el flujo `db` + `downloads.save()` del
+Artifact depende de que la capacidad esté disponible para el visor en ese momento
+(iOS enruta `save()` por la hoja de compartir nativa, no una escritura directa) y
+ya había fallado una vez. Se decidió **no seguir parcheando ese mecanismo** —
+sacar el botón de descarga del Artifact y dejar el calendario como referencia
+pura (fecha/horario/título/hashtags/música + miniatura), apoyado 100% en
+`SendUserFile`, que fue el único canal 100% confiable toda la sesión para
+entregar archivos reales guardables. Las 252 imágenes se reenviaron por chat
+en 7 tandas de 36 (una por día de publicación).
+
+**2) Colores con más impacto visual + edición más avanzada** (pedido explícito:
+"colores que hagan un gran impacto visual", "edición un poco más avanzada, un
+poco más compleja"). Se agregó un sistema de `categoria` por carrusel (dinero
+oro `#F2B705` / IA azul `#2F8CFF` / mito-alerta rojo `#FF2D3D` / regalo-CTA
+magenta `#FF2E9F` / éxito-sistema el naranja de marca de siempre, sin cambios)
+que resuelve un `colorAcento` por slide (`CarruselSlide.tsx`, cae a
+`PALETA.acento` si no se pasa -- no rompe nada de `identidad.ts`, que sigue
+siendo la única paleta de marca real compartida con el motor de video). El
+resaltado de palabras clave (`resaltar`) pasó de texto de color a un **chip
+tipo marcador fluo** (fondo sólido + texto invertido), y cada slide tiene una
+barra de acento arriba -- más "editado", visualmente más fuerte que antes.
+
+**3) Hooks repetidos, encontrados y corregidos** (no pedido explícitamente,
+encontrado auditando el lote antes de tocarlo). Los 10 carruseles "Mito: X"
+(#21-30) eran casi duplicados textuales de otros 10 del mismo lote (mismo
+ángulo, a veces la misma palabra clave de CTA) -- se reescribieron con un dato
+o anécdota concreta y propia cada uno. **Bug real de producto encontrado y
+arreglado en el camino**: 7 carruseles distintos compartían la misma palabra
+clave de comentario con otro carrusel del lote (`SISTEMA` x5, `EMPEZAR` x3,
+`VISIBLE`/`PRODUCTO`/`ACTIVOS`/`PLATAFORMAS`/`ERRORES` x2) -- si alguien
+comentaba esa palabra en cualquiera de los dos posts, no había forma de saber
+qué PDF corresponde mandarle. Las 42 palabras clave del lote son únicas ahora.
+
+**4) Calendario reconstruido día por día** con fecha real (arranca al día
+siguiente de la sesión), horario sugerido, título, hashtags y un **estilo de
+música sugerido por categoría** (tono/género, no un track puntual real -- no
+hay forma de saber qué está trending en la plataforma en el momento real de
+publicar, así que se documentó como guía, no como un audio inventado).
+Publicado en el mismo Artifact de siempre (misma URL), con `capabilities: {}`
+para sacar la declaración vieja de `db`/`downloads` que ya no usa.
+
+**Pipeline usado**: se borraron las 252 PNG viejas de `imagenes/lote42/` (el
+workflow de render salta archivos que ya existen, así que hace falta borrar
+para regenerar), se corrió `render-lote42-carruseles.yml` completo de nuevo
+(run 34308469373, ~20 min, éxito), se generó el calendario con un script nuevo
+(`generar_calendario.py`, en el scratchpad de la sesión -- no comiteado al
+repo, es una herramienta de entrega puntual) que lee la metadata real vía
+`dump_calendario_datos.ts` (nuevo, comiteado en `fabrica/carrusel/`) en vez de
+depender de otra corrida de CI.
+
+**Pendiente real, no resuelto esta sesión**: si los PDF/guías prometidos en
+cada CTA ("te mando la guía") existen como archivos reales entregables, y el
+mecanismo real de monitorear comentarios de TikTok y responder con el
+recurso correcto -- bloqueado por la Regla de Oro (ninguna integración con
+cuenta real sin confirmación explícita del operador sobre qué cuenta usar).
+
 ## Bloque: calendario interactivo del lote de 42 + portadas con imagen en los 37 restantes (2026-09-08, misma sesión que el bloque de abajo)
 
 Continuación directa del bloque de abajo, ya con los 252 slides renderizados
