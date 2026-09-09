@@ -1,5 +1,20 @@
 # Estado vivo del proyecto
 
+## Bloque: calendario recalculado a 5 días de semana (2026-09-09, misma sesión que el bloque de abajo)
+
+Tercer ajuste del mismo cronograma en la misma sesión: el operador pidió
+recortar el reparto de 7 días corridos (bloque de abajo) a **solo días de
+semana** (sin sábado ni domingo). 42 carruseles y 21 videos no dividen
+exacto entre 5 días, así que `generar_calendario_v2.py` (scratchpad) ahora
+reparte con una función `repartir()` que da lo más parejo posible (los
+primeros días absorben el resto): carruseles `[9,9,8,8,8]`, videos
+`[5,4,4,4,4]`. Dentro de cada día, esos items se vuelven a repartir entre
+las mismas 3 franjas horarias investigadas (12:00/18:00/20:00), escalonados
+15 min entre sí (a veces esa franja se extiende más allá de la hora exacta
+cuando le tocan más piezas -- ej. 12:00 a 13:00 en el día más cargado --
+pero se mantiene dentro de la ventana ancha de cada estudio, ej. almuerzo
+IG 10-15h). Reemplaza el reparto de 7 días como versión vigente.
+
 ## Bloque: calendario re-entregado como archivo descargable + reorganizado a 7 días (2026-09-09, misma sesión que el bloque de abajo)
 
 Dos ajustes reales pedidos por el operador sobre la entrega anterior, en la misma sesión:
