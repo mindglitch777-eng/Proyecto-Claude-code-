@@ -1,5 +1,91 @@
 # Estado vivo del proyecto
 
+## Bloque: calendario unificado (21 videos + 42 carruseles) con horarios investigados + descarga de carruseles arreglada de nuevo (2026-09-09, misma sesión que el bloque de abajo)
+
+Pedido explícito del operador: un calendario COMPLETO (hora/día/título/
+hashtags/descripción/música) que junte los 21 videos normales Y los 42
+carruseles en un solo cronograma, con horarios basados en investigación real
+(no solo la intuición "martes a viernes de noche" que el operador propuso) y
+que la descarga funcione correctamente esta vez.
+
+**1) Horarios investigados de verdad (WebSearch, no asumidos).** TikTok:
+pico fuerte en la noche (18-22h, especialmente 20-21h) y una ventana
+secundaria a la mañana (6-9h); evitar 10-14h entre semana y siempre 1-5h.
+Instagram: más fuerte martes-jueves, con ventana de almuerzo (11-13h/10-15h)
+y ventana de "vuelta a casa" (17-19h); fines de semana débiles en ambas
+plataformas. Fuentes: Sprout Social, Buffer (7.1M posts de TikTok / 9.6M de
+Instagram analizados), Hootsuite — citadas con URL real en un `<details>`
+plegable dentro del propio calendario. Confirma la intuición del operador
+(mar-vie) y la refina: 3 franjas por día, 12:00 y 18:00 (carrusel) + 20:00
+(video), en vez de "de noche" a secas.
+
+**2) Cronograma unificado.** 42 carruseles (2/día) + 21 videos (1/día) = 21
+días de publicación exactos, arrancando mañana, solo martes-viernes.
+Metadata de publicación de los 21 videos, que no existía como estructura
+separada, se creó en `fabrica/ejemplos/lote_21_publicacion.ts` (paralelo a
+`lote_21_datos.ts`, que sigue siendo solo guión/voz) con hashtags,
+descripción, categoría y CTA por video. `COLOR_CATEGORIA`/`MUSICA_CATEGORIA`
+se exportaron desde `fabrica/carrusel/lote_42_datos.ts` para que videos y
+carruseles compartan una sola taxonomía de categoría/color/música (antes
+solo existía para carruseles). `fabrica/ejemplos/dump_calendario_unificado.ts`
+(nuevo) vuelca todo a JSON plano para que el generador del calendario no
+dependa de otra corrida de CI.
+
+**3) Botón de descarga de los carruseles, reintentado con el bug real
+corregido.** El bloque de abajo (mismo día) documenta que ese mecanismo se
+había sacado del calendario anterior por poco confiable. El operador pidió
+explícitamente en esta vuelta que la descarga funcionara, así que se
+reintentó -- pero esta vez se encontró y corrigió el bug concreto: el
+JS viejo escribía siempre `.png` como extensión del archivo descargado sin
+mirar el `mime` real del documento (`downloads.save()` infiere el tipo por
+la EXTENSIÓN del nombre de archivo, no por `Blob.type` -- confirmado
+releyendo el contrato `.d.ts` de la capacidad, no asumido), y muchas
+imágenes habían sido recomprimidas a JPEG por el límite de 256KB/documento.
+Con `image/jpeg` guardado como `.png` el archivo quedaba corrupto o el
+sistema operativo lo rechazaba -- causa directa más probable del "no me
+guarda" reportado antes. Corregido con una tabla `EXT_POR_MIME` que arma el
+nombre real según el `mime` del documento. **Aun así, la limitación de fondo
+que motivó sacarlo la vez anterior (en iOS `downloads.save()` pasa por la
+hoja de compartir nativa, no una escritura directa, y ya había fallado una
+vez sin causa clara) no desapareció** -- esto es un segundo intento con un
+bug real corregido, no una garantía de que quedó resuelto del todo; si
+vuelve a fallar, la próxima vez conviene sacarlo definitivamente y quedarse
+solo con `SendUserFile`, que fue 100% confiable las dos veces.
+
+**4) Videos: sin botón de descarga, a propósito.** Investigado el contrato
+real de `downloads` (`.d.ts`): no hay límite de tamaño en `save()` en sí,
+pero para que los bytes lleguen a la página hace falta `db` (256KB/documento)
+o incrustarlos en el HTML (≤16MB toda la página) -- los 21 videos pesan
+3.5-10.2MB cada uno, así que ningún mecanismo del Artifact puede servirlos.
+En vez de ofrecer un botón que iba a fallar seguro, cada tarjeta de video
+del calendario dice explícitamente "ya te lo mandé por chat -- un .mp4 no
+entra en este calendario, pesa demasiado" y los 21 videos se entregaron
+por `SendUserFile` en 6 tandas (100MB total). Es una limitación técnica
+real, no una decisión de conveniencia.
+
+**5) Pipeline de datos.** Los 252 PNG de `imagenes/lote42/` se
+recomprimieron (PNG si el base64 entra en 240000 caracteres, si no JPEG
+bajando calidad de a 10 desde 85) y se resubieron al `db` del Artifact en
+42 tandas de 6 (una por carrusel) -- el calendario se republicó primero con
+`capabilities: {db: {}, downloads: true}` declaradas explícitamente (sin
+esto el `write_db` falla con "no such artifact, collection, or document",
+mismo síntoma que la vuelta anterior). Verificado con `read_db get` sobre
+un documento que las 252 imágenes quedaron bien subidas.
+
+**Entrega**: calendario republicado en el mismo Artifact de siempre
+(`https://claude.ai/code/artifact/3531bacf-b3b3-47d2-bccc-5f46e3fb9f2f`),
+21 videos entregados por chat en 6 tandas. El generador
+(`generar_calendario_v2.py`) y el preparador de documentos
+(`preparar_db_docs.py`) quedaron en el scratchpad de la sesión, no en el
+repo -- son herramientas de entrega puntual, igual que el `generar_calendario.py`
+del bloque anterior.
+
+**Pendiente real, no resuelto esta vuelta**: confirmar con el operador si
+la descarga de carruseles funcionó de verdad esta vez desde su celular
+(no hay forma de probar la capacidad real de Artifact fuera del cliente
+real de Claude) -- y lo mismo de siempre, automatizar la publicación real
+a redes sigue bloqueado por la Regla de Oro.
+
 ## Bloque: colores por categoría + hooks sin duplicar + calendario día-por-día del lote de 42 (2026-09-09)
 
 Continuación directa del bloque de abajo. El operador reportó dos problemas reales

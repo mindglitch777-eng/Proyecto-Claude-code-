@@ -720,7 +720,7 @@ const CATEGORIA_POR_NUMERO: Record<number, Categoria> = {
  * desarrollo con el que ya venimos" no cambia para la mayoria y el
  * color extra queda reservado para las categorias que de verdad
  * necesitan distinguirse (dinero/ia/alerta/regalo). */
-const COLOR_CATEGORIA: Partial<Record<Categoria, string>> = {
+export const COLOR_CATEGORIA: Partial<Record<Categoria, string>> = {
   dinero: '#F2B705', // oro -- personas ricas, plataformas de venta, facturacion
   ia: '#2F8CFF', // azul electrico -- IA/automatizacion/algoritmo
   alerta: '#FF2D3D', // rojo alarma -- mitos, errores, advertencias
@@ -730,8 +730,11 @@ const COLOR_CATEGORIA: Partial<Record<Categoria, string>> = {
 /** Estilo de audio SUGERIDO por categoria -- tono/genero, no un track
  * puntual (no existe forma de saber que sonido esta trending en la
  * plataforma en el momento real de publicar; el operador elige el
- * audio/trend concreto ahi, esto es la guia de que tipo buscar). */
-const MUSICA_CATEGORIA: Record<Categoria, string> = {
+ * audio/trend concreto ahi, esto es la guia de que tipo buscar).
+ * Exportado: lo reusa fabrica/ejemplos/lote_21_publicacion.ts para que
+ * el lote de 21 videos use la MISMA taxonomia de categoria/musica que
+ * el lote de 42 carruseles, un solo criterio en todo el calendario. */
+export const MUSICA_CATEGORIA: Record<Categoria, string> = {
   dinero: 'Beat trap/lujo (caja registradora o "money counter") — sensación riqueza/estatus',
   ia: 'Synth futurista, pulso electrónico ascendente — sensación tech/escalar',
   alerta: 'Sonido corto de tensión/glitch al inicio + beat seco — sensación de corte de mito',
