@@ -107,5 +107,110 @@
       },
       "message": "Post published successfully"
     }
+  },
+  {
+    "id": "carrusel-08",
+    "fecha": "2026-09-10T23:09:01.156Z",
+    "ok": true,
+    "postId": "6aa3388c2da049532a2bc3b1",
+    "scheduledFor": "2026-09-10T23:15:00Z",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "No tenés que ser experto",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081733993_gqqju7hc_860bf5dc-ffdf-4e6d-a8aa-6afa0d20bd71.png",
+            "_id": "6aa3388c2da049532a2bc3b2"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081734603_xdei4oe6_bdd38fb9-91f6-4c07-b074-18a49c6dd6b0.png",
+            "_id": "6aa3388c2da049532a2bc3b3"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081735083_cqcjmsmv_7fc51291-b143-4a2a-9f75-cd95d1c5324f.png",
+            "_id": "6aa3388c2da049532a2bc3b4"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081735593_vzs64g2a_f43005ba-cd6f-49ed-973b-cbae4fad33e3.png",
+            "_id": "6aa3388c2da049532a2bc3b5"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081736048_2analcpn_d3b6d159-8eb1-40e8-bf24-760504be69ae.png",
+            "_id": "6aa3388c2da049532a2bc3b6"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081736822_8l1q0zbs_ff40a592-98c7-468b-87a8-c8a06c72ae15.png",
+            "_id": "6aa3388c2da049532a2bc3b7"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-10T23:15:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "Mito #2: hay que ser experto. Falso.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #EmprendedorPrincipiante",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "fec616a3212d65d334f92004952e0d0d",
+            "_id": "6aa3388c2da049532a2bc3b8"
+          }
+        ],
+        "scheduledFor": "2026-09-10T23:15:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa3388c2da049532a2bc3b1",
+        "createdAt": "2026-09-10T23:09:01.006Z",
+        "updatedAt": "2026-09-10T23:09:01.006Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    }
   }
 ]
