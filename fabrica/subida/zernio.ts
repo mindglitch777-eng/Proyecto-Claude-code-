@@ -92,6 +92,12 @@ export type DatosTikTok = {
   // especifica para posts de fotos (hasta 4000 caracteres).
   photoCoverIndex?: number;
   autoAddMusic?: boolean;
+  // OJO real (confirmado con el error de Zernio en el primer intento de
+  // carrusel-01): en un post de fotos, el `content` de nivel superior se
+  // usa como TITULO del slideshow -- TikTok lo capa a 90 caracteres. El
+  // caption largo real (descripcion + hashtags) va aca, en `description`
+  // (hasta 4000 caracteres), no en el `content` del post.
+  description?: string;
   // OJO real: el errorMessage real de Zernio ante "TikTok direct posting
   // is at capacity" dice literalmente "Use tiktokSettings.draft: true"
   // -- distinto del campo `draft` plano de arriba, que es lo que dice

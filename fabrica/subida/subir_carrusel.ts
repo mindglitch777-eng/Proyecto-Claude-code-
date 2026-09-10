@@ -66,13 +66,19 @@ async function main(): Promise<void> {
     );
   }
 
-  const caption = `${carrusel.descripcion}\n\n${carrusel.hashtags.join(' ')}`;
+  // OJO real: en un post de fotos el `content` de nivel superior es el
+  // TITULO del slideshow (TikTok lo capa a 90 caracteres) -- el caption
+  // largo (descripcion + hashtags) va en platformSpecificData.description.
+  if (carrusel.titulo.length > 90) {
+    throw new Error(`${id}: el titulo "${carrusel.titulo}" pesa ${carrusel.titulo.length} caracteres, supera el limite de 90 de TikTok para el titulo del slideshow.`);
+  }
+  const captionLargo = `${carrusel.descripcion}\n\n${carrusel.hashtags.join(' ')}`;
 
   console.log(`Subiendo ${id} ("${carrusel.titulo}", ${rutasImagenes.length} slides) a TikTok${scheduledFor ? ` (programado para ${scheduledFor})` : ''}...`);
 
   const resultado = await publicarCarrusel({
     rutasImagenes,
-    contenido: caption,
+    contenido: carrusel.titulo,
     scheduledFor,
     cuentaTikTok: {
       accountId: ACCOUNT_ID_TIKTOK,
@@ -84,6 +90,7 @@ async function main(): Promise<void> {
         contentPreviewConfirmed: true,
         expressConsentGiven: true,
         photoCoverIndex: 0,
+        description: captionLargo,
         draft: true,
         tiktokSettings: {draft: true},
       },
