@@ -1,10 +1,10 @@
-name: subir-video
+name: subir-carrusel
 
-# Sube UN video del lote21 a TikTok + YouTube via Zernio
-# (fabrica/subida/subir_video.ts). Disparo MANUAL por ahora
-# (workflow_dispatch) a proposito -- primera vez que se ejercita esto
-# de punta a punta con una cuenta real, no se automatiza solo hasta
-# confirmar que un video de prueba aparece bien en las dos plataformas.
+# Sube UN carrusel del lote42 a TikTok via Zernio
+# (fabrica/subida/subir_carrusel.ts). Disparo MANUAL (workflow_dispatch)
+# -- primera vez que se ejercita el posteo de fotos/carruseles, mismo
+# criterio que subir-video.yml: no se automatiza solo hasta confirmar
+# que aparece bien en la cuenta real.
 
 permissions:
   contents: write
@@ -12,8 +12,8 @@ permissions:
 on:
   workflow_dispatch:
     inputs:
-      video:
-        description: "Id del video a subir (ej: v01)"
+      carrusel:
+        description: "Id del carrusel a subir (ej: carrusel-01)"
         required: true
       scheduledFor:
         description: "Opcional -- ISO UTC para programar (ej: 2026-09-11T00:15:00Z). Vacio = publica ya."
@@ -36,19 +36,19 @@ jobs:
         working-directory: fabrica
         run: npm ci --no-audit --no-fund
 
-      - name: Subir ${{ github.event.inputs.video }}
+      - name: Subir ${{ github.event.inputs.carrusel }}
         working-directory: fabrica
         env:
           ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
-        run: npx tsx subida/subir_video.ts "${{ github.event.inputs.video }}" "${{ github.event.inputs.scheduledFor }}"
+        run: npx tsx subida/subir_carrusel.ts "${{ github.event.inputs.carrusel }}" "${{ github.event.inputs.scheduledFor }}"
 
-      - name: Commitear log de subida (state/uploads.json)
+      - name: Commitear log de subida (state/carruseles.json)
         run: |
           git config user.name  "productor-bot"
           git config user.email "actions@github.com"
-          git add state/uploads.json
+          git add state/carruseles.json
           if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
-          git commit -m "Log de subida: ${{ github.event.inputs.video }}"
+          git commit -m "Log de subida: ${{ github.event.inputs.carrusel }}"
           for i in 1 2 3; do
             git pull --rebase origin "$GITHUB_REF_NAME" && \
             git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
