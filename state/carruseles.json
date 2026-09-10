@@ -482,5 +482,110 @@
       },
       "message": "Post scheduled successfully"
     }
+  },
+  {
+    "id": "carrusel-11",
+    "fecha": "2026-09-10T23:56:08.651Z",
+    "ok": true,
+    "postId": "6aa343984caf63d9cab4dfb0",
+    "scheduledFor": "2026-09-15T13:30:00Z",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "El 90% usa IA mal",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084561915_3xi3sajb_50c230c8-47cb-4acb-b57a-f4105aebba39.png",
+            "_id": "6aa343984caf63d9cab4dfb1"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084562496_zbupc43i_7ed381e2-7259-4b18-95a9-69b89b422a24.png",
+            "_id": "6aa343984caf63d9cab4dfb2"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084563245_tgdplj93_7445bb6c-8e3d-4014-a8f6-3e9a6e9ca505.png",
+            "_id": "6aa343984caf63d9cab4dfb3"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084563758_o2d4wltp_8e5f9b40-383d-4b1a-814f-88f5ae0d9f58.png",
+            "_id": "6aa343984caf63d9cab4dfb4"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084564166_u2ovxgw1_5e3ab3b2-2424-4380-adab-86c02280eae8.png",
+            "_id": "6aa343984caf63d9cab4dfb5"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084565059_46v9dl7a_21b23612-5854-4a9b-833b-1c1ecd810316.png",
+            "_id": "6aa343984caf63d9cab4dfb6"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-15T13:30:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "La IA no es un juguete. Es una palanca.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #IA #InteligenciaArtificial",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "3a0789bf07876de136022230bbfbdb0a",
+            "_id": "6aa343984caf63d9cab4dfb7"
+          }
+        ],
+        "scheduledFor": "2026-09-15T13:30:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa343984caf63d9cab4dfb0",
+        "createdAt": "2026-09-10T23:56:08.509Z",
+        "updatedAt": "2026-09-10T23:56:08.509Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    }
   }
 ]
