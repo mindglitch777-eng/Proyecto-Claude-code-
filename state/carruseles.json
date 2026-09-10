@@ -220,7 +220,13 @@
     "postId": "6aa3388b2da049532a2bc395",
     "scheduledFor": "2026-09-11T00:00:00Z",
     "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
-    "respuestaCruda": {"message": "Post scheduled successfully", "post": {"_id": "6aa3388b2da049532a2bc395", "status": "scheduled"}}
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa3388b2da049532a2bc395",
+        "status": "scheduled"
+      }
+    }
   },
   {
     "id": "carrusel-29",
@@ -229,7 +235,13 @@
     "postId": "6aa33891b50a79df27cdbf55",
     "scheduledFor": "2026-09-10T23:30:00Z",
     "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
-    "respuestaCruda": {"message": "Post scheduled successfully", "post": {"_id": "6aa33891b50a79df27cdbf55", "status": "scheduled"}}
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa33891b50a79df27cdbf55",
+        "status": "scheduled"
+      }
+    }
   },
   {
     "id": "carrusel-36",
@@ -238,7 +250,13 @@
     "postId": "6aa3388c426058eec36240e6",
     "scheduledFor": "2026-09-11T00:30:00Z",
     "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
-    "respuestaCruda": {"message": "Post scheduled successfully", "post": {"_id": "6aa3388c426058eec36240e6", "status": "scheduled"}}
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa3388c426058eec36240e6",
+        "status": "scheduled"
+      }
+    }
   },
   {
     "id": "carrusel-22",
@@ -247,6 +265,117 @@
     "postId": "6aa33894b50a79df27cdc042",
     "scheduledFor": "2026-09-11T01:00:00Z",
     "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
-    "respuestaCruda": {"message": "Post scheduled successfully", "post": {"_id": "6aa33894b50a79df27cdc042", "status": "scheduled"}}
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa33894b50a79df27cdc042",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-37",
+    "fecha": "2026-09-10T23:50:00.113Z",
+    "ok": true,
+    "postId": "6aa34227ea85fbd5be8d4693",
+    "scheduledFor": "2026-09-12T00:30:00Z",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Plantilla para tu primer producto",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084192998_0bb8nuo7_1bcc4133-884c-427e-81ed-96a65b9373ee.png",
+            "_id": "6aa34227ea85fbd5be8d4694"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084193482_dekhv0k6_ca37c9d2-9fd6-424a-b98e-a84ef261745a.png",
+            "_id": "6aa34227ea85fbd5be8d4695"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084193945_lb2zd04n_7c995e3d-2167-4b33-b975-10d904d2b2d9.png",
+            "_id": "6aa34227ea85fbd5be8d4696"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084194486_lk844fni_72bf57de-e7cb-4af1-8dbf-ef4d3a337474.png",
+            "_id": "6aa34227ea85fbd5be8d4697"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084195087_6ihlormj_3625d01a-b598-49d0-97c6-a6bce104ae0e.png",
+            "_id": "6aa34227ea85fbd5be8d4698"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084195887_v5cq46rm_fef1f51b-870a-4c3c-a3b1-473dfb29191b.png",
+            "_id": "6aa34227ea85fbd5be8d4699"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-12T00:30:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "Plantilla gratis para armar tu primer producto.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Plantilla #RecursoGratis",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "519d23a0857baeaba6365d7d87aa1d97",
+            "_id": "6aa34227ea85fbd5be8d469a"
+          }
+        ],
+        "scheduledFor": "2026-09-12T00:30:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa34227ea85fbd5be8d4693",
+        "createdAt": "2026-09-10T23:49:59.979Z",
+        "updatedAt": "2026-09-10T23:49:59.979Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    }
   }
 ]
