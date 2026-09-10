@@ -10,10 +10,16 @@
  *
  * Dos llamadas:
  *   1. POST /v1/media/upload-direct -- sube el archivo (multipart,
- *      campo "file"), maximo 25MB, se borra solo a los 7 dias. Los 21
- *      videos del lote pesan 3.5-10.2MB, entran sin problema. Si algun
- *      video futuro pesa mas de 25MB, esta funcion tira error claro en
- *      vez de intentar y fallar en la plataforma.
+ *      campo "file"), se borra solo a los 7 dias. La documentacion
+ *      dice 25MB de maximo, pero el limite REAL observado es mucho
+ *      menor: un video de 4.02MB (lote21-v05) entro bien, uno de
+ *      9.76MB (lote21-v07) fallo con HTTP 413 "Request Entity Too
+ *      Large" / FUNCTION_PAYLOAD_TOO_LARGE -- el error viene de la
+ *      infraestructura de Vercel detras de Zernio, que suele limitar
+ *      el body de una funcion serverless a ~4.5MB independientemente
+ *      de lo que diga la documentacion de la app. TAMANO_MAXIMO_BYTES
+ *      abajo usa un limite conservador basado en el ultimo caso real
+ *      confirmado que funciono, no en el numero de la documentacion.
  *   2. POST /v1/posts -- crea el post apuntando a la URL que devolvio
  *      el upload, una entrada por plataforma (tiktok/youtube) con su
  *      `accountId` y `platformSpecificData` propio.
@@ -30,7 +36,7 @@ import {readFileSync, statSync} from 'fs';
 import {basename} from 'path';
 
 const BASE = 'https://zernio.com/api/v1';
-const TAMANO_MAXIMO_BYTES = 25 * 1024 * 1024;
+const TAMANO_MAXIMO_BYTES = 4 * 1024 * 1024;
 const REINTENTOS = 3;
 
 export type PlataformaId = 'tiktok' | 'youtube';
@@ -92,7 +98,7 @@ export async function subirArchivoDirecto(rutaVideo: string, apiKeyParam?: strin
   const tamano = statSync(rutaVideo).size;
   if (tamano > TAMANO_MAXIMO_BYTES) {
     throw new Error(
-      `${rutaVideo} pesa ${(tamano / 1024 / 1024).toFixed(1)}MB, supera el maximo de 25MB de Zernio -- hace falta alojarlo en otro lado (no lo intenta, para no fallar recien en la plataforma).`
+      `${rutaVideo} pesa ${(tamano / 1024 / 1024).toFixed(1)}MB, supera el limite real observado (~4MB, no los 25MB que dice la documentacion de Zernio -- ver comentario arriba) -- hace falta comprimirlo o alojarlo en otro lado (no lo intenta, para no fallar recien en la plataforma).`
     );
   }
 
