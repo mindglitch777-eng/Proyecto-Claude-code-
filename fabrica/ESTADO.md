@@ -1,5 +1,55 @@
 # Estado vivo del proyecto
 
+## Bloque: pipeline de carruseles (TikTok photo post) + `scheduledFor` nativo + 9 posts programados hoy (2026-09-10)
+
+Pedido del operador: subir ~3 videos + ~6 carruseles hoy en horarios
+óptimos, espaciados de forma coherente. Nunca se había publicado un
+carrusel/foto vía Zernio en este proyecto -- había que construir el
+pipeline entero.
+
+**Investigación real de horarios**: pico de engagement de TikTok
+confirmado mar-jue 14-18h. Los 42 carruseles YA tenían horarios
+sugeridos reales en `lote_42_datos.ts` (`horaSugerida`, 6 franjas/día:
+09:30, 10:30, 14:30, 16:00, 20:30, 21:30) -- se usó el "día 1" de esa
+rotación (6 carruseles exactos) en vez de inventar horarios nuevos.
+
+**Pipeline nuevo construido**: `publicarCarrusel()` en `zernio.ts`
+(sube cada slide vía `upload-direct`, arma un post de fotos TikTok con
+`photoCoverIndex:0`) + `subir_carrusel.ts` (CLI) +
+`subir-carrusel.yml`. Se generalizó `crearPost()`/`publicarVideo()`
+para aceptar `mediaItems[]` y un `scheduledFor` opcional (ISO UTC, el
+campo nativo de Zernio -- deja que el post se publique solo a la hora
+programada, sin tener que reintentar workflows en tiempo real).
+
+**2 bugs reales encontrados y arreglados en el camino**:
+1. En un post de fotos, TikTok usa el `content` de nivel superior como
+   TÍTULO del slideshow (cap real de 90 caracteres) -- no como caption
+   largo. El caption real va en `platformSpecificData.description`
+   (hasta 4000 caracteres). Confirmado por el error real de Zernio
+   (`TIKTOK_PHOTO_TITLE_TOO_LONG`) en el primer intento con
+   `carrusel-01`.
+2. Al disparar 8 workflows casi a la vez, 6 de 8 perdieron la carrera
+   de git al comitear su propio log (el loop de reintentos nunca
+   abortaba el rebase en conflicto antes de reintentar). El POST real
+   a Zernio SÍ salió bien en los 6 casos -- solo el registro local
+   quedaba incompleto. Reconstruido a mano con los postId reales de
+   los logs de GitHub Actions. Arreglado en ambos workflows
+   (`git rebase --abort` antes de cada reintento + `continue-on-error`
+   en el paso de commit, para que una carrera de git nunca vuelva a
+   tumbar un job cuya subida real sí funcionó).
+
+**Resultado real**: 9 posts creados/programados hoy -- `carrusel-01`
+publicado ya (Creator Inbox), y `carrusel-08`, `carrusel-15`,
+`carrusel-29`, `carrusel-36`, `carrusel-22`, `v05`, `v15`, `v16`
+programados vía `scheduledFor` entre las 23:15 UTC del 10/09 y la
+01:00 UTC del 11/09, espaciados 15 min, con `carrusel-29` y
+`carrusel-36` cayendo justo en sus franjas "Noche" reales (20:30 y
+21:30 hora Argentina, asumida por el tono del proyecto -- no
+confirmada explícitamente con el operador, si la cuenta real es de
+otro huso horario los horarios de esta tanda puntual quedarían
+corridos, pero el mecanismo de `scheduledFor` en sí es correcto para
+cualquier huso una vez confirmado).
+
 ## Bloque: investigado el límite de ~4MB de Zernio -- el presign está roto del lado de ellos, revertido a upload-direct (2026-09-10)
 
 El operador pidió investigar si el límite real de ~4-4.5MB de
