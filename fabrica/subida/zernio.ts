@@ -151,7 +151,6 @@ export async function subirArchivo(rutaVideo: string, apiKeyParam?: string): Pro
     if (!uploadUrl) {
       throw new Error(`media/presign sin uploadUrl en la respuesta: ${JSON.stringify(cuerpoPresign)}`);
     }
-    const fileUrl = cuerpoPresign.fileUrl ?? uploadUrl.split('?')[0];
 
     const buffer = readFileSync(rutaVideo);
     const respPut = await fetch(uploadUrl, {
@@ -161,13 +160,15 @@ export async function subirArchivo(rutaVideo: string, apiKeyParam?: string): Pro
     });
     if (!respPut.ok) throw new Error(`PUT a uploadUrl HTTP ${respPut.status}: ${await respPut.text()}`);
 
-    // Hipotesis real probada tras un fallo con "missingFiles":1 en
-    // crearPost() (el PUT da 200 pero el backend de Zernio no encuentra
-    // el objeto todavia al armar el post) -- espera corta para darle
-    // tiempo a R2/Zernio a propagar el objeto recien subido.
-    await new Promise((r) => setTimeout(r, 4000));
-
-    return fileUrl;
+    // Hipotesis 1 (espera de propagacion, 4s) probada y descartada: el
+    // 400 de crearPost() con "missingFiles":1 vuelve practicamente
+    // instantaneo incluso con la espera, asi que no es timing.
+    // Hipotesis 2, probando ahora: en vez de la URL derivada (sin la
+    // query de firma, que asumia que el objeto quedaba publico), se usa
+    // la uploadUrl COMPLETA (con firma) como fileUrl -- por si el
+    // backend de Zernio la lee directo de ahi en vez de necesitar una
+    // URL publica separada.
+    return cuerpoPresign.fileUrl ?? uploadUrl;
   }, `subir archivo ${nombreArchivo} (presign)`);
 }
 
