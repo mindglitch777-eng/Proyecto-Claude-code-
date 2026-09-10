@@ -44,8 +44,9 @@ function guardarEnLog(entrada: EntradaLog): void {
 
 async function main(): Promise<void> {
   const id = process.argv[2];
+  const scheduledFor = process.argv[3]; // opcional, ISO UTC -- si falta, publica ya
   if (!id) {
-    console.error('Uso: npx tsx subida/subir_video.ts <id>  (ej: v01)');
+    console.error('Uso: npx tsx subida/subir_video.ts <id> [scheduledForISO]  (ej: v01 2026-09-11T00:15:00Z)');
     process.exit(1);
   }
 
@@ -62,11 +63,12 @@ async function main(): Promise<void> {
 
   const caption = `${publicacion.descripcion}\n\n${publicacion.cta}\n\n${publicacion.hashtags.join(' ')}`;
 
-  console.log(`Subiendo ${id} ("${video.titulo}") a TikTok + YouTube...`);
+  console.log(`Subiendo ${id} ("${video.titulo}") a TikTok + YouTube${scheduledFor ? ` (programado para ${scheduledFor})` : ''}...`);
 
   const resultado = await publicarVideo({
     rutaVideo,
     contenido: caption,
+    scheduledFor,
     cuentaTikTok: {
       accountId: ACCOUNT_ID_TIKTOK,
       datos: {

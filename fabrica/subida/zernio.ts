@@ -87,6 +87,11 @@ export type DatosTikTok = {
   draft?: boolean;
   commercialContentType?: 'none' | 'brand_organic' | 'brand_content';
   videoMadeWithAi?: boolean;
+  // Solo aplica a posts de fotos (carruseles) -- rules/platforms.md:
+  // indice del slide que se usa como portada, y descripcion extendida
+  // especifica para posts de fotos (hasta 4000 caracteres).
+  photoCoverIndex?: number;
+  autoAddMusic?: boolean;
   // OJO real: el errorMessage real de Zernio ante "TikTok direct posting
   // is at capacity" dice literalmente "Use tiktokSettings.draft: true"
   // -- distinto del campo `draft` plano de arriba, que es lo que dice
@@ -207,12 +212,12 @@ export async function subirArchivo(rutaVideo: string, apiKeyParam?: string): Pro
  * queda disponible por si hace falta el camino rapido para un archivo
  * chico puntual.
  */
-export async function subirArchivoDirecto(rutaVideo: string, apiKeyParam?: string): Promise<string> {
+export async function subirArchivoDirecto(rutaArchivo: string, apiKeyParam?: string, contentType = 'video/mp4'): Promise<string> {
   const apiKey = requerirApiKey(apiKeyParam);
   return conReintentos(async () => {
-    const buffer = readFileSync(rutaVideo);
+    const buffer = readFileSync(rutaArchivo);
     const form = new FormData();
-    form.append('file', new Blob([buffer], {type: 'video/mp4'}), basename(rutaVideo));
+    form.append('file', new Blob([buffer], {type: contentType}), basename(rutaArchivo));
 
     const resp = await fetch(`${BASE}/media/upload-direct`, {
       method: 'POST',
@@ -223,14 +228,23 @@ export async function subirArchivoDirecto(rutaVideo: string, apiKeyParam?: strin
     const data = (await resp.json()) as {url: string};
     if (!data.url) throw new Error(`upload-direct sin campo "url" en la respuesta: ${JSON.stringify(data)}`);
     return data.url;
-  }, `subir archivo ${basename(rutaVideo)}`);
+  }, `subir archivo ${basename(rutaArchivo)}`);
 }
 
-/** Crea el post apuntando a las plataformas indicadas. publishNow=true siempre (nunca programa para despues sin que se pida explicito). */
+export type MediaItem = {type: 'image' | 'video'; url: string};
+
+/**
+ * Crea el post apuntando a las plataformas indicadas.
+ * `scheduledFor` (ISO UTC) programa el post para mas adelante -- si no
+ * se pasa, publishNow=true (nunca programa para despues sin que se
+ * pida explicito). rules/posts.md: "Scheduling (pick one)" -- publishNow
+ * y scheduledFor son mutuamente excluyentes.
+ */
 export async function crearPost(opciones: {
   contenido: string;
-  urlVideo: string;
+  mediaItems: MediaItem[];
   cuentas: CuentaObjetivo[];
+  scheduledFor?: string;
   apiKey?: string;
 }): Promise<ResultadoSubida> {
   const apiKey = requerirApiKey(opciones.apiKey);
@@ -241,9 +255,9 @@ export async function crearPost(opciones: {
       headers: {Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json'},
       body: JSON.stringify({
         content: opciones.contenido,
-        mediaItems: [{type: 'video', url: opciones.urlVideo}],
+        mediaItems: opciones.mediaItems,
         platforms: opciones.cuentas,
-        publishNow: true,
+        ...(opciones.scheduledFor ? {scheduledFor: opciones.scheduledFor} : {publishNow: true}),
       }),
     });
     const cuerpo = await resp.text();
@@ -328,6 +342,7 @@ export async function publicarVideo(opciones: {
   contenido: string;
   cuentaTikTok?: {accountId: string; datos: DatosTikTok};
   cuentaYouTube?: {accountId: string; datos: DatosYouTube};
+  scheduledFor?: string;
   apiKey?: string;
 }): Promise<ResultadoSubida> {
   if (!opciones.cuentaTikTok && !opciones.cuentaYouTube) {
@@ -351,5 +366,43 @@ export async function publicarVideo(opciones: {
   if (opciones.cuentaYouTube) {
     cuentas.push({platform: 'youtube', accountId: opciones.cuentaYouTube.accountId, platformSpecificData: opciones.cuentaYouTube.datos});
   }
-  return crearPost({contenido: opciones.contenido, urlVideo, cuentas, apiKey: opciones.apiKey});
+  return crearPost({
+    contenido: opciones.contenido,
+    mediaItems: [{type: 'video', url: urlVideo}],
+    cuentas,
+    scheduledFor: opciones.scheduledFor,
+    apiKey: opciones.apiKey,
+  });
+}
+
+/**
+ * Sube un carrusel de imagenes (TikTok photo post -- YouTube no tiene
+ * equivalente, asi que solo aplica a TikTok). Sube cada slide via
+ * upload-direct (imagenes del lote42 pesan <1.2MB, bien por debajo del
+ * limite real de ~4MB) y arma un unico post con todas las imagenes en
+ * `mediaItems` en orden. `photoCoverIndex: 0` fija la portada en el
+ * primer slide (rules/platforms.md).
+ */
+export async function publicarCarrusel(opciones: {
+  rutasImagenes: string[];
+  contenido: string;
+  cuentaTikTok: {accountId: string; datos: DatosTikTok};
+  scheduledFor?: string;
+  apiKey?: string;
+}): Promise<ResultadoSubida> {
+  if (opciones.rutasImagenes.length === 0) {
+    throw new Error('publicarCarrusel: no se paso ninguna imagen.');
+  }
+  const mediaItems: MediaItem[] = [];
+  for (const ruta of opciones.rutasImagenes) {
+    const url = await subirArchivoDirecto(ruta, opciones.apiKey, 'image/png');
+    mediaItems.push({type: 'image', url});
+  }
+  return crearPost({
+    contenido: opciones.contenido,
+    mediaItems,
+    cuentas: [{platform: 'tiktok', accountId: opciones.cuentaTikTok.accountId, platformSpecificData: opciones.cuentaTikTok.datos}],
+    scheduledFor: opciones.scheduledFor,
+    apiKey: opciones.apiKey,
+  });
 }
