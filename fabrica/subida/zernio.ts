@@ -64,9 +64,11 @@ export type CuentaObjetivo =
   | {platform: 'tiktok'; accountId: string; platformSpecificData: DatosTikTok}
   | {platform: 'youtube'; accountId: string; platformSpecificData: DatosYouTube};
 
+export type ResultadoPlataforma = {platform: string; status: string; error?: string | null; publishedUrl?: string};
+
 export type ResultadoSubida =
-  | {ok: true; postId?: string; respuestaCruda: unknown}
-  | {ok: false; error: string; respuestaCruda?: unknown};
+  | {ok: true; postId?: string; plataformas?: ResultadoPlataforma[]; respuestaCruda: unknown}
+  | {ok: false; error: string; plataformas?: ResultadoPlataforma[]; respuestaCruda?: unknown};
 
 function requerirApiKey(apiKeyParam?: string): string {
   const apiKey = apiKeyParam ?? process.env.ZERNIO_API_KEY;
@@ -143,7 +145,19 @@ export async function crearPost(opciones: {
     let data: any = {};
     try { data = JSON.parse(cuerpo); } catch { /* respuesta no-JSON, se guarda como texto */ }
     if (!resp.ok) return {ok: false, error: `posts HTTP ${resp.status}: ${cuerpo}`, respuestaCruda: data || cuerpo};
-    return {ok: true, postId: data.id ?? data.postId, respuestaCruda: data};
+
+    // OJO real: un HTTP 200 NO significa que se publico -- Zernio puede
+    // devolver 200 con el post creado pero "publishing failed" en el
+    // cuerpo (ej: TikTok a capacidad). Solo se cuenta como exito real
+    // si CADA plataforma pedida quedo "published" segun platformResults.
+    const plataformas: ResultadoPlataforma[] | undefined = Array.isArray(data?.platformResults)
+      ? data.platformResults
+      : undefined;
+    if (plataformas && !plataformas.every((p) => p.status === 'published')) {
+      const detalle = plataformas.map((p) => `${p.platform}:${p.status}${p.error ? ` (${p.error})` : ''}`).join(', ');
+      return {ok: false, error: data.error ?? `no todas las plataformas publicaron -- ${detalle}`, plataformas, respuestaCruda: data};
+    }
+    return {ok: true, postId: data.id ?? data.postId ?? data.post?._id, plataformas, respuestaCruda: data};
   }, 'crear post en Zernio');
 }
 

@@ -9,7 +9,7 @@
  */
 import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'fs';
 import {dirname, resolve} from 'path';
-import {publicarVideo} from './zernio';
+import {publicarVideo, type ResultadoPlataforma} from './zernio';
 import {VIDEOS} from '../ejemplos/lote_21_datos';
 import {PUBLICACION_LOTE21} from '../ejemplos/lote_21_publicacion';
 
@@ -26,6 +26,7 @@ type EntradaLog = {
   ok: boolean;
   postId?: string;
   error?: string;
+  plataformas?: ResultadoPlataforma[];
   respuestaCruda?: unknown;
 };
 
@@ -94,17 +95,25 @@ async function main(): Promise<void> {
     ok: resultado.ok,
     postId: resultado.ok ? resultado.postId : undefined,
     error: resultado.ok ? undefined : resultado.error,
+    plataformas: resultado.plataformas,
     respuestaCruda: resultado.respuestaCruda,
   });
 
   console.log('Respuesta cruda de Zernio (para verificar cada plataforma por separado):');
   console.log(JSON.stringify(resultado.respuestaCruda, null, 2));
 
+  if (resultado.plataformas) {
+    console.log('Estado por plataforma:');
+    for (const p of resultado.plataformas) {
+      console.log(`  - ${p.platform}: ${p.status}${p.error ? ` -- ${p.error}` : ''}`);
+    }
+  }
+
   if (!resultado.ok) {
     console.error(`FALLO la subida de ${id}: ${resultado.error}`);
     process.exit(1);
   }
-  console.log(`OK -- ${id} publicado. postId: ${resultado.postId ?? '(no informado)'}`);
+  console.log(`OK -- ${id} publicado en TODAS las plataformas pedidas. postId: ${resultado.postId ?? '(no informado)'}`);
 }
 
 main().catch((error) => {
