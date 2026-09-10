@@ -161,6 +161,12 @@ export async function subirArchivo(rutaVideo: string, apiKeyParam?: string): Pro
     });
     if (!respPut.ok) throw new Error(`PUT a uploadUrl HTTP ${respPut.status}: ${await respPut.text()}`);
 
+    // Hipotesis real probada tras un fallo con "missingFiles":1 en
+    // crearPost() (el PUT da 200 pero el backend de Zernio no encuentra
+    // el objeto todavia al armar el post) -- espera corta para darle
+    // tiempo a R2/Zernio a propagar el objeto recien subido.
+    await new Promise((r) => setTimeout(r, 4000));
+
     return fileUrl;
   }, `subir archivo ${nombreArchivo} (presign)`);
 }
