@@ -377,5 +377,110 @@
       },
       "message": "Post scheduled successfully"
     }
+  },
+  {
+    "id": "carrusel-38",
+    "fecha": "2026-09-10T23:53:05.662Z",
+    "ok": true,
+    "postId": "6aa342e11c995ee32f5d9a84",
+    "scheduledFor": "2026-09-15T00:30:00Z",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Checklist para lanzar en 7 días",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084377655_1cnfyqd5_d6a59ba8-8ca3-4d6f-ad76-38eb39f41acb.png",
+            "_id": "6aa342e11c995ee32f5d9a85"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084378724_n7o8e25i_fa33b1ea-498a-4183-99a7-f377bd3b678e.png",
+            "_id": "6aa342e11c995ee32f5d9a86"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084379513_4tm21duk_9e836bcb-4901-43e9-acce-3ad514134c7f.png",
+            "_id": "6aa342e11c995ee32f5d9a87"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084380260_bjhl5eb4_83f14c9b-834a-4903-9929-375614e0b24a.png",
+            "_id": "6aa342e11c995ee32f5d9a88"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084380945_j3it42p1_f2f0fe66-443a-4e6a-8c03-c565c8574108.png",
+            "_id": "6aa342e11c995ee32f5d9a89"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084381981_41kbtnz9_6a2d5156-f5d1-4834-844a-a91810432cb5.png",
+            "_id": "6aa342e11c995ee32f5d9a8a"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-15T00:30:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "Checklist gratis: lanzá en 7 días.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Checklist #Lanzamiento",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "3204bc7851684835278b770a744e16ca",
+            "_id": "6aa342e11c995ee32f5d9a8b"
+          }
+        ],
+        "scheduledFor": "2026-09-15T00:30:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa342e11c995ee32f5d9a84",
+        "createdAt": "2026-09-10T23:53:05.490Z",
+        "updatedAt": "2026-09-10T23:53:05.490Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    }
   }
 ]
