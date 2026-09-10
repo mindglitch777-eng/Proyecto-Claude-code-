@@ -1,5 +1,68 @@
 # Estado vivo del proyecto
 
+## Bloque: subida automática a Zernio -- secret arreglado, 3 bugs reales encontrados y corregidos, TikTok en modo borrador (2026-09-10, continuación del bloque de abajo)
+
+Continuación directa del bloque anterior (secret vacío sin confirmar).
+El operador había guardado el secret en la sección equivocada de GitHub
+("Secretos y variables **de los agentes**" -- Copilot, no Actions) --
+confusión real de menús de GitHub, no error del operador. Corregido
+apuntándolo a Settings → Secrets and variables → **Actions**.
+
+**v05 (primera subida real que llegó a intentar publicar)**: resultado
+mixto real -- YouTube publicó bien, TikTok falló con
+`"TikTok direct posting is at capacity right now. Use
+tiktokSettings.draft: true to deliver via Creator Inbox, or try again
+in a few hours as capacity frees up."` -- límite de cupo de TikTok para
+apps sin auditoría completa, no relacionado con la cuenta ni la clave.
+
+**Bug 1 encontrado y corregido -- límite de tamaño real no coincide con
+la documentación**: `v07` (9.76MB) falló con HTTP 413
+`FUNCTION_PAYLOAD_TOO_LARGE` (infraestructura Vercel detrás de Zernio)
+pese a que la doc dice 25MB de máximo. `v05` (4.02MB) sí había entrado.
+`TAMANO_MAXIMO_BYTES` en `zernio.ts` bajado a ~4MB (valor conservador
+confirmado por un caso real, no por lo que dice la doc).
+
+**Bug 2 encontrado y corregido -- falso positivo real, más grave**:
+`v14` quedó logueado como "OK -- publicado" aunque la respuesta real de
+Zernio decía `"message": "Post created but publishing failed"` /
+`"error": "All platforms failed"` (TikTok por cupo otra vez, YouTube
+"pending"). El código solo miraba si el HTTP respondía 200, nunca leía
+el cuerpo real. `crearPost()` en `zernio.ts` ahora lee
+`platformResults` y solo marca fallo si alguna plataforma quedó
+`"failed"` de verdad. Se agregó `diagnosticar.ts` +
+`diagnosticar-zernio.yml` (solo lectura, `GET /v1/posts`,
+`GET /v1/posts/:id/logs`) para poder auditar publicaciones pasadas sin
+adivinar.
+
+**Decisión del operador -- TikTok en modo borrador por ahora**: dos
+fallos reales de cupo (`v05`, `v14`) separados ~15 minutos confirman que
+no es un bache de segundos -- esperar minutos no sirve, y frenar la
+automatización por horas no es aceptable para el proyecto (TikTok es el
+canal de mayor potencial viral). Se activó `tiktokSettings.draft: true`
+(mandado también plano como `draft: true` por la ambigüedad real del
+campo -- el propio `errorMessage` de Zernio nombra `tiktokSettings.draft`
+textual, distinto de lo que documentaba `rules/platforms.md`): el video
+llega al Creator Inbox de TikTok y el operador lo confirma con un toque,
+sin depender del cupo de posteo directo. **Probado real con `v11`**:
+`"message": "Post published successfully"`, TikTok con
+`platformPostId: "v_inbox_url~v2...⁠"` (confirma que llegó al inbox) y
+`isDraft: true` agregado por la propia Zernio, YouTube "pending" (se
+resuelve solo unos segundos después, visto en `v05`/`v14`).
+
+**Pendiente explícito, no urgente**: el operador pidió investigar (para
+debatir con argumentos de los dos lados antes de decidir, no para
+implementar ya) alternativas de código abierto -- n8n u otros MCP --
+que eliminen la dependencia de apps de terceros como Zernio y su límite
+de cupo. No se tocó nada de esto todavía.
+
+**Estado de la automatización a este punto**: `subir-video.yml`
+(disparo manual, `workflow_dispatch`) funciona de punta a punta --
+YouTube 100% automático, TikTok llega al Creator Inbox esperando un
+toque de confirmación del operador. Videos usados en pruebas hasta
+ahora: v05, v07 (falló por tamaño, no reintentado), v10 (falló por
+secret, no reintentado), v11, v14 -- v01/v02/v03 reservados aparte por
+el operador.
+
 ## Bloque: subida automática a TikTok + YouTube via Zernio (2026-09-10)
 
 Pedido explícito del operador: automatizar la subida de los videos ya
