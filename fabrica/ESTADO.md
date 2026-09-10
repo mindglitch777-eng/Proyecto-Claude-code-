@@ -1,5 +1,60 @@
 # Estado vivo del proyecto
 
+## Bloque: investigado el límite de ~4MB de Zernio -- el presign está roto del lado de ellos, revertido a upload-direct (2026-09-10)
+
+El operador pidió investigar si el límite real de ~4-4.5MB de
+`/v1/media/upload-direct` (9 de los 15 videos restantes del lote21 lo
+superan) se podía evitar sin comprimir nada. `rules/media.md` del repo
+oficial de Zernio confirma una segunda vía, `POST /v1/media/presign`
+(hasta 5GB, sube directo a storage sin pasar por la función serverless
+chica), en teoría eliminando el problema por completo.
+
+**Probado en vivo 4 veces con v07 (9.76MB), todas fallando igual:**
+1. Implementación inicial asumiendo que el presign devuelve `fileUrl`
+   (como muestra el ejemplo de la doc) -- la respuesta real **solo
+   trae `uploadUrl`**, nunca `fileUrl` (el ejemplo de la doc es
+   pseudo-código, no el body real).
+2. Derivando `fileUrl` de `uploadUrl` sin la query de firma (así
+   funcionan las URLs firmadas S3/R2 en general): el PUT sube bien
+   (200), pero `POST /v1/posts` falla siempre con HTTP 400
+   `{"error":"Some media files failed to upload...","details":
+   {"missingFiles":1}}`.
+3. Agregando una espera de 4s por si era un tema de propagación
+   (R2/backend necesita "ver" el archivo recién subido): mismo error,
+   igual de instantáneo (~1.5s totales) -- descarta que sea timing.
+4. Usando la `uploadUrl` **completa** (con la firma) como `fileUrl`:
+   mismo error otra vez.
+
+Búsqueda exhaustiva de los 24 archivos `rules/*.md` del repo oficial de
+Zernio (clonado directo, `zernio-dev/zernio-api`) sin encontrar ningún
+endpoint de "finalize"/"confirm upload" ni una forma documentada de
+resolver esto -- es un gap/bug real del lado de Zernio, no algo
+adivinado ni un error nuestro de implementación.
+
+**Única alternativa real encontrada** (sin comprimir el video):
+alojar el archivo en una URL pública propia (ej. haciendo público este
+repo, o subiéndolo a algún host público) y pasarle esa URL a
+`mediaItems.url` en vez de depender del upload de Zernio -- se probó
+que el repo es privado, así que `raw.githubusercontent.com` no sirve
+tal cual. Esto **no se implementó**: exponer contenido por un canal
+público nuevo es exactamente lo que la Regla de Oro del proyecto pide
+confirmar con el operador antes de hacerlo, así que queda pendiente de
+esa decisión en vez de resolverse unilateralmente.
+
+**Código dejado en estado seguro mientras tanto**: `publicarVideo()`
+en `zernio.ts` volvió a usar `subirArchivoDirecto()` (upload-direct,
+confirmado que funciona) para videos ≤4MB, y tira un error explícito
+--no un 413 confuso-- para los que lo superan, explicando el bloqueo
+real de arriba. `subirArchivo()` (presign) queda implementada pero sin
+usar por defecto, documentada como rota en el comentario de cabecera
+del archivo. Ningún video que ya subía bien (v11/v13/v14 y cualquiera
+≤4MB) quedó afectado por esta investigación.
+
+**Pendiente del operador** (bloqueado en esto, no en el resto): decidir
+entre (a) comprimir los 9 videos que superan ~4MB para que entren por
+upload-direct, o (b) autorizar alojar esos videos en una URL pública
+propia como paso intermedio antes de subirlos a Zernio.
+
 ## Bloque: modo borrador de TikTok confirmado -- el fallo de entrega fue puntual, no consistente (2026-09-10, continuación del bloque de abajo)
 
 Tras el bloque de abajo, el operador probó confirmar `v11` desde la app

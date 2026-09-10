@@ -17,15 +17,38 @@
  *      de una funcion serverless de Vercel detras de Zernio). Sirve
  *      solo para archivos chicos -- rules/media.md del repo de Zernio
  *      lo confirma explicito: pensado para "inbox messages and small
- *      files".
- *   2. POST /v1/media/presign + PUT directo al storage -- la via real
- *      para archivos grandes (hasta 5GB segun la doc), confirmada en
- *      rules/media.md: se pide una URL firmada, se sube el archivo
- *      DIRECTO a esa URL (nunca pasa por la funcion serverless de
- *      Zernio, asi que el limite de ~4.5MB no aplica), y se usa la
- *      `fileUrl` que devuelve para crear el post. Es la que usa
- *      subirArchivo() de aca abajo -- upload-direct quedo solo de
- *      referencia, no se llama mas desde publicarVideo().
+ *      files". Es la que usa publicarVideo() por defecto (ver OJO real
+ *      del punto 2 -- el presign quedo roto en la practica).
+ *   2. POST /v1/media/presign + PUT directo al storage -- en teoria la
+ *      via para archivos grandes (hasta 5GB segun rules/media.md), pero
+ *      PROBADA Y ROTA en 3 intentos reales distintos (2026-09-10, video
+ *      v07 de 9.76MB):
+ *        a) el presign real solo devuelve `{"uploadUrl": "..."}` --
+ *           nunca `fileUrl`, a pesar de que el ejemplo de rules/media.md
+ *           lo muestra (es pseudo-codigo, no el body real).
+ *        b) usando la uploadUrl sin la query de firma como fileUrl: el
+ *           PUT da 200 pero POST /v1/posts falla siempre con HTTP 400
+ *           `{"error":"Some media files failed to upload...",
+ *           "details":{"missingFiles":1}}`.
+ *        c) agregando una espera de 4s por si era un tema de
+ *           propagacion: mismo error, igual de instantaneo -- no es
+ *           timing.
+ *        d) usando la uploadUrl COMPLETA (con la firma) como fileUrl:
+ *           mismo error otra vez.
+ *      Busqueda exhaustiva en los 24 archivos de rules/ del repo oficial
+ *      de Zernio (`git clone` de zernio-dev/zernio-api) sin encontrar
+ *      ningun endpoint de "finalize"/"confirm upload" ni una forma
+ *      documentada de resolver esto. subirArchivo() de aca abajo queda
+ *      implementada pero SIN USAR por publicarVideo() -- devuelve la
+ *      uploadUrl firmada completa (la ultima variante probada) por si
+ *      en el futuro Zernio arregla su lado, pero no se confia en ella
+ *      para produccion. Video de mas de ~4MB: por ahora la unica salida
+ *      real encontrada (sin comprimir) seria alojar el archivo en una
+ *      URL publica propia y pasarsela a mediaItems.url -- pero esto
+ *      significa publicar contenido en un canal nuevo (ej. hacer public
+ *      el repo, o subir a un host publico), lo cual la Regla de Oro del
+ *      proyecto exige confirmar con el operador antes de hacerlo. No
+ *      implementado sin esa confirmacion.
  *   3. POST /v1/posts -- crea el post apuntando a la URL que devolvio
  *      la subida, una entrada por plataforma (tiktok/youtube) con su
  *      `accountId` y `platformSpecificData` propio.
@@ -42,8 +65,13 @@ import {readFileSync, statSync} from 'fs';
 import {basename} from 'path';
 
 const BASE = 'https://zernio.com/api/v1';
-// Limite real de /v1/media/presign segun rules/media.md (5GB) -- muy por
-// encima de cualquier video del lote, se deja como red de seguridad nomas.
+// Limite real confirmado de /v1/media/upload-direct (no el 25MB que dice
+// la doc) -- ver OJO real arriba. Un video mas grande no se sube solo:
+// publicarVideo() tira un error explicito en vez de intentarlo y fallar
+// con un 413 confuso.
+const LIMITE_UPLOAD_DIRECTO_BYTES = 4 * 1024 * 1024;
+// Limite real de /v1/media/presign segun rules/media.md (5GB) -- se deja
+// como red de seguridad para subirArchivo(), que no se usa por defecto.
 const TAMANO_MAXIMO_BYTES = 5 * 1024 * 1024 * 1024;
 const REINTENTOS = 3;
 
@@ -305,7 +333,17 @@ export async function publicarVideo(opciones: {
   if (!opciones.cuentaTikTok && !opciones.cuentaYouTube) {
     throw new Error('publicarVideo: no se paso ninguna cuenta destino (ni TikTok ni YouTube).');
   }
-  const urlVideo = await subirArchivo(opciones.rutaVideo, opciones.apiKey);
+  const tamano = statSync(opciones.rutaVideo).size;
+  if (tamano > LIMITE_UPLOAD_DIRECTO_BYTES) {
+    throw new Error(
+      `${opciones.rutaVideo} pesa ${(tamano / 1024 / 1024).toFixed(2)}MB, supera el limite real de ~4MB de ` +
+      `/v1/media/upload-direct. El flujo /v1/media/presign (subirArchivo()) esta probado y roto en el lado de ` +
+      `Zernio (POST /v1/posts falla siempre con "missingFiles":1, ver el comentario de arriba del archivo). ` +
+      `Pendiente del operador: comprimir este video para que entre en upload-direct, o decidir alojarlo en una ` +
+      `URL publica propia (esto ultimo publica contenido en un canal nuevo -- requiere confirmacion explicita).`
+    );
+  }
+  const urlVideo = await subirArchivoDirecto(opciones.rutaVideo, opciones.apiKey);
   const cuentas: CuentaObjetivo[] = [];
   if (opciones.cuentaTikTok) {
     cuentas.push({platform: 'tiktok', accountId: opciones.cuentaTikTok.accountId, platformSpecificData: opciones.cuentaTikTok.datos});
