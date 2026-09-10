@@ -1,6 +1,28 @@
 # Estado vivo del proyecto
 
-## Bloque: subida automática a Zernio -- secret arreglado, 3 bugs reales encontrados y corregidos, TikTok en modo borrador (2026-09-10, continuación del bloque de abajo)
+## Bloque: modo borrador de TikTok confirmado -- el fallo de entrega fue puntual, no consistente (2026-09-10, continuación del bloque de abajo)
+
+Tras el bloque de abajo, el operador probó confirmar `v11` desde la app
+de TikTok y no encontró el video en ningún lado (ni notificaciones ni
+Borradores) -- coincide con un bug real y documentado de TikTok
+(desincronización API-vs-cliente, visto en un issue público de otro
+integrador). Antes de asumir que el enfoque completo no sirve, se
+investigó si cambiar a n8n evitaría el problema de fondo: **no lo
+evita** -- el límite de cupo/modo-privado para apps sin auditar es una
+política de la propia TikTok, no algo específico de Zernio. Una app de
+TikTok armada para n8n nacería igual de "no auditada" con las mismas
+restricciones (o peor, sin la app pre-aprobada que ya tiene Zernio).
+
+**Segunda prueba real con `v13`** (mismo modo borrador, sin cambios de
+código): esta vez **sí llegó la notificación a TikTok** y el operador
+lo confirmó ("llego la notificacion espectacular"). Conclusión: el
+fallo de `v11` fue puntual/inconsistente (el bug documentado de TikTok
+no es 100% reproducible), no un bloqueo permanente del modo borrador.
+**El camino queda validado** -- TikTok en modo borrador + confirmación
+manual del operador es viable como flujo estable, junto con YouTube
+100% automático.
+
+## Bloque: subida automática a Zernio -- secret arreglado, 3 bugs reales encontrados y corregidos, TikTok en modo borrador (2026-09-10)
 
 Continuación directa del bloque anterior (secret vacío sin confirmar).
 El operador había guardado el secret en la sección equivocada de GitHub
