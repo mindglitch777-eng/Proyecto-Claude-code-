@@ -58,7 +58,9 @@ export type CuentaObjetivo =
   | {platform: 'tiktok'; accountId: string; platformSpecificData: DatosTikTok}
   | {platform: 'youtube'; accountId: string; platformSpecificData: DatosYouTube};
 
-export type ResultadoSubida = {ok: true; postId?: string} | {ok: false; error: string};
+export type ResultadoSubida =
+  | {ok: true; postId?: string; respuestaCruda: unknown}
+  | {ok: false; error: string; respuestaCruda?: unknown};
 
 function requerirApiKey(apiKeyParam?: string): string {
   const apiKey = apiKeyParam ?? process.env.ZERNIO_API_KEY;
@@ -132,10 +134,10 @@ export async function crearPost(opciones: {
       }),
     });
     const cuerpo = await resp.text();
-    if (!resp.ok) return {ok: false, error: `posts HTTP ${resp.status}: ${cuerpo}`};
     let data: any = {};
     try { data = JSON.parse(cuerpo); } catch { /* respuesta no-JSON, se guarda como texto */ }
-    return {ok: true, postId: data.id ?? data.postId};
+    if (!resp.ok) return {ok: false, error: `posts HTTP ${resp.status}: ${cuerpo}`, respuestaCruda: data || cuerpo};
+    return {ok: true, postId: data.id ?? data.postId, respuestaCruda: data};
   }, 'crear post en Zernio');
 }
 

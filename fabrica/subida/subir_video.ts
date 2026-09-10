@@ -26,6 +26,7 @@ type EntradaLog = {
   ok: boolean;
   postId?: string;
   error?: string;
+  respuestaCruda?: unknown;
 };
 
 function leerLog(): EntradaLog[] {
@@ -93,7 +94,11 @@ async function main(): Promise<void> {
     ok: resultado.ok,
     postId: resultado.ok ? resultado.postId : undefined,
     error: resultado.ok ? undefined : resultado.error,
+    respuestaCruda: resultado.respuestaCruda,
   });
+
+  console.log('Respuesta cruda de Zernio (para verificar cada plataforma por separado):');
+  console.log(JSON.stringify(resultado.respuestaCruda, null, 2));
 
   if (!resultado.ok) {
     console.error(`FALLO la subida de ${id}: ${resultado.error}`);
