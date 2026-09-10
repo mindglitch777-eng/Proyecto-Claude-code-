@@ -141,6 +141,40 @@ export async function crearPost(opciones: {
   }, 'crear post en Zernio');
 }
 
+/**
+ * Lista los posts recientes con su detalle crudo (incluye, segun
+ * rules/webhooks.md del repo de Zernio, resultado por plataforma:
+ * platform/status/publishedUrl/error). Es de solo lectura, pensada
+ * para diagnostico -- no publica nada.
+ */
+export async function listarPostsRecientes(limite = 5, apiKeyParam?: string): Promise<unknown> {
+  const apiKey = requerirApiKey(apiKeyParam);
+  const resp = await fetch(`${BASE}/posts?limit=${limite}`, {
+    headers: {Authorization: `Bearer ${apiKey}`},
+  });
+  const cuerpo = await resp.text();
+  let data: any = cuerpo;
+  try { data = JSON.parse(cuerpo); } catch { /* se deja como texto */ }
+  if (!resp.ok) throw new Error(`GET /posts HTTP ${resp.status}: ${cuerpo}`);
+  return data;
+}
+
+/**
+ * Trae los logs de publicacion de un post puntual (donde Zernio informa
+ * el error real por plataforma cuando una falla, segun rules/errors.md).
+ */
+export async function obtenerLogsPost(postId: string, apiKeyParam?: string): Promise<unknown> {
+  const apiKey = requerirApiKey(apiKeyParam);
+  const resp = await fetch(`${BASE}/posts/${postId}/logs`, {
+    headers: {Authorization: `Bearer ${apiKey}`},
+  });
+  const cuerpo = await resp.text();
+  let data: any = cuerpo;
+  try { data = JSON.parse(cuerpo); } catch { /* se deja como texto */ }
+  if (!resp.ok) throw new Error(`GET /posts/${postId}/logs HTTP ${resp.status}: ${cuerpo}`);
+  return data;
+}
+
 /** Orquesta subida + post, pensado para llamarse una vez por video ya renderizado. */
 export async function publicarVideo(opciones: {
   rutaVideo: string;
