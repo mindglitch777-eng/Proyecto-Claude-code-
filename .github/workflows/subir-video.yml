@@ -1,0 +1,54 @@
+name: subir-video
+
+# Sube UN video del lote21 a TikTok + YouTube via Zernio
+# (fabrica/subida/subir_video.ts). Disparo MANUAL por ahora
+# (workflow_dispatch) a proposito -- primera vez que se ejercita esto
+# de punta a punta con una cuenta real, no se automatiza solo hasta
+# confirmar que un video de prueba aparece bien en las dos plataformas.
+
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+    inputs:
+      video:
+        description: "Id del video a subir (ej: v01)"
+        required: true
+
+jobs:
+  subir:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: fabrica/package-lock.json
+
+      - name: Dependencias
+        working-directory: fabrica
+        run: npm ci --no-audit --no-fund
+
+      - name: Subir ${{ github.event.inputs.video }}
+        working-directory: fabrica
+        env:
+          ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
+        run: npx tsx subida/subir_video.ts "${{ github.event.inputs.video }}"
+
+      - name: Commitear log de subida (state/uploads.json)
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add state/uploads.json
+          if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
+          git commit -m "Log de subida: ${{ github.event.inputs.video }}"
+          for i in 1 2 3; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && \
+            git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
+            sleep $((RANDOM % 5 + 2 * i))
+          done
+          exit 1
