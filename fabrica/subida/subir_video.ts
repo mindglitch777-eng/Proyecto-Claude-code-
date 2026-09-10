@@ -77,6 +77,14 @@ async function main(): Promise<void> {
         contentPreviewConfirmed: true,
         expressConsentGiven: true,
         videoMadeWithAi: true,
+        // Decision del operador (2026-09-10) tras 2 fallos reales por
+        // "TikTok direct posting is at capacity" (v05 y v14, ~15min
+        // aparte -- no es un bache de segundos): mientras tanto TikTok
+        // va a modo borrador (Creator Inbox) en vez de intentar publicar
+        // directo. El operador confirma el video con un toque desde la
+        // app -- YouTube sigue publicando 100% automatico sin cambios.
+        draft: true,
+        tiktokSettings: {draft: true},
       },
     },
     cuentaYouTube: {

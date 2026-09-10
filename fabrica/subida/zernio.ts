@@ -51,6 +51,13 @@ export type DatosTikTok = {
   draft?: boolean;
   commercialContentType?: 'none' | 'brand_organic' | 'brand_content';
   videoMadeWithAi?: boolean;
+  // OJO real: el errorMessage real de Zernio ante "TikTok direct posting
+  // is at capacity" dice literalmente "Use tiktokSettings.draft: true"
+  // -- distinto del campo `draft` plano de arriba, que es lo que dice
+  // rules/platforms.md. Se manda ANIDADO tambien, ademas del plano, por
+  // si la API en verdad lee de aca (no se pudo confirmar cual de los
+  // dos lee sin una prueba real con draft:true).
+  tiktokSettings?: {draft?: boolean};
 };
 
 export type DatosYouTube = {
@@ -148,12 +155,16 @@ export async function crearPost(opciones: {
 
     // OJO real: un HTTP 200 NO significa que se publico -- Zernio puede
     // devolver 200 con el post creado pero "publishing failed" en el
-    // cuerpo (ej: TikTok a capacidad). Solo se cuenta como exito real
-    // si CADA plataforma pedida quedo "published" segun platformResults.
+    // cuerpo (ej: TikTok a capacidad). Se cuenta como exito solo si
+    // NINGUNA plataforma pedida quedo "failed" -- no se exige que TODAS
+    // digan "published" porque una plataforma en modo borrador
+    // (tiktokSettings.draft:true) legitimamente no termina en
+    // "published" (va a Creator Inbox a la espera de que el operador la
+    // confirme a mano) y no por eso es un fallo real.
     const plataformas: ResultadoPlataforma[] | undefined = Array.isArray(data?.platformResults)
       ? data.platformResults
       : undefined;
-    if (plataformas && !plataformas.every((p) => p.status === 'published')) {
+    if (plataformas && plataformas.some((p) => p.status === 'failed')) {
       const detalle = plataformas.map((p) => `${p.platform}:${p.status}${p.error ? ` (${p.error})` : ''}`).join(', ');
       return {ok: false, error: data.error ?? `no todas las plataformas publicaron -- ${detalle}`, plataformas, respuestaCruda: data};
     }
