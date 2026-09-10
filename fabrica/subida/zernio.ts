@@ -206,6 +206,24 @@ export async function obtenerLogsPost(postId: string, apiKeyParam?: string): Pro
   return data;
 }
 
+/**
+ * Consulta el resumen de analiticas por cuenta (GET /v1/analytics).
+ * OJO real: rules/analytics.md dice que la mayoria de estos endpoints
+ * requieren el "analytics add-on" de Zernio -- no confirmado si el plan
+ * gratuito lo incluye. Esta funcion es de solo lectura, para probarlo
+ * antes de prometer metricas en cualquier panel.
+ */
+export async function obtenerAnalytics(apiKeyParam?: string): Promise<unknown> {
+  const apiKey = requerirApiKey(apiKeyParam);
+  const resp = await fetch(`${BASE}/analytics`, {
+    headers: {Authorization: `Bearer ${apiKey}`},
+  });
+  const cuerpo = await resp.text();
+  let data: any = cuerpo;
+  try { data = JSON.parse(cuerpo); } catch { /* se deja como texto */ }
+  return {httpStatus: resp.status, ok: resp.ok, data};
+}
+
 /** Orquesta subida + post, pensado para llamarse una vez por video ya renderizado. */
 export async function publicarVideo(opciones: {
   rutaVideo: string;

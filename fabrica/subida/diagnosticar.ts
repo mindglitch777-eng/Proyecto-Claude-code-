@@ -7,11 +7,15 @@
  *
  * Uso: npx tsx subida/diagnosticar.ts
  */
-import {listarPostsRecientes, obtenerLogsPost} from './zernio';
+import {listarPostsRecientes, obtenerLogsPost, obtenerAnalytics} from './zernio';
 
 async function main(): Promise<void> {
+  console.log('--- GET /v1/analytics (probando si el plan gratuito lo incluye) ---');
+  const analytics = await obtenerAnalytics();
+  console.log(JSON.stringify(analytics, null, 2));
+
   const posts = (await listarPostsRecientes(5)) as any;
-  console.log('--- GET /v1/posts?limit=5 ---');
+  console.log('\n--- GET /v1/posts?limit=5 ---');
   console.log(JSON.stringify(posts, null, 2));
 
   const lista: any[] = Array.isArray(posts) ? posts : posts?.data ?? posts?.posts ?? [];
