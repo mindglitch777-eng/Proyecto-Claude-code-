@@ -7,7 +7,7 @@ name: subir-video
 # confirmar que un video de prueba aparece bien en las dos plataformas.
 
 permissions:
-  contents: read
+  contents: write
 
 on:
   workflow_dispatch:
