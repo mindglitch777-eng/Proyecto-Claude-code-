@@ -1,0 +1,35 @@
+name: diagnosticar-zernio
+
+# Solo lectura: lista los posts recientes de Zernio y sus logs de
+# publicacion por plataforma (fabrica/subida/diagnosticar.ts). No sube
+# ni publica nada -- pensado para ver el error real cuando una subida
+# quedo "ok" en general pero fallo en una sola plataforma (ej: TikTok).
+
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnosticar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: fabrica/package-lock.json
+
+      - name: Dependencias
+        working-directory: fabrica
+        run: npm ci --no-audit --no-fund
+
+      - name: Diagnosticar
+        working-directory: fabrica
+        env:
+          ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
+        run: npx tsx subida/diagnosticar.ts
