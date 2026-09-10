@@ -116,6 +116,18 @@ async function conReintentos<T>(intento: () => Promise<T>, contexto: string): Pr
  * vieja subirArchivoDirecto() (renombrada abajo, ya no se usa desde
  * publicarVideo pero queda por si algun dia hace falta un archivo
  * chico rapido).
+ *
+ * OJO real: el ejemplo de rules/media.md (`const {uploadUrl, fileUrl}
+ * = await getPresignedUrl(...)`) es pseudo-codigo -- llama a una
+ * funcion inventada, no muestra el body real de la respuesta. Probado
+ * en vivo: POST /v1/media/presign solo devuelve `{"uploadUrl": "..."}`,
+ * sin `fileUrl`. La `fileUrl` se deriva sacandole los parametros de
+ * firma (todo despues del "?") a `uploadUrl` -- asi funcionan las URLs
+ * firmadas de S3/R2 en general (el "?X-Amz-..." es solo la firma
+ * temporal para el PUT, el path de antes es la URL real del objeto).
+ * No confirmado 100% que Zernio pueda leer ese objeto de vuelta al
+ * crear el post -- si crearPost() falla con un error de "no se pudo
+ * descargar el media", ese es el primer lugar a revisar.
  */
 export async function subirArchivo(rutaVideo: string, apiKeyParam?: string): Promise<string> {
   const apiKey = requerirApiKey(apiKeyParam);
@@ -134,10 +146,12 @@ export async function subirArchivo(rutaVideo: string, apiKeyParam?: string): Pro
       body: JSON.stringify({filename: nombreArchivo, contentType: 'video/mp4'}),
     });
     if (!respPresign.ok) throw new Error(`media/presign HTTP ${respPresign.status}: ${await respPresign.text()}`);
-    const {uploadUrl, fileUrl} = (await respPresign.json()) as {uploadUrl: string; fileUrl: string};
-    if (!uploadUrl || !fileUrl) {
-      throw new Error(`media/presign sin uploadUrl/fileUrl en la respuesta: ${JSON.stringify({uploadUrl, fileUrl})}`);
+    const cuerpoPresign = (await respPresign.json()) as {uploadUrl: string; fileUrl?: string};
+    const uploadUrl = cuerpoPresign.uploadUrl;
+    if (!uploadUrl) {
+      throw new Error(`media/presign sin uploadUrl en la respuesta: ${JSON.stringify(cuerpoPresign)}`);
     }
+    const fileUrl = cuerpoPresign.fileUrl ?? uploadUrl.split('?')[0];
 
     const buffer = readFileSync(rutaVideo);
     const respPut = await fetch(uploadUrl, {
