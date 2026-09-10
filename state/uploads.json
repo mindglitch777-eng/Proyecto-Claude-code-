@@ -558,5 +558,107 @@
       },
       "message": "Post scheduled successfully"
     }
+  },
+  {
+    "id": "v19",
+    "fecha": "2026-09-10T23:52:58.729Z",
+    "ok": true,
+    "postId": "6aa342da2c20506f68986b3a",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Mito tres: \"el algoritmo me odia\". No. Tu producto es invisible.\n\nSé visible. Con sistema, no con suerte.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #Algoritmo",
+        "mediaItems": [
+          {
+            "type": "video",
+            "url": "https://media.zernio.com/media/1789084377531_va32cuzl_78dc6769-f252-49ab-9ddb-6075d90bd5c1.mp4",
+            "_id": "6aa342da2c20506f68986b3b"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-14T15:00:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "videoMadeWithAi": true,
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "661e48207620d77e17dab5aaa1f5c610",
+            "_id": "6aa342da2c20506f68986b3c"
+          },
+          {
+            "platform": "youtube",
+            "accountId": {
+              "_id": "6aa1ce88726ebfe037cfe0ea",
+              "platform": "youtube",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "Taller de Activos ",
+              "isActive": true,
+              "profilePicture": "https://yt3.ggpht.com/YGQNFw6NYfwuTSi-ccHO72WDeEOyqzxJY2aNfolBzg3XGZtVx695XAXN7t7oTW_13T6fTkAu02Q=s88-c-k-c0x00ffffff-no-rj",
+              "username": "tallerdeactivos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-14T15:00:00.000Z",
+            "platformSpecificData": {
+              "title": "Mito: el algoritmo me odia",
+              "visibility": "public",
+              "containsSyntheticMedia": true
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "17ccff21b7d2922acea737e645e75352",
+            "_id": "6aa342da2c20506f68986b3d"
+          }
+        ],
+        "scheduledFor": "2026-09-14T15:00:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa342da2c20506f68986b3a",
+        "createdAt": "2026-09-10T23:52:58.565Z",
+        "updatedAt": "2026-09-10T23:52:58.565Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    }
   }
 ]
