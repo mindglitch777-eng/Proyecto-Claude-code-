@@ -212,5 +212,41 @@
       },
       "message": "Post scheduled successfully"
     }
+  },
+  {
+    "id": "carrusel-15",
+    "fecha": "2026-09-10T23:08:59.866Z",
+    "ok": true,
+    "postId": "6aa3388b2da049532a2bc395",
+    "scheduledFor": "2026-09-11T00:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {"message": "Post scheduled successfully", "post": {"_id": "6aa3388b2da049532a2bc395", "status": "scheduled"}}
+  },
+  {
+    "id": "carrusel-29",
+    "fecha": "2026-09-10T23:09:05.615Z",
+    "ok": true,
+    "postId": "6aa33891b50a79df27cdbf55",
+    "scheduledFor": "2026-09-10T23:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {"message": "Post scheduled successfully", "post": {"_id": "6aa33891b50a79df27cdbf55", "status": "scheduled"}}
+  },
+  {
+    "id": "carrusel-36",
+    "fecha": "2026-09-10T23:09:00.448Z",
+    "ok": true,
+    "postId": "6aa3388c426058eec36240e6",
+    "scheduledFor": "2026-09-11T00:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {"message": "Post scheduled successfully", "post": {"_id": "6aa3388c426058eec36240e6", "status": "scheduled"}}
+  },
+  {
+    "id": "carrusel-22",
+    "fecha": "2026-09-10T23:09:08.701Z",
+    "ok": true,
+    "postId": "6aa33894b50a79df27cdc042",
+    "scheduledFor": "2026-09-11T01:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {"message": "Post scheduled successfully", "post": {"_id": "6aa33894b50a79df27cdc042", "status": "scheduled"}}
   }
 ]

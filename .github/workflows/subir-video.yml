@@ -43,15 +43,24 @@ jobs:
         run: npx tsx subida/subir_video.ts "${{ github.event.inputs.video }}" "${{ github.event.inputs.scheduledFor }}"
 
       - name: Commitear log de subida (state/uploads.json)
+        # OJO real: con varios workflows disparados casi a la vez (ej. un
+        # lote programado con scheduledFor), esto puede perder la carrera
+        # de git -- el POST a Zernio del paso de arriba ya salio bien en
+        # ese caso, asi que un fallo aca NO debe tumbar el job entero
+        # (continue-on-error) ni esconder que la subida real funciono.
+        continue-on-error: true
         run: |
           git config user.name  "productor-bot"
           git config user.email "actions@github.com"
           git add state/uploads.json
           if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
           git commit -m "Log de subida: ${{ github.event.inputs.video }}"
-          for i in 1 2 3; do
+          for i in 1 2 3 4 5 6; do
+            git rebase --abort >/dev/null 2>&1 || true
             git pull --rebase origin "$GITHUB_REF_NAME" && \
             git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
             sleep $((RANDOM % 5 + 2 * i))
           done
-          exit 1
+          git rebase --abort >/dev/null 2>&1 || true
+          echo "::warning::No se pudo commitear state/uploads.json tras varios intentos (carrera de git) -- la subida real a Zernio SI salio bien, revisar/reconstruir el log a mano."
+          exit 0
