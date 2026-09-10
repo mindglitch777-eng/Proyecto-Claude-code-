@@ -8,20 +8,26 @@
  * repo oficial `zernio-dev/zernio-api` (rules/platforms.md,
  * rules/media.md via GitHub raw, no bloqueado) -- no adivinado.
  *
- * Dos llamadas:
- *   1. POST /v1/media/upload-direct -- sube el archivo (multipart,
- *      campo "file"), se borra solo a los 7 dias. La documentacion
- *      dice 25MB de maximo, pero el limite REAL observado es mucho
- *      menor: un video de 4.02MB (lote21-v05) entro bien, uno de
- *      9.76MB (lote21-v07) fallo con HTTP 413 "Request Entity Too
- *      Large" / FUNCTION_PAYLOAD_TOO_LARGE -- el error viene de la
- *      infraestructura de Vercel detras de Zernio, que suele limitar
- *      el body de una funcion serverless a ~4.5MB independientemente
- *      de lo que diga la documentacion de la app. TAMANO_MAXIMO_BYTES
- *      abajo usa un limite conservador basado en el ultimo caso real
- *      confirmado que funciono, no en el numero de la documentacion.
- *   2. POST /v1/posts -- crea el post apuntando a la URL que devolvio
- *      el upload, una entrada por plataforma (tiktok/youtube) con su
+ * Tres llamadas:
+ *   1. POST /v1/media/upload-direct -- sube el archivo entero de una
+ *      (multipart, campo "file"). La documentacion dice 25MB de
+ *      maximo, pero el limite REAL observado es mucho menor: un video
+ *      de 4.02MB entro bien, uno de 9.76MB fallo con HTTP 413 "Request
+ *      Entity Too Large" / FUNCTION_PAYLOAD_TOO_LARGE (limite tipico
+ *      de una funcion serverless de Vercel detras de Zernio). Sirve
+ *      solo para archivos chicos -- rules/media.md del repo de Zernio
+ *      lo confirma explicito: pensado para "inbox messages and small
+ *      files".
+ *   2. POST /v1/media/presign + PUT directo al storage -- la via real
+ *      para archivos grandes (hasta 5GB segun la doc), confirmada en
+ *      rules/media.md: se pide una URL firmada, se sube el archivo
+ *      DIRECTO a esa URL (nunca pasa por la funcion serverless de
+ *      Zernio, asi que el limite de ~4.5MB no aplica), y se usa la
+ *      `fileUrl` que devuelve para crear el post. Es la que usa
+ *      subirArchivo() de aca abajo -- upload-direct quedo solo de
+ *      referencia, no se llama mas desde publicarVideo().
+ *   3. POST /v1/posts -- crea el post apuntando a la URL que devolvio
+ *      la subida, una entrada por plataforma (tiktok/youtube) con su
  *      `accountId` y `platformSpecificData` propio.
  *
  * OJO real: la forma exacta de `platformSpecificData.tiktok` tiene una
@@ -36,7 +42,9 @@ import {readFileSync, statSync} from 'fs';
 import {basename} from 'path';
 
 const BASE = 'https://zernio.com/api/v1';
-const TAMANO_MAXIMO_BYTES = 4 * 1024 * 1024;
+// Limite real de /v1/media/presign segun rules/media.md (5GB) -- muy por
+// encima de cualquier video del lote, se deja como red de seguridad nomas.
+const TAMANO_MAXIMO_BYTES = 5 * 1024 * 1024 * 1024;
 const REINTENTOS = 3;
 
 export type PlataformaId = 'tiktok' | 'youtube';
@@ -101,16 +109,57 @@ async function conReintentos<T>(intento: () => Promise<T>, contexto: string): Pr
   throw new Error(`${contexto} fallo despues de ${REINTENTOS} intentos: ${(ultimoError as Error).message}`);
 }
 
-/** Sube el archivo de video a Zernio y devuelve la URL temporal para usar en crearPost(). */
-export async function subirArchivoDirecto(rutaVideo: string, apiKeyParam?: string): Promise<string> {
+/**
+ * Sube el archivo de video via presign (pide URL firmada, hace PUT
+ * directo al storage, evita el limite chico de upload-direct) y
+ * devuelve la URL final para usar en crearPost(). Reemplaza a la
+ * vieja subirArchivoDirecto() (renombrada abajo, ya no se usa desde
+ * publicarVideo pero queda por si algun dia hace falta un archivo
+ * chico rapido).
+ */
+export async function subirArchivo(rutaVideo: string, apiKeyParam?: string): Promise<string> {
   const apiKey = requerirApiKey(apiKeyParam);
   const tamano = statSync(rutaVideo).size;
   if (tamano > TAMANO_MAXIMO_BYTES) {
     throw new Error(
-      `${rutaVideo} pesa ${(tamano / 1024 / 1024).toFixed(1)}MB, supera el limite real observado (~4MB, no los 25MB que dice la documentacion de Zernio -- ver comentario arriba) -- hace falta comprimirlo o alojarlo en otro lado (no lo intenta, para no fallar recien en la plataforma).`
+      `${rutaVideo} pesa ${(tamano / 1024 / 1024).toFixed(1)}MB, supera el limite de 5GB de /v1/media/presign -- no deberia pasar con un video de este proyecto.`
     );
   }
+  const nombreArchivo = basename(rutaVideo);
 
+  return conReintentos(async () => {
+    const respPresign = await fetch(`${BASE}/media/presign`, {
+      method: 'POST',
+      headers: {Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json'},
+      body: JSON.stringify({filename: nombreArchivo, contentType: 'video/mp4'}),
+    });
+    if (!respPresign.ok) throw new Error(`media/presign HTTP ${respPresign.status}: ${await respPresign.text()}`);
+    const {uploadUrl, fileUrl} = (await respPresign.json()) as {uploadUrl: string; fileUrl: string};
+    if (!uploadUrl || !fileUrl) {
+      throw new Error(`media/presign sin uploadUrl/fileUrl en la respuesta: ${JSON.stringify({uploadUrl, fileUrl})}`);
+    }
+
+    const buffer = readFileSync(rutaVideo);
+    const respPut = await fetch(uploadUrl, {
+      method: 'PUT',
+      headers: {'Content-Type': 'video/mp4'},
+      body: buffer,
+    });
+    if (!respPut.ok) throw new Error(`PUT a uploadUrl HTTP ${respPut.status}: ${await respPut.text()}`);
+
+    return fileUrl;
+  }, `subir archivo ${nombreArchivo} (presign)`);
+}
+
+/**
+ * Sube el archivo entero de una via upload-direct -- solo sirve para
+ * archivos chicos (~4.5MB o menos, ver comentario arriba). Ya no la usa
+ * publicarVideo() (usa subirArchivo() / presign, que no tiene ese techo);
+ * queda disponible por si hace falta el camino rapido para un archivo
+ * chico puntual.
+ */
+export async function subirArchivoDirecto(rutaVideo: string, apiKeyParam?: string): Promise<string> {
+  const apiKey = requerirApiKey(apiKeyParam);
   return conReintentos(async () => {
     const buffer = readFileSync(rutaVideo);
     const form = new FormData();
@@ -235,7 +284,7 @@ export async function publicarVideo(opciones: {
   if (!opciones.cuentaTikTok && !opciones.cuentaYouTube) {
     throw new Error('publicarVideo: no se paso ninguna cuenta destino (ni TikTok ni YouTube).');
   }
-  const urlVideo = await subirArchivoDirecto(opciones.rutaVideo, opciones.apiKey);
+  const urlVideo = await subirArchivo(opciones.rutaVideo, opciones.apiKey);
   const cuentas: CuentaObjetivo[] = [];
   if (opciones.cuentaTikTok) {
     cuentas.push({platform: 'tiktok', accountId: opciones.cuentaTikTok.accountId, platformSpecificData: opciones.cuentaTikTok.datos});
