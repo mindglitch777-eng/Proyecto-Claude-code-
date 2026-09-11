@@ -109,6 +109,20 @@
 
 **Mecánica de captación ya definida:** comentario como puerta de entrada al producto gratuito (gating por comentario, no por formulario).
 
+## Ángulo madre del contenido (decidido con investigación, 2026-09-11)
+
+**No competimos de frente en "cómo hacer dinero online" genérico.** Investigación
+real (WebSearch) confirmó que es el género más saturado y más gurú que existe —
+el mismo patrón que esta marca ya rechaza ("comentá CLASE y te invito a una clase
+gratuita" es el ejemplo textual encontrado). "Vender productos digitales" es más
+específico, más chico y más fácil de diferenciar. Ver
+`fabrica/docs/MATRIZ_CONTENIDO.md` para el detalle completo y las fuentes.
+
+**Regla resultante:** "dinero online" solo sirve como gancho de entrada (Capa 1,
+lo que la gente ya busca) — el desarrollo de cada pieza siempre aterriza en un
+producto digital concreto de un nicho concreto, nunca se queda en la promesa
+genérica.
+
 ## Producto gratuito — El Buscador de Activos (flujo confirmado, 2026-09-11)
 
 **Objetivo del flujo:** no entregar todo gratis de una. Ir mostrando de a partes, como
@@ -150,6 +164,13 @@ tutoriales avanzados que ya existen.
 
 ## Changelog
 *Más nuevo primero.*
+- v4 (2026-09-11) — Decidido el ángulo madre con investigación real: "cómo hacer
+  dinero online" genérico queda descartado como tema central (es el género más
+  saturado/gurú, confirmado por WebSearch) — se usa solo como gancho de entrada,
+  nunca como el contenido en sí. "Vender productos digitales" queda como ángulo
+  central por ser más específico y diferenciable. Ver `fabrica/docs/MATRIZ_CONTENIDO.md`
+  para la estructura completa de cuánto contenido se puede generar (12 nichos × 3
+  etapas de embudo × 4+ formatos) y el criterio de priorización.
 - v3 (2026-09-11) — Agregado el flujo confirmado del producto gratuito (El Buscador
   de Activos): recorrido de 3 pasos (oportunidad → prueba gratis de guion/ganchos →
   teaser de automatización) diseñado para dejar con ganas del pago, no entregar todo
