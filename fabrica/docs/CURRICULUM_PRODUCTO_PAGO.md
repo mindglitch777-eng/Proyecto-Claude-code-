@@ -111,8 +111,32 @@ Los demás entregables (checklist de grabación, banco de música, checklist
 antes de publicar, checklist de Hotmart) siguen como documentos/checklists —
 no todo necesita ser una herramienta interactiva, pero los 3 puntos de
 mayor fricción para el comprador (validar nicho, escribir guion, armar
-calendario) sí la tienen. Construcción real de estas 3 herramientas: tarea
-pendiente aparte, no arrancada todavía.
+calendario) sí la tienen.
+
+**Construidas y probadas (2026-09-11):** las 3 herramientas existen como
+preview interactiva real — Artifact "La Máquina de Activos"
+(`https://claude.ai/code/artifact/f8551d68-399e-48d5-914e-2034e232cc74`).
+Se probaron con Playwright (no solo revisión de código) y se corrigieron 2
+bugs reales encontrados así: falso-positivo del matcher de nichos por
+substring naive, y highlight de chip que nunca se aplicaba. Iteración
+directa con feedback del operador:
+- *Validador de Activos:* el operador marcó la primera versión como "muy
+  mala" (sin veredicto final, sin ideas, sin guía de diferenciación ni de
+  ejecución) — se rehízo con veredicto explícito, 2 ideas concretas por
+  nicho (`ejemplo` + `idea2`), bloque "cómo diferenciarte de la multitud"
+  (`OPORTUNIDAD_INFO.diferenciacion`) y "los 3 pasos, sin vueltas"
+  (`OPORTUNIDAD_INFO.pasos`), manteniendo la fuente citada.
+- *Generador de Ganchos y Guiones:* ganchos reescritos con tono más
+  agresivo/confrontativo (los 12 nichos + los 4 ángulos en modo tema
+  libre), y se agregó un toggle "sin mostrar la cara" / "mostrando la
+  cara" que cambia, por línea de guion, el ícono de encuadre y la
+  indicación de grabación (mirada a cámara vs. pantalla/manos en off).
+
+Libertad de elegir / personalizado ya está en las 3: Validador acepta
+cualquier texto libre con fallback honesto (checklist de 3 preguntas si no
+hay dato propio), Guiones tiene modo "tema libre" con estructura genérica
+declarada como tal, Calendario permite tocar día por día además de los
+presets 3/5/7.
 
 ## Contenido exacto — qué archivo/plantilla recibe la persona en cada módulo
 
