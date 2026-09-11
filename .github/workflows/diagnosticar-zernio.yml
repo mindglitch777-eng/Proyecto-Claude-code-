@@ -10,6 +10,10 @@ permissions:
 
 on:
   workflow_dispatch:
+    inputs:
+      postIds:
+        description: "Opcional -- postIds separados por coma para ver logs puntuales (ej: 6aa209a3e20fab0aab6d4dac,6aa20bbb54465788b9c99e38). Vacio = listado de recientes."
+        required: false
 
 jobs:
   diagnosticar:
@@ -32,4 +36,4 @@ jobs:
         working-directory: fabrica
         env:
           ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
-        run: npx tsx subida/diagnosticar.ts
+        run: npx tsx subida/diagnosticar.ts "${{ github.event.inputs.postIds }}"

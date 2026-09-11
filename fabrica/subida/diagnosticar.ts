@@ -6,10 +6,28 @@
  * No sube ni publica nada.
  *
  * Uso: npx tsx subida/diagnosticar.ts
+ *      npx tsx subida/diagnosticar.ts <postId1,postId2,...>  -- salta el
+ *      listado de recientes (paginado, solo trae 5 a la vez) y va directo
+ *      a los logs de esos posts puntuales.
  */
 import {listarPostsRecientes, obtenerLogsPost, obtenerAnalytics} from './zernio';
 
 async function main(): Promise<void> {
+  const idsArg = process.argv[2];
+
+  if (idsArg) {
+    for (const id of idsArg.split(',').map((s) => s.trim()).filter(Boolean)) {
+      console.log(`\n--- GET /v1/posts/${id}/logs ---`);
+      try {
+        const logs = await obtenerLogsPost(id);
+        console.log(JSON.stringify(logs, null, 2));
+      } catch (error) {
+        console.error(`No se pudieron obtener logs de ${id}: ${(error as Error).message}`);
+      }
+    }
+    return;
+  }
+
   console.log('--- GET /v1/analytics (probando si el plan gratuito lo incluye) ---');
   const analytics = await obtenerAnalytics();
   console.log(JSON.stringify(analytics, null, 2));
