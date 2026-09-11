@@ -1,5 +1,50 @@
 # Estado vivo del proyecto
 
+## Bloque: programados los 9 videos manuales restantes (compresion real, no URL publica) + mismo bug de carrera de git corregido (2026-09-11)
+
+Pendiente heredado del bloque de investigacion del 2026-09-10: 9 de
+los 21 videos del lote21 (v04, v06, v07, v08, v09, v10, v12, v18, v21)
+pesaban mas del limite real de `upload-direct` (~4.19MB) y la via
+alternativa (`presign`) habia quedado confirmada rota del lado de
+Zernio. Las dos salidas documentadas eran (a) comprimir los videos o
+(b) exponerlos en una URL publica -- bloqueado en (b) por la Regla de
+Oro del proyecto (expone contenido en un canal nuevo, necesita
+confirmacion explicita).
+
+**Se resolvio con (a), sin necesitar esa confirmacion**: los 9 videos
+se re-encodearon con `ffmpeg` (libx264, 2 pasadas, audio AAC 96kbps,
+bitrate de video calculado por duracion) a ~3.4-3.7MB cada uno --
+margen real bajo el limite del codigo y bajo el tamano confirmado que
+funciono en un caso real (~4.02MB). Verificado con comparacion de
+frame en el caso de mayor reduccion (v07: 3.73Mbps -> 1.25Mbps) sin
+degradacion visible. `videos/lote21/lote21-vXX.mp4` quedaron
+reemplazados por las versiones comprimidas (v01-v03 sin tocar,
+reservados).
+
+**Los 9 se dispararon y programaron** via `subir-video.yml`, un video
+por dia habil (14-24 sep, 20:00 UTC = 17:00 ART, dentro del pico
+confirmado mar-jue 14-18h pero sin coincidir con los horarios exactos
+de los carruseles) -- confirmado en los 9 casos con la respuesta real
+de Zernio (`"Post scheduled successfully"`, `status: "scheduled"`).
+
+**Mismo bug de carrera de git que en los carruseles, vuelto a
+aparecer**: de 9 registros esperados en `state/uploads.json`, solo 1
+(v10, el primero disparado) gano la carrera de push -- los otros 8
+perdieron su commit de log aunque el POST real a Zernio funciono en
+los 9 casos. Reconstruidos a mano con postId y scheduledFor reales de
+los logs de GitHub Actions, mismo patron de campo `"nota"` ya usado
+para los carruseles. **Esto confirma que la mejora futura recomendada
+en el bloque anterior (loguear cada subida en un archivo individual en
+vez de un JSON compartido) sigue pendiente y sigue siendo necesaria**
+-- el fix actual (`git rebase --abort` + `continue-on-error`) solo
+evita que el job falle, no que se pierda el registro.
+
+**Resultado real**: 18 de los 21 videos del lote21 quedan
+programados/publicados (v01-v03 siguen reservados, fuera de esta
+automatizacion). Sumado a los 42/42 carruseles del bloque anterior,
+el catalogo completo (21 videos + 42 carruseles) queda con solo 3
+videos sin tocar por decision explicita, no por bloqueo tecnico.
+
 ## Bloque: cierre del plan de 6 dias (36 carruseles) + bug real encontrado y corregido (30 registros de log perdidos) (2026-09-11)
 
 Contexto: plan aprobado de 6 dias para programar los 36 carruseles
