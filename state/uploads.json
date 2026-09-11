@@ -9,7 +9,11 @@
     "nota": "Entrada reconstruida a mano: reprogramacion del horario de mediodia (avoid 10-14h TikTok, confirmado por el operador) -- ninguna plataforma habia publicado todavia con el post viejo 6aa34390f8e05c3cdbcc2b52 (status pending en tiktok y youtube), asi que se cancelo con DELETE (confirmado real, devuelve 404 despues) y se recreo mandando a TikTok + YouTube (sin --solo-tiktok). El paso 'Commitear log de subida' perdio la carrera de git (5 workflows de carrusel + 2 de video casi simultaneos).",
     "respuestaCruda": {
       "message": "Post scheduled successfully",
-      "post": {"_id": "6aa4334b6020b2de270ed310", "status": "scheduled", "scheduledFor": "2026-09-15T23:45:00.000Z"}
+      "post": {
+        "_id": "6aa4334b6020b2de270ed310",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-15T23:45:00.000Z"
+      }
     }
   },
   {
@@ -18,7 +22,7 @@
     "ok": true,
     "postId": "6aa42e1fa43c28e73cddeddd",
     "scheduledFor": "2026-09-11T21:00:00.000Z",
-    "notificado": false,
+    "notificado": true,
     "nota": "Entrada reconstruida a mano: reprogramacion del jueves (--solo-tiktok, YouTube ya publicado bien la primera vez, no se duplica) -- el paso 'Commitear log de subida' de este run perdio la carrera de git (3 workflows disparados casi a la vez: v05/v15/v16) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
     "respuestaCruda": {
       "message": "Post scheduled successfully",
