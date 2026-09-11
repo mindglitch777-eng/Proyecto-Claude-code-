@@ -77,6 +77,38 @@ la historia, se saca — aunque "se vea piola".
   como reales; correr instaladores no verificados es un riesgo de
   seguridad, no una decisión de diseño.
 
+## Extensión a "La Máquina de Activos" (2026-09-11)
+
+El operador probó el Artifact de "La Máquina de Activos" (las 3 herramientas +
+Mi Proyecto) y lo marcó como visualmente "triste" — funcionalmente eficiente
+pero sin vida, sin ganas de usarlo. Pidió algo más profesional/minimalista
+que además transmita energía con pocas palabras (dio de ejemplo un estilo
+tipo "tu [pequeño] imperio digital, hoy"). Se mantuvo la misma paleta y
+tipografía documentadas arriba (nada de colores nuevos ni fuentes nuevas —
+el problema no era la identidad, era la ejecución) y se ajustó:
+
+- **Brillo sutil de marca:** un `radial-gradient` muy suave del mismo acento
+  copper detrás del header, en vez de fondo plano — dentro del principio de
+  "un solo acento", no rompe la regla, le da atmósfera.
+- **Tabs rediseñadas:** de una grilla de botones con bordes (se leía
+  "spreadsheet") a tabs tipo subrayado — más liviano, más de app real.
+- **Saludo dinámico y personalizado:** el header ahora es un saludo que
+  cambia según el estado real del usuario (sin proyectos → invita a crear
+  el primero; con proyectos sin abrir → pregunta cuál sigue; con proyecto
+  activo → "`{nombre}`, en marcha." + racha como frase, no como número
+  repetido). Reemplaza el copy estático genérico de antes.
+- **Racha con tratamiento de "big number":** una sola vez, en un tile
+  grande dedicado (`.stat-hero`), no repetida en el saludo + el bloque de
+  hoy + el tile (se corrigió esa triplicación real que apareció al
+  revisar el primer intento con captura de pantalla).
+- **Disclosure movido:** el aviso "vista previa interna, no publicada" ya
+  no es lo primero que ve el usuario (competía con el saludo) — pasó al
+  footer, donde sigue siendo honesto pero no es la bienvenida.
+
+Verificado con Playwright (los 3 flujos de herramientas sin romper nada) +
+capturas de pantalla reales en oscuro/claro/mobile antes de publicar — no
+solo descripción, se miró el resultado.
+
 ## Fuentes de esta dirección
 - Referencia visual del operador: captura de video mostrando un sitio tipo
   agencia (parallax GSAP/ScrollTrigger, tipografía serif grande, fondo
