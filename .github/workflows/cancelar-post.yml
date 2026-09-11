@@ -1,0 +1,38 @@
+name: cancelar-post
+
+# Cancela un post programado a futuro en Zernio (DELETE /v1/posts/:id,
+# fabrica/subida/cancelar_post.ts). Disparo manual. No toca ningun
+# state/*.json -- solo lee/escribe contra la API de Zernio.
+
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+    inputs:
+      postId:
+        description: "postId de Zernio a cancelar (ej: 6aa342e71c995ee32f5d9d63)"
+        required: true
+
+jobs:
+  cancelar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: fabrica/package-lock.json
+
+      - name: Dependencias
+        working-directory: fabrica
+        run: npm ci --no-audit --no-fund
+
+      - name: Cancelar ${{ github.event.inputs.postId }}
+        working-directory: fabrica
+        env:
+          ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
+        run: npx tsx subida/cancelar_post.ts "${{ github.event.inputs.postId }}"

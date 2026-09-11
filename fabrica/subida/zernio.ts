@@ -327,6 +327,32 @@ export async function obtenerPost(postId: string, apiKeyParam?: string): Promise
 }
 
 /**
+ * Cancela/elimina un post programado a futuro (DELETE /v1/posts/:id).
+ * El repo oficial de Zernio lista el endpoint en la tabla resumen pero
+ * SIN contrato detallado (body/respuesta/comportamiento con posts ya
+ * programados) -- no hay forma de confirmarlo sin probarlo con un caso
+ * real. Uso previsto: reprogramar un carrusel que YA fue creado con
+ * `scheduledFor` en un horario malo (Zernio publica carruseles directo,
+ * sin pasar por el inbox de borrador de TikTok, asi que crear un post
+ * nuevo con el horario corregido SIN borrar el viejo duplicaria la
+ * publicacion real en la cuenta -- a diferencia de los videos, donde el
+ * viejo borrador nunca tocado en el inbox no hace daño si se lo deja
+ * expirar solo).
+ */
+export async function eliminarPost(postId: string, apiKeyParam?: string): Promise<unknown> {
+  const apiKey = requerirApiKey(apiKeyParam);
+  const resp = await fetch(`${BASE}/posts/${postId}`, {
+    method: 'DELETE',
+    headers: {Authorization: `Bearer ${apiKey}`},
+  });
+  const cuerpo = await resp.text();
+  let data: any = cuerpo;
+  try { data = JSON.parse(cuerpo); } catch { /* se deja como texto */ }
+  if (!resp.ok) throw new Error(`DELETE /posts/${postId} HTTP ${resp.status}: ${cuerpo}`);
+  return data;
+}
+
+/**
  * Trae los logs de publicacion de un post puntual (donde Zernio informa
  * el error real por plataforma cuando una falla, segun rules/errors.md).
  */
