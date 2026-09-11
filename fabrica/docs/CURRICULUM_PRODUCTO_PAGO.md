@@ -184,6 +184,63 @@ Hotmart, no en este Artifact), pero sí significa que esta vista previa,
 tal cual está, solo la puede probar el operador mismo — no sirve todavía
 para mandarle el link a un comprador real.
 
+## Auditoría técnica + más variedad y personalización (2026-09-11)
+
+El operador pidió tres cosas: (1) una revisión técnica real de todo, (2)
+más personalización en los nichos/alternativas de producto — no solo 12
+nichos fijos ni una sola idea por nicho, con opciones que apliquen
+"con o sin Claude" — y (3) que los guiones dejen de sentirse casi
+idénticos entre sí.
+
+**Auditoría técnica:** se revisó el código completo (cross-check de cada
+`onclick` contra su función, ids duplicados, todas las combinaciones de
+nicho×ángulo×formato en Guiones, los 12 nichos + texto libre en el
+Validador, los 3 presets + calendario totalmente apagado en el
+Planificador, y el ciclo completo de Mi Proyecto) con Playwright — 0
+bugs encontrados al cierre, salvo el que sigue.
+
+**Bug real encontrado y corregido:** en el modo "de la lista" del
+Generador, el ángulo elegido cambiaba la etiqueta pero NUNCA el
+contenido real — el hook y las 3 líneas del guion eran idénticos sin
+importar qué ángulo se tocara (verificado comparando los 4 ángulos con
+el mismo nicho, texto byte-por-byte igual). Es la causa concreta de "los
+guiones son casi exactamente iguales". Se arregló escribiendo, para cada
+uno de los 12 nichos, un gancho+guion propio para "Herramienta como
+gancho", "Mito desmentido" y "Resultado crudo" (el original ya escrito
+queda para "Construcción en vivo") — 36 guiones nuevos, todos partiendo
+de los mismos datos reales del nicho (porQue/esfuerzo/oportunidad), solo
+con el enfoque narrativo del ángulo elegido. Verificado con Playwright:
+los 4 ángulos ahora dan hooks distintos para el mismo nicho.
+
+**Modo "tema libre" también repetía estructura** (un solo template fijo
+por ángulo, la palabra del tema era lo único que cambiaba). Se
+expandió a 3 variantes reales de tono/estructura por ángulo (12 en
+total), elegidas de forma determinística por un hash del tema escrito —
+mismo tema da siempre el mismo resultado, temas distintos caen en
+variantes distintas. Verificado: 15 temas de prueba se repartieron
+razonablemente entre las 3 variantes de cada ángulo.
+
+**Kit universal de formatos (para "no solo 12 nichos"):** el Validador
+reutiliza los 7 tipos de oportunidad ya investigados
+(`OPORTUNIDAD_INFO`, con fuente citada en `INVESTIGACION_NICHOS_SIN_CLAUDE.md`)
+como banco aplicable a CUALQUIER idea, no solo a los 12 nichos
+precargados. Cuando el texto libre no matchea ningún nicho conocido, en
+vez de solo el checklist de 3 preguntas, ahora también se muestran 4 de
+esos 7 formatos — personalizados por una heurística simple de palabras
+clave sobre lo que la persona escribió (no una lista fija en el mismo
+orden siempre), cada uno con diferenciación real. Para los 12 nichos
+matcheados se sumó una 3ra idea (un formato universal distinto al
+investigado para ese nicho) — de 2 ideas a 3 en todos los casos.
+
+**"Con Claude" / "sin IA" (interpretado de "con o sin cloud" — se
+entendió como refiriéndose a Claude, dado el contexto del proyecto):**
+cada uno de los 7 formatos universales tiene ahora una diferenciación
+para el camino manual y una nota honesta de dónde ayuda Claude de
+verdad y dónde no reemplaza el criterio propio (nunca vendiendo humo —
+ej. en UGC se aclara que la IA no reemplaza nada, uno es el que graba).
+Se muestra en el Validador tanto para nichos matcheados como para el
+kit universal.
+
 ## Contenido exacto — qué archivo/plantilla recibe la persona en cada módulo
 
 Primera baja a tierra (2026-09-11). Cada entregable sale de algo que ya
