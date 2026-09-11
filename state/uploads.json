@@ -1,5 +1,39 @@
 [
   {
+    "id": "v05",
+    "fecha": "2026-09-11T16:36:47.534Z",
+    "ok": true,
+    "postId": "6aa42e1fa43c28e73cddeddd",
+    "scheduledFor": "2026-09-11T21:00:00.000Z",
+    "notificado": false,
+    "nota": "Entrada reconstruida a mano: reprogramacion del jueves (--solo-tiktok, YouTube ya publicado bien la primera vez, no se duplica) -- el paso 'Commitear log de subida' de este run perdio la carrera de git (3 workflows disparados casi a la vez: v05/v15/v16) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa42e1fa43c28e73cddeddd",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-11T21:00:00.000Z"
+      }
+    }
+  },
+  {
+    "id": "v16",
+    "fecha": "2026-09-11T16:37:09.910Z",
+    "ok": true,
+    "postId": "6aa42e351d5eab03a355a80d",
+    "scheduledFor": "2026-09-12T00:00:00.000Z",
+    "notificado": false,
+    "nota": "Entrada reconstruida a mano: reprogramacion del jueves (--solo-tiktok, YouTube ya publicado bien la primera vez, no se duplica) -- el paso 'Commitear log de subida' de este run perdio la carrera de git (3 workflows disparados casi a la vez: v05/v15/v16) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa42e351d5eab03a355a80d",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-12T00:00:00.000Z"
+      }
+    }
+  },
+  {
     "id": "v14",
     "fecha": "2026-09-10T01:28:04.997Z",
     "ok": true,
