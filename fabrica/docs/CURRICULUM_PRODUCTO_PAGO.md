@@ -87,6 +87,33 @@ completar el curso ni para que el sistema no-code funcione.
 
 ---
 
+## Diferenciación: herramientas reales, no solo plantillas (2026-09-11)
+
+Decisión del operador: no alcanza con "plantillas" — eso es lo que ya vende
+todo el mundo en Hotmart (ver "Panorama competitivo" en
+`product-marketing.md`). El diferencial real es entregar **herramientas que
+ya hacen el trabajo**, como El Buscador de Activos, no documentos para
+llenar a mano. Se convierten 3 de los entregables:
+
+- **Módulo 1:** en vez de una ficha de validación para completar → **Validador
+  de Activos** (herramienta): la persona ingresa su idea de nicho y la
+  herramienta la evalúa con el mismo criterio real ya usado (fuente,
+  esfuerzo/ingreso, plata inicial) — no un formulario en blanco.
+- **Módulo 2:** en vez de una plantilla de guion en blanco → **Generador de
+  Ganchos y Guiones** (herramienta): elige nicho + ángulo y arma el guion —
+  extensión directa de El Buscador de Activos, pero para cualquier nicho que
+  la persona escriba, no solo los 12 ya precargados.
+- **Módulo 4:** en vez de un calendario para completar a mano → **Planificador
+  de Publicaciones** (herramienta): ingresa frecuencia deseada y arma el
+  calendario con los horarios reales ya investigados (18:00/20:30 ART).
+
+Los demás entregables (checklist de grabación, banco de música, checklist
+antes de publicar, checklist de Hotmart) siguen como documentos/checklists —
+no todo necesita ser una herramienta interactiva, pero los 3 puntos de
+mayor fricción para el comprador (validar nicho, escribir guion, armar
+calendario) sí la tienen. Construcción real de estas 3 herramientas: tarea
+pendiente aparte, no arrancada todavía.
+
 ## Contenido exacto — qué archivo/plantilla recibe la persona en cada módulo
 
 Primera baja a tierra (2026-09-11). Cada entregable sale de algo que ya

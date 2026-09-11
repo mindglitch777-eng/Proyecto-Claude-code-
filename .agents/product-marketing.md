@@ -60,6 +60,11 @@
 - Es el sistema real que el propio operador está usando ahora mismo para vender — no una teoría ni un caso ajeno.
 - Se muestra el proceso en vivo (construcción + resultados reales, buenos y malos) en vez de un resultado ya pulido y vendido como perfecto.
 - No requiere saber editar, diseñar ni programar — la plantilla ya viene armada.
+- **Herramientas reales, no solo plantillas para llenar** (decisión 2026-09-11):
+  lo que hace todo el mundo en Hotmart son documentos en blanco para completar
+  a mano — acá se entregan herramientas que ya hacen el trabajo (validar
+  nicho, generar guion, armar calendario), la misma lógica que ya funciona en
+  El Buscador de Activos. Detalle en `fabrica/docs/CURRICULUM_PRODUCTO_PAGO.md`.
 
 **Por qué eligen esto en vez de otra cosa:** Porque ven la prueba en tiempo real en el contenido (screenshots, resultados, errores reales incluidos) antes de comprar, no una promesa vacía.
 
