@@ -1,4 +1,11 @@
-# Currículum — producto pago (sistema + curso + comunidad)
+# Currículum — La Máquina de Activos (sistema + curso + comunidad)
+
+**Nombre propuesto (2026-09-11, pendiente de confirmación final del
+operador):** *La Máquina de Activos* — sale directo de la propia definición
+ya escrita en `.agents/product-marketing.md` ("armar tu propia máquina de
+contenido y venta automatizada"), no es un nombre inventado aparte.
+Alternativas consideradas: *La Fábrica de Activos* (usa el nombre real del
+motor interno, `fabrica/`), *El Motor de Activos*.
 
 Primer esqueleto de módulos del curso, decidido con el operador (2026-09-11):
 **"las dos versiones"** — un curso no-code para la mayoría (herramientas que
@@ -80,8 +87,56 @@ completar el curso ni para que el sistema no-code funcione.
 
 ---
 
-## Pendiente (próximo paso, no resuelto todavía)
-Definir el contenido EXACTO de "el sistema" — qué plantillas/archivos
-concretos recibe la persona en cada módulo (ej: la plantilla de Notion real
-del calendario, el doc de la plantilla de guion, etc.). Se define después de
-confirmar que esta estructura de 5 módulos + comunidad + anexo está bien.
+## Contenido exacto — qué archivo/plantilla recibe la persona en cada módulo
+
+Primera baja a tierra (2026-09-11). Cada entregable sale de algo que ya
+existe y funciona en la fábrica real, no se inventa de cero — se traduce a
+formato entregable (Notion / doc / PDF).
+
+**Módulo 1 — Encontrá tu activo**
+- *Ficha de validación de nicho* (plantilla nueva a armar): criterios reales
+  ya usados en la investigación — fuente citada, esfuerzo/ingreso, plata
+  inicial — para que la persona evalúe SU propio nicho, no solo copie los 12.
+- *Los 12 nichos ya investigados* como ejemplo de referencia (`INVESTIGACION_NICHOS_SIN_CLAUDE.md` + `MAPEO_NICHOS_INTERES.md`), pasados a Notion.
+
+**Módulo 2 — Armá el gancho y el guion**
+- *Plantilla de guion en blanco* (hook → desarrollo → escalada → payoff →
+  cierre), sacada del formato real de `lote_21_publicacion.ts`.
+- *Banco de 21+ ideas reales* (`BANCO_IDEAS_CONTENIDO.md`) como ejemplos ya
+  resueltos, no genéricos.
+- *Hoja de voz de marca* (1 página): las frases reales, palabras a
+  usar/evitar, ya escritas en `product-marketing.md`.
+
+**Módulo 3 — Producí sin saber editar**
+- *Checklist de grabación con celular* (nuevo, a redactar: luz, encuadre,
+  audio — lo mínimo real que ya se usa).
+- *Plantilla de Canva* con el sistema de color por categoría ya definido
+  (dinero=dorado, ia=azul, alerta=rojo, regalo=magenta — `lote_42_datos.ts`).
+- *Banco de música/SFX gratis*, mismos links CC0 que ya usa la fábrica.
+
+**Módulo 4 — Programá y automatizá**
+- *Plantilla de calendario de contenido* con los horarios reales
+  investigados (18:00 / 20:30 ART, picos confirmados, franjas a evitar).
+- *Guía paso a paso* de herramienta no-code de programación (Buffer/
+  Metricool o similar) — a redactar, es la traducción del rol que hoy
+  cumplen Zernio + GitHub Actions.
+- *Checklist "antes de publicar"* — nace directo de la lección real del
+  comentario sin sistema listo (`fabrica/ESTADO.md`), para no repetirla.
+
+**Módulo 5 — Convertí en venta**
+- *El Buscador de Activos* en sí, como ejercicio: se enseña a adaptar la
+  misma herramienta al nicho propio del alumno.
+- *Guía de la mecánica comentario → acceso* (Ángulo 2), con la advertencia
+  real ya aprendida: no publicar sin el mecanismo de entrega listo.
+- *Checklist de conexión con Hotmart* (cuenta, ficha de producto, área de
+  miembros) — mismo proceso ya documentado para "El Corte".
+
+**Anexo técnico (opcional):** acceso de solo lectura a fragmentos reales del
+código (`zernio.ts`, `subir_video.ts`, los workflows de GitHub Actions) para
+quien quiera automatizar a ese nivel — no es requisito para nada de arriba.
+
+## Pendiente
+Redactar el contenido real de los 5-6 entregables marcados como "a
+redactar" arriba (checklist de grabación, guía no-code de programación,
+checklist antes de publicar, checklist de Hotmart). Confirmar el nombre
+final del sistema (*La Máquina de Activos* u otra opción).
