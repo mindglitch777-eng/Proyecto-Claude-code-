@@ -18,6 +18,9 @@ on:
       scheduledFor:
         description: "Opcional -- ISO UTC para programar (ej: 2026-09-11T00:15:00Z). Vacio = publica ya."
         required: false
+      soloTiktok:
+        description: "true = reintentar SOLO TikTok (no duplicar en YouTube si ya publico bien la primera vez)"
+        required: false
 
 jobs:
   subir:
@@ -40,7 +43,9 @@ jobs:
         working-directory: fabrica
         env:
           ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
-        run: npx tsx subida/subir_video.ts "${{ github.event.inputs.video }}" "${{ github.event.inputs.scheduledFor }}"
+        run: >-
+          npx tsx subida/subir_video.ts "${{ github.event.inputs.video }}" "${{ github.event.inputs.scheduledFor }}"
+          ${{ github.event.inputs.soloTiktok == 'true' && '--solo-tiktok' || '' }}
 
       - name: Commitear log de subida (state/uploads.json)
         # OJO real: con varios workflows disparados casi a la vez (ej. un
