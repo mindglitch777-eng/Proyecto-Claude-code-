@@ -1,5 +1,63 @@
 # Estado vivo del proyecto
 
+## Bloque: corregido el franja de las 12:00 (sin evidencia real para TikTok) + reprogramado el jueves perdido (2026-09-11)
+
+**El operador cuestiono con fundamento el franja de las 12:00** ("a las
+12 del mediodia siento que no me alcanzaron un buen numero de
+visualizaciones... de noche vi un resultado mucho mas rapido"). Se
+releyo la investigacion real ya citada en el bloque "calendario
+unificado" (2026-09-09, fuentes: Buffer -- 7.1M posts de TikTok
+analizados --, Sprout Social, Hootsuite): para TikTok el pico fuerte es
+de noche (18-22h, especialmente 20-21h) y **el propio texto dice
+explicitamente "evitar 10-14h entre semana"**. El franja de las 12:00
+que se venia usando **no tenia respaldo para TikTok** -- venia de la
+ventana de almuerzo de Instagram (11-13h), arrastrada de una version
+vieja del calendario de cuando todavia se contemplaba subir tambien a
+Instagram. Cuando el operador saco Instagram del proyecto, nadie
+revirtio ese franja. La percepcion del operador coincidia exactamente
+con la investigacion ya hecha -- el bug era nuestro, no una intuicion
+sin sustento. **Confirmado con el operador: de ahora en mas TikTok usa
+solo 18:00 y 20:30 (dentro del pico real 18-22h), sin franja de
+mediodia.**
+
+**Diagnostico real de "el jueves no se subio"**: los 3 videos
+programados el jueves 10/9 (v05, v15, v16 -- horario real ART, no el
+"11/9 madrugada UTC" que parecia a primera vista) muestran en Zernio
+`status: "published"` + `platformPostId: "v_inbox_url~..."` igual que
+v11/v13 (de una prueba anterior, mas vieja) -- pero **el operador
+confirmo revisando la app real que ninguno aparece en la Creator
+Inbox de TikTok**, ni siquiera v16 que todavia estaba dentro de la
+ventana de 24h que documenta TikTok para el modo "subir sin publicar"
+(investigado por WebSearch: el inbox descarta el contenido si el
+creador no lo termina de publicar dentro de esas 24h). v17 (disparado
+hoy a las 12:00 ART, el ultimo con ese franja antes de corregirlo) SI
+aparecio en la campana de notificaciones de TikTok en minutos --
+confirma que el mecanismo de entrega en si funciona, asi que el
+problema de v05/v15/v16 no es sistemico, es puntual de esos 3 posts
+(expiracion u otra causa no identificada del lado de TikTok/Zernio).
+
+**Reprogramados hoy mismo con nuevo horario**: v05 -> 18:00 ART, v15 ->
+20:45 ART, v16 -> 21:00 ART (escalonados 15 min, dentro/cerca del pico
+18-22h, sin pisar los carruseles de hoy: carrusel-30 20:30 y
+carrusel-37 21:30). **Se agrego `--solo-tiktok` a `subir_video.ts`**
+(y al input `soloTiktok` de `subir-video.yml`) porque estos 3 ya habian
+publicado bien en YouTube la primera vez -- reenviar con
+`publicarVideo()` normal hubiera duplicado el video real y publico del
+canal de YouTube. Los 3 POST a Zernio confirmaron
+`"Post scheduled successfully"`. **Mismo bug de carrera de git de
+siempre** (3 workflows casi simultaneos): solo v15 gano el commit, v05
+y v16 se reconstruyeron a mano en `state/uploads.json` con los datos
+reales de los logs de GitHub Actions.
+
+**Pendiente explicito**: el operador planteo una reorganizacion mas
+grande (correr toda la cascada de dias -- "lo del viernes al sabado" y
+asi sucesivamente -- para ganar margen y enfocarse en mejorar la
+fabrica). Se acordo resolver primero el reemplazo del jueves (hecho
+arriba) antes de tocar el resto del calendario, para no reorganizar
+dos veces si algo de este ajuste de horario todavia necesitaba mas
+vuelta. Sigue sin definirse el resto de la cascada.
+
+
 ## Bloque: verificacion real de TikTok + descubrimiento de auto-delay de Zernio + sistema de aviso por ntfy.sh (2026-09-11)
 
 **Verificacion pedida por el operador** ("verifique y no vi nada en
