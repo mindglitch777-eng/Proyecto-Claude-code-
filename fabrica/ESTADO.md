@@ -1,5 +1,56 @@
 # Estado vivo del proyecto
 
+## Bloque: verificacion real de TikTok + descubrimiento de auto-delay de Zernio + sistema de aviso por ntfy.sh (2026-09-11)
+
+**Verificacion pedida por el operador** ("verifique y no vi nada en
+TikTok" sobre el lote subido jueves): `obtenerLogsPost()` devolvia
+logs vacios para los 9 posts probados -- inutil para verificar. Se
+agrego `obtenerPost(postId)` a `zernio.ts` (`GET /v1/posts/:id`, estado
+real actual del post, no el historial de eventos) y se uso desde
+`diagnosticar.ts` (ahora acepta postIds sueltos como argumento --
+`npx tsx subida/diagnosticar.ts <id1,id2,...>` -- salta el listado
+paginado). Resultado real chequeando v11/v13/v16/v17/v19/v20:
+- v11, v13, v16: **confirmados de verdad en el Creator Inbox** desde el
+  9/9 (`status: "published"`, `platformPostId: "v_inbox_url~..."`) --
+  no aparecen en el feed principal de TikTok porque son borradores
+  esperando el toque manual del operador, por eso "no se veia nada".
+- v17, v19, v20: **NO llegaron todavia** -- Zernio les cambio el
+  `scheduledFor` por su cuenta a un horario/dia posterior sin que nunca
+  se lo pidieramos (v17 mas tarde el mismo dia, v19 +3 dias, v20 +4
+  dias). Esto es un comportamiento de Zernio no documentado (probable
+  throttling propio para no re-disparar el error de cupo de TikTok), no
+  un bug del codigo -- pero confirma que **no se puede confiar en el
+  `scheduledFor` que nosotros mandamos** para saber cuando un video va
+  a estar listo.
+
+**Correccion de cadencia (error propio, senalado por el operador)**:
+los 9 videos de este lote quedaron programados 1 por dia sin cruzar con
+los carruseles -- el operador aclaro que esa NO era la idea y que el
+plan real documentado (rondas previas) era 6 carruseles + 3 videos/dia
+intercalados 15 min aparte dentro de las mismas franjas. Pendiente
+explicito: reprogramar los 8 posts ya creados via `PUT /v1/posts/:id`
+(existe del lado de Zernio, no implementado aun aca) -- **no ejecutado
+todavia, falta confirmacion explicita del operador** antes de tocar
+posts ya programados.
+
+**Sistema de aviso -- se descarto Telegram** (el operador reporto que
+Telegram le pide pagar por costo de SMS de verificacion) **y se
+implemento con ntfy.sh** (push HTTP abierto, sin cuenta ni telefono,
+gratis hasta 250 avisos/dia): se agrego
+`fabrica/subida/notificar_pendientes.ts` + workflow
+`.github/workflows/notificar-box.yml` (cron cada 20 min +
+`workflow_dispatch`). Diseno: **poll periodico del estado real via
+`obtenerPost()`, nunca del `scheduledFor` pedido** (justo por el
+auto-delay de Zernio de arriba) -- cuando un video de
+`state/uploads.json` queda con TikTok `status: "published"` +
+`platformPostId` que empieza `v_inbox_url~`, manda el push y marca
+`notificado: true` en el log (mismo patron para carruseles de
+`state/carruseles.json`, con solo `status: "published"` en cualquier
+plataforma, sin logica de inbox). Topic de ntfy generado al azar
+(`secrets.token_hex`) -- pendiente que el operador lo agregue como
+secret `NTFY_TOPIC` en GitHub Actions (no hay herramienta para crearlo
+desde aca) y se suscriba en la app.
+
 ## Bloque: programados los 9 videos manuales restantes (compresion real, no URL publica) + mismo bug de carrera de git corregido (2026-09-11)
 
 Pendiente heredado del bloque de investigacion del 2026-09-10: 9 de
