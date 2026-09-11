@@ -1,5 +1,38 @@
 # Estado vivo del proyecto
 
+## Bloque: agregado DELETE /v1/posts/:id + corregidos los 7 items restantes en horario de mediodia (2026-09-11, misma sesion que el bloque de abajo)
+
+Continuacion del bloque de abajo: quedaban 7 items ya programados en el
+horario de mediodia recien descartado (5 carruseles a las 10:30 --
+carrusel-10/11/12/13/14 -- y 2 videos a las 12:00 -- v19, v20). Barrido
+completo del calendario confirmo que **solo esos 7 estaban en la franja
+problematica** (10-14h) -- los 36 carruseles restantes (09:30/14:30/16:00/
+20:30/21:30) y los 9 videos manuales (17:00) ya estaban fuera de esa
+ventana, no hizo falta tocarlos.
+
+**Se agrego `eliminarPost()` (DELETE /v1/posts/:id) a `zernio.ts`** --
+contrato no documentado en el repo oficial de Zernio (solo aparece
+listado en la tabla, sin body/respuesta). Probado primero con un caso
+real (carrusel-10) antes de confiar en el: Zernio respondio
+`{"message": "Post deleted successfully"}`, y un `GET` posterior al
+mismo postId confirmo `404 Post not found` -- cancelacion real, no solo
+un flag. Se agrego `cancelar_post.ts` + workflow `cancelar-post.yml`.
+
+**Por que cancelar y no solo re-crear**: los carruseles usan el mismo
+modo borrador (`draft: true`) que los videos -- no publican solo, pero
+crear un post nuevo sin cancelar el viejo hubiera generado dos avisos
+de `notificar-box` para el mismo contenido (confuso, aunque no
+duplicaba nada publico).
+
+**Los 7 se cancelaron y reprogramaron**: carrusel-10 (14/9), carrusel-11
+(15/9), carrusel-12 (16/9), carrusel-13 (17/9), carrusel-14 (18/9) ->
+18:00 ART cada uno. v19 (14/9) y v20 (15/9) -> 20:45 ART (ninguno habia
+publicado todavia en ninguna plataforma, asi que se recrearon mandando
+tambien a YouTube, sin `--solo-tiktok`). Mismo bug de carrera de git de
+siempre (7 workflows casi simultaneos): solo carrusel-12 y v19 ganaron
+el commit, los otros 5 se reconstruyeron a mano con los datos reales
+de los logs de GitHub Actions.
+
 ## Bloque: corregido el franja de las 12:00 (sin evidencia real para TikTok) + reprogramado el jueves perdido (2026-09-11)
 
 **El operador cuestiono con fundamento el franja de las 12:00** ("a las
