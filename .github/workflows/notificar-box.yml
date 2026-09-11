@@ -15,12 +15,23 @@ on:
   schedule:
     - cron: "*/20 * * * *"
 
+env:
+  # El cron de "schedule" siempre lee este archivo y corre contra la
+  # rama por defecto (main) -- pero el codigo real (notificar_pendientes.ts,
+  # zernio.ts, state/*.json, fabrica/package.json) vive en esta rama de
+  # trabajo, no en main (main solo tiene este .yml registrado, patron
+  # ya usado en el repo para poder disparar por API). Por eso el
+  # checkout de abajo fija `ref` a mano en vez de dejar el default.
+  RAMA_TRABAJO: claude/organize-repo-duplicates-xl042t
+
 jobs:
   notificar:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RAMA_TRABAJO }}
 
       - uses: actions/setup-node@v4
         with:
@@ -52,8 +63,8 @@ jobs:
           git commit -m "notificar-box: marcar notificado"
           for i in 1 2 3 4 5 6; do
             git rebase --abort >/dev/null 2>&1 || true
-            git pull --rebase origin "$GITHUB_REF_NAME" && \
-            git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
+            git pull --rebase origin "$RAMA_TRABAJO" && \
+            git push origin HEAD:"$RAMA_TRABAJO" && exit 0
             sleep $((RANDOM % 5 + 2 * i))
           done
           git rebase --abort >/dev/null 2>&1 || true
