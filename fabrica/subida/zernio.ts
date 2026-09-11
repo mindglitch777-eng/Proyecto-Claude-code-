@@ -309,6 +309,24 @@ export async function listarPostsRecientes(limite = 5, apiKeyParam?: string): Pr
 }
 
 /**
+ * Trae el estado ACTUAL de un post puntual (GET /v1/posts/:id) -- a
+ * diferencia de obtenerLogsPost() (historial de eventos, puede venir
+ * vacio), esto devuelve el documento del post con el `status` real por
+ * plataforma tal cual esta ahora mismo (published/failed/pending).
+ */
+export async function obtenerPost(postId: string, apiKeyParam?: string): Promise<unknown> {
+  const apiKey = requerirApiKey(apiKeyParam);
+  const resp = await fetch(`${BASE}/posts/${postId}`, {
+    headers: {Authorization: `Bearer ${apiKey}`},
+  });
+  const cuerpo = await resp.text();
+  let data: any = cuerpo;
+  try { data = JSON.parse(cuerpo); } catch { /* se deja como texto */ }
+  if (!resp.ok) throw new Error(`GET /posts/${postId} HTTP ${resp.status}: ${cuerpo}`);
+  return data;
+}
+
+/**
  * Trae los logs de publicacion de un post puntual (donde Zernio informa
  * el error real por plataforma cuando una falla, segun rules/errors.md).
  */

@@ -10,13 +10,20 @@
  *      listado de recientes (paginado, solo trae 5 a la vez) y va directo
  *      a los logs de esos posts puntuales.
  */
-import {listarPostsRecientes, obtenerLogsPost, obtenerAnalytics} from './zernio';
+import {listarPostsRecientes, obtenerLogsPost, obtenerPost, obtenerAnalytics} from './zernio';
 
 async function main(): Promise<void> {
   const idsArg = process.argv[2];
 
   if (idsArg) {
     for (const id of idsArg.split(',').map((s) => s.trim()).filter(Boolean)) {
+      console.log(`\n--- GET /v1/posts/${id} (estado actual) ---`);
+      try {
+        const post = await obtenerPost(id);
+        console.log(JSON.stringify(post, null, 2));
+      } catch (error) {
+        console.error(`No se pudo obtener el post ${id}: ${(error as Error).message}`);
+      }
       console.log(`\n--- GET /v1/posts/${id}/logs ---`);
       try {
         const logs = await obtenerLogsPost(id);
