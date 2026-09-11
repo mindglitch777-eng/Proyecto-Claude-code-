@@ -692,5 +692,110 @@
       },
       "message": "Post scheduled successfully"
     }
+  },
+  {
+    "id": "carrusel-41",
+    "fecha": "2026-09-11T00:01:48.796Z",
+    "ok": true,
+    "postId": "6aa344ec7df10a99a2fefce8",
+    "scheduledFor": "2026-09-18T00:30:00Z",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Las plataformas que uso",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084901730_uip0g4em_cc4fd5d8-9de2-420f-8c38-5f2088e9ba76.png",
+            "_id": "6aa344ec7df10a99a2fefce9"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084902201_rdgtfijx_fb3d7156-f28c-4655-888c-0dd7812fac66.png",
+            "_id": "6aa344ec7df10a99a2fefcea"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084903138_m50z62xm_4ddf410a-87eb-4dd1-8ffe-1d92ffcc9c3d.png",
+            "_id": "6aa344ec7df10a99a2fefceb"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084903731_ig8swc4s_3ac1e417-d8e7-40e0-8582-5b8cf1238224.png",
+            "_id": "6aa344ec7df10a99a2fefcec"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084904249_kzctzhpn_4e6e69cd-78c1-4fc6-a633-f740bbc6c127.png",
+            "_id": "6aa344ec7df10a99a2fefced"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084905182_8c44q8j3_c8ad51b9-7c61-4010-86be-187099b077c9.png",
+            "_id": "6aa344ec7df10a99a2fefcee"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-18T00:30:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "Las plataformas reales que uso para vender.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Plataformas #VentasOnline",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "012a59e4947e25eb0b732673f3a29d30",
+            "_id": "6aa344ec7df10a99a2fefcef"
+          }
+        ],
+        "scheduledFor": "2026-09-18T00:30:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa344ec7df10a99a2fefce8",
+        "createdAt": "2026-09-11T00:01:48.637Z",
+        "updatedAt": "2026-09-11T00:01:48.637Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    }
   }
 ]
