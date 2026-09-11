@@ -45,8 +45,12 @@ function guardarEnLog(entrada: EntradaLog): void {
 async function main(): Promise<void> {
   const id = process.argv[2];
   const scheduledFor = process.argv[3]; // opcional, ISO UTC -- si falta, publica ya
+  const soloTiktok = process.argv[4] === '--solo-tiktok';
   if (!id) {
-    console.error('Uso: npx tsx subida/subir_video.ts <id> [scheduledForISO]  (ej: v01 2026-09-11T00:15:00Z)');
+    console.error(
+      'Uso: npx tsx subida/subir_video.ts <id> [scheduledForISO] [--solo-tiktok]  (ej: v01 2026-09-11T00:15:00Z)\n' +
+        '--solo-tiktok: reintentar SOLO TikTok (para cuando YouTube ya publico bien la primera vez y no hay que duplicarlo).',
+    );
     process.exit(1);
   }
 
@@ -63,7 +67,9 @@ async function main(): Promise<void> {
 
   const caption = `${publicacion.descripcion}\n\n${publicacion.cta}\n\n${publicacion.hashtags.join(' ')}`;
 
-  console.log(`Subiendo ${id} ("${video.titulo}") a TikTok + YouTube${scheduledFor ? ` (programado para ${scheduledFor})` : ''}...`);
+  console.log(
+    `Subiendo ${id} ("${video.titulo}") a TikTok${soloTiktok ? '' : ' + YouTube'}${scheduledFor ? ` (programado para ${scheduledFor})` : ''}...`,
+  );
 
   const resultado = await publicarVideo({
     rutaVideo,
@@ -89,14 +95,18 @@ async function main(): Promise<void> {
         tiktokSettings: {draft: true},
       },
     },
-    cuentaYouTube: {
-      accountId: ACCOUNT_ID_YOUTUBE,
-      datos: {
-        title: video.titulo,
-        visibility: 'public',
-        containsSyntheticMedia: true,
-      },
-    },
+    ...(soloTiktok
+      ? {}
+      : {
+          cuentaYouTube: {
+            accountId: ACCOUNT_ID_YOUTUBE,
+            datos: {
+              title: video.titulo,
+              visibility: 'public',
+              containsSyntheticMedia: true,
+            },
+          },
+        }),
   });
 
   guardarEnLog({
