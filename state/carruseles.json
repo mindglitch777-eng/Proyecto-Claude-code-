@@ -9,7 +9,11 @@
     "nota": "Entrada reconstruida a mano: reprogramacion del horario de mediodia (avoid 10-14h TikTok, confirmado por el operador) -- se cancelo el post viejo 6aa342e71c995ee32f5d9d63 con DELETE (confirmado real, devuelve 404 despues) antes de crear este. El paso 'Commitear log de subida' perdio la carrera de git (5 workflows de carrusel + 2 de video casi simultaneos).",
     "respuestaCruda": {
       "message": "Post scheduled successfully",
-      "post": {"_id": "6aa4334389d4155595482738", "status": "scheduled", "scheduledFor": "2026-09-14T21:00:00.000Z"}
+      "post": {
+        "_id": "6aa4334389d4155595482738",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-14T21:00:00.000Z"
+      }
     }
   },
   {
@@ -22,7 +26,11 @@
     "nota": "Entrada reconstruida a mano: reprogramacion del horario de mediodia (avoid 10-14h TikTok, confirmado por el operador) -- se cancelo el post viejo 6aa343984caf63d9cab4dfb0 con DELETE (confirmado real, devuelve 404 despues) antes de crear este. El paso 'Commitear log de subida' perdio la carrera de git (5 workflows de carrusel + 2 de video casi simultaneos).",
     "respuestaCruda": {
       "message": "Post scheduled successfully",
-      "post": {"_id": "6aa43351c543becb1248b76d", "status": "scheduled", "scheduledFor": "2026-09-15T21:00:00.000Z"}
+      "post": {
+        "_id": "6aa43351c543becb1248b76d",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-15T21:00:00.000Z"
+      }
     }
   },
   {
@@ -35,7 +43,11 @@
     "nota": "Entrada reconstruida a mano: reprogramacion del horario de mediodia (avoid 10-14h TikTok, confirmado por el operador) -- se cancelo el post viejo 6aa344ee8e932222dfd3bf91 con DELETE (confirmado real, devuelve 404 despues) antes de crear este. El paso 'Commitear log de subida' perdio la carrera de git (5 workflows de carrusel + 2 de video casi simultaneos).",
     "respuestaCruda": {
       "message": "Post scheduled successfully",
-      "post": {"_id": "6aa43368c543becb1248be03", "status": "scheduled", "scheduledFor": "2026-09-17T21:00:00.000Z"}
+      "post": {
+        "_id": "6aa43368c543becb1248be03",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-17T21:00:00.000Z"
+      }
     }
   },
   {
@@ -48,7 +60,11 @@
     "nota": "Entrada reconstruida a mano: reprogramacion del horario de mediodia (avoid 10-14h TikTok, confirmado por el operador) -- se cancelo el post viejo 6aa3458b2dea647a4ee00fed con DELETE (confirmado real, devuelve 404 despues) antes de crear este. El paso 'Commitear log de subida' perdio la carrera de git (5 workflows de carrusel + 2 de video casi simultaneos).",
     "respuestaCruda": {
       "message": "Post scheduled successfully",
-      "post": {"_id": "6aa43365c543becb1248bd12", "status": "scheduled", "scheduledFor": "2026-09-18T21:00:00.000Z"}
+      "post": {
+        "_id": "6aa43365c543becb1248bd12",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-18T21:00:00.000Z"
+      }
     }
   },
   {
@@ -1035,7 +1051,8 @@
         "_id": "6aa3422e62361f664307448a",
         "status": "scheduled"
       }
-    }
+    },
+    "notificado": true
   },
   {
     "id": "carrusel-03",
