@@ -1,0 +1,72 @@
+name: notificar-box
+
+# Chequeo periodico de solo-lectura+aviso: consulta el estado REAL de
+# cada post pendiente en Zernio (fabrica/subida/notificar_pendientes.ts)
+# y manda un push por ntfy.sh apenas un video llega de verdad al
+# Creator Inbox de TikTok (o un carrusel queda publicado). No sube ni
+# publica nada nuevo -- solo lee y, si corresponde, marca "notificado"
+# en state/uploads.json / state/carruseles.json.
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "*/20 * * * *"
+
+env:
+  # El cron de "schedule" siempre lee este archivo y corre contra la
+  # rama por defecto (main) -- pero el codigo real (notificar_pendientes.ts,
+  # zernio.ts, state/*.json, fabrica/package.json) vive en esta rama de
+  # trabajo, no en main (main solo tiene este .yml registrado, patron
+  # ya usado en el repo para poder disparar por API). Por eso el
+  # checkout de abajo fija `ref` a mano en vez de dejar el default.
+  RAMA_TRABAJO: claude/organize-repo-duplicates-xl042t
+
+jobs:
+  notificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RAMA_TRABAJO }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: fabrica/package-lock.json
+
+      - name: Dependencias
+        working-directory: fabrica
+        run: npm ci --no-audit --no-fund
+
+      - name: Chequear pendientes y avisar
+        working-directory: fabrica
+        env:
+          ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: npx tsx subida/notificar_pendientes.ts
+
+      - name: Commitear notificado:true (state/uploads.json + state/carruseles.json)
+        # Mismo riesgo de carrera de git que subir-video.yml/subir-carrusel.yml
+        # si este workflow llegara a solaparse con una subida real -- no
+        # debe tumbar el job (el aviso por ntfy.sh ya salio igual).
+        continue-on-error: true
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add state/uploads.json state/carruseles.json
+          if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
+          git commit -m "notificar-box: marcar notificado"
+          for i in 1 2 3 4 5 6; do
+            git rebase --abort >/dev/null 2>&1 || true
+            git pull --rebase origin "$RAMA_TRABAJO" && \
+            git push origin HEAD:"$RAMA_TRABAJO" && exit 0
+            sleep $((RANDOM % 5 + 2 * i))
+          done
+          git rebase --abort >/dev/null 2>&1 || true
+          echo "::warning::No se pudo commitear el estado notificado tras varios intentos (carrera de git) -- el aviso por ntfy.sh SI se mando, puede repetirse la proxima corrida."
+          exit 0
