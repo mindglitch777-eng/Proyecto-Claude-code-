@@ -138,6 +138,52 @@ hay dato propio), Guiones tiene modo "tema libre" con estructura genérica
 declarada como tal, Calendario permite tocar día por día además de los
 presets 3/5/7.
 
+## "Mi Proyecto" — capa que amarra las 3 herramientas (2026-09-11)
+
+El operador marcó que 3 herramientas sueltas (cada una se resetea al
+volver a entrar) no alcanzan para que esto se sienta "de todos los días".
+Se debatió y se agregó una 4ta pieza que conecta las otras 3 a un proyecto
+propio y persistente, en vez de que cada visita empiece de cero:
+
+- **Varios proyectos en paralelo:** el comprador puede tener más de un
+  proyecto activo (ej. probando 2 nichos a la vez), cada uno con su
+  propio nicho, ángulo recomendado, calendario y banco de guiones.
+- **"Hoy te toca":** un bloque único que lee el calendario del proyecto y
+  dice, sin ambigüedad, si hoy corresponde publicar, si ya se armó el
+  guion de hoy, y si ya se marcó como publicado — con un botón directo a
+  generar el guion faltante.
+- **Racha visible:** 🔥 días seguidos publicando en los días programados,
+  calculada de verdad a partir del historial guardado (no un contador que
+  se pueda desincronizar) + total acumulado de publicaciones.
+- **Banco de guiones acumulado:** cada guion generado dentro de un
+  proyecto se guarda con fecha, nicho, ángulo y formato — no se pisa el
+  anterior.
+- **Ángulo recomendado por nicho:** el Validador ahora sugiere un ángulo
+  concreto (de los 4 ya existentes) con la razón puntual de por qué ese
+  ángulo funciona mejor para ese nicho/oportunidad — en vez de que el
+  comprador elija a ciegas entre 4 opciones. Vinculado también al
+  proyecto activo si hay uno abierto.
+
+**Detalle técnico honesto:** esto usa la capability `db` real de la
+plataforma de Artifacts (no una simulación) — el proyecto, el calendario
+y el banco de guiones sobreviven de verdad al cerrar y volver a abrir el
+link. Se verificó la lógica completa (crear proyecto, generar guion,
+marcar publicado, cálculo de racha, vínculo de nicho, calendario
+persistente) con Playwright contra un mock fiel al contrato real de la
+capability, más el camino sin `db` (archivo local / vista sin sesión), sin
+errores. Lo que NO se pudo verificar desde acá es el guardado en vivo
+contra el link real de claude.ai (el sandbox no tiene salida de red hacia
+ese dominio) — falta abrir el Artifact publicado con sesión real y probar
+cerrar/reabrir para confirmarlo en producción.
+
+**Límite real de esta capability, para que quede honesto:** un Artifact
+con `db` declarado deja de poder compartirse públicamente — solo lo puede
+abrir un miembro con sesión en la misma organización de Claude del
+operador. Esto no afecta al producto final (que va a vivir en Notion +
+Hotmart, no en este Artifact), pero sí significa que esta vista previa,
+tal cual está, solo la puede probar el operador mismo — no sirve todavía
+para mandarle el link a un comprador real.
+
 ## Contenido exacto — qué archivo/plantilla recibe la persona en cada módulo
 
 Primera baja a tierra (2026-09-11). Cada entregable sale de algo que ya
