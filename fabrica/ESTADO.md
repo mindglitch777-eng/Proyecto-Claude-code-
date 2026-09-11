@@ -1,5 +1,59 @@
 # Estado vivo del proyecto
 
+## Bloque: cierre del plan de 6 dias (36 carruseles) + bug real encontrado y corregido (30 registros de log perdidos) (2026-09-11)
+
+Contexto: plan aprobado de 6 dias para programar los 36 carruseles
+restantes del lote42 (dias 2-7, 6 por dia en las franjas Manana/Tarde/
+Noche de `lote_42_datos.ts`), disparando `subir-carrusel.yml` por
+`workflow_dispatch` con `scheduledFor` para que Zernio publique solo a
+la hora programada. Los 6 batches (uno por dia) se dispararon y los 36
+runs de GitHub Actions terminaron con `conclusion: "success"`.
+
+**Bug real encontrado (no visible en los logs de "success")**: el fix
+de "carrera de git" aplicado en la ronda anterior (`git rebase --abort`
+antes de cada reintento + `continue-on-error: true`) evita que el job
+falle cuando 6 workflows corren casi a la vez, pero **no evita que se
+pierda el commit del log** -- solo garantiza que un fallo de git no
+tumbe el job cuya subida real a Zernio ya funciono. Resultado real:
+de los 36 registros esperados en `state/carruseles.json` para los dias
+2-7, **solo 6 se comitearon** (1 "ganador" de cada batch de 6); los
+otros 30 quedaron sin registrar aunque el POST a Zernio salio bien en
+los 36 casos. Esto no se detecto verificando solo `conclusion:
+"success"` de los workflow runs -- hubo que abrir el contenido real de
+`state/carruseles.json` y contar entradas contra los 42 carruseles
+esperados.
+
+**Correccion aplicada**: se recorrieron los 43 runs del workflow
+`subir-carrusel.yml`, se identifico cada carrusel por el nombre del
+step (`"Subir carrusel-XX"`), y se extrajo el `postId` y `scheduledFor`
+reales de cada log (`tail_lines: 500` -- el default de 60 solo
+capturaba la cola con el conflicto de git, no la respuesta JSON real
+de Zernio). Se reconstruyeron a mano las 30 entradas faltantes con
+esos datos reales (nunca inventados), cada una con un campo `"nota"`
+documentando la causa y la fuente de verificacion, siguiendo el mismo
+patron ya usado para las 4 entradas reconstruidas del dia 1 en la
+ronda anterior. `state/carruseles.json` ahora tiene las 42/42 entradas
+completas (comiteado y pusheado a `claude/organize-repo-duplicates-xl042t`).
+
+**Resultado real del plan de 6 dias**: los 36 carruseles (dias 2-7)
+quedan efectivamente programados en Zernio (confirmado por la
+respuesta real de cada POST, `"Post scheduled successfully"` /
+`"status": "scheduled"`), sumados a los 6 del dia 1 de la ronda
+anterior -- 42/42 carruseles del lote42 programados. Quedan pendientes
+de programar, aparte de este plan, 6 videos manuales del lote21 (v08,
+v09, v10, v12, v18, v21) que no formaban parte de este plan de
+carruseles.
+
+**Mejora futura recomendada (no aplicada esta ronda)**: el mecanismo
+de "un commit por item, con reintentos de rebase" sigue perdiendo
+registros bajo carga simultanea aunque el job no falle -- el fix
+actual solo evita que se rompa la subida real. Una solucion mas
+robusta seria loguear cada subida en un archivo individual (uno por
+`carrusel-XX`/`vNN`, sin colision posible) en vez de un unico JSON
+compartido, o usar un mecanismo de append atomico del lado del
+servidor (ej. un endpoint propio o una Issue/Discussion de GitHub como
+log en vez de un commit a `main`).
+
 ## Bloque: pipeline de carruseles (TikTok photo post) + `scheduledFor` nativo + 9 posts programados hoy (2026-09-10)
 
 Pedido del operador: subir ~3 videos + ~6 carruseles hoy en horarios
