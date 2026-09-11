@@ -69,6 +69,14 @@ formulario.
 DM/link). Definir antes de publicar el primero cómo se entrega el acceso real
 (evitar prometer algo que todavía no existe armado).
 
+**Actualización 2026-09-11 — este riesgo ya se confirmó real, no es solo
+teórico:** llegó el primer comentario pidiendo acceso y no había nada armado
+para responder (ver bloque nuevo en `fabrica/ESTADO.md`). Conclusión: el
+gancho funciona (prueba positiva), pero **el Ángulo 2 queda en pausa** — no se
+publica un segundo video de este tipo hasta que El Buscador de Activos esté
+publicado de verdad y el mecanismo de entrega (comentario → qué recibe la
+persona, concretamente) esté definido y confirmado con el operador.
+
 ---
 
 ## Ángulo 3 — Mitos desmentidos

@@ -1,5 +1,65 @@
 # Estado vivo del proyecto
 
+## Bloque: primer comentario real del Ángulo 2 sin mecanismo de entrega listo + rediseño del Buscador de Activos con marca real (2026-09-11)
+
+**Llegó el primer comentario real pidiendo acceso** en uno de los videos del
+Ángulo 2 (herramienta como gancho, mecánica de captación por comentario ya
+documentada en `fabrica/docs/BANCO_IDEAS_CONTENIDO.md`). No se le pudo dar una
+respuesta real porque **el producto gratuito (El Buscador de Activos) todavía
+no existe publicado ni conectado** — exactamente el riesgo que ese mismo
+documento ya marcaba como advertencia antes de publicar el primer video de ese
+ángulo. Se registra como caso de aprendizaje, no como error nuevo: era un
+riesgo conocido y asumido, confirmado ahora con un caso real.
+
+**Lectura correcta del hecho, sin quedarse solo en lo negativo**: el gancho
+funciona — genera el comentario que se buscaba. Lo que falta no es el
+contenido, es tener el mecanismo de entrega listo *antes* del próximo video de
+este ángulo. Mientras no esté listo, el Ángulo 2 queda en pausa (no se publica
+un segundo video de ese tipo) para no repetir el mismo hueco.
+
+**Trabajo de esta sesión sobre El Buscador de Activos** (previsualización
+interactiva, Artifact privado, todavía sin publicar en dominio real ni
+conectado a Claude en vivo):
+- Definido el flujo de 3 pasos (oportunidad de nicho → prueba de guion/gancho →
+  teaser de automatización) y las dos versiones (con Claude / sin Claude), ver
+  `.agents/product-marketing.md` sección "Producto gratuito".
+- Investigación real con fuentes de 12 oportunidades (`fabrica/docs/INVESTIGACION_NICHOS_SIN_CLAUDE.md`)
+  mapeadas a 12 nichos de interés (`fabrica/docs/MAPEO_NICHOS_INTERES.md`).
+- Decidido el ángulo madre de contenido con investigación real: "dinero online"
+  genérico queda descartado (género más saturado/gurú), se usa solo como
+  gancho de entrada — ver `fabrica/docs/MATRIZ_CONTENIDO.md`.
+- **Rediseño visual con marca real**: el operador pasó el logo real (isotipo
+  "T" en cobre metálico sobre negro). Se extrajo la paleta real del propio
+  código de la fábrica en vez de inventar una — `remotion-spike/src/identidad.ts`
+  (fondo `#0A0A0C`, texto `#F6F6F4`, acento `#FF4E24`) y
+  `fabrica/carrusel/lote_42_datos.ts` (colores por categoría). Primera vuelta
+  del diseño usó esos colores pero el operador marcó que se notaban "patrones
+  repetidos de página hecha por IA" (badges de colores, cards con sombra,
+  gradientes de fondo) — se corrigió a un diseño minimalista de un solo acento
+  (el cobre real del logo) sobre negro, con el logo real embebido.
+- Usuarios reales confirmados y agregados a la página: TikTok `@taller.activos`,
+  YouTube `@tallerdeactivos` (sacados de `state/uploads.json`, no inventados).
+- **Limitación técnica real encontrada**: no se pudo descargar la foto de
+  perfil real de las cuentas (URLs de TikTok/YouTube) porque la política de
+  red de este entorno bloquea esos dominios de imágenes (confirmado con
+  `curl` + `$HTTPS_PROXY/__agentproxy/status`, no es un bug corregible desde
+  acá). El logo real sí se pudo usar porque el operador lo mandó directo por
+  el chat.
+
+**Roadmap ordenado para no repetir el hueco del Ángulo 2** (definido con el
+operador, para ir tachando en orden, uno por vez):
+1. Cerrar el diseño de El Buscador de Activos (en revisión con el operador).
+2. Definir y construir el mecanismo real de entrega (qué recibe la persona
+   que comenta: ¿link a una página publicada? ¿DM automático? ¿ambos?) —
+   pendiente, bloqueado por Regla de Oro hasta confirmación explícita del
+   operador (contactar gente real requiere confirmación en la sesión).
+3. Publicar El Buscador de Activos en un path nuevo de Netlify (sin tocar el
+   redirect existente de "El Corte") — pendiente.
+4. Recién ahí, retomar el Ángulo 2 con un segundo video.
+5. En paralelo, seguir sacando ángulos 1/3/4 (construcción en vivo, mitos,
+   resultados crudos) que no dependen de este mecanismo y no tienen este
+   riesgo.
+
 ## Bloque: agregado DELETE /v1/posts/:id + corregidos los 7 items restantes en horario de mediodia (2026-09-11, misma sesion que el bloque de abajo)
 
 Continuacion del bloque de abajo: quedaban 7 items ya programados en el
