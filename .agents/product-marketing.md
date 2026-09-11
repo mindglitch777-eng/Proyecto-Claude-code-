@@ -157,6 +157,18 @@ oportunidad real está en la enorme cantidad de gente que **todavía no sabe qu�
 Claude o no sabe usarlo correctamente** — ese es el hueco, no competir con los
 tutoriales avanzados que ya existen.
 
+## Comunidad exclusiva (agregada a la oferta, 2026-09-11)
+
+El operador decidió que el producto pago incluye, además del sistema y el
+curso, una **comunidad exclusiva** — ya está reflejado en el CTA de El
+Buscador de Activos ("Quiero el sistema completo + comunidad exclusiva").
+Esto reemplaza la recomendación anterior de posponer la decisión de
+comunidad hasta tener compradores reales: el operador prefiere anunciarla
+como parte de la oferta desde ahora. Sigue pendiente definir el formato
+concreto (Discord, grupo de WhatsApp, Skool, etc.) cuando se arme el
+producto pago real — por ahora es una pieza más de la oferta, no algo
+operativo todavía.
+
 ## Objetivos
 **Objetivo de negocio:** Terminar de construir el producto (plantilla+curso) y el gratuito, sacando la mayor cantidad de ángulos de contenido posible del proceso, antes de fijar precio.
 **Acción de conversión clave:** Comentar en el video para pedir acceso al producto gratuito → de ahí, embudo hacia el producto pago.
