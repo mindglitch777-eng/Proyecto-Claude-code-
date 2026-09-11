@@ -157,6 +157,14 @@ oportunidad real está en la enorme cantidad de gente que **todavía no sabe qu�
 Claude o no sabe usarlo correctamente** — ese es el hueco, no competir con los
 tutoriales avanzados que ya existen.
 
+## Currículum del producto pago (2026-09-11)
+
+Esqueleto de 5 módulos + comunidad + anexo técnico opcional, decidido con el
+operador ("las dos versiones": curso no-code para la mayoría + anexo técnico
+para quien sepa/quiera programar). Detalle completo en
+`fabrica/docs/CURRICULUM_PRODUCTO_PAGO.md`. Pendiente: contenido exacto de
+"el sistema" (qué plantillas/archivos concretos se entregan).
+
 ## Comunidad exclusiva (agregada a la oferta, 2026-09-11)
 
 El operador decidió que el producto pago incluye, además del sistema y el
