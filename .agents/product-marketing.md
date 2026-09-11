@@ -109,6 +109,40 @@
 
 **Mecánica de captación ya definida:** comentario como puerta de entrada al producto gratuito (gating por comentario, no por formulario).
 
+## Producto gratuito — El Buscador de Activos (flujo confirmado, 2026-09-11)
+
+**Objetivo del flujo:** no entregar todo gratis de una. Ir mostrando de a partes, como
+capítulos, para que en el último quede ganas reales de pasar al producto pago —
+"dejar con ganas de probarlo de manera correcta", no que la persona ya se haya
+llevado el resultado completo gratis.
+
+**Los 3 pasos del recorrido:**
+1. **Oportunidad/nicho** — la persona recibe una idea concreta de qué activo/nicho le
+   conviene (ver los 12 nichos en desarrollo, con ejemplos en este documento).
+2. **"¿Querés saber qué contenido tenés que subir?"** — se muestra una prueba gratis:
+   ganchos ya clasificados + un guión de ejemplo completo (uno, no el sistema entero).
+   Esto es el corazón del "quedar con ganas": suficientemente real como para
+   demostrar que funciona, no suficiente como para reemplazar el curso.
+3. **Teaser de automatización** — un módulo/pantalla que dice "esto se puede
+   automatizar de punta a punta" sin explicar cómo. Cierra con el link al producto
+   pago (sistema + curso).
+
+**Dos caminos, mismo destino (confirmado por el operador):**
+- **Camino "con Claude":** para quien ya escuchó hablar de Claude, sabe que tiene
+  potencial pero no lo usa bien — se anima a crear cuenta y probar la demo en vivo.
+  Ese mismo camino termina llevándolo al producto pago + curso.
+- **Camino "sin Claude":** para quien no le interesa crear cuenta ni usar Claude
+  todavía — usa la versión pre-armada (12 nichos, sin login). Mismo cierre: link al
+  producto pago.
+- Ninguno de los dos caminos es "el bueno" — cubren perfiles distintos de la misma
+  audiencia, ambos válidos, ambos terminan en la misma venta.
+
+**Por qué esto diferencia y no es "otro tutorial de Claude":** ya existe una cantidad
+enorme de contenido de skills/tutoriales de Claude para gente que ya lo usa. La
+oportunidad real está en la enorme cantidad de gente que **todavía no sabe qué es
+Claude o no sabe usarlo correctamente** — ese es el hueco, no competir con los
+tutoriales avanzados que ya existen.
+
 ## Objetivos
 **Objetivo de negocio:** Terminar de construir el producto (plantilla+curso) y el gratuito, sacando la mayor cantidad de ángulos de contenido posible del proceso, antes de fijar precio.
 **Acción de conversión clave:** Comentar en el video para pedir acceso al producto gratuito → de ahí, embudo hacia el producto pago.
@@ -116,5 +150,12 @@
 
 ## Changelog
 *Más nuevo primero.*
+- v3 (2026-09-11) — Agregado el flujo confirmado del producto gratuito (El Buscador
+  de Activos): recorrido de 3 pasos (oportunidad → prueba gratis de guion/ganchos →
+  teaser de automatización) diseñado para dejar con ganas del pago, no entregar todo
+  gratis. Confirmados los dos caminos (con Claude / sin Claude) como perfiles
+  distintos de la misma audiencia, no una jerarquía. Reforzada la diferenciación
+  central: el hueco es la gente que no sabe qué es Claude o no lo usa bien, no
+  competir con tutoriales avanzados que ya existen.
 - v2 (2026-09-11) — Completado el panorama competitivo con investigación real (WebSearch): CreaShort.ai, Ángela Aparicio, César Antunes, Mateo Maffia como referencias directas/secundarias, y el hueco de mercado identificado.
 - v1 (2026-09-11) — Documento inicial, armado a partir de conversación con el operador + voz de marca real extraída de los 21 guiones ya escritos (`fabrica/ejemplos/lote_21_publicacion.ts`). Panorama competitivo, objeciones y anti-persona quedan sin completar — precio explícitamente pospuesto por decisión del operador.

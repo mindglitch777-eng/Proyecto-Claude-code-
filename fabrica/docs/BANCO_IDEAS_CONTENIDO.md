@@ -53,6 +53,16 @@ formulario.
 6. **"3 IA trabajando juntas y no pago sueldo"** — angle ya validado en v11
    (`"Armá tu equipo de IA. Sin nómina."`) — variante mostrando la fábrica en vez de
    herramientas genéricas de terceros.
+7. **"No sabés lo que hace Claude hoy en día"** — gancho directo a gente que no
+   conoce o no sabe usar Claude (el hueco real, ver diferenciación en
+   `.agents/product-marketing.md`). Se muestra la página del Buscador de Activos en
+   vivo: pedido → Claude genera el resultado en pantalla → se muestra el guion que
+   arma → CTA: *"Comentá 'LINK' y te paso la página para que la pruebes."*
+8. **"Top 5 herramientas para crear contenido con IA (y una te va a sorprender)"**
+   — formato listicle, incluye 4 herramientas conocidas/reales + la nuestra en el
+   puesto que corresponda por mérito real, no forzado al #1. Sirve para captar gente
+   que ya busca "herramientas de IA" por su cuenta, sin depender de que conozcan la
+   marca de antemano.
 
 **Hashtags base sugeridos:** `#TallerDeActivos #IA #Herramientas #Automatizacion`
 **Nota:** este ángulo es el único con mecánica de captación explícita (comentario →
