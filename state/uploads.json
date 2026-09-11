@@ -864,5 +864,133 @@
       },
       "message": "Post scheduled successfully"
     }
+  },
+  {
+    "id": "v04",
+    "fecha": "2026-09-11T13:54:55.240Z",
+    "ok": true,
+    "postId": "6aa4082fe8e4e1444759c210",
+    "scheduledFor": "2026-09-15T20:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por la misma carrera de git ya documentada en los carruseles (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa4082fe8e4e1444759c210",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-15T20:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "v09",
+    "fecha": "2026-09-11T13:55:03.517Z",
+    "ok": true,
+    "postId": "6aa40837e8e4e1444759c4f3",
+    "scheduledFor": "2026-09-16T20:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por la misma carrera de git ya documentada en los carruseles (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa40837e8e4e1444759c4f3",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-16T20:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "v06",
+    "fecha": "2026-09-11T13:54:44.625Z",
+    "ok": true,
+    "postId": "6aa408249245bfe41d58b68e",
+    "scheduledFor": "2026-09-17T20:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por la misma carrera de git ya documentada en los carruseles (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa408249245bfe41d58b68e",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-17T20:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "v07",
+    "fecha": "2026-09-11T13:54:58.336Z",
+    "ok": true,
+    "postId": "6aa40832e8e4e1444759c2fc",
+    "scheduledFor": "2026-09-18T20:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por la misma carrera de git ya documentada en los carruseles (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa40832e8e4e1444759c2fc",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-18T20:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "v12",
+    "fecha": "2026-09-11T13:54:49.272Z",
+    "ok": true,
+    "postId": "6aa40829e8e4e1444759bfd5",
+    "scheduledFor": "2026-09-21T20:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por la misma carrera de git ya documentada en los carruseles (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa40829e8e4e1444759bfd5",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-21T20:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "v08",
+    "fecha": "2026-09-11T13:54:49.187Z",
+    "ok": true,
+    "postId": "6aa40829e8e4e1444759bfb3",
+    "scheduledFor": "2026-09-22T20:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por la misma carrera de git ya documentada en los carruseles (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa40829e8e4e1444759bfb3",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-22T20:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "v21",
+    "fecha": "2026-09-11T13:55:00.823Z",
+    "ok": true,
+    "postId": "6aa40834e8e4e1444759c3de",
+    "scheduledFor": "2026-09-23T20:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por la misma carrera de git ya documentada en los carruseles (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa40834e8e4e1444759c3de",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-23T20:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "v18",
+    "fecha": "2026-09-11T13:55:35.302Z",
+    "ok": true,
+    "postId": "6aa40857574add111207aff6",
+    "scheduledFor": "2026-09-24T20:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por la misma carrera de git ya documentada en los carruseles (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa40857574add111207aff6",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-24T20:00:00Z"
+      }
+    }
   }
 ]
