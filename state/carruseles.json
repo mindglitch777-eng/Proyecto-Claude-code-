@@ -106,7 +106,8 @@
         "publishingClaimedAt": "2026-09-10T23:06:38.687Z"
       },
       "message": "Post published successfully"
-    }
+    },
+    "notificado": true
   },
   {
     "id": "carrusel-08",
@@ -211,7 +212,8 @@
         "__v": 0
       },
       "message": "Post scheduled successfully"
-    }
+    },
+    "notificado": true
   },
   {
     "id": "carrusel-15",
@@ -226,7 +228,8 @@
         "_id": "6aa3388b2da049532a2bc395",
         "status": "scheduled"
       }
-    }
+    },
+    "notificado": true
   },
   {
     "id": "carrusel-29",
@@ -241,7 +244,8 @@
         "_id": "6aa33891b50a79df27cdbf55",
         "status": "scheduled"
       }
-    }
+    },
+    "notificado": true
   },
   {
     "id": "carrusel-36",
@@ -256,7 +260,8 @@
         "_id": "6aa3388c426058eec36240e6",
         "status": "scheduled"
       }
-    }
+    },
+    "notificado": true
   },
   {
     "id": "carrusel-22",
@@ -271,7 +276,8 @@
         "_id": "6aa33894b50a79df27cdc042",
         "status": "scheduled"
       }
-    }
+    },
+    "notificado": true
   },
   {
     "id": "carrusel-37",
@@ -916,7 +922,8 @@
         "_id": "6aa342295f2578182cff0579",
         "status": "scheduled"
       }
-    }
+    },
+    "notificado": true
   },
   {
     "id": "carrusel-09",
