@@ -313,17 +313,39 @@ export async function listarPostsRecientes(limite = 5, apiKeyParam?: string): Pr
  * diferencia de obtenerLogsPost() (historial de eventos, puede venir
  * vacio), esto devuelve el documento del post con el `status` real por
  * plataforma tal cual esta ahora mismo (published/failed/pending).
+ *
+ * OJO real (2026-09-12): la API de Zernio tiene su PROPIO rate limit
+ * (60 req/ventana, HTTP 429 con body
+ * `{"error":"Rate limit exceeded...","details":{"currentCount","limit","retryAfterSeconds"}}`)
+ * -- distinto del rate limit de TikTok que reportan los posts en si.
+ * notificar_pendientes.ts y reintentar_fallidos.ts corren en el mismo
+ * job cada 20 min e iteran decenas de entradas cada uno llamando esta
+ * funcion, y lo chocaban de lleno (confirmado real: job que proceso 0
+ * de 60+ entradas por este motivo). Ante un 429 se espera lo que pide
+ * `retryAfterSeconds` (+ margen) y se reintenta un par de veces en vez
+ * de tirar el error de una -- sin esto cualquier corrida con muchas
+ * entradas pendientes queda inutil de nuevo apenas crezca el volumen.
  */
 export async function obtenerPost(postId: string, apiKeyParam?: string): Promise<unknown> {
   const apiKey = requerirApiKey(apiKeyParam);
-  const resp = await fetch(`${BASE}/posts/${postId}`, {
-    headers: {Authorization: `Bearer ${apiKey}`},
-  });
-  const cuerpo = await resp.text();
-  let data: any = cuerpo;
-  try { data = JSON.parse(cuerpo); } catch { /* se deja como texto */ }
-  if (!resp.ok) throw new Error(`GET /posts/${postId} HTTP ${resp.status}: ${cuerpo}`);
-  return data;
+  const MAX_INTENTOS_429 = 3;
+  for (let intento = 1; intento <= MAX_INTENTOS_429; intento++) {
+    const resp = await fetch(`${BASE}/posts/${postId}`, {
+      headers: {Authorization: `Bearer ${apiKey}`},
+    });
+    const cuerpo = await resp.text();
+    let data: any = cuerpo;
+    try { data = JSON.parse(cuerpo); } catch { /* se deja como texto */ }
+    if (resp.ok) return data;
+    if (resp.status === 429 && intento < MAX_INTENTOS_429) {
+      const retryAfterSeg = typeof data?.details?.retryAfterSeconds === 'number' ? data.details.retryAfterSeconds : 30;
+      console.error(`[zernio] GET /posts/${postId} -- rate limit de Zernio (429), esperando ${retryAfterSeg}s antes de reintentar (intento ${intento}/${MAX_INTENTOS_429})`);
+      await new Promise((r) => setTimeout(r, (retryAfterSeg + 2) * 1000));
+      continue;
+    }
+    throw new Error(`GET /posts/${postId} HTTP ${resp.status}: ${cuerpo}`);
+  }
+  throw new Error(`GET /posts/${postId} -- rate limit de Zernio persistente tras ${MAX_INTENTOS_429} intentos`);
 }
 
 /**

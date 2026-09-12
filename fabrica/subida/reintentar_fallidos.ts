@@ -119,6 +119,14 @@ function extraerDoc(respuesta: unknown): PostZernio {
 async function procesarEntrada(entrada: Entrada, topic: string, todas: Entrada[]): Promise<'reintentado' | 'resuelto' | 'agotado' | 'sin_cambios'> {
   if (!entrada.ok || !entrada.postId) return 'sin_cambios';
   if (entrada.estadoReintento === 'resuelto' || entrada.estadoReintento === 'agotado') return 'sin_cambios';
+  // Si ya se notifico (publicado con exito, chequeado por notificar_pendientes.ts)
+  // no puede estar "failed" -- saltar ANTES de gastar una llamada a Zernio.
+  // Sin este corte se consultaba obtenerPost() para las 60+ entradas
+  // historicas en cada corrida (cada 20 min) y se chocaba con el rate
+  // limit propio de la API de Zernio (60 req/ventana, HTTP 429) antes de
+  // llegar siquiera a las entradas realmente fallidas -- confirmado real
+  // 2026-09-12, job que proceso 0 de 60+ entradas por este motivo.
+  if (entrada.notificado) return 'sin_cambios';
 
   const reintentosPrevios = entrada.reintentos ?? 0;
   const ultimoReintento = [...todas].reverse().find((x) => x.reintentoDe === entrada.id);
