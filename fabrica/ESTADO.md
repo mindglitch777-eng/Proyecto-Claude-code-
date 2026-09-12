@@ -1,5 +1,58 @@
 # Estado vivo del proyecto
 
+## Bloque: reintento automático de posts fallidos (rate limit de TikTok/Zernio) — implementado, roto en el primer run, arreglado y verificado en vivo (2026-09-12)
+
+**Motivo**: viernes 11/09, franja horaria "viral" confirmada por el operador
+(18hs / 20-23hs ART) -- llegó una sola notificación de video, ningún carrusel.
+Diagnóstico real (consultando Zernio en vivo): 3 carruseles (carrusel-09/16/23)
+quedaron en `status: failed` con el error puntual de TikTok "Too many pending
+posts" (cupo lleno del Creator Inbox, transitorio, no un problema de
+contenido). Limpiar el inbox a mano no los reintenta solo -- quedan fallados
+para siempre si nadie interviene.
+
+**Pedido explícito del operador**: que quede en el sistema un reintento
+automático permanente para este caso puntual, no un fix manual de una vez
+("cuando pase esto que pone fallido volver a reintentar... que quede eso en
+el sistema pq si no ese problema nos va a dejar varios errores bastantes
+feos").
+
+**Implementado**: `fabrica/subida/reintentar_fallidos.ts`, corriendo cada 20
+min en el mismo cron de `notificar-box.yml`. Detecta SOLO el error puntual de
+"Too many pending posts" (nunca fallos de contenido -- esos quedan intactos
+para revisión humana), recrea el post reusando los mismos
+mediaItems/content/platformSpecificData ya subidos (leídos en vivo de Zernio,
+no re-derivados de datos locales), programado para la próxima franja horaria
+buena (18hs o 20-23hs ART). Tope de 2 reintentos por post; agotados, avisa por
+ntfy con prioridad urgente. El `.yml` se registró también en `main` (patrón ya
+usado en el repo: el cron de `schedule` siempre lee el `.yml` de la rama por
+defecto, el código real vive en la rama de trabajo vía `ref` en el checkout).
+
+**Bug encontrado y arreglado en el primer run real**: la primera ejecución en
+vivo procesó "0 upload(s) + 0 carrusel(es)" -- el propio loop de
+`reintentar_fallidos.ts` (sin filtrar entradas ya publicadas) más
+`notificar_pendientes.ts` corriendo en el mismo job agotaban el rate limit
+PROPIO de la API de Zernio (60 req/ventana, HTTP 429, distinto del rate limit
+de TikTok que se buscaba resolver) antes de llegar a los 3 carruseles
+realmente fallados. Arreglado con dos cambios (commit `c9b0a19`):
+1. `reintentar_fallidos.ts` salta entradas con `notificado: true` ANTES de
+   llamar a Zernio (mismo filtro que ya usaba `notificar_pendientes.ts`).
+2. `zernio.ts` `obtenerPost()`: ante un 429 espera `retryAfterSeconds` (+
+   margen) y reintenta hasta 2 veces en vez de tirar el error de una.
+
+**Verificado en vivo** (`workflow_dispatch` manual, run `34664701750`, job
+`103474172529`): el paso de reintento esperó los 429 reales (31s y 56s) y
+terminó `"Listo. 0 upload(s) + 3 carrusel(es) procesados."` -- carrusel-09,
+carrusel-16 y carrusel-23 quedaron `estadoReintento: "reintentando"` con sus
+`-reintento1` creados y `ok: true`, programados para la próxima franja buena.
+Confirmado en `state/carruseles.json` (commit `4ad5e77`, automático del
+propio cron). El sistema queda funcionando de forma permanente, no fue un fix
+manual de una vez.
+
+**Nota aparte, no tocada esta sesión** (fuera del pedido puntual): 5 entradas
+de carruseles antiguas (carrusel-10/11/12/13/14) devuelven `HTTP 404 Post not
+found` en Zernio -- no es el error de rate limit, el script correctamente no
+las toca. Si el operador quiere, se puede investigar aparte.
+
 ## Bloque: primer comentario real del Ángulo 2 sin mecanismo de entrega listo + rediseño del Buscador de Activos con marca real (2026-09-11)
 
 **Llegó el primer comentario real pidiendo acceso** en uno de los videos del
