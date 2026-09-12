@@ -1,4 +1,13 @@
 [[redirects]]
+  from = "/buscador-de-activos"
+  to = "/buscador-de-activos.html"
+  status = 200
+
+# El Corte esta archivado (decision del operador, 2026-09-03) -- esta regla
+# de abajo no se toca, solo se agrego la de arriba, que tiene que ir primero
+# porque el "/*" de abajo intercepta cualquier ruta que no tenga su propia
+# regla explicita antes.
+[[redirects]]
   from = "/*"
   to = "/el-corte-v7.html"
   status = 200
