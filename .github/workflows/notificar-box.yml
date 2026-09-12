@@ -1,11 +1,17 @@
 name: notificar-box
 
-# Chequeo periodico de solo-lectura+aviso: consulta el estado REAL de
-# cada post pendiente en Zernio (fabrica/subida/notificar_pendientes.ts)
-# y manda un push por ntfy.sh apenas un video llega de verdad al
-# Creator Inbox de TikTok (o un carrusel queda publicado). No sube ni
-# publica nada nuevo -- solo lee y, si corresponde, marca "notificado"
-# en state/uploads.json / state/carruseles.json.
+# Chequeo periodico: (1) consulta el estado REAL de cada post pendiente
+# en Zernio (fabrica/subida/notificar_pendientes.ts) y manda un push
+# por ntfy.sh apenas un video llega de verdad al Creator Inbox de
+# TikTok (o un carrusel queda publicado); (2) reintenta automaticamente
+# (fabrica/subida/reintentar_fallidos.ts) los posts que fallaron por el
+# rate limit puntual de TikTok ("Too many pending posts" -- cupo lleno
+# del inbox, transitorio) recreandolos en la proxima franja horaria
+# buena, hasta 2 veces por post -- decision del operador 2026-09-12
+# tras varios carruseles reales que quedaron sin publicar un viernes
+# porque nadie los reintento. No publica contenido nuevo que no haya
+# sido ya programado antes por el operador; solo termina de entregar lo
+# que ya estaba aprobado y quedo trabado por un error de plataforma.
 
 permissions:
   contents: write
@@ -49,6 +55,13 @@ jobs:
           ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: npx tsx subida/notificar_pendientes.ts
+
+      - name: Reintentar posts fallidos por rate limit de TikTok
+        working-directory: fabrica
+        env:
+          ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: npx tsx subida/reintentar_fallidos.ts
 
       - name: Commitear notificado:true (state/uploads.json + state/carruseles.json)
         # Mismo riesgo de carrera de git que subir-video.yml/subir-carrusel.yml
