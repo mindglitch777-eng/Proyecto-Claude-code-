@@ -1,5 +1,41 @@
 # Estado vivo del proyecto
 
+## Bloque: publicado El Buscador de Activos en Netlify — sale de vista previa interna por primera vez (2026-09-12)
+
+**Roadmap punto 3 (del bloque de abajo, "Ángulo 2") ejecutado**: el operador
+pidió explícitamente publicar el archivo real, verificar diseño y confirmar
+los links de redes/producto gratis antes de subirlo. Se hizo en ese orden:
+
+1. **Diseño verificado con capturas reales** (Playwright, no solo lectura de
+   código) en oscuro/claro/desktop/mobile antes de publicar -- confirmado
+   que sigue lo documentado en `fabrica/docs/DIRECCION_VISUAL_BUSCADOR_DE_ACTIVOS.md`
+   (un solo acento cobre, tipografía Fraunces/Archivo/JetBrains Mono, sin
+   badges de colores ni cards con sombra ni gradientes multicolor -- los
+   patrones que el operador marcó como "hecho por IA" en la ronda anterior
+   NO están presentes en esta versión).
+2. **Links de redes + producto**: ya estaban correctos en el Artifact (TikTok
+   `@taller.activos`, YouTube `@tallerdeactivos`, tanto en el capítulo "quién
+   está atrás" como en el footer) -- se confirmó, no hizo falta agregar nada.
+3. **Publicado de verdad**: `producto/buscador-de-activos.html` +
+   `producto/assets/logo-mark.png` (el mismo HTML/logo ya verificado, no
+   re-escrito), con una regla nueva en `netlify.toml` para
+   `/buscador-de-activos` **antes** del catch-all existente de El Corte --
+   la regla de El Corte no se tocó (sigue archivado, decisión del operador
+   03/09). Commiteado en la rama de trabajo (`a833e0a`) y espejado a `main`
+   (`029e1b8`) porque Netlify despliega desde `main` (mismo patrón ya usado
+   para los workflows de GitHub Actions).
+
+**Importante -- explícitamente NO tocado esta sesión**: `producto/el-corte-v7.html`
+(El Corte). Sigue la regla del proyecto: archivado, no se toca ni se
+menciona como próximo paso salvo pedido aparte del operador.
+
+**Resultado real**: ahora existe `/buscador-de-activos` como link real y
+compartible -- resuelve el hueco documentado en el bloque de abajo (no poder
+responder al primer comentario real pidiendo acceso). Sigue pendiente el
+punto 2 del roadmap (mecanismo de entrega -- DM/automatización -- bloqueado
+por Regla de Oro hasta confirmación explícita) antes de retomar el Ángulo 2
+con un segundo video.
+
 ## Bloque: reintento automático de posts fallidos (rate limit de TikTok/Zernio) — implementado, roto en el primer run, arreglado y verificado en vivo (2026-09-12)
 
 **Motivo**: viernes 11/09, franja horaria "viral" confirmada por el operador
