@@ -1007,7 +1007,9 @@
         "_id": "6aa342394dd45f46f23c308a",
         "status": "scheduled"
       }
-    }
+    },
+    "reintentos": 1,
+    "estadoReintento": "reintentando"
   },
   {
     "id": "carrusel-16",
@@ -1022,7 +1024,9 @@
         "_id": "6aa3423c5f2578182cff084d",
         "status": "scheduled"
       }
-    }
+    },
+    "reintentos": 1,
+    "estadoReintento": "reintentando"
   },
   {
     "id": "carrusel-23",
@@ -1037,7 +1041,9 @@
         "_id": "6aa3423636fc0188184d2dcf",
         "status": "scheduled"
       }
-    }
+    },
+    "reintentos": 1,
+    "estadoReintento": "reintentando"
   },
   {
     "id": "carrusel-30",
@@ -1533,6 +1539,339 @@
         "__v": 0
       },
       "message": "Post scheduled successfully"
+    }
+  },
+  {
+    "id": "carrusel-09-reintento1",
+    "fecha": "2026-09-12T01:27:13.548Z",
+    "ok": true,
+    "postId": "6aa4aa6ab77923467e1f28a1",
+    "reintentoDe": "carrusel-09",
+    "scheduledFor": "2026-09-12T01:27:05.078Z",
+    "notificado": false,
+    "respuestaCruda": {
+      "post": {
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa4aa6ab77923467e1f28a1",
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Lo que no te cuentan de Hotmart",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084209785_czzqnnma_42784553-f731-4e90-adb9-fbc31ff1e952.png",
+            "_id": "6aa4aa6ab77923467e1f28a2"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084210579_gxr3ha59_f067d790-ecbd-436f-9537-97fb77b46ba2.png",
+            "_id": "6aa4aa6ab77923467e1f28a3"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084211307_68a3iaj4_bc58c09f-9ef7-4b72-813b-c2a681cb0cb4.png",
+            "_id": "6aa4aa6ab77923467e1f28a4"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084212019_q7ntxjio_699fec59-8a46-42bb-aedf-ce8fa057b704.png",
+            "_id": "6aa4aa6ab77923467e1f28a5"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084212546_xyk0gqj7_5c586a63-20bc-4a5a-bb50-b145775b5158.png",
+            "_id": "6aa4aa6ab77923467e1f28a6"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084213757_snwbvyfb_6f74c4b6-10ea-426b-8040-f7018beefcd5.png",
+            "_id": "6aa4aa6ab77923467e1f28a7"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=a52d5b39&x-expires=1789275600&x-signature=LeHCrUGot0pvIb%2BTusIYANJjPwY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-12T01:27:05.078Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "Lo que nadie te cuenta antes de elegir plataforma.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Hotmart #PlataformasDeVenta",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              },
+              "isDraft": true
+            },
+            "status": "published",
+            "publishAttempts": 0,
+            "contentHash": "02c8a420012fca7994c0d5bfbd7fd5df",
+            "_id": "6aa4aa6ab77923467e1f28a8",
+            "platformPostId": "p_inbox_url~v2.7684454155481794568",
+            "publishedAt": "2026-09-12T01:27:13.168Z"
+          }
+        ],
+        "scheduledFor": "2026-09-12T01:27:05.078Z",
+        "timezone": "UTC",
+        "status": "published",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "createdAt": "2026-09-12T01:27:06.405Z",
+        "updatedAt": "2026-09-12T01:27:13.311Z",
+        "__v": 0,
+        "publishingClaimedAt": "2026-09-12T01:27:06.474Z"
+      },
+      "message": "Post published successfully"
+    }
+  },
+  {
+    "id": "carrusel-16-reintento1",
+    "fecha": "2026-09-12T01:27:19.897Z",
+    "ok": true,
+    "postId": "6aa4aa737806a65f6acd46c7",
+    "reintentoDe": "carrusel-16",
+    "scheduledFor": "2026-09-12T01:27:14.044Z",
+    "notificado": false,
+    "respuestaCruda": {
+      "post": {
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa4aa737806a65f6acd46c7",
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Así se ve un producto hecho en una tarde",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084211544_bl4wlp72_5cf87272-9f8a-47ad-afc2-060e3b48952e.png",
+            "_id": "6aa4aa737806a65f6acd46c8"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084212673_ftskphi0_922ceeb9-ac59-48c2-97a6-864237774436.png",
+            "_id": "6aa4aa737806a65f6acd46c9"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084213271_moc3nwjd_5798442f-644a-4cee-8f9c-16efac560527.png",
+            "_id": "6aa4aa737806a65f6acd46ca"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084214019_66fii8s7_9e2e56e3-7fba-414b-ac31-ab53f4b4afdc.png",
+            "_id": "6aa4aa737806a65f6acd46cb"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084214528_hh4jdlby_e5a522ca-0154-4fe1-a1ba-7d65b30e385c.png",
+            "_id": "6aa4aa737806a65f6acd46cc"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084215664_4504k4ln_8ff6c4fa-a758-4f7c-9563-09b4e9e1c880.png",
+            "_id": "6aa4aa737806a65f6acd46cd"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=a52d5b39&x-expires=1789275600&x-signature=LeHCrUGot0pvIb%2BTusIYANJjPwY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-12T01:27:14.044Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "4 horas. Así de rápido se puede armar.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #ProductoEnUnDia #Productividad",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              },
+              "isDraft": true
+            },
+            "status": "published",
+            "publishAttempts": 0,
+            "contentHash": "5815feb03857f3f45272f7a685a2a995",
+            "_id": "6aa4aa737806a65f6acd46ce",
+            "platformPostId": "p_inbox_url~v2.7684453171162482709",
+            "publishedAt": "2026-09-12T01:27:19.543Z"
+          }
+        ],
+        "scheduledFor": "2026-09-12T01:27:14.044Z",
+        "timezone": "UTC",
+        "status": "published",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "createdAt": "2026-09-12T01:27:15.640Z",
+        "updatedAt": "2026-09-12T01:27:19.711Z",
+        "__v": 0,
+        "publishingClaimedAt": "2026-09-12T01:27:15.705Z"
+      },
+      "message": "Post published successfully"
+    }
+  },
+  {
+    "id": "carrusel-23-reintento1",
+    "fecha": "2026-09-12T01:27:26.492Z",
+    "ok": true,
+    "postId": "6aa4aa79b77923467e1f2ea2",
+    "reintentoDe": "carrusel-23",
+    "scheduledFor": "2026-09-12T01:27:20.391Z",
+    "notificado": false,
+    "respuestaCruda": {
+      "post": {
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa4aa79b77923467e1f2ea2",
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Empecé sin saber nada del tema",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084206372_ge16sgnj_de9dff04-6be3-442e-b305-1dbd4db754c1.png",
+            "_id": "6aa4aa79b77923467e1f2ea3"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084207146_q1vtr91j_06d3ad5b-1215-4048-9cb7-e7102d9fcfaf.png",
+            "_id": "6aa4aa79b77923467e1f2ea4"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084207823_0occdy4h_b8b5f593-60f2-4f55-846c-878f6a16d048.png",
+            "_id": "6aa4aa79b77923467e1f2ea5"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084208618_xusdq2jh_d2ca3136-04bc-4c7a-a910-356566e53213.png",
+            "_id": "6aa4aa79b77923467e1f2ea6"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084209354_1jg3jcjs_59481a0f-b93a-4d60-a353-033923391577.png",
+            "_id": "6aa4aa79b77923467e1f2ea7"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084210594_opz5buvi_e651ce1b-4dd7-4b24-9379-27b2fb51936c.png",
+            "_id": "6aa4aa79b77923467e1f2ea8"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=a52d5b39&x-expires=1789275600&x-signature=LeHCrUGot0pvIb%2BTusIYANJjPwY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-12T01:27:20.391Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "No sabía nada del tema. Vendí igual.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #EmprenderSinExperiencia",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              },
+              "isDraft": true
+            },
+            "status": "published",
+            "publishAttempts": 0,
+            "contentHash": "3669b616ce116788f7281c86385c41a5",
+            "_id": "6aa4aa79b77923467e1f2ea9",
+            "platformPostId": "p_inbox_url~v2.7684454175074355208",
+            "publishedAt": "2026-09-12T01:27:26.189Z"
+          }
+        ],
+        "scheduledFor": "2026-09-12T01:27:20.391Z",
+        "timezone": "UTC",
+        "status": "published",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "createdAt": "2026-09-12T01:27:21.704Z",
+        "updatedAt": "2026-09-12T01:27:26.302Z",
+        "__v": 0,
+        "publishingClaimedAt": "2026-09-12T01:27:21.775Z"
+      },
+      "message": "Post published successfully"
     }
   }
 ]
