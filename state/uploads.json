@@ -39,7 +39,7 @@
     "ok": true,
     "postId": "6aa42e351d5eab03a355a80d",
     "scheduledFor": "2026-09-12T00:00:00.000Z",
-    "notificado": false,
+    "notificado": true,
     "nota": "Entrada reconstruida a mano: reprogramacion del jueves (--solo-tiktok, YouTube ya publicado bien la primera vez, no se duplica) -- el paso 'Commitear log de subida' de este run perdio la carrera de git (3 workflows disparados casi a la vez: v05/v15/v16) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
     "respuestaCruda": {
       "message": "Post scheduled successfully",
