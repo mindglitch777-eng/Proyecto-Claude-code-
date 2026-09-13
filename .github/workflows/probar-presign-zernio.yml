@@ -1,0 +1,35 @@
+name: probar-presign-zernio
+
+# Solo prueba presign+PUT (subida/probar_presign.ts) con un video real
+# >4MB, para ver si Zernio arreglo de su lado el bug documentado en
+# fabrica/subida/zernio.ts (el presign nunca devolvia `fileUrl`). NO
+# llama a crearPost() -- no programa ni publica nada real.
+
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: fabrica/package-lock.json
+
+      - name: Dependencias
+        working-directory: fabrica
+        run: npm ci --no-audit --no-fund
+
+      - name: Probar presign con v07.mp4 (8.4MB)
+        working-directory: fabrica
+        env:
+          ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
+        run: npx tsx subida/probar_presign.ts ../videos/remotion/v07.mp4
