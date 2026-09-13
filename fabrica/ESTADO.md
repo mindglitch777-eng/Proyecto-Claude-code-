@@ -1,5 +1,24 @@
 # Estado vivo del proyecto
 
+## Bloque: reintentado el bug de presign de Zernio (rutina programada) — sigue exactamente igual (2026-09-13)
+
+**Retomado por una rutina programada** ("Reintentar presign de Zernio"), no por pedido directo en esta sesión.
+Se probó de nuevo `subirArchivo()` (presign + PUT) con un video real >4MB (`videos/remotion/v07.mp4`, 8.4MB)
+vía un script puntual (`fabrica/subida/probar_presign.ts`, workflow `probar-presign-zernio.yml`) --
+**solo prueba presign+PUT, no llama a `crearPost()`, no programa ni publica nada real.**
+
+**Resultado: el bug sigue exactamente igual.** El presign real sigue devolviendo únicamente
+`{"uploadUrl": "..."}`, nunca `fileUrl` -- confirmado en el log real del job
+(`GET .../media/presign` -> el código cae al fallback documentado `cuerpoPresign.fileUrl ?? uploadUrl`,
+la URL devuelta sigue trayendo la query de firma `?X-Amz-...`, exactamente la variante (d) ya probada
+y descartada el 2026-09-10). El PUT en sí funcionó bien (200, ~1.7s para 8.4MB) -- el problema sigue
+siendo del lado de Zernio, no de la subida en sí.
+
+**No se insistió más, según la instrucción de la propia rutina** ("si sigue igual, no insistas más por
+ahora y avisá al operador"). Sigue sin haber forma confirmada de subir un video >4MB a Zernio para
+publicar de verdad -- la salida real pendiente (alojar el archivo en una URL pública propia) sigue
+bloqueada por la Regla de Oro hasta que el operador confirme explícitamente.
+
 ## Bloque: publicado El Buscador de Activos en Netlify — sale de vista previa interna por primera vez (2026-09-12)
 
 **Roadmap punto 3 (del bloque de abajo, "Ángulo 2") ejecutado**: el operador
