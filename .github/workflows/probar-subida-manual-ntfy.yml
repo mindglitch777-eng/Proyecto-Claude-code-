@@ -33,4 +33,11 @@ jobs:
         working-directory: fabrica
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
-        run: npx tsx subida/enviar_para_subida_manual.ts ../videos/remotion/v07.mp4 "Prueba real: este es el video que te llega para subir a mano. #test"
+        # Bloque literal (run: |), no scalar en una sola linea -- el
+        # caption de prueba tiene un "#" y eso arranca un comentario YAML
+        # si va en una linea plana sin comillas de bloque, cortando el
+        # resto del texto en silencio (encontrado real al registrar este
+        # workflow: GitHub lo aceptaba pero sin trigger workflow_dispatch
+        # reconocido).
+        run: |
+          npx tsx subida/enviar_para_subida_manual.ts ../videos/remotion/v07.mp4 "Prueba real: este es el video que te llega para subir a mano. #test"
