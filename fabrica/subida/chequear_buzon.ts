@@ -15,34 +15,11 @@
  *
  * Uso: npx tsx subida/chequear_buzon.ts
  */
-import {existsSync, readFileSync, writeFileSync, appendFileSync} from 'fs';
-import {resolve} from 'path';
+import {appendFileSync} from 'fs';
+import {RUTA_UPLOADS, leerLog, guardarLog} from './publicacion';
 
-const RAIZ = resolve(__dirname, '../..');
-const LOG_PATH = resolve(RAIZ, 'state/uploads.json');
 const DIAS_VENCIMIENTO = 3; // igual al retention-days del artifact
 const MAX_DELAY_NTFY_MS = 3 * 24 * 60 * 60 * 1000; // limite real de ntfy.sh
-
-type EntradaLog = {
-  id: string;
-  manual?: boolean;
-  estado?: 'pendiente' | 'subido' | 'vencido';
-  tema?: string;
-  scheduledFor?: string;
-  avisadoBuzon?: boolean;
-  avisadoBuzonEn?: string;
-  rutaVideo?: string;
-  [k: string]: unknown;
-};
-
-function leer(): EntradaLog[] {
-  if (!existsSync(LOG_PATH)) return [];
-  return JSON.parse(readFileSync(LOG_PATH, 'utf-8'));
-}
-
-function guardar(entradas: EntradaLog[]): void {
-  writeFileSync(LOG_PATH, JSON.stringify(entradas, null, 2) + '\n');
-}
 
 function escribirOutput(clave: string, valor: string): void {
   const rutaOutput = process.env.GITHUB_OUTPUT;
@@ -54,7 +31,7 @@ function escribirOutput(clave: string, valor: string): void {
 }
 
 function main(): void {
-  const entradas = leer();
+  const entradas = leerLog(RUTA_UPLOADS);
   const ahora = Date.now();
   let cambios = 0;
 
@@ -77,7 +54,7 @@ function main(): void {
     return new Date(e.scheduledFor).getTime() - ahora <= MAX_DELAY_NTFY_MS;
   });
 
-  if (cambios > 0) guardar(entradas);
+  if (cambios > 0) guardarLog(RUTA_UPLOADS, entradas);
 
   if (listo) {
     console.log(`Ahora entra en ventana para programar: ${listo.id} (${listo.scheduledFor}).`);

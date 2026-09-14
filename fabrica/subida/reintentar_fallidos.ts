@@ -24,39 +24,13 @@
  * Uso: npx tsx subida/reintentar_fallidos.ts
  * Env: ZERNIO_API_KEY (existente), NTFY_TOPIC (existente)
  */
-import {existsSync, readFileSync, writeFileSync} from 'fs';
-import {resolve} from 'path';
 import {crearPost, obtenerPost, type CuentaObjetivo, type MediaItem} from './zernio';
-
-const RAIZ = resolve(__dirname, '../..');
-const UPLOADS_PATH = resolve(RAIZ, 'state/uploads.json');
-const CARRUSELES_PATH = resolve(RAIZ, 'state/carruseles.json');
+import {RUTA_UPLOADS as UPLOADS_PATH, RUTA_CARRUSELES as CARRUSELES_PATH, leerLog as leer, guardarLog as guardar, type Publicacion as Entrada} from './publicacion';
 
 const MAX_REINTENTOS = 2;
 // TikTok pide esperar 15-30 min tras el rate limit antes de reintentar
 // -- se toma el piso de ese rango para no chocar de nuevo enseguida.
 const ESPERA_MINIMA_MS = 30 * 60 * 1000;
-
-type Entrada = {
-  id: string;
-  fecha?: string;
-  ok?: boolean;
-  postId?: string;
-  notificado?: boolean;
-  reintentos?: number;
-  reintentoDe?: string;
-  estadoReintento?: 'reintentando' | 'resuelto' | 'agotado';
-  [k: string]: unknown;
-};
-
-function leer(ruta: string): Entrada[] {
-  if (!existsSync(ruta)) return [];
-  return JSON.parse(readFileSync(ruta, 'utf-8'));
-}
-
-function guardar(ruta: string, datos: Entrada[]): void {
-  writeFileSync(ruta, JSON.stringify(datos, null, 2) + '\n');
-}
 
 function esRateLimitTikTok(msg: unknown): boolean {
   return typeof msg === 'string' && /too many pending posts/i.test(msg);

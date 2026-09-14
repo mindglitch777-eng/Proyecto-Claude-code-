@@ -1,5 +1,39 @@
 # Estado vivo del proyecto
 
+## Bloque: un solo "formulario oficial" para toda publicación (2026-09-14)
+
+**Pedido explícito del operador**: "la idea es que se junten todos los engranajes y funcione completo el
+sistema" -- tras discutir que la Torre de Control no podía ser "rígida y mantenible en el tiempo" mientras cada
+script tuviera su propia copia suelta de qué campos tiene una publicación.
+
+**Auditoría real (antes de tocar nada):** 6 scripts en `fabrica/subida/` redeclaraban su propio tipo
+`EntradaLog`/`Entrada` para el mismo concepto -- cada uno con los campos que necesitó en el momento:
+`subir_video.ts`, `subir_carrusel.ts`, `chequear_buzon.ts`, `avisar_buzon.ts`, `notificar_pendientes.ts`,
+`reintentar_fallidos.ts`. Todas operan sobre `state/uploads.json` (videos) y/o `state/carruseles.json`
+(carruseles) -- misma forma real en ambos archivos, confirmado inspeccionando las keys usadas de verdad en los
+23 + 50 entradas reales (`nota`, `notificado`, `reintentos`, `estadoReintento`, etc., varias de las cuales
+ningún tipo local declaraba y solo sobrevivían por el escape hatch `[k: string]: unknown`).
+
+**Hecho:** `fabrica/subida/publicacion.ts` -- nuevo, único archivo con:
+- `type Publicacion` -- la forma canónica completa (núcleo + sub-flujo de reintento automático + sub-flujo de
+  buzón manual), con comentario de una línea por campo explicando de dónde sale y qué significa. Ya no hay
+  `[k: string]: unknown` en ningún lado -- si un campo no está declarado acá, TypeScript lo marca.
+- `leerLog()`, `guardarLog()`, `agregarEntrada()` -- las funciones de lectura/escritura que antes también
+  estaban repetidas y levemente distintas entre scripts (una no hacía `mkdirSync`, otra sí).
+- `RUTA_UPLOADS`, `RUTA_CARRUSELES` -- las dos rutas, antes hardcodeadas por separado en cada script.
+
+Los 6 scripts se migraron a importar de acá (`-140` líneas netas de código duplicado). `npx tsc --noEmit`
+limpio, y corrida real de `chequear_buzon.ts` contra los datos reales confirma que la migración funciona en
+tiempo de ejecución, no solo en tipos.
+
+**Por qué importa:** de acá en más, un campo nuevo (por ejemplo para el generador real del panel) se agrega en
+UN solo lugar, y cualquier script que se olvide de usarlo bien lo marca el compilador -- no se rompe en
+silencio.
+
+**Sigue (el "engranaje" que todavía falta soldar):** el generador real de `panel/torre-de-control.html` que lea
+`Publicacion[]` de ambos archivos y arme la página -- hoy la página sigue siendo la maqueta con datos de
+ejemplo. Ese es el próximo paso lógico ahora que existe el formulario único del que ese generador va a leer.
+
 ## Bloque: inventario real de artifacts antes de borrar nada (2026-09-14)
 
 **Pedido explícito del operador**: ante el bloqueo repetido "Artifact storage quota has been hit" al probar

@@ -7,37 +7,14 @@
  * validado con los videos: TikTok sigue con cupo limitado para posteo
  * directo en apps sin auditar.
  */
-import {existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync} from 'fs';
-import {dirname, resolve} from 'path';
-import {publicarCarrusel, type ResultadoPlataforma} from './zernio';
+import {existsSync, readdirSync} from 'fs';
+import {resolve} from 'path';
+import {publicarCarrusel} from './zernio';
+import {RUTA_CARRUSELES, agregarEntrada} from './publicacion';
 import {CARRUSELES_42} from '../carrusel/lote_42_datos';
 
 const RAIZ = resolve(__dirname, '../..');
 const ACCOUNT_ID_TIKTOK = '6aa1ce18726ebfe037cfddd1';
-const LOG_PATH = resolve(RAIZ, 'state/carruseles.json');
-
-type EntradaLog = {
-  id: string;
-  fecha: string;
-  ok: boolean;
-  postId?: string;
-  error?: string;
-  plataformas?: ResultadoPlataforma[];
-  scheduledFor?: string;
-  respuestaCruda?: unknown;
-};
-
-function leerLog(): EntradaLog[] {
-  if (!existsSync(LOG_PATH)) return [];
-  return JSON.parse(readFileSync(LOG_PATH, 'utf-8'));
-}
-
-function guardarEnLog(entrada: EntradaLog): void {
-  const log = leerLog();
-  log.push(entrada);
-  mkdirSync(dirname(LOG_PATH), {recursive: true});
-  writeFileSync(LOG_PATH, JSON.stringify(log, null, 2) + '\n');
-}
 
 async function main(): Promise<void> {
   const id = process.argv[2];
@@ -97,7 +74,7 @@ async function main(): Promise<void> {
     },
   });
 
-  guardarEnLog({
+  agregarEntrada(RUTA_CARRUSELES, {
     id,
     fecha: new Date().toISOString(),
     ok: resultado.ok,

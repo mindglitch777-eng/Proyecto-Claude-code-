@@ -17,19 +17,8 @@
  * Uso: npx tsx subida/avisar_buzon.ts <id> <tema> <horario>
  * Env: NTFY_TOPIC (existente)
  */
-import {existsSync, readFileSync, writeFileSync} from 'fs';
-import {resolve} from 'path';
 import {enviarAvisoParaSubidaManual} from './enviar_para_subida_manual';
-
-const RAIZ = resolve(__dirname, '../..');
-const LOG_PATH = resolve(RAIZ, 'state/uploads.json');
-
-type EntradaLog = {
-  id: string;
-  avisadoBuzon?: boolean;
-  avisadoBuzonEn?: string;
-  [k: string]: unknown;
-};
+import {RUTA_UPLOADS, leerLog, guardarLog} from './publicacion';
 
 async function main(): Promise<void> {
   const id = process.argv[2];
@@ -50,20 +39,16 @@ async function main(): Promise<void> {
   await enviarAvisoParaSubidaManual(topic, `${id}.mp4`, tema, horario, `Video programado: ${tema}`, entregarEnUnix);
   console.log(entregarEnUnix ? `Aviso programado para ${horario}.` : `Aviso mandado ya para ${id}.`);
 
-  if (!existsSync(LOG_PATH)) {
-    console.error(`No existe ${LOG_PATH} -- no se pudo marcar avisadoBuzon.`);
-    process.exit(1);
-  }
-  const entradas: EntradaLog[] = JSON.parse(readFileSync(LOG_PATH, 'utf-8'));
+  const entradas = leerLog(RUTA_UPLOADS);
   const entrada = entradas.find((e) => e.id === id);
   if (!entrada) {
-    console.error(`No se encontró "${id}" en ${LOG_PATH} -- el aviso ya salió, pero no se pudo marcar.`);
+    console.error(`No se encontró "${id}" en ${RUTA_UPLOADS} -- el aviso ya salió, pero no se pudo marcar.`);
     process.exit(1);
   }
   entrada.avisadoBuzon = true;
   entrada.avisadoBuzonEn = new Date().toISOString();
-  writeFileSync(LOG_PATH, JSON.stringify(entradas, null, 2) + '\n');
-  console.log(`${id} marcado avisadoBuzon:true en ${LOG_PATH}.`);
+  guardarLog(RUTA_UPLOADS, entradas);
+  console.log(`${id} marcado avisadoBuzon:true en ${RUTA_UPLOADS}.`);
 }
 
 main().catch((error) => {

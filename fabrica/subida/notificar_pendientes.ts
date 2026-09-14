@@ -17,30 +17,8 @@
  * Uso: npx tsx subida/notificar_pendientes.ts
  * Env: ZERNIO_API_KEY (existente), NTFY_TOPIC (nuevo)
  */
-import {existsSync, readFileSync, writeFileSync} from 'fs';
-import {resolve} from 'path';
 import {obtenerPost} from './zernio';
-
-const RAIZ = resolve(__dirname, '../..');
-const UPLOADS_PATH = resolve(RAIZ, 'state/uploads.json');
-const CARRUSELES_PATH = resolve(RAIZ, 'state/carruseles.json');
-
-type Entrada = {
-  id: string;
-  ok?: boolean;
-  postId?: string;
-  notificado?: boolean;
-  [k: string]: unknown;
-};
-
-function leer(ruta: string): Entrada[] {
-  if (!existsSync(ruta)) return [];
-  return JSON.parse(readFileSync(ruta, 'utf-8'));
-}
-
-function guardar(ruta: string, datos: Entrada[]): void {
-  writeFileSync(ruta, JSON.stringify(datos, null, 2) + '\n');
-}
+import {RUTA_UPLOADS as UPLOADS_PATH, RUTA_CARRUSELES as CARRUSELES_PATH, leerLog as leer, guardarLog as guardar, type Publicacion as Entrada} from './publicacion';
 
 function extraerPlataformas(respuesta: unknown): Array<{platform: string; status: string; platformPostId?: string}> {
   const doc = (respuesta as any)?.post ?? respuesta;

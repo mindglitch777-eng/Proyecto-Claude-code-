@@ -7,10 +7,11 @@
  * de cada plataforma), se podrian mover a env vars si el dia de mañana
  * hay mas de una cuenta por plataforma.
  */
-import {existsSync, mkdirSync, readFileSync, writeFileSync, appendFileSync} from 'fs';
-import {dirname, resolve} from 'path';
-import {publicarVideo, type ResultadoPlataforma} from './zernio';
+import {existsSync, appendFileSync} from 'fs';
+import {resolve} from 'path';
+import {publicarVideo} from './zernio';
 import {enviarAvisoParaSubidaManual} from './enviar_para_subida_manual';
+import {RUTA_UPLOADS, agregarEntrada} from './publicacion';
 import {VIDEOS} from '../ejemplos/lote_21_datos';
 import {PUBLICACION_LOTE21} from '../ejemplos/lote_21_publicacion';
 
@@ -18,38 +19,6 @@ const RAIZ = resolve(__dirname, '../..');
 
 const ACCOUNT_ID_TIKTOK = '6aa1ce18726ebfe037cfddd1';
 const ACCOUNT_ID_YOUTUBE = '6aa1ce88726ebfe037cfe0ea';
-
-const LOG_PATH = resolve(RAIZ, 'state/uploads.json');
-
-type EntradaLog = {
-  id: string;
-  fecha: string;
-  ok: boolean;
-  postId?: string;
-  error?: string;
-  plataformas?: ResultadoPlataforma[];
-  respuestaCruda?: unknown;
-  // Buzón de subida manual (video >4MB, Zernio no lo puede subir --
-  // ver zernio.ts) -- agregado 2026-09-14, ver panel/LANZAMIENTO.md.
-  manual?: boolean;
-  estado?: 'pendiente' | 'subido' | 'vencido';
-  tema?: string;
-  scheduledFor?: string;
-  avisadoBuzon?: boolean;
-  rutaVideo?: string;
-};
-
-function leerLog(): EntradaLog[] {
-  if (!existsSync(LOG_PATH)) return [];
-  return JSON.parse(readFileSync(LOG_PATH, 'utf-8'));
-}
-
-function guardarEnLog(entrada: EntradaLog): void {
-  const log = leerLog();
-  log.push(entrada);
-  mkdirSync(dirname(LOG_PATH), {recursive: true});
-  writeFileSync(LOG_PATH, JSON.stringify(log, null, 2) + '\n');
-}
 
 async function main(): Promise<void> {
   const id = process.argv[2];
@@ -147,7 +116,7 @@ async function main(): Promise<void> {
       if (rutaOutput) appendFileSync(rutaOutput, `huboBuzon=true\nrutaVideoBuzon=${rutaVideo}\n`);
       const entregarEnUnix = scheduledFor && msHastaHorario > 10_000 ? Math.floor(new Date(scheduledFor).getTime() / 1000) : undefined;
       await enviarAvisoParaSubidaManual(topic, `${id}.mp4`, video.titulo, scheduledFor ?? 'ahora', caption, entregarEnUnix);
-      guardarEnLog({id, fecha: new Date().toISOString(), ok: true, manual: true, estado: 'pendiente', tema: video.titulo, scheduledFor, rutaVideo, avisadoBuzon: true});
+      agregarEntrada(RUTA_UPLOADS, {id, fecha: new Date().toISOString(), ok: true, manual: true, estado: 'pendiente', tema: video.titulo, scheduledFor, rutaVideo, avisadoBuzon: true});
       console.log(
         entregarEnUnix
           ? `OK -- ${id} mandado al buzon, aviso programado para ${scheduledFor} (ntfy.sh lo entrega solo).`
@@ -157,13 +126,13 @@ async function main(): Promise<void> {
       // Falta mas de 3 dias -- ntfy.sh no puede programar tan lejos.
       // Se registra pendiente; chequear_buzon.ts (corrida diaria, no
       // cada 15 min) lo agarra en cuanto entre en la ventana de 3 dias.
-      guardarEnLog({id, fecha: new Date().toISOString(), ok: true, manual: true, estado: 'pendiente', tema: video.titulo, scheduledFor, rutaVideo, avisadoBuzon: false});
+      agregarEntrada(RUTA_UPLOADS, {id, fecha: new Date().toISOString(), ok: true, manual: true, estado: 'pendiente', tema: video.titulo, scheduledFor, rutaVideo, avisadoBuzon: false});
       console.log(`OK -- ${id} registrado en el buzon, todavia faltan mas de 3 dias para ${scheduledFor} (limite real de ntfy.sh).`);
     }
     return;
   }
 
-  guardarEnLog({
+  agregarEntrada(RUTA_UPLOADS, {
     id,
     fecha: new Date().toISOString(),
     ok: resultado.ok,
