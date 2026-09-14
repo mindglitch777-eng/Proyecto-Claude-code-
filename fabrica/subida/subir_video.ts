@@ -130,22 +130,35 @@ async function main(): Promise<void> {
     if (!mensaje.includes('supera el limite real de ~4MB')) throw error;
 
     console.log(`${id} pesa mas de lo que Zernio puede subir solo -- cae al buzon de subida manual.`);
-    if (!scheduledFor) {
-      // Sin horario futuro que esperar: el workflow ya subio el video
-      // como artifact ANTES de este paso (ver subir-video.yml), asi que
-      // avisar ya mismo, sin esperar al chequeo periodico.
+
+    // Entrega programada de ntfy.sh (min 10s, max 3 dias -- confirmado
+    // real 2026-09-14) en vez de un chequeo periodico: se manda UNA
+    // sola vez, ya, y ntfy.sh lo entrega solo en el momento justo. Cero
+    // corridas de mas -- pedido explicito del operador ("que me avise
+    // en el momento exacto, no que revise cada 20 minutos al pedo").
+    const MAX_DELAY_MS = 3 * 24 * 60 * 60 * 1000;
+    const msHastaHorario = scheduledFor ? new Date(scheduledFor).getTime() - Date.now() : 0;
+    const entraEnVentanaDeNtfy = !scheduledFor || msHastaHorario <= MAX_DELAY_MS;
+
+    if (entraEnVentanaDeNtfy) {
       const topic = process.env.NTFY_TOPIC;
       if (!topic) throw new Error('Falta NTFY_TOPIC en el entorno para avisar el buzon.');
       const rutaOutput = process.env.GITHUB_OUTPUT;
       if (rutaOutput) appendFileSync(rutaOutput, `huboBuzon=true\nrutaVideoBuzon=${rutaVideo}\n`);
-      await enviarAvisoParaSubidaManual(topic, `${id}.mp4`, video.titulo, 'ahora', caption);
-      guardarEnLog({id, fecha: new Date().toISOString(), ok: true, manual: true, estado: 'subido', tema: video.titulo, rutaVideo, avisadoBuzon: true});
-      console.log(`OK -- ${id} mandado al buzon de subida manual (aviso ya enviado, sin horario programado).`);
+      const entregarEnUnix = scheduledFor && msHastaHorario > 10_000 ? Math.floor(new Date(scheduledFor).getTime() / 1000) : undefined;
+      await enviarAvisoParaSubidaManual(topic, `${id}.mp4`, video.titulo, scheduledFor ?? 'ahora', caption, entregarEnUnix);
+      guardarEnLog({id, fecha: new Date().toISOString(), ok: true, manual: true, estado: 'pendiente', tema: video.titulo, scheduledFor, rutaVideo, avisadoBuzon: true});
+      console.log(
+        entregarEnUnix
+          ? `OK -- ${id} mandado al buzon, aviso programado para ${scheduledFor} (ntfy.sh lo entrega solo).`
+          : `OK -- ${id} mandado al buzon de subida manual (aviso ya enviado).`,
+      );
     } else {
-      // Con horario futuro: solo se registra pendiente. El aviso lo
-      // dispara chequear_buzon.ts en el momento preciso, no ahora.
+      // Falta mas de 3 dias -- ntfy.sh no puede programar tan lejos.
+      // Se registra pendiente; chequear_buzon.ts (corrida diaria, no
+      // cada 15 min) lo agarra en cuanto entre en la ventana de 3 dias.
       guardarEnLog({id, fecha: new Date().toISOString(), ok: true, manual: true, estado: 'pendiente', tema: video.titulo, scheduledFor, rutaVideo, avisadoBuzon: false});
-      console.log(`OK -- ${id} registrado en el buzon, pendiente para ${scheduledFor}. El aviso llega en el momento preciso.`);
+      console.log(`OK -- ${id} registrado en el buzon, todavia faltan mas de 3 dias para ${scheduledFor} (limite real de ntfy.sh).`);
     }
     return;
   }

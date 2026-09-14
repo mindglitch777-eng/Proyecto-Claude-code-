@@ -24,7 +24,17 @@
  * esto no es "publicar contenido públicamente": hace falta la cuenta de
  * GitHub del operador, la misma que ya usa para todo este proyecto.
  *
- * Uso: npx tsx subida/enviar_para_subida_manual.ts <ruta-video> <tema> <horario> <caption>
+ * ENTREGA PROGRAMADA (2026-09-14, a pedido del operador -- "que me avise
+ * en el momento exacto, no que revise cada 20 minutos al pedo, es gasto
+ * técnico que no nos conviene"): en vez de un chequeo periódico que
+ * pregunta todo el rato "¿ya es la hora?", el aviso se manda UNA sola
+ * vez, apenas se detecta el video pesado, con el header `At` de ntfy.sh
+ * (confirmado real leyendo docs/publish.md del repo oficial de ntfy:
+ * acepta un timestamp Unix, mínimo 10s y máximo 3 días de anticipación)
+ * -- ntfy.sh lo guarda y lo entrega solo, justo a esa hora. Cero
+ * corridas de GitHub Actions de más.
+ *
+ * Uso: npx tsx subida/enviar_para_subida_manual.ts <ruta-video> <tema> <horario> <caption> [entregarEnUnix]
  * Env: NTFY_TOPIC (existente), GITHUB_SERVER_URL/GITHUB_REPOSITORY/
  *      GITHUB_RUN_ID (los pone GitHub Actions solo, no hace falta setearlos)
  */
@@ -56,7 +66,8 @@ export async function enviarAvisoParaSubidaManual(
   nombreVideo: string,
   tema: string,
   horario: string,
-  caption: string
+  caption: string,
+  entregarEnUnix?: number
 ): Promise<void> {
   const link = construirLinkDelRun();
   const cuerpo =
@@ -65,16 +76,14 @@ export async function enviarAvisoParaSubidaManual(
     `${caption}\n\n` +
     `Bajá el video acá (necesitás estar logueado en GitHub con tu cuenta): ${link}\n` +
     `Buscá el archivo adjunto ("video") al final de esa página, bajalo y compartilo directo a TikTok/YouTube.`;
-  const resp = await fetch(`https://ntfy.sh/${topic}`, {
-    method: 'POST',
-    headers: {
-      Title: `Video nuevo -- subilo a mano (${nombreVideo})`,
-      Priority: 'high',
-      Tags: 'movie_camera',
-      Markdown: 'yes',
-    },
-    body: cuerpo,
-  });
+  const headers: Record<string, string> = {
+    Title: `Video nuevo -- subilo a mano (${nombreVideo})`,
+    Priority: 'high',
+    Tags: 'movie_camera',
+    Markdown: 'yes',
+  };
+  if (entregarEnUnix) headers.At = String(entregarEnUnix);
+  const resp = await fetch(`https://ntfy.sh/${topic}`, {method: 'POST', headers, body: cuerpo});
   if (!resp.ok) throw new Error(`ntfy.sh respondió HTTP ${resp.status}: ${await resp.text()}`);
 }
 
@@ -83,8 +92,9 @@ async function main(): Promise<void> {
   const tema = process.argv[3] ?? '(sin tema de prueba)';
   const horario = process.argv[4] ?? '(sin horario de prueba)';
   const caption = process.argv[5] ?? '(sin caption de prueba)';
+  const entregarEnUnix = process.argv[6] ? Number(process.argv[6]) : undefined;
   if (!rutaVideo) {
-    console.error('Uso: npx tsx subida/enviar_para_subida_manual.ts <ruta-video> <tema> <horario> <caption>');
+    console.error('Uso: npx tsx subida/enviar_para_subida_manual.ts <ruta-video> <tema> <horario> <caption> [entregarEnUnix]');
     process.exit(1);
   }
   const topic = process.env.NTFY_TOPIC;
@@ -93,9 +103,13 @@ async function main(): Promise<void> {
     process.exit(1);
   }
   const nombreVideo = basename(rutaVideo);
-  console.log('Mandando aviso con tema, horario y el link al artifact de este run...');
-  await enviarAvisoParaSubidaManual(topic, nombreVideo, tema, horario, caption);
-  console.log('Listo -- debería haber llegado 1 notificación con el tema, el horario y el link para bajar el video.');
+  console.log(
+    entregarEnUnix
+      ? `Programando el aviso para entregarse a las ${new Date(entregarEnUnix * 1000).toISOString()}...`
+      : 'Mandando aviso ya, con tema, horario y el link al artifact de este run...',
+  );
+  await enviarAvisoParaSubidaManual(topic, nombreVideo, tema, horario, caption, entregarEnUnix);
+  console.log('Listo -- el aviso quedó mandado (ntfy.sh se encarga de entregarlo en el momento justo si se programó).');
 }
 
 main().catch((error) => {

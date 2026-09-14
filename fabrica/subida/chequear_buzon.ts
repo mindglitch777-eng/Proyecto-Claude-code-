@@ -1,21 +1,19 @@
 /**
- * CLI de corrida periódica (pensado para cron cada 15-20 min, mismo
- * patrón que notificar-box.yml): revisa state/uploads.json y hace dos
- * cosas, cada vez que corre --
+ * CLI de corrida diaria (NO cada 15 minutos -- cambio 2026-09-14 a
+ * pedido explícito del operador: "que me avise en el momento exacto,
+ * no que revise cada 20 minutos al pedo, es gasto técnico que no nos
+ * conviene"). Desde que subir_video.ts programa el aviso directo en
+ * ntfy.sh con el header `At` (entrega programada real, min 10s/max 3
+ * días), este script YA NO dispara el aviso en el momento -- eso lo
+ * hace ntfy.sh solo. Lo único que le queda a esta corrida diaria:
  *
- * 1) Marca como "vencido" (nunca silenciosamente perdido) un video del
- *    buzón que ya fue avisado hace más de 3 días (los mismos 3 días de
- *    retention-days del artifact de GitHub) y nunca se confirmó subido.
- * 2) Busca EL PRIMER video pendiente cuyo horario programado (scheduledFor)
- *    ya llegó, y lo imprime en $GITHUB_OUTPUT para que el workflow suba
- *    su artifact y mande el aviso -- a propósito, procesa uno por corrida
- *    (no todos a la vez): con el cron cada 15-20 min alcanza, y evita la
- *    complejidad de subir varios artifacts distintos en un mismo job.
+ * 1) Marcar como "vencido" un video avisado hace más de 3 días que
+ *    nunca se confirmó subido (nunca silenciosamente perdido).
+ * 2) Encontrar UN pendiente que todavía no se pudo avisar porque
+ *    faltaban más de 3 días (límite real de ntfy.sh) y que YA entró en
+ *    esa ventana -- para programarle recién ahora el aviso real.
  *
  * Uso: npx tsx subida/chequear_buzon.ts
- * No manda nada por ntfy ni sube ningún artifact -- solo lee/escribe
- * state/uploads.json y decide. El aviso real lo manda avisar_buzon.ts,
- * llamado por el workflow SOLO si este script encontró algo pendiente.
  */
 import {existsSync, readFileSync, writeFileSync, appendFileSync} from 'fs';
 import {resolve} from 'path';
@@ -23,6 +21,7 @@ import {resolve} from 'path';
 const RAIZ = resolve(__dirname, '../..');
 const LOG_PATH = resolve(RAIZ, 'state/uploads.json');
 const DIAS_VENCIMIENTO = 3; // igual al retention-days del artifact
+const MAX_DELAY_NTFY_MS = 3 * 24 * 60 * 60 * 1000; // limite real de ntfy.sh
 
 type EntradaLog = {
   id: string;
@@ -70,23 +69,25 @@ function main(): void {
     }
   }
 
-  // 2) El primer pendiente cuyo horario ya llegó (o nunca tuvo horario,
-  // no debería pasar -- subir_video.ts ya lo maneja aparte).
-  const listo = entradas.find(
-    (e) => e.manual && e.estado === 'pendiente' && !e.avisadoBuzon && e.scheduledFor && new Date(e.scheduledFor).getTime() <= ahora,
-  );
+  // 2) El primer pendiente sin avisar que YA entró en la ventana de 3
+  // días de ntfy.sh (cuando subir_video.ts lo registró, todavía faltaba
+  // demasiado para programarlo).
+  const listo = entradas.find((e) => {
+    if (!e.manual || e.estado !== 'pendiente' || e.avisadoBuzon || !e.scheduledFor) return false;
+    return new Date(e.scheduledFor).getTime() - ahora <= MAX_DELAY_NTFY_MS;
+  });
 
   if (cambios > 0) guardar(entradas);
 
   if (listo) {
-    console.log(`Pendiente listo para avisar: ${listo.id} (programado ${listo.scheduledFor}).`);
+    console.log(`Ahora entra en ventana para programar: ${listo.id} (${listo.scheduledFor}).`);
     escribirOutput('hayPendiente', 'true');
     escribirOutput('id', listo.id);
     escribirOutput('rutaVideo', listo.rutaVideo ?? '');
     escribirOutput('tema', listo.tema ?? '');
     escribirOutput('horario', listo.scheduledFor ?? '');
   } else {
-    console.log('Nada pendiente para avisar en esta corrida.');
+    console.log('Nada para programar en esta corrida.');
     escribirOutput('hayPendiente', 'false');
   }
 }

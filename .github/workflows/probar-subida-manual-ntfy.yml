@@ -36,7 +36,7 @@ jobs:
           path: videos/remotion/v07.mp4
           retention-days: 3
 
-      - name: Mandar aviso con el link para bajar el video
+      - name: Mandar aviso PROGRAMADO para 60s en el futuro (probar entrega programada de ntfy.sh)
         working-directory: fabrica
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
@@ -47,4 +47,6 @@ jobs:
         # workflow: GitHub lo aceptaba pero sin trigger workflow_dispatch
         # reconocido).
         run: |
-          npx tsx subida/enviar_para_subida_manual.ts ../videos/remotion/v07.mp4 "Prueba real: tema del video de ejemplo" "hoy a las 18:00" "Prueba real: este es el aviso con el link al artifact, ya no el archivo pegado a la notificacion. #test"
+          ENTREGAR_EN=$(( $(date +%s) + 60 ))
+          echo "Programando para el timestamp Unix $ENTREGAR_EN ($(date -u -d @$ENTREGAR_EN))"
+          npx tsx subida/enviar_para_subida_manual.ts ../videos/remotion/v07.mp4 "Prueba real: tema del video de ejemplo" "en 60 segundos" "Prueba real de entrega programada -- si esto te llega ~60s despues de que dispare el workflow, funciona. #test" "$ENTREGAR_EN"
