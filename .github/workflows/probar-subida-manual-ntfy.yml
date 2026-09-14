@@ -2,10 +2,10 @@ name: probar-subida-manual-ntfy
 
 # Prueba real de la tercera alternativa al bug de presign de Zernio (ver
 # ESTADO.md 2026-09-14): sube un video real como artifact de este mismo
-# workflow y manda un aviso por ntfy.sh con el link para bajarlo a mano
-# (subida/enviar_para_subida_manual.ts), para subida manual desde la app
-# nativa de TikTok/YouTube -- sin pasar por Zernio para nada. No publica
-# ni programa nada real.
+# workflow y manda un aviso por ntfy.sh con tema, horario y el link para
+# bajarlo a mano (subida/enviar_para_subida_manual.ts), para subida
+# manual desde la app nativa de TikTok/YouTube -- sin pasar por Zernio
+# para nada. No publica ni programa nada real.
 
 permissions:
   contents: read
@@ -37,7 +37,7 @@ jobs:
           path: videos/remotion/v07.mp4
           retention-days: 3
 
-      - name: Mandar aviso con el link para bajar el video
+      - name: Mandar aviso con tema, horario y el link para bajar el video
         working-directory: fabrica
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
@@ -48,4 +48,4 @@ jobs:
         # workflow: GitHub lo aceptaba pero sin trigger workflow_dispatch
         # reconocido).
         run: |
-          npx tsx subida/enviar_para_subida_manual.ts ../videos/remotion/v07.mp4 "Prueba real: este es el aviso con el link al artifact, ya no el archivo pegado a la notificacion. #test"
+          npx tsx subida/enviar_para_subida_manual.ts ../videos/remotion/v07.mp4 "Prueba real: tema del video de ejemplo" "hoy a las 18:00" "Prueba real: este es el aviso con el link al artifact, ya no el archivo pegado a la notificacion. #test"
