@@ -1,5 +1,70 @@
 # Estado vivo del proyecto
 
+## Bloque: publicación pasa a manual vía apps nativas -- se borra Zernio-para-publicar (2026-09-14)
+
+**Pedido explícito del operador**, tras encontrar en vivo que `notificar-box.yml` (el sondeo cada 20 min a
+Zernio para confirmar publicaciones) venía fallando y probablemente había agotado el cupo de Actions: en vez de
+seguir ajustando ese sondeo, investigar si TikTok/YouTube tienen programación nativa. Confirmado real (el
+operador tiene TikTok Studio instalado y probó que la programación funciona desde el celular; YouTube Studio
+también programa nativo desde la app): **las dos plataformas dejan de publicarse vía Zernio y pasan a subirse
+a mano por el operador**, con nuestro sistema encargándose solo de generar y entregar el contenido.
+
+**Se borró (ya no tiene función):**
+- `.github/workflows/notificar-box.yml`, `fabrica/subida/notificar_pendientes.ts`,
+  `fabrica/subida/reintentar_fallidos.ts`, `fabrica/subida/avisar_buzon.ts` -- existían solo para confirmar/
+  reintentar posts de Zernio, que ya no se crean.
+- `.github/workflows/probar-presign-zernio.yml`, `probar-lectura-presign-zernio.yml`,
+  `probar-subida-manual-ntfy.yml` + `fabrica/subida/probar_presign.ts`, `probar_lectura_presign.ts` --
+  diagnóstico de un bug de Zernio que ya no importa (no volvemos a llamar ese endpoint) y prueba de una
+  entrega programada al segundo que tampoco hace falta más.
+- La lógica de "esperar a que entre en ventana de 3 días de ntfy.sh" en `chequear_buzon.ts` (ahora solo marca
+  vencidos) -- la entrega es siempre inmediata, no hay nada que esperar.
+
+**Se reescribió:**
+- `subir_video.ts`/`subir_carrusel.ts`: ya no llaman a Zernio para nada -- arman el paquete completo (archivo +
+  tema + horario SUGERIDO + descripción + hashtags + música) y lo entregan siempre por el Buzón (antes solo
+  pasaba ahí si el video pesaba >4MB).
+- `enviar_para_subida_manual.ts`: generalizado para video Y carrusel, devuelve el link del run (para que el
+  panel lo pueda mostrar), sin la complejidad de entrega programada al segundo (`entregarEnUnix` sacado).
+- `fabrica/subida/publicacion.ts` (`Publicacion`): se sacaron todos los campos que solo existían para el flujo
+  de Zernio (`postId`, `error`, `plataformas`, `respuestaCruda`, `notificado`, `reintentos`, `reintentoDe`,
+  `estadoReintento`) -- si el día de mañana vuelve a hacer falta algo de esto, se agrega de nuevo, no antes.
+
+**Se construyó, nuevo:** `fabrica/subida/generar_panel.ts` -- el generador REAL del panel (ver bloque de abajo).
+
+**Queda vivo, sin tocar:** `fabrica/subida/zernio.ts` (cliente de API general, sus funciones de publicar ya no
+se llaman pero las de lectura -- `obtenerPost`, `listarPostsRecientes`, posible `obtenerAnalytics()` -- podrían
+servir para el módulo de métricas más adelante), `diagnosticar-zernio.yml` y `cancelar-post.yml` (siguen
+teniendo utilidad puntual sobre los posts que Zernio ya tenía programados de antes de este cambio).
+
+## Bloque: generador real del panel (Buzón) -- reemplaza la maqueta (2026-09-14)
+
+**Alcance definido por el operador** ("el panel tendría que ser solamente para la llegada de los videos con el
+link de descarga, descripción, hashtags, etc. y listo"): nada de calendario ni métricas -- eso queda para
+módulos aparte (ver roadmap abajo). El panel es la cola de contenido pendiente de subir a mano.
+
+`fabrica/subida/generar_panel.ts` lee `Publicacion[]` de `state/uploads.json` + `state/carruseles.json`
+(filtra `estado: 'pendiente'|'vencido'`), cruza con el contenido real (`lote_21_publicacion.ts`/
+`lote_42_datos.ts`, sin duplicar texto en el log) y arma `panel/torre-de-control.html`: por cada item, tipo,
+tema, horario sugerido, descripción+hashtags, música, botón de descarga (al run de GitHub Actions) y botón "Ya
+lo subí". Corrida real hoy: 0 items pendientes (nada pasó todavía por el flujo nuevo) -- estado vacío correcto,
+no un error. Se regenera solo al final de `subir-video.yml`/`subir-carrusel.yml`/`chequear-buzon.yml`.
+
+**Pendiente real:** el commit del panel va a la rama de trabajo, no a `main` (Netlify sirve desde `main`) --
+documentado en `panel/LANZAMIENTO.md`, no bloquea seguir desarrollando.
+
+## Roadmap de módulos (definido por el operador 2026-09-14)
+
+1. **Fábrica** (generación de contenido) -- funciona, no se toca.
+2. **Entrega del paquete** (Buzón) -- reconstruido hoy, funciona.
+3. **Panel** (cola de contenido pendiente) -- reconstruido hoy, funciona (generador real, ver arriba).
+4. **Memoria** ("Ya lo subí") -- código listo, activación pendiente de 2 pasos manuales del operador.
+5. **Métricas reales** -- no empezado (YouTube API oficial, scraper de TikTok a videos propios).
+6. **Refinamiento y pensamiento crítico sobre los productos** -- nuevo, no empezado. Pendiente de definir
+   alcance con el operador.
+7. **Mejora de algoritmo y videos con resultados ya llegados** -- nuevo, no empezado. Depende del módulo 5
+   (necesita métricas reales para tener con qué trabajar).
+
 ## Bloque: un solo "formulario oficial" para toda publicación (2026-09-14)
 
 **Pedido explícito del operador**: "la idea es que se junten todos los engranajes y funcione completo el

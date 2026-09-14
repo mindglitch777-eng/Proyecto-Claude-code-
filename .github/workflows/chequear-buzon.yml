@@ -1,16 +1,13 @@
 name: chequear-buzon
 
-# Chequeo UNA VEZ POR DIA (cambiado de cada 15 min, 2026-09-14 -- pedido
-# explicito del operador: "que me avise en el momento exacto, no que
-# revise cada 20 minutos al pedo, es gasto tecnico que no nos conviene").
-# Desde que subir_video.ts programa el aviso directo en ntfy.sh con
-# entrega programada real (header `At`, confirmado real: acepta
-# timestamp Unix, min 10s/max 3 dias), esta corrida YA NO dispara el
-# aviso en el momento -- eso lo hace ntfy.sh solo. Lo unico que le queda:
-# (1) marcar como "vencido" un video avisado hace mas de 3 dias que
-# nunca se confirmo subido, y (2) programar recien ahora el aviso de un
-# pendiente que faltaba demasiado (mas de 3 dias) cuando se registro y
-# que ya entro en esa ventana.
+# Chequeo diario: marca como "vencido" un contenido avisado hace más de
+# 3 días que nunca se confirmó subido (el artifact de GitHub Actions
+# expira a esos 3 días, retention-days). Simplificado 2026-09-14
+# (segunda vez, mismo día): desde que TikTok/YouTube se publican
+# SIEMPRE a mano vía apps nativas, subir_video.ts/subir_carrusel.ts
+# entregan el aviso de inmediato al terminar -- ya no hace falta
+# "esperar a que entre en ventana" para programar nada, así que este
+# chequeo diario solo hace la limpieza de vencidos.
 
 permissions:
   contents: write
@@ -21,9 +18,9 @@ on:
     - cron: "0 9 * * *"
 
 env:
-  # Mismo motivo que notificar-box.yml: el cron de "schedule" siempre
-  # corre contra la rama por defecto (main), pero el codigo y los datos
-  # reales viven en esta rama de trabajo hasta que se mergean.
+  # El cron de "schedule" siempre corre contra la rama por defecto
+  # (main), pero el codigo y los datos reales viven en esta rama de
+  # trabajo hasta que se mergean.
   RAMA_TRABAJO: claude/organize-repo-duplicates-xl042t
 
 jobs:
@@ -45,41 +42,22 @@ jobs:
         working-directory: fabrica
         run: npm ci --no-audit --no-fund
 
-      - name: Chequear vencidos + buscar un pendiente que ya entro en ventana
-        id: chequeo
+      - name: Marcar vencidos
         working-directory: fabrica
         run: npx tsx subida/chequear_buzon.ts
 
-      - name: Subir el video pendiente como artifact
-        if: steps.chequeo.outputs.hayPendiente == 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: video
-          path: ${{ steps.chequeo.outputs.rutaVideo }}
-          retention-days: 3
-
-      - name: Programar el aviso real del buzon (entrega programada de ntfy.sh)
-        if: steps.chequeo.outputs.hayPendiente == 'true'
+      - name: Regenerar panel (panel/torre-de-control.html)
         working-directory: fabrica
-        env:
-          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
-        run: >-
-          npx tsx subida/avisar_buzon.ts
-          "${{ steps.chequeo.outputs.id }}"
-          "${{ steps.chequeo.outputs.tema }}"
-          "${{ steps.chequeo.outputs.horario }}"
+        run: npx tsx subida/generar_panel.ts
 
-      - name: Commitear cambios en state/uploads.json (vencidos + avisadoBuzon)
-        # Mismo riesgo de carrera de git que subir-video.yml/notificar-box.yml
-        # si se solapa con una subida real -- el aviso por ntfy.sh ya salio
-        # igual, no debe tumbar el job.
+      - name: Commitear cambios (state/uploads.json + state/carruseles.json + panel)
         continue-on-error: true
         run: |
           git config user.name  "productor-bot"
           git config user.email "actions@github.com"
-          git add state/uploads.json
+          git add state/uploads.json state/carruseles.json panel/torre-de-control.html
           if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
-          git commit -m "chequear-buzon: vencidos + avisadoBuzon"
+          git commit -m "chequear-buzon: marcar vencidos"
           for i in 1 2 3 4 5 6; do
             git rebase --abort >/dev/null 2>&1 || true
             git pull --rebase origin "$RAMA_TRABAJO" && \
@@ -87,5 +65,5 @@ jobs:
             sleep $((RANDOM % 5 + 2 * i))
           done
           git rebase --abort >/dev/null 2>&1 || true
-          echo "::warning::No se pudo commitear state/uploads.json tras varios intentos (carrera de git) -- el aviso (si salio) ya salio igual, puede repetirse la proxima corrida."
+          echo "::warning::No se pudo commitear tras varios intentos (carrera de git), se reintenta la proxima corrida."
           exit 0

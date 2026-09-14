@@ -1,10 +1,10 @@
 name: subir-video
 
-# Sube UN video del lote21 a TikTok + YouTube via Zernio
-# (fabrica/subida/subir_video.ts). Disparo MANUAL por ahora
-# (workflow_dispatch) a proposito -- primera vez que se ejercita esto
-# de punta a punta con una cuenta real, no se automatiza solo hasta
-# confirmar que un video de prueba aparece bien en las dos plataformas.
+# Entrega UN video del lote21 al operador para que lo suba a mano vía
+# TikTok Studio / YouTube Studio (fabrica/subida/subir_video.ts) --
+# arquitectura 2026-09-14: ya no publica nada vía Zernio, solo arma y
+# manda el aviso con el paquete completo (video + tema + horario
+# sugerido + descripción + hashtags + música).
 
 permissions:
   contents: write
@@ -13,13 +13,10 @@ on:
   workflow_dispatch:
     inputs:
       video:
-        description: "Id del video a subir (ej: v01)"
+        description: "Id del video a entregar (ej: v01)"
         required: true
       scheduledFor:
-        description: "Opcional -- ISO UTC para programar (ej: 2026-09-11T00:15:00Z). Vacio = publica ya."
-        required: false
-      soloTiktok:
-        description: "true = reintentar SOLO TikTok (no duplicar en YouTube si ya publico bien la primera vez)"
+        description: "Opcional -- ISO UTC, horario SUGERIDO (franja 18-23 ART TikTok). Vos programás la hora real en la app."
         required: false
 
 jobs:
@@ -39,42 +36,35 @@ jobs:
         working-directory: fabrica
         run: npm ci --no-audit --no-fund
 
-      - name: Subir ${{ github.event.inputs.video }}
+      - name: Entregar ${{ github.event.inputs.video }}
         id: subir
         working-directory: fabrica
         env:
-          ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
-        run: >-
-          npx tsx subida/subir_video.ts "${{ github.event.inputs.video }}" "${{ github.event.inputs.scheduledFor }}"
-          ${{ github.event.inputs.soloTiktok == 'true' && '--solo-tiktok' || '' }}
+        run: npx tsx subida/subir_video.ts "${{ github.event.inputs.video }}" "${{ github.event.inputs.scheduledFor }}"
 
-      - name: Subir el video como artifact (cayó al buzón de subida manual)
-        # subir_video.ts escribe huboBuzon=true SOLO cuando el archivo
-        # supera el límite real de Zernio y no tenía horario futuro que
-        # esperar -- en ese caso el aviso ya salió, esto solo adjunta el
-        # archivo real a la corrida para que el link de la notificación
-        # funcione.
-        if: steps.subir.outputs.huboBuzon == 'true'
+      - name: Subir el video como artifact (para que el link del aviso funcione)
         uses: actions/upload-artifact@v4
         with:
           name: video
           path: ${{ steps.subir.outputs.rutaVideoBuzon }}
           retention-days: 3
 
-      - name: Commitear log de subida (state/uploads.json)
-        # OJO real: con varios workflows disparados casi a la vez (ej. un
-        # lote programado con scheduledFor), esto puede perder la carrera
-        # de git -- el POST a Zernio del paso de arriba ya salio bien en
-        # ese caso, asi que un fallo aca NO debe tumbar el job entero
-        # (continue-on-error) ni esconder que la subida real funciono.
+      - name: Regenerar panel (panel/torre-de-control.html)
+        working-directory: fabrica
+        run: npx tsx subida/generar_panel.ts
+
+      - name: Commitear log de entrega + panel (state/uploads.json, panel/torre-de-control.html)
+        # OJO real: con varios workflows disparados casi a la vez esto
+        # puede perder la carrera de git -- el aviso por ntfy.sh ya
+        # salio bien en ese caso, un fallo aca no debe tumbar el job.
         continue-on-error: true
         run: |
           git config user.name  "productor-bot"
           git config user.email "actions@github.com"
-          git add state/uploads.json
+          git add state/uploads.json panel/torre-de-control.html
           if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
-          git commit -m "Log de subida: ${{ github.event.inputs.video }}"
+          git commit -m "Log de entrega + panel: ${{ github.event.inputs.video }}"
           for i in 1 2 3 4 5 6; do
             git rebase --abort >/dev/null 2>&1 || true
             git pull --rebase origin "$GITHUB_REF_NAME" && \
@@ -82,5 +72,5 @@ jobs:
             sleep $((RANDOM % 5 + 2 * i))
           done
           git rebase --abort >/dev/null 2>&1 || true
-          echo "::warning::No se pudo commitear state/uploads.json tras varios intentos (carrera de git) -- la subida real a Zernio SI salio bien, revisar/reconstruir el log a mano."
+          echo "::warning::No se pudo commitear state/uploads.json tras varios intentos (carrera de git) -- el aviso SI se mando bien, revisar/reconstruir el log a mano."
           exit 0

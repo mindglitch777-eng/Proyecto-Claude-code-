@@ -1,26 +1,25 @@
 /**
- * CLI: sube un carrusel del lote42 a TikTok via Zernio (foto post, no
- * hay equivalente en YouTube). Uso:
- *   npx tsx subida/subir_carrusel.ts carrusel-01 [scheduledForISO]
+ * CLI: entrega un carrusel del lote42 al operador para que lo suba a
+ * mano vía TikTok Studio (programación nativa, hasta 10+ días) --
+ * arquitectura 2026-09-14, ya no publica vía Zernio. Las imágenes se
+ * suben como artifact de GitHub Actions y el operador arma el post de
+ * fotos él mismo desde la app.
  *
- * Modo borrador (Creator Inbox) por default, mismo criterio ya
- * validado con los videos: TikTok sigue con cupo limitado para posteo
- * directo en apps sin auditar.
+ * Uso: npx tsx subida/subir_carrusel.ts carrusel-01 [scheduledForISO]
  */
-import {existsSync, readdirSync} from 'fs';
+import {existsSync, readdirSync, appendFileSync} from 'fs';
 import {resolve} from 'path';
-import {publicarCarrusel} from './zernio';
+import {enviarAvisoParaSubidaManual} from './enviar_para_subida_manual';
 import {RUTA_CARRUSELES, agregarEntrada} from './publicacion';
 import {CARRUSELES_42} from '../carrusel/lote_42_datos';
 
 const RAIZ = resolve(__dirname, '../..');
-const ACCOUNT_ID_TIKTOK = '6aa1ce18726ebfe037cfddd1';
 
 async function main(): Promise<void> {
   const id = process.argv[2];
-  const scheduledFor = process.argv[3]; // opcional, ISO UTC -- si falta, publica ya
+  const scheduledFor = process.argv[3]; // opcional, ISO UTC -- horario SUGERIDO, el operador programa la hora real en TikTok Studio
   if (!id) {
-    console.error('Uso: npx tsx subida/subir_carrusel.ts <id> [scheduledForISO]  (ej: carrusel-01 2026-09-11T00:15:00Z)');
+    console.error('Uso: npx tsx subida/subir_carrusel.ts <id> [scheduledForISO]  (ej: carrusel-01 2026-09-16T21:00:00Z)');
     process.exit(1);
   }
 
@@ -35,71 +34,34 @@ async function main(): Promise<void> {
   }
   const rutasImagenes = readdirSync(carpetaImagenes)
     .filter((f) => f.endsWith('.png'))
-    .sort()
-    .map((f) => resolve(carpetaImagenes, f));
+    .sort();
   if (rutasImagenes.length !== carrusel.slides.length) {
     throw new Error(
       `${id}: se esperaban ${carrusel.slides.length} slides (segun lote_42_datos.ts) pero se encontraron ${rutasImagenes.length} PNG en ${carpetaImagenes}.`
     );
   }
 
-  // OJO real: en un post de fotos el `content` de nivel superior es el
-  // TITULO del slideshow (TikTok lo capa a 90 caracteres) -- el caption
-  // largo (descripcion + hashtags) va en platformSpecificData.description.
-  if (carrusel.titulo.length > 90) {
-    throw new Error(`${id}: el titulo "${carrusel.titulo}" pesa ${carrusel.titulo.length} caracteres, supera el limite de 90 de TikTok para el titulo del slideshow.`);
-  }
-  const captionLargo = `${carrusel.descripcion}\n\n${carrusel.hashtags.join(' ')}`;
+  const caption = `${carrusel.titulo}\n\n${carrusel.descripcion}\n\n${carrusel.hashtags.join(' ')}`;
+  const captionConMusica = `${caption}\n\n🎵 Música sugerida: ${carrusel.musica}`;
 
-  console.log(`Subiendo ${id} ("${carrusel.titulo}", ${rutasImagenes.length} slides) a TikTok${scheduledFor ? ` (programado para ${scheduledFor})` : ''}...`);
+  const topic = process.env.NTFY_TOPIC;
+  if (!topic) throw new Error('Falta NTFY_TOPIC en el entorno para avisar.');
+  const rutaOutput = process.env.GITHUB_OUTPUT;
+  if (rutaOutput) appendFileSync(rutaOutput, `carpetaImagenesBuzon=${carpetaImagenes}\n`);
 
-  const resultado = await publicarCarrusel({
-    rutasImagenes,
-    contenido: carrusel.titulo,
-    scheduledFor,
-    cuentaTikTok: {
-      accountId: ACCOUNT_ID_TIKTOK,
-      datos: {
-        privacyLevel: 'PUBLIC_TO_EVERYONE',
-        allowComment: true,
-        allowDuet: true,
-        allowStitch: true,
-        contentPreviewConfirmed: true,
-        expressConsentGiven: true,
-        photoCoverIndex: 0,
-        description: captionLargo,
-        draft: true,
-        tiktokSettings: {draft: true},
-      },
-    },
-  });
-
+  const link = await enviarAvisoParaSubidaManual(topic, `${id}.zip`, carrusel.titulo, scheduledFor ?? '(programalo vos en TikTok Studio)', captionConMusica, 'carrusel');
   agregarEntrada(RUTA_CARRUSELES, {
     id,
     fecha: new Date().toISOString(),
-    ok: resultado.ok,
-    postId: resultado.ok ? resultado.postId : undefined,
-    error: resultado.ok ? undefined : resultado.error,
-    plataformas: resultado.plataformas,
+    ok: true,
+    estado: 'pendiente',
+    tema: carrusel.titulo,
     scheduledFor,
-    respuestaCruda: resultado.respuestaCruda,
+    link,
+    avisadoBuzon: true,
+    avisadoBuzonEn: new Date().toISOString(),
   });
-
-  console.log('Respuesta cruda de Zernio:');
-  console.log(JSON.stringify(resultado.respuestaCruda, null, 2));
-
-  if (resultado.plataformas) {
-    console.log('Estado por plataforma:');
-    for (const p of resultado.plataformas) {
-      console.log(`  - ${p.platform}: ${p.status}${p.error ? ` -- ${p.error}` : ''}`);
-    }
-  }
-
-  if (!resultado.ok) {
-    console.error(`FALLO la subida de ${id}: ${resultado.error}`);
-    process.exit(1);
-  }
-  console.log(`OK -- ${id} ${scheduledFor ? 'programado' : 'publicado'}. postId: ${resultado.postId ?? '(no informado)'}`);
+  console.log(`OK -- ${id} entregado al operador (aviso mandado, ${rutasImagenes.length} imágenes como artifact).`);
 }
 
 main().catch((error) => {

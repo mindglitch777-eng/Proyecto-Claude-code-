@@ -1,9 +1,11 @@
 /**
- * Tercera alternativa al bug de presign de Zernio (ver zernio.ts y
- * ESTADO.md 2026-09-14): en vez de pelear con la subida automática de
- * videos pesados (>4MB de /v1/media/upload-direct, presign roto sin
- * arreglo posible de nuestro lado), se entrega el video para que el
- * operador lo suba a mano desde la app nativa de TikTok/YouTube.
+ * Entrega el contenido (video o carrusel) al operador para que lo
+ * suba a mano vía TikTok Studio / YouTube Studio -- arquitectura
+ * 2026-09-14: TikTok y YouTube se publican SIEMPRE a mano desde las
+ * apps nativas (programación nativa: TikTok Studio hasta 10+ días,
+ * YouTube Studio hasta ~1 año), no vía Zernio. Este script solo arma
+ * y manda el paquete completo (archivo + tema + horario sugerido +
+ * descripción + hashtags + música) para que el operador lo cargue.
  *
  * INTENTO 1 (descartado, evidencia real 2026-09-14): mandar el archivo
  * pegado directo a una notificación de ntfy.sh. Falló con HTTP 413
@@ -12,29 +14,16 @@
  * causa real no es el tamaño: las máquinas de GitHub Actions comparten
  * IP entre miles de usuarios del servidor GRATIS de ntfy.sh, y el cupo
  * de ancho de banda "por visitante" de esa IP ya viene gastado por
- * tráfico ajeno -- no es confiable (a veces anda, a veces no, según qué
- * tan usada esté la IP en ese momento).
+ * tráfico ajeno -- no es confiable.
  *
- * SOLUCIÓN REAL (esta): el video se sube como artifact del propio
- * workflow de GitHub Actions (gratis, sin compartir cupo con nadie, ya
- * es infraestructura que usamos para todo lo demás) y ntfy.sh manda
- * SOLO un mensaje de texto con el link a esa corrida -- los adjuntos de
- * GitHub Actions requieren estar logueado en GitHub para bajarlos
- * (confirmado leyendo docs.github.com/rest/actions/artifacts), así que
- * esto no es "publicar contenido públicamente": hace falta la cuenta de
- * GitHub del operador, la misma que ya usa para todo este proyecto.
+ * SOLUCIÓN REAL (esta): el archivo se sube como artifact del propio
+ * workflow de GitHub Actions (gratis, sin compartir cupo con nadie) y
+ * ntfy.sh manda SOLO un mensaje de texto con el link a esa corrida --
+ * los adjuntos de GitHub Actions requieren estar logueado en GitHub
+ * para bajarlos, así que esto no es "publicar contenido públicamente":
+ * hace falta la cuenta de GitHub del operador.
  *
- * ENTREGA PROGRAMADA (2026-09-14, a pedido del operador -- "que me avise
- * en el momento exacto, no que revise cada 20 minutos al pedo, es gasto
- * técnico que no nos conviene"): en vez de un chequeo periódico que
- * pregunta todo el rato "¿ya es la hora?", el aviso se manda UNA sola
- * vez, apenas se detecta el video pesado, con el header `At` de ntfy.sh
- * (confirmado real leyendo docs/publish.md del repo oficial de ntfy:
- * acepta un timestamp Unix, mínimo 10s y máximo 3 días de anticipación)
- * -- ntfy.sh lo guarda y lo entrega solo, justo a esa hora. Cero
- * corridas de GitHub Actions de más.
- *
- * Uso: npx tsx subida/enviar_para_subida_manual.ts <ruta-video> <tema> <horario> <caption> [entregarEnUnix]
+ * Uso: npx tsx subida/enviar_para_subida_manual.ts <ruta-archivo> <tema> <horario> <caption> [video|carrusel]
  * Env: NTFY_TOPIC (existente), GITHUB_SERVER_URL/GITHUB_REPOSITORY/
  *      GITHUB_RUN_ID (los pone GitHub Actions solo, no hace falta setearlos)
  */
@@ -55,46 +44,50 @@ export function construirLinkDelRun(): string {
 
 /**
  * `tema` y `horario` van SEPARADOS del resto del cuerpo, no metidos
- * dentro del caption -- decisión 2026-09-14, a pedido del operador: un
- * aviso que solo dice "tenés un video" sin decir DE QUÉ es ni CUÁNDO
- * corresponde subirlo no genera confianza de que lo que se va a subir
- * es lo correcto en el momento correcto (mismo objetivo que la sección
- * "Buzón" de la Torre de Control, que muestra estos mismos dos datos).
+ * dentro del caption -- un aviso que solo dice "tenés contenido" sin
+ * decir DE QUÉ es ni CUÁNDO conviene subirlo no genera confianza de
+ * que lo que se va a subir es lo correcto en el momento correcto.
+ * `horario` es SUGERIDO (franja 18-23 ART para TikTok, ver CLAUDE.md)
+ * -- la hora real la fija el operador al programar en la app nativa.
  */
 export async function enviarAvisoParaSubidaManual(
   topic: string,
-  nombreVideo: string,
+  nombreArchivo: string,
   tema: string,
   horario: string,
   caption: string,
-  entregarEnUnix?: number
-): Promise<void> {
+  tipoContenido: 'video' | 'carrusel' = 'video'
+): Promise<string> {
   const link = construirLinkDelRun();
+  const instruccion =
+    tipoContenido === 'carrusel'
+      ? 'Bajá las imágenes del carrusel acá (necesitás estar logueado en GitHub con tu cuenta), en orden, y armá el post desde TikTok Studio:'
+      : 'Bajá el video acá (necesitás estar logueado en GitHub con tu cuenta) y programalo desde TikTok Studio / YouTube Studio:';
   const cuerpo =
     `Tema: ${tema}\n` +
-    `Subilo: ${horario}\n\n` +
+    `Horario sugerido: ${horario}\n\n` +
     `${caption}\n\n` +
-    `Bajá el video acá (necesitás estar logueado en GitHub con tu cuenta): ${link}\n` +
-    `Buscá el archivo adjunto ("video") al final de esa página, bajalo y compartilo directo a TikTok/YouTube.`;
+    `${instruccion} ${link}\n` +
+    `Buscá el archivo adjunto ("${tipoContenido}") al final de esa página.`;
   const headers: Record<string, string> = {
-    Title: `Video nuevo -- subilo a mano (${nombreVideo})`,
+    Title: `${tipoContenido === 'carrusel' ? 'Carrusel' : 'Video'} listo -- subilo a mano (${nombreArchivo})`,
     Priority: 'high',
-    Tags: 'movie_camera',
+    Tags: tipoContenido === 'carrusel' ? 'frame_with_picture' : 'movie_camera',
     Markdown: 'yes',
   };
-  if (entregarEnUnix) headers.At = String(entregarEnUnix);
   const resp = await fetch(`https://ntfy.sh/${topic}`, {method: 'POST', headers, body: cuerpo});
   if (!resp.ok) throw new Error(`ntfy.sh respondió HTTP ${resp.status}: ${await resp.text()}`);
+  return link;
 }
 
 async function main(): Promise<void> {
-  const rutaVideo = process.argv[2];
+  const rutaArchivo = process.argv[2];
   const tema = process.argv[3] ?? '(sin tema de prueba)';
   const horario = process.argv[4] ?? '(sin horario de prueba)';
   const caption = process.argv[5] ?? '(sin caption de prueba)';
-  const entregarEnUnix = process.argv[6] ? Number(process.argv[6]) : undefined;
-  if (!rutaVideo) {
-    console.error('Uso: npx tsx subida/enviar_para_subida_manual.ts <ruta-video> <tema> <horario> <caption> [entregarEnUnix]');
+  const tipoContenido = (process.argv[6] as 'video' | 'carrusel') ?? 'video';
+  if (!rutaArchivo) {
+    console.error('Uso: npx tsx subida/enviar_para_subida_manual.ts <ruta-archivo> <tema> <horario> <caption> [video|carrusel]');
     process.exit(1);
   }
   const topic = process.env.NTFY_TOPIC;
@@ -102,14 +95,10 @@ async function main(): Promise<void> {
     console.error('Falta NTFY_TOPIC en el entorno.');
     process.exit(1);
   }
-  const nombreVideo = basename(rutaVideo);
-  console.log(
-    entregarEnUnix
-      ? `Programando el aviso para entregarse a las ${new Date(entregarEnUnix * 1000).toISOString()}...`
-      : 'Mandando aviso ya, con tema, horario y el link al artifact de este run...',
-  );
-  await enviarAvisoParaSubidaManual(topic, nombreVideo, tema, horario, caption, entregarEnUnix);
-  console.log('Listo -- el aviso quedó mandado (ntfy.sh se encarga de entregarlo en el momento justo si se programó).');
+  const nombreArchivo = basename(rutaArchivo);
+  console.log('Mandando aviso, con tema, horario sugerido y el link al artifact de este run...');
+  await enviarAvisoParaSubidaManual(topic, nombreArchivo, tema, horario, caption, tipoContenido);
+  console.log('Listo -- el aviso quedó mandado.');
 }
 
 main().catch((error) => {

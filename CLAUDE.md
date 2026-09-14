@@ -27,25 +27,37 @@ Nunca paralizarse ante un bloqueo. Si algo falla o parece imposible:
    vista la Regla de oro (nunca gastar, publicar ni contactar terceros
    sin confirmación explícita).
 
+## Arquitectura de publicación (2026-09-14, reemplaza toda automatización previa)
+TikTok y YouTube se publican SIEMPRE a mano por el operador, vía las apps nativas de
+cada plataforma (TikTok Studio, YouTube Studio) -- programación propia de cada app
+(TikTok hasta 10+ días, YouTube hasta ~1 año), confirmado real por el operador (tiene
+TikTok Studio instalado y probó que la programación funciona desde el celular). Zernio
+DEJÓ de usarse para publicar -- nuestro sistema solo genera el contenido y se lo
+entrega al operador (archivo + tema + horario sugerido + descripción + hashtags +
+música) vía el Buzón (artifact de GitHub Actions + aviso por ntfy.sh). Motivo del
+cambio: Zernio tenía un bug de presign sin arreglo posible de nuestro lado, límites de
+tamaño, rate limits de TikTok, y exigía sondeo periódico (ver regla de abajo) solo para
+confirmar que un post llegó a destino -- la programación nativa no necesita nada de eso.
+
 ## Reglas rígidas de publicación (información fija, no reinterpretar)
 Confirmadas por el operador el 2026-09-11 y reconfirmadas el 2026-09-14 ("guarda eso
 para siempre como información rígida y recta") — no son sugerencias, son datos de
 negocio fijos:
-- **TikTok**: franja "viral" 18:00 a 23:00 ART (UTC-3) corrida, SIN hueco adentro.
-  Fuera de esa franja no se programa ni se reintenta un post nuevo de TikTok.
+- **TikTok**: franja "viral" 18:00 a 23:00 ART (UTC-3) corrida, SIN hueco adentro. Es
+  el horario SUGERIDO que se muestra en el Buzón/panel -- el operador elige la hora
+  real al programar en TikTok Studio, no hay automatización que la fuerce.
 - **YouTube**: sin restricción horaria — publica bien a cualquier hora.
 - **Nunca sondear en bucle corto ni "todo el día" sin necesidad** ("cada 15/20 minutos
-  al pedo" y "eso tiene que morir" — cita textual del operador, dicha primero sobre el
-  buzón y reiterada el 2026-09-14 sobre `notificar-box.yml`, que se nos había pasado
-  bajar la primera vez). No alcanza con espaciarlo (ej: pasar de 20 min a 1 hora
-  corriendo igual las 24hs) si el chequeo solo puede encontrar algo real durante una
-  ventana conocida (ej: la franja 18-23 ART de arriba) — el cron tiene que acotarse a
-  esa ventana + margen, no solo bajar la frecuencia. Antes de aceptar sondeo periódico
-  como la única opción, investigar si el servicio externo ofrece webhooks/callbacks
-  (postura resolutiva) — recién ahí, si de verdad no hay alternativa, el sondeo queda
-  como último recurso, lo más acotado posible. Y si una regla de este tipo ya se aplicó
-  una vez a un workflow, se audita que valga para TODOS los workflows parecidos, no
-  solo el que motivó el pedido.
+  al pedo" y "eso tiene que morir" — cita textual del operador). Ante cualquier
+  necesidad de chequeo periódico futura: primero investigar si el servicio externo
+  ofrece webhooks/callbacks (postura resolutiva); si de verdad no hay alternativa,
+  acotar el cron a la ventana real donde puede pasar algo, nunca "24hs por las dudas".
+  Y si esto ya se corrigió una vez en un workflow, auditar que valga para todos los
+  workflows parecidos, no solo el que motivó el pedido. Precedente real 2026-09-14: el
+  sondeo de `notificar-box.yml` (cada 20 min, confirmaba publicaciones de Zernio) se
+  intentó primero espaciar, y terminó borrado del todo al mover la publicación a
+  programación nativa -- la solución real casi siempre es sacar la necesidad de
+  sondear, no ajustarle la frecuencia.
 
 ## Prioridad actual: La Nueva Fábrica Audiovisual (`fabrica/`)
 "El Corte" (producto de Hotmart de la Fase 1 original, publicado el

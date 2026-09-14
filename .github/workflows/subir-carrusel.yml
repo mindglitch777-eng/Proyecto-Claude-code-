@@ -1,10 +1,10 @@
 name: subir-carrusel
 
-# Sube UN carrusel del lote42 a TikTok via Zernio
-# (fabrica/subida/subir_carrusel.ts). Disparo MANUAL (workflow_dispatch)
-# -- primera vez que se ejercita el posteo de fotos/carruseles, mismo
-# criterio que subir-video.yml: no se automatiza solo hasta confirmar
-# que aparece bien en la cuenta real.
+# Entrega UN carrusel del lote42 al operador para que lo suba a mano
+# vía TikTok Studio (fabrica/subida/subir_carrusel.ts) -- arquitectura
+# 2026-09-14: ya no publica nada vía Zernio, solo arma y manda el
+# aviso con el paquete completo (imágenes + tema + horario sugerido +
+# descripción + hashtags + música).
 
 permissions:
   contents: write
@@ -13,10 +13,10 @@ on:
   workflow_dispatch:
     inputs:
       carrusel:
-        description: "Id del carrusel a subir (ej: carrusel-01)"
+        description: "Id del carrusel a entregar (ej: carrusel-01)"
         required: true
       scheduledFor:
-        description: "Opcional -- ISO UTC para programar (ej: 2026-09-11T00:15:00Z). Vacio = publica ya."
+        description: "Opcional -- ISO UTC, horario SUGERIDO (franja 18-23 ART). Vos programás la hora real en TikTok Studio."
         required: false
 
 jobs:
@@ -36,25 +36,32 @@ jobs:
         working-directory: fabrica
         run: npm ci --no-audit --no-fund
 
-      - name: Subir ${{ github.event.inputs.carrusel }}
+      - name: Entregar ${{ github.event.inputs.carrusel }}
+        id: subir
         working-directory: fabrica
         env:
-          ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: npx tsx subida/subir_carrusel.ts "${{ github.event.inputs.carrusel }}" "${{ github.event.inputs.scheduledFor }}"
 
-      - name: Commitear log de subida (state/carruseles.json)
-        # OJO real: con varios workflows disparados casi a la vez (ej. un
-        # lote programado con scheduledFor), esto puede perder la carrera
-        # de git -- el POST a Zernio del paso de arriba ya salio bien en
-        # ese caso, asi que un fallo aca NO debe tumbar el job entero
-        # (continue-on-error) ni esconder que la subida real funciono.
+      - name: Subir las imágenes como artifact (para que el link del aviso funcione)
+        uses: actions/upload-artifact@v4
+        with:
+          name: carrusel
+          path: ${{ steps.subir.outputs.carpetaImagenesBuzon }}
+          retention-days: 3
+
+      - name: Regenerar panel (panel/torre-de-control.html)
+        working-directory: fabrica
+        run: npx tsx subida/generar_panel.ts
+
+      - name: Commitear log de entrega + panel (state/carruseles.json, panel/torre-de-control.html)
         continue-on-error: true
         run: |
           git config user.name  "productor-bot"
           git config user.email "actions@github.com"
-          git add state/carruseles.json
+          git add state/carruseles.json panel/torre-de-control.html
           if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
-          git commit -m "Log de subida: ${{ github.event.inputs.carrusel }}"
+          git commit -m "Log de entrega + panel: ${{ github.event.inputs.carrusel }}"
           for i in 1 2 3 4 5 6; do
             git rebase --abort >/dev/null 2>&1 || true
             git pull --rebase origin "$GITHUB_REF_NAME" && \
@@ -62,5 +69,5 @@ jobs:
             sleep $((RANDOM % 5 + 2 * i))
           done
           git rebase --abort >/dev/null 2>&1 || true
-          echo "::warning::No se pudo commitear state/carruseles.json tras varios intentos (carrera de git) -- la subida real a Zernio SI salio bien, revisar/reconstruir el log a mano."
+          echo "::warning::No se pudo commitear state/carruseles.json tras varios intentos (carrera de git) -- el aviso SI se mando bien, revisar/reconstruir el log a mano."
           exit 0
