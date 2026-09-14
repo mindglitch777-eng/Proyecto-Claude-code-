@@ -1,5 +1,30 @@
 # Estado vivo del proyecto
 
+## Bloque: inventario real de artifacts antes de borrar nada (2026-09-14)
+
+**Pedido explícito del operador**: ante el bloqueo repetido "Artifact storage quota has been hit" al probar
+el buzón/ntfy, "revisa que verdaderamente hay q borrar no todo por las dudas" -- no autorizó una limpieza a
+ciegas, pidió evidencia primero.
+
+**Hecho, sin borrar nada:** `fabrica/subida/listar_artifacts.ts` (solo lectura, usa el `GITHUB_TOKEN`
+automático de Actions) + `.github/workflows/listar-artifacts.yml` (registrado también en `main` para poder
+dispararlo por API), corrido real: run
+[34838628293](https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34838628293).
+
+**Resultado real (contradice la hipótesis de "hay que limpiar basura de pruebas"):**
+- Histórico total: 123 artifacts, 8440.8MB -- la gran mayoría ya expiraron solos y no cuentan para el cupo.
+- **Vivos ahora mismo (lo único que cuenta para el cupo): 27 artifacts, 49.9MB.**
+- Los 27 vivos son TODOS audio real (`audio-caso-XX`, `audio-rebecca-beach`, `audio-taylor-posada`) de
+  las corridas de voz del 2026-09-02 (documentales de El Corte) -- contenido real de trabajo, no basura de
+  prueba -- y expiran solos el 2026-12-01.
+- No hay ningún artifact de "video" (los de las pruebas de buzón/ntfy) todavía vivo -- ya expiraron.
+
+**Conclusión honesta:** 49.9MB no es un cupo lleno bajo ningún plan real de GitHub (el mínimo gratuito son
+500MB). Borrar estos 27 artifacts ni siquiera destrabaría nada -- y encima son contenido real, no descartable.
+El bloqueo real es casi seguro el "usage recalculado cada 6-12hs" que el propio error menciona (desfasaje
+entre lo que ya expiró/se liberó y lo que el contador de cupo todavía refleja), no acumulación de basura en
+este repo. Postura: no se borra nada; se reintenta la prueba de ntfy más tarde, cuando el cupo se recalculó.
+
 ## Bloque: la "memoria" de la Torre de Control -- botón "Ya lo subí" vía Netlify Function (2026-09-14)
 
 **Pedido explícito**: cómo se entera el sistema de que un video del buzón (subida manual) ya se subió, si ese
