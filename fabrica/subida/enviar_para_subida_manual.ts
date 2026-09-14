@@ -24,7 +24,7 @@
  * esto no es "publicar contenido públicamente": hace falta la cuenta de
  * GitHub del operador, la misma que ya usa para todo este proyecto.
  *
- * Uso: npx tsx subida/enviar_para_subida_manual.ts <ruta-video> <caption>
+ * Uso: npx tsx subida/enviar_para_subida_manual.ts <ruta-video> <tema> <horario> <caption>
  * Env: NTFY_TOPIC (existente), GITHUB_SERVER_URL/GITHUB_REPOSITORY/
  *      GITHUB_RUN_ID (los pone GitHub Actions solo, no hace falta setearlos)
  */
@@ -43,9 +43,25 @@ export function construirLinkDelRun(): string {
   return `${servidor}/${repo}/actions/runs/${runId}`;
 }
 
-export async function enviarAvisoParaSubidaManual(topic: string, nombreVideo: string, caption: string): Promise<void> {
+/**
+ * `tema` y `horario` van SEPARADOS del resto del cuerpo, no metidos
+ * dentro del caption -- decisión 2026-09-14, a pedido del operador: un
+ * aviso que solo dice "tenés un video" sin decir DE QUÉ es ni CUÁNDO
+ * corresponde subirlo no genera confianza de que lo que se va a subir
+ * es lo correcto en el momento correcto (mismo objetivo que la sección
+ * "Buzón" de la Torre de Control, que muestra estos mismos dos datos).
+ */
+export async function enviarAvisoParaSubidaManual(
+  topic: string,
+  nombreVideo: string,
+  tema: string,
+  horario: string,
+  caption: string
+): Promise<void> {
   const link = construirLinkDelRun();
   const cuerpo =
+    `Tema: ${tema}\n` +
+    `Subilo: ${horario}\n\n` +
     `${caption}\n\n` +
     `Bajá el video acá (necesitás estar logueado en GitHub con tu cuenta): ${link}\n` +
     `Buscá el archivo adjunto ("video") al final de esa página, bajalo y compartilo directo a TikTok/YouTube.`;
@@ -64,9 +80,11 @@ export async function enviarAvisoParaSubidaManual(topic: string, nombreVideo: st
 
 async function main(): Promise<void> {
   const rutaVideo = process.argv[2];
-  const caption = process.argv[3] ?? '(sin caption de prueba)';
+  const tema = process.argv[3] ?? '(sin tema de prueba)';
+  const horario = process.argv[4] ?? '(sin horario de prueba)';
+  const caption = process.argv[5] ?? '(sin caption de prueba)';
   if (!rutaVideo) {
-    console.error('Uso: npx tsx subida/enviar_para_subida_manual.ts <ruta-video> <caption>');
+    console.error('Uso: npx tsx subida/enviar_para_subida_manual.ts <ruta-video> <tema> <horario> <caption>');
     process.exit(1);
   }
   const topic = process.env.NTFY_TOPIC;
@@ -75,9 +93,9 @@ async function main(): Promise<void> {
     process.exit(1);
   }
   const nombreVideo = basename(rutaVideo);
-  console.log('Mandando aviso con el link al artifact de este run...');
-  await enviarAvisoParaSubidaManual(topic, nombreVideo, caption);
-  console.log('Listo -- debería haber llegado 1 notificación con el link para bajar el video.');
+  console.log('Mandando aviso con tema, horario y el link al artifact de este run...');
+  await enviarAvisoParaSubidaManual(topic, nombreVideo, tema, horario, caption);
+  console.log('Listo -- debería haber llegado 1 notificación con el tema, el horario y el link para bajar el video.');
 }
 
 main().catch((error) => {
