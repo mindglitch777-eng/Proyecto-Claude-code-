@@ -36,27 +36,28 @@ function esRateLimitTikTok(msg: unknown): boolean {
   return typeof msg === 'string' && /too many pending posts/i.test(msg);
 }
 
-/** Franja "viral" confirmada por el operador (2026-09-11): 18hs, y de
- *  20 a 23hs (ART, UTC-3). Si `desde` ya cae en la franja, devuelve
- *  `desde` tal cual (publicar ya); si no, el proximo arranque de
- *  franja (18:00 o 20:00 ART) en UTC. */
+/** Franja "viral" -- regla RÍGIDA confirmada por el operador (2026-09-11,
+ *  reconfirmada 2026-09-14): 18:00 a 23:00 ART corrido (UTC-3), sin
+ *  hueco adentro -- para TikTok. YouTube no tiene restricción horaria,
+ *  publica bien a cualquier hora (ver CLAUDE.md). Si `desde` ya cae en
+ *  la franja, devuelve `desde` tal cual (publicar ya); si no, el
+ *  próximo arranque de franja (18:00 ART) en UTC. */
 export function proximaFranjaBuena(desde: Date): Date {
   const horaArt = (desde.getUTCHours() - 3 + 24) % 24;
-  if (horaArt === 18 || (horaArt >= 20 && horaArt < 23)) return new Date(desde.getTime());
+  if (horaArt >= 18 && horaArt < 23) return new Date(desde.getTime());
 
-  let mejor: Date | null = null;
+  // Un solo candidato posible por día (18:00 ART) -- el de hoy si todavía
+  // no pasó, si no el de mañana (los candidatos ya vienen en orden
+  // cronológico, así que el primero que sea futuro es el más próximo).
   for (let dias = 0; dias < 2; dias++) {
-    for (const horaArtObjetivo of [18, 20]) {
-      const candidato = new Date(desde.getTime());
-      candidato.setUTCDate(desde.getUTCDate() + dias);
-      candidato.setUTCHours(horaArtObjetivo + 3, 0, 0, 0);
-      if (candidato.getTime() > desde.getTime() && (!mejor || candidato.getTime() < mejor.getTime())) {
-        mejor = candidato;
-      }
-    }
-    if (mejor) break;
+    const candidato = new Date(desde.getTime());
+    candidato.setUTCDate(desde.getUTCDate() + dias);
+    candidato.setUTCHours(18 + 3, 0, 0, 0);
+    if (candidato.getTime() > desde.getTime()) return candidato;
   }
-  return mejor as Date;
+  // Inalcanzable en la práctica (mañana 18:00 ART siempre es futuro),
+  // pero TypeScript necesita un retorno exhaustivo.
+  throw new Error('No se encontró franja buena en las próximas 48hs -- esto no debería pasar nunca.');
 }
 
 async function avisar(topic: string, titulo: string, mensaje: string, prioridad: string): Promise<void> {

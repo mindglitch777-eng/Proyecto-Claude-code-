@@ -27,6 +27,21 @@ Nunca paralizarse ante un bloqueo. Si algo falla o parece imposible:
    vista la Regla de oro (nunca gastar, publicar ni contactar terceros
    sin confirmación explícita).
 
+## Reglas rígidas de publicación (información fija, no reinterpretar)
+Confirmadas por el operador el 2026-09-11 y reconfirmadas el 2026-09-14 ("guarda eso
+para siempre como información rígida y recta") — no son sugerencias, son datos de
+negocio fijos:
+- **TikTok**: franja "viral" 18:00 a 23:00 ART (UTC-3) corrida, SIN hueco adentro.
+  Fuera de esa franja no se programa ni se reintenta un post nuevo de TikTok.
+- **YouTube**: sin restricción horaria — publica bien a cualquier hora.
+- **Nunca sondear en bucle corto** ("cada 15/20 minutos al pedo" — cita textual del
+  operador, dicha primero sobre el buzón y reiterada el 2026-09-14 sobre
+  `notificar-box.yml`, que se nos había pasado bajar la primera vez). Cualquier chequeo
+  periódico nuevo arranca por default en la cadencia más baja que cumpla su propósito
+  (una vez por hora o menos), nunca en minutos — y si una regla de este tipo ya se
+  aplicó una vez a un workflow, se audita que valga para TODOS los workflows
+  parecidos, no solo el que motivó el pedido.
+
 ## Prioridad actual: La Nueva Fábrica Audiovisual (`fabrica/`)
 "El Corte" (producto de Hotmart de la Fase 1 original, publicado el
 20/08) queda **archivado por decisión explícita del operador (03/09):

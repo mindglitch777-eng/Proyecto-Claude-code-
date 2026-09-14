@@ -12,6 +12,15 @@ name: notificar-box
 # porque nadie los reintento. No publica contenido nuevo que no haya
 # sido ya programado antes por el operador; solo termina de entregar lo
 # que ya estaba aprobado y quedo trabado por un error de plataforma.
+#
+# Cron bajado de cada 20 min a una vez por hora (2026-09-14, pedido
+# explicito reiterado del operador: nada de sondeo frecuente "al pedo"
+# -- misma regla ya aplicada a chequear-buzon.yml). 72 corridas/dia a
+# ~3 min cada una eran, muy probablemente, la causa real de haber
+# agotado hoy el cupo de minutos de GitHub Actions de la cuenta
+# (bloqueo repo-wide confirmado, ver ESTADO.md). Una vez por hora sigue
+# siendo tiempo razonable para una confirmacion/reintento, sin gastar
+# de mas.
 
 permissions:
   contents: write
@@ -19,7 +28,7 @@ permissions:
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: "*/20 * * * *"
+    - cron: "0 * * * *"
 
 env:
   # El cron de "schedule" siempre lee este archivo y corre contra la
