@@ -22,25 +22,27 @@ preguntarme a mí el estado real.
 - [ ] El paso que regenera `panel/torre-de-control.html` con datos reales
       desde `state/uploads.json` + `state/carruseles.json` + métricas —
       hoy la página es estática, con datos de ejemplo escritos a mano.
-- [ ] Chequeo periódico que dispare el aviso del buzón en el momento
-      preciso (comparando `scheduledFor` contra la hora actual), no antes
-      ni después.
-- [ ] Marcar como "vencido" (no silenciosamente perdido) un video del
-      buzón cuyos 3 días de retención del artifact pasaron sin que se
-      haya tocado "Ya lo subí".
 - [ ] Fetch real de métricas: confirmar si el plan gratuito de Zernio
       incluye `obtenerAnalytics()` (nunca probado), conectar la API
       oficial de YouTube, adaptar el scraper de TikTok a videos propios.
 - [ ] Conteo real de videos vs. carruseles subidos + comparación semana
-      contra semana — depende de que los dos puntos de arriba ya estén
+      contra semana — depende de que el punto de arriba ya esté
       guardando datos reales.
+- [ ] Probar de punta a punta el chequeo periódico (`chequear-buzon.yml`)
+      con un video real programado a futuro, no solo revisado por código.
 
-## Qué SÍ está construido y probado hoy
+## Qué SÍ está construido hoy (código real, commiteado)
 
 - Buzón de subida manual (artifact de GitHub Actions + aviso por ntfy
   con tema, horario y link) — probado real, funciona.
 - Botón "Ya lo subí" → Netlify Function → guarda en `state/uploads.json`
   en `main` — código escrito y commiteado, pendiente solo de la
   configuración manual del operador de arriba para activarse de verdad.
+- Notificación en el momento preciso: `subir_video.ts` cae al buzón solo
+  cuando el video pesa de más; `chequear-buzon.yml` (cron cada 15 min)
+  dispara el aviso justo cuando llega el horario programado, ni antes
+  ni después.
+- Limpieza de vencidos: un video avisado hace más de 3 días que nunca se
+  confirmó subido se marca `vencido`, no desaparece en silencio.
 - Diseño visual completo (paleta, calendario semanal con múltiples
   publicaciones por día, previsualizaciones) — aprobado por el operador.
