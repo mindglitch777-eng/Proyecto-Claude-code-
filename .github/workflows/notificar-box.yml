@@ -13,14 +13,27 @@ name: notificar-box
 # sido ya programado antes por el operador; solo termina de entregar lo
 # que ya estaba aprobado y quedo trabado por un error de plataforma.
 #
-# Cron bajado de cada 20 min a una vez por hora (2026-09-14, pedido
-# explicito reiterado del operador: nada de sondeo frecuente "al pedo"
-# -- misma regla ya aplicada a chequear-buzon.yml). 72 corridas/dia a
-# ~3 min cada una eran, muy probablemente, la causa real de haber
-# agotado hoy el cupo de minutos de GitHub Actions de la cuenta
-# (bloqueo repo-wide confirmado, ver ESTADO.md). Una vez por hora sigue
-# siendo tiempo razonable para una confirmacion/reintento, sin gastar
-# de mas.
+# Cron recortado de cada 20 min (72 corridas/dia, 24hs) a solo la
+# franja horaria real donde puede pasar algo -- 2026-09-14, pedido
+# explicito reiterado del operador de MATAR el sondeo "al pedo" cada
+# rato, no solo espaciarlo. 72 corridas/dia a ~3 min cada una eran, muy
+# probablemente, la causa real de haber agotado hoy el cupo de minutos
+# de GitHub Actions de la cuenta (bloqueo repo-wide confirmado, ver
+# ESTADO.md). No se elimina del todo porque el "toque de confirmar" que
+# el operador necesita hacer en el Creator Inbox de TikTok depende de
+# este aviso -- sin él, un video en modo borrador queda esperando para
+# siempre sin que nadie se entere que hay que confirmarlo. Por eso
+# corre 1 vez por hora, pero SOLO 17:00-00:00 ART (20:00-03:00 UTC,
+# ver CLAUDE.md "franja 18-23 ART" + 1h de margen antes/después) -- las
+# 8 corridas/dia que realmente pueden encontrar algo, no las 24.
+#
+# Pendiente real (bloqueado, no por falta de intento): investigar si
+# Zernio soporta webhooks (zernio.ts referencia haber leido
+# "rules/webhooks.md" de su repo) para eliminar el sondeo del todo --
+# no se pudo confirmar hoy porque el egress de red desde esta sesión de
+# Claude Code está bloqueado hacia zernio.com (solo se puede probar
+# desde dentro de un run de Actions, que hoy también está frenado por
+# el cupo). Próximo paso en cuanto el cupo se recupere.
 
 permissions:
   contents: write
@@ -28,7 +41,7 @@ permissions:
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: "0 * * * *"
+    - cron: "0 20-23,0-3 * * *"
 
 env:
   # El cron de "schedule" siempre lee este archivo y corre contra la

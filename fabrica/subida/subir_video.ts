@@ -14,6 +14,7 @@ import {enviarAvisoParaSubidaManual} from './enviar_para_subida_manual';
 import {RUTA_UPLOADS, agregarEntrada} from './publicacion';
 import {VIDEOS} from '../ejemplos/lote_21_datos';
 import {PUBLICACION_LOTE21} from '../ejemplos/lote_21_publicacion';
+import {MUSICA_CATEGORIA} from '../carrusel/lote_42_datos';
 
 const RAIZ = resolve(__dirname, '../..');
 
@@ -115,7 +116,12 @@ async function main(): Promise<void> {
       const rutaOutput = process.env.GITHUB_OUTPUT;
       if (rutaOutput) appendFileSync(rutaOutput, `huboBuzon=true\nrutaVideoBuzon=${rutaVideo}\n`);
       const entregarEnUnix = scheduledFor && msHastaHorario > 10_000 ? Math.floor(new Date(scheduledFor).getTime() / 1000) : undefined;
-      await enviarAvisoParaSubidaManual(topic, `${id}.mp4`, video.titulo, scheduledFor ?? 'ahora', caption, entregarEnUnix);
+      // Música sugerida solo va en el AVISO del buzón (para que el
+      // operador la elija al subir a mano desde la app nativa) -- nunca
+      // en `caption`, que es el texto real que se publica en el post.
+      const musica = MUSICA_CATEGORIA[publicacion.categoria];
+      const captionConMusica = `${caption}\n\n🎵 Música sugerida: ${musica}`;
+      await enviarAvisoParaSubidaManual(topic, `${id}.mp4`, video.titulo, scheduledFor ?? 'ahora', captionConMusica, entregarEnUnix);
       agregarEntrada(RUTA_UPLOADS, {id, fecha: new Date().toISOString(), ok: true, manual: true, estado: 'pendiente', tema: video.titulo, scheduledFor, rutaVideo, avisadoBuzon: true});
       console.log(
         entregarEnUnix

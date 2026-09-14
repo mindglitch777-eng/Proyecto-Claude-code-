@@ -34,13 +34,18 @@ negocio fijos:
 - **TikTok**: franja "viral" 18:00 a 23:00 ART (UTC-3) corrida, SIN hueco adentro.
   Fuera de esa franja no se programa ni se reintenta un post nuevo de TikTok.
 - **YouTube**: sin restricción horaria — publica bien a cualquier hora.
-- **Nunca sondear en bucle corto** ("cada 15/20 minutos al pedo" — cita textual del
-  operador, dicha primero sobre el buzón y reiterada el 2026-09-14 sobre
-  `notificar-box.yml`, que se nos había pasado bajar la primera vez). Cualquier chequeo
-  periódico nuevo arranca por default en la cadencia más baja que cumpla su propósito
-  (una vez por hora o menos), nunca en minutos — y si una regla de este tipo ya se
-  aplicó una vez a un workflow, se audita que valga para TODOS los workflows
-  parecidos, no solo el que motivó el pedido.
+- **Nunca sondear en bucle corto ni "todo el día" sin necesidad** ("cada 15/20 minutos
+  al pedo" y "eso tiene que morir" — cita textual del operador, dicha primero sobre el
+  buzón y reiterada el 2026-09-14 sobre `notificar-box.yml`, que se nos había pasado
+  bajar la primera vez). No alcanza con espaciarlo (ej: pasar de 20 min a 1 hora
+  corriendo igual las 24hs) si el chequeo solo puede encontrar algo real durante una
+  ventana conocida (ej: la franja 18-23 ART de arriba) — el cron tiene que acotarse a
+  esa ventana + margen, no solo bajar la frecuencia. Antes de aceptar sondeo periódico
+  como la única opción, investigar si el servicio externo ofrece webhooks/callbacks
+  (postura resolutiva) — recién ahí, si de verdad no hay alternativa, el sondeo queda
+  como último recurso, lo más acotado posible. Y si una regla de este tipo ya se aplicó
+  una vez a un workflow, se audita que valga para TODOS los workflows parecidos, no
+  solo el que motivó el pedido.
 
 ## Prioridad actual: La Nueva Fábrica Audiovisual (`fabrica/`)
 "El Corte" (producto de Hotmart de la Fase 1 original, publicado el
