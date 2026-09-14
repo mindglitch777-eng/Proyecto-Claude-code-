@@ -38,17 +38,36 @@
  *      Busqueda exhaustiva en los 24 archivos de rules/ del repo oficial
  *      de Zernio (`git clone` de zernio-dev/zernio-api) sin encontrar
  *      ningun endpoint de "finalize"/"confirm upload" ni una forma
- *      documentada de resolver esto. subirArchivo() de aca abajo queda
+ *      documentada de resolver esto.
+ *      e) CERRADO en 2026-09-14 (subida/probar_lectura_presign.ts,
+ *         GitHub Actions run 34801661693): se probo si el objeto subido
+ *         por el PUT se puede LEER de vuelta -- ninguna de las dos URLs
+ *         posibles funciona. La URL sin firma da HTTP 400
+ *         "InvalidArgument: Authorization" (el objeto NO es publico).
+ *         La uploadUrl completa (con la firma que uso el PUT) da HTTP
+ *         403 "SignatureDoesNotMatch" al usarla con GET -- una URL
+ *         presignada de S3/R2 esta firmada para UN metodo HTTP
+ *         especifico, no sirve para otro. Conclusion dura, no otra
+ *         hipotesis mas: Zernio nunca entrega una URL de lectura real
+ *         para este objeto, ni a nosotros ni (presumiblemente) a su
+ *         propio backend al armar el post -- de ahi el "missingFiles":1
+ *         siempre. No hay variante de URL que arregle esto de nuestro
+ *         lado; el defecto esta en su endpoint de presign, que le falta
+ *         devolver ese segundo campo (`fileUrl`) que su propia
+ *         documentacion promete. subirArchivo() de aca abajo queda
  *      implementada pero SIN USAR por publicarVideo() -- devuelve la
  *      uploadUrl firmada completa (la ultima variante probada) por si
  *      en el futuro Zernio arregla su lado, pero no se confia en ella
- *      para produccion. Video de mas de ~4MB: por ahora la unica salida
- *      real encontrada (sin comprimir) seria alojar el archivo en una
- *      URL publica propia y pasarsela a mediaItems.url -- pero esto
- *      significa publicar contenido en un canal nuevo (ej. hacer public
- *      el repo, o subir a un host publico), lo cual la Regla de Oro del
- *      proyecto exige confirmar con el operador antes de hacerlo. No
- *      implementado sin esa confirmacion.
+ *      para produccion. Video de mas de ~4MB: los dos caminos reales que
+ *      quedan (ninguno implementado sin decision del operador) son (1)
+ *      reportar este bug a soporte de Zernio con esta evidencia exacta
+ *      -- es contactar a un tercero real, requiere confirmacion segun
+ *      la Regla de Oro -- o (2) comprimir el render para que entre en
+ *      el limite real de ~4MB de upload-direct (que SI funciona hoy),
+ *      con la perdida de calidad que eso implique en videos largos.
+ *      Alojar el archivo en una URL publica propia sigue siendo la
+ *      tercera opcion ya documentada, con la misma necesidad de
+ *      confirmacion (publica contenido en un canal nuevo).
  *   3. POST /v1/posts -- crea el post apuntando a la URL que devolvio
  *      la subida, una entrada por plataforma (tiktok/youtube) con su
  *      `accountId` y `platformSpecificData` propio.

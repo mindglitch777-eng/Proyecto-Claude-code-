@@ -1,5 +1,31 @@
 # Estado vivo del proyecto
 
+## Bloque: causa real del bug de presign de Zernio, encontrada y cerrada (2026-09-14)
+
+**Pedido explícito en esta sesión** ("busquen la solución de manera productiva y resolutiva" -- postura
+resolutiva de `CLAUDE.md`): en vez de volver a reportar "sigue roto" sin más, se probó algo que nunca se
+había probado -- si el archivo subido por el PUT del presign se puede LEER de vuelta con un GET simple.
+Script nuevo `fabrica/subida/probar_lectura_presign.ts`, workflow `probar-lectura-presign-zernio.yml`
+(GitHub Actions run 34801661693, éxito) -- **no llama a `crearPost()`, cero costo, cero publicación.**
+
+**Resultado: causa real encontrada, no una hipótesis más.**
+- GET a la URL sin firma (la que usábamos como `fileUrl` derivada): `HTTP 400 InvalidArgument
+  "Authorization"` -- el objeto NO es público.
+- GET a la `uploadUrl` completa (con la misma firma que usó el PUT): `HTTP 403 SignatureDoesNotMatch` --
+  una URL presignada de S3/R2 está firmada para UN método HTTP específico (PUT), no sirve para GET.
+
+**Conclusión:** Zernio nunca entrega una URL de lectura real para el archivo subido -- ni a nosotros, ni
+(presumiblemente) a su propio backend al armar el post. Por eso `missingFiles:1` es constante, no
+intermitente. No hay variante de URL que lo arregle de nuestro lado -- el defecto es un campo faltante
+(`fileUrl`) en su propio endpoint de presign. Documentado en el header de `zernio.ts`.
+
+**Los dos caminos reales que quedan (ninguno ejecutado, ambos necesitan decisión del operador):**
+1. Reportar el bug a soporte de Zernio con esta evidencia exacta -- contacta a un tercero real, requiere
+   confirmación explícita (Regla de Oro).
+2. Comprimir el render para que entre en el límite real de ~4MB de `upload-direct` (que SÍ funciona hoy) --
+   viable sin costo ni contacto externo, con la contra de perder calidad en videos más largos que unos
+   pocos segundos a bitrate razonable.
+
 ## Bloque: reintentado el bug de presign de Zernio (rutina programada) — sigue exactamente igual (2026-09-13)
 
 **Retomado por una rutina programada** ("Reintentar presign de Zernio"), no por pedido directo en esta sesión.
