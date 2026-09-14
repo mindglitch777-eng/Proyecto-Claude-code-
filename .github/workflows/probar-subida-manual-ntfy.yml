@@ -1,0 +1,36 @@
+name: probar-subida-manual-ntfy
+
+# Prueba real de la tercera alternativa al bug de presign de Zernio (ver
+# ESTADO.md 2026-09-14): manda un video real + su caption al celular del
+# operador via ntfy.sh (subida/enviar_para_subida_manual.ts), para
+# subida manual a mano en la app nativa de TikTok/YouTube -- sin pasar
+# por Zernio para nada. No publica ni programa nada real.
+
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: fabrica/package-lock.json
+
+      - name: Dependencias
+        working-directory: fabrica
+        run: npm ci --no-audit --no-fund
+
+      - name: Mandar video + caption de prueba por ntfy
+        working-directory: fabrica
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: npx tsx subida/enviar_para_subida_manual.ts ../videos/remotion/v07.mp4 "Prueba real: este es el video que te llega para subir a mano. #test"
