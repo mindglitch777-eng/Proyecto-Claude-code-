@@ -1074,7 +1074,8 @@
         "_id": "6aa342eb3e8f59b4040f0c52",
         "status": "scheduled"
       }
-    }
+    },
+    "notificado": true
   },
   {
     "id": "carrusel-10",
