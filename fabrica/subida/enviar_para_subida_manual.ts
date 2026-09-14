@@ -2,59 +2,64 @@
  * Tercera alternativa al bug de presign de Zernio (ver zernio.ts y
  * ESTADO.md 2026-09-14): en vez de pelear con la subida automática de
  * videos pesados (>4MB de /v1/media/upload-direct, presign roto sin
- * arreglo posible de nuestro lado), se los manda directo al celular del
- * operador por ntfy.sh -- el archivo real pegado a la notificación. El
- * operador toca la notificación del video, lo comparte directo a
- * TikTok/YouTube desde la app nativa (sin límite de tamaño real, sin
- * pasar por Zernio para nada) y pega el caption del otro mensaje.
+ * arreglo posible de nuestro lado), se entrega el video para que el
+ * operador lo suba a mano desde la app nativa de TikTok/YouTube.
  *
- * Van DOS mensajes separados, no uno solo: leyendo docs/publish.md del
- * repo oficial de ntfy (binwiederhier/ntfy, confirmado 2026-09-14) no
- * existe ningún header tipo "Message" para mandar texto de acompañamiento
- * cuando el body del mensaje ya es el archivo binario -- el body sirve
- * para UNA cosa o la otra, no las dos a la vez.
+ * INTENTO 1 (descartado, evidencia real 2026-09-14): mandar el archivo
+ * pegado directo a una notificación de ntfy.sh. Falló con HTTP 413
+ * "attachment too large, or bandwidth limit reached" en un video de
+ * 8.38MB -- bien debajo del límite documentado de 15MB por adjunto. La
+ * causa real no es el tamaño: las máquinas de GitHub Actions comparten
+ * IP entre miles de usuarios del servidor GRATIS de ntfy.sh, y el cupo
+ * de ancho de banda "por visitante" de esa IP ya viene gastado por
+ * tráfico ajeno -- no es confiable (a veces anda, a veces no, según qué
+ * tan usada esté la IP en ese momento).
  *
- * Límite real del servidor público ntfy.sh (no self-hosted, mismo doc):
- * 15MB por adjunto, expira a las 3 horas.
+ * SOLUCIÓN REAL (esta): el video se sube como artifact del propio
+ * workflow de GitHub Actions (gratis, sin compartir cupo con nadie, ya
+ * es infraestructura que usamos para todo lo demás) y ntfy.sh manda
+ * SOLO un mensaje de texto con el link a esa corrida -- los adjuntos de
+ * GitHub Actions requieren estar logueado en GitHub para bajarlos
+ * (confirmado leyendo docs.github.com/rest/actions/artifacts), así que
+ * esto no es "publicar contenido públicamente": hace falta la cuenta de
+ * GitHub del operador, la misma que ya usa para todo este proyecto.
  *
  * Uso: npx tsx subida/enviar_para_subida_manual.ts <ruta-video> <caption>
- * Env: NTFY_TOPIC (existente, mismo secret que notificar_pendientes.ts)
+ * Env: NTFY_TOPIC (existente), GITHUB_SERVER_URL/GITHUB_REPOSITORY/
+ *      GITHUB_RUN_ID (los pone GitHub Actions solo, no hace falta setearlos)
  */
-import {readFileSync, statSync} from 'fs';
 import {basename} from 'path';
 
-const LIMITE_ADJUNTO_BYTES = 15 * 1024 * 1024;
-
-export async function enviarCaptionParaSubidaManual(topic: string, nombreVideo: string, caption: string): Promise<void> {
-  const resp = await fetch(`https://ntfy.sh/${topic}`, {
-    method: 'POST',
-    headers: {Title: `Caption para ${nombreVideo}`, Priority: 'default', Tags: 'memo'},
-    body: caption,
-  });
-  if (!resp.ok) throw new Error(`ntfy.sh (caption) respondió HTTP ${resp.status}: ${await resp.text()}`);
-}
-
-export async function enviarVideoParaSubidaManual(topic: string, rutaVideo: string): Promise<void> {
-  const tamano = statSync(rutaVideo).size;
-  if (tamano > LIMITE_ADJUNTO_BYTES) {
+export function construirLinkDelRun(): string {
+  const servidor = process.env.GITHUB_SERVER_URL;
+  const repo = process.env.GITHUB_REPOSITORY;
+  const runId = process.env.GITHUB_RUN_ID;
+  if (!servidor || !repo || !runId) {
     throw new Error(
-      `${rutaVideo} pesa ${(tamano / 1024 / 1024).toFixed(1)}MB, supera el límite real de 15MB de adjuntos de ` +
-      `ntfy.sh -- este video puntual no entra por este camino, hace falta otra alternativa para este caso.`
+      'Faltan GITHUB_SERVER_URL/GITHUB_REPOSITORY/GITHUB_RUN_ID -- este script está pensado para correr ' +
+      'dentro de un workflow de GitHub Actions, donde estas variables las pone GitHub solo.'
     );
   }
-  const nombreArchivo = basename(rutaVideo);
-  const buffer = readFileSync(rutaVideo);
+  return `${servidor}/${repo}/actions/runs/${runId}`;
+}
+
+export async function enviarAvisoParaSubidaManual(topic: string, nombreVideo: string, caption: string): Promise<void> {
+  const link = construirLinkDelRun();
+  const cuerpo =
+    `${caption}\n\n` +
+    `Bajá el video acá (necesitás estar logueado en GitHub con tu cuenta): ${link}\n` +
+    `Buscá el archivo adjunto ("video") al final de esa página, bajalo y compartilo directo a TikTok/YouTube.`;
   const resp = await fetch(`https://ntfy.sh/${topic}`, {
-    method: 'PUT',
+    method: 'POST',
     headers: {
-      Title: 'Video nuevo -- subilo a mano (TikTok/YouTube)',
-      Filename: nombreArchivo,
+      Title: `Video nuevo -- subilo a mano (${nombreVideo})`,
       Priority: 'high',
       Tags: 'movie_camera',
+      Markdown: 'yes',
     },
-    body: buffer,
+    body: cuerpo,
   });
-  if (!resp.ok) throw new Error(`ntfy.sh (video) respondió HTTP ${resp.status}: ${await resp.text()}`);
+  if (!resp.ok) throw new Error(`ntfy.sh respondió HTTP ${resp.status}: ${await resp.text()}`);
 }
 
 async function main(): Promise<void> {
@@ -70,11 +75,9 @@ async function main(): Promise<void> {
     process.exit(1);
   }
   const nombreVideo = basename(rutaVideo);
-  console.log(`Mandando caption de prueba para ${nombreVideo}...`);
-  await enviarCaptionParaSubidaManual(topic, nombreVideo, caption);
-  console.log('Caption mandado. Mandando el video real...');
-  await enviarVideoParaSubidaManual(topic, rutaVideo);
-  console.log('Listo -- deberían haber llegado 2 notificaciones al celular (caption + video).');
+  console.log('Mandando aviso con el link al artifact de este run...');
+  await enviarAvisoParaSubidaManual(topic, nombreVideo, caption);
+  console.log('Listo -- debería haber llegado 1 notificación con el link para bajar el video.');
 }
 
 main().catch((error) => {
