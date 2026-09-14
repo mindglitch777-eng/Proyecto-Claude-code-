@@ -1,0 +1,92 @@
+name: chequear-buzon
+
+# Chequeo periodico (cada 15 min): revisa state/uploads.json en busca de
+# un video del buzon de subida manual cuyo horario programado ya llego,
+# y en ese caso sube su archivo como artifact + manda el aviso real por
+# ntfy con tema, horario y el link -- "notificacion en el momento
+# preciso", no antes ni despues (pedido explicito del operador,
+# 2026-09-14, ver panel/LANZAMIENTO.md). Tambien marca como "vencido"
+# (nunca silenciosamente perdido) un video avisado hace mas de 3 dias
+# que nunca se confirmo subido.
+#
+# Procesa UN pendiente por corrida, a proposito -- con el cron cada 15
+# min alcanza, y evita la complejidad de subir varios artifacts
+# distintos en un mismo job.
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "*/15 * * * *"
+
+env:
+  # Mismo motivo que notificar-box.yml: el cron de "schedule" siempre
+  # corre contra la rama por defecto (main), pero el codigo y los datos
+  # reales viven en esta rama de trabajo hasta que se mergean.
+  RAMA_TRABAJO: claude/organize-repo-duplicates-xl042t
+
+jobs:
+  chequear:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RAMA_TRABAJO }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: fabrica/package-lock.json
+
+      - name: Dependencias
+        working-directory: fabrica
+        run: npm ci --no-audit --no-fund
+
+      - name: Chequear vencidos + buscar el proximo pendiente
+        id: chequeo
+        working-directory: fabrica
+        run: npx tsx subida/chequear_buzon.ts
+
+      - name: Subir el video pendiente como artifact
+        if: steps.chequeo.outputs.hayPendiente == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: video
+          path: ${{ steps.chequeo.outputs.rutaVideo }}
+          retention-days: 3
+
+      - name: Mandar el aviso real del buzon
+        if: steps.chequeo.outputs.hayPendiente == 'true'
+        working-directory: fabrica
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: >-
+          npx tsx subida/avisar_buzon.ts
+          "${{ steps.chequeo.outputs.id }}"
+          "${{ steps.chequeo.outputs.tema }}"
+          "${{ steps.chequeo.outputs.horario }}"
+
+      - name: Commitear cambios en state/uploads.json (vencidos + avisadoBuzon)
+        # Mismo riesgo de carrera de git que subir-video.yml/notificar-box.yml
+        # si se solapa con una subida real -- el aviso por ntfy.sh ya salio
+        # igual, no debe tumbar el job.
+        continue-on-error: true
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add state/uploads.json
+          if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
+          git commit -m "chequear-buzon: vencidos + avisadoBuzon"
+          for i in 1 2 3 4 5 6; do
+            git rebase --abort >/dev/null 2>&1 || true
+            git pull --rebase origin "$RAMA_TRABAJO" && \
+            git push origin HEAD:"$RAMA_TRABAJO" && exit 0
+            sleep $((RANDOM % 5 + 2 * i))
+          done
+          git rebase --abort >/dev/null 2>&1 || true
+          echo "::warning::No se pudo commitear state/uploads.json tras varios intentos (carrera de git) -- el aviso (si salio) ya salio igual, puede repetirse la proxima corrida."
+          exit 0

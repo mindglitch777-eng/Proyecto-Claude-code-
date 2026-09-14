@@ -7,9 +7,10 @@
  * de cada plataforma), se podrian mover a env vars si el dia de mañana
  * hay mas de una cuenta por plataforma.
  */
-import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'fs';
+import {existsSync, mkdirSync, readFileSync, writeFileSync, appendFileSync} from 'fs';
 import {dirname, resolve} from 'path';
 import {publicarVideo, type ResultadoPlataforma} from './zernio';
+import {enviarAvisoParaSubidaManual} from './enviar_para_subida_manual';
 import {VIDEOS} from '../ejemplos/lote_21_datos';
 import {PUBLICACION_LOTE21} from '../ejemplos/lote_21_publicacion';
 
@@ -28,6 +29,14 @@ type EntradaLog = {
   error?: string;
   plataformas?: ResultadoPlataforma[];
   respuestaCruda?: unknown;
+  // Buzón de subida manual (video >4MB, Zernio no lo puede subir --
+  // ver zernio.ts) -- agregado 2026-09-14, ver panel/LANZAMIENTO.md.
+  manual?: boolean;
+  estado?: 'pendiente' | 'subido' | 'vencido';
+  tema?: string;
+  scheduledFor?: string;
+  avisadoBuzon?: boolean;
+  rutaVideo?: string;
 };
 
 function leerLog(): EntradaLog[] {
@@ -71,43 +80,75 @@ async function main(): Promise<void> {
     `Subiendo ${id} ("${video.titulo}") a TikTok${soloTiktok ? '' : ' + YouTube'}${scheduledFor ? ` (programado para ${scheduledFor})` : ''}...`,
   );
 
-  const resultado = await publicarVideo({
-    rutaVideo,
-    contenido: caption,
-    scheduledFor,
-    cuentaTikTok: {
-      accountId: ACCOUNT_ID_TIKTOK,
-      datos: {
-        privacyLevel: 'PUBLIC_TO_EVERYONE',
-        allowComment: true,
-        allowDuet: true,
-        allowStitch: true,
-        contentPreviewConfirmed: true,
-        expressConsentGiven: true,
-        videoMadeWithAi: true,
-        // Decision del operador (2026-09-10) tras 2 fallos reales por
-        // "TikTok direct posting is at capacity" (v05 y v14, ~15min
-        // aparte -- no es un bache de segundos): mientras tanto TikTok
-        // va a modo borrador (Creator Inbox) en vez de intentar publicar
-        // directo. El operador confirma el video con un toque desde la
-        // app -- YouTube sigue publicando 100% automatico sin cambios.
-        draft: true,
-        tiktokSettings: {draft: true},
+  let resultado;
+  try {
+    resultado = await publicarVideo({
+      rutaVideo,
+      contenido: caption,
+      scheduledFor,
+      cuentaTikTok: {
+        accountId: ACCOUNT_ID_TIKTOK,
+        datos: {
+          privacyLevel: 'PUBLIC_TO_EVERYONE',
+          allowComment: true,
+          allowDuet: true,
+          allowStitch: true,
+          contentPreviewConfirmed: true,
+          expressConsentGiven: true,
+          videoMadeWithAi: true,
+          // Decision del operador (2026-09-10) tras 2 fallos reales por
+          // "TikTok direct posting is at capacity" (v05 y v14, ~15min
+          // aparte -- no es un bache de segundos): mientras tanto TikTok
+          // va a modo borrador (Creator Inbox) en vez de intentar publicar
+          // directo. El operador confirma el video con un toque desde la
+          // app -- YouTube sigue publicando 100% automatico sin cambios.
+          draft: true,
+          tiktokSettings: {draft: true},
+        },
       },
-    },
-    ...(soloTiktok
-      ? {}
-      : {
-          cuentaYouTube: {
-            accountId: ACCOUNT_ID_YOUTUBE,
-            datos: {
-              title: video.titulo,
-              visibility: 'public',
-              containsSyntheticMedia: true,
+      ...(soloTiktok
+        ? {}
+        : {
+            cuentaYouTube: {
+              accountId: ACCOUNT_ID_YOUTUBE,
+              datos: {
+                title: video.titulo,
+                visibility: 'public',
+                containsSyntheticMedia: true,
+              },
             },
-          },
-        }),
-  });
+          }),
+    });
+  } catch (error) {
+    const mensaje = (error as Error).message;
+    // publicarVideo() tira ESTE error especifico, sin llamar a la red,
+    // cuando el archivo supera el limite real de ~4MB de upload-direct
+    // (presign de Zernio roto, ver zernio.ts) -- en vez de fallar el
+    // job entero, cae al buzon de subida manual (2026-09-14, ver
+    // panel/LANZAMIENTO.md). Cualquier OTRO error sigue siendo un fallo
+    // real, no se lo confunde con este caso.
+    if (!mensaje.includes('supera el limite real de ~4MB')) throw error;
+
+    console.log(`${id} pesa mas de lo que Zernio puede subir solo -- cae al buzon de subida manual.`);
+    if (!scheduledFor) {
+      // Sin horario futuro que esperar: el workflow ya subio el video
+      // como artifact ANTES de este paso (ver subir-video.yml), asi que
+      // avisar ya mismo, sin esperar al chequeo periodico.
+      const topic = process.env.NTFY_TOPIC;
+      if (!topic) throw new Error('Falta NTFY_TOPIC en el entorno para avisar el buzon.');
+      const rutaOutput = process.env.GITHUB_OUTPUT;
+      if (rutaOutput) appendFileSync(rutaOutput, `huboBuzon=true\nrutaVideoBuzon=${rutaVideo}\n`);
+      await enviarAvisoParaSubidaManual(topic, `${id}.mp4`, video.titulo, 'ahora', caption);
+      guardarEnLog({id, fecha: new Date().toISOString(), ok: true, manual: true, estado: 'subido', tema: video.titulo, rutaVideo, avisadoBuzon: true});
+      console.log(`OK -- ${id} mandado al buzon de subida manual (aviso ya enviado, sin horario programado).`);
+    } else {
+      // Con horario futuro: solo se registra pendiente. El aviso lo
+      // dispara chequear_buzon.ts en el momento preciso, no ahora.
+      guardarEnLog({id, fecha: new Date().toISOString(), ok: true, manual: true, estado: 'pendiente', tema: video.titulo, scheduledFor, rutaVideo, avisadoBuzon: false});
+      console.log(`OK -- ${id} registrado en el buzon, pendiente para ${scheduledFor}. El aviso llega en el momento preciso.`);
+    }
+    return;
+  }
 
   guardarEnLog({
     id,

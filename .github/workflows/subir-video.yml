@@ -40,12 +40,27 @@ jobs:
         run: npm ci --no-audit --no-fund
 
       - name: Subir ${{ github.event.inputs.video }}
+        id: subir
         working-directory: fabrica
         env:
           ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: >-
           npx tsx subida/subir_video.ts "${{ github.event.inputs.video }}" "${{ github.event.inputs.scheduledFor }}"
           ${{ github.event.inputs.soloTiktok == 'true' && '--solo-tiktok' || '' }}
+
+      - name: Subir el video como artifact (cayó al buzón de subida manual)
+        # subir_video.ts escribe huboBuzon=true SOLO cuando el archivo
+        # supera el límite real de Zernio y no tenía horario futuro que
+        # esperar -- en ese caso el aviso ya salió, esto solo adjunta el
+        # archivo real a la corrida para que el link de la notificación
+        # funcione.
+        if: steps.subir.outputs.huboBuzon == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: video
+          path: ${{ steps.subir.outputs.rutaVideoBuzon }}
+          retention-days: 3
 
       - name: Commitear log de subida (state/uploads.json)
         # OJO real: con varios workflows disparados casi a la vez (ej. un
