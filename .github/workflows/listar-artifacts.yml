@@ -1,0 +1,46 @@
+name: listar-artifacts
+
+# Diagnostico de solo lectura: lista TODOS los artifacts de Actions
+# guardados en el repo (nombre, tamano, fecha, si expiraron) para decidir
+# con evidencia real que es seguro borrar antes de limpiar el cupo lleno
+# que viene bloqueando las pruebas del buzon/ntfy (ver ESTADO.md
+# 2026-09-14). No borra nada, solo lista -- pedido explicito del
+# operador de revisar antes de borrar ("no todo por las dudas").
+
+permissions:
+  contents: read
+  actions: read
+
+on:
+  workflow_dispatch: {}
+
+env:
+  # Mismo motivo que los demas workflows de este proyecto: el codigo real
+  # vive en esta rama de trabajo hasta que se mergea a main.
+  RAMA_TRABAJO: claude/organize-repo-duplicates-xl042t
+
+jobs:
+  listar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RAMA_TRABAJO }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: fabrica/package-lock.json
+
+      - name: Dependencias
+        working-directory: fabrica
+        run: npm ci --no-audit --no-fund
+
+      - name: Listar artifacts del repo (solo lectura)
+        working-directory: fabrica
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: npx tsx subida/listar_artifacts.ts
