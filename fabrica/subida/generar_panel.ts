@@ -197,9 +197,15 @@ function generarHtml(items: ItemPanel[]): string {
 
 function main(): void {
   const items = [...armarItemsVideo(leerLog(RUTA_UPLOADS)), ...armarItemsCarrusel(leerLog(RUTA_CARRUSELES))];
-  const html = generarHtml(items);
+  let html = generarHtml(items);
+  // MARCAR_SUBIDO_SECRET (mismo valor que el operador carga en Netlify) se
+  // hornea acá adentro de la página -- si todavía no está configurado como
+  // secret de GitHub Actions, queda el placeholder sin reemplazar (el botón
+  // "Ya lo subí" falla con 401 hasta que se complete panel/LANZAMIENTO.md).
+  const secreto = process.env.MARCAR_SUBIDO_SECRET;
+  if (secreto) html = html.replace('__SECRETO_PANEL__', secreto);
   writeFileSync(RUTA_SALIDA, html);
-  console.log(`Listo -- ${items.length} item(s) pendiente(s) en ${RUTA_SALIDA}.`);
+  console.log(`Listo -- ${items.length} item(s) pendiente(s) en ${RUTA_SALIDA}.${secreto ? '' : ' (MARCAR_SUBIDO_SECRET no está seteado -- placeholder sin reemplazar.)'}`);
 }
 
 main();

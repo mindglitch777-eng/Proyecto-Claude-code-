@@ -12,8 +12,11 @@ como módulos aparte.
 - [ ] En Netlify → Site settings → Environment variables, cargar:
   - [ ] `GITHUB_TOKEN` = el PAT de arriba.
   - [ ] `MARCAR_SUBIDO_SECRET` = una palabra clave elegida por el operador.
-  - [ ] Reemplazar `__SECRETO_PANEL__` en `panel/torre-de-control.html` por ese
-        mismo valor (o mover el reemplazo a un paso del workflow que genera el panel).
+- [ ] En GitHub → este repo → Settings → Secrets and variables → Actions → New
+      repository secret: `MARCAR_SUBIDO_SECRET` con el **mismo valor exacto** que
+      cargaste en Netlify. (Ya está cableado del lado del código --
+      `generar_panel.ts` lo hornea solo en la página cada vez que se regenera, ver
+      bloque de abajo. Solo falta que este secret exista.)
 
 ## Qué SÍ está construido hoy (código real, commiteado)
 
@@ -28,6 +31,10 @@ como módulos aparte.
 - Botón "Ya lo subí" → Netlify Function → guarda en `state/uploads.json`/
   `state/carruseles.json` en `main` — código escrito y commiteado, pendiente solo de
   la configuración manual del operador de arriba para activarse de verdad.
+- El secreto que el botón manda ya se hornea solo en cada página generada
+  (`generar_panel.ts` lee `MARCAR_SUBIDO_SECRET` del entorno y reemplaza el
+  placeholder) -- no hace falta editar el HTML a mano nunca más, solo cargar el
+  secret una vez en GitHub Actions (arriba).
 - Limpieza de vencidos: `chequear-buzon.yml` (diario) marca `vencido` un contenido
   avisado hace más de 3 días que nunca se confirmó subido (el artifact expira a los
   3 días).

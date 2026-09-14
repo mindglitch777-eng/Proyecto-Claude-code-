@@ -52,6 +52,8 @@ jobs:
 
       - name: Regenerar panel (panel/torre-de-control.html)
         working-directory: fabrica
+        env:
+          MARCAR_SUBIDO_SECRET: ${{ secrets.MARCAR_SUBIDO_SECRET }}
         run: npx tsx subida/generar_panel.ts
 
       - name: Commitear log de entrega + panel (state/carruseles.json, panel/torre-de-control.html)
