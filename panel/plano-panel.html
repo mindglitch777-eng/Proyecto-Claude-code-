@@ -1,0 +1,204 @@
+<title>Plano del Panel</title>
+<style>
+  :root {
+    --bg: #f7f5f2;
+    --surface: #ffffff;
+    --border: #d8d3cb;
+    --text: #211f1c;
+    --text-muted: #6b655c;
+    --accent: #3454d1;
+    --accent-soft: #e8ecfb;
+    --on-accent: #ffffff;
+    --warn: #b6651b;
+    --warn-soft: #fbeee0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #171614;
+      --surface: #211f1c;
+      --border: #3a362f;
+      --text: #f2efe9;
+      --text-muted: #b3ab9d;
+      --accent: #7c93ff;
+      --accent-soft: #262c4a;
+      --on-accent: #14142b;
+      --warn: #e0975a;
+      --warn-soft: #3a2a1a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #171614;
+    --surface: #211f1c;
+    --border: #3a362f;
+    --text: #f2efe9;
+    --text-muted: #b3ab9d;
+    --accent: #7c93ff;
+    --accent-soft: #262c4a;
+    --on-accent: #14142b;
+    --warn: #e0975a;
+    --warn-soft: #3a2a1a;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  }
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding-block: 32px 48px;
+  }
+  header {
+    margin-bottom: 8px;
+  }
+  h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(26px, 5vw, 34px);
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+    text-wrap: balance;
+  }
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+  .sub {
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.5;
+    max-width: 60ch;
+    margin: 0 0 28px;
+  }
+  figure {
+    margin: 0;
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    color: var(--border);
+  }
+  figcaption {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 14px;
+    max-width: 60ch;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 18px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+  .legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .legend svg { width: 22px; height: 14px; flex: none; color: var(--text-muted); }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="kicker">Panel de control — fábrica</p>
+    <h1>Plano del panel</h1>
+    <p class="sub">
+      Seis bloques, en el orden en que conviene construirlos. Todos se apoyan
+      en una sola base técnica definida una sola vez; el bloque de resultados
+      (paso 3) necesita probar tres integraciones antes de poder mostrar
+      datos reales.
+    </p>
+  </header>
+
+  <figure>
+    <svg viewBox="0 0 760 1130" role="img" aria-label="Diagrama de seis pasos para construir el panel de control de la fábrica: base técnica, lo de hoy, resultados reales, salud y plata, memoria y conocimiento, y el otro proyecto — cada paso se construye después del anterior, y el paso de resultados reales requiere probar tres integraciones antes.">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 Z" fill="currentColor" />
+        </marker>
+      </defs>
+
+      <!-- connecting arrows (drawn first, sit behind boxes) -->
+      <line x1="70" y1="120" x2="70" y2="158" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)" />
+      <line x1="70" y1="340" x2="70" y2="378" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)" />
+      <line x1="70" y1="540" x2="70" y2="578" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)" />
+      <line x1="70" y1="720" x2="70" y2="758" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)" />
+      <line x1="70" y1="940" x2="70" y2="978" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)" />
+
+      <!-- Paso 1: Base técnica -->
+      <rect x="40" y="30" width="680" height="90" rx="12" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5" />
+      <circle cx="70" cy="75" r="21" fill="var(--accent)" />
+      <text x="70" y="80" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="16" font-weight="500" fill="var(--on-accent)">1</text>
+      <text x="110" y="60" font-family="IBM Plex Sans, sans-serif" font-size="17" font-weight="600" fill="var(--text)">Base técnica</text>
+      <text x="110" y="82" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="var(--text-muted)">Una sola vez: de dónde saca los datos, cómo se actualiza</text>
+      <text x="110" y="99" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="var(--text-muted)">sola, cómo la abrís desde el celular</text>
+
+      <!-- Paso 2: Lo de hoy -->
+      <rect x="40" y="160" width="680" height="180" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5" />
+      <circle cx="70" cy="205" r="21" fill="var(--accent)" />
+      <text x="70" y="210" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="16" font-weight="500" fill="var(--on-accent)">2</text>
+      <text x="110" y="192" font-family="IBM Plex Sans, sans-serif" font-size="17" font-weight="600" fill="var(--text)">Lo de hoy</text>
+      <text x="110" y="214" font-family="IBM Plex Sans, sans-serif" font-size="13.5" fill="var(--text)">• Buzón de subida manual</text>
+      <text x="110" y="236" font-family="IBM Plex Sans, sans-serif" font-size="13.5" fill="var(--text)">• Estado del día</text>
+      <text x="110" y="258" font-family="IBM Plex Sans, sans-serif" font-size="13.5" fill="var(--text)">• Pendientes de que decidas</text>
+      <text x="110" y="280" font-family="IBM Plex Sans, sans-serif" font-size="13.5" fill="var(--text)">• Racha</text>
+      <text x="110" y="302" font-family="IBM Plex Sans, sans-serif" font-size="13.5" fill="var(--text)">• Calendario programado</text>
+
+      <!-- Paso 3: Resultados reales -->
+      <rect x="40" y="380" width="680" height="160" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5" />
+      <circle cx="70" cy="425" r="21" fill="var(--accent)" />
+      <text x="70" y="430" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="16" font-weight="500" fill="var(--on-accent)">3</text>
+      <text x="110" y="412" font-family="IBM Plex Sans, sans-serif" font-size="17" font-weight="600" fill="var(--text)">Resultados reales</text>
+      <text x="110" y="434" font-family="IBM Plex Sans, sans-serif" font-size="13.5" fill="var(--text)">• Métricas automáticas (vistas, likes, comentarios)</text>
+      <rect x="110" y="450" width="560" height="72" rx="8" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="1.5" stroke-dasharray="4 4" />
+      <text x="126" y="470" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="600" fill="var(--warn)">Antes de construir esto:</text>
+      <text x="126" y="488" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="var(--text-muted)">probar si Zernio da analíticas gratis, conectar la API</text>
+      <text x="126" y="505" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="var(--text-muted)">de YouTube, y adaptar el scraper de TikTok</text>
+
+      <!-- Paso 4: Salud y plata -->
+      <rect x="40" y="580" width="680" height="140" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5" />
+      <circle cx="70" cy="625" r="21" fill="var(--accent)" />
+      <text x="70" y="630" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="16" font-weight="500" fill="var(--on-accent)">4</text>
+      <text x="110" y="612" font-family="IBM Plex Sans, sans-serif" font-size="17" font-weight="600" fill="var(--text)">Salud y plata</text>
+      <text x="110" y="634" font-family="IBM Plex Sans, sans-serif" font-size="13.5" fill="var(--text)">• Semáforo de integraciones externas</text>
+      <text x="110" y="656" font-family="IBM Plex Sans, sans-serif" font-size="13.5" fill="var(--text)">• Alertas preventivas (antes de que exploten)</text>
+      <text x="110" y="678" font-family="IBM Plex Sans, sans-serif" font-size="13.5" fill="var(--text)">• Costos</text>
+
+      <!-- Paso 5: Memoria y conocimiento -->
+      <rect x="40" y="760" width="680" height="180" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5" />
+      <circle cx="70" cy="805" r="21" fill="var(--accent)" />
+      <text x="70" y="810" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="16" font-weight="500" fill="var(--on-accent)">5</text>
+      <text x="110" y="792" font-family="IBM Plex Sans, sans-serif" font-size="17" font-weight="600" fill="var(--text)">Memoria y conocimiento</text>
+      <text x="110" y="814" font-family="IBM Plex Sans, sans-serif" font-size="13.5" fill="var(--text)">• Biblioteca de trucos con evidencia</text>
+      <text x="110" y="836" font-family="IBM Plex Sans, sans-serif" font-size="13.5" fill="var(--text)">• Catálogo de herramientas evaluadas</text>
+      <text x="110" y="858" font-family="IBM Plex Sans, sans-serif" font-size="13.5" fill="var(--text)">• Cicatrices y lecciones aprendidas</text>
+      <text x="110" y="880" font-family="IBM Plex Sans, sans-serif" font-size="13.5" fill="var(--text)">• Estilo/modo de cada publicación</text>
+      <text x="110" y="902" font-family="IBM Plex Sans, sans-serif" font-size="13.5" fill="var(--text)">• Anotaciones libres</text>
+
+      <!-- Paso 6: El otro proyecto -->
+      <rect x="40" y="980" width="680" height="120" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5" />
+      <circle cx="70" cy="1025" r="21" fill="var(--accent)" />
+      <text x="70" y="1030" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="16" font-weight="500" fill="var(--on-accent)">6</text>
+      <text x="110" y="1012" font-family="IBM Plex Sans, sans-serif" font-size="17" font-weight="600" fill="var(--text)">El otro proyecto + cartelito</text>
+      <text x="110" y="1034" font-family="IBM Plex Sans, sans-serif" font-size="13.5" fill="var(--text)">• Estado del producto pago (La Máquina de Activos)</text>
+      <text x="110" y="1056" font-family="IBM Plex Sans, sans-serif" font-size="13.5" fill="var(--text)">• El Corte, archivado</text>
+    </svg>
+    <figcaption>
+      Cada paso se construye después del anterior (flecha = "después"). El
+      recuadro punteado del paso 3 marca lo único que hace falta investigar
+      antes de poder mostrar datos reales ahí.
+    </figcaption>
+  </figure>
+</div>

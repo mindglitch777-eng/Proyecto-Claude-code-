@@ -1,5 +1,65 @@
 # Estado vivo del proyecto
 
+## Bloque: buzón de subida manual (tercera alternativa a Zernio) + primer diseño de la Torre de Control (2026-09-14)
+
+**Contexto**: tras cerrar la causa real del bug de presign de Zernio (bloque de abajo), el operador pidió una
+tercera alternativa que no dependiera de que Zernio arregle nada ni de comprimir videos con pérdida de calidad --
+"el problema de ser ni hoy tiktok... busquemos una tercera alternativa de manera concluyente".
+
+**Camino real recorrido (2 intentos fallidos antes del que funciona), documentado para no repetirlo:**
+1. Mandar el video pegado directo a una notificación de ntfy.sh -- **falló real**, HTTP 413 "attachment too
+   large, or bandwidth limit reached" en un video de 8.38MB (bien debajo del límite de 15MB documentado). Causa
+   real: las IPs compartidas de GitHub Actions ya vienen con el cupo de ancho de banda del servidor GRATIS de
+   ntfy.sh gastado por tráfico de otros usuarios -- no es confiable.
+2. Subir el video como artifact del propio workflow de GitHub Actions -- **falló real**, "Artifact storage quota
+   has been hit" (cupo gratis de Actions ya lleno en este repo, acumulado de meses de renders de prueba nunca
+   limpiados). Pendiente: limpiar artifacts viejos para liberar espacio (no ejecutado todavía, requiere ok del
+   operador antes de borrar nada).
+3. **Solución real, funcionando**: `fabrica/subida/enviar_para_subida_manual.ts` sube el video como artifact
+   (mismo mecanismo del intento 2, en cuanto se libere el cupo) y manda por ntfy.sh SOLO un mensaje de texto con
+   **tema del video + horario en que corresponde subirlo + el link a la corrida** (agregado a pedido explícito del
+   operador 2026-09-14: un aviso que solo dice "tenés un video" sin decir de qué es ni cuándo no genera confianza
+   de que se va a subir lo correcto en el momento correcto). Los adjuntos de GitHub Actions requieren estar
+   logueado en GitHub para bajarlos -- no es "publicar contenido públicamente" (Regla de Oro respetada).
+   Workflow de prueba: `probar-subida-manual-ntfy.yml` (registrado en `main`, corre contra esta rama de trabajo).
+
+**Torre de Control -- panel de control interno del proyecto (idea nueva, en diseño, todavía NO construido):**
+A partir de este mismo problema, el operador propuso ir más allá de un parche puntual: un panel de control
+propio (no un producto para vender, una herramienta interna) para ver el estado real de la fábrica sin tener
+que preguntarme por texto. Se definieron, en orden de construcción:
+1. Base técnica (una sola vez): de dónde saca los datos, cómo se actualiza sola, cómo se abre desde el celular.
+2. Lo de hoy: buzón de subida manual (con tema+horario), estado del día, pendientes de que decida el operador,
+   racha, calendario programado.
+3. Resultados reales: métricas automáticas (vistas/likes/comentarios) -- requiere antes probar si el plan
+   gratuito de Zernio incluye `obtenerAnalytics()` (nunca probado), conectar la API oficial de YouTube (ya existe
+   `fabrica/research/youtube_api.ts`), y adaptar el scraper de TikTok ya existente
+   (`fabrica/research/scraper_video_tiktok.py`) a videos propios en vez de investigación de terceros. Se
+   descartó explícitamente pedirle al operador su usuario/contraseña de TikTok/YouTube (riesgo real de bloqueo
+   de cuenta por login automatizado sospechoso).
+4. Salud y plata: semáforo de integraciones externas, alertas preventivas (el cupo de artifacts que se llenó
+   hoy es el ejemplo real de lo que esto evitaría), costos.
+5. Memoria y conocimiento: biblioteca de trucos con evidencia, catálogo de herramientas evaluadas, cicatrices/
+   lecciones aprendidas (basado en `ARQUITECTURA.md` y `PENDIENTES.md` reales), estilo/modo de cada publicación,
+   anotaciones libres.
+6. El otro proyecto + cartelito: estado del producto pago (La Máquina de Activos) y El Corte marcado como
+   archivado (para que nada lo toque por error).
+
+Dos artifacts de Claude publicados como parte del diseño (previsualizaciones, no la app real todavía):
+mapa/diagrama del orden de construcción, y una maqueta visual del panel ("Torre de Control", paleta provisoria
+en teal -- pendiente de pasar a la paleta cobre/naranja de `producto/buscador-de-activos.html`, que el operador
+eligió como identidad visual real en vez de inventar una nueva o reusar el verde archivado de El Corte).
+
+**Pendiente explícito, no resuelto todavía:**
+- Limpiar artifacts viejos de GitHub Actions para liberar el cupo (necesita luz verde del operador).
+- Aplicar la paleta cobre/naranja (`--bg:#0a0a0c; --copper:#ff4e24`, tipografía Fraunces+Archivo+JetBrains Mono)
+  a la maqueta de la Torre de Control.
+- Rediseñar la sección de calendario como una vista de calendario real (no una lista), mostrando qué videos
+  están programados esta semana -- con la idea de que el calendario viva guardado en nuestros propios datos
+  (`state/uploads.json`/`state/carruseles.json`), no dependiendo de la programación interna de Zernio.
+- Ninguna pieza de la Torre de Control está construida todavía como aplicación real -- todo lo de arriba son
+  maquetas/diseño, a propósito, siguiendo el proceso ya establecido en el proyecto (ideas y diseño completos
+  antes de escribir la versión final).
+
 ## Bloque: causa real del bug de presign de Zernio, encontrada y cerrada (2026-09-14)
 
 **Pedido explícito en esta sesión** ("busquen la solución de manera productiva y resolutiva" -- postura
