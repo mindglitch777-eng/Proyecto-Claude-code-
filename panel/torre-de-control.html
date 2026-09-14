@@ -1,208 +1,153 @@
 <title>Torre de Control</title>
 <style>
   /*
-    Diseño deliberadamente de un solo modo (oscuro) -- una torre de
-    control real se ve así, no cambia con la hora del día del visitante.
-    Paleta y colores pintados explícitos igual, para que se vea bien
-    sobre cualquier fondo del visor.
+    Misma identidad visual real del proyecto (producto/buscador-de-activos.html):
+    fondo tinta + acento cobre, Fraunces para titulares/cifras, Archivo para
+    cuerpo, JetBrains Mono para etiquetas -- no una paleta inventada aparte.
   */
   :root {
-    --bg: #0e1013;
-    --surface: #161920;
-    --surface-2: #1c212a;
-    --border: #262b34;
-    --border-soft: #1e232c;
-    --text: #eef1f4;
-    --text-muted: #8b93a1;
-    --text-faint: #5b6270;
-    --accent: #4fb8ae;
-    --accent-soft: rgba(79, 184, 174, 0.13);
-    --ok: #5fb87a;
-    --ok-soft: rgba(95, 184, 122, 0.14);
-    --warn: #d99a45;
-    --warn-soft: rgba(217, 154, 69, 0.14);
+    --bg: #faf9f7; --surface: #ffffff; --surface-2: #ffffff; --line: #e6e2dd; --line-soft: #efece7;
+    --text: #17151a; --text-dim: #6a6560;
+    --copper: #d43d15; --copper-light: #e85a30; --copper-dark: #912a0c; --copper-soft: rgba(212,61,21,.08);
+    --ok: #3f8f5c; --ok-soft: rgba(63,143,92,.10);
+    --warn: #b5791f; --warn-soft: rgba(181,121,31,.10);
+    --on-copper: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0a0a0c; --surface: #141315; --surface-2: #17161a; --line: #28262a; --line-soft: #201f22;
+      --text: #f6f6f4; --text-dim: #948f8c;
+      --copper: #ff4e24; --copper-light: #ff8261; --copper-dark: #b8320f; --copper-soft: rgba(255,78,36,.12);
+      --ok: #5fb87a; --ok-soft: rgba(95,184,122,.14);
+      --warn: #d99a45; --warn-soft: rgba(217,154,69,.14);
+      --on-copper: #140b06;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0a0a0c; --surface: #141315; --surface-2: #17161a; --line: #28262a; --line-soft: #201f22;
+    --text: #f6f6f4; --text-dim: #948f8c;
+    --copper: #ff4e24; --copper-light: #ff8261; --copper-dark: #b8320f; --copper-soft: rgba(255,78,36,.12);
+    --ok: #5fb87a; --ok-soft: rgba(95,184,122,.14);
+    --warn: #d99a45; --warn-soft: rgba(217,154,69,.14);
+    --on-copper: #140b06;
   }
 
-  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
   * { box-sizing: border-box; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Manrope', system-ui, sans-serif;
-  }
-  .shell {
-    max-width: 1080px;
-    margin: 0 auto;
-    padding: 22px 16px 56px;
-  }
+  body { background: var(--bg); color: var(--text); font-family: 'Archivo', sans-serif; }
+  .shell { max-width: 1080px; margin: 0 auto; padding: 22px 16px 56px; }
+  h1, h2 { font-family: 'Fraunces', Georgia, serif; margin: 0; text-wrap: balance; }
+  .cap { font-family: 'JetBrains Mono', monospace; letter-spacing: 0.08em; text-transform: uppercase; }
 
   /* ---------- header ---------- */
   .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    flex-wrap: wrap;
-    padding-bottom: 20px;
-    margin-bottom: 22px;
-    border-bottom: 1px solid var(--border-soft);
+    display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+    padding-bottom: 20px; margin-bottom: 22px; border-bottom: 1px solid var(--line-soft);
   }
-  .brand { display: flex; align-items: center; gap: 10px; }
-  .brand svg { width: 26px; height: 26px; color: var(--accent); flex: none; }
-  .brand-text .name {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .brand-text .sub { font-size: 12px; color: var(--text-faint); margin-top: 1px; }
+  .brand { display: flex; align-items: center; gap: 11px; }
+  .brand svg { width: 26px; height: 26px; color: var(--copper); flex: none; }
+  .brand-text .name { font-family: 'Fraunces', serif; font-weight: 600; font-size: 17px; letter-spacing: 0.01em; }
+  .brand-text .sub { font-size: 12px; color: var(--text-dim); margin-top: 1px; font-family: 'JetBrains Mono', monospace; }
   .status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--text-muted);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 7px 12px;
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px;
   }
   .status-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); flex: none; }
 
   /* ---------- generic card ---------- */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 18px 20px;
-  }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; }
   .card h2 {
-    font-size: 12px;
-    font-family: 'IBM Plex Mono', monospace;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin: 0 0 14px;
-    font-weight: 500;
+    font-size: 11.5px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--text-dim); margin: 0 0 14px; font-weight: 500;
   }
 
   /* ---------- hero: hoy ---------- */
-  .hero {
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 22px 22px 20px;
-    margin-bottom: 16px;
-  }
+  .hero { background: var(--surface-2); border: 1px solid var(--copper-soft); border-radius: 18px; padding: 22px 22px 20px; margin-bottom: 16px; }
   .hero h2 {
-    font-size: 12px;
-    font-family: 'IBM Plex Mono', monospace;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin: 0 0 16px;
-    font-weight: 600;
+    font-size: 11.5px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--copper); margin: 0 0 16px; font-weight: 600;
   }
-  .hero-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-  }
+  .hero-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
   @media (max-width: 640px) {
     .hero-grid { grid-template-columns: 1fr; }
-    .hero-grid > div:not(:last-child) { padding-bottom: 16px; border-bottom: 1px solid var(--border-soft); }
+    .hero-grid > div:not(:last-child) { padding-bottom: 16px; border-bottom: 1px solid var(--line-soft); }
   }
-  .hero-item .label { font-size: 12.5px; color: var(--text-muted); margin-bottom: 8px; }
-  .hero-item .big { font-family: 'IBM Plex Mono', monospace; font-size: 26px; font-weight: 600; line-height: 1.1; }
-  .hero-item .buzon-title { font-size: 14px; font-weight: 600; color: var(--text); margin-top: 9px; line-height: 1.4; }
-  .hero-item .detail { font-size: 13px; color: var(--text-muted); margin-top: 6px; line-height: 1.45; }
+  .hero-item .label { font-size: 12px; color: var(--text-dim); margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
+  .hero-item .big { font-family: 'Fraunces', serif; font-weight: 600; font-size: 26px; line-height: 1.1; }
+  .hero-item .buzon-title { font-size: 14.5px; font-weight: 600; color: var(--text); margin-top: 9px; line-height: 1.4; }
+  .hero-item .detail { font-size: 13px; color: var(--text-dim); margin-top: 6px; line-height: 1.45; }
   .buzon-btn {
-    display: inline-flex; align-items: center; gap: 7px;
-    margin-top: 12px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12.5px; font-weight: 500;
-    color: #0e1013;
-    background: var(--accent);
-    border-radius: 8px;
-    padding: 8px 12px;
-    width: fit-content;
+    display: inline-flex; align-items: center; gap: 7px; margin-top: 12px;
+    font-family: 'Archivo', sans-serif; font-size: 13px; font-weight: 700;
+    color: var(--on-copper); background: var(--copper); border-radius: 8px; padding: 9px 13px; width: fit-content;
   }
   .buzon-btn svg { width: 14px; height: 14px; }
 
   /* ---------- grid of secondary cards ---------- */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-  .grid.tight { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-bottom: 16px; }
 
   /* métricas */
   .metric-row { display: flex; gap: 22px; margin-bottom: 16px; flex-wrap: wrap; }
-  .metric-row .m .num { font-family: 'IBM Plex Mono', monospace; font-size: 21px; font-weight: 600; }
-  .metric-row .m .lbl { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .metric-row .m .num { font-family: 'Fraunces', serif; font-weight: 700; font-size: 22px; font-variant-numeric: tabular-nums; }
+  .metric-row .m .lbl { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
   .spark { display: flex; align-items: flex-end; gap: 4px; height: 40px; }
-  .spark rect { fill: var(--accent); opacity: 0.85; }
+  .spark rect { fill: var(--copper); opacity: 0.85; }
 
-  /* status list (salud de integraciones) */
+  /* status list */
   .status-list { display: flex; flex-direction: column; gap: 11px; }
   .status-row { display: flex; align-items: center; justify-content: space-between; font-size: 13.5px; }
   .status-row .who { display: flex; align-items: center; gap: 9px; }
   .status-row .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
   .status-row .dot.ok { background: var(--ok); }
   .status-row .dot.warn { background: var(--warn); }
-  .status-row .tag { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-faint); }
+  .status-row .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-dim); }
 
   /* costo */
-  .cost-big { font-family: 'IBM Plex Mono', monospace; font-size: 24px; font-weight: 600; }
-  .cost-note { font-size: 12.5px; color: var(--text-muted); margin-top: 6px; }
+  .cost-big { font-family: 'Fraunces', serif; font-weight: 700; font-size: 24px; }
+  .cost-note { font-size: 12.5px; color: var(--text-dim); margin-top: 6px; }
 
   /* pendientes */
   .pending-item { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; line-height: 1.5; }
   .pending-item .flag {
-    flex: none; margin-top: 2px;
-    font-family: 'IBM Plex Mono', monospace; font-size: 10.5px;
-    color: var(--warn); background: var(--warn-soft);
-    border-radius: 5px; padding: 2px 6px; letter-spacing: 0.04em;
+    flex: none; margin-top: 2px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+    color: var(--warn); background: var(--warn-soft); border-radius: 5px; padding: 2px 6px; letter-spacing: 0.04em;
   }
 
-  /* calendario */
-  .cal-item { display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; padding: 8px 0; border-bottom: 1px solid var(--border-soft); }
-  .cal-item:last-child { border-bottom: none; padding-bottom: 0; }
-  .cal-item .when { color: var(--text-muted); font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
-  .cal-item .fmt { font-size: 11.5px; color: var(--text-faint); }
+  /* calendario -- forma de semana, no lista */
+  .week { display: flex; flex-direction: column; }
+  .day { display: flex; align-items: center; gap: 14px; padding: 10px 4px; border-bottom: 1px solid var(--line-soft); }
+  .day:last-child { border-bottom: none; padding-bottom: 2px; }
+  .day.today { background: var(--copper-soft); border-radius: 8px; padding-left: 8px; padding-right: 8px; margin: 0 -8px; border-bottom-color: transparent; }
+  .d-date { flex: none; width: 46px; text-align: center; }
+  .d-num { display: block; font-family: 'Fraunces', serif; font-weight: 700; font-size: 19px; line-height: 1; }
+  .day.today .d-num { color: var(--copper); }
+  .d-name { display: block; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-dim); margin-top: 3px; }
+  .d-content { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .d-title { font-size: 13.5px; font-weight: 600; color: var(--text); }
+  .d-meta { font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+  .d-empty { font-size: 12.5px; color: var(--text-dim); font-style: italic; }
+  .cal-note { font-size: 12px; color: var(--text-dim); margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line-soft); }
 
-  /* memoria (más callada, es referencia) */
+  /* memoria */
   .memo-stats { display: flex; flex-wrap: wrap; gap: 16px 22px; }
-  .memo-stats .m { font-size: 13px; color: var(--text-muted); }
-  .memo-stats .m b { color: var(--text); font-family: 'IBM Plex Mono', monospace; font-weight: 600; }
+  .memo-stats .m { font-size: 13px; color: var(--text-dim); }
+  .memo-stats .m b { color: var(--text); font-family: 'Fraunces', serif; font-weight: 700; }
 
-  /* footer row: producto pago + el corte */
+  /* footer row */
   .foot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 560px) { .foot-grid { grid-template-columns: 1fr; } }
-  .progress-track { height: 6px; border-radius: 999px; background: var(--border); overflow: hidden; margin: 10px 0 8px; }
-  .progress-fill { height: 100%; background: var(--accent); border-radius: 999px; }
-  .archived {
-    display: flex; align-items: center; gap: 10px;
-    color: var(--text-faint); font-size: 13px;
-  }
+  .progress-track { height: 6px; border-radius: 999px; background: var(--line); overflow: hidden; margin: 10px 0 8px; }
+  .progress-fill { height: 100%; background: var(--copper); border-radius: 999px; }
+  .archived { display: flex; align-items: center; gap: 10px; color: var(--text-dim); font-size: 13px; }
   .archived svg { width: 16px; height: 16px; flex: none; }
 
-  .footnote {
-    text-align: center;
-    font-size: 12px;
-    color: var(--text-faint);
-    margin-top: 8px;
-  }
+  .footnote { text-align: center; font-size: 12px; color: var(--text-dim); margin-top: 8px; }
 </style>
 
 <svg width="0" height="0" style="position:absolute">
   <defs>
-    <symbol id="i-check" viewBox="0 0 20 20"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-download" viewBox="0 0 20 20"><path d="M10 3v9m0 0l-3.5-3.5M10 12l3.5-3.5M4 15.5h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-lock" viewBox="0 0 20 20"><rect x="5" y="9" width="10" height="8" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 9V6.5a3 3 0 0 1 6 0V9" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
   </defs>
@@ -240,7 +185,7 @@
       <div class="hero-item">
         <div class="label">Próxima publicación</div>
         <div class="big">Mañana</div>
-        <div class="detail">10:00 · TikTok · formato "camino"</div>
+        <div class="detail">"Por qué nadie te responde a la primera" · TikTok · 10:00</div>
       </div>
     </div>
   </section>
@@ -285,14 +230,43 @@
     </section>
   </div>
 
-  <div class="grid">
-    <section class="card">
-      <h2>Calendario programado</h2>
-      <div class="cal-item"><span>Mañana · TikTok</span><span class="when">10:00</span></div>
-      <div class="cal-item"><span>Jueves · YouTube</span><span class="when">18:00</span></div>
-      <div class="cal-item"><span>Viernes · Carrusel</span><span class="when">12:00</span></div>
-    </section>
+  <!-- CALENDARIO -->
+  <section class="card" style="margin-bottom:16px">
+    <h2>Calendario — esta semana</h2>
+    <div class="week">
+      <div class="day today">
+        <div class="d-date"><span class="d-num">14</span><span class="d-name">Lun</span></div>
+        <div class="d-content"><span class="d-title">Cómo armar tu primer canal sin mostrar la cara</span><span class="d-meta">TikTok · 18:00 · buzón manual</span></div>
+      </div>
+      <div class="day">
+        <div class="d-date"><span class="d-num">15</span><span class="d-name">Mar</span></div>
+        <div class="d-content"><span class="d-title">Por qué nadie te responde a la primera</span><span class="d-meta">TikTok · 10:00 · formato "camino"</span></div>
+      </div>
+      <div class="day">
+        <div class="d-date"><span class="d-num">16</span><span class="d-name">Mié</span></div>
+        <div class="d-content"><span class="d-empty">Sin publicación programada</span></div>
+      </div>
+      <div class="day">
+        <div class="d-date"><span class="d-num">17</span><span class="d-name">Jue</span></div>
+        <div class="d-content"><span class="d-title">El error que repetís sin darte cuenta</span><span class="d-meta">YouTube · 18:00</span></div>
+      </div>
+      <div class="day">
+        <div class="d-date"><span class="d-num">18</span><span class="d-name">Vie</span></div>
+        <div class="d-content"><span class="d-title">5 señales de que estás rumiando</span><span class="d-meta">Carrusel · 12:00</span></div>
+      </div>
+      <div class="day">
+        <div class="d-date"><span class="d-num">19</span><span class="d-name">Sáb</span></div>
+        <div class="d-content"><span class="d-empty">Sin publicación programada</span></div>
+      </div>
+      <div class="day">
+        <div class="d-date"><span class="d-num">20</span><span class="d-name">Dom</span></div>
+        <div class="d-content"><span class="d-empty">Sin publicación programada</span></div>
+      </div>
+    </div>
+    <p class="cal-note">Guardado en nuestros propios datos (state/uploads.json + state/carruseles.json) — no depende de la programación interna de Zernio.</p>
+  </section>
 
+  <div class="grid">
     <section class="card">
       <h2>Memoria y conocimiento</h2>
       <div class="memo-stats">
@@ -302,21 +276,18 @@
         <div class="m"><b>2</b> anotaciones nuevas</div>
       </div>
     </section>
-  </div>
 
-  <div class="foot-grid">
     <section class="card">
       <h2>Producto pago — La Máquina de Activos</h2>
       <div style="font-size:13.5px">4 de 6 módulos definidos</div>
       <div class="progress-track"><div class="progress-fill" style="width:66%"></div></div>
       <div class="cost-note">faltan: entrega final y afinado de herramientas</div>
     </section>
-
-    <section class="card">
-      <h2>Archivado</h2>
-      <div class="archived"><svg><use href="#i-lock"/></svg> El Corte — cerrado por decisión del operador, no se toca</div>
-    </section>
   </div>
+
+  <section class="card">
+    <div class="archived"><svg><use href="#i-lock"/></svg> El Corte — archivado por decisión del operador, no se toca</div>
+  </section>
 
   <p class="footnote">Vista previa con datos de ejemplo — así se vería un día cualquiera una vez construido.</p>
 
