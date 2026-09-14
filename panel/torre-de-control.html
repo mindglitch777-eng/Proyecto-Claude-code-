@@ -147,8 +147,18 @@
   }
   .pub-status.manual { color: var(--copper); background: var(--copper-soft); }
   .pub-status.auto { color: var(--ok); background: var(--ok-soft); }
-  .pub-dl { flex: none; display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; }
-  .pub-dl svg { width: 16px; height: 16px; color: var(--copper); }
+  .pub-actions { flex: none; display: flex; align-items: center; gap: 8px; }
+  .pub-dl { display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; color: var(--copper); }
+  .pub-dl svg { width: 16px; height: 16px; }
+  .pub-done {
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500;
+    color: var(--text-dim); background: transparent; border: 1px solid var(--line);
+    border-radius: 6px; padding: 5px 9px; cursor: pointer;
+  }
+  .pub-done:hover { border-color: var(--copper); color: var(--copper); }
+  .pub.done { opacity: 0.5; }
+  .pub.done .pub-title { text-decoration: line-through; }
+  .pub.done .pub-actions { display: none; }
 
   .cal-note { font-size: 12px; color: var(--text-dim); margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line-soft); }
 
@@ -262,21 +272,27 @@
       <div class="day today">
         <div class="d-date"><span class="d-num">14</span><span class="d-name">Lun</span><span class="d-count">3 hoy</span></div>
         <div class="d-items">
-          <div class="pub">
+          <div class="pub" data-pub="video-2026-09-14-a">
             <div class="pub-thumb"><svg><use href="#i-play"/></svg></div>
             <div class="pub-info">
               <div class="pub-title">Cómo armar tu primer canal sin mostrar la cara</div>
               <div class="pub-meta"><span>TikTok · Video · 12:00</span><span class="pub-status manual">Manual</span></div>
             </div>
-            <div class="pub-dl"><svg><use href="#i-download"/></svg></div>
+            <div class="pub-actions">
+              <a class="pub-dl" href="#" title="Bajar el video"><svg><use href="#i-download"/></svg></a>
+              <button class="pub-done" type="button" onclick="marcarSubido('video-2026-09-14-a', this)">Ya lo subí</button>
+            </div>
           </div>
-          <div class="pub">
+          <div class="pub" data-pub="video-2026-09-14-b">
             <div class="pub-thumb"><svg><use href="#i-play"/></svg></div>
             <div class="pub-info">
               <div class="pub-title">La rutina de 5 minutos que cambia tu enfoque</div>
               <div class="pub-meta"><span>TikTok · Video · 18:00</span><span class="pub-status manual">Manual</span></div>
             </div>
-            <div class="pub-dl"><svg><use href="#i-download"/></svg></div>
+            <div class="pub-actions">
+              <a class="pub-dl" href="#" title="Bajar el video"><svg><use href="#i-download"/></svg></a>
+              <button class="pub-done" type="button" onclick="marcarSubido('video-2026-09-14-b', this)">Ya lo subí</button>
+            </div>
           </div>
           <div class="pub">
             <div class="pub-thumb square"><svg><use href="#i-stack"/></svg></div>
@@ -382,3 +398,30 @@
   <p class="footnote">Vista previa con datos de ejemplo — así se vería un día cualquiera una vez construido.</p>
 
 </div>
+
+<script>
+  // SECRETO_PANEL se reemplaza acá en el momento de generar esta página
+  // (mismo valor que la variable MARCAR_SUBIDO_SECRET en Netlify) --
+  // en esta maqueta queda como placeholder, no es un secreto real.
+  const SECRETO_PANEL = "__SECRETO_PANEL__";
+
+  async function marcarSubido(id, boton) {
+    boton.disabled = true;
+    const textoOriginal = boton.textContent;
+    boton.textContent = "Guardando...";
+    try {
+      const resp = await fetch('/api/marcar-subido', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({id, secret: SECRETO_PANEL}),
+      });
+      if (!resp.ok) throw new Error(await resp.text());
+      const fila = boton.closest('.pub');
+      if (fila) fila.classList.add('done');
+    } catch (error) {
+      boton.disabled = false;
+      boton.textContent = textoOriginal;
+      alert('No se pudo guardar: ' + error.message);
+    }
+  }
+</script>

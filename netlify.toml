@@ -1,6 +1,19 @@
+[build]
+  functions = "netlify/functions"
+
 [[redirects]]
   from = "/buscador-de-activos"
   to = "/buscador-de-activos.html"
+  status = 200
+
+[[redirects]]
+  from = "/panel"
+  to = "/panel/torre-de-control.html"
+  status = 200
+
+[[redirects]]
+  from = "/api/marcar-subido"
+  to = "/.netlify/functions/marcar-subido"
   status = 200
 
 # El Corte esta archivado (decision del operador, 2026-09-03) -- esta regla

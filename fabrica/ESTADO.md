@@ -1,5 +1,43 @@
 # Estado vivo del proyecto
 
+## Bloque: la "memoria" de la Torre de Control -- botón "Ya lo subí" vía Netlify Function (2026-09-14)
+
+**Pedido explícito**: cómo se entera el sistema de que un video del buzón (subida manual) ya se subió, si ese
+paso pasa por fuera de Zernio y nuestro sistema no lo puede ver solo.
+
+**Decisión de arquitectura, ya implementada (código, no maqueta):**
+- `netlify/functions/marcar-subido.js` -- Netlify Function nueva. Recibe `{id, secret}` del botón "Ya lo subí"
+  del panel, valida el secreto contra `MARCAR_SUBIDO_SECRET` (env var), y si coincide actualiza
+  `state/uploads.json` en la rama `main` (la que Netlify tiene deployada) vía la API de GitHub, usando un token
+  guardado como `GITHUB_TOKEN` (env var, nunca llega al navegador). Marca `estado:"subido"` + `subidoEn` en la
+  entrada correspondiente.
+- Por qué una Function y no que el botón escriba directo a GitHub desde el navegador: una página estática no
+  puede guardar un token con permiso de escritura sin exponerlo a cualquiera que mire el código fuente.
+- `netlify.toml` -- agregado `[build] functions = "netlify/functions"`, redirect `/api/marcar-subido` ->
+  `/.netlify/functions/marcar-subido` (antes del catchall de El Corte, mismo patrón ya usado), y redirect
+  `/panel` -> `/panel/torre-de-control.html`.
+- `panel/torre-de-control.html` -- cada publicación manual del calendario tiene ahora un botón "Ya lo subí" real
+  (JS con `fetch()` al endpoint de arriba), que al confirmar tacha la fila. El secreto va como placeholder
+  (`__SECRETO_PANEL__`) -- se reemplaza en el momento real de generar la página (paso todavía no construido).
+
+**Pendiente explícito, requiere acción manual del operador (no se puede hacer desde acá):**
+1. Crear un GitHub PAT fine-grained, alcance SOLO este repo, permiso "Contents: Read and write" -- nada más.
+2. En Netlify -- Site settings > Environment variables -- cargar `GITHUB_TOKEN` (el PAT de arriba) y
+   `MARCAR_SUBIDO_SECRET` (una palabra clave elegida por el operador).
+3. El mismo valor de `MARCAR_SUBIDO_SECRET` va a tener que estar también como GitHub Actions secret el día que
+   se construya el paso real de "generar la página con datos reales" (todavía no existe -- hoy la página es
+   una maqueta estática con datos de ejemplo, no se regenera sola).
+
+**Todavía no resuelto (fuera del alcance de este bloque):**
+- El paso real que regenera `panel/torre-de-control.html` con datos reales desde `state/uploads.json` +
+  `state/carruseles.json` + métricas -- no existe todavía, es el próximo paso lógico.
+- Notificación en el momento preciso (chequeo periódico tipo `notificar-box.yml` pero comparando `scheduledFor`
+  contra la hora actual) -- diseñado, no construido.
+- Limpieza de vencidos sin subir (marcar `estado:"vencido"` si pasan los 3 días de retención del artifact sin
+  que se haya marcado `subido`) -- diseñado, no construido.
+- Fetch real de métricas (YouTube API / Zernio `obtenerAnalytics()` / scraper TikTok apuntado a videos propios)
+  -- diseñado, no probado ni construido.
+
 ## Bloque: buzón de subida manual (tercera alternativa a Zernio) + primer diseño de la Torre de Control (2026-09-14)
 
 **Contexto**: tras cerrar la causa real del bug de presign de Zernio (bloque de abajo), el operador pidió una
