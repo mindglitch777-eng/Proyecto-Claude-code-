@@ -50,31 +50,35 @@ jobs:
           path: ${{ steps.subir.outputs.rutaVideoBuzon }}
           retention-days: 3
 
-      - name: Regenerar panel (panel/torre-de-control.html)
-        working-directory: fabrica
-        env:
-          MARCAR_SUBIDO_SECRET: ${{ secrets.MARCAR_SUBIDO_SECRET }}
-        run: npx tsx subida/generar_panel.ts
-
       - name: Commitear log de entrega + panel (state/uploads.json, panel/torre-de-control.html)
-        # OJO real: con varios workflows disparados casi a la vez esto
-        # puede perder la carrera de git -- el aviso por ntfy.sh ya
-        # salio bien en ese caso, un fallo aca no debe tumbar el job.
+        # Cada intento parte de la version MAS FRESCA del remoto (fetch +
+        # reset --hard) y reaplica ahi el UNICO pendiente de esta corrida
+        # (state/pendientes/<id>.json, no trackeado en git -- sobrevive al
+        # reset --hard) de forma idempotente -- asi nunca compite por las
+        # mismas lineas que otra corrida concurrente pueda haber tocado
+        # mientras tanto. Ver aplicar_pendiente.ts para el porque: el
+        # patron viejo (escribir el log completo una vez y solo reintentar
+        # el mismo push) perdia la carrera de git de verdad (2026-09-15:
+        # 28 de 32 avisos se mandaron bien pero el registro se perdio).
         continue-on-error: true
+        env:
+          ID: ${{ github.event.inputs.video }}
         run: |
           git config user.name  "productor-bot"
           git config user.email "actions@github.com"
-          git add state/uploads.json panel/torre-de-control.html panel/index.html
-          if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
-          git commit -m "Log de entrega + panel: ${{ github.event.inputs.video }}"
+          PENDIENTE="$GITHUB_WORKSPACE/state/pendientes/$ID.json"
           for i in 1 2 3 4 5 6; do
-            git rebase --abort >/dev/null 2>&1 || true
-            git pull --rebase origin "$GITHUB_REF_NAME" && \
-            git push origin HEAD:"$GITHUB_REF_NAME" && exit 0
+            git fetch origin "$GITHUB_REF_NAME"
+            git reset --hard "origin/$GITHUB_REF_NAME"
+            (cd fabrica && npx tsx subida/aplicar_pendiente.ts "$PENDIENTE" "$GITHUB_WORKSPACE/state/uploads.json")
+            (cd fabrica && npx tsx subida/generar_panel.ts)
+            git add state/uploads.json panel/torre-de-control.html panel/index.html
+            if git diff --cached --quiet; then echo "sin cambios"; rm -f "$PENDIENTE"; exit 0; fi
+            git commit -m "Log de entrega + panel: $ID"
+            if git push origin HEAD:"$GITHUB_REF_NAME"; then rm -f "$PENDIENTE"; exit 0; fi
             sleep $((RANDOM % 5 + 2 * i))
           done
-          git rebase --abort >/dev/null 2>&1 || true
-          echo "::warning::No se pudo commitear state/uploads.json tras varios intentos (carrera de git) -- el aviso SI se mando bien, revisar/reconstruir el log a mano."
+          echo "::warning::No se pudo commitear state/uploads.json tras varios intentos -- el aviso SI se mando bien, $PENDIENTE queda en el runner (se pierde al terminar el job), revisar/reconstruir el log a mano."
           exit 0
 
       - name: Sincronizar panel + estado a main (Netlify sirve el panel publico desde ahi)
