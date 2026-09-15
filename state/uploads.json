@@ -106,15 +106,15 @@
     "subidoEn": "2026-09-15T10:56:45.933397Z"
   },
   {
-    "id": "v06",
-    "fecha": "2026-09-15T11:18:34.464Z",
+    "id": "v07",
+    "fecha": "2026-09-15T11:18:45.782Z",
     "ok": true,
     "estado": "pendiente",
-    "tema": "Una tarde, cuatro horas, pagó el alquiler",
+    "tema": "La cara oculta de vender online",
     "scheduledFor": "",
-    "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v06.mp4",
-    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962532851",
+    "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v07.mp4",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962549998",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:18:34.464Z"
+    "avisadoBuzonEn": "2026-09-15T11:18:45.782Z"
   }
 ]
