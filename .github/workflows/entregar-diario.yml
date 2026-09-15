@@ -1,0 +1,150 @@
+name: entregar-diario
+
+# Entrega automática diaria: 3 videos + 6 carruseles por día, lunes a
+# viernes -- ritmo confirmado por el operador 2026-09-15 ("3 videos al
+# día y 6 carruseles diarios", "lunes a viernes"). Reemplaza el
+# disparo manual uno por uno para el ritmo normal de todos los días;
+# subir-video.yml / subir-carrusel.yml siguen existiendo para entregas
+# puntuales fuera de este ritmo (reintentos, casos especiales).
+#
+# fabrica/subida/preparar_entrega_diaria.ts calcula qué toca hoy sin
+# contador separado (se deriva de qué ids ya están en
+# state/uploads.json / state/carruseles.json), así que si un día falla
+# a mitad de camino, la próxima corrida retoma solo, sin duplicar nada
+# ya entregado.
+
+on:
+  schedule:
+    - cron: "3 12 * * 1-5" # 12:03 UTC = 09:03 ART, lunes a viernes
+  workflow_dispatch: {}
+
+env:
+  RAMA_TRABAJO: claude/organize-repo-duplicates-xl042t
+
+permissions:
+  contents: write
+
+jobs:
+  preparar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.preparar.outputs.matrix }}
+      hayContenido: ${{ steps.preparar.outputs.hayContenido }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RAMA_TRABAJO }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: fabrica/package-lock.json
+
+      - name: Dependencias
+        working-directory: fabrica
+        run: npm ci --no-audit --no-fund
+
+      - name: Calcular qué toca hoy
+        id: preparar
+        working-directory: fabrica
+        run: npx tsx subida/preparar_entrega_diaria.ts
+
+  entregar:
+    needs: preparar
+    if: needs.preparar.outputs.hayContenido == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      max-parallel: 1
+      matrix:
+        include: ${{ fromJson(needs.preparar.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RAMA_TRABAJO }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: fabrica/package-lock.json
+
+      - name: Dependencias
+        working-directory: fabrica
+        run: npm ci --no-audit --no-fund
+
+      - name: Entregar video ${{ matrix.id }}
+        if: matrix.tipo == 'video'
+        id: subir_video
+        working-directory: fabrica
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: npx tsx subida/subir_video.ts "${{ matrix.id }}" "${{ matrix.scheduledFor }}"
+
+      - name: Subir el video como artifact
+        if: matrix.tipo == 'video'
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-${{ matrix.id }}
+          path: ${{ steps.subir_video.outputs.rutaVideoBuzon }}
+          retention-days: 3
+
+      - name: Entregar carrusel ${{ matrix.id }}
+        if: matrix.tipo == 'carrusel'
+        id: subir_carrusel
+        working-directory: fabrica
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: npx tsx subida/subir_carrusel.ts "${{ matrix.id }}" "${{ matrix.scheduledFor }}"
+
+      - name: Subir las imágenes como artifact
+        if: matrix.tipo == 'carrusel'
+        uses: actions/upload-artifact@v4
+        with:
+          name: carrusel-${{ matrix.id }}
+          path: ${{ steps.subir_carrusel.outputs.carpetaImagenesBuzon }}
+          retention-days: 3
+
+      - name: Regenerar panel
+        working-directory: fabrica
+        run: npx tsx subida/generar_panel.ts
+
+      - name: Commitear log + panel (rama de trabajo)
+        continue-on-error: true
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git add state/uploads.json state/carruseles.json panel/torre-de-control.html panel/index.html
+          if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
+          git commit -m "Entrega diaria: ${{ matrix.id }}"
+          for i in 1 2 3 4 5 6; do
+            git rebase --abort >/dev/null 2>&1 || true
+            git pull --rebase origin "$RAMA_TRABAJO" && \
+            git push origin HEAD:"$RAMA_TRABAJO" && exit 0
+            sleep $((RANDOM % 5 + 2 * i))
+          done
+          git rebase --abort >/dev/null 2>&1 || true
+          echo "::warning::No se pudo commitear tras varios intentos (carrera de git) -- el aviso SI se mandó."
+          exit 0
+
+      - name: Sincronizar panel + estado a main
+        continue-on-error: true
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          git fetch origin main
+          for i in 1 2 3 4 5 6; do
+            git checkout -B "sync-main-${{ matrix.id }}" origin/main
+            git checkout "$RAMA_TRABAJO" -- panel/torre-de-control.html panel/index.html state/uploads.json state/carruseles.json
+            git add panel/torre-de-control.html panel/index.html state/uploads.json state/carruseles.json
+            if git diff --cached --quiet; then echo "sin cambios para main"; git checkout "$RAMA_TRABAJO"; exit 0; fi
+            git commit -m "panel + estado: sync desde $RAMA_TRABAJO (${{ matrix.id }})"
+            if git push origin "sync-main-${{ matrix.id }}:main"; then git checkout "$RAMA_TRABAJO"; exit 0; fi
+            git checkout "$RAMA_TRABAJO"
+            git fetch origin main
+            sleep $((RANDOM % 5 + 2 * i))
+          done
+          echo "::warning::No se pudo sincronizar a main tras varios intentos (carrera de git) -- se reintenta la próxima corrida."
+          exit 0
