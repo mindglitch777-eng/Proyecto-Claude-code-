@@ -304,5 +304,27 @@
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964173287",
     "avisadoBuzon": true,
     "avisadoBuzonEn": "2026-09-15T11:37:51.221Z"
+  },
+  {
+    "id": "carrusel-40",
+    "fecha": "2026-09-15T11:37:56.120Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "Video privado: cómo hice X",
+    "scheduledFor": "",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964175771",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T11:37:56.120Z"
+  },
+  {
+    "id": "carrusel-41",
+    "fecha": "2026-09-15T11:38:08.700Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "Las plataformas que uso",
+    "scheduledFor": "",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964181606",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T11:38:08.700Z"
   }
 ]
