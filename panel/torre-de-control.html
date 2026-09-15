@@ -39,16 +39,19 @@
     border-radius: 999px; padding: 2px 10px; font-weight: 600;
   }
   h2 { margin: 0; font-size: 1.1rem; }
-  .item-horario { margin: 0; font-size: 0.85rem; color: var(--muted); }
+  .item-horario {
+    margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--copper);
+  }
   .item-copy { margin: 0; white-space: pre-wrap; font-size: 0.9rem; line-height: 1.4; }
   .item-musica { margin: 0; font-size: 0.85rem; color: var(--muted); }
   .item-acciones { display: flex; gap: 10px; margin-top: 4px; flex-wrap: wrap; }
-  .boton-descarga, .boton-listo {
+  .boton-descarga, .boton-listo, .boton-copiar {
     border-radius: 8px; padding: 10px 16px; font-size: 0.9rem; font-weight: 600;
     text-decoration: none; border: none; cursor: pointer; text-align: center;
+    font-family: inherit;
   }
   .boton-descarga { background: var(--copper); color: #fff; }
-  .boton-listo { background: transparent; border: 1px solid var(--borde); color: var(--tinta); }
+  .boton-listo, .boton-copiar { background: transparent; border: 1px solid var(--borde); color: var(--tinta); }
   .boton-listo.done { opacity: 0.5; pointer-events: none; }
   .vacio { text-align: center; color: var(--muted); padding: 48px 0; }
 </style>
@@ -62,17 +65,32 @@
             <span class="item-tipo">🎬 Video</span>
             
           </div>
+          <p class="item-horario">📅 Sin horario sugerido todavía -- elegís vos la hora dentro de la franja 18-23 ART</p>
           <h2>No sabe editar, es su ventaja</h2>
-          <p class="item-horario">Horario sugerido: (programalo vos)</p>
           <p class="item-copy">El que más vende productos digitales no sabe ni abrir un editor de video. Esa es su ventaja.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #MarketingDigital #IA</p>
           <p class="item-musica">🎵 Beat motivacional que sube de intensidad hacia el CTA</p>
           <div class="item-acciones">
             <a class="boton-descarga" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34920510722" target="_blank" rel="noopener">Descargar</a>
+            <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="El que más vende productos digitales no sabe ni abrir un editor de video. Esa es su ventaja.
+
+#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #MarketingDigital #IA">Copiar texto</button>
             <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v01" target="_blank" rel="noopener">Ya lo subí</a>
           </div>
         </article>
   </div>
+  <script>
+    function copiarTexto(boton) {
+      const texto = boton.getAttribute('data-texto');
+      navigator.clipboard.writeText(texto).then(() => {
+        const original = boton.textContent;
+        boton.textContent = 'Copiado ✓';
+        setTimeout(() => { boton.textContent = original; }, 1500);
+      }).catch(() => {
+        alert('No se pudo copiar solo -- mantené presionado el texto de arriba para copiarlo a mano.');
+      });
+    }
+  </script>
 </body>
 </html>
