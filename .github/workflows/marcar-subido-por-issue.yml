@@ -1,11 +1,12 @@
 name: marcar-subido-por-issue
 
 # Reemplaza a la Netlify Function + secreto (2026-09-15, el panel se
-# movio a GitHub Pages). El boton "Ya lo subi" del panel ahora es un
-# link que abre un Issue prellenado ("Ya subido: <id>") -- no hace
+# movio a GitHub Pages, luego a un sitio nuevo de Netlify por límite
+# real de permisos de Pages). El boton "Ya lo subi" del panel ahora es
+# un link que abre un Issue prellenado ("Ya subido: <id>") -- no hace
 # falta ningun secreto nuevo, el operador ya esta logueado en GitHub.
 # Este workflow marca la entrada real como subida, regenera el panel,
-# lo empuja a main (dispara publicar-panel-pages.yml) y cierra el issue.
+# lo empuja a main y cierra el issue.
 #
 # Filtro de seguridad: el repo es publico desde 2026-09-15, asi que
 # cualquiera podria abrir un issue con este titulo -- solo se procesa
@@ -81,12 +82,14 @@ jobs:
           cp state/uploads.json /tmp/uploads.json
           cp state/carruseles.json /tmp/carruseles.json
           cp panel/torre-de-control.html /tmp/panel.html
+          cp panel/index.html /tmp/panel-index.html
           for i in 1 2 3 4 5 6; do
             git checkout -B sync-main origin/main
             cp /tmp/uploads.json state/uploads.json
             cp /tmp/carruseles.json state/carruseles.json
             cp /tmp/panel.html panel/torre-de-control.html
-            git add state/uploads.json state/carruseles.json panel/torre-de-control.html
+            cp /tmp/panel-index.html panel/index.html
+            git add state/uploads.json state/carruseles.json panel/torre-de-control.html panel/index.html
             if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
             git commit -m "Marcar subido: ${{ steps.marcar.outputs.id }} (issue #${{ github.event.issue.number }})"
             if git push origin sync-main:main; then exit 0; fi
