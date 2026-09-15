@@ -44,13 +44,14 @@
     "id": "v04",
     "fecha": "2026-09-15T10:45:25.658Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "El gurú que nunca vendió",
     "scheduledFor": "2026-09-15T21:30:00-03:00",
     "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v04.mp4",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34959062299",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T10:45:25.658Z"
+    "avisadoBuzonEn": "2026-09-15T10:45:25.658Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "v05",
@@ -110,13 +111,14 @@
     "id": "v06",
     "fecha": "2026-09-15T11:18:34.464Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Una tarde, cuatro horas, pagó el alquiler",
     "scheduledFor": "",
     "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v06.mp4",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962532851",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:18:34.464Z"
+    "avisadoBuzonEn": "2026-09-15T11:18:34.464Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "v20",
@@ -134,37 +136,40 @@
     "id": "v07",
     "fecha": "2026-09-15T11:29:38.888Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "La cara oculta de vender online",
     "scheduledFor": "",
     "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v07.mp4",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34963509853",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:29:38.888Z"
+    "avisadoBuzonEn": "2026-09-15T11:29:38.888Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "v08",
     "fecha": "2026-09-15T11:35:59.787Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "El error de mil dólares",
     "scheduledFor": "",
     "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v08.mp4",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964101936",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:35:59.787Z"
+    "avisadoBuzonEn": "2026-09-15T11:35:59.787Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "v12",
     "fecha": "2026-09-15T11:36:05.370Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "No sé diseñar",
     "scheduledFor": "",
     "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v12.mp4",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964106462",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:05.370Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:05.370Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "v21",
@@ -182,13 +187,14 @@
     "id": "v09",
     "fecha": "2026-09-15T11:36:09.198Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Tres segundos, cincuenta dólares",
     "scheduledFor": "",
     "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v09.mp4",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964104400",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:09.199Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:09.199Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "v18",
@@ -206,25 +212,27 @@
     "id": "v11",
     "fecha": "2026-09-15T12:25:27.065Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Tres IA, dos sueldos",
     "scheduledFor": "2026-09-15T18:30:00-03:00",
     "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v11.mp4",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34968621858",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T12:25:27.065Z"
+    "avisadoBuzonEn": "2026-09-15T12:25:27.065Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "v13",
     "fecha": "2026-09-15T12:26:53.218Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "El sitio que reemplaza al diseñador",
     "scheduledFor": "2026-09-15T20:00:00-03:00",
     "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v13.mp4",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34968621858",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T12:26:53.218Z"
+    "avisadoBuzonEn": "2026-09-15T12:26:53.218Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "v14",
