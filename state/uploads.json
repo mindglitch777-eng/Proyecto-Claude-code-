@@ -118,15 +118,15 @@
     "avisadoBuzonEn": "2026-09-15T11:18:34.464Z"
   },
   {
-    "id": "v20",
-    "fecha": "2026-09-15T11:21:33.237Z",
+    "id": "v12",
+    "fecha": "2026-09-15T11:21:33.329Z",
     "ok": true,
     "estado": "pendiente",
-    "tema": "Lo que Hotmart no te dice",
+    "tema": "No sé diseñar",
     "scheduledFor": "",
-    "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v20.mp4",
-    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962799105",
+    "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v12.mp4",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962787281",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:21:33.237Z"
+    "avisadoBuzonEn": "2026-09-15T11:21:33.329Z"
   }
 ]
