@@ -1,5 +1,25 @@
 # Estado vivo del proyecto
 
+## Bloque: entrega diaria automática -- 3 videos + 6 carruseles/día, lun-vie (2026-09-15)
+
+**Pedido explícito del operador**: le preocupaba no saber cómo le iban a llegar los avisos si tocaban varios
+videos el mismo día, y pidió organizarse mejor (algo tipo calendario) para tener todo listo para subir. Se
+resolvió con automatización real, no con una vista de calendario nueva en el panel (que el propio operador había
+pedido sacar el 2026-09-14):
+
+- **`entregar-diario.yml`** (nuevo): cron lunes a viernes, 09:03 ART. Calcula qué toca (sin contador aparte --
+  se deriva de qué ids ya están en `state/uploads.json`/`state/carruseles.json`) y dispara
+  `subir_video.ts`/`subir_carrusel.ts` automáticamente por cada item.
+- **Ritmo confirmado por el operador**: 3 videos/día (horarios fijos 18:30/20:00/21:30 ART, dentro de la franja
+  18-23 sin hueco) + 6 carruseles/día (ya venían con `dia`/`horaSugerida` propios en `lote_42_datos.ts` -- se
+  entrega el grupo completo del `dia` más chico pendiente, exactamente 6 items a la vez, uno por franja).
+- Con 21 videos y 42 carruseles, ambos lotes se agotan en exactamente 7 días hábiles (~1.5 semanas) al mismo
+  ritmo -- coincidencia real, no ajustada a mano.
+- Cada item sigue mandando su **propio aviso separado** por ntfy.sh (así se le respondió la pregunta directa del
+  operador: 3 videos el mismo día = 3 avisos distintos, cada uno con su descarga y su horario).
+- `subir-video.yml`/`subir-carrusel.yml` (disparo manual, uno por uno) siguen existiendo para casos puntuales
+  fuera de este ritmo.
+
 ## Bloque: el panel se muda de Netlify a GitHub Pages -- separado por completo de El Corte (2026-09-15)
 
 **Pedido explícito del operador**, tras la confusión real de las secciones anteriores (el operador entró al link
