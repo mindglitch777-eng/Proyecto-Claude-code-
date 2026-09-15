@@ -337,5 +337,16 @@
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964184253",
     "avisadoBuzon": true,
     "avisadoBuzonEn": "2026-09-15T11:38:17.663Z"
+  },
+  {
+    "id": "carrusel-11",
+    "fecha": "2026-09-15T11:41:18.976Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "El 90% usa IA mal",
+    "scheduledFor": "",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964576771",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T11:41:18.976Z"
   }
 ]
