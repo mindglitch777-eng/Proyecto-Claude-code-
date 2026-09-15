@@ -97,14 +97,14 @@
     "avisadoBuzonEn": "2026-09-15T11:22:15.208Z"
   },
   {
-    "id": "carrusel-42",
-    "fecha": "2026-09-15T11:24:41.793Z",
+    "id": "carrusel-41",
+    "fecha": "2026-09-15T11:24:20.426Z",
     "ok": true,
     "estado": "pendiente",
-    "tema": "El sistema en 5 pasos",
+    "tema": "Las plataformas que uso",
     "scheduledFor": "",
-    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962942765",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962937189",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:24:41.793Z"
+    "avisadoBuzonEn": "2026-09-15T11:24:20.426Z"
   }
 ]
