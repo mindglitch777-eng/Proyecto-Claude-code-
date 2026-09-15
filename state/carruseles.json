@@ -15,12 +15,13 @@
     "id": "carrusel-08",
     "fecha": "2026-09-15T10:48:31.131Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "No tenés que ser experto",
     "scheduledFor": "2026-09-15T10:30:00-03:00",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34959062299",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T10:48:31.131Z"
+    "avisadoBuzonEn": "2026-09-15T10:48:31.131Z",
+    "subidoEn": "2026-09-15T20:06:43.391Z"
   },
   {
     "id": "carrusel-15",
