@@ -86,14 +86,14 @@
     "subidoEn": "2026-09-15T10:56:45.933397Z"
   },
   {
-    "id": "carrusel-26",
-    "fecha": "2026-09-15T11:22:32.146Z",
+    "id": "carrusel-25",
+    "fecha": "2026-09-15T11:22:36.516Z",
     "ok": true,
     "estado": "pendiente",
-    "tema": "El que no vende, no ayuda a nadie",
+    "tema": "Ese carrusel no te paga el alquiler",
     "scheduledFor": "",
-    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962888564",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962883348",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:22:32.146Z"
+    "avisadoBuzonEn": "2026-09-15T11:22:36.516Z"
   }
 ]
