@@ -47,12 +47,14 @@
     "id": "carrusel-29",
     "fecha": "2026-09-15T10:52:40.540Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Mi primer producto no vendió ni uno",
     "scheduledFor": "2026-09-15T20:30:00-03:00",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34959062299",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T10:52:40.540Z"
+    "avisadoBuzonEn": "2026-09-15T10:52:40.540Z",
+    "subidoEn": "2026-09-15T10:56:45.933397Z",
+    "nota": "Marcado subido a mano: confirmado real en TikTok Studio/YouTube Studio (screenshots del operador, 2026-09-15) -- ya estaba publicado antes de que existiera este sistema de registro."
   },
   {
     "id": "carrusel-36",
@@ -64,5 +66,23 @@
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34959062299",
     "avisadoBuzon": true,
     "avisadoBuzonEn": "2026-09-15T10:53:55.867Z"
+  },
+  {
+    "id": "carrusel-16",
+    "fecha": "2026-09-15T10:56:45.933397Z",
+    "ok": true,
+    "estado": "subido",
+    "tema": "Así se ve un producto hecho en una tarde",
+    "nota": "Marcado subido a mano: confirmado real en TikTok Studio/YouTube Studio (screenshots del operador, 2026-09-15) -- ya estaba publicado antes de que existiera este sistema de registro.",
+    "subidoEn": "2026-09-15T10:56:45.933397Z"
+  },
+  {
+    "id": "carrusel-37",
+    "fecha": "2026-09-15T10:56:45.933397Z",
+    "ok": true,
+    "estado": "subido",
+    "tema": "Plantilla para tu primer producto",
+    "nota": "Marcado subido a mano: confirmado real en TikTok Studio/YouTube Studio (screenshots del operador, 2026-09-15) -- ya estaba publicado antes de que existiera este sistema de registro.",
+    "subidoEn": "2026-09-15T10:56:45.933397Z"
   }
 ]
