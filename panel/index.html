@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buzón</title>
+<style>
+  :root {
+    --bg: #faf9f7; --tinta: #1a1a1a; --muted: #6b6b6b; --card: #ffffff;
+    --borde: #e5e2dc; --copper: #d43d15;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0a0a0c; --tinta: #f2f0ec; --muted: #9a9a9a; --card: #17171a;
+      --borde: #2a2a2e; --copper: #ff4e24;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0a0a0c; --tinta: #f2f0ec; --muted: #9a9a9a; --card: #17171a;
+    --borde: #2a2a2e; --copper: #ff4e24;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--tinta);
+    font-family: 'Archivo', system-ui, sans-serif; padding: 24px 16px 48px;
+  }
+  h1 { font-size: 1.4rem; margin: 0 0 4px; }
+  .subtitulo { color: var(--muted); margin: 0 0 24px; font-size: 0.9rem; }
+  .lista { display: flex; flex-direction: column; gap: 16px; max-width: 560px; margin: 0 auto; }
+  .item {
+    background: var(--card); border: 1px solid var(--borde); border-radius: 12px;
+    padding: 18px; display: flex; flex-direction: column; gap: 8px;
+  }
+  .item-vencido { border-color: var(--copper); }
+  .item-cabecera { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .item-tipo { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  .item-badge {
+    font-size: 0.75rem; color: var(--copper); border: 1px solid var(--copper);
+    border-radius: 999px; padding: 2px 10px; font-weight: 600;
+  }
+  h2 { margin: 0; font-size: 1.1rem; }
+  .item-horario { margin: 0; font-size: 0.85rem; color: var(--muted); }
+  .item-copy { margin: 0; white-space: pre-wrap; font-size: 0.9rem; line-height: 1.4; }
+  .item-musica { margin: 0; font-size: 0.85rem; color: var(--muted); }
+  .item-acciones { display: flex; gap: 10px; margin-top: 4px; flex-wrap: wrap; }
+  .boton-descarga, .boton-listo {
+    border-radius: 8px; padding: 10px 16px; font-size: 0.9rem; font-weight: 600;
+    text-decoration: none; border: none; cursor: pointer; text-align: center;
+  }
+  .boton-descarga { background: var(--copper); color: #fff; }
+  .boton-listo { background: transparent; border: 1px solid var(--borde); color: var(--tinta); }
+  .boton-listo.done { opacity: 0.5; pointer-events: none; }
+  .vacio { text-align: center; color: var(--muted); padding: 48px 0; }
+</style>
+</head>
+<body>
+  <h1>Buzón</h1>
+  <p class="subtitulo">Lo que hay para bajar y subir a mano (TikTok Studio / YouTube Studio).</p>
+  <div class="lista">
+        <article class="item">
+          <div class="item-cabecera">
+            <span class="item-tipo">🎬 Video</span>
+            
+          </div>
+          <h2>No sabe editar, es su ventaja</h2>
+          <p class="item-horario">Horario sugerido: (programalo vos)</p>
+          <p class="item-copy">El que más vende productos digitales no sabe ni abrir un editor de video. Esa es su ventaja.
+
+#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #MarketingDigital #IA</p>
+          <p class="item-musica">🎵 Beat motivacional que sube de intensidad hacia el CTA</p>
+          <div class="item-acciones">
+            <a class="boton-descarga" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34920510722" target="_blank" rel="noopener">Descargar</a>
+            <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v01" target="_blank" rel="noopener">Ya lo subí</a>
+          </div>
+        </article>
+  </div>
+</body>
+</html>
