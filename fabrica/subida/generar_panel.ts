@@ -32,7 +32,7 @@
  *
  * Uso: npx tsx subida/generar_panel.ts
  */
-import {writeFileSync} from 'fs';
+import {writeFileSync, readdirSync, existsSync} from 'fs';
 import {resolve} from 'path';
 import {RUTA_UPLOADS, RUTA_CARRUSELES, leerLog, type Publicacion} from './publicacion';
 import {VIDEOS} from '../ejemplos/lote_21_datos';
@@ -43,6 +43,18 @@ const RAIZ = resolve(__dirname, '../..');
 const RUTA_SALIDA = resolve(RAIZ, 'panel/torre-de-control.html');
 const RUTA_INDEX = resolve(RAIZ, 'panel/index.html');
 const REPO_ISSUES_NUEVO = 'https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new';
+// Descarga directa desde el archivo YA commiteado en el repo (público
+// desde 2026-09-15) -- raw.githubusercontent.com sirve el archivo real
+// sin login de GitHub y sin vencimiento (a diferencia del link al run de
+// Actions, que exige entrar a la UI de GitHub y expira a los 3 días).
+// Pedido explícito del operador (2026-09-16): "que tenga que ir hasta
+// github es bastante pajoso".
+// OJO real: apunta a la rama de TRABAJO, no a main -- los videos/imagenes
+// reales solo viven ahí (main es un espejo parcial de unos pocos
+// archivos para Netlify/Pages, nunca tuvo los binarios de videos/lote21
+// ni imagenes/lote42). Probado en vivo (curl -I): la URL sobre main
+// devuelve 404, sobre la rama de trabajo devuelve 200.
+const RAW_BASE = 'https://raw.githubusercontent.com/mindglitch777-eng/Proyecto-Claude-code-/claude/organize-repo-duplicates-xl042t';
 const HORARIOS_VIDEO_ART = ['18:30', '20:00', '21:30']; // mismo orden que preparar_entrega_diaria.ts
 export const TOTAL_DIAS = 7; // 21 videos / 3 por día = 7; 42 carruseles / 6 por día = 7 -- coincidencia real, no ajustada
 
@@ -55,13 +67,14 @@ type ItemPanel = {
   tema: string;
   estado: Estado;
   vencido: boolean;
-  link?: string;
   descripcion: string;
   cta?: string;
   hashtags: string[];
   musica: string;
   franjaSugerida: string; // texto chico, ej "Noche · sugerido 21:30 ART"
   subidoEn?: string;
+  descargaVideo?: string; // solo video -- raw.githubusercontent.com, descarga directa
+  descargaImagenes?: {numero: number; url: string}[]; // solo carrusel -- una por slide
 };
 
 function estadoDesdeLog(entrada: Publicacion | undefined): {estado: Estado; vencido: boolean} {
@@ -86,15 +99,27 @@ export function construirCatalogoVideos(): ItemPanel[] {
       tema: entrada?.tema ?? v.titulo,
       estado,
       vencido,
-      link: entrada?.link,
       descripcion: pub.descripcion,
       cta: pub.cta,
       hashtags: pub.hashtags,
       musica: MUSICA_CATEGORIA[pub.categoria],
       franjaSugerida: `sugerido ${hora} ART`,
       subidoEn: entrada?.subidoEn,
+      descargaVideo: `${RAW_BASE}/videos/lote21/lote21-${v.id}.mp4`,
     };
   }).filter((x): x is ItemPanel => x !== null);
+}
+
+/** Lista las imágenes reales de un carrusel ya renderizado y arma sus
+ * URLs de descarga directa -- vacío si la carpeta todavía no existe
+ * (item sin entregar). */
+function descargaImagenesCarrusel(id: string): {numero: number; url: string}[] {
+  const carpeta = resolve(RAIZ, `imagenes/lote42/${id}`);
+  if (!existsSync(carpeta)) return [];
+  return readdirSync(carpeta)
+    .filter((f) => f.endsWith('.png'))
+    .sort()
+    .map((archivo, i) => ({numero: i + 1, url: `${RAW_BASE}/imagenes/lote42/${id}/${archivo}`}));
 }
 
 export function construirCatalogoCarruseles(): ItemPanel[] {
@@ -109,12 +134,12 @@ export function construirCatalogoCarruseles(): ItemPanel[] {
       tema: entrada?.tema ?? c.titulo,
       estado,
       vencido,
-      link: entrada?.link,
       descripcion: c.descripcion,
       hashtags: c.hashtags,
       musica: c.musica,
       franjaSugerida: `${c.horario} · sugerido ${c.horaSugerida} ART`,
       subidoEn: entrada?.subidoEn,
+      descargaImagenes: descargaImagenesCarrusel(c.id),
     };
   });
 }
@@ -156,18 +181,28 @@ function renderizarItem(item: ItemPanel): string {
           </article>`;
   }
 
+  // Descarga directa del archivo ya commiteado en el repo (público) --
+  // ver RAW_BASE arriba. Para video es un solo botón; para carrusel son
+  // 6 botones numerados (uno por imagen) en vez de un zip: TikTok arma
+  // el post de fotos seleccionando varias imágenes de la galería del
+  // celular, no importando un zip, así que bajarlas sueltas es lo que
+  // realmente hace falta, no un paso extra de descomprimir.
+  const botonesDescarga = item.tipo === 'video'
+    ? (item.descargaVideo ? `<a class="boton-descarga" href="${item.descargaVideo}" target="_blank" rel="noopener">Descargar video</a>` : '')
+    : (item.descargaImagenes ?? []).map((img) => `<a class="boton-descarga boton-descarga-img" href="${img.url}" target="_blank" rel="noopener">Img ${img.numero}</a>`).join('');
+
   return `
           <article class="item ${claseEstado}${item.vencido ? ' item-vencido' : ''}">
             <div class="item-cabecera">
               <span class="item-tipo">${iconoTipo} ${item.tipo === 'video' ? 'Video' : 'Carrusel'}</span>
-              <span class="item-estado-badge ${item.vencido ? 'badge-vencido' : 'badge-pendiente'}">${item.vencido ? '⚠️ Vencido -- re-entregar' : '⏳ Listo para bajar'}</span>
+              <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
             </div>
             <p class="item-franja">${escaparHtml(item.franjaSugerida)}</p>
             <h3>${escaparHtml(item.tema)}</h3>
             <p class="item-copy">${escaparHtml(copy)}</p>
             <p class="item-musica">🎵 ${escaparHtml(item.musica)}</p>
             <div class="item-acciones">
-              ${item.link && !item.vencido ? `<a class="boton-descarga" href="${item.link}" target="_blank" rel="noopener">Descargar</a>` : ''}
+              ${botonesDescarga}
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="${escaparHtml(copy)}">Copiar texto</button>
               <a class="boton-listo" href="${urlMarcarSubido(item.id)}" target="_blank" rel="noopener">Ya lo subí</a>
             </div>
@@ -341,6 +376,7 @@ export const ESTILOS_PANEL = `
     font-family: inherit;
   }
   .boton-descarga { background: var(--copper); color: #fff; }
+  .boton-descarga-img { padding: 8px 10px; min-width: 44px; }
   .boton-listo, .boton-copiar { background: var(--card); border: 1px solid var(--borde); color: var(--tinta); }
 `;
 
