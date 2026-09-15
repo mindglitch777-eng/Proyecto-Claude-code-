@@ -86,14 +86,14 @@
     "subidoEn": "2026-09-15T10:56:45.933397Z"
   },
   {
-    "id": "carrusel-27",
-    "fecha": "2026-09-15T11:22:30.065Z",
+    "id": "carrusel-19",
+    "fecha": "2026-09-15T11:22:18.499Z",
     "ok": true,
     "estado": "pendiente",
-    "tema": "Mi sistema cambió 6 veces este año",
+    "tema": "3 segundos, una venta",
     "scheduledFor": "",
-    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962893476",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962865196",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:22:30.065Z"
+    "avisadoBuzonEn": "2026-09-15T11:22:18.499Z"
   }
 ]
