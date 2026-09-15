@@ -111,6 +111,31 @@ function urlMarcarSubido(id: string): string {
   return `${REPO_ISSUES_NUEVO}?${params.toString()}`;
 }
 
+/** Formatea el horario sugerido en hora de Argentina, legible de un
+ * vistazo (ej: "mar. 16/09, 20:00 ART") -- antes se mostraba el ISO
+ * crudo o nada, lo que hacía parecer que el panel no tenía fechas. */
+function formatearHorario(iso?: string): string {
+  if (!iso) return 'Sin horario sugerido todavía -- elegís vos la hora dentro de la franja 18-23 ART';
+  const fecha = new Date(iso);
+  if (isNaN(fecha.getTime())) return 'Sin horario sugerido todavía -- elegís vos la hora dentro de la franja 18-23 ART';
+  const formateado = new Intl.DateTimeFormat('es-AR', {
+    weekday: 'short', day: '2-digit', month: '2-digit',
+    hour: '2-digit', minute: '2-digit',
+    timeZone: 'America/Argentina/Buenos_Aires',
+  }).format(fecha);
+  return `${formateado} ART`;
+}
+
+/** Ordena por horario sugerido (los que no tienen todavía quedan al
+ * final) -- así con varios items pendientes se ve como una agenda, no
+ * una lista suelta. */
+function ordenarPorHorario(items: ItemPanel[]): ItemPanel[] {
+  const conHorario = items.filter((i) => i.horario);
+  const sinHorario = items.filter((i) => !i.horario);
+  conHorario.sort((a, b) => new Date(a.horario!).getTime() - new Date(b.horario!).getTime());
+  return [...conHorario, ...sinHorario];
+}
+
 function renderizarItem(item: ItemPanel): string {
   const copy = `${item.descripcion}\n\n${item.hashtags.join(' ')}`;
   return `
@@ -119,12 +144,13 @@ function renderizarItem(item: ItemPanel): string {
             <span class="item-tipo">${item.tipo === 'video' ? '🎬 Video' : '🖼️ Carrusel'}</span>
             ${item.vencido ? '<span class="item-badge">VENCIDO -- el link ya expiró, hay que re-entregarlo</span>' : ''}
           </div>
+          <p class="item-horario">📅 ${escaparHtml(formatearHorario(item.horario))}</p>
           <h2>${escaparHtml(item.tema)}</h2>
-          <p class="item-horario">Horario sugerido: ${item.horario ? escaparHtml(item.horario) : '(programalo vos)'}</p>
           <p class="item-copy">${escaparHtml(copy)}</p>
           <p class="item-musica">🎵 ${escaparHtml(item.musica)}</p>
           <div class="item-acciones">
             ${item.link && !item.vencido ? `<a class="boton-descarga" href="${item.link}" target="_blank" rel="noopener">Descargar</a>` : ''}
+            <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="${escaparHtml(copy)}">Copiar texto</button>
             <a class="boton-listo" href="${urlMarcarSubido(item.id)}" target="_blank" rel="noopener">Ya lo subí</a>
           </div>
         </article>`;
@@ -176,16 +202,19 @@ function generarHtml(items: ItemPanel[]): string {
     border-radius: 999px; padding: 2px 10px; font-weight: 600;
   }
   h2 { margin: 0; font-size: 1.1rem; }
-  .item-horario { margin: 0; font-size: 0.85rem; color: var(--muted); }
+  .item-horario {
+    margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--copper);
+  }
   .item-copy { margin: 0; white-space: pre-wrap; font-size: 0.9rem; line-height: 1.4; }
   .item-musica { margin: 0; font-size: 0.85rem; color: var(--muted); }
   .item-acciones { display: flex; gap: 10px; margin-top: 4px; flex-wrap: wrap; }
-  .boton-descarga, .boton-listo {
+  .boton-descarga, .boton-listo, .boton-copiar {
     border-radius: 8px; padding: 10px 16px; font-size: 0.9rem; font-weight: 600;
     text-decoration: none; border: none; cursor: pointer; text-align: center;
+    font-family: inherit;
   }
   .boton-descarga { background: var(--copper); color: #fff; }
-  .boton-listo { background: transparent; border: 1px solid var(--borde); color: var(--tinta); }
+  .boton-listo, .boton-copiar { background: transparent; border: 1px solid var(--borde); color: var(--tinta); }
   .boton-listo.done { opacity: 0.5; pointer-events: none; }
   .vacio { text-align: center; color: var(--muted); padding: 48px 0; }
 </style>
@@ -195,13 +224,25 @@ function generarHtml(items: ItemPanel[]): string {
   <p class="subtitulo">Lo que hay para bajar y subir a mano (TikTok Studio / YouTube Studio).</p>
   <div class="lista">${cuerpo}
   </div>
+  <script>
+    function copiarTexto(boton) {
+      const texto = boton.getAttribute('data-texto');
+      navigator.clipboard.writeText(texto).then(() => {
+        const original = boton.textContent;
+        boton.textContent = 'Copiado ✓';
+        setTimeout(() => { boton.textContent = original; }, 1500);
+      }).catch(() => {
+        alert('No se pudo copiar solo -- mantené presionado el texto de arriba para copiarlo a mano.');
+      });
+    }
+  </script>
 </body>
 </html>
 `;
 }
 
 function main(): void {
-  const items = [...armarItemsVideo(leerLog(RUTA_UPLOADS)), ...armarItemsCarrusel(leerLog(RUTA_CARRUSELES))];
+  const items = ordenarPorHorario([...armarItemsVideo(leerLog(RUTA_UPLOADS)), ...armarItemsCarrusel(leerLog(RUTA_CARRUSELES))]);
   const html = generarHtml(items);
   writeFileSync(RUTA_SALIDA, html);
   // Copia idéntica como index.html: un sitio nuevo de Netlify con
