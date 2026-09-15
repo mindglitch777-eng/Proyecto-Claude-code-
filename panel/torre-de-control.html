@@ -70,31 +70,9 @@
           <p class="item-musica">🎵 Beat motivacional que sube de intensidad hacia el CTA</p>
           <div class="item-acciones">
             <a class="boton-descarga" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34920510722" target="_blank" rel="noopener">Descargar</a>
-            <button class="boton-listo" type="button" onclick="marcarSubido('v01', this)">Ya lo subí</button>
+            <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v01" target="_blank" rel="noopener">Ya lo subí</a>
           </div>
         </article>
   </div>
-  <script>
-    // SECRETO_PANEL se reemplaza acá en el momento real de generar esta página
-    const SECRETO_PANEL = "Fabrica2026";
-    async function marcarSubido(id, boton) {
-      boton.disabled = true;
-      boton.textContent = 'Marcando...';
-      try {
-        const resp = await fetch('/api/marcar-subido', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({id, secret: SECRETO_PANEL}),
-        });
-        if (!resp.ok) throw new Error(await resp.text());
-        boton.textContent = 'Subido ✓';
-        boton.classList.add('done');
-      } catch (err) {
-        boton.disabled = false;
-        boton.textContent = 'Ya lo subí';
-        alert('No se pudo marcar: ' + err.message);
-      }
-    }
-  </script>
 </body>
 </html>
