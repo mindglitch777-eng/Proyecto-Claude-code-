@@ -128,5 +128,17 @@
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962799105",
     "avisadoBuzon": true,
     "avisadoBuzonEn": "2026-09-15T11:21:33.237Z"
+  },
+  {
+    "id": "v07",
+    "fecha": "2026-09-15T11:29:38.888Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "La cara oculta de vender online",
+    "scheduledFor": "",
+    "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v07.mp4",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34963509853",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T11:29:38.888Z"
   }
 ]
