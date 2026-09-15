@@ -116,17 +116,5 @@
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962532851",
     "avisadoBuzon": true,
     "avisadoBuzonEn": "2026-09-15T11:18:34.464Z"
-  },
-  {
-    "id": "v21",
-    "fecha": "2026-09-15T11:21:38.876Z",
-    "ok": true,
-    "estado": "pendiente",
-    "tema": "Un video de 40 minutos vs. un curso de 6 meses",
-    "scheduledFor": "",
-    "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v21.mp4",
-    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962804292",
-    "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:21:38.876Z"
   }
 ]
