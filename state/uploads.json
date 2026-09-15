@@ -106,15 +106,15 @@
     "subidoEn": "2026-09-15T10:56:45.933397Z"
   },
   {
-    "id": "v07",
-    "fecha": "2026-09-15T11:18:45.782Z",
+    "id": "v08",
+    "fecha": "2026-09-15T11:18:57.042Z",
     "ok": true,
     "estado": "pendiente",
-    "tema": "La cara oculta de vender online",
+    "tema": "El error de mil dólares",
     "scheduledFor": "",
-    "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v07.mp4",
-    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962549998",
+    "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v08.mp4",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962567496",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:18:45.782Z"
+    "avisadoBuzonEn": "2026-09-15T11:18:57.042Z"
   }
 ]
