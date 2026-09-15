@@ -81,12 +81,14 @@ jobs:
           cp state/uploads.json /tmp/uploads.json
           cp state/carruseles.json /tmp/carruseles.json
           cp panel/torre-de-control.html /tmp/panel.html
+          cp panel/index.html /tmp/panel-index.html
           for i in 1 2 3 4 5 6; do
             git checkout -B sync-main origin/main
             cp /tmp/uploads.json state/uploads.json
             cp /tmp/carruseles.json state/carruseles.json
             cp /tmp/panel.html panel/torre-de-control.html
-            git add state/uploads.json state/carruseles.json panel/torre-de-control.html
+            cp /tmp/panel-index.html panel/index.html
+            git add state/uploads.json state/carruseles.json panel/torre-de-control.html panel/index.html
             if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
             git commit -m "Marcar subido: ${{ steps.marcar.outputs.id }} (issue #${{ github.event.issue.number }})"
             if git push origin sync-main:main; then exit 0; fi

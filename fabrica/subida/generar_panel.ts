@@ -13,15 +13,25 @@
  * lote_42_datos.ts) -- el estado no duplica ese texto, lo referencia
  * por id.
  *
- * Publicación 2026-09-15: se movió de Netlify (mismo sitio que El
- * Corte, causó confusión real de rutas/redirects que casi hace parecer
- * que se había roto el producto pago) a GitHub Pages, un sitio
- * COMPLETAMENTE separado -- decisión explícita del operador ("no tiene
- * nada que ver una cosa con la otra"). El botón "Ya lo subí" dejó de
- * pegarle a una Netlify Function con secreto -- ahora es un link que
- * abre un Issue de GitHub prellenado (el operador ya está logueado en
- * GitHub, no hace falta ningún secreto nuevo); un workflow aparte
- * (marcar-subido-por-issue.yml) lo procesa y cierra el issue solo.
+ * Publicación 2026-09-15: se sacó del sitio de Netlify de El Corte
+ * (mismo sitio causó confusión real de rutas/redirects que casi hace
+ * parecer que se había roto el producto pago) -- decisión explícita
+ * del operador ("no tiene nada que ver una cosa con la otra"). Se
+ * probó GitHub Pages primero, pero la creación inicial del sitio
+ * requiere un permiso que el token automático de Actions no tiene
+ * (límite real de la plataforma, no arreglable desde acá) -- el
+ * operador prefirió quedarse en la MISMA cuenta de Netlify que ya usa,
+ * pero un SITIO nuevo y separado, no el de El Corte. Por eso este
+ * script escribe panel/index.html además de panel/torre-de-control.html
+ * -- un sitio nuevo de Netlify apuntado a la carpeta panel/ como
+ * publish directory sirve panel/index.html en la raíz sin necesitar
+ * ninguna regla de redirect.
+ *
+ * El botón "Ya lo subí" dejó de pegarle a una Netlify Function con
+ * secreto -- ahora es un link que abre un Issue de GitHub prellenado
+ * (el operador ya está logueado en GitHub, no hace falta ningún
+ * secreto nuevo); un workflow aparte (marcar-subido-por-issue.yml) lo
+ * procesa y cierra el issue solo.
  *
  * Uso: npx tsx subida/generar_panel.ts
  */
@@ -34,6 +44,7 @@ import {CARRUSELES_42, MUSICA_CATEGORIA} from '../carrusel/lote_42_datos';
 
 const RAIZ = resolve(__dirname, '../..');
 const RUTA_SALIDA = resolve(RAIZ, 'panel/torre-de-control.html');
+const RUTA_INDEX = resolve(RAIZ, 'panel/index.html');
 const REPO_ISSUES_NUEVO = 'https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new';
 
 type ItemPanel = {
@@ -193,7 +204,11 @@ function main(): void {
   const items = [...armarItemsVideo(leerLog(RUTA_UPLOADS)), ...armarItemsCarrusel(leerLog(RUTA_CARRUSELES))];
   const html = generarHtml(items);
   writeFileSync(RUTA_SALIDA, html);
-  console.log(`Listo -- ${items.length} item(s) pendiente(s) en ${RUTA_SALIDA}.`);
+  // Copia idéntica como index.html: un sitio nuevo de Netlify con
+  // publish directory = "panel" sirve esto directo en la raíz, sin
+  // ninguna regla de redirect.
+  writeFileSync(RUTA_INDEX, html);
+  console.log(`Listo -- ${items.length} item(s) pendiente(s) en ${RUTA_SALIDA} y ${RUTA_INDEX}.`);
 }
 
 main();
