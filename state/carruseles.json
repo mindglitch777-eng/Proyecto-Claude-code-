@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "id": "carrusel-01",
+    "fecha": "2026-09-15T10:46:54.529Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "El que más vende, menos sabe",
+    "scheduledFor": "2026-09-15T09:30:00-03:00",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34959062299",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T10:46:54.529Z"
+  }
+]
