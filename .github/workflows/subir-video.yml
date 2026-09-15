@@ -76,3 +76,29 @@ jobs:
           git rebase --abort >/dev/null 2>&1 || true
           echo "::warning::No se pudo commitear state/uploads.json tras varios intentos (carrera de git) -- el aviso SI se mando bien, revisar/reconstruir el log a mano."
           exit 0
+
+      - name: Sincronizar panel + estado a main (Netlify sirve el panel publico desde ahi)
+        # OJO real (2026-09-15): sin este paso el panel/torre-de-control.html
+        # que ve el operador en Netlify quedaba vacio/desactualizado para
+        # siempre -- el resto del codigo vive en la rama de trabajo, pero
+        # esto SI tiene que llegar a main (mismo patron que ya usa
+        # netlify/functions/marcar-subido.js).
+        continue-on-error: true
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          RAMA_ORIGEN="$GITHUB_REF_NAME"
+          git fetch origin main
+          for i in 1 2 3 4 5 6; do
+            git checkout -B sync-main origin/main
+            git checkout "$RAMA_ORIGEN" -- panel/torre-de-control.html state/uploads.json state/carruseles.json
+            git add panel/torre-de-control.html state/uploads.json state/carruseles.json
+            if git diff --cached --quiet; then echo "sin cambios para main"; git checkout "$RAMA_ORIGEN"; exit 0; fi
+            git commit -m "panel + estado: sync desde $RAMA_ORIGEN (${{ github.event.inputs.video }})"
+            if git push origin sync-main:main; then git checkout "$RAMA_ORIGEN"; exit 0; fi
+            git checkout "$RAMA_ORIGEN"
+            git fetch origin main
+            sleep $((RANDOM % 5 + 2 * i))
+          done
+          echo "::warning::No se pudo sincronizar panel/estado a main tras varios intentos (carrera de git) -- se reintenta la proxima corrida."
+          exit 0
