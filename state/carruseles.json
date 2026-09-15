@@ -315,5 +315,38 @@
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964175771",
     "avisadoBuzon": true,
     "avisadoBuzonEn": "2026-09-15T11:37:56.120Z"
+  },
+  {
+    "id": "carrusel-41",
+    "fecha": "2026-09-15T11:38:08.700Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "Las plataformas que uso",
+    "scheduledFor": "",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964181606",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T11:38:08.700Z"
+  },
+  {
+    "id": "carrusel-42",
+    "fecha": "2026-09-15T11:38:17.663Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "El sistema en 5 pasos",
+    "scheduledFor": "",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964184253",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T11:38:17.663Z"
+  },
+  {
+    "id": "carrusel-11",
+    "fecha": "2026-09-15T11:41:18.976Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "El 90% usa IA mal",
+    "scheduledFor": "",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964576771",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T11:41:18.976Z"
   }
 ]
