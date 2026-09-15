@@ -192,7 +192,7 @@ function renderizarItem(item: ItemPanel): string {
     : (item.descargaImagenes ?? []).map((img) => `<a class="boton-descarga boton-descarga-img" href="${img.url}" target="_blank" rel="noopener">Img ${img.numero}</a>`).join('');
 
   return `
-          <article class="item ${claseEstado}${item.vencido ? ' item-vencido' : ''}">
+          <article class="item ${claseEstado}${item.vencido ? ' item-vencido' : ''}" data-id="${item.id}" data-tipo="${item.tipo}">
             <div class="item-cabecera">
               <span class="item-tipo">${iconoTipo} ${item.tipo === 'video' ? 'Video' : 'Carrusel'}</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -204,7 +204,7 @@ function renderizarItem(item: ItemPanel): string {
             <div class="item-acciones">
               ${botonesDescarga}
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="${escaparHtml(copy)}">Copiar texto</button>
-              <a class="boton-listo" href="${urlMarcarSubido(item.id)}" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="${urlMarcarSubido(item.id)}">Ya lo subí</button>
             </div>
           </article>`;
 }
@@ -212,7 +212,7 @@ function renderizarItem(item: ItemPanel): string {
 function puntoMapa(item: ItemPanel): string {
   const clase = item.estado === 'subido' ? 'punto-subido' : item.estado === 'sin_entregar' ? 'punto-espera' : 'punto-pendiente';
   const titulo = `${item.tipo === 'video' ? '🎬' : '🖼️'} ${item.tema} -- ${item.estado === 'subido' ? 'subido' : item.estado === 'sin_entregar' ? 'sin entregar' : 'pendiente'}`;
-  return `<span class="punto ${clase}" title="${escaparHtml(titulo)}"></span>`;
+  return `<span class="punto ${clase}" data-id="${item.id}" title="${escaparHtml(titulo)}"></span>`;
 }
 
 export function renderizarMapa(porDia: Map<number, ItemPanel[]>): string {
@@ -378,6 +378,15 @@ export const ESTILOS_PANEL = `
   .boton-descarga { background: var(--copper); color: #fff; }
   .boton-descarga-img { padding: 8px 10px; min-width: 44px; }
   .boton-listo, .boton-copiar { background: var(--card); border: 1px solid var(--borde); color: var(--tinta); }
+  .boton-listo:disabled { opacity: 0.6; cursor: default; }
+
+  /* -- Aviso flotante (confirmación de "Ya lo subí") -- */
+  .aviso-flotante {
+    position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+    background: var(--tinta); color: var(--bg); padding: 10px 16px; border-radius: 999px;
+    font-size: 0.82rem; font-weight: 600; box-shadow: 0 4px 16px rgba(0,0,0,0.25); z-index: 100;
+    max-width: calc(100% - 32px); text-align: center;
+  }
 `;
 
 // Contenido compartido (mapa + resumen + acordeón + script de copiar) --
@@ -421,21 +430,21 @@ export function construirCuerpo(catalogo: ItemPanel[]): {cuerpoHtml: string; act
     <p class="actualizado">Actualizado ${actualizado} ART</p>
 
     <div class="resumen">
-      <div class="resumen-tile ok"><div class="resumen-numero">${totalSubido}</div><div class="resumen-label">Ya subidos</div></div>
-      <div class="resumen-tile acento"><div class="resumen-numero">${totalAccionable}</div><div class="resumen-label">Para bajar ahora</div></div>
-      <div class="resumen-tile"><div class="resumen-numero">${totalSinEntregar}</div><div class="resumen-label">Sin entregar todavía</div></div>
+      <div class="resumen-tile ok"><div class="resumen-numero" id="resumen-subidos">${totalSubido}</div><div class="resumen-label">Ya subidos</div></div>
+      <div class="resumen-tile acento"><div class="resumen-numero" id="resumen-pendientes">${totalAccionable}</div><div class="resumen-label">Para bajar ahora</div></div>
+      <div class="resumen-tile"><div class="resumen-numero" id="resumen-sin-entregar">${totalSinEntregar}</div><div class="resumen-label">Sin entregar todavía</div></div>
       <div class="resumen-tile"><div class="resumen-numero">${catalogo.length}</div><div class="resumen-label">Total (video+carrusel)</div></div>
     </div>
     <div class="barras">
       <div class="barra-fila">
         <span class="barra-etiqueta">🎬 Videos</span>
-        <span class="barra-pista"><span class="barra-relleno" style="width:${pctVideos}%"></span></span>
-        <span class="barra-pct">${subidoVideos}/${totalVideos}</span>
+        <span class="barra-pista"><span class="barra-relleno" id="barra-video-relleno" style="width:${pctVideos}%"></span></span>
+        <span class="barra-pct" id="barra-video-pct">${subidoVideos}/${totalVideos}</span>
       </div>
       <div class="barra-fila">
         <span class="barra-etiqueta">🖼️ Carruseles</span>
-        <span class="barra-pista"><span class="barra-relleno" style="width:${pctCarruseles}%"></span></span>
-        <span class="barra-pct">${subidoCarruseles}/${totalCarruseles}</span>
+        <span class="barra-pista"><span class="barra-relleno" id="barra-carrusel-relleno" style="width:${pctCarruseles}%"></span></span>
+        <span class="barra-pct" id="barra-carrusel-pct">${subidoCarruseles}/${totalCarruseles}</span>
       </div>
     </div>
 
@@ -446,6 +455,7 @@ export function construirCuerpo(catalogo: ItemPanel[]): {cuerpoHtml: string; act
     <h2>Detalle por día</h2>
     ${diasHtml}
   </div>
+  <div id="aviso-flotante" class="aviso-flotante" hidden></div>
   <script>
     function copiarTexto(boton) {
       const texto = boton.getAttribute('data-texto');
@@ -466,6 +476,116 @@ export function construirCuerpo(catalogo: ItemPanel[]): {cuerpoHtml: string; act
       const el = document.getElementById(id);
       if (el && el.tagName === 'DETAILS') el.open = true;
     })();
+
+    // "Ya lo subí" -- marca el item YA en pantalla (efecto real e
+    // inmediato, sin depender de un segundo paso en github.com) y, si
+    // corre dentro de un Claude Artifact, guarda el cambio con
+    // claude.use('artifact') para que quede al recargar/reabrir. Si no
+    // hay esa capacidad (panel estático en Netlify/GitHub Pages), cae al
+    // link de Issue de GitHub de siempre como respaldo.
+    function setTexto(id, valor) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = String(valor);
+    }
+    function setBarra(tipo, subido, total) {
+      const pct = total ? Math.round((subido / total) * 100) : 0;
+      const relleno = document.getElementById('barra-' + tipo + '-relleno');
+      const pctEl = document.getElementById('barra-' + tipo + '-pct');
+      if (relleno) relleno.style.width = pct + '%';
+      if (pctEl) pctEl.textContent = subido + '/' + total;
+    }
+    function recalcularResumen() {
+      const items = document.querySelectorAll('.item[data-tipo]');
+      let totalVideos = 0, totalCarruseles = 0, subidoVideos = 0, subidoCarruseles = 0;
+      let totalAccionable = 0, totalSinEntregar = 0;
+      items.forEach((it) => {
+        const esVideo = it.dataset.tipo === 'video';
+        const subido = it.classList.contains('item-subido');
+        const espera = it.classList.contains('item-espera');
+        if (esVideo) { totalVideos++; if (subido) subidoVideos++; } else { totalCarruseles++; if (subido) subidoCarruseles++; }
+        if (!subido && !espera) totalAccionable++;
+        if (espera) totalSinEntregar++;
+      });
+      setTexto('resumen-subidos', subidoVideos + subidoCarruseles);
+      setTexto('resumen-pendientes', totalAccionable);
+      setTexto('resumen-sin-entregar', totalSinEntregar);
+      setBarra('video', subidoVideos, totalVideos);
+      setBarra('carrusel', subidoCarruseles, totalCarruseles);
+
+      document.querySelectorAll('.dia').forEach((dia) => {
+        const itemsDia = dia.querySelectorAll('.item[data-tipo]');
+        let listos = 0, accionables = 0;
+        itemsDia.forEach((it) => {
+          if (it.classList.contains('item-subido')) listos++;
+          else if (!it.classList.contains('item-espera')) accionables++;
+        });
+        const resumen = dia.querySelector('.dia-resumen');
+        if (resumen) resumen.textContent = listos + '/' + itemsDia.length + ' subido' + (accionables > 0 ? ' · ' + accionables + ' para bajar ahora' : '');
+        const tarjeta = document.querySelector('.mapa-tarjeta[href="#' + dia.id + '"]');
+        if (!tarjeta) return;
+        const fraccion = tarjeta.querySelector('.mapa-fraccion');
+        if (fraccion) fraccion.textContent = listos + '/' + itemsDia.length;
+        let accion = tarjeta.querySelector('.mapa-accion');
+        if (accionables > 0) {
+          if (!accion) {
+            accion = document.createElement('span');
+            accion.className = 'mapa-accion';
+            tarjeta.appendChild(accion);
+          }
+          accion.textContent = accionables + ' para bajar ahora';
+        } else if (accion) {
+          accion.remove();
+        }
+      });
+    }
+    function avisar(mensaje) {
+      const el = document.getElementById('aviso-flotante');
+      if (!el) return;
+      el.textContent = mensaje;
+      el.hidden = false;
+      clearTimeout(el._t);
+      el._t = setTimeout(() => { el.hidden = true; }, 3200);
+    }
+    function marcarSubido(boton) {
+      const item = boton.closest('.item');
+      if (!item || item.dataset.marcando === '1') return;
+      item.dataset.marcando = '1';
+      boton.disabled = true;
+      boton.textContent = 'Guardando…';
+
+      const id = item.dataset.id;
+      const tipo = item.dataset.tipo;
+      const tema = item.querySelector('h3') ? item.querySelector('h3').textContent : '';
+      const fallbackUrl = boton.getAttribute('data-fallback-url');
+
+      item.className = 'item item-subido';
+      item.innerHTML = '<div class="item-cabecera"><span class="item-tipo">' + (tipo === 'video' ? '🎬 Video' : '🖼️ Carrusel') + '</span><span class="item-estado-badge badge-subido">✅ Ya subido</span></div><h3>' + tema + '</h3>';
+      item.dataset.id = id;
+      item.dataset.tipo = tipo;
+
+      const punto = document.querySelector('.punto[data-id="' + id + '"]');
+      if (punto) {
+        punto.classList.remove('punto-pendiente');
+        punto.classList.add('punto-subido');
+        punto.title = punto.title.replace('pendiente', 'subido');
+      }
+
+      recalcularResumen();
+
+      if (window.claude && window.claude.use) {
+        window.claude.use('artifact').then((artifact) => {
+          if (!artifact) { avisar('Marcado ✓ -- no se guardó solo, si recargás vuelve a pendiente.'); return null; }
+          return artifact.publish('<!doctype html>' + document.documentElement.outerHTML);
+        }).then((ok) => {
+          if (ok !== null) avisar('Guardado ✅');
+        }).catch(() => {
+          avisar('Marcado ✓ -- no se guardó solo, si recargás vuelve a pendiente.');
+        });
+      } else if (fallbackUrl) {
+        avisar('Abriendo GitHub para confirmar -- tocá "Submit new issue" ahí.');
+        window.open(fallbackUrl, '_blank', 'noopener');
+      }
+    }
   </script>`;
 
   return {cuerpoHtml, actualizado};

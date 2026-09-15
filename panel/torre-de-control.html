@@ -113,30 +113,39 @@
   .boton-descarga { background: var(--copper); color: #fff; }
   .boton-descarga-img { padding: 8px 10px; min-width: 44px; }
   .boton-listo, .boton-copiar { background: var(--card); border: 1px solid var(--borde); color: var(--tinta); }
+  .boton-listo:disabled { opacity: 0.6; cursor: default; }
+
+  /* -- Aviso flotante (confirmación de "Ya lo subí") -- */
+  .aviso-flotante {
+    position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+    background: var(--tinta); color: var(--bg); padding: 10px 16px; border-radius: 999px;
+    font-size: 0.82rem; font-weight: 600; box-shadow: 0 4px 16px rgba(0,0,0,0.25); z-index: 100;
+    max-width: calc(100% - 32px); text-align: center;
+  }
 </style>
 </head>
 <body>
   <div class="envoltorio">
     <h1>Torre de Control</h1>
     <p class="subtitulo">Ritmo real: 3 videos + 6 carruseles por día hábil. 21 videos + 42 carruseles = 7 días.</p>
-    <p class="actualizado">Actualizado 15/9, 10:37 a. m. ART</p>
+    <p class="actualizado">Actualizado 15/9, 04:06 p. m. ART</p>
 
     <div class="resumen">
-      <div class="resumen-tile ok"><div class="resumen-numero">11</div><div class="resumen-label">Ya subidos</div></div>
-      <div class="resumen-tile acento"><div class="resumen-numero">46</div><div class="resumen-label">Para bajar ahora</div></div>
-      <div class="resumen-tile"><div class="resumen-numero">6</div><div class="resumen-label">Sin entregar todavía</div></div>
+      <div class="resumen-tile ok"><div class="resumen-numero" id="resumen-subidos">11</div><div class="resumen-label">Ya subidos</div></div>
+      <div class="resumen-tile acento"><div class="resumen-numero" id="resumen-pendientes">46</div><div class="resumen-label">Para bajar ahora</div></div>
+      <div class="resumen-tile"><div class="resumen-numero" id="resumen-sin-entregar">6</div><div class="resumen-label">Sin entregar todavía</div></div>
       <div class="resumen-tile"><div class="resumen-numero">63</div><div class="resumen-label">Total (video+carrusel)</div></div>
     </div>
     <div class="barras">
       <div class="barra-fila">
         <span class="barra-etiqueta">🎬 Videos</span>
-        <span class="barra-pista"><span class="barra-relleno" style="width:38%"></span></span>
-        <span class="barra-pct">8/21</span>
+        <span class="barra-pista"><span class="barra-relleno" id="barra-video-relleno" style="width:38%"></span></span>
+        <span class="barra-pct" id="barra-video-pct">8/21</span>
       </div>
       <div class="barra-fila">
         <span class="barra-etiqueta">🖼️ Carruseles</span>
-        <span class="barra-pista"><span class="barra-relleno" style="width:7%"></span></span>
-        <span class="barra-pct">3/42</span>
+        <span class="barra-pista"><span class="barra-relleno" id="barra-carrusel-relleno" style="width:7%"></span></span>
+        <span class="barra-pct" id="barra-carrusel-pct">3/42</span>
       </div>
     </div>
 
@@ -148,10 +157,10 @@
             <span class="mapa-fraccion">3/9</span>
           </div>
           <div class="mapa-puntos">
-            <span class="punto punto-subido" title="🎬 No sabe editar, es su ventaja -- subido"></span><span class="punto punto-subido" title="🎬 Aprendiendo marketing en 2026 -- subido"></span><span class="punto punto-pendiente" title="🎬 Tu primer producto tiene que ser una basura -- pendiente"></span>
+            <span class="punto punto-subido" data-id="v01" title="🎬 No sabe editar, es su ventaja -- subido"></span><span class="punto punto-subido" data-id="v02" title="🎬 Aprendiendo marketing en 2026 -- subido"></span><span class="punto punto-pendiente" data-id="v03" title="🎬 Tu primer producto tiene que ser una basura -- pendiente"></span>
           </div>
           <div class="mapa-puntos mapa-puntos-carrusel">
-            <span class="punto punto-pendiente" title="🖼️ El que más vende, menos sabe -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ No tenés que ser experto -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ 5 errores que matan ventas -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ Vendí sin un solo seguidor -- pendiente"></span><span class="punto punto-subido" title="🖼️ Mi primer producto no vendió ni uno -- subido"></span><span class="punto punto-pendiente" title="🖼️ El sistema de los que ganan -- pendiente"></span>
+            <span class="punto punto-pendiente" data-id="carrusel-01" title="🖼️ El que más vende, menos sabe -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-08" title="🖼️ No tenés que ser experto -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-15" title="🖼️ 5 errores que matan ventas -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-22" title="🖼️ Vendí sin un solo seguidor -- pendiente"></span><span class="punto punto-subido" data-id="carrusel-29" title="🖼️ Mi primer producto no vendió ni uno -- subido"></span><span class="punto punto-pendiente" data-id="carrusel-36" title="🖼️ El sistema de los que ganan -- pendiente"></span>
           </div>
           <span class="mapa-accion">6 para bajar ahora</span>
         </a>
@@ -162,10 +171,10 @@
             <span class="mapa-fraccion">3/9</span>
           </div>
           <div class="mapa-puntos">
-            <span class="punto punto-pendiente" title="🎬 El gurú que nunca vendió -- pendiente"></span><span class="punto punto-subido" title="🎬 Contenido vs. activos -- subido"></span><span class="punto punto-pendiente" title="🎬 Una tarde, cuatro horas, pagó el alquiler -- pendiente"></span>
+            <span class="punto punto-pendiente" data-id="v04" title="🎬 El gurú que nunca vendió -- pendiente"></span><span class="punto punto-subido" data-id="v05" title="🎬 Contenido vs. activos -- subido"></span><span class="punto punto-pendiente" data-id="v06" title="🎬 Una tarde, cuatro horas, pagó el alquiler -- pendiente"></span>
           </div>
           <div class="mapa-puntos mapa-puntos-carrusel">
-            <span class="punto punto-pendiente" title="🖼️ ¿Todavía estudiando marketing? -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ Lo que no te cuentan de Hotmart -- pendiente"></span><span class="punto punto-subido" title="🖼️ Así se ve un producto hecho en una tarde -- subido"></span><span class="punto punto-pendiente" title="🖼️ Empecé sin saber nada del tema -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ La &quot;suerte&quot; fueron 200 publicaciones -- pendiente"></span><span class="punto punto-subido" title="🖼️ Plantilla para tu primer producto -- subido"></span>
+            <span class="punto punto-pendiente" data-id="carrusel-02" title="🖼️ ¿Todavía estudiando marketing? -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-09" title="🖼️ Lo que no te cuentan de Hotmart -- pendiente"></span><span class="punto punto-subido" data-id="carrusel-16" title="🖼️ Así se ve un producto hecho en una tarde -- subido"></span><span class="punto punto-pendiente" data-id="carrusel-23" title="🖼️ Empecé sin saber nada del tema -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-30" title="🖼️ La &quot;suerte&quot; fueron 200 publicaciones -- pendiente"></span><span class="punto punto-subido" data-id="carrusel-37" title="🖼️ Plantilla para tu primer producto -- subido"></span>
           </div>
           <span class="mapa-accion">6 para bajar ahora</span>
         </a>
@@ -176,10 +185,10 @@
             <span class="mapa-fraccion">0/9</span>
           </div>
           <div class="mapa-puntos">
-            <span class="punto punto-pendiente" title="🎬 La cara oculta de vender online -- pendiente"></span><span class="punto punto-pendiente" title="🎬 El error de mil dólares -- pendiente"></span><span class="punto punto-pendiente" title="🎬 Tres segundos, cincuenta dólares -- pendiente"></span>
+            <span class="punto punto-pendiente" data-id="v07" title="🎬 La cara oculta de vender online -- pendiente"></span><span class="punto punto-pendiente" data-id="v08" title="🎬 El error de mil dólares -- pendiente"></span><span class="punto punto-pendiente" data-id="v09" title="🎬 Tres segundos, cincuenta dólares -- pendiente"></span>
           </div>
           <div class="mapa-puntos mapa-puntos-carrusel">
-            <span class="punto punto-espera" title="🖼️ Tu primer producto tiene que ser BASURA -- sin entregar"></span><span class="punto punto-espera" title="🖼️ Este video vale más que tu curso -- sin entregar"></span><span class="punto punto-espera" title="🖼️ La cara oculta de vender online -- sin entregar"></span><span class="punto punto-espera" title="🖼️ Un prompt no es un sistema -- sin entregar"></span><span class="punto punto-espera" title="🖼️ El sistema de Elon Musk -- sin entregar"></span><span class="punto punto-espera" title="🖼️ Checklist para lanzar en 7 días -- sin entregar"></span>
+            <span class="punto punto-espera" data-id="carrusel-03" title="🖼️ Tu primer producto tiene que ser BASURA -- sin entregar"></span><span class="punto punto-espera" data-id="carrusel-10" title="🖼️ Este video vale más que tu curso -- sin entregar"></span><span class="punto punto-espera" data-id="carrusel-17" title="🖼️ La cara oculta de vender online -- sin entregar"></span><span class="punto punto-espera" data-id="carrusel-24" title="🖼️ Un prompt no es un sistema -- sin entregar"></span><span class="punto punto-espera" data-id="carrusel-31" title="🖼️ El sistema de Elon Musk -- sin entregar"></span><span class="punto punto-espera" data-id="carrusel-38" title="🖼️ Checklist para lanzar en 7 días -- sin entregar"></span>
           </div>
           <span class="mapa-accion">3 para bajar ahora</span>
         </a>
@@ -190,10 +199,10 @@
             <span class="mapa-fraccion">1/9</span>
           </div>
           <div class="mapa-puntos">
-            <span class="punto punto-subido" title="🎬 Mientras dormías -- subido"></span><span class="punto punto-pendiente" title="🎬 Tres IA, dos sueldos -- pendiente"></span><span class="punto punto-pendiente" title="🎬 No sé diseñar -- pendiente"></span>
+            <span class="punto punto-subido" data-id="v10" title="🎬 Mientras dormías -- subido"></span><span class="punto punto-pendiente" data-id="v11" title="🎬 Tres IA, dos sueldos -- pendiente"></span><span class="punto punto-pendiente" data-id="v12" title="🎬 No sé diseñar -- pendiente"></span>
           </div>
           <div class="mapa-puntos mapa-puntos-carrusel">
-            <span class="punto punto-pendiente" title="🖼️ Los gurús te mienten -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ El 90% usa IA mal -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ El error que me costó caro -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ Ese carrusel no te paga el alquiler -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ El sistema de Mr. Beast -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ Guía de los 5 errores -- pendiente"></span>
+            <span class="punto punto-pendiente" data-id="carrusel-04" title="🖼️ Los gurús te mienten -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-11" title="🖼️ El 90% usa IA mal -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-18" title="🖼️ El error que me costó caro -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-25" title="🖼️ Ese carrusel no te paga el alquiler -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-32" title="🖼️ El sistema de Mr. Beast -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-39" title="🖼️ Guía de los 5 errores -- pendiente"></span>
           </div>
           <span class="mapa-accion">8 para bajar ahora</span>
         </a>
@@ -204,10 +213,10 @@
             <span class="mapa-fraccion">1/9</span>
           </div>
           <div class="mapa-puntos">
-            <span class="punto punto-pendiente" title="🎬 El sitio que reemplaza al diseñador -- pendiente"></span><span class="punto punto-pendiente" title="🎬 Backend abierto -- pendiente"></span><span class="punto punto-subido" title="🎬 De mockup a producto en 5 minutos -- subido"></span>
+            <span class="punto punto-pendiente" data-id="v13" title="🎬 El sitio que reemplaza al diseñador -- pendiente"></span><span class="punto punto-pendiente" data-id="v14" title="🎬 Backend abierto -- pendiente"></span><span class="punto punto-subido" data-id="v15" title="🎬 De mockup a producto en 5 minutos -- subido"></span>
           </div>
           <div class="mapa-puntos mapa-puntos-carrusel">
-            <span class="punto punto-pendiente" title="🖼️ El contenido es café. Los activos son edificios -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ De 0 a resultado real en 60 días -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ 3 segundos, una venta -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ El que no vende, no ayuda a nadie -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ El sistema de Jeff Bezos -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ Video privado: cómo hice X -- pendiente"></span>
+            <span class="punto punto-pendiente" data-id="carrusel-05" title="🖼️ El contenido es café. Los activos son edificios -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-12" title="🖼️ De 0 a resultado real en 60 días -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-19" title="🖼️ 3 segundos, una venta -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-26" title="🖼️ El que no vende, no ayuda a nadie -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-33" title="🖼️ El sistema de Jeff Bezos -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-40" title="🖼️ Video privado: cómo hice X -- pendiente"></span>
           </div>
           <span class="mapa-accion">8 para bajar ahora</span>
         </a>
@@ -218,10 +227,10 @@
             <span class="mapa-fraccion">2/9</span>
           </div>
           <div class="mapa-puntos">
-            <span class="punto punto-subido" title="🎬 De 37 carpetas a 3 -- subido"></span><span class="punto punto-subido" title="🎬 Mito: necesitás 10 mil seguidores -- subido"></span><span class="punto punto-pendiente" title="🎬 Mito: soy un experto -- pendiente"></span>
+            <span class="punto punto-subido" data-id="v16" title="🎬 De 37 carpetas a 3 -- subido"></span><span class="punto punto-subido" data-id="v17" title="🎬 Mito: necesitás 10 mil seguidores -- subido"></span><span class="punto punto-pendiente" data-id="v18" title="🎬 Mito: soy un experto -- pendiente"></span>
           </div>
           <div class="mapa-puntos mapa-puntos-carrusel">
-            <span class="punto punto-pendiente" title="🖼️ El algoritmo no te odia -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ El error que cuesta caro -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ Mientras dormías, tu activo trabajó -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ Mi sistema cambió 6 veces este año -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ El sistema de Gary Vaynerchuk -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ Las plataformas que uso -- pendiente"></span>
+            <span class="punto punto-pendiente" data-id="carrusel-06" title="🖼️ El algoritmo no te odia -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-13" title="🖼️ El error que cuesta caro -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-20" title="🖼️ Mientras dormías, tu activo trabajó -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-27" title="🖼️ Mi sistema cambió 6 veces este año -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-34" title="🖼️ El sistema de Gary Vaynerchuk -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-41" title="🖼️ Las plataformas que uso -- pendiente"></span>
           </div>
           <span class="mapa-accion">7 para bajar ahora</span>
         </a>
@@ -232,10 +241,10 @@
             <span class="mapa-fraccion">1/9</span>
           </div>
           <div class="mapa-puntos">
-            <span class="punto punto-subido" title="🎬 Mito: el algoritmo me odia -- subido"></span><span class="punto punto-pendiente" title="🎬 Lo que Hotmart no te dice -- pendiente"></span><span class="punto punto-pendiente" title="🎬 Un video de 40 minutos vs. un curso de 6 meses -- pendiente"></span>
+            <span class="punto punto-subido" data-id="v19" title="🎬 Mito: el algoritmo me odia -- subido"></span><span class="punto punto-pendiente" data-id="v20" title="🎬 Lo que Hotmart no te dice -- pendiente"></span><span class="punto punto-pendiente" data-id="v21" title="🎬 Un video de 40 minutos vs. un curso de 6 meses -- pendiente"></span>
           </div>
           <div class="mapa-puntos mapa-puntos-carrusel">
-            <span class="punto punto-pendiente" title="🖼️ No necesitás seguidores -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ Lo que factura un activo digital -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ El algoritmo no te esconde nada -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ Subí el precio y vendí más -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ El sistema de Steve Jobs -- pendiente"></span><span class="punto punto-pendiente" title="🖼️ El sistema en 5 pasos -- pendiente"></span>
+            <span class="punto punto-pendiente" data-id="carrusel-07" title="🖼️ No necesitás seguidores -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-14" title="🖼️ Lo que factura un activo digital -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-21" title="🖼️ El algoritmo no te esconde nada -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-28" title="🖼️ Subí el precio y vendí más -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-35" title="🖼️ El sistema de Steve Jobs -- pendiente"></span><span class="punto punto-pendiente" data-id="carrusel-42" title="🖼️ El sistema en 5 pasos -- pendiente"></span>
           </div>
           <span class="mapa-accion">8 para bajar ahora</span>
         </a>
@@ -268,7 +277,7 @@
             <h3>Aprendiendo marketing en 2026</h3>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="v03" data-tipo="video">
             <div class="item-cabecera">
               <span class="item-tipo">🎬 Video</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -288,14 +297,14 @@ Lanzá tu primera basura que vende.
 Lanzá tu primera basura que vende.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Emprendedor #ProductoDigital">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v03" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v03">Ya lo subí</button>
             </div>
           </article>
           </div>
           <div class="dia-columna">
             <h4>Carruseles</h4>
             
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-01" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -311,11 +320,11 @@ Lanzá tu primera basura que vende.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="La ventaja real no es saber editar. Es tener sistema. 👇
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #MarketingDigital #IA">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-01" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-01">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-08" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -331,11 +340,11 @@ Lanzá tu primera basura que vende.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="Mito #2: hay que ser experto. Falso.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #EmprendedorPrincipiante">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-08" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-08">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-15" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -351,11 +360,11 @@ Lanzá tu primera basura que vende.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="5 errores que probablemente estás cometiendo ahora mismo.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #ErroresComunes #VentasOnline">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-15" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-15">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-22" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -371,7 +380,7 @@ Lanzá tu primera basura que vende.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="Vendí sin audiencia. Se puede.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #VenderSinAudiencia">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-22" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-22">Ya lo subí</button>
             </div>
           </article>
 
@@ -383,7 +392,7 @@ Lanzá tu primera basura que vende.
             <h3>Mi primer producto no vendió ni uno</h3>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-36" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -399,7 +408,7 @@ Lanzá tu primera basura que vende.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="No es talento. Es sistema.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Sistema #Emprendimiento">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-36" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-36">Ya lo subí</button>
             </div>
           </article>
           </div>
@@ -415,7 +424,7 @@ Lanzá tu primera basura que vende.
           <div class="dia-columna">
             <h4>Videos</h4>
             
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="v04" data-tipo="video">
             <div class="item-cabecera">
               <span class="item-tipo">🎬 Video</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -435,7 +444,7 @@ El sistema real, sin gurús.
 El sistema real, sin gurús.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Gurus #SistemaDeVentas">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v04" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v04">Ya lo subí</button>
             </div>
           </article>
 
@@ -447,7 +456,7 @@ El sistema real, sin gurús.
             <h3>Contenido vs. activos</h3>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="v06" data-tipo="video">
             <div class="item-cabecera">
               <span class="item-tipo">🎬 Video</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -467,14 +476,14 @@ Tu primera tarde puede pagar algo real.
 Tu primera tarde puede pagar algo real.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #ProductoEnUnDia #Productividad">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v06" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v06">Ya lo subí</button>
             </div>
           </article>
           </div>
           <div class="dia-columna">
             <h4>Carruseles</h4>
             
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-02" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -490,11 +499,11 @@ Tu primera tarde puede pagar algo real.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="Dejá de estudiar marketing. Empezá a aplicarlo.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #MarketingDigital #VentasOnline">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-02" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-02">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-09" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -510,7 +519,7 @@ Tu primera tarde puede pagar algo real.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="Lo que nadie te cuenta antes de elegir plataforma.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Hotmart #PlataformasDeVenta">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-09" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-09">Ya lo subí</button>
             </div>
           </article>
 
@@ -522,7 +531,7 @@ Tu primera tarde puede pagar algo real.
             <h3>Así se ve un producto hecho en una tarde</h3>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-23" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -538,11 +547,11 @@ Tu primera tarde puede pagar algo real.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="No sabía nada del tema. Vendí igual.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #EmprenderSinExperiencia">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-23" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-23">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-30" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -558,7 +567,7 @@ Tu primera tarde puede pagar algo real.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="200 posts que nadie vio, antes del que sí funcionó.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #Sistema">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-30" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-30">Ya lo subí</button>
             </div>
           </article>
 
@@ -582,7 +591,7 @@ Tu primera tarde puede pagar algo real.
           <div class="dia-columna">
             <h4>Videos</h4>
             
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="v07" data-tipo="video">
             <div class="item-cabecera">
               <span class="item-tipo">🎬 Video</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -602,11 +611,11 @@ Aguantá 27 días. Después, cambia.
 Aguantá 27 días. Después, cambia.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #RealidadEmprender #Persistencia">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v07" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v07">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="v08" data-tipo="video">
             <div class="item-cabecera">
               <span class="item-tipo">🎬 Video</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -626,11 +635,11 @@ Usá el error. Es información, no fracaso.
 Usá el error. Es información, no fracaso.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #AprenderDelError #Precios">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v08" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v08">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="v09" data-tipo="video">
             <div class="item-cabecera">
               <span class="item-tipo">🎬 Video</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -650,7 +659,7 @@ Automatizá una vez. Cobrá siempre.
 Automatizá una vez. Cobrá siempre.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Automatizacion #Escalar">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v09" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v09">Ya lo subí</button>
             </div>
           </article>
           </div>
@@ -731,7 +740,7 @@ Automatizá una vez. Cobrá siempre.
             <h3>Mientras dormías</h3>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="v11" data-tipo="video">
             <div class="item-cabecera">
               <span class="item-tipo">🎬 Video</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -751,11 +760,11 @@ Armá tu equipo de IA. Sin nómina.
 Armá tu equipo de IA. Sin nómina.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #IA #Herramientas">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v11" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v11">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="v12" data-tipo="video">
             <div class="item-cabecera">
               <span class="item-tipo">🎬 Video</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -775,14 +784,14 @@ Diseñá sin saber. La idea vende.
 Diseñá sin saber. La idea vende.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #DiseñoSinExperiencia #Herramientas">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v12" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v12">Ya lo subí</button>
             </div>
           </article>
           </div>
           <div class="dia-columna">
             <h4>Carruseles</h4>
             
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-04" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -798,11 +807,11 @@ Diseñá sin saber. La idea vende.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="No necesitás un gurú. Necesitás ejecutar.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Gurus #SistemaDeVentas">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-04" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-04">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-11" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -818,11 +827,11 @@ Diseñá sin saber. La idea vende.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="La IA no es un juguete. Es una palanca.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #IA #InteligenciaArtificial">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-11" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-11">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-18" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -838,11 +847,11 @@ Diseñá sin saber. La idea vende.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="El error que terminó siendo la mejor lección.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #AprenderDelError #Precios">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-18" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-18">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-25" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -858,11 +867,11 @@ Diseñá sin saber. La idea vende.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="El contenido caduca. El activo no.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #ActivosDigitales">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-25" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-25">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-32" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -878,11 +887,11 @@ Diseñá sin saber. La idea vende.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="Perdía plata en cada video. Así ganó.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #MrBeast #YouTube">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-32" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-32">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-39" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -898,7 +907,7 @@ Diseñá sin saber. La idea vende.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="Los 5 errores que matan ventas (y cómo evitarlos).
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Errores #RecursoGratis">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-39" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-39">Ya lo subí</button>
             </div>
           </article>
           </div>
@@ -914,7 +923,7 @@ Diseñá sin saber. La idea vende.
           <div class="dia-columna">
             <h4>Videos</h4>
             
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="v13" data-tipo="video">
             <div class="item-cabecera">
               <span class="item-tipo">🎬 Video</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -934,11 +943,11 @@ Dejá de pagar de más.
 Dejá de pagar de más.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Herramientas #RecursoGratis">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v13" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v13">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="v14" data-tipo="video">
             <div class="item-cabecera">
               <span class="item-tipo">🎬 Video</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -958,7 +967,7 @@ Armá el flujo. Después, es automático.
 Armá el flujo. Después, es automático.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Automatizacion #VentasOnline">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v14" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v14">Ya lo subí</button>
             </div>
           </article>
 
@@ -973,7 +982,7 @@ Armá el flujo. Después, es automático.
           <div class="dia-columna">
             <h4>Carruseles</h4>
             
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-05" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -989,11 +998,11 @@ Armá el flujo. Después, es automático.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="Dejá de postear café. Empezá a construir edificios.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #ActivosDigitales #IngresoPasivo">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-05" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-05">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-12" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1009,11 +1018,11 @@ Armá el flujo. Después, es automático.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="La diferencia no es la idea. Es terminarla.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Resultados #PrimerProducto">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-12" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-12">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-19" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1029,11 +1038,11 @@ Armá el flujo. Después, es automático.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="3 segundos de trabajo. Una venta automática.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Automatizacion #Escalar">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-19" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-19">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-26" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1049,11 +1058,11 @@ Armá el flujo. Después, es automático.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="Vender no es manipular. Es avisar que existe una salida.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #VenderSinCulpa">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-26" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-26">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-33" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1069,11 +1078,11 @@ Armá el flujo. Después, es automático.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="Años sin mostrar ganancias. Así se construyó Amazon.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #JeffBezos #Amazon">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-33" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-33">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-40" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1089,7 +1098,7 @@ Armá el flujo. Después, es automático.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="El proceso real, sin filtros. Solo para los que comentan.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #DetrasDeCamara #ContenidoExclusivo">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-40" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-40">Ya lo subí</button>
             </div>
           </article>
           </div>
@@ -1121,7 +1130,7 @@ Armá el flujo. Después, es automático.
             <h3>Mito: necesitás 10 mil seguidores</h3>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="v18" data-tipo="video">
             <div class="item-cabecera">
               <span class="item-tipo">🎬 Video</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1141,14 +1150,14 @@ Empezá sin serlo. El título llega después.
 Empezá sin serlo. El título llega después.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #EmprendedorPrincipiante">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v18" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v18">Ya lo subí</button>
             </div>
           </article>
           </div>
           <div class="dia-columna">
             <h4>Carruseles</h4>
             
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-06" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1164,11 +1173,11 @@ Empezá sin serlo. El título llega después.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="No es el algoritmo. Es tu sistema.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Algoritmo #ContenidoQueVende">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-06" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-06">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-13" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1184,11 +1193,11 @@ Empezá sin serlo. El título llega después.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="El error que te está costando plata cada mes.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #TiempoVsConocimiento #Activos">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-13" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-13">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-20" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1204,11 +1213,11 @@ Empezá sin serlo. El título llega después.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="Tu activo no descansa cuando vos sí.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #TrabajaMientrasDormis #ActivosDigitales">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-20" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-20">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-27" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1224,11 +1233,11 @@ Empezá sin serlo. El título llega después.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="Cambié mi sistema 6 veces este año. Por eso funciona.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #Iteracion">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-27" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-27">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-34" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1244,11 +1253,11 @@ Empezá sin serlo. El título llega después.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="De $3M a $60M sin cambiar el producto.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #GaryVee #Marketing">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-34" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-34">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-41" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1264,7 +1273,7 @@ Empezá sin serlo. El título llega después.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="Las plataformas reales que uso para vender.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Plataformas #VentasOnline">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-41" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-41">Ya lo subí</button>
             </div>
           </article>
           </div>
@@ -1288,7 +1297,7 @@ Empezá sin serlo. El título llega después.
             <h3>Mito: el algoritmo me odia</h3>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="v20" data-tipo="video">
             <div class="item-cabecera">
               <span class="item-tipo">🎬 Video</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1308,11 +1317,11 @@ No uses la default. Usá la que te conviene.
 No uses la default. Usá la que te conviene.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Hotmart #PlataformasDeVenta">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v20" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v20">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="v21" data-tipo="video">
             <div class="item-cabecera">
               <span class="item-tipo">🎬 Video</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1332,14 +1341,14 @@ Resolvé, no alargues. Eso es lo que vende.
 Resolvé, no alargues. Eso es lo que vende.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #ContenidoQueVende #Cursos">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v21" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+v21">Ya lo subí</button>
             </div>
           </article>
           </div>
           <div class="dia-columna">
             <h4>Carruseles</h4>
             
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-07" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1355,11 +1364,11 @@ Resolvé, no alargues. Eso es lo que vende.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="Mito #1: necesitás seguidores. Falso.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #VenderSinSeguidores">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-07" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-07">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-14" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1375,11 +1384,11 @@ Resolvé, no alargues. Eso es lo que vende.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="Mientras dormís, un activo real sigue trabajando.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #IngresoPasivo #ActivosDigitales">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-14" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-14">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-21" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1395,11 +1404,11 @@ Resolvé, no alargues. Eso es lo que vende.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="No es el algoritmo. Es lo que estás vendiendo.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #Algoritmo">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-21" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-21">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-28" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1415,11 +1424,11 @@ Resolvé, no alargues. Eso es lo que vende.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="Subí el precio al doble. Vendí más, no menos.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #Precios">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-28" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-28">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-35" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1435,11 +1444,11 @@ Resolvé, no alargues. Eso es lo que vende.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="Lo echaron de su propia empresa. Volvió y la salvó.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #SteveJobs #Apple">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-35" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-35">Ya lo subí</button>
             </div>
           </article>
 
-          <article class="item item-pendiente">
+          <article class="item item-pendiente" data-id="carrusel-42" data-tipo="carrusel">
             <div class="item-cabecera">
               <span class="item-tipo">🖼️ Carrusel</span>
               <span class="item-estado-badge badge-pendiente">⏳ Listo para bajar</span>
@@ -1455,13 +1464,14 @@ Resolvé, no alargues. Eso es lo que vende.
               <button class="boton-copiar" type="button" onclick="copiarTexto(this)" data-texto="El sistema completo, en 5 pasos, gratis.
 
 #TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Sistema #RecursoGratis">Copiar texto</button>
-              <a class="boton-listo" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-42" target="_blank" rel="noopener">Ya lo subí</a>
+              <button class="boton-listo" type="button" onclick="marcarSubido(this)" data-fallback-url="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new?title=Ya+subido%3A+carrusel-42">Ya lo subí</button>
             </div>
           </article>
           </div>
         </div>
       </details>
   </div>
+  <div id="aviso-flotante" class="aviso-flotante" hidden></div>
   <script>
     function copiarTexto(boton) {
       const texto = boton.getAttribute('data-texto');
@@ -1482,6 +1492,116 @@ Resolvé, no alargues. Eso es lo que vende.
       const el = document.getElementById(id);
       if (el && el.tagName === 'DETAILS') el.open = true;
     })();
+
+    // "Ya lo subí" -- marca el item YA en pantalla (efecto real e
+    // inmediato, sin depender de un segundo paso en github.com) y, si
+    // corre dentro de un Claude Artifact, guarda el cambio con
+    // claude.use('artifact') para que quede al recargar/reabrir. Si no
+    // hay esa capacidad (panel estático en Netlify/GitHub Pages), cae al
+    // link de Issue de GitHub de siempre como respaldo.
+    function setTexto(id, valor) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = String(valor);
+    }
+    function setBarra(tipo, subido, total) {
+      const pct = total ? Math.round((subido / total) * 100) : 0;
+      const relleno = document.getElementById('barra-' + tipo + '-relleno');
+      const pctEl = document.getElementById('barra-' + tipo + '-pct');
+      if (relleno) relleno.style.width = pct + '%';
+      if (pctEl) pctEl.textContent = subido + '/' + total;
+    }
+    function recalcularResumen() {
+      const items = document.querySelectorAll('.item[data-tipo]');
+      let totalVideos = 0, totalCarruseles = 0, subidoVideos = 0, subidoCarruseles = 0;
+      let totalAccionable = 0, totalSinEntregar = 0;
+      items.forEach((it) => {
+        const esVideo = it.dataset.tipo === 'video';
+        const subido = it.classList.contains('item-subido');
+        const espera = it.classList.contains('item-espera');
+        if (esVideo) { totalVideos++; if (subido) subidoVideos++; } else { totalCarruseles++; if (subido) subidoCarruseles++; }
+        if (!subido && !espera) totalAccionable++;
+        if (espera) totalSinEntregar++;
+      });
+      setTexto('resumen-subidos', subidoVideos + subidoCarruseles);
+      setTexto('resumen-pendientes', totalAccionable);
+      setTexto('resumen-sin-entregar', totalSinEntregar);
+      setBarra('video', subidoVideos, totalVideos);
+      setBarra('carrusel', subidoCarruseles, totalCarruseles);
+
+      document.querySelectorAll('.dia').forEach((dia) => {
+        const itemsDia = dia.querySelectorAll('.item[data-tipo]');
+        let listos = 0, accionables = 0;
+        itemsDia.forEach((it) => {
+          if (it.classList.contains('item-subido')) listos++;
+          else if (!it.classList.contains('item-espera')) accionables++;
+        });
+        const resumen = dia.querySelector('.dia-resumen');
+        if (resumen) resumen.textContent = listos + '/' + itemsDia.length + ' subido' + (accionables > 0 ? ' · ' + accionables + ' para bajar ahora' : '');
+        const tarjeta = document.querySelector('.mapa-tarjeta[href="#' + dia.id + '"]');
+        if (!tarjeta) return;
+        const fraccion = tarjeta.querySelector('.mapa-fraccion');
+        if (fraccion) fraccion.textContent = listos + '/' + itemsDia.length;
+        let accion = tarjeta.querySelector('.mapa-accion');
+        if (accionables > 0) {
+          if (!accion) {
+            accion = document.createElement('span');
+            accion.className = 'mapa-accion';
+            tarjeta.appendChild(accion);
+          }
+          accion.textContent = accionables + ' para bajar ahora';
+        } else if (accion) {
+          accion.remove();
+        }
+      });
+    }
+    function avisar(mensaje) {
+      const el = document.getElementById('aviso-flotante');
+      if (!el) return;
+      el.textContent = mensaje;
+      el.hidden = false;
+      clearTimeout(el._t);
+      el._t = setTimeout(() => { el.hidden = true; }, 3200);
+    }
+    function marcarSubido(boton) {
+      const item = boton.closest('.item');
+      if (!item || item.dataset.marcando === '1') return;
+      item.dataset.marcando = '1';
+      boton.disabled = true;
+      boton.textContent = 'Guardando…';
+
+      const id = item.dataset.id;
+      const tipo = item.dataset.tipo;
+      const tema = item.querySelector('h3') ? item.querySelector('h3').textContent : '';
+      const fallbackUrl = boton.getAttribute('data-fallback-url');
+
+      item.className = 'item item-subido';
+      item.innerHTML = '<div class="item-cabecera"><span class="item-tipo">' + (tipo === 'video' ? '🎬 Video' : '🖼️ Carrusel') + '</span><span class="item-estado-badge badge-subido">✅ Ya subido</span></div><h3>' + tema + '</h3>';
+      item.dataset.id = id;
+      item.dataset.tipo = tipo;
+
+      const punto = document.querySelector('.punto[data-id="' + id + '"]');
+      if (punto) {
+        punto.classList.remove('punto-pendiente');
+        punto.classList.add('punto-subido');
+        punto.title = punto.title.replace('pendiente', 'subido');
+      }
+
+      recalcularResumen();
+
+      if (window.claude && window.claude.use) {
+        window.claude.use('artifact').then((artifact) => {
+          if (!artifact) { avisar('Marcado ✓ -- no se guardó solo, si recargás vuelve a pendiente.'); return null; }
+          return artifact.publish('<!doctype html>' + document.documentElement.outerHTML);
+        }).then((ok) => {
+          if (ok !== null) avisar('Guardado ✅');
+        }).catch(() => {
+          avisar('Marcado ✓ -- no se guardó solo, si recargás vuelve a pendiente.');
+        });
+      } else if (fallbackUrl) {
+        avisar('Abriendo GitHub para confirmar -- tocá "Submit new issue" ahí.');
+        window.open(fallbackUrl, '_blank', 'noopener');
+      }
+    }
   </script>
 </body>
 </html>
