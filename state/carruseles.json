@@ -84,5 +84,16 @@
     "tema": "Plantilla para tu primer producto",
     "nota": "Marcado subido a mano: confirmado real en TikTok Studio/YouTube Studio (screenshots del operador, 2026-09-15) -- ya estaba publicado antes de que existiera este sistema de registro.",
     "subidoEn": "2026-09-15T10:56:45.933397Z"
+  },
+  {
+    "id": "carrusel-07",
+    "fecha": "2026-09-15T11:22:15.590Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "No necesitás seguidores",
+    "scheduledFor": "",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962828762",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T11:22:15.590Z"
   }
 ]
