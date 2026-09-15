@@ -19,11 +19,15 @@ video visible como pendiente para siempre. Se movieron las entradas viejas a
 `state/archivo-zernio-uploads.json` / `state/archivo-zernio-carruseles.json` (se conservan, no se borraron) y
 `state/uploads.json`/`state/carruseles.json` quedan solo con entradas del formato nuevo.
 
-**Gap real encontrado (en curso de arreglarse):** el panel (`panel/torre-de-control.html`) y los archivos de
-estado se commitean a la rama de trabajo, pero Netlify sirve el sitio público desde `main` -- hasta ahora nunca
-se sincronizaba, así que el panel "en vivo" que el operador puede revisar todos los días estaba vacío/desactualizado.
-Se está agregando un paso a los 3 workflows (`subir-video.yml`, `subir-carrusel.yml`, `chequear-buzon.yml`) para
-que también empujen panel + estado a `main` en cada corrida (mismo patrón que ya usa `marcar-subido.js`).
+**Gap real encontrado y arreglado:** el panel (`panel/torre-de-control.html`), `state/uploads.json`,
+`state/carruseles.json` y **`netlify.toml`** se venían commiteando/editando solo en la rama de trabajo, pero
+Netlify sirve el sitio público desde `main` -- ninguno de los cuatro se había sincronizado nunca. El panel "en
+vivo" que el operador podía revisar estaba vacío, y el `netlify.toml` de `main` ni siquiera tenía la regla
+`/panel -> /panel/torre-de-control.html` (solo el catch-all viejo que manda todo a El Corte) -- confirmado real
+cuando el operador entró y le apareció El Corte en vez del panel. Se agregó un paso a los 3 workflows
+(`subir-video.yml`, `subir-carrusel.yml`, `chequear-buzon.yml`) para que empujen panel + estado a `main` en cada
+corrida (mismo patrón que ya usa `marcar-subido.js`), y se sincronizaron a mano los 4 archivos por primera vez
+(2026-09-15) para que el panel funcione ya mismo, sin esperar a la próxima entrega.
 
 ## Bloque: Módulo 5 (Métricas reales) se descarta -- decisión explícita del operador (2026-09-15)
 
