@@ -44,7 +44,7 @@ const RUTA_SALIDA = resolve(RAIZ, 'panel/torre-de-control.html');
 const RUTA_INDEX = resolve(RAIZ, 'panel/index.html');
 const REPO_ISSUES_NUEVO = 'https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new';
 const HORARIOS_VIDEO_ART = ['18:30', '20:00', '21:30']; // mismo orden que preparar_entrega_diaria.ts
-const TOTAL_DIAS = 7; // 21 videos / 3 por día = 7; 42 carruseles / 6 por día = 7 -- coincidencia real, no ajustada
+export const TOTAL_DIAS = 7; // 21 videos / 3 por día = 7; 42 carruseles / 6 por día = 7 -- coincidencia real, no ajustada
 
 type Estado = 'subido' | 'pendiente' | 'sin_entregar';
 
@@ -70,7 +70,7 @@ function estadoDesdeLog(entrada: Publicacion | undefined): {estado: Estado; venc
   return {estado: 'pendiente', vencido: entrada.estado === 'vencido'};
 }
 
-function construirCatalogoVideos(): ItemPanel[] {
+export function construirCatalogoVideos(): ItemPanel[] {
   const log = leerLog(RUTA_UPLOADS);
   return VIDEOS.map((v, idx): ItemPanel | null => {
     const pub = PUBLICACION_LOTE21.find((p) => p.id === v.id);
@@ -97,7 +97,7 @@ function construirCatalogoVideos(): ItemPanel[] {
   }).filter((x): x is ItemPanel => x !== null);
 }
 
-function construirCatalogoCarruseles(): ItemPanel[] {
+export function construirCatalogoCarruseles(): ItemPanel[] {
   const log = leerLog(RUTA_CARRUSELES);
   return CARRUSELES_42.map((c): ItemPanel => {
     const entrada = log.find((e) => e.id === c.id);
@@ -180,7 +180,7 @@ function puntoMapa(item: ItemPanel): string {
   return `<span class="punto ${clase}" title="${escaparHtml(titulo)}"></span>`;
 }
 
-function renderizarMapa(porDia: Map<number, ItemPanel[]>): string {
+export function renderizarMapa(porDia: Map<number, ItemPanel[]>): string {
   const tarjetas: string[] = [];
   for (let dia = 1; dia <= TOTAL_DIAS; dia++) {
     const items = porDia.get(dia) ?? [];
@@ -206,7 +206,7 @@ function renderizarMapa(porDia: Map<number, ItemPanel[]>): string {
   return tarjetas.join('\n');
 }
 
-function renderizarDia(dia: number, items: ItemPanel[]): string {
+export function renderizarDia(dia: number, items: ItemPanel[]): string {
   const accionables = items.filter((i) => i.estado === 'pendiente').length;
   const listos = items.filter((i) => i.estado === 'subido').length;
   const abierto = accionables > 0 ? ' open' : '';
@@ -231,44 +231,10 @@ function renderizarDia(dia: number, items: ItemPanel[]): string {
       </details>`;
 }
 
-function generarHtml(catalogo: ItemPanel[]): string {
-  const porDia = new Map<number, ItemPanel[]>();
-  for (const item of catalogo) {
-    const lista = porDia.get(item.dia) ?? [];
-    lista.push(item);
-    porDia.set(item.dia, lista);
-  }
-  for (const lista of porDia.values()) {
-    lista.sort((a, b) => (a.tipo === b.tipo ? a.id.localeCompare(b.id, 'es', {numeric: true}) : a.tipo === 'video' ? -1 : 1));
-  }
-
-  const totalVideos = catalogo.filter((i) => i.tipo === 'video').length;
-  const totalCarruseles = catalogo.filter((i) => i.tipo === 'carrusel').length;
-  const subidoVideos = catalogo.filter((i) => i.tipo === 'video' && i.estado === 'subido').length;
-  const subidoCarruseles = catalogo.filter((i) => i.tipo === 'carrusel' && i.estado === 'subido').length;
-  const totalAccionable = catalogo.filter((i) => i.estado === 'pendiente').length;
-  const totalSinEntregar = catalogo.filter((i) => i.estado === 'sin_entregar').length;
-  const totalSubido = subidoVideos + subidoCarruseles;
-  const pctVideos = totalVideos ? Math.round((subidoVideos / totalVideos) * 100) : 0;
-  const pctCarruseles = totalCarruseles ? Math.round((subidoCarruseles / totalCarruseles) * 100) : 0;
-
-  const mapaHtml = renderizarMapa(porDia);
-  const diasHtml = Array.from({length: TOTAL_DIAS}, (_, i) => i + 1)
-    .map((dia) => renderizarDia(dia, porDia.get(dia) ?? []))
-    .join('\n');
-
-  const actualizado = new Intl.DateTimeFormat('es-AR', {
-    day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit',
-    timeZone: 'America/Argentina/Buenos_Aires',
-  }).format(new Date());
-
-  return `<!doctype html>
-<html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Torre de Control</title>
-<style>
+// CSS compartido entre el doc standalone (Netlify) y el fragmento para
+// Claude Artifact (generar_panel_artifact.ts) -- una sola fuente, nunca
+// se desincronizan los dos estilos.
+export const ESTILOS_PANEL = `
   :root {
     --bg: #faf9f7; --tinta: #1a1a1a; --muted: #6b6b6b; --card: #ffffff;
     --borde: #e5e2dc; --copper: #d43d15; --verde: #1a7a3c; --verde-bg: #e8f5ec;
@@ -376,9 +342,43 @@ function generarHtml(catalogo: ItemPanel[]): string {
   }
   .boton-descarga { background: var(--copper); color: #fff; }
   .boton-listo, .boton-copiar { background: var(--card); border: 1px solid var(--borde); color: var(--tinta); }
-</style>
-</head>
-<body>
+`;
+
+// Contenido compartido (mapa + resumen + acordeón + script de copiar) --
+// usado por generarHtml (doc standalone) y por generar_panel_artifact.ts
+// (fragmento sin wrapper para publicar como Claude Artifact).
+export function construirCuerpo(catalogo: ItemPanel[]): {cuerpoHtml: string; actualizado: string} {
+  const porDia = new Map<number, ItemPanel[]>();
+  for (const item of catalogo) {
+    const lista = porDia.get(item.dia) ?? [];
+    lista.push(item);
+    porDia.set(item.dia, lista);
+  }
+  for (const lista of porDia.values()) {
+    lista.sort((a, b) => (a.tipo === b.tipo ? a.id.localeCompare(b.id, 'es', {numeric: true}) : a.tipo === 'video' ? -1 : 1));
+  }
+
+  const totalVideos = catalogo.filter((i) => i.tipo === 'video').length;
+  const totalCarruseles = catalogo.filter((i) => i.tipo === 'carrusel').length;
+  const subidoVideos = catalogo.filter((i) => i.tipo === 'video' && i.estado === 'subido').length;
+  const subidoCarruseles = catalogo.filter((i) => i.tipo === 'carrusel' && i.estado === 'subido').length;
+  const totalAccionable = catalogo.filter((i) => i.estado === 'pendiente').length;
+  const totalSinEntregar = catalogo.filter((i) => i.estado === 'sin_entregar').length;
+  const totalSubido = subidoVideos + subidoCarruseles;
+  const pctVideos = totalVideos ? Math.round((subidoVideos / totalVideos) * 100) : 0;
+  const pctCarruseles = totalCarruseles ? Math.round((subidoCarruseles / totalCarruseles) * 100) : 0;
+
+  const mapaHtml = renderizarMapa(porDia);
+  const diasHtml = Array.from({length: TOTAL_DIAS}, (_, i) => i + 1)
+    .map((dia) => renderizarDia(dia, porDia.get(dia) ?? []))
+    .join('\n');
+
+  const actualizado = new Intl.DateTimeFormat('es-AR', {
+    day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit',
+    timeZone: 'America/Argentina/Buenos_Aires',
+  }).format(new Date());
+
+  const cuerpoHtml = `
   <div class="envoltorio">
     <h1>Torre de Control</h1>
     <p class="subtitulo">Ritmo real: 3 videos + 6 carruseles por día hábil. 21 videos + 42 carruseles = 7 días.</p>
@@ -430,7 +430,22 @@ function generarHtml(catalogo: ItemPanel[]): string {
       const el = document.getElementById(id);
       if (el && el.tagName === 'DETAILS') el.open = true;
     })();
-  </script>
+  </script>`;
+
+  return {cuerpoHtml, actualizado};
+}
+
+function generarHtml(catalogo: ItemPanel[]): string {
+  const {cuerpoHtml} = construirCuerpo(catalogo);
+  return `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Torre de Control</title>
+<style>${ESTILOS_PANEL}</style>
+</head>
+<body>${cuerpoHtml}
 </body>
 </html>
 `;
@@ -449,4 +464,6 @@ function main(): void {
   console.log(`Listo -- ${catalogo.length} item(s) en el catálogo (${subidos} subido(s), ${accionables} para bajar ahora) en ${RUTA_SALIDA} y ${RUTA_INDEX}.`);
 }
 
-main();
+// Guardia para que importar construirCuerpo/ESTILOS_PANEL desde
+// generar_panel_artifact.ts no dispare esta escritura de más.
+if (require.main === module) main();
