@@ -86,14 +86,25 @@
     "subidoEn": "2026-09-15T10:56:45.933397Z"
   },
   {
-    "id": "carrusel-32",
-    "fecha": "2026-09-15T11:23:23.928Z",
+    "id": "carrusel-20",
+    "fecha": "2026-09-15T11:22:15.208Z",
     "ok": true,
     "estado": "pendiente",
-    "tema": "El sistema de Mr. Beast",
+    "tema": "Mientras dormías, tu activo trabajó",
     "scheduledFor": "",
-    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962904687",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962870896",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:23:23.929Z"
+    "avisadoBuzonEn": "2026-09-15T11:22:15.208Z"
+  },
+  {
+    "id": "carrusel-39",
+    "fecha": "2026-09-15T11:24:12.278Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "Guía de los 5 errores",
+    "scheduledFor": "",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962926122",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T11:24:12.278Z"
   }
 ]
