@@ -10,10 +10,10 @@
  *
  * Uso: npx tsx subida/subir_video.ts v01 [scheduledForISO]
  */
-import {existsSync, appendFileSync} from 'fs';
+import {existsSync, appendFileSync, mkdirSync, writeFileSync} from 'fs';
 import {resolve} from 'path';
 import {enviarAvisoParaSubidaManual} from './enviar_para_subida_manual';
-import {RUTA_UPLOADS, agregarEntrada} from './publicacion';
+import {Publicacion} from './publicacion';
 import {VIDEOS} from '../ejemplos/lote_21_datos';
 import {PUBLICACION_LOTE21} from '../ejemplos/lote_21_publicacion';
 import {MUSICA_CATEGORIA} from '../carrusel/lote_42_datos';
@@ -52,7 +52,7 @@ async function main(): Promise<void> {
   if (rutaOutput) appendFileSync(rutaOutput, `rutaVideoBuzon=${rutaVideo}\n`);
 
   const link = await enviarAvisoParaSubidaManual(topic, `${id}.mp4`, video.titulo, scheduledFor ?? '(programalo vos en TikTok Studio / YouTube Studio)', captionConMusica);
-  agregarEntrada(RUTA_UPLOADS, {
+  const entrada: Publicacion = {
     id,
     fecha: new Date().toISOString(),
     ok: true,
@@ -63,7 +63,19 @@ async function main(): Promise<void> {
     link,
     avisadoBuzon: true,
     avisadoBuzonEn: new Date().toISOString(),
-  });
+  };
+  // No se escribe directo a state/uploads.json aca -- ver aplicar_pendiente.ts:
+  // con varias entregas casi simultaneas, escribir el log completo desde una
+  // foto vieja en memoria pierde la carrera de git (confirmado real,
+  // 2026-09-15: 28 de 32 avisos se mandaron bien pero el registro se perdio).
+  // Se deja la entrada en un archivo propio (nunca colisiona entre corridas
+  // distintas) y el workflow la aplica de forma reintentable contra la
+  // version mas fresca del remoto.
+  const carpetaPendientes = resolve(RAIZ, 'state/pendientes');
+  mkdirSync(carpetaPendientes, {recursive: true});
+  const rutaPendiente = resolve(carpetaPendientes, `${id}.json`);
+  writeFileSync(rutaPendiente, JSON.stringify(entrada, null, 2) + '\n');
+  if (rutaOutput) appendFileSync(rutaOutput, `rutaPendiente=${rutaPendiente}\n`);
   console.log(`OK -- ${id} entregado al operador (aviso mandado, video como artifact).`);
 }
 

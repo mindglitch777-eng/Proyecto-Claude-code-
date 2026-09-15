@@ -7,10 +7,10 @@
  *
  * Uso: npx tsx subida/subir_carrusel.ts carrusel-01 [scheduledForISO]
  */
-import {existsSync, readdirSync, appendFileSync} from 'fs';
+import {existsSync, readdirSync, appendFileSync, mkdirSync, writeFileSync} from 'fs';
 import {resolve} from 'path';
 import {enviarAvisoParaSubidaManual} from './enviar_para_subida_manual';
-import {RUTA_CARRUSELES, agregarEntrada} from './publicacion';
+import {Publicacion} from './publicacion';
 import {CARRUSELES_42} from '../carrusel/lote_42_datos';
 
 const RAIZ = resolve(__dirname, '../..');
@@ -50,7 +50,7 @@ async function main(): Promise<void> {
   if (rutaOutput) appendFileSync(rutaOutput, `carpetaImagenesBuzon=${carpetaImagenes}\n`);
 
   const link = await enviarAvisoParaSubidaManual(topic, `${id}.zip`, carrusel.titulo, scheduledFor ?? '(programalo vos en TikTok Studio)', captionConMusica, 'carrusel');
-  agregarEntrada(RUTA_CARRUSELES, {
+  const entrada: Publicacion = {
     id,
     fecha: new Date().toISOString(),
     ok: true,
@@ -60,7 +60,16 @@ async function main(): Promise<void> {
     link,
     avisadoBuzon: true,
     avisadoBuzonEn: new Date().toISOString(),
-  });
+  };
+  // Ver aplicar_pendiente.ts: no se escribe directo a state/carruseles.json
+  // aca -- pierde la carrera de git con varias entregas simultaneas
+  // (confirmado real 2026-09-15). Queda en un archivo propio por id, que el
+  // workflow aplica de forma reintentable contra la version mas fresca.
+  const carpetaPendientes = resolve(RAIZ, 'state/pendientes');
+  mkdirSync(carpetaPendientes, {recursive: true});
+  const rutaPendiente = resolve(carpetaPendientes, `${id}.json`);
+  writeFileSync(rutaPendiente, JSON.stringify(entrada, null, 2) + '\n');
+  if (rutaOutput) appendFileSync(rutaOutput, `rutaPendiente=${rutaPendiente}\n`);
   console.log(`OK -- ${id} entregado al operador (aviso mandado, ${rutasImagenes.length} imágenes como artifact).`);
 }
 
