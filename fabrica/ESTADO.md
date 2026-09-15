@@ -1,5 +1,40 @@
 # Estado vivo del proyecto
 
+## Bloque: Zernio abandonado del todo (carruseles incluidos) + backlog completo entregado + fix real de carrera de git (2026-09-15)
+
+**Pedido explícito del operador**: "y si abandonamos zernio para los carruseles también? aparecen que se suben y
+luego no, o quedan en cola durante días y siguen horarios que ya no deberíamos seguir... programamos todo con tik
+tok estudio y listo." Después: "dale, dispará, pero que no se borren los videos... mandame el backlog completo."
+
+- **Causa real encontrada**: `subir_video.ts`/`subir_carrusel.ts` ya no publicaban vía Zernio desde el
+  2026-09-14, pero quedaron **37 posts programados a futuro sin cancelar** desde antes del pivot (28 carruseles +
+  9 videos), todos con horarios viejos (12:30-23:30 UTC, la regla "evitar 10-14h" ya descartada) -- eso era lo
+  que seguía apareciendo raro en Zernio/TikTok.
+- **Cancelados los 37 de verdad** (`DELETE /v1/posts/:id` real contra la API de Zernio, confirmado post por post):
+  33 con `"Post deleted successfully"`, 4 con 404 (ya habían sido cancelados en una reprogramación vieja -- no es
+  un fallo, ya estaban resueltos). `cancelar_post.ts` ahora acepta una lista de postIds en una sola corrida (antes
+  uno por uno).
+- **Backlog completo entregado al Buzón**: los 8 videos (v06,v07,v08,v09,v12,v18,v20,v21) y 24 carruseles
+  (04,05,06,07,11,12,13,14,18,19,20,21,25,26,27,28,32,33,34,35,39,40,41,42) que tenían posts huérfanos en Zernio
+  pero nunca habían pasado por el Buzón nuevo -- confirmado 1 por 1 que sus archivos/imágenes ya estaban
+  renderizados y commiteados antes de disparar nada.
+- **Bug real encontrado y arreglado de raíz en el camino**: al disparar las 32 entregas casi simultáneas, 28 de
+  32 avisos por ntfy.sh salieron bien pero el registro en `state/uploads.json`/`state/carruseles.json` se perdió
+  -- cada corrida leía/escribía el log completo desde una foto vieja en memoria, y la que perdía la carrera de
+  `git push` reintentaba el mismo diff desactualizado sin volver a leer lo que la otra corrida ya había empujado
+  (el job igual reportaba "success" por el `continue-on-error`, así que no se notaba). Fix real (no solo para
+  esta vez): `subir_video.ts`/`subir_carrusel.ts` ya no escriben directo al log -- dejan la entrada en
+  `state/pendientes/<id>.json` (no trackeado en git), y el step de commit de `subir-video.yml`/
+  `subir-carrusel.yml`/`entregar-diario.yml` ahora, en cada intento del loop, hace `git fetch` + `reset --hard` a
+  la versión más fresca del remoto y recién ahí aplica su único pendiente de forma idempotente
+  (`aplicar_pendiente.ts`) -- así nunca compite por las mismas líneas que otra corrida concurrente haya tocado.
+  Re-disparadas las 27 entradas que se habían perdido con el mecanismo nuevo: 26 entraron a la primera, 1
+  (`carrusel-11`) necesitó un segundo disparo (colisión pura, resuelta al toque). Verificado con `diff` real que
+  `state/uploads.json`/`state/carruseles.json` quedaron idénticos entre la rama de trabajo y `main`.
+- Con esto: TikTok y YouTube quedan publicados **100% a mano** desde las apps nativas, sin ningún rastro de Zernio
+  corriendo ni programado a futuro -- el flujo completo es Buzón (aviso + descarga + copiar texto) → operador
+  programa en TikTok Studio/YouTube Studio.
+
 ## Bloque: entrega diaria automática -- 3 videos + 6 carruseles/día, lun-vie (2026-09-15)
 
 **Pedido explícito del operador**: le preocupaba no saber cómo le iban a llegar los avisos si tocaban varios
