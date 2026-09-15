@@ -86,14 +86,25 @@
     "subidoEn": "2026-09-15T10:56:45.933397Z"
   },
   {
-    "id": "carrusel-33",
-    "fecha": "2026-09-15T11:24:03.243Z",
+    "id": "carrusel-20",
+    "fecha": "2026-09-15T11:22:15.208Z",
     "ok": true,
     "estado": "pendiente",
-    "tema": "El sistema de Jeff Bezos",
+    "tema": "Mientras dormías, tu activo trabajó",
     "scheduledFor": "",
-    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962909969",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962870896",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:24:03.243Z"
+    "avisadoBuzonEn": "2026-09-15T11:22:15.208Z"
+  },
+  {
+    "id": "carrusel-40",
+    "fecha": "2026-09-15T11:24:24.669Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "Video privado: cómo hice X",
+    "scheduledFor": "",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962931340",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T11:24:24.669Z"
   }
 ]
