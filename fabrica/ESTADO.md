@@ -1,5 +1,20 @@
 # Estado vivo del proyecto
 
+## Bloque: Módulo 5 (Métricas reales) se descarta -- decisión explícita del operador (2026-09-15)
+
+Antes de construir nada se investigó qué había ya hecho: cliente real y testeado de YouTube Data API v3
+(`fabrica/research/youtube_api.ts`, gratis sin tarjeta, sin plan pago, solo bloqueado por falta de
+`FABRICA_YOUTUBE_API_KEY`) y un scraper real de un video puntual de TikTok (`fabrica/research/scraper_tiktok_video.py`,
+genérico, serviría apuntado a videos propios). Antes de tocar el botón "Ya lo subí" del panel (pendiente de
+activación, Módulo 4) se le preguntó al operador cómo capturar el link real publicado, necesario para poder
+buscar métricas después.
+
+**Respuesta del operador:** TikTok Studio y YouTube Studio ya dan un resumen semanal de vistas/métricas nativo
+-- construir un fetch automático de métricas gastaría tiempo y tokens sobre algo que la app nativa ya resuelve.
+**Módulo 5 queda descartado, no solo pospuesto** -- no hay plan de retomarlo salvo que el operador lo pida de
+nuevo. `youtube_api.ts` y `scraper_tiktok_video.py` quedan como están (código real, testeado, sin usar) por si
+algún día hace falta, pero no se sigue construyendo nada arriba de esto.
+
 ## Bloque: publicación pasa a manual vía apps nativas -- se borra Zernio-para-publicar (2026-09-14)
 
 **Pedido explícito del operador**, tras encontrar en vivo que `notificar-box.yml` (el sondeo cada 20 min a
@@ -59,7 +74,8 @@ documentado en `panel/LANZAMIENTO.md`, no bloquea seguir desarrollando.
 2. **Entrega del paquete** (Buzón) -- reconstruido hoy, funciona.
 3. **Panel** (cola de contenido pendiente) -- reconstruido hoy, funciona (generador real, ver arriba).
 4. **Memoria** ("Ya lo subí") -- código listo, activación pendiente de 2 pasos manuales del operador.
-5. **Métricas reales** -- no empezado (YouTube API oficial, scraper de TikTok a videos propios).
+5. **Métricas reales** -- DESCARTADO (2026-09-15, decisión explícita del operador): TikTok Studio/YouTube Studio
+   ya dan resumen semanal nativo, no vale la pena construir un fetch automático propio. Ver bloque de arriba.
 6. **Refinamiento y pensamiento crítico sobre los productos** -- nuevo, no empezado. Pendiente de definir
    alcance con el operador.
 7. **Mejora de algoritmo y videos con resultados ya llegados** -- nuevo, no empezado. Depende del módulo 5
@@ -195,7 +211,7 @@ que preguntarme por texto. Se definieron, en orden de construcción:
 3. Resultados reales: métricas automáticas (vistas/likes/comentarios) -- requiere antes probar si el plan
    gratuito de Zernio incluye `obtenerAnalytics()` (nunca probado), conectar la API oficial de YouTube (ya existe
    `fabrica/research/youtube_api.ts`), y adaptar el scraper de TikTok ya existente
-   (`fabrica/research/scraper_video_tiktok.py`) a videos propios en vez de investigación de terceros. Se
+   (`fabrica/research/scraper_tiktok_video.py`) a videos propios en vez de investigación de terceros. Se
    descartó explícitamente pedirle al operador su usuario/contraseña de TikTok/YouTube (riesgo real de bloqueo
    de cuenta por login automatizado sospechoso).
 4. Salud y plata: semáforo de integraciones externas, alertas preventivas (el cupo de artifacts que se llenó
