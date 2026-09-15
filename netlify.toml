@@ -1,20 +1,14 @@
-[build]
-  functions = "netlify/functions"
-
 [[redirects]]
   from = "/buscador-de-activos"
   to = "/buscador-de-activos.html"
   status = 200
 
-[[redirects]]
-  from = "/panel"
-  to = "/panel/torre-de-control.html"
-  status = 200
-
-[[redirects]]
-  from = "/api/marcar-subido"
-  to = "/.netlify/functions/marcar-subido"
-  status = 200
+# El panel de la Torre de Control (Buzon) vivia acá vía /panel + una
+# Netlify Function para el botón "Ya lo subí" -- se sacó de este sitio
+# por completo el 2026-09-15 (decisión del operador: mezclar el panel
+# con el dominio de El Corte generaba confusión real de rutas/redirects,
+# nada que ver una cosa con la otra). El panel ahora vive en GitHub
+# Pages, ver .github/workflows/publicar-panel-pages.yml.
 
 # El Corte esta archivado (decision del operador, 2026-09-03) -- esta regla
 # de abajo no se toca, solo se agrego la de arriba, que tiene que ir primero

@@ -1,5 +1,24 @@
 # Estado vivo del proyecto
 
+## Bloque: el panel se muda de Netlify a GitHub Pages -- separado por completo de El Corte (2026-09-15)
+
+**Pedido explícito del operador**, tras la confusión real de las secciones anteriores (el operador entró al link
+de Netlify y le apareció El Corte en vez del panel, por un desajuste de sincronización entre ramas): "crea otra
+[página]... no tiene nada que ver una cosa con la otra... analiza diagnostica lo que tenga que hacer paso por
+paso... pero no me traigas este problema en la mesa". Se resolvió de punta a punta sin pedirle nada al operador:
+
+- **Panel → GitHub Pages** (`https://mindglitch777-eng.github.io/Proyecto-Claude-code-/`), sitio propio, cero
+  relación con el dominio de Netlify de El Corte. `publicar-panel-pages.yml` (nuevo) lo redespliega solo cada vez
+  que cambia `panel/torre-de-control.html` en `main`.
+- **Botón "Ya lo subí" → ya no depende de Netlify Functions ni de ningún secreto nuevo.** Ahora es un link a un
+  Issue de GitHub prellenado (`Ya subido: <id>`) -- el operador ya está logueado en GitHub para todo lo demás.
+  `marcar-subido-por-issue.yml` (nuevo) procesa el issue, marca la entrada real, regenera el panel, lo empuja a
+  `main` y cierra el issue solo. Filtrado por usuario (solo el operador) porque el repo ya es público.
+- Se sacó `netlify.toml`/`netlify/functions/marcar-subido.js` todo lo relacionado al panel (queda solo lo de El
+  Corte + El Buscador de Activos, que sí son de Netlify).
+- Cero configuración manual pendiente del operador -- a diferencia del primer intento con Netlify (que pedía 3
+  pasos manuales: PAT, variable de entorno, secret de Actions), esta versión no necesita nada nuevo.
+
 ## Bloque: repo público + primera entrega real de punta a punta + bug de ids duplicados encontrado y arreglado (2026-09-15)
 
 **Repo público (decisión explícita del operador):** el bloqueo de GitHub Actions no era un bug de código -- el

@@ -1,0 +1,51 @@
+name: publicar-panel-pages
+
+# Publica panel/torre-de-control.html en GitHub Pages -- sitio propio,
+# separado por completo de Netlify/El Corte (decision explicita del
+# operador 2026-09-15: mezclar el panel con el dominio de El Corte via
+# redirects de Netlify causo confusion real de rutas que parecia que
+# el producto pago se habia roto). Se dispara solo cuando cambia algo
+# en panel/ en main (adonde ya sincronizan subir-video.yml,
+# subir-carrusel.yml, chequear-buzon.yml y marcar-subido-por-issue.yml).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "panel/**"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Preparar carpeta a publicar
+        run: |
+          mkdir -p _site
+          cp panel/torre-de-control.html _site/index.html
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -13,6 +13,16 @@
  * lote_42_datos.ts) -- el estado no duplica ese texto, lo referencia
  * por id.
  *
+ * Publicación 2026-09-15: se movió de Netlify (mismo sitio que El
+ * Corte, causó confusión real de rutas/redirects que casi hace parecer
+ * que se había roto el producto pago) a GitHub Pages, un sitio
+ * COMPLETAMENTE separado -- decisión explícita del operador ("no tiene
+ * nada que ver una cosa con la otra"). El botón "Ya lo subí" dejó de
+ * pegarle a una Netlify Function con secreto -- ahora es un link que
+ * abre un Issue de GitHub prellenado (el operador ya está logueado en
+ * GitHub, no hace falta ningún secreto nuevo); un workflow aparte
+ * (marcar-subido-por-issue.yml) lo procesa y cierra el issue solo.
+ *
  * Uso: npx tsx subida/generar_panel.ts
  */
 import {writeFileSync} from 'fs';
@@ -24,6 +34,7 @@ import {CARRUSELES_42, MUSICA_CATEGORIA} from '../carrusel/lote_42_datos';
 
 const RAIZ = resolve(__dirname, '../..');
 const RUTA_SALIDA = resolve(RAIZ, 'panel/torre-de-control.html');
+const REPO_ISSUES_NUEVO = 'https://github.com/mindglitch777-eng/Proyecto-Claude-code-/issues/new';
 
 type ItemPanel = {
   id: string;
@@ -84,6 +95,11 @@ function escaparHtml(texto: string): string {
   return texto.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+function urlMarcarSubido(id: string): string {
+  const params = new URLSearchParams({title: `Ya subido: ${id}`});
+  return `${REPO_ISSUES_NUEVO}?${params.toString()}`;
+}
+
 function renderizarItem(item: ItemPanel): string {
   const copy = `${item.descripcion}\n\n${item.hashtags.join(' ')}`;
   return `
@@ -98,7 +114,7 @@ function renderizarItem(item: ItemPanel): string {
           <p class="item-musica">🎵 ${escaparHtml(item.musica)}</p>
           <div class="item-acciones">
             ${item.link && !item.vencido ? `<a class="boton-descarga" href="${item.link}" target="_blank" rel="noopener">Descargar</a>` : ''}
-            <button class="boton-listo" type="button" onclick="marcarSubido('${item.id}', this)">Ya lo subí</button>
+            <a class="boton-listo" href="${urlMarcarSubido(item.id)}" target="_blank" rel="noopener">Ya lo subí</a>
           </div>
         </article>`;
 }
@@ -168,28 +184,6 @@ function generarHtml(items: ItemPanel[]): string {
   <p class="subtitulo">Lo que hay para bajar y subir a mano (TikTok Studio / YouTube Studio).</p>
   <div class="lista">${cuerpo}
   </div>
-  <script>
-    // SECRETO_PANEL se reemplaza acá en el momento real de generar esta página
-    const SECRETO_PANEL = "__SECRETO_PANEL__";
-    async function marcarSubido(id, boton) {
-      boton.disabled = true;
-      boton.textContent = 'Marcando...';
-      try {
-        const resp = await fetch('/api/marcar-subido', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({id, secret: SECRETO_PANEL}),
-        });
-        if (!resp.ok) throw new Error(await resp.text());
-        boton.textContent = 'Subido ✓';
-        boton.classList.add('done');
-      } catch (err) {
-        boton.disabled = false;
-        boton.textContent = 'Ya lo subí';
-        alert('No se pudo marcar: ' + err.message);
-      }
-    }
-  </script>
 </body>
 </html>
 `;
@@ -197,15 +191,9 @@ function generarHtml(items: ItemPanel[]): string {
 
 function main(): void {
   const items = [...armarItemsVideo(leerLog(RUTA_UPLOADS)), ...armarItemsCarrusel(leerLog(RUTA_CARRUSELES))];
-  let html = generarHtml(items);
-  // MARCAR_SUBIDO_SECRET (mismo valor que el operador carga en Netlify) se
-  // hornea acá adentro de la página -- si todavía no está configurado como
-  // secret de GitHub Actions, queda el placeholder sin reemplazar (el botón
-  // "Ya lo subí" falla con 401 hasta que se complete panel/LANZAMIENTO.md).
-  const secreto = process.env.MARCAR_SUBIDO_SECRET;
-  if (secreto) html = html.replace('__SECRETO_PANEL__', secreto);
+  const html = generarHtml(items);
   writeFileSync(RUTA_SALIDA, html);
-  console.log(`Listo -- ${items.length} item(s) pendiente(s) en ${RUTA_SALIDA}.${secreto ? '' : ' (MARCAR_SUBIDO_SECRET no está seteado -- placeholder sin reemplazar.)'}`);
+  console.log(`Listo -- ${items.length} item(s) pendiente(s) en ${RUTA_SALIDA}.`);
 }
 
 main();
