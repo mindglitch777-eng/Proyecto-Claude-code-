@@ -161,38 +161,5 @@
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964135280",
     "avisadoBuzon": true,
     "avisadoBuzonEn": "2026-09-15T11:36:21.008Z"
-  },
-  {
-    "id": "carrusel-12",
-    "fecha": "2026-09-15T11:36:19.646Z",
-    "ok": true,
-    "estado": "pendiente",
-    "tema": "De 0 a resultado real en 60 días",
-    "scheduledFor": "",
-    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964133298",
-    "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:19.647Z"
-  },
-  {
-    "id": "carrusel-21",
-    "fecha": "2026-09-15T11:36:31.472Z",
-    "ok": true,
-    "estado": "pendiente",
-    "tema": "El algoritmo no te esconde nada",
-    "scheduledFor": "",
-    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964149756",
-    "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:31.472Z"
-  },
-  {
-    "id": "carrusel-26",
-    "fecha": "2026-09-15T11:36:40.289Z",
-    "ok": true,
-    "estado": "pendiente",
-    "tema": "El que no vende, no ayuda a nadie",
-    "scheduledFor": "",
-    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964154547",
-    "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:40.289Z"
   }
 ]
