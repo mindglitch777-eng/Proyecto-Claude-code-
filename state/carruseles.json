@@ -86,14 +86,14 @@
     "subidoEn": "2026-09-15T10:56:45.933397Z"
   },
   {
-    "id": "carrusel-11",
-    "fecha": "2026-09-15T11:23:06.905Z",
+    "id": "carrusel-32",
+    "fecha": "2026-09-15T11:23:23.928Z",
     "ok": true,
     "estado": "pendiente",
-    "tema": "El 90% usa IA mal",
+    "tema": "El sistema de Mr. Beast",
     "scheduledFor": "",
-    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962834654",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962904687",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:23:06.905Z"
+    "avisadoBuzonEn": "2026-09-15T11:23:23.929Z"
   }
 ]
