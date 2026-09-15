@@ -27,23 +27,25 @@
     "id": "carrusel-15",
     "fecha": "2026-09-15T10:49:49.595Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "5 errores que matan ventas",
     "scheduledFor": "2026-09-15T14:30:00-03:00",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34959062299",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T10:49:49.595Z"
+    "avisadoBuzonEn": "2026-09-15T10:49:49.595Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "carrusel-22",
     "fecha": "2026-09-15T10:51:17.548Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Vendí sin un solo seguidor",
     "scheduledFor": "2026-09-15T16:00:00-03:00",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34959062299",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T10:51:17.548Z"
+    "avisadoBuzonEn": "2026-09-15T10:51:17.548Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "carrusel-29",
@@ -62,12 +64,13 @@
     "id": "carrusel-36",
     "fecha": "2026-09-15T10:53:55.867Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "El sistema de los que ganan",
     "scheduledFor": "2026-09-15T21:30:00-03:00",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34959062299",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T10:53:55.867Z"
+    "avisadoBuzonEn": "2026-09-15T10:53:55.867Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "carrusel-16",
@@ -135,12 +138,13 @@
     "id": "carrusel-04",
     "fecha": "2026-09-15T11:36:06.586Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Los gurús te mienten",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964117595",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:06.586Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:06.586Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "carrusel-05",
@@ -212,12 +216,13 @@
     "id": "carrusel-25",
     "fecha": "2026-09-15T11:36:29.319Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Ese carrusel no te paga el alquiler",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964151754",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:29.319Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:29.319Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "carrusel-28",
@@ -256,23 +261,25 @@
     "id": "carrusel-18",
     "fecha": "2026-09-15T11:36:22.442Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "El error que me costó caro",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964139964",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:22.442Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:22.442Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "carrusel-32",
     "fecha": "2026-09-15T11:37:19.400Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "El sistema de Mr. Beast",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964166392",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:37:19.400Z"
+    "avisadoBuzonEn": "2026-09-15T11:37:19.400Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "carrusel-33",
@@ -300,12 +307,13 @@
     "id": "carrusel-39",
     "fecha": "2026-09-15T11:37:51.221Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Guía de los 5 errores",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964173287",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:37:51.221Z"
+    "avisadoBuzonEn": "2026-09-15T11:37:51.221Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "carrusel-40",
@@ -344,55 +352,60 @@
     "id": "carrusel-11",
     "fecha": "2026-09-15T11:41:18.976Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "El 90% usa IA mal",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964576771",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:41:18.976Z"
+    "avisadoBuzonEn": "2026-09-15T11:41:18.976Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "carrusel-02",
     "fecha": "2026-09-15T12:29:33.736Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "¿Todavía estudiando marketing?",
     "scheduledFor": "2026-09-15T09:30:00-03:00",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34968621858",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T12:29:33.737Z"
+    "avisadoBuzonEn": "2026-09-15T12:29:33.737Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "carrusel-09",
     "fecha": "2026-09-15T12:30:52.068Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Lo que no te cuentan de Hotmart",
     "scheduledFor": "2026-09-15T10:30:00-03:00",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34968621858",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T12:30:52.068Z"
+    "avisadoBuzonEn": "2026-09-15T12:30:52.068Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "carrusel-23",
     "fecha": "2026-09-15T12:32:01.394Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Empecé sin saber nada del tema",
     "scheduledFor": "2026-09-15T16:00:00-03:00",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34968621858",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T12:32:01.394Z"
+    "avisadoBuzonEn": "2026-09-15T12:32:01.394Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   },
   {
     "id": "carrusel-30",
     "fecha": "2026-09-15T12:33:11.239Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "La \"suerte\" fueron 200 publicaciones",
     "scheduledFor": "2026-09-15T20:30:00-03:00",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34968621858",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T12:33:11.239Z"
+    "avisadoBuzonEn": "2026-09-15T12:33:11.239Z",
+    "subidoEn": "2026-09-15T20:48:09.159Z"
   }
 ]
