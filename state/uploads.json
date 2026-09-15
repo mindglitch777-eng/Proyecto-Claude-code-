@@ -224,5 +224,17 @@
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34968621858",
     "avisadoBuzon": true,
     "avisadoBuzonEn": "2026-09-15T12:26:53.218Z"
+  },
+  {
+    "id": "v14",
+    "fecha": "2026-09-15T12:28:17.760Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "Backend abierto",
+    "scheduledFor": "2026-09-15T21:30:00-03:00",
+    "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v14.mp4",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34968621858",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T12:28:17.760Z"
   }
 ]
