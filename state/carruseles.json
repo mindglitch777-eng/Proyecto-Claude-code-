@@ -117,5 +117,16 @@
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964124774",
     "avisadoBuzon": true,
     "avisadoBuzonEn": "2026-09-15T11:36:08.976Z"
+  },
+  {
+    "id": "carrusel-14",
+    "fecha": "2026-09-15T11:36:17.225Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "Lo que factura un activo digital",
+    "scheduledFor": "",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964137687",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T11:36:17.225Z"
   }
 ]
