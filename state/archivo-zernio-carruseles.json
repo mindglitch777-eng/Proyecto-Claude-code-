@@ -1,0 +1,1878 @@
+[
+  {
+    "id": "carrusel-10",
+    "fecha": "2026-09-11T16:58:43.891Z",
+    "ok": true,
+    "postId": "6aa4334389d4155595482738",
+    "scheduledFor": "2026-09-14T21:00:00.000Z",
+    "notificado": false,
+    "nota": "Entrada reconstruida a mano: reprogramacion del horario de mediodia (avoid 10-14h TikTok, confirmado por el operador) -- se cancelo el post viejo 6aa342e71c995ee32f5d9d63 con DELETE (confirmado real, devuelve 404 despues) antes de crear este. El paso 'Commitear log de subida' perdio la carrera de git (5 workflows de carrusel + 2 de video casi simultaneos).",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa4334389d4155595482738",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-14T21:00:00.000Z"
+      }
+    }
+  },
+  {
+    "id": "carrusel-11",
+    "fecha": "2026-09-11T16:57:36Z",
+    "ok": true,
+    "postId": "6aa43351c543becb1248b76d",
+    "scheduledFor": "2026-09-15T21:00:00.000Z",
+    "notificado": false,
+    "nota": "Entrada reconstruida a mano: reprogramacion del horario de mediodia (avoid 10-14h TikTok, confirmado por el operador) -- se cancelo el post viejo 6aa343984caf63d9cab4dfb0 con DELETE (confirmado real, devuelve 404 despues) antes de crear este. El paso 'Commitear log de subida' perdio la carrera de git (5 workflows de carrusel + 2 de video casi simultaneos).",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa43351c543becb1248b76d",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-15T21:00:00.000Z"
+      }
+    }
+  },
+  {
+    "id": "carrusel-13",
+    "fecha": "2026-09-11T16:59:20.787Z",
+    "ok": true,
+    "postId": "6aa43368c543becb1248be03",
+    "scheduledFor": "2026-09-17T21:00:00.000Z",
+    "notificado": false,
+    "nota": "Entrada reconstruida a mano: reprogramacion del horario de mediodia (avoid 10-14h TikTok, confirmado por el operador) -- se cancelo el post viejo 6aa344ee8e932222dfd3bf91 con DELETE (confirmado real, devuelve 404 despues) antes de crear este. El paso 'Commitear log de subida' perdio la carrera de git (5 workflows de carrusel + 2 de video casi simultaneos).",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa43368c543becb1248be03",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-17T21:00:00.000Z"
+      }
+    }
+  },
+  {
+    "id": "carrusel-14",
+    "fecha": "2026-09-11T16:59:17.464Z",
+    "ok": true,
+    "postId": "6aa43365c543becb1248bd12",
+    "scheduledFor": "2026-09-18T21:00:00.000Z",
+    "notificado": false,
+    "nota": "Entrada reconstruida a mano: reprogramacion del horario de mediodia (avoid 10-14h TikTok, confirmado por el operador) -- se cancelo el post viejo 6aa3458b2dea647a4ee00fed con DELETE (confirmado real, devuelve 404 despues) antes de crear este. El paso 'Commitear log de subida' perdio la carrera de git (5 workflows de carrusel + 2 de video casi simultaneos).",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa43365c543becb1248bd12",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-18T21:00:00.000Z"
+      }
+    }
+  },
+  {
+    "id": "carrusel-01",
+    "fecha": "2026-09-10T23:06:46.626Z",
+    "ok": true,
+    "postId": "6aa337fe4726232e16009d08",
+    "scheduledFor": "",
+    "respuestaCruda": {
+      "post": {
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa337fe4726232e16009d08",
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "El que más vende, menos sabe",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081591604_0x64rwys_7d42d125-7a5c-4801-ac49-53bcc82833bd.png",
+            "_id": "6aa337fe4726232e16009d09"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081592164_af5gilw3_79fe9718-8e88-4fa9-9da4-de60a11c014c.png",
+            "_id": "6aa337fe4726232e16009d0a"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081592667_8z07l219_48be96ad-15cb-413a-9f25-85ab4ec5a9a0.png",
+            "_id": "6aa337fe4726232e16009d0b"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081593210_rqbexvfy_682ba657-912e-406d-a691-9a1afe171727.png",
+            "_id": "6aa337fe4726232e16009d0c"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081593597_a8thiuuh_10f6f4f7-e781-4352-b6b3-87c15ddf18d2.png",
+            "_id": "6aa337fe4726232e16009d0d"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081594417_jbarknet_82d9bb77-228e-4628-8e92-78c26546bf25.png",
+            "_id": "6aa337fe4726232e16009d0e"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-10T23:06:35.018Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "La ventaja real no es saber editar. Es tener sistema. 👇\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #MarketingDigital #IA",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              },
+              "isDraft": true
+            },
+            "status": "published",
+            "publishAttempts": 0,
+            "contentHash": "4bc008fa92c402380de55f156e773bd1",
+            "_id": "6aa337fe4726232e16009d0f",
+            "platformPostId": "p_inbox_url~v2.7684046537479194641",
+            "publishedAt": "2026-09-10T23:06:45.942Z"
+          }
+        ],
+        "scheduledFor": "2026-09-10T23:06:35.018Z",
+        "timezone": "UTC",
+        "status": "published",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "createdAt": "2026-09-10T23:06:38.568Z",
+        "updatedAt": "2026-09-10T23:06:46.437Z",
+        "__v": 0,
+        "publishingClaimedAt": "2026-09-10T23:06:38.687Z"
+      },
+      "message": "Post published successfully"
+    },
+    "notificado": true
+  },
+  {
+    "id": "carrusel-08",
+    "fecha": "2026-09-10T23:09:01.156Z",
+    "ok": true,
+    "postId": "6aa3388c2da049532a2bc3b1",
+    "scheduledFor": "2026-09-10T23:15:00Z",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "No tenés que ser experto",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081733993_gqqju7hc_860bf5dc-ffdf-4e6d-a8aa-6afa0d20bd71.png",
+            "_id": "6aa3388c2da049532a2bc3b2"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081734603_xdei4oe6_bdd38fb9-91f6-4c07-b074-18a49c6dd6b0.png",
+            "_id": "6aa3388c2da049532a2bc3b3"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081735083_cqcjmsmv_7fc51291-b143-4a2a-9f75-cd95d1c5324f.png",
+            "_id": "6aa3388c2da049532a2bc3b4"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081735593_vzs64g2a_f43005ba-cd6f-49ed-973b-cbae4fad33e3.png",
+            "_id": "6aa3388c2da049532a2bc3b5"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081736048_2analcpn_d3b6d159-8eb1-40e8-bf24-760504be69ae.png",
+            "_id": "6aa3388c2da049532a2bc3b6"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789081736822_8l1q0zbs_ff40a592-98c7-468b-87a8-c8a06c72ae15.png",
+            "_id": "6aa3388c2da049532a2bc3b7"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-10T23:15:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "Mito #2: hay que ser experto. Falso.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #EmprendedorPrincipiante",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "fec616a3212d65d334f92004952e0d0d",
+            "_id": "6aa3388c2da049532a2bc3b8"
+          }
+        ],
+        "scheduledFor": "2026-09-10T23:15:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa3388c2da049532a2bc3b1",
+        "createdAt": "2026-09-10T23:09:01.006Z",
+        "updatedAt": "2026-09-10T23:09:01.006Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    },
+    "notificado": true
+  },
+  {
+    "id": "carrusel-15",
+    "fecha": "2026-09-10T23:08:59.866Z",
+    "ok": true,
+    "postId": "6aa3388b2da049532a2bc395",
+    "scheduledFor": "2026-09-11T00:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa3388b2da049532a2bc395",
+        "status": "scheduled"
+      }
+    },
+    "notificado": true
+  },
+  {
+    "id": "carrusel-29",
+    "fecha": "2026-09-10T23:09:05.615Z",
+    "ok": true,
+    "postId": "6aa33891b50a79df27cdbf55",
+    "scheduledFor": "2026-09-10T23:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa33891b50a79df27cdbf55",
+        "status": "scheduled"
+      }
+    },
+    "notificado": true
+  },
+  {
+    "id": "carrusel-36",
+    "fecha": "2026-09-10T23:09:00.448Z",
+    "ok": true,
+    "postId": "6aa3388c426058eec36240e6",
+    "scheduledFor": "2026-09-11T00:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa3388c426058eec36240e6",
+        "status": "scheduled"
+      }
+    },
+    "notificado": true
+  },
+  {
+    "id": "carrusel-22",
+    "fecha": "2026-09-10T23:09:08.701Z",
+    "ok": true,
+    "postId": "6aa33894b50a79df27cdc042",
+    "scheduledFor": "2026-09-11T01:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa33894b50a79df27cdc042",
+        "status": "scheduled"
+      }
+    },
+    "notificado": true
+  },
+  {
+    "id": "carrusel-37",
+    "fecha": "2026-09-10T23:50:00.113Z",
+    "ok": true,
+    "postId": "6aa34227ea85fbd5be8d4693",
+    "scheduledFor": "2026-09-12T00:30:00Z",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Plantilla para tu primer producto",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084192998_0bb8nuo7_1bcc4133-884c-427e-81ed-96a65b9373ee.png",
+            "_id": "6aa34227ea85fbd5be8d4694"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084193482_dekhv0k6_ca37c9d2-9fd6-424a-b98e-a84ef261745a.png",
+            "_id": "6aa34227ea85fbd5be8d4695"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084193945_lb2zd04n_7c995e3d-2167-4b33-b975-10d904d2b2d9.png",
+            "_id": "6aa34227ea85fbd5be8d4696"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084194486_lk844fni_72bf57de-e7cb-4af1-8dbf-ef4d3a337474.png",
+            "_id": "6aa34227ea85fbd5be8d4697"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084195087_6ihlormj_3625d01a-b598-49d0-97c6-a6bce104ae0e.png",
+            "_id": "6aa34227ea85fbd5be8d4698"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084195887_v5cq46rm_fef1f51b-870a-4c3c-a3b1-473dfb29191b.png",
+            "_id": "6aa34227ea85fbd5be8d4699"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-12T00:30:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "Plantilla gratis para armar tu primer producto.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Plantilla #RecursoGratis",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "519d23a0857baeaba6365d7d87aa1d97",
+            "_id": "6aa34227ea85fbd5be8d469a"
+          }
+        ],
+        "scheduledFor": "2026-09-12T00:30:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa34227ea85fbd5be8d4693",
+        "createdAt": "2026-09-10T23:49:59.979Z",
+        "updatedAt": "2026-09-10T23:49:59.979Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    },
+    "notificado": true
+  },
+  {
+    "id": "carrusel-38",
+    "fecha": "2026-09-10T23:53:05.662Z",
+    "ok": true,
+    "postId": "6aa342e11c995ee32f5d9a84",
+    "scheduledFor": "2026-09-15T00:30:00Z",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Checklist para lanzar en 7 días",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084377655_1cnfyqd5_d6a59ba8-8ca3-4d6f-ad76-38eb39f41acb.png",
+            "_id": "6aa342e11c995ee32f5d9a85"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084378724_n7o8e25i_fa33b1ea-498a-4183-99a7-f377bd3b678e.png",
+            "_id": "6aa342e11c995ee32f5d9a86"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084379513_4tm21duk_9e836bcb-4901-43e9-acce-3ad514134c7f.png",
+            "_id": "6aa342e11c995ee32f5d9a87"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084380260_bjhl5eb4_83f14c9b-834a-4903-9929-375614e0b24a.png",
+            "_id": "6aa342e11c995ee32f5d9a88"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084380945_j3it42p1_f2f0fe66-443a-4e6a-8c03-c565c8574108.png",
+            "_id": "6aa342e11c995ee32f5d9a89"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084381981_41kbtnz9_6a2d5156-f5d1-4834-844a-a91810432cb5.png",
+            "_id": "6aa342e11c995ee32f5d9a8a"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-15T00:30:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "Checklist gratis: lanzá en 7 días.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Checklist #Lanzamiento",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "3204bc7851684835278b770a744e16ca",
+            "_id": "6aa342e11c995ee32f5d9a8b"
+          }
+        ],
+        "scheduledFor": "2026-09-15T00:30:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa342e11c995ee32f5d9a84",
+        "createdAt": "2026-09-10T23:53:05.490Z",
+        "updatedAt": "2026-09-10T23:53:05.490Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    }
+  },
+  {
+    "id": "carrusel-11",
+    "fecha": "2026-09-10T23:56:08.651Z",
+    "ok": true,
+    "postId": "6aa343984caf63d9cab4dfb0",
+    "scheduledFor": "2026-09-15T13:30:00Z",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "El 90% usa IA mal",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084561915_3xi3sajb_50c230c8-47cb-4acb-b57a-f4105aebba39.png",
+            "_id": "6aa343984caf63d9cab4dfb1"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084562496_zbupc43i_7ed381e2-7259-4b18-95a9-69b89b422a24.png",
+            "_id": "6aa343984caf63d9cab4dfb2"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084563245_tgdplj93_7445bb6c-8e3d-4014-a8f6-3e9a6e9ca505.png",
+            "_id": "6aa343984caf63d9cab4dfb3"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084563758_o2d4wltp_8e5f9b40-383d-4b1a-814f-88f5ae0d9f58.png",
+            "_id": "6aa343984caf63d9cab4dfb4"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084564166_u2ovxgw1_5e3ab3b2-2424-4380-adab-86c02280eae8.png",
+            "_id": "6aa343984caf63d9cab4dfb5"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084565059_46v9dl7a_21b23612-5854-4a9b-833b-1c1ecd810316.png",
+            "_id": "6aa343984caf63d9cab4dfb6"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-15T13:30:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "La IA no es un juguete. Es una palanca.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #IA #InteligenciaArtificial",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "3a0789bf07876de136022230bbfbdb0a",
+            "_id": "6aa343984caf63d9cab4dfb7"
+          }
+        ],
+        "scheduledFor": "2026-09-15T13:30:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa343984caf63d9cab4dfb0",
+        "createdAt": "2026-09-10T23:56:08.509Z",
+        "updatedAt": "2026-09-10T23:56:08.509Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    }
+  },
+  {
+    "id": "carrusel-05",
+    "fecha": "2026-09-10T23:59:04.612Z",
+    "ok": true,
+    "postId": "6aa34448a7549fc0efe238ed",
+    "scheduledFor": "2026-09-16T12:30:00Z",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "El contenido es café. Los activos son edificios",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084737592_c2ej5w7d_bb7a1271-208a-4a07-93a1-e9aef7749891.png",
+            "_id": "6aa34448a7549fc0efe238ee"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084738189_xz69fpro_fbbda592-038a-4a69-984e-eb4faff3eccb.png",
+            "_id": "6aa34448a7549fc0efe238ef"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084738686_08ophrnk_087a94a2-b81e-432c-add8-1f8946977c32.png",
+            "_id": "6aa34448a7549fc0efe238f0"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084739243_fy1dpb1k_f1b68c2c-8b51-4d5e-952c-27a567432a57.png",
+            "_id": "6aa34448a7549fc0efe238f1"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084739790_jk3nrnzb_be9fefaf-ccfd-49ce-85ef-3aa11fde7a15.png",
+            "_id": "6aa34448a7549fc0efe238f2"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084740692_gnpqykuw_4cd4d1b2-83eb-4b33-89b6-b6edee885bfa.png",
+            "_id": "6aa34448a7549fc0efe238f3"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-16T12:30:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "Dejá de postear café. Empezá a construir edificios.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #ActivosDigitales #IngresoPasivo",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "6e127af36edae6d9ac96c882404698b7",
+            "_id": "6aa34448a7549fc0efe238f4"
+          }
+        ],
+        "scheduledFor": "2026-09-16T12:30:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa34448a7549fc0efe238ed",
+        "createdAt": "2026-09-10T23:59:04.473Z",
+        "updatedAt": "2026-09-10T23:59:04.473Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    }
+  },
+  {
+    "id": "carrusel-41",
+    "fecha": "2026-09-11T00:01:48.796Z",
+    "ok": true,
+    "postId": "6aa344ec7df10a99a2fefce8",
+    "scheduledFor": "2026-09-18T00:30:00Z",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Las plataformas que uso",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084901730_uip0g4em_cc4fd5d8-9de2-420f-8c38-5f2088e9ba76.png",
+            "_id": "6aa344ec7df10a99a2fefce9"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084902201_rdgtfijx_fb3d7156-f28c-4655-888c-0dd7812fac66.png",
+            "_id": "6aa344ec7df10a99a2fefcea"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084903138_m50z62xm_4ddf410a-87eb-4dd1-8ffe-1d92ffcc9c3d.png",
+            "_id": "6aa344ec7df10a99a2fefceb"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084903731_ig8swc4s_3ac1e417-d8e7-40e0-8582-5b8cf1238224.png",
+            "_id": "6aa344ec7df10a99a2fefcec"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084904249_kzctzhpn_4e6e69cd-78c1-4fc6-a633-f740bbc6c127.png",
+            "_id": "6aa344ec7df10a99a2fefced"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084905182_8c44q8j3_c8ad51b9-7c61-4010-86be-187099b077c9.png",
+            "_id": "6aa344ec7df10a99a2fefcee"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-18T00:30:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "Las plataformas reales que uso para vender.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Plataformas #VentasOnline",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "012a59e4947e25eb0b732673f3a29d30",
+            "_id": "6aa344ec7df10a99a2fefcef"
+          }
+        ],
+        "scheduledFor": "2026-09-18T00:30:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa344ec7df10a99a2fefce8",
+        "createdAt": "2026-09-11T00:01:48.637Z",
+        "updatedAt": "2026-09-11T00:01:48.637Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    }
+  },
+  {
+    "id": "carrusel-07",
+    "fecha": "2026-09-11T00:04:22.317Z",
+    "ok": true,
+    "postId": "6aa34586d7f4a79f00ae3288",
+    "scheduledFor": "2026-09-18T12:30:00Z",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "No necesitás seguidores",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789085055166_di30d2jm_e229bf0e-919a-4be9-a695-c8db11560ec7.png",
+            "_id": "6aa34586d7f4a79f00ae3289"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789085055857_detj2q0b_016be896-fdfe-40d1-96cc-4d5d769ac555.png",
+            "_id": "6aa34586d7f4a79f00ae328a"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789085056418_xntdxs44_a7729446-a1cb-4020-b041-8e8e418e21b7.png",
+            "_id": "6aa34586d7f4a79f00ae328b"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789085057067_e9uc0av6_a9d4deec-52b3-4b1c-be21-f61daa926dd2.png",
+            "_id": "6aa34586d7f4a79f00ae328c"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789085057844_m41e6642_1d7b0062-8635-48c0-ba86-7bdf12a12939.png",
+            "_id": "6aa34586d7f4a79f00ae328d"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789085058740_lruxefvi_3da1f4fb-1056-4e4a-9f24-f52c4f05b13a.png",
+            "_id": "6aa34586d7f4a79f00ae328e"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-18T12:30:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "Mito #1: necesitás seguidores. Falso.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #VenderSinSeguidores",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "6f69efd502c230c337b4799afe10235c",
+            "_id": "6aa34586d7f4a79f00ae328f"
+          }
+        ],
+        "scheduledFor": "2026-09-18T12:30:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa34586d7f4a79f00ae3288",
+        "createdAt": "2026-09-11T00:04:22.133Z",
+        "updatedAt": "2026-09-11T00:04:22.133Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    }
+  },
+  {
+    "id": "carrusel-02",
+    "fecha": "2026-09-10T23:50:00.000Z",
+    "ok": true,
+    "postId": "6aa342295f2578182cff0579",
+    "scheduledFor": "2026-09-11T12:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa342295f2578182cff0579",
+        "status": "scheduled"
+      }
+    },
+    "notificado": true
+  },
+  {
+    "id": "carrusel-09",
+    "fecha": "2026-09-10T23:50:01.000Z",
+    "ok": true,
+    "postId": "6aa342394dd45f46f23c308a",
+    "scheduledFor": "2026-09-11T13:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa342394dd45f46f23c308a",
+        "status": "scheduled"
+      }
+    },
+    "reintentos": 1,
+    "estadoReintento": "resuelto"
+  },
+  {
+    "id": "carrusel-16",
+    "fecha": "2026-09-10T23:50:02.000Z",
+    "ok": true,
+    "postId": "6aa3423c5f2578182cff084d",
+    "scheduledFor": "2026-09-11T17:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa3423c5f2578182cff084d",
+        "status": "scheduled"
+      }
+    },
+    "reintentos": 1,
+    "estadoReintento": "resuelto"
+  },
+  {
+    "id": "carrusel-23",
+    "fecha": "2026-09-10T23:50:03.000Z",
+    "ok": true,
+    "postId": "6aa3423636fc0188184d2dcf",
+    "scheduledFor": "2026-09-11T19:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa3423636fc0188184d2dcf",
+        "status": "scheduled"
+      }
+    },
+    "reintentos": 1,
+    "estadoReintento": "resuelto"
+  },
+  {
+    "id": "carrusel-30",
+    "fecha": "2026-09-10T23:50:04.000Z",
+    "ok": true,
+    "postId": "6aa3422e62361f664307448a",
+    "scheduledFor": "2026-09-11T23:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa3422e62361f664307448a",
+        "status": "scheduled"
+      }
+    },
+    "notificado": true
+  },
+  {
+    "id": "carrusel-03",
+    "fecha": "2026-09-10T23:53:00.000Z",
+    "ok": true,
+    "postId": "6aa342eb3e8f59b4040f0c52",
+    "scheduledFor": "2026-09-14T12:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa342eb3e8f59b4040f0c52",
+        "status": "scheduled"
+      }
+    },
+    "notificado": true
+  },
+  {
+    "id": "carrusel-10",
+    "fecha": "2026-09-10T23:53:01.000Z",
+    "ok": true,
+    "postId": "6aa342e71c995ee32f5d9d63",
+    "scheduledFor": "2026-09-14T13:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa342e71c995ee32f5d9d63",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-17",
+    "fecha": "2026-09-10T23:53:02.000Z",
+    "ok": true,
+    "postId": "6aa342e31c995ee32f5d9b91",
+    "scheduledFor": "2026-09-14T17:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa342e31c995ee32f5d9b91",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-24",
+    "fecha": "2026-09-10T23:53:03.000Z",
+    "ok": true,
+    "postId": "6aa342e93e8f59b4040f0bc3",
+    "scheduledFor": "2026-09-14T19:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa342e93e8f59b4040f0bc3",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-31",
+    "fecha": "2026-09-10T23:53:04.000Z",
+    "ok": true,
+    "postId": "6aa342e71c995ee32f5d9d09",
+    "scheduledFor": "2026-09-14T23:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa342e71c995ee32f5d9d09",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-04",
+    "fecha": "2026-09-10T23:56:00.000Z",
+    "ok": true,
+    "postId": "6aa343aaf36c7591749796bc",
+    "scheduledFor": "2026-09-15T12:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa343aaf36c7591749796bc",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-18",
+    "fecha": "2026-09-10T23:56:01.000Z",
+    "ok": true,
+    "postId": "6aa343c64caf63d9cab4e0ba",
+    "scheduledFor": "2026-09-15T17:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa343c64caf63d9cab4e0ba",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-25",
+    "fecha": "2026-09-10T23:56:02.000Z",
+    "ok": true,
+    "postId": "6aa343a9f36c7591749795c8",
+    "scheduledFor": "2026-09-15T19:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa343a9f36c7591749795c8",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-32",
+    "fecha": "2026-09-10T23:56:03.000Z",
+    "ok": true,
+    "postId": "6aa343aaf8e05c3cdbcc35ac",
+    "scheduledFor": "2026-09-15T23:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa343aaf8e05c3cdbcc35ac",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-39",
+    "fecha": "2026-09-10T23:56:04.000Z",
+    "ok": true,
+    "postId": "6aa343a2f36c7591749791bf",
+    "scheduledFor": "2026-09-16T00:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa343a2f36c7591749791bf",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-12",
+    "fecha": "2026-09-10T23:59:00.000Z",
+    "ok": true,
+    "postId": "6aa344505c12fcb90ad11684",
+    "scheduledFor": "2026-09-16T13:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa344505c12fcb90ad11684",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-19",
+    "fecha": "2026-09-10T23:59:01.000Z",
+    "ok": true,
+    "postId": "6aa34458a7549fc0efe23d31",
+    "scheduledFor": "2026-09-16T17:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa34458a7549fc0efe23d31",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-26",
+    "fecha": "2026-09-10T23:59:02.000Z",
+    "ok": true,
+    "postId": "6aa344502d748187823775da",
+    "scheduledFor": "2026-09-16T19:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa344502d748187823775da",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-33",
+    "fecha": "2026-09-10T23:59:03.000Z",
+    "ok": true,
+    "postId": "6aa3444ea7549fc0efe23b09",
+    "scheduledFor": "2026-09-16T23:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa3444ea7549fc0efe23b09",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-40",
+    "fecha": "2026-09-10T23:59:04.000Z",
+    "ok": true,
+    "postId": "6aa3445cf36c75917497b2b1",
+    "scheduledFor": "2026-09-17T00:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa3445cf36c75917497b2b1",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-06",
+    "fecha": "2026-09-11T00:02:00.000Z",
+    "ok": true,
+    "postId": "6aa344f68e932222dfd3bfc5",
+    "scheduledFor": "2026-09-17T12:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa344f68e932222dfd3bfc5",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-13",
+    "fecha": "2026-09-11T00:02:01.000Z",
+    "ok": true,
+    "postId": "6aa344ee8e932222dfd3bf91",
+    "scheduledFor": "2026-09-17T13:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa344ee8e932222dfd3bf91",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-20",
+    "fecha": "2026-09-11T00:02:02.000Z",
+    "ok": true,
+    "postId": "6aa344ed7df10a99a2fefd61",
+    "scheduledFor": "2026-09-17T17:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa344ed7df10a99a2fefd61",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-27",
+    "fecha": "2026-09-11T00:02:03.000Z",
+    "ok": true,
+    "postId": "6aa344ed924dfb6073c37309",
+    "scheduledFor": "2026-09-17T19:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa344ed924dfb6073c37309",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-34",
+    "fecha": "2026-09-11T00:02:04.000Z",
+    "ok": true,
+    "postId": "6aa344f77df10a99a2ff0133",
+    "scheduledFor": "2026-09-17T23:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa344f77df10a99a2ff0133",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-14",
+    "fecha": "2026-09-11T00:04:27.000Z",
+    "ok": true,
+    "postId": "6aa3458b2dea647a4ee00fed",
+    "scheduledFor": "2026-09-18T13:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa3458b2dea647a4ee00fed",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-21",
+    "fecha": "2026-09-11T00:04:30.000Z",
+    "ok": true,
+    "postId": "6aa3458da732e9bcbb158ce3",
+    "scheduledFor": "2026-09-18T17:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa3458da732e9bcbb158ce3",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-28",
+    "fecha": "2026-09-11T00:04:31.000Z",
+    "ok": true,
+    "postId": "6aa3458fd7f4a79f00ae3497",
+    "scheduledFor": "2026-09-18T19:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa3458fd7f4a79f00ae3497",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-35",
+    "fecha": "2026-09-11T00:04:27.500Z",
+    "ok": true,
+    "postId": "6aa3458a2dea647a4ee00fc8",
+    "scheduledFor": "2026-09-18T23:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa3458a2dea647a4ee00fc8",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-42",
+    "fecha": "2026-09-11T00:04:31.500Z",
+    "ok": true,
+    "postId": "6aa3458ea732e9bcbb158d42",
+    "scheduledFor": "2026-09-19T00:30:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (6 workflows disparados casi a la vez en el mismo lote diario) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa3458ea732e9bcbb158d42",
+        "status": "scheduled"
+      }
+    }
+  },
+  {
+    "id": "carrusel-12",
+    "fecha": "2026-09-11T16:58:47.215Z",
+    "ok": true,
+    "postId": "6aa4334789d4155595482890",
+    "scheduledFor": "2026-09-16T21:00:00Z",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "De 0 a resultado real en 60 días",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789145918692_z3die5lo_506dc594-2fb1-482d-a595-7ff31b1055da.png",
+            "_id": "6aa4334789d4155595482891"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789145919173_wzaqe6qy_41fa2068-60cb-40af-a172-e33f4fff2168.png",
+            "_id": "6aa4334789d4155595482892"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789145919662_76e21o0f_4dd86273-3148-4187-a52b-b8ecb107c7bc.png",
+            "_id": "6aa4334789d4155595482893"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789145920332_xajotwok_09237f08-aa56-43ac-96aa-3f7fbb236b38.png",
+            "_id": "6aa4334789d4155595482894"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789145920940_y0cq2upb_d86d9713-af2e-456c-8be1-4fea0b9cfd4a.png",
+            "_id": "6aa4334789d4155595482895"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789145921668_3sz9jt78_a9578cd9-5e92-488c-bbb5-b8b27c161a9f.png",
+            "_id": "6aa4334789d4155595482896"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=a52d5b39&x-expires=1789275600&x-signature=LeHCrUGot0pvIb%2BTusIYANJjPwY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-16T21:00:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "La diferencia no es la idea. Es terminarla.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Resultados #PrimerProducto",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "9e6d4b09a5335c28adcc07509046bbb3",
+            "_id": "6aa4334789d4155595482897"
+          }
+        ],
+        "scheduledFor": "2026-09-16T21:00:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa4334789d4155595482890",
+        "createdAt": "2026-09-11T16:58:47.098Z",
+        "updatedAt": "2026-09-11T16:58:47.098Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    }
+  },
+  {
+    "id": "carrusel-09-reintento1",
+    "fecha": "2026-09-12T01:27:13.548Z",
+    "ok": true,
+    "postId": "6aa4aa6ab77923467e1f28a1",
+    "reintentoDe": "carrusel-09",
+    "scheduledFor": "2026-09-12T01:27:05.078Z",
+    "notificado": true,
+    "respuestaCruda": {
+      "post": {
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa4aa6ab77923467e1f28a1",
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Lo que no te cuentan de Hotmart",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084209785_czzqnnma_42784553-f731-4e90-adb9-fbc31ff1e952.png",
+            "_id": "6aa4aa6ab77923467e1f28a2"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084210579_gxr3ha59_f067d790-ecbd-436f-9537-97fb77b46ba2.png",
+            "_id": "6aa4aa6ab77923467e1f28a3"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084211307_68a3iaj4_bc58c09f-9ef7-4b72-813b-c2a681cb0cb4.png",
+            "_id": "6aa4aa6ab77923467e1f28a4"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084212019_q7ntxjio_699fec59-8a46-42bb-aedf-ce8fa057b704.png",
+            "_id": "6aa4aa6ab77923467e1f28a5"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084212546_xyk0gqj7_5c586a63-20bc-4a5a-bb50-b145775b5158.png",
+            "_id": "6aa4aa6ab77923467e1f28a6"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084213757_snwbvyfb_6f74c4b6-10ea-426b-8040-f7018beefcd5.png",
+            "_id": "6aa4aa6ab77923467e1f28a7"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=a52d5b39&x-expires=1789275600&x-signature=LeHCrUGot0pvIb%2BTusIYANJjPwY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-12T01:27:05.078Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "Lo que nadie te cuenta antes de elegir plataforma.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Hotmart #PlataformasDeVenta",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              },
+              "isDraft": true
+            },
+            "status": "published",
+            "publishAttempts": 0,
+            "contentHash": "02c8a420012fca7994c0d5bfbd7fd5df",
+            "_id": "6aa4aa6ab77923467e1f28a8",
+            "platformPostId": "p_inbox_url~v2.7684454155481794568",
+            "publishedAt": "2026-09-12T01:27:13.168Z"
+          }
+        ],
+        "scheduledFor": "2026-09-12T01:27:05.078Z",
+        "timezone": "UTC",
+        "status": "published",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "createdAt": "2026-09-12T01:27:06.405Z",
+        "updatedAt": "2026-09-12T01:27:13.311Z",
+        "__v": 0,
+        "publishingClaimedAt": "2026-09-12T01:27:06.474Z"
+      },
+      "message": "Post published successfully"
+    }
+  },
+  {
+    "id": "carrusel-16-reintento1",
+    "fecha": "2026-09-12T01:27:19.897Z",
+    "ok": true,
+    "postId": "6aa4aa737806a65f6acd46c7",
+    "reintentoDe": "carrusel-16",
+    "scheduledFor": "2026-09-12T01:27:14.044Z",
+    "notificado": true,
+    "respuestaCruda": {
+      "post": {
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa4aa737806a65f6acd46c7",
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Así se ve un producto hecho en una tarde",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084211544_bl4wlp72_5cf87272-9f8a-47ad-afc2-060e3b48952e.png",
+            "_id": "6aa4aa737806a65f6acd46c8"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084212673_ftskphi0_922ceeb9-ac59-48c2-97a6-864237774436.png",
+            "_id": "6aa4aa737806a65f6acd46c9"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084213271_moc3nwjd_5798442f-644a-4cee-8f9c-16efac560527.png",
+            "_id": "6aa4aa737806a65f6acd46ca"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084214019_66fii8s7_9e2e56e3-7fba-414b-ac31-ab53f4b4afdc.png",
+            "_id": "6aa4aa737806a65f6acd46cb"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084214528_hh4jdlby_e5a522ca-0154-4fe1-a1ba-7d65b30e385c.png",
+            "_id": "6aa4aa737806a65f6acd46cc"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084215664_4504k4ln_8ff6c4fa-a758-4f7c-9563-09b4e9e1c880.png",
+            "_id": "6aa4aa737806a65f6acd46cd"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=a52d5b39&x-expires=1789275600&x-signature=LeHCrUGot0pvIb%2BTusIYANJjPwY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-12T01:27:14.044Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "4 horas. Así de rápido se puede armar.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #ProductoEnUnDia #Productividad",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              },
+              "isDraft": true
+            },
+            "status": "published",
+            "publishAttempts": 0,
+            "contentHash": "5815feb03857f3f45272f7a685a2a995",
+            "_id": "6aa4aa737806a65f6acd46ce",
+            "platformPostId": "p_inbox_url~v2.7684453171162482709",
+            "publishedAt": "2026-09-12T01:27:19.543Z"
+          }
+        ],
+        "scheduledFor": "2026-09-12T01:27:14.044Z",
+        "timezone": "UTC",
+        "status": "published",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "createdAt": "2026-09-12T01:27:15.640Z",
+        "updatedAt": "2026-09-12T01:27:19.711Z",
+        "__v": 0,
+        "publishingClaimedAt": "2026-09-12T01:27:15.705Z"
+      },
+      "message": "Post published successfully"
+    }
+  },
+  {
+    "id": "carrusel-23-reintento1",
+    "fecha": "2026-09-12T01:27:26.492Z",
+    "ok": true,
+    "postId": "6aa4aa79b77923467e1f2ea2",
+    "reintentoDe": "carrusel-23",
+    "scheduledFor": "2026-09-12T01:27:20.391Z",
+    "notificado": true,
+    "respuestaCruda": {
+      "post": {
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa4aa79b77923467e1f2ea2",
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Empecé sin saber nada del tema",
+        "mediaItems": [
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084206372_ge16sgnj_de9dff04-6be3-442e-b305-1dbd4db754c1.png",
+            "_id": "6aa4aa79b77923467e1f2ea3"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084207146_q1vtr91j_06d3ad5b-1215-4048-9cb7-e7102d9fcfaf.png",
+            "_id": "6aa4aa79b77923467e1f2ea4"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084207823_0occdy4h_b8b5f593-60f2-4f55-846c-878f6a16d048.png",
+            "_id": "6aa4aa79b77923467e1f2ea5"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084208618_xusdq2jh_d2ca3136-04bc-4c7a-a910-356566e53213.png",
+            "_id": "6aa4aa79b77923467e1f2ea6"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084209354_1jg3jcjs_59481a0f-b93a-4d60-a353-033923391577.png",
+            "_id": "6aa4aa79b77923467e1f2ea7"
+          },
+          {
+            "type": "image",
+            "url": "https://media.zernio.com/media/1789084210594_opz5buvi_e651ce1b-4dd7-4b24-9379-27b2fb51936c.png",
+            "_id": "6aa4aa79b77923467e1f2ea8"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=a52d5b39&x-expires=1789275600&x-signature=LeHCrUGot0pvIb%2BTusIYANJjPwY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-12T01:27:20.391Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "photoCoverIndex": 0,
+              "description": "No sabía nada del tema. Vendí igual.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #EmprenderSinExperiencia",
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              },
+              "isDraft": true
+            },
+            "status": "published",
+            "publishAttempts": 0,
+            "contentHash": "3669b616ce116788f7281c86385c41a5",
+            "_id": "6aa4aa79b77923467e1f2ea9",
+            "platformPostId": "p_inbox_url~v2.7684454175074355208",
+            "publishedAt": "2026-09-12T01:27:26.189Z"
+          }
+        ],
+        "scheduledFor": "2026-09-12T01:27:20.391Z",
+        "timezone": "UTC",
+        "status": "published",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "createdAt": "2026-09-12T01:27:21.704Z",
+        "updatedAt": "2026-09-12T01:27:26.302Z",
+        "__v": 0,
+        "publishingClaimedAt": "2026-09-12T01:27:21.775Z"
+      },
+      "message": "Post published successfully"
+    }
+  }
+]

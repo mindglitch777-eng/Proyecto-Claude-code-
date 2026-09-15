@@ -1,5 +1,30 @@
 # Estado vivo del proyecto
 
+## Bloque: repo público + primera entrega real de punta a punta + bug de ids duplicados encontrado y arreglado (2026-09-15)
+
+**Repo público (decisión explícita del operador):** el bloqueo de GitHub Actions no era un bug de código -- el
+repo es privado y el plan gratuito de GitHub da minutos de Actions limitados por mes en repos privados (se
+agotaron por `notificar-box.yml` corriendo cada 20 min 24/7 durante 2 semanas, antes de borrarlo). En repos
+públicos Actions es gratis sin límite. Antes de proponerlo se revisó todo el historial de git buscando claves
+reales commiteadas (ninguna encontrada -- siempre se usó `process.env`) y se confirmó que es seguro. El operador
+lo hizo público desde GitHub Settings. Resultado inmediato: `subir-video.yml` corrió por primera vez con éxito
+real de punta a punta (antes solo fallaba en 2s sin arrancar).
+
+**Bug real encontrado al probarlo (arreglado, no solo documentado):** `state/uploads.json` y
+`state/carruseles.json` seguían teniendo las ~23 y ~50 entradas viejas de la era Zernio (formato viejo, con
+`postId`/`respuestaCruda`, sin campo `estado`) mezcladas con las entradas nuevas. El botón "Ya lo subí"
+(`marcar-subido.js`) busca por `id` con `.find()` -- con un id duplicado (ej. `v05`, que va a volver a entregarse
+algún día) hubiera marcado como "subido" la entrada VIEJA (irrelevante) en vez de la nueva real, dejando el
+video visible como pendiente para siempre. Se movieron las entradas viejas a
+`state/archivo-zernio-uploads.json` / `state/archivo-zernio-carruseles.json` (se conservan, no se borraron) y
+`state/uploads.json`/`state/carruseles.json` quedan solo con entradas del formato nuevo.
+
+**Gap real encontrado (en curso de arreglarse):** el panel (`panel/torre-de-control.html`) y los archivos de
+estado se commitean a la rama de trabajo, pero Netlify sirve el sitio público desde `main` -- hasta ahora nunca
+se sincronizaba, así que el panel "en vivo" que el operador puede revisar todos los días estaba vacío/desactualizado.
+Se está agregando un paso a los 3 workflows (`subir-video.yml`, `subir-carrusel.yml`, `chequear-buzon.yml`) para
+que también empujen panel + estado a `main` en cada corrida (mismo patrón que ya usa `marcar-subido.js`).
+
 ## Bloque: Módulo 5 (Métricas reales) se descarta -- decisión explícita del operador (2026-09-15)
 
 Antes de construir nada se investigó qué había ya hecho: cliente real y testeado de YouTube Data API v3

@@ -1,0 +1,1234 @@
+[
+  {
+    "id": "v20",
+    "fecha": "2026-09-11T16:58:52.927Z",
+    "ok": true,
+    "postId": "6aa4334b6020b2de270ed310",
+    "scheduledFor": "2026-09-15T23:45:00.000Z",
+    "notificado": false,
+    "nota": "Entrada reconstruida a mano: reprogramacion del horario de mediodia (avoid 10-14h TikTok, confirmado por el operador) -- ninguna plataforma habia publicado todavia con el post viejo 6aa34390f8e05c3cdbcc2b52 (status pending en tiktok y youtube), asi que se cancelo con DELETE (confirmado real, devuelve 404 despues) y se recreo mandando a TikTok + YouTube (sin --solo-tiktok). El paso 'Commitear log de subida' perdio la carrera de git (5 workflows de carrusel + 2 de video casi simultaneos).",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa4334b6020b2de270ed310",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-15T23:45:00.000Z"
+      }
+    }
+  },
+  {
+    "id": "v05",
+    "fecha": "2026-09-11T16:36:47.534Z",
+    "ok": true,
+    "postId": "6aa42e1fa43c28e73cddeddd",
+    "scheduledFor": "2026-09-11T21:00:00.000Z",
+    "notificado": true,
+    "nota": "Entrada reconstruida a mano: reprogramacion del jueves (--solo-tiktok, YouTube ya publicado bien la primera vez, no se duplica) -- el paso 'Commitear log de subida' de este run perdio la carrera de git (3 workflows disparados casi a la vez: v05/v15/v16) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa42e1fa43c28e73cddeddd",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-11T21:00:00.000Z"
+      }
+    }
+  },
+  {
+    "id": "v16",
+    "fecha": "2026-09-11T16:37:09.910Z",
+    "ok": true,
+    "postId": "6aa42e351d5eab03a355a80d",
+    "scheduledFor": "2026-09-12T00:00:00.000Z",
+    "notificado": true,
+    "nota": "Entrada reconstruida a mano: reprogramacion del jueves (--solo-tiktok, YouTube ya publicado bien la primera vez, no se duplica) -- el paso 'Commitear log de subida' de este run perdio la carrera de git (3 workflows disparados casi a la vez: v05/v15/v16) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa42e351d5eab03a355a80d",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-12T00:00:00.000Z"
+      }
+    }
+  },
+  {
+    "id": "v14",
+    "fecha": "2026-09-10T01:28:04.997Z",
+    "ok": true,
+    "respuestaCruda": {
+      "post": {
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa207a4111dd7c63dc5e360",
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Backend abierto: así configuré mi curso para que se venda mientras yo como.\n\nArmá el flujo. Después, es automático.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Automatizacion #VentasOnline",
+        "mediaItems": [
+          {
+            "type": "video",
+            "url": "https://media.zernio.com/media/1789003682981_colpviio_0342bff6-ecb7-4fb2-9deb-95d4239aa727.mp4",
+            "_id": "6aa207a4111dd7c63dc5e361"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://media.zernio.com/media/tiktok-avatars/1788989391589_ac718vj3_tiktok-avatar--000XW78a8jhoVG44kpPxQEx7SoMDw47ZbXM.jpg",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-10T01:28:03.505Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "videoMadeWithAi": true
+            },
+            "status": "failed",
+            "publishAttempts": 0,
+            "contentHash": "94031d6424055bc98a4d66c9d56a75fb",
+            "_id": "6aa207a4111dd7c63dc5e362",
+            "errorCategory": "account_issue",
+            "errorMessage": "TikTok direct posting is at capacity right now. Use tiktokSettings.draft: true to deliver via Creator Inbox, or try again in a few hours as capacity frees up.",
+            "errorSource": "user"
+          },
+          {
+            "platform": "youtube",
+            "accountId": {
+              "_id": "6aa1ce88726ebfe037cfe0ea",
+              "platform": "youtube",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "Taller de Activos ",
+              "isActive": true,
+              "profilePicture": "https://yt3.ggpht.com/YGQNFw6NYfwuTSi-ccHO72WDeEOyqzxJY2aNfolBzg3XGZtVx695XAXN7t7oTW_13T6fTkAu02Q=s88-c-k-c0x00ffffff-no-rj",
+              "username": "tallerdeactivos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-10T01:28:03.505Z",
+            "platformSpecificData": {
+              "title": "Backend abierto",
+              "visibility": "public",
+              "containsSyntheticMedia": true
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "c883f6b6de849423dc3a89944da4426a",
+            "_id": "6aa207a4111dd7c63dc5e363"
+          }
+        ],
+        "scheduledFor": "2026-09-10T01:28:03.505Z",
+        "timezone": "UTC",
+        "status": "publishing",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "createdAt": "2026-09-10T01:28:04.142Z",
+        "updatedAt": "2026-09-10T01:28:04.751Z",
+        "__v": 0,
+        "publishingClaimedAt": "2026-09-10T01:28:04.261Z"
+      },
+      "message": "Post created but publishing failed",
+      "error": "All platforms failed",
+      "platformResults": [
+        {
+          "platform": "tiktok",
+          "status": "failed",
+          "error": "TikTok direct posting is at capacity right now. Use tiktokSettings.draft: true to deliver via Creator Inbox, or try again in a few hours as capacity frees up."
+        },
+        {
+          "platform": "youtube",
+          "status": "pending",
+          "error": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "v11",
+    "fecha": "2026-09-10T01:36:38.598Z",
+    "ok": true,
+    "postId": "6aa209a3e20fab0aab6d4dac",
+    "respuestaCruda": {
+      "post": {
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa209a3e20fab0aab6d4dac",
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Tres IA que te ahorran dos sueldos y trabajan las veinticuatro horas.\n\nArmá tu equipo de IA. Sin nómina.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #IA #Herramientas",
+        "mediaItems": [
+          {
+            "type": "video",
+            "url": "https://media.zernio.com/media/1789004193812_n8f69vf5_ce32cbba-47bb-46ec-9313-6d02088b9bbd.mp4",
+            "_id": "6aa209a3e20fab0aab6d4dad"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://media.zernio.com/media/tiktok-avatars/1788989391589_ac718vj3_tiktok-avatar--000XW78a8jhoVG44kpPxQEx7SoMDw47ZbXM.jpg",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-10T01:36:35.158Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "videoMadeWithAi": true,
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              },
+              "isDraft": true
+            },
+            "status": "published",
+            "publishAttempts": 0,
+            "contentHash": "07bd2befad4323a61a1088be7c28bfd8",
+            "_id": "6aa209a3e20fab0aab6d4dae",
+            "platformPostId": "v_inbox_url~v2.7683713751459252244",
+            "publishedAt": "2026-09-10T01:36:38.279Z"
+          },
+          {
+            "platform": "youtube",
+            "accountId": {
+              "_id": "6aa1ce88726ebfe037cfe0ea",
+              "platform": "youtube",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "Taller de Activos ",
+              "isActive": true,
+              "profilePicture": "https://yt3.ggpht.com/YGQNFw6NYfwuTSi-ccHO72WDeEOyqzxJY2aNfolBzg3XGZtVx695XAXN7t7oTW_13T6fTkAu02Q=s88-c-k-c0x00ffffff-no-rj",
+              "username": "tallerdeactivos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-10T01:36:35.158Z",
+            "platformSpecificData": {
+              "title": "Tres IA, dos sueldos",
+              "visibility": "public",
+              "containsSyntheticMedia": true
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "1b97555a5d78e5b5f884b8e141fbb963",
+            "_id": "6aa209a3e20fab0aab6d4daf"
+          }
+        ],
+        "scheduledFor": "2026-09-10T01:36:35.158Z",
+        "timezone": "UTC",
+        "status": "publishing",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "createdAt": "2026-09-10T01:36:35.737Z",
+        "updatedAt": "2026-09-10T01:36:38.280Z",
+        "__v": 0,
+        "publishingClaimedAt": "2026-09-10T01:36:35.808Z"
+      },
+      "message": "Post published successfully"
+    },
+    "notificado": true
+  },
+  {
+    "id": "v13",
+    "fecha": "2026-09-10T01:45:34.776Z",
+    "ok": true,
+    "postId": "6aa20bbb54465788b9c99e38",
+    "respuestaCruda": {
+      "post": {
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa20bbb54465788b9c99e38",
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Este sitio me hizo olvidar que los diseñadores existen. Y es gratis.\n\nDejá de pagar de más.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Herramientas #RecursoGratis",
+        "mediaItems": [
+          {
+            "type": "video",
+            "url": "https://media.zernio.com/media/1789004730579_55gwzt0a_1c8d1f66-995a-46ea-8329-de4fbc1333f9.mp4",
+            "_id": "6aa20bbb54465788b9c99e39"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://media.zernio.com/media/tiktok-avatars/1788989391589_ac718vj3_tiktok-avatar--000XW78a8jhoVG44kpPxQEx7SoMDw47ZbXM.jpg",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-10T01:45:31.116Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "videoMadeWithAi": true,
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              },
+              "isDraft": true
+            },
+            "status": "published",
+            "publishAttempts": 0,
+            "contentHash": "1e02780b3bed60089e2588a4dd5d07c4",
+            "_id": "6aa20bbb54465788b9c99e3a",
+            "platformPostId": "v_inbox_url~v2.7683715961317279764",
+            "publishedAt": "2026-09-10T01:45:34.360Z"
+          },
+          {
+            "platform": "youtube",
+            "accountId": {
+              "_id": "6aa1ce88726ebfe037cfe0ea",
+              "platform": "youtube",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "Taller de Activos ",
+              "isActive": true,
+              "profilePicture": "https://yt3.ggpht.com/YGQNFw6NYfwuTSi-ccHO72WDeEOyqzxJY2aNfolBzg3XGZtVx695XAXN7t7oTW_13T6fTkAu02Q=s88-c-k-c0x00ffffff-no-rj",
+              "username": "tallerdeactivos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-10T01:45:31.116Z",
+            "platformSpecificData": {
+              "title": "El sitio que reemplaza al diseñador",
+              "visibility": "public",
+              "containsSyntheticMedia": true
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "3a3ec72664dc9b96829f04b906d1bb41",
+            "_id": "6aa20bbb54465788b9c99e3b"
+          }
+        ],
+        "scheduledFor": "2026-09-10T01:45:31.116Z",
+        "timezone": "UTC",
+        "status": "publishing",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "createdAt": "2026-09-10T01:45:31.633Z",
+        "updatedAt": "2026-09-10T01:45:34.361Z",
+        "__v": 0,
+        "publishingClaimedAt": "2026-09-10T01:45:31.698Z"
+      },
+      "message": "Post published successfully"
+    },
+    "notificado": true
+  },
+  {
+    "id": "v16",
+    "fecha": "2026-09-10T23:08:56.884Z",
+    "ok": true,
+    "postId": "6aa33888d6b984aaddb26ffc",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Abro mi caos. Organizo treinta y siete carpetas en tres. Y aparece un producto nuevo.\n\nOrdená el caos. Ahí está tu producto.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Organizacion #ProductoDigital",
+        "mediaItems": [
+          {
+            "type": "video",
+            "url": "https://media.zernio.com/media/1789081735295_oy40pt74_514e7830-595c-4591-a729-89221767d44d.mp4",
+            "_id": "6aa33888d6b984aaddb26ffd"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-11T00:45:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "videoMadeWithAi": true,
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "a6bfa658e978a603efb369d7c2cb3f3c",
+            "_id": "6aa33888d6b984aaddb26ffe"
+          },
+          {
+            "platform": "youtube",
+            "accountId": {
+              "_id": "6aa1ce88726ebfe037cfe0ea",
+              "platform": "youtube",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "Taller de Activos ",
+              "isActive": true,
+              "profilePicture": "https://yt3.ggpht.com/YGQNFw6NYfwuTSi-ccHO72WDeEOyqzxJY2aNfolBzg3XGZtVx695XAXN7t7oTW_13T6fTkAu02Q=s88-c-k-c0x00ffffff-no-rj",
+              "username": "tallerdeactivos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-11T00:45:00.000Z",
+            "platformSpecificData": {
+              "title": "De 37 carpetas a 3",
+              "visibility": "public",
+              "containsSyntheticMedia": true
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "ea0898f3749654db349c5ffef0418c6a",
+            "_id": "6aa33888d6b984aaddb26fff"
+          }
+        ],
+        "scheduledFor": "2026-09-11T00:45:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa33888d6b984aaddb26ffc",
+        "createdAt": "2026-09-10T23:08:56.714Z",
+        "updatedAt": "2026-09-10T23:08:56.714Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    },
+    "notificado": true
+  },
+  {
+    "id": "v05",
+    "fecha": "2026-09-10T23:09:01.620Z",
+    "ok": true,
+    "postId": "6aa3388d34ee61ab57325552",
+    "scheduledFor": "2026-09-10T23:45:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro. Reintento del fallo por cupo de TikTok de una sesion anterior, ahora via Creator Inbox.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa3388d34ee61ab57325552",
+        "status": "scheduled"
+      }
+    },
+    "notificado": true
+  },
+  {
+    "id": "v15",
+    "fecha": "2026-09-10T23:09:06.793Z",
+    "ok": true,
+    "postId": "6aa338926f83107895bddfb2",
+    "scheduledFor": "2026-09-11T00:15:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por una carrera de git (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa338926f83107895bddfb2",
+        "status": "scheduled"
+      }
+    },
+    "notificado": true
+  },
+  {
+    "id": "v17",
+    "fecha": "2026-09-10T23:50:09.833Z",
+    "ok": true,
+    "postId": "6aa3423136fc0188184d2c9b",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Mito uno: \"necesito diez mil seguidores\". Falso. Yo vendí con cero.\n\nVendé sin audiencia. El producto hace el trabajo.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #VenderSinSeguidores",
+        "mediaItems": [
+          {
+            "type": "video",
+            "url": "https://media.zernio.com/media/1789084208415_nrj0bb1f_eb0c3690-a483-4e51-85f4-3df37b66b508.mp4",
+            "_id": "6aa3423136fc0188184d2c9c"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-11T15:00:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "videoMadeWithAi": true,
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "5576f4ab68e7ac4722b5260b59849f10",
+            "_id": "6aa3423136fc0188184d2c9d"
+          },
+          {
+            "platform": "youtube",
+            "accountId": {
+              "_id": "6aa1ce88726ebfe037cfe0ea",
+              "platform": "youtube",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "Taller de Activos ",
+              "isActive": true,
+              "profilePicture": "https://yt3.ggpht.com/YGQNFw6NYfwuTSi-ccHO72WDeEOyqzxJY2aNfolBzg3XGZtVx695XAXN7t7oTW_13T6fTkAu02Q=s88-c-k-c0x00ffffff-no-rj",
+              "username": "tallerdeactivos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-11T15:00:00.000Z",
+            "platformSpecificData": {
+              "title": "Mito: necesitás 10 mil seguidores",
+              "visibility": "public",
+              "containsSyntheticMedia": true
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "107d5993cfad60bc3b0079980bb85e38",
+            "_id": "6aa3423136fc0188184d2c9e"
+          }
+        ],
+        "scheduledFor": "2026-09-11T15:00:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa3423136fc0188184d2c9b",
+        "createdAt": "2026-09-10T23:50:09.689Z",
+        "updatedAt": "2026-09-10T23:50:09.689Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    },
+    "notificado": true
+  },
+  {
+    "id": "v19",
+    "fecha": "2026-09-10T23:52:58.729Z",
+    "ok": true,
+    "postId": "6aa342da2c20506f68986b3a",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Mito tres: \"el algoritmo me odia\". No. Tu producto es invisible.\n\nSé visible. Con sistema, no con suerte.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #Algoritmo",
+        "mediaItems": [
+          {
+            "type": "video",
+            "url": "https://media.zernio.com/media/1789084377531_va32cuzl_78dc6769-f252-49ab-9ddb-6075d90bd5c1.mp4",
+            "_id": "6aa342da2c20506f68986b3b"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-14T15:00:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "videoMadeWithAi": true,
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "661e48207620d77e17dab5aaa1f5c610",
+            "_id": "6aa342da2c20506f68986b3c"
+          },
+          {
+            "platform": "youtube",
+            "accountId": {
+              "_id": "6aa1ce88726ebfe037cfe0ea",
+              "platform": "youtube",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "Taller de Activos ",
+              "isActive": true,
+              "profilePicture": "https://yt3.ggpht.com/YGQNFw6NYfwuTSi-ccHO72WDeEOyqzxJY2aNfolBzg3XGZtVx695XAXN7t7oTW_13T6fTkAu02Q=s88-c-k-c0x00ffffff-no-rj",
+              "username": "tallerdeactivos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-14T15:00:00.000Z",
+            "platformSpecificData": {
+              "title": "Mito: el algoritmo me odia",
+              "visibility": "public",
+              "containsSyntheticMedia": true
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "17ccff21b7d2922acea737e645e75352",
+            "_id": "6aa342da2c20506f68986b3d"
+          }
+        ],
+        "scheduledFor": "2026-09-14T15:00:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa342da2c20506f68986b3a",
+        "createdAt": "2026-09-10T23:52:58.565Z",
+        "updatedAt": "2026-09-10T23:52:58.565Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    }
+  },
+  {
+    "id": "v20",
+    "fecha": "2026-09-10T23:56:01.172Z",
+    "ok": true,
+    "postId": "6aa34390f8e05c3cdbcc2b52",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Hotmart te cobra comisión y te paga a los treinta días. Acá lo que nadie te dice.\n\nNo uses la default. Usá la que te conviene.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Hotmart #PlataformasDeVenta",
+        "mediaItems": [
+          {
+            "type": "video",
+            "url": "https://media.zernio.com/media/1789084559351_mprshqn8_fcab9fd7-de8a-4d1b-b8c8-522a69c67ca4.mp4",
+            "_id": "6aa34390f8e05c3cdbcc2b53"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=9cdec427&x-expires=1789189200&x-signature=hqYy4mLzb7%2BypgG9hpsM49Gt%2BlA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my3",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-15T15:00:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "videoMadeWithAi": true,
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "a0d15da12eacc6f0c8f44cb1ebc0bb4d",
+            "_id": "6aa34390f8e05c3cdbcc2b54"
+          },
+          {
+            "platform": "youtube",
+            "accountId": {
+              "_id": "6aa1ce88726ebfe037cfe0ea",
+              "platform": "youtube",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "Taller de Activos ",
+              "isActive": true,
+              "profilePicture": "https://yt3.ggpht.com/YGQNFw6NYfwuTSi-ccHO72WDeEOyqzxJY2aNfolBzg3XGZtVx695XAXN7t7oTW_13T6fTkAu02Q=s88-c-k-c0x00ffffff-no-rj",
+              "username": "tallerdeactivos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-15T15:00:00.000Z",
+            "platformSpecificData": {
+              "title": "Lo que Hotmart no te dice",
+              "visibility": "public",
+              "containsSyntheticMedia": true
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "e048958eccd696e4316530215ae2253e",
+            "_id": "6aa34390f8e05c3cdbcc2b55"
+          }
+        ],
+        "scheduledFor": "2026-09-15T15:00:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa34390f8e05c3cdbcc2b52",
+        "createdAt": "2026-09-10T23:56:00.988Z",
+        "updatedAt": "2026-09-10T23:56:00.988Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    }
+  },
+  {
+    "id": "v10",
+    "fecha": "2026-09-11T13:54:32.931Z",
+    "ok": true,
+    "postId": "6aa408189245bfe41d58b215",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Mientras dormías, tu activo digital trabajó. Acá la prueba, en crudo.\n\nConstruí algo que venda solo.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #TrabajaMientrasDormis #ActivosDigitales",
+        "mediaItems": [
+          {
+            "type": "video",
+            "url": "https://media.zernio.com/media/1789134870662_0h1oz170_96e9de8e-0fd6-4322-847f-f59c03159376.mp4",
+            "_id": "6aa408189245bfe41d58b216"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=a52d5b39&x-expires=1789275600&x-signature=LeHCrUGot0pvIb%2BTusIYANJjPwY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-14T20:00:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "videoMadeWithAi": true,
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "c235565d6468a097fe36d5e0ef921dfa",
+            "_id": "6aa408189245bfe41d58b217"
+          },
+          {
+            "platform": "youtube",
+            "accountId": {
+              "_id": "6aa1ce88726ebfe037cfe0ea",
+              "platform": "youtube",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "Taller de Activos ",
+              "isActive": true,
+              "profilePicture": "https://yt3.ggpht.com/YGQNFw6NYfwuTSi-ccHO72WDeEOyqzxJY2aNfolBzg3XGZtVx695XAXN7t7oTW_13T6fTkAu02Q=s88-c-k-c0x00ffffff-no-rj",
+              "username": "tallerdeactivos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-14T20:00:00.000Z",
+            "platformSpecificData": {
+              "title": "Mientras dormías",
+              "visibility": "public",
+              "containsSyntheticMedia": true
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "0693853d7020b3948a3e73f5f93a095d",
+            "_id": "6aa408189245bfe41d58b218"
+          }
+        ],
+        "scheduledFor": "2026-09-14T20:00:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa408189245bfe41d58b215",
+        "createdAt": "2026-09-11T13:54:32.803Z",
+        "updatedAt": "2026-09-11T13:54:32.803Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    }
+  },
+  {
+    "id": "v04",
+    "fecha": "2026-09-11T13:54:55.240Z",
+    "ok": true,
+    "postId": "6aa4082fe8e4e1444759c210",
+    "scheduledFor": "2026-09-15T20:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por la misma carrera de git ya documentada en los carruseles (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa4082fe8e4e1444759c210",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-15T20:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "v09",
+    "fecha": "2026-09-11T13:55:03.517Z",
+    "ok": true,
+    "postId": "6aa40837e8e4e1444759c4f3",
+    "scheduledFor": "2026-09-16T20:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por la misma carrera de git ya documentada en los carruseles (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa40837e8e4e1444759c4f3",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-16T20:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "v06",
+    "fecha": "2026-09-11T13:54:44.625Z",
+    "ok": true,
+    "postId": "6aa408249245bfe41d58b68e",
+    "scheduledFor": "2026-09-17T20:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por la misma carrera de git ya documentada en los carruseles (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa408249245bfe41d58b68e",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-17T20:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "v07",
+    "fecha": "2026-09-11T13:54:58.336Z",
+    "ok": true,
+    "postId": "6aa40832e8e4e1444759c2fc",
+    "scheduledFor": "2026-09-18T20:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por la misma carrera de git ya documentada en los carruseles (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa40832e8e4e1444759c2fc",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-18T20:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "v12",
+    "fecha": "2026-09-11T13:54:49.272Z",
+    "ok": true,
+    "postId": "6aa40829e8e4e1444759bfd5",
+    "scheduledFor": "2026-09-21T20:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por la misma carrera de git ya documentada en los carruseles (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa40829e8e4e1444759bfd5",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-21T20:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "v08",
+    "fecha": "2026-09-11T13:54:49.187Z",
+    "ok": true,
+    "postId": "6aa40829e8e4e1444759bfb3",
+    "scheduledFor": "2026-09-22T20:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por la misma carrera de git ya documentada en los carruseles (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa40829e8e4e1444759bfb3",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-22T20:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "v21",
+    "fecha": "2026-09-11T13:55:00.823Z",
+    "ok": true,
+    "postId": "6aa40834e8e4e1444759c3de",
+    "scheduledFor": "2026-09-23T20:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por la misma carrera de git ya documentada en los carruseles (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa40834e8e4e1444759c3de",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-23T20:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "v18",
+    "fecha": "2026-09-11T13:55:35.302Z",
+    "ok": true,
+    "postId": "6aa40857574add111207aff6",
+    "scheduledFor": "2026-09-24T20:00:00Z",
+    "nota": "Entrada reconstruida a mano: el paso 'Commitear log de subida' de este run fallo por la misma carrera de git ya documentada en los carruseles (8 workflows disparados casi a la vez) -- el POST /v1/posts real a Zernio salio bien (\"Post scheduled successfully\", confirmado en los logs del job de GitHub Actions), solo faltaba este registro.",
+    "respuestaCruda": {
+      "message": "Post scheduled successfully",
+      "post": {
+        "_id": "6aa40857574add111207aff6",
+        "status": "scheduled",
+        "scheduledFor": "2026-09-24T20:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "v15",
+    "fecha": "2026-09-11T16:36:47.770Z",
+    "ok": true,
+    "postId": "6aa42e1fa43c28e73cddee03",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Cinco minutos. De un mockup de PowerPoint a un producto que vende. Sin cortes.\n\n5 minutos reales. Sin trucos de edición.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #ProductoEnUnDia #Productividad",
+        "mediaItems": [
+          {
+            "type": "video",
+            "url": "https://media.zernio.com/media/1789144605993_kypinrs6_8ef95cf5-ba70-4dda-8ebf-77986ed6175c.mp4",
+            "_id": "6aa42e1fa43c28e73cddee04"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=a52d5b39&x-expires=1789275600&x-signature=LeHCrUGot0pvIb%2BTusIYANJjPwY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-11T23:45:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "videoMadeWithAi": true,
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "ce7c19ac9620d5c96cc2cfc423186203",
+            "_id": "6aa42e1fa43c28e73cddee05"
+          }
+        ],
+        "scheduledFor": "2026-09-11T23:45:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa42e1fa43c28e73cddee03",
+        "createdAt": "2026-09-11T16:36:47.641Z",
+        "updatedAt": "2026-09-11T16:36:47.641Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    },
+    "notificado": true
+  },
+  {
+    "id": "v19",
+    "fecha": "2026-09-11T16:58:43.410Z",
+    "ok": true,
+    "postId": "6aa4334289d41555954826d1",
+    "respuestaCruda": {
+      "post": {
+        "userId": "6aa1cda676258fbeb1df5a7a",
+        "title": "",
+        "content": "Mito tres: \"el algoritmo me odia\". No. Tu producto es invisible.\n\nSé visible. Con sistema, no con suerte.\n\n#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #Mito #Algoritmo",
+        "mediaItems": [
+          {
+            "type": "video",
+            "url": "https://media.zernio.com/media/1789145921042_pzqp8e7b_fb16a8c2-4cad-4d40-9da4-a1de26fe687f.mp4",
+            "_id": "6aa4334289d41555954826d2"
+          }
+        ],
+        "platforms": [
+          {
+            "platform": "tiktok",
+            "accountId": {
+              "_id": "6aa1ce18726ebfe037cfddd1",
+              "platform": "tiktok",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "taller activos",
+              "isActive": true,
+              "profilePicture": "https://p16-common-sign.tiktokcdn.com/tos-alisg-avt-0068/19bfb28b35ff0b360b09baa64880058d~tplv-tiktokx-cropcenter:168:168.jpeg?dr=14577&refresh_token=a52d5b39&x-expires=1789275600&x-signature=LeHCrUGot0pvIb%2BTusIYANJjPwY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=my",
+              "username": "taller.activos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-14T23:45:00.000Z",
+            "platformSpecificData": {
+              "privacyLevel": "PUBLIC_TO_EVERYONE",
+              "allowComment": true,
+              "allowDuet": true,
+              "allowStitch": true,
+              "contentPreviewConfirmed": true,
+              "expressConsentGiven": true,
+              "videoMadeWithAi": true,
+              "draft": true,
+              "tiktokSettings": {
+                "draft": true
+              }
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "bae9ff8a61db75d9b52d431d2e860380",
+            "_id": "6aa4334289d41555954826d3"
+          },
+          {
+            "platform": "youtube",
+            "accountId": {
+              "_id": "6aa1ce88726ebfe037cfe0ea",
+              "platform": "youtube",
+              "profileId": "6aa1cda62e891e220974df48",
+              "displayName": "Taller de Activos ",
+              "isActive": true,
+              "profilePicture": "https://yt3.ggpht.com/YGQNFw6NYfwuTSi-ccHO72WDeEOyqzxJY2aNfolBzg3XGZtVx695XAXN7t7oTW_13T6fTkAu02Q=s88-c-k-c0x00ffffff-no-rj",
+              "username": "tallerdeactivos"
+            },
+            "profileId": "6aa1cda62e891e220974df48",
+            "customMedia": [],
+            "scheduledFor": "2026-09-14T23:45:00.000Z",
+            "platformSpecificData": {
+              "title": "Mito: el algoritmo me odia",
+              "visibility": "public",
+              "containsSyntheticMedia": true
+            },
+            "status": "pending",
+            "publishAttempts": 0,
+            "contentHash": "5995c371d2970d2ad727106407afc047",
+            "_id": "6aa4334289d41555954826d4"
+          }
+        ],
+        "scheduledFor": "2026-09-14T23:45:00.000Z",
+        "timezone": "UTC",
+        "status": "scheduled",
+        "tags": [],
+        "hashtags": [],
+        "mentions": [],
+        "visibility": "public",
+        "crosspostingEnabled": true,
+        "metadata": {
+          "usageCounted": true
+        },
+        "publishAttempts": 0,
+        "recycling": {
+          "enabled": false,
+          "gapFreq": "month",
+          "recycleCount": 0,
+          "contentVariations": [],
+          "contentVariationIndex": 0
+        },
+        "_id": "6aa4334289d41555954826d1",
+        "createdAt": "2026-09-11T16:58:42.927Z",
+        "updatedAt": "2026-09-11T16:58:42.927Z",
+        "__v": 0
+      },
+      "message": "Post scheduled successfully"
+    }
+  }
+]
