@@ -128,5 +128,16 @@
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964137687",
     "avisadoBuzon": true,
     "avisadoBuzonEn": "2026-09-15T11:36:17.225Z"
+  },
+  {
+    "id": "carrusel-04",
+    "fecha": "2026-09-15T11:36:06.586Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "Los gurús te mienten",
+    "scheduledFor": "",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964117595",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T11:36:06.586Z"
   }
 ]
