@@ -86,14 +86,14 @@
     "subidoEn": "2026-09-15T10:56:45.933397Z"
   },
   {
-    "id": "carrusel-34",
-    "fecha": "2026-09-15T11:23:46.177Z",
+    "id": "carrusel-11",
+    "fecha": "2026-09-15T11:23:06.905Z",
     "ok": true,
     "estado": "pendiente",
-    "tema": "El sistema de Gary Vaynerchuk",
+    "tema": "El 90% usa IA mal",
     "scheduledFor": "",
-    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962915375",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962834654",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:23:46.177Z"
+    "avisadoBuzonEn": "2026-09-15T11:23:06.905Z"
   }
 ]
