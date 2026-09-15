@@ -106,15 +106,15 @@
     "subidoEn": "2026-09-15T10:56:45.933397Z"
   },
   {
-    "id": "v08",
-    "fecha": "2026-09-15T11:18:57.042Z",
+    "id": "v09",
+    "fecha": "2026-09-15T11:19:05.789Z",
     "ok": true,
     "estado": "pendiente",
-    "tema": "El error de mil dólares",
+    "tema": "Tres segundos, cincuenta dólares",
     "scheduledFor": "",
-    "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v08.mp4",
-    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962567496",
+    "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v09.mp4",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962573175",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:18:57.042Z"
+    "avisadoBuzonEn": "2026-09-15T11:19:05.789Z"
   }
 ]
