@@ -34,5 +34,17 @@
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34959062299",
     "avisadoBuzon": true,
     "avisadoBuzonEn": "2026-09-15T10:43:30.222Z"
+  },
+  {
+    "id": "v04",
+    "fecha": "2026-09-15T10:45:25.658Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "El gurú que nunca vendió",
+    "scheduledFor": "2026-09-15T21:30:00-03:00",
+    "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v04.mp4",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34959062299",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T10:45:25.658Z"
   }
 ]
