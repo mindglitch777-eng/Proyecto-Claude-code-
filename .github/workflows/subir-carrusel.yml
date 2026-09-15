@@ -61,7 +61,7 @@ jobs:
         run: |
           git config user.name  "productor-bot"
           git config user.email "actions@github.com"
-          git add state/carruseles.json panel/torre-de-control.html
+          git add state/carruseles.json panel/torre-de-control.html panel/index.html
           if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
           git commit -m "Log de entrega + panel: ${{ github.event.inputs.carrusel }}"
           for i in 1 2 3 4 5 6; do
@@ -88,8 +88,8 @@ jobs:
           git fetch origin main
           for i in 1 2 3 4 5 6; do
             git checkout -B sync-main origin/main
-            git checkout "$RAMA_ORIGEN" -- panel/torre-de-control.html state/uploads.json state/carruseles.json
-            git add panel/torre-de-control.html state/uploads.json state/carruseles.json
+            git checkout "$RAMA_ORIGEN" -- panel/torre-de-control.html panel/index.html state/uploads.json state/carruseles.json
+            git add panel/torre-de-control.html panel/index.html state/uploads.json state/carruseles.json
             if git diff --cached --quiet; then echo "sin cambios para main"; git checkout "$RAMA_ORIGEN"; exit 0; fi
             git commit -m "panel + estado: sync desde $RAMA_ORIGEN (${{ github.event.inputs.carrusel }})"
             if git push origin sync-main:main; then git checkout "$RAMA_ORIGEN"; exit 0; fi
