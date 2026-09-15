@@ -212,5 +212,17 @@
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34968621858",
     "avisadoBuzon": true,
     "avisadoBuzonEn": "2026-09-15T12:25:27.065Z"
+  },
+  {
+    "id": "v13",
+    "fecha": "2026-09-15T12:26:53.218Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "El sitio que reemplaza al diseñador",
+    "scheduledFor": "2026-09-15T20:00:00-03:00",
+    "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v13.mp4",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34968621858",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T12:26:53.218Z"
   }
 ]
