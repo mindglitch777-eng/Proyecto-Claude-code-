@@ -97,14 +97,14 @@
     "avisadoBuzonEn": "2026-09-15T11:22:15.208Z"
   },
   {
-    "id": "carrusel-40",
-    "fecha": "2026-09-15T11:24:24.669Z",
+    "id": "carrusel-42",
+    "fecha": "2026-09-15T11:24:41.793Z",
     "ok": true,
     "estado": "pendiente",
-    "tema": "Video privado: cómo hice X",
+    "tema": "El sistema en 5 pasos",
     "scheduledFor": "",
-    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962931340",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962942765",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:24:24.669Z"
+    "avisadoBuzonEn": "2026-09-15T11:24:41.793Z"
   }
 ]
