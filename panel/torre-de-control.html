@@ -56,11 +56,27 @@
 <body>
   <h1>Buzón</h1>
   <p class="subtitulo">Lo que hay para bajar y subir a mano (TikTok Studio / YouTube Studio).</p>
-  <div class="lista"><p class="vacio">No hay nada pendiente de subir ahora mismo.</p>
+  <div class="lista">
+        <article class="item">
+          <div class="item-cabecera">
+            <span class="item-tipo">🎬 Video</span>
+            
+          </div>
+          <h2>No sabe editar, es su ventaja</h2>
+          <p class="item-horario">Horario sugerido: (programalo vos)</p>
+          <p class="item-copy">El que más vende productos digitales no sabe ni abrir un editor de video. Esa es su ventaja.
+
+#TallerDeActivos #ProductosDigitales #Emprendimiento #InfoProductos #DineroOnline #MarketingDigital #IA</p>
+          <p class="item-musica">🎵 Beat motivacional que sube de intensidad hacia el CTA</p>
+          <div class="item-acciones">
+            <a class="boton-descarga" href="https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34920510722" target="_blank" rel="noopener">Descargar</a>
+            <button class="boton-listo" type="button" onclick="marcarSubido('v01', this)">Ya lo subí</button>
+          </div>
+        </article>
   </div>
   <script>
     // SECRETO_PANEL se reemplaza acá en el momento real de generar esta página
-    const SECRETO_PANEL = "__SECRETO_PANEL__";
+    const SECRETO_PANEL = "Fabrica2026";
     async function marcarSubido(id, boton) {
       boton.disabled = true;
       boton.textContent = 'Marcando...';

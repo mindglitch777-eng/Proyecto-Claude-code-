@@ -1230,5 +1230,17 @@
       },
       "message": "Post scheduled successfully"
     }
+  },
+  {
+    "id": "v01",
+    "fecha": "2026-09-15T02:16:59.646Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "No sabe editar, es su ventaja",
+    "scheduledFor": "",
+    "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v01.mp4",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34920510722",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T02:16:59.647Z"
   }
 ]
