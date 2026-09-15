@@ -238,5 +238,27 @@
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964122490",
     "avisadoBuzon": true,
     "avisadoBuzonEn": "2026-09-15T11:36:07.517Z"
+  },
+  {
+    "id": "carrusel-19",
+    "fecha": "2026-09-15T11:36:34.204Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "3 segundos, una venta",
+    "scheduledFor": "",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964142432",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T11:36:34.204Z"
+  },
+  {
+    "id": "carrusel-18",
+    "fecha": "2026-09-15T11:36:22.442Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "El error que me costó caro",
+    "scheduledFor": "",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964139964",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-15T11:36:22.442Z"
   }
 ]
