@@ -160,7 +160,7 @@ function renderizarItem(item: ItemPanel): string {
 
   if (item.estado === 'sin_entregar') {
     return `
-          <article class="item ${claseEstado}">
+          <article class="item ${claseEstado}" data-id="${item.id}" data-tipo="${item.tipo}">
             <div class="item-cabecera">
               <span class="item-tipo">${iconoTipo} ${item.tipo === 'video' ? 'Video' : 'Carrusel'}</span>
               <span class="item-estado-badge badge-espera">⚪ Todavía no le toca turno</span>
@@ -172,7 +172,7 @@ function renderizarItem(item: ItemPanel): string {
 
   if (item.estado === 'subido') {
     return `
-          <article class="item ${claseEstado}">
+          <article class="item ${claseEstado}" data-id="${item.id}" data-tipo="${item.tipo}">
             <div class="item-cabecera">
               <span class="item-tipo">${iconoTipo} ${item.tipo === 'video' ? 'Video' : 'Carrusel'}</span>
               <span class="item-estado-badge badge-subido">✅ Ya subido</span>
