@@ -1,5 +1,33 @@
 # Estado vivo del proyecto
 
+## Bloque: corrección real del piloto documental 1 -- componente nuevo (Revelacion) (2026-09-16)
+
+**Pedido explícito del operador, tras ver el resultado del bloque de abajo**: rechazo directo --
+"no se cumple para nada la flechita que se va dibujando... por qué hiciste algo que no te pedí".
+Con razón: la v1 usaba `punch` + `chat` + `diagrama` como 3 escenas separadas, cortadas entre sí por
+una transición -- exactamente lo que el operador había pedido evitar ("una sola línea, sin cortes").
+El `diagrama` además resultó ser iconos de clipart genéricos (un globo de diálogo "EL PEDIDO", una
+carita de robot "LA FÁBRICA") sin ninguna relación visual con el pedido real -- se eligió por
+reusar catálogo en vez de construir lo pedido, y no se le avisó al operador de esa sustitución antes
+de renderizar.
+
+- **Componente nuevo**: `remotion-spike/src/agresivo/Revelacion.tsx`, registrado en
+  `fabrica/componentes/registro.json` (id `revelacion`) y enganchado en `FabricaVideo.tsx`. Hace
+  TODO en un solo trazo continuo: texto de entrada (última línea en rojo) -> logo "Claude" suave ->
+  una línea que se dibuja con el paso del tiempo (SVG, crece de un punto a otro) -> el prompt real
+  montado ENCIMA de esa misma línea, arranca borroso y se enfoca -> la línea sigue hasta una etiqueta
+  de resultado. Sin cortes entre esos momentos.
+- `generar_piloto_documental.ts`: las 3 escenas viejas (`doc1-hook`/`doc1-prompt`/`doc1-diagrama`)
+  se reemplazan por una sola (`doc1-revelacion`) con narración consolidada (voz real regenerada).
+- **Hallazgo útil**: se puede renderizar Remotion localmente en esta sesión apuntando
+  `--browser-executable` al Chromium headless ya instalado para Playwright
+  (`/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell`) -- la descarga
+  propia de Remotion (`remotion.media`) está bloqueada por el proxy de red del entorno. Esto permite
+  verificar un render completo (frames reales, no solo teoría) ANTES de gastar un ciclo de GitHub
+  Actions -- se usó acá para confirmar visualmente la corrección antes de entregarla.
+- **Resultado real**: `videos/pilotos/piloto-documental-1.mp4` re-renderizado (40.9s), verificado
+  frame por frame que la línea única y el blur->foco del prompt se ven como se pidió.
+
 ## Bloque: primer piloto documental real (Claude), en paralelo a Taller de Activos (2026-09-16)
 
 **Pedido explícito del operador**: nuevo ángulo de contenido, distinto del "los gurús son una
