@@ -355,6 +355,40 @@
     "notas": "Probado con audio real en esta sesion (CentroBeat 'diagrama' + AudioCentro, casos 03/05/06/13/18/20 y Metodo de RebeccaBeach): el bloque completo dura lo que suma el audio de narracion de cada nodo, pero el DIBUJO de cada nodo sigue su propio 't' fijo en el codigo -- no se reubica automaticamente para caer justo cuando se nombra ese nodo en el audio. Es la misma limitacion de AudioCentro que los demas: duracion total exacta, reparto visual interno aproximado."
   },
   {
+    "id": "revelacion",
+    "archivo": "agresivo/Revelacion.tsx",
+    "exportacion": "Revelacion",
+    "categoria": "diagrama",
+    "funcion": "Pieza UNICA y continua (no se corta en escenas separadas): texto de entrada con la ultima linea en rojo -> logo suave -> UNA linea que se dibuja con el paso del tiempo -> un pedido/prompt real montado ENCIMA de esa linea, arranca borroso y se enfoca -> la misma linea sigue hasta una etiqueta de resultado. Pensada para documentar un pedido real -> resultado real sin cortes entre esos momentos.",
+    "intensidad": 0.55,
+    "ritmo": "dinamico",
+    "capacidadTexto": "media",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      6,
+      16
+    ],
+    "compatibleCon": [
+      "texto",
+      "diagrama"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "lineaHook": "string -- primera linea del texto de entrada",
+      "lineaTiro": "string -- segunda linea, mas grande, en color acento (rojo)",
+      "logoTexto": "string, opcional (default 'Claude') -- wordmark que aparece suave, dos veces (entrada y junto al pedido)",
+      "etiquetaPedido": "string -- texto que acompaña al prompt real (ej. 'esto es lo que le pedi a')",
+      "prompt": "string -- el pedido/prompt real, arranca borroso y se enfoca sobre la linea",
+      "etiquetaResultado": "string -- texto que aparece donde la linea termina (ej. 'y estos fueron los resultados')",
+      "t": "{hook,tiro,logo,lineaEmpieza,pedidoLlega,promptBorroso,promptEnfoca,lineaLlegaResultado,resultadoAparece}: number (seg) -- anclas explicitas de toda la secuencia, un solo trazo de principio a fin"
+    },
+    "estado": "validado",
+    "notas": "Creada porque 'diagrama' (iconos de clipart + flechas cortas) y 'chat' (cuadro de mensaje aislado) no alcanzaban para el pedido explicito del operador de una sola linea continua sin cortes entre el gancho, el prompt real y el resultado -- ver fabrica/ESTADO.md, bloque del piloto documental 1."
+  },
+  {
     "id": "logos-herramientas",
     "archivo": "escenas/herramientas.tsx",
     "exportacion": "LogosHerramientas",

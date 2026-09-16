@@ -7,14 +7,21 @@
  * que se dibuja hacia el pedido real -> resultado real -> métricas
  * reales -> CTA al grupo de WhatsApp, 20 cupos gratis).
  *
+ * CORRECCIÓN (tras feedback real del operador): la v1 de este guion
+ * partía el gancho, el pedido y la línea en 3 escenas separadas (punch
+ * + chat + diagrama), con un corte/transición entre cada una -- eso
+ * rompía justo lo que se pidió ("una sola línea que se dibuja, sin
+ * cortes"), y el "diagrama" resultó ser iconos de clipart genéricos
+ * (un globo de diálogo, una carita de robot) sin ninguna relación
+ * visual con el pedido real. Se reemplazan esas 3 escenas por UNA sola
+ * pieza nueva (`revelacion`, ver agresivo/Revelacion.tsx): texto de
+ * entrada -> línea única que se dibuja con el paso del tiempo -> el
+ * pedido real montado ENCIMA de esa misma línea, borroso -> enfocado
+ * -> la línea sigue hasta el resultado. Sin cortes en el medio.
+ *
  * Componentes, todos reales y validados de registro.json:
- *   - punch: texto de entrada con la última línea en rojo (acentoUltima).
- *   - chat: la captura del pedido real, como mensaje de "Claude" --
- *     se usa el componente nativo (mismo motor visual que el resto del
- *     video) en vez de una captura de pantalla externa, para que no
- *     desentone de estilo y para no replicar la interfaz real de Claude.
- *   - diagrama: la línea se DIBUJA con el paso del tiempo (no aparece
- *     hecha) conectando el pedido -> la fábrica -> el resultado.
+ *   - revelacion: pieza única y continua (ver arriba) -- gancho, pedido
+ *     real y anuncio del resultado en el mismo trazo, sin cortes.
  *   - rafaga: los 6 videos reales del lote21 (v01,v03,v05,v06,v08,v09)
  *     y, en una segunda rafaga corta, 2 carruseles reales del lote42 --
  *     uno atrás del otro, nunca simultáneos (pedido explícito del
@@ -35,56 +42,36 @@ import path from 'node:path';
 import {writeFileSync} from 'node:fs';
 import {renderizarPorGuion, type EscenaGuion} from '../composicion/renderizador_por_guion';
 
-type NodoDiagrama = {fig: string; x: number; y: number; tam: number; rotulo?: string; t: number; acento?: boolean};
-type FlechaDiagrama = {de: number; a: number; t: number; acento?: boolean};
-type DatosDiagrama = {nodos: NodoDiagrama[]; flechas?: FlechaDiagrama[]};
-
 const RAIZ = path.join(__dirname, '..', '..');
 const ID_VIDEO = 'piloto-documental-1';
 
-const diagramaProcesoReal: DatosDiagrama = {
-  nodos: [
-    {fig: 'mensaje', x: 0.5, y: 0.3, tam: 150, rotulo: 'EL PEDIDO', t: 0, acento: true},
-    {fig: 'robot', x: 0.5, y: 0.52, tam: 150, rotulo: 'LA FÁBRICA', t: 1.7, acento: true},
-    {fig: 'cohete', x: 0.5, y: 0.74, tam: 150, rotulo: 'EL RESULTADO', t: 3.3, acento: true},
-  ],
-  flechas: [
-    {de: 0, a: 1, t: 1.1, acento: true},
-    {de: 1, a: 2, t: 2.7, acento: true},
-  ],
-};
-
 const escenas: EscenaGuion[] = [
   {
-    id: 'doc1-hook',
-    textoVoz: 'Le pedí a mi sistema que armara un mes de contenido. Esto es lo que me tiró.',
-    componenteId: 'punch',
+    id: 'doc1-revelacion',
+    textoVoz: 'Le pedí a mi sistema que armara un mes de contenido. Esto es lo que me tiró. '
+      + 'Esto es lo que le pedí. Y esto fue lo que armó, solo, sin que yo tocara nada más.',
+    componenteId: 'revelacion',
     props: {
-      lineas: ['Le pedí a mi sistema que armara un mes de contenido.', 'Esto es lo que me tiró.'],
-      entra: [0, 1.6],
-      acentoUltima: true,
+      lineaHook: 'Le pedí a mi sistema que armara un mes de contenido.',
+      lineaTiro: 'Esto es lo que me tiró.',
+      logoTexto: 'Claude',
+      etiquetaPedido: 'esto es lo que le pedí a',
+      prompt: 'Armame 21 videos completos: guion, voz y edición, listos para publicar.',
+      etiquetaResultado: 'Y esto fue lo que armó, solo',
+      t: {
+        hook: 0,
+        tiro: 1.5,
+        logo: 2.3,
+        lineaEmpieza: 3.0,
+        pedidoLlega: 4.2,
+        promptBorroso: 4.4,
+        promptEnfoca: 5.7,
+        lineaLlegaResultado: 8.2,
+        resultadoAparece: 8.5,
+      },
     },
-    intensidad: 9,
+    intensidad: 8,
     esPrimera: true,
-  },
-  {
-    id: 'doc1-prompt',
-    textoVoz: 'Esto es lo que le pedí.',
-    componenteId: 'chat',
-    props: {
-      titulo: 'Claude',
-      mensajes: [
-        {de: 'vos', txt: 'Armame 21 videos completos: guion, voz y edición, listos para publicar.', t: 0},
-      ],
-    },
-    intensidad: 6,
-  },
-  {
-    id: 'doc1-diagrama',
-    textoVoz: 'Y esto fue lo que armó, solo, sin que yo tocara nada más.',
-    componenteId: 'diagrama',
-    props: {d: diagramaProcesoReal},
-    intensidad: 6,
   },
   {
     id: 'doc1-resultado',
