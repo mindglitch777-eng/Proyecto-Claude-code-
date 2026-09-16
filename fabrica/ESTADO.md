@@ -1,5 +1,32 @@
 # Estado vivo del proyecto
 
+## Bloque: "El error real" #1 -- 2da corrección real, hook a pantalla completa (2026-09-16)
+
+**Pedido explícito del operador tras ver la v1** (con risas, no enojo -- "nadie va a mirar eso"):
+dos correcciones reales, no cosméticas:
+1. La prueba/aclaración seguía en jerga de programador (`state/uploads.json`, "registro", "log") --
+   "eso lo mira un desarrollador, no le llama la atención a nadie". Reescrito todo en lenguaje de
+   todos los días, sin rutas de archivo ni palabras técnicas, manteniendo el dato 100% real.
+2. "El hook tiene que ser más potente, entrar con distinta tipografía y la palabra más fuerte en
+   rojo y que sea más grande, que ocupe toda la pantalla" -- y la frase exacta pedida: **"así fue
+   como casi pierdo 27 videos"**.
+
+**Componente** (`remotion-spike/src/agresivo/BugReal.tsx`): el hook pasa de un bloque chico
+arriba (top 58%) a ocupar la pantalla completa, en 3 escalones de tipografía escalados
+(`hookIntro`/`hookMedio`/`hookImpacto`, reemplazan a `numeroGrande`/`numeroEtiqueta`): serif
+itálica chica ("Así fue como") -> grotesca bold mayúscula mediana ("CASI PIERDO") -> grotesca
+bold 132px en rojo ("27 videos."), con scale-in. El hook completo hace fade-out justo antes de
+que aparezca la evidencia (`opHookContainer`), en vez de quedar fijo arriba todo el video.
+
+**Guion** (`fabrica/ejemplos/generar_error_real_1.ts`): texto de voz y props reescritos con el
+lenguaje nuevo; anclajes de tiempo (`t: {...}`) recalculados NO a ojo sino alineados a las pausas
+reales detectadas con `ffmpeg silencedetect` sobre el audio regenerado (`err1-todo.wav`, 21.89s
+reales). Audio viejo borrado y regenerado real vía `generar-voz-pilotos.yml` (run exitoso). Bridge
+regenerado (`error-real-1.json`, 22.64s), renderizado localmente (Playwright headless shell) y
+verificado frame por frame: hook a pantalla completa con "27 videos." gigante y rojo, evidencia y
+resultado en lenguaje llano, sin jerga -- confirmado antes de sobreescribir
+`videos/pilotos/error-real-1.mp4`. `registro.json` actualizado con los props y la función nuevos.
+
 ## Bloque: nueva sub-serie "El error real" -- video 1, "27 registros perdidos" (2026-09-16)
 
 **Contexto**: tras aprobar el piloto documental, el operador trajo 3 prompts (redactados en otra

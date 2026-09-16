@@ -5,39 +5,42 @@
     {
       "unidadId": "err1-todo",
       "desdeSeg": 0,
-      "duracionSeg": 18.041995,
+      "duracionSeg": 22.138005,
       "componenteId": "bug-real",
       "props": {
-        "numeroGrande": "27",
-        "numeroEtiqueta": "registros se perdieron",
-        "aclaracion": "No los videos. El registro de qué ya subí.",
-        "pruebaTitulo": "el log real",
+        "hookIntro": "Así fue como",
+        "hookMedio": "casi pierdo",
+        "hookImpacto": "27 videos.",
+        "aclaracion": "No se borró nada. Pero por un rato no supe qué estaba listo.",
+        "pruebaTitulo": "lo que pasó",
         "pruebaLineas": [
-          "32 entregas casi simultáneas",
-          "state/uploads.json: 27 entradas sin guardar",
-          "causa: cada corrida escribía desde una foto vieja"
+          "subí 32 videos casi al mismo tiempo",
+          "27 quedaron sin registrarse como subidos",
+          "el sistema guardaba una lista vieja mientras yo seguía subiendo"
         ],
         "resultadoNumero": 27,
-        "resultadoDetalle": "26 entraron a la primera. 1 necesitó un segundo intento.",
-        "verificacion": "Verificado con diff real: idéntico entre la rama y main.",
+        "resultadoDetalle": "26 se recuperaron a la primera. 1 necesitó un segundo intento.",
+        "verificacion": "Lo comprobé a mano, línea por línea: quedó todo igual.",
         "cierre": "Esto es lo que no se ve en el video final.",
         "t": {
-          "hookNumero": 0,
-          "hookAclaracion": 1.9,
-          "pruebaAparece": 3.8,
-          "lineaSigue": 7.7,
-          "resultadoCountDesde": 9.5,
-          "resultadoCountDuracion": 1.5,
-          "resultadoDetalle": 11.5,
-          "verificacion": 13.9,
-          "cierre": 16.6
+          "hookIntro": 0,
+          "hookMedio": 1,
+          "hookImpacto": 1.6,
+          "hookAclaracion": 2.6,
+          "pruebaAparece": 6.4,
+          "lineaSigue": 10.9,
+          "resultadoCountDesde": 11.1,
+          "resultadoCountDuracion": 1.3,
+          "resultadoDetalle": 14.1,
+          "verificacion": 16,
+          "cierre": 20.1
         }
       },
       "audios": [
         {
           "archivo": "fabrica_error_real_1/err1-todo.wav",
           "desdeSegRelativo": 0,
-          "duracionSeg": 17.791995
+          "duracionSeg": 21.888005
         }
       ],
       "golpe": "negro",
@@ -93,14 +96,14 @@
       ]
     }
   ],
-  "duracionTotalSeg": 18.541995,
+  "duracionTotalSeg": 22.638005,
   "analisisRetencion": {
     "mapa": [
       {
         "unidadId": "err1-todo",
         "fase": "hook",
         "energia": "muy_alta",
-        "duracionSeg": 18.041995,
+        "duracionSeg": 22.138005,
         "esClimax": false
       }
     ],
