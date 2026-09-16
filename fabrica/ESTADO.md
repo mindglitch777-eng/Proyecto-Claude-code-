@@ -1,5 +1,40 @@
 # Estado vivo del proyecto
 
+## Bloque: primer piloto documental real (Claude), en paralelo a Taller de Activos (2026-09-16)
+
+**Pedido explícito del operador**: nuevo ángulo de contenido, distinto del "los gurús son una
+mierda" (genérico, sin mostrar herramientas ni ángulo a producto). Inspirado en el formato de un
+creador real que documenta pruebas/experimentos con IA (ej. "le doy $50 a la IA...") y monetiza con
+una comunidad exclusiva de pago único. Se armó el primer video del formato nuevo, "documental de
+proceso real": el pedido real -> línea que se dibuja (componente `diagrama`, nodos con tiempo real
+de trazado) -> 6 videos + 2 carruseles reales del catálogo ya existente (sin generar nada nuevo,
+postura resolutiva) -> métricas reales (captura de TikTok Studio, 7 días, 1.8K vistas) -> CTA al
+grupo de WhatsApp (20 cupos gratis, sin promesa "de por vida" -- decisión ya tomada antes de
+validar interés real).
+
+- **`fabrica/ejemplos/generar_piloto_documental.ts`**: guion completo (7 escenas), reusa
+  componentes reales ya validados de `registro.json` (`punch`, `chat`, `diagrama`, `rafaga`,
+  `remate`) -- ningún componente nuevo. El "prompt" en pantalla se muestra con el componente nativo
+  `chat` (mismo motor visual que el resto del video), no con una captura externa de la interfaz real
+  de Claude -- evita desentonar de estilo y replicar una UI real.
+- **`assets/metraje_video/documental_piloto/`**: los 6 videos reales del lote21 (v01,v03,v05,v06,
+  v08,v09) + 2 slides de carrusel reales (carrusel-04, carrusel-11) + la captura de métricas del
+  operador, convertidos a clip de fondo 1080x1920 (mismo formato que el resto) -- se copian solos a
+  `remotion-spike/public/video/` vía `preparar-public.sh`, igual que el resto del metraje curado.
+- **`capturas_voz/manifest_pilotos.json`**: 7 líneas nuevas (`doc1-*`), generadas reales con
+  Qwen3-TTS vía `generar-voz-pilotos.yml` (mismo workflow que ya usaban p1/p2/p3, sin tocar sus
+  líneas).
+- **Bug real encontrado y arreglado**: el primer intento de render falló (404 al pedir
+  `doc1-hook.wav`) porque `render-pilotos.yml` solo armaba las carpetas `fabrica_piloto_1/2/3` en el
+  paso de copiar audio a `public/` -- nunca `fabrica_piloto_documental_1`, que es la
+  `carpetaPublica` real que usa el guion nuevo. Se agregó la carpeta + el `cp` de `doc1-*.wav`,
+  mismo patrón que los otros 3. Corregido, commiteado y vuelto a disparar -- render real exitoso.
+- **Resultado real**: `videos/pilotos/piloto-documental-1.mp4`, 42.5s, voz real, renderizado en
+  GitHub Actions. Registrado en `Root.tsx` (Composition `piloto-documental-1`) y sumado al matrix
+  de `render-pilotos.yml`.
+- **Pendiente real (no resuelto esta ronda, a decisión del operador)**: `render (piloto-2)` sigue
+  fallando en su paso de commit (falla preexistente, no relacionada a este cambio -- no se tocó).
+
 ## Bloque: Zernio abandonado del todo (carruseles incluidos) + backlog completo entregado + fix real de carrera de git (2026-09-15)
 
 **Pedido explícito del operador**: "y si abandonamos zernio para los carruseles también? aparecen que se suben y
