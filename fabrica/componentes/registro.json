@@ -425,7 +425,7 @@
     "archivo": "agresivo/BugReal.tsx",
     "exportacion": "BugReal",
     "categoria": "cifra",
-    "funcion": "Pieza UNICA y continua para la sub-serie 'El error real': un bug real encontrado y arreglado en la fabrica, contado con el NUMERO real como gancho dramatico (grande, rojo, kinetico) primero -- no con el log como protagonista. Camino curvo (mismo mecanismo que Revelacion.tsx) hacia una tarjeta de evidencia breve (estetica de log/terminal), luego un count-up real hasta el numero de recuperados/corregidos, detalle y verificacion.",
+    "funcion": "Pieza UNICA y continua para la sub-serie 'El error real': un bug real encontrado y arreglado en la fabrica, contado con un gancho de pantalla completa en 3 escalones de tipografia (chico -> mediano -> gigante y rojo, ej 'Asi fue como' / 'casi pierdo' / '27 videos.') en lenguaje cotidiano, no tecnico -- 'nadie va a mirar los logs y entender que hubo un problema'. El gancho se retira (fade-out) antes de la evidencia. Camino curvo (mismo mecanismo que Revelacion.tsx) hacia una tarjeta de evidencia breve en palabras simples (sin jerga de programador ni rutas de archivo), luego un count-up real hasta el numero de recuperados/corregidos, detalle y verificacion.",
     "intensidad": 0.7,
     "ritmo": "dinamico",
     "capacidadTexto": "media",

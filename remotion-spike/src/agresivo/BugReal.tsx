@@ -4,11 +4,15 @@ import {PALETA, GROTESCA, SERIF, ANCHO, ALTO} from '../identidad';
 
 // Primera pieza de la sub-serie "El error real": un bug real encontrado
 // y arreglado en la fabrica, contado con el mismo lenguaje visual que
-// el documental (linea curva continua, sin cortes) pero con una
-// correccion de enfoque pedida por el operador: "nadie va a mirar los
-// logs y entender que hubo un problema" -- el NUMERO real es el gancho
-// dramatico (grande, rojo, kinetico), el log/prueba real queda como
-// evidencia breve y secundaria, no como protagonista.
+// el documental (linea curva continua, sin cortes) pero con dos
+// correcciones reales pedidas por el operador tras ver la v1:
+//   1. "Nadie va a mirar los logs y entender que hubo un problema" --
+//      el gancho tiene que pegar en palabras de todos los dias, no en
+//      jerga de programador ("registros", rutas de archivo).
+//   2. "El hook tiene que ser mas potente, tipo 'asi fue como casi
+//      pierdo 27 videos', que ocupe toda la pantalla" -- el hook pasa
+//      de un bloque chico arriba a dominar la pantalla completa, en 3
+//      escalones de tipografia (chico -> mediano -> gigante y rojo).
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 
 function caminoCurvo(x: number, y0: number, y1: number, amplitud: number): string {
@@ -17,7 +21,9 @@ function caminoCurvo(x: number, y0: number, y1: number, amplitud: number): strin
 }
 
 export type BugRealTiempos = {
-  hookNumero: number;
+  hookIntro: number;
+  hookMedio: number;
+  hookImpacto: number;
   hookAclaracion: number;
   pruebaAparece: number;
   lineaSigue: number;
@@ -29,8 +35,9 @@ export type BugRealTiempos = {
 };
 
 export const BugReal: React.FC<{
-  numeroGrande: string;
-  numeroEtiqueta: string;
+  hookIntro: string;
+  hookMedio: string;
+  hookImpacto: string;
   aclaracion: string;
   pruebaTitulo: string;
   pruebaLineas: string[];
@@ -40,8 +47,9 @@ export const BugReal: React.FC<{
   cierre: string;
   t: BugRealTiempos;
 }> = ({
-  numeroGrande,
-  numeroEtiqueta,
+  hookIntro,
+  hookMedio,
+  hookImpacto,
   aclaracion,
   pruebaTitulo,
   pruebaLineas,
@@ -57,17 +65,29 @@ export const BugReal: React.FC<{
   const ent = (t0: number, dur: number) =>
     interpolate(seg, [t0, t0 + dur], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
 
-  const opNumero = ent(t.hookNumero, 0.5);
-  const opEtiqueta = ent(t.hookNumero + 0.15, 0.5);
+  const opIntro = ent(t.hookIntro, 0.4);
+  const opMedio = ent(t.hookMedio, 0.4);
+  const opImpacto = ent(t.hookImpacto, 0.5);
+  const escalaImpacto = interpolate(seg, [t.hookImpacto, t.hookImpacto + 0.5], [0.88, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
   const opAclaracion = ent(t.hookAclaracion, 0.5);
+  // El gancho ocupa toda la pantalla mientras se lee, y se retira
+  // (fade-out) justo antes de que arranque la prueba -- asi domina el
+  // arranque sin quedar superpuesto con el resto del video.
+  const opHookContainer = interpolate(seg, [t.pruebaAparece - 0.5, t.pruebaAparece], [1, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
 
   // -- camino curvo, en 2 tramos, igual que Revelacion.tsx --
-  const yLineaInicio = 0.32 * ALTO;
-  const yLineaPrueba = 0.5 * ALTO;
+  const yLineaInicio = 0.16 * ALTO;
+  const yLineaPrueba = 0.44 * ALTO;
   const camino1 = caminoCurvo(ANCHO / 2, yLineaInicio, yLineaPrueba, -140);
   const progreso1 = clamp01((seg - t.pruebaAparece + 0.3) / 0.7);
 
-  const yLineaFin = 0.9 * ALTO;
+  const yLineaFin = 0.88 * ALTO;
   const camino2 = caminoCurvo(ANCHO / 2, yLineaPrueba, yLineaFin, 130);
   const progreso2 = clamp01((seg - t.lineaSigue) / 0.8);
 
@@ -91,43 +111,72 @@ export const BugReal: React.FC<{
         <path d={camino2} fill="none" stroke={PALETA.acento} strokeWidth={5} strokeLinecap="round" pathLength={1} strokeDasharray={1} strokeDashoffset={1 - progreso2} />
       </svg>
 
-      {/* El gancho -- el numero real, grande y en rojo, protagonista */}
-      <div style={{position: 'absolute', top: '10%', left: 0, right: 0, padding: '0 8%', textAlign: 'center'}}>
+      {/* El gancho -- a pantalla completa, 3 escalones de tipografia:
+          chico (contexto) -> mediano (tension) -> gigante y rojo (el golpe) */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: '0 7%',
+          textAlign: 'center',
+          opacity: opHookContainer,
+        }}
+      >
         <div
           style={{
-            fontFamily: GROTESCA,
-            fontWeight: 800,
-            fontSize: 118,
-            lineHeight: 0.95,
-            color: PALETA.acento,
-            opacity: opNumero,
-            letterSpacing: '-0.02em',
+            fontFamily: SERIF,
+            fontStyle: 'italic',
+            fontWeight: 600,
+            fontSize: 40,
+            color: PALETA.texto,
+            opacity: opIntro,
           }}
         >
-          {numeroGrande}
+          {hookIntro}
         </div>
         <div
           style={{
             fontFamily: GROTESCA,
             fontWeight: 800,
-            fontSize: 46,
-            lineHeight: 1.1,
+            fontSize: 64,
+            lineHeight: 1,
             color: PALETA.texto,
-            opacity: opEtiqueta,
-            marginTop: 6,
+            opacity: opMedio,
+            marginTop: 8,
             textTransform: 'uppercase',
           }}
         >
-          {numeroEtiqueta}
+          {hookMedio}
+        </div>
+        <div
+          style={{
+            fontFamily: GROTESCA,
+            fontWeight: 800,
+            fontSize: 132,
+            lineHeight: 0.92,
+            color: PALETA.acento,
+            opacity: opImpacto,
+            marginTop: 14,
+            letterSpacing: '-0.02em',
+            transform: `scale(${escalaImpacto})`,
+          }}
+        >
+          {hookImpacto}
         </div>
         <div
           style={{
             fontFamily: SERIF,
             fontStyle: 'italic',
-            fontSize: 32,
+            fontSize: 28,
             color: PALETA.texto,
             opacity: opAclaracion,
-            marginTop: 18,
+            marginTop: 22,
           }}
         >
           {aclaracion}
