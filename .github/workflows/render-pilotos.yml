@@ -69,10 +69,11 @@ jobs:
       - name: Copiar audio real de los pilotos a public/
         if: steps.check.outputs.listo == 'true'
         run: |
-          mkdir -p remotion-spike/public/fabrica_piloto_1 remotion-spike/public/fabrica_piloto_2 remotion-spike/public/fabrica_piloto_3
+          mkdir -p remotion-spike/public/fabrica_piloto_1 remotion-spike/public/fabrica_piloto_2 remotion-spike/public/fabrica_piloto_3 remotion-spike/public/fabrica_piloto_documental_1
           cp capturas_voz/audio_pilotos/p1-*.wav remotion-spike/public/fabrica_piloto_1/ 2>/dev/null || true
           cp capturas_voz/audio_pilotos/p2-*.wav remotion-spike/public/fabrica_piloto_2/ 2>/dev/null || true
           cp capturas_voz/audio_pilotos/p3-*.wav remotion-spike/public/fabrica_piloto_3/ 2>/dev/null || true
+          cp capturas_voz/audio_pilotos/doc1-*.wav remotion-spike/public/fabrica_piloto_documental_1/ 2>/dev/null || true
 
       - name: Renderizar ${{ matrix.video }}
         if: steps.check.outputs.listo == 'true'
