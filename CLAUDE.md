@@ -27,6 +27,35 @@ Nunca paralizarse ante un bloqueo. Si algo falla o parece imposible:
    vista la Regla de oro (nunca gastar, publicar ni contactar terceros
    sin confirmación explícita).
 
+## Test de ángulo comercial (regla permanente, agregada tras "El error real" #1, 2026-09-16)
+Ejecución técnica perfecta no salva un ángulo que a nadie le importa. Precedente real: "El error
+real" #1 tenía calidad gráfica y de guion aprobadas, pero el ángulo ("casi pierdo 27 videos") es un
+drama 100% interno -- el operador lo resumió así: *"a quién le va a interesar que casi se me
+pierden 27 videos, a nadie, absolutamente a nadie"*. Se corrigió la tipografía/lenguaje dos veces
+antes de identificar que el problema real era el ángulo, no la ejecución -- eso no puede volver a
+pasar.
+
+**Ningún guion se escribe sin pasar antes por este test** (antes de tocar Remotion, no después de
+renderizar):
+1. ¿A quién le importa esto sin conocer el contexto interno de la fábrica? Si la historia solo
+   tiene peso para alguien que ya sabe cómo funcionamos por dentro, no es contenido -- es un log de
+   trabajo con música.
+2. ¿Qué se lleva el espectador -- FOMO real, curiosidad resuelta con un premio, o un resultado que
+   puede imaginar para sí mismo? Tiene que ganar algo, no solo enterarse de algo nuestro.
+3. ¿De quién son las apuestas (stakes)? Tienen que ser del espectador (su tiempo, su plata, su
+   duda sobre si esto funciona), nunca solo nuestras.
+4. ¿Qué patrón de gancho/retención ya documentado en `fabrica/hooks/catalogo.ts` (con nivel de
+   evidencia real, ver `fabrica/research/retencion.md`) se está usando? Un ángulo inventado sin
+   apoyo en ese catálogo es sospechoso -- no se descarta de plano, pero se marca y se discute.
+5. Comparación directa contra el piloto documental 1 (`fabrica/ejemplos/generar_piloto_documental.ts`,
+   el primer video con ángulo aprobado: "le pedí a mi sistema que arme un mes de contenido, en 1:30
+   armé 41 piezas"): si el ángulo nuevo no genera el mismo nivel de "yo también quiero esto", no se
+   construye todavía -- se debate el ángulo con el operador primero.
+
+Igual que con la evidencia de retención (`fabrica/research/retencion.md`), esto es un filtro
+cualitativo para decidir QUÉ se construye, nunca un "score de viralidad" numérico inventado -- la
+única forma real de confirmar que un ángulo funciona es publicarlo y medirlo.
+
 ## Arquitectura de publicación (2026-09-14, reemplaza toda automatización previa)
 TikTok y YouTube se publican SIEMPRE a mano por el operador, vía las apps nativas de
 cada plataforma (TikTok Studio, YouTube Studio) -- programación propia de cada app
