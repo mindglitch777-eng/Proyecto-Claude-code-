@@ -1,0 +1,133 @@
+{
+  "id": "error-real-1",
+  "fps": 30,
+  "escenas": [
+    {
+      "unidadId": "err1-todo",
+      "desdeSeg": 0,
+      "duracionSeg": 18.041995,
+      "componenteId": "bug-real",
+      "props": {
+        "numeroGrande": "27",
+        "numeroEtiqueta": "registros se perdieron",
+        "aclaracion": "No los videos. El registro de qué ya subí.",
+        "pruebaTitulo": "el log real",
+        "pruebaLineas": [
+          "32 entregas casi simultáneas",
+          "state/uploads.json: 27 entradas sin guardar",
+          "causa: cada corrida escribía desde una foto vieja"
+        ],
+        "resultadoNumero": 27,
+        "resultadoDetalle": "26 entraron a la primera. 1 necesitó un segundo intento.",
+        "verificacion": "Verificado con diff real: idéntico entre la rama y main.",
+        "cierre": "Esto es lo que no se ve en el video final.",
+        "t": {
+          "hookNumero": 0,
+          "hookAclaracion": 1.9,
+          "pruebaAparece": 3.8,
+          "lineaSigue": 7.7,
+          "resultadoCountDesde": 9.5,
+          "resultadoCountDuracion": 1.5,
+          "resultadoDetalle": 11.5,
+          "verificacion": 13.9,
+          "cierre": 16.6
+        }
+      },
+      "audios": [
+        {
+          "archivo": "fabrica_error_real_1/err1-todo.wav",
+          "desdeSegRelativo": 0,
+          "duracionSeg": 17.791995
+        }
+      ],
+      "golpe": "negro",
+      "volumenSfx": 0.5,
+      "estrategiaEdicion": {
+        "unidadId": "err1-todo",
+        "intencion": "enganchar",
+        "energia": "muy_alta",
+        "densidadVisual": "densa",
+        "estilos": [
+          "agresivo",
+          "documental"
+        ],
+        "elementoPrincipal": {
+          "tipo": "concepto",
+          "descripcion": "el mensaje central de la unidad"
+        },
+        "entrada": {
+          "tipo": "inmediata",
+          "razon": "primera unidad del video (hook): capturar atencion desde el frame 0"
+        },
+        "salida": {
+          "tipo": "corte_limpio",
+          "razon": "cierre del video: no debe quedar nada pendiente despues"
+        },
+        "transicion": {
+          "golpe": "negro",
+          "funcion": "dirigir_atencion",
+          "intensidad": "muy_alta",
+          "motivo": "golpe \"negro\" acompana una unidad con intencion \"enganchar\" (elemento principal: el mensaje central de la unidad)"
+        },
+        "microeventos": [
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_elemento_principal",
+            "descripcion": "entra el mensaje central de la unidad",
+            "razon": "elemento principal de la unidad \"err1-todo\""
+          },
+          {
+            "enSegRelativo": 0,
+            "tipo": "entra_sfx",
+            "descripcion": "SFX de entrada acompanando el elemento principal",
+            "razon": "estilo combinado incluye enfasis sonoro en la entrada (ver estilos.ts, tiposMicroEventoPreferidos)"
+          }
+        ],
+        "relacionConAnterior": "abre el video -- no hay escena anterior con la cual relacionarse",
+        "respiracion": false,
+        "patronRetencionId": "contexto-parcial",
+        "razonGeneral": "unidad \"err1-todo\" (1/1, categoria=cifra): intencion=enganchar (energia=muy_alta, densidad=densa), estilos=[agresivo+documental], patron_retencion=contexto-parcial"
+      },
+      "patronesRetencion": [
+        "contexto-parcial"
+      ]
+    }
+  ],
+  "duracionTotalSeg": 18.541995,
+  "analisisRetencion": {
+    "mapa": [
+      {
+        "unidadId": "err1-todo",
+        "fase": "hook",
+        "energia": "muy_alta",
+        "duracionSeg": 18.041995,
+        "esClimax": false
+      }
+    ],
+    "alertas": [
+      {
+        "tipo": "sin_escalada_visible",
+        "severidad": "baja",
+        "descripcion": "ninguna unidad del video está clasificada como escalada -- si hay una revelación, puede llegar sin suficiente tensión construida antes",
+        "razon": "fases presentes: hook"
+      }
+    ],
+    "patronesUsados": [
+      {
+        "patronId": "contexto-parcial",
+        "nombre": "Contexto parcial",
+        "categoria": "apertura",
+        "porQue": "Da un dato concreto (un nombre, una cifra) sin explicar todavia el resto -- el espectador entiende que hay una historia pero no la historia completa. Maxima curiosidad con ALGO de contexto, no con cero.",
+        "evidencia": [
+          {
+            "id": "loewenstein-1994-brecha-curiosidad",
+            "concepto": "Brecha de curiosidad (curiosity gap)",
+            "nivel": "evidencia"
+          }
+        ],
+        "esHipotesisUObservado": "evidencia_real",
+        "dependeDe": "err1-todo"
+      }
+    ]
+  }
+}

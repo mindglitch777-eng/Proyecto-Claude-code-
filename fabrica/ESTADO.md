@@ -1,5 +1,36 @@
 # Estado vivo del proyecto
 
+## Bloque: nueva sub-serie "El error real" -- video 1, "27 registros perdidos" (2026-09-16)
+
+**Contexto**: tras aprobar el piloto documental, el operador trajo 3 prompts (redactados en otra
+charla) para una sub-serie sobre bugs reales de la fábrica. Se debatió antes de construir: de los 3,
+solo 2 tenían caso real disponible sin inventar nada -- el prompt de "pregunta real de audiencia"
+queda pausado porque no hay acceso a un comentario/DM real con contenido legible (el operador tiene
+que pasar una captura real cuando llegue una). Pedido explícito del operador tras ver el primer
+render: el log/evidencia NO puede ser el protagonista ("nadie va a mirar los logs y entender que
+hubo un problema") -- el NÚMERO real es el gancho dramático, el log queda como prueba breve y
+secundaria.
+
+**Caso real usado**: la carrera de git de 2026-09-15 (ver bloque "Zernio abandonado del todo... fix
+real de carrera de git" más abajo) -- 27 entradas perdidas en `state/uploads.json`/`carruseles.json`
+de 32 entregas casi simultáneas, 26 recuperadas a la primera + 1 con un segundo intento, verificado
+con `diff` real.
+
+**Componente nuevo**: `remotion-spike/src/agresivo/BugReal.tsx` (id `bug-real`, registrado en
+`fabrica/componentes/registro.json` y enganchado en `FabricaVideo.tsx`) -- mismo lenguaje visual que
+`Revelacion.tsx` (camino curvo real, `pathLength=1`), pero con estructura propia: número real gigante
+en rojo como gancho -> aclaración honesta (no exagerar lo que pasó) -> tarjeta de evidencia breve
+(estética de log/terminal) -> camino sigue -> count-up real hasta el número de recuperados -> detalle
+-> verificación (en verde) -> cierre.
+
+Guion: `fabrica/ejemplos/generar_error_real_1.ts` (id `error-real-1`, una sola escena continua, 18.6s
+con voz real). Registrado en `Root.tsx` y sumado al matrix + copia de audio de `render-pilotos.yml`.
+Renderizado localmente (mismo método que las correcciones anteriores) y verificado frame por frame
+antes de entregar `videos/pilotos/error-real-1.mp4`.
+
+**Pendiente real, ya acordado con el operador**: el video 2 de esta sub-serie (el bug del render de
+hoy, "doc1-hook.wav" 404) se hace después de que el operador revise este primero -- no en simultáneo.
+
 ## Bloque: 2do rediseño real del piloto documental 1 -- línea curva, Claude real, grid 6, dinero (2026-09-16)
 
 **Pedido explícito del operador tras ver la corrección anterior**: 7.5/10, "no cumple la idea original
