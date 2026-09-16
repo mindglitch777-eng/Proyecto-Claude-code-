@@ -418,5 +418,16 @@
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/35095696851",
     "avisadoBuzon": true,
     "avisadoBuzonEn": "2026-09-16T12:26:37.764Z"
+  },
+  {
+    "id": "carrusel-10",
+    "fecha": "2026-09-16T12:28:08.372Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "Este video vale más que tu curso",
+    "scheduledFor": "2026-09-16T10:30:00-03:00",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/35095696851",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-16T12:28:08.373Z"
   }
 ]
