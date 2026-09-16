@@ -124,13 +124,14 @@
     "id": "v20",
     "fecha": "2026-09-15T11:21:33.237Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Lo que Hotmart no te dice",
     "scheduledFor": "",
     "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v20.mp4",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962799105",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:21:33.237Z"
+    "avisadoBuzonEn": "2026-09-15T11:21:33.237Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "v07",
@@ -175,13 +176,14 @@
     "id": "v21",
     "fecha": "2026-09-15T11:36:06.689Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Un video de 40 minutos vs. un curso de 6 meses",
     "scheduledFor": "",
     "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v21.mp4",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964110738",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:06.690Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:06.690Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "v09",
@@ -200,13 +202,14 @@
     "id": "v18",
     "fecha": "2026-09-15T11:36:06.502Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Mito: soy un experto",
     "scheduledFor": "",
     "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v18.mp4",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964108527",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:06.502Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:06.502Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "v11",
@@ -238,12 +241,13 @@
     "id": "v14",
     "fecha": "2026-09-15T12:28:17.760Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Backend abierto",
     "scheduledFor": "2026-09-15T21:30:00-03:00",
     "rutaVideo": "/home/runner/work/Proyecto-Claude-code-/Proyecto-Claude-code-/videos/lote21/lote21-v14.mp4",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34968621858",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T12:28:17.760Z"
+    "avisadoBuzonEn": "2026-09-15T12:28:17.760Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   }
 ]

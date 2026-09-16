@@ -94,45 +94,49 @@
     "id": "carrusel-20",
     "fecha": "2026-09-15T11:22:15.208Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Mientras dormías, tu activo trabajó",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962870896",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:22:15.208Z"
+    "avisadoBuzonEn": "2026-09-15T11:22:15.208Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "carrusel-35",
     "fecha": "2026-09-15T11:24:01.401Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "El sistema de Steve Jobs",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34962920713",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:24:01.401Z"
+    "avisadoBuzonEn": "2026-09-15T11:24:01.401Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "carrusel-07",
     "fecha": "2026-09-15T11:36:08.976Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "No necesitás seguidores",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964124774",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:08.976Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:08.976Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "carrusel-14",
     "fecha": "2026-09-15T11:36:17.225Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Lo que factura un activo digital",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964137687",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:17.225Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:17.225Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "carrusel-04",
@@ -150,67 +154,73 @@
     "id": "carrusel-05",
     "fecha": "2026-09-15T11:36:19.375Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "El contenido es café. Los activos son edificios",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964119612",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:19.375Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:19.375Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "carrusel-13",
     "fecha": "2026-09-15T11:36:21.008Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "El error que cuesta caro",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964135280",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:21.008Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:21.008Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "carrusel-12",
     "fecha": "2026-09-15T11:36:19.646Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "De 0 a resultado real en 60 días",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964133298",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:19.647Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:19.647Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "carrusel-21",
     "fecha": "2026-09-15T11:36:31.472Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "El algoritmo no te esconde nada",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964149756",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:31.472Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:31.472Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "carrusel-26",
     "fecha": "2026-09-15T11:36:40.289Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "El que no vende, no ayuda a nadie",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964154547",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:40.289Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:40.289Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "carrusel-27",
     "fecha": "2026-09-15T11:36:35.885Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Mi sistema cambió 6 veces este año",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964157508",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:35.886Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:35.886Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "carrusel-25",
@@ -228,34 +238,37 @@
     "id": "carrusel-28",
     "fecha": "2026-09-15T11:36:45.784Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Subí el precio y vendí más",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964160243",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:45.784Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:45.784Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "carrusel-06",
     "fecha": "2026-09-15T11:36:07.517Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "El algoritmo no te odia",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964122490",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:07.517Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:07.517Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "carrusel-19",
     "fecha": "2026-09-15T11:36:34.204Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "3 segundos, una venta",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964142432",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:36:34.204Z"
+    "avisadoBuzonEn": "2026-09-15T11:36:34.204Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "carrusel-18",
@@ -285,23 +298,25 @@
     "id": "carrusel-33",
     "fecha": "2026-09-15T11:37:40.049Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "El sistema de Jeff Bezos",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964168928",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:37:40.049Z"
+    "avisadoBuzonEn": "2026-09-15T11:37:40.049Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "carrusel-34",
     "fecha": "2026-09-15T11:37:40.664Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "El sistema de Gary Vaynerchuk",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964171073",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:37:40.664Z"
+    "avisadoBuzonEn": "2026-09-15T11:37:40.664Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "carrusel-39",
@@ -319,23 +334,25 @@
     "id": "carrusel-40",
     "fecha": "2026-09-15T11:37:56.120Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Video privado: cómo hice X",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964175771",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:37:56.120Z"
+    "avisadoBuzonEn": "2026-09-15T11:37:56.120Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "carrusel-41",
     "fecha": "2026-09-15T11:38:08.700Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "subido",
     "tema": "Las plataformas que uso",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964181606",
     "avisadoBuzon": true,
-    "avisadoBuzonEn": "2026-09-15T11:38:08.700Z"
+    "avisadoBuzonEn": "2026-09-15T11:38:08.700Z",
+    "subidoEn": "2026-09-16T12:36:48.120Z"
   },
   {
     "id": "carrusel-42",
