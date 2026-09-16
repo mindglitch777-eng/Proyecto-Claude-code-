@@ -429,5 +429,16 @@
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/35095696851",
     "avisadoBuzon": true,
     "avisadoBuzonEn": "2026-09-16T12:28:08.373Z"
+  },
+  {
+    "id": "carrusel-17",
+    "fecha": "2026-09-16T12:29:23.580Z",
+    "ok": true,
+    "estado": "pendiente",
+    "tema": "La cara oculta de vender online",
+    "scheduledFor": "2026-09-16T14:30:00-03:00",
+    "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/35095696851",
+    "avisadoBuzon": true,
+    "avisadoBuzonEn": "2026-09-16T12:29:23.580Z"
   }
 ]
