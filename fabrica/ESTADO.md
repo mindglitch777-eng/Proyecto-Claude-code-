@@ -1,5 +1,49 @@
 # Estado vivo del proyecto
 
+## Bloque: 2do rediseño real del piloto documental 1 -- línea curva, Claude real, grid 6, dinero (2026-09-16)
+
+**Pedido explícito del operador tras ver la corrección anterior**: 7.5/10, "no cumple la idea original
+tampoco". Puntos concretos que faltaban:
+- La línea de `Revelacion.tsx` era recta -- pedido: curva real, "como un mapa del tesoro que se va
+  desviando, si no, no se sabe hacia dónde va".
+- El "pedido real" era un cuadrito de chat genérico -- "no genera confianza". Pedido: que se vea
+  como una captura real de la interfaz de Claude.
+- Los resultados (lo más importante) quedaban en segundo plano con `rafaga` (un clip atrás de otro).
+  Pedido: pantalla dividida en 6, con 6 videos reales EN SIMULTÁNEO, mismo tratamiento para los
+  carruseles, texto arriba sincronizado con la voz ("En 1:30 armé 41 piezas de contenido").
+- Métricas sin peso visual real. Pedido: texto kinético palabra por palabra (tipografías alternadas),
+  la palabra "resultados" en verde y otra tipografía, lluvia de billetes, métricas de fondo.
+- Pedido explícito y repetido: no limitarse al catálogo de componentes existente -- construir los
+  formatos que hagan falta.
+
+**Dos piezas nuevas, ninguna reusa el catálogo básico**:
+- `remotion-spike/src/agresivo/Revelacion.tsx` (reescrita): camino curvo real (bezier de 2 tramos,
+  mismo truco de `pathLength=1` que `Diagrama.tsx` para que se dibuje con el tiempo) en vez de una
+  `<line>` recta. La tarjeta del prompt ahora replica la estética real de Claude (logo, fondo claro,
+  burbuja) con zoom + foco progresivo, en vez del cuadrito de chat genérico.
+- `remotion-spike/src/agresivo/ResultadosVivos.tsx` (nueva): camino curvo que sigue -> grilla de 6
+  videos reales EN SIMULTÁNEO (`Grilla6`, CSS grid 2x3, cada celda un `OffthreadVideo` real) con
+  caption sincronizado -> crossfade a grilla de 6 carruseles reales (se generaron 4 clips nuevos de
+  carrusel-01/15/22/36 para llegar a 6, mismo criterio que los videos) -> camino sigue -> texto
+  kinético palabra por palabra (tipografía alternada GROTESCA/SERIF, "resultados" en verde) ->
+  `LluviaDeBilletes` (partículas 💵 con pseudo-random determinista, no `Math.random()`, para que
+  Remotion renderice igual en cada pasada) -> métricas reales de fondo.
+
+Registradas en `fabrica/componentes/registro.json` (ids `revelacion` actualizado, `resultados-vivos`
+nuevo) y enganchadas en `FabricaVideo.tsx` (mismo patrón: un import + una entrada del mapa). Guion
+reescrito: `doc1-revelacion` (texto más corto) + `doc1-resultados-vivos` (reemplaza a
+`doc1-resultado`/`doc1-carruseles`/`doc1-metricas`) + `doc1-cta` (sin cambios).
+
+**Verificación real antes de entregar**: se renderizó localmente (Chromium de Playwright, mismo
+método que la corrección anterior) y se inspeccionaron frames de cada tramo -- línea curva visible,
+tarjeta de Claude con blur->foco real, grilla de 6 videos simultáneos confirmada en pantalla, grilla
+de carruseles, texto kinético con "resultados" en verde, lluvia de billetes y métricas reales todo
+visible junto -- antes de reemplazar `videos/pilotos/piloto-documental-1.mp4` (22.1s).
+
+**Nota pendiente, no bloqueante**: el texto dice "en 5 días" (número que pidió el operador
+explícitamente) pero la captura de métricas real que se ve de fondo dice "7 sep - 13 sep" (7 días) --
+inconsistencia visual menor, ya flagueada al operador antes de que confirmara el número.
+
 ## Bloque: corrección real del piloto documental 1 -- componente nuevo (Revelacion) (2026-09-16)
 
 **Pedido explícito del operador, tras ver el resultado del bloque de abajo**: rechazo directo --
