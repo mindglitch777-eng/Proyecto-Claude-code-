@@ -421,6 +421,43 @@
     "notas": "Creada porque el operador pidio explicitamente pantalla dividida en 6 con reproduccion SIMULTANEA (no secuencial como la v2 con 'rafaga'), mas peso visual real para resultados+metricas, y una lluvia de dinero -- nada de esto existia en el catalogo. Ver fabrica/ESTADO.md, bloque de la 2da correccion del piloto documental."
   },
   {
+    "id": "bug-real",
+    "archivo": "agresivo/BugReal.tsx",
+    "exportacion": "BugReal",
+    "categoria": "cifra",
+    "funcion": "Pieza UNICA y continua para la sub-serie 'El error real': un bug real encontrado y arreglado en la fabrica, contado con el NUMERO real como gancho dramatico (grande, rojo, kinetico) primero -- no con el log como protagonista. Camino curvo (mismo mecanismo que Revelacion.tsx) hacia una tarjeta de evidencia breve (estetica de log/terminal), luego un count-up real hasta el numero de recuperados/corregidos, detalle y verificacion.",
+    "intensidad": 0.7,
+    "ritmo": "dinamico",
+    "capacidadTexto": "media",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      8,
+      20
+    ],
+    "compatibleCon": [
+      "cifra",
+      "diagrama"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "numeroGrande": "string -- el numero real como gancho (ej '27')",
+      "numeroEtiqueta": "string -- que fue ese numero (ej 'REGISTROS SE PERDIERON')",
+      "aclaracion": "string -- precision honesta (ej 'No los videos. El registro de que ya subi.')",
+      "pruebaTitulo": "string -- label de la evidencia (ej 'EL LOG REAL')",
+      "pruebaLineas": "string[] -- 2-4 lineas estilo terminal/log, contenido real resumido (no logs crudos pegados)",
+      "resultadoNumero": "number -- el count-up real (ej 27 recuperados)",
+      "resultadoDetalle": "string -- precision del resultado (ej '26 a la primera, 1 con un segundo intento')",
+      "verificacion": "string -- como se confirmo (ej 'Verificado con diff real: identico entre la rama y main')",
+      "cierre": "string -- linea de cierre",
+      "t": "{hookNumero,hookAclaracion,pruebaAparece,lineaSigue,resultadoCountDesde,resultadoCountDuracion,resultadoDetalle,verificacion,cierre}: number (seg)"
+    },
+    "estado": "validado",
+    "notas": "Creada para la sub-serie 'El error real' (prompts traidos por el operador desde otra charla). Pedido explicito: el dato real es el gancho visual, el log es prueba secundaria -- 'nadie va a mirar los logs y entender que hubo un problema'. Primer caso real usado: la carrera de git de 2026-09-15 (27 entradas perdidas en state/uploads.json/carruseles.json, ver fabrica/ESTADO.md)."
+  },
+  {
     "id": "logos-herramientas",
     "archivo": "escenas/herramientas.tsx",
     "exportacion": "LogosHerramientas",

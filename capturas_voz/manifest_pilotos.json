@@ -13,5 +13,6 @@
   {"id": "p3-cta", "texto": "No necesitás un equipo. Necesitás las herramientas correctas."},
   {"id": "doc1-revelacion", "texto": "Le pedí a mi sistema que armara un mes de contenido. Esto es lo que me tiró. Esto es lo que le pedí."},
   {"id": "doc1-resultados-vivos", "texto": "En una hora y media armé cuarenta y una piezas de contenido: veintiún videos y los carruseles, todos listos para subir. Y estos fueron los resultados. En cinco días, esto es lo que pasó."},
-  {"id": "doc1-cta", "texto": "Esto lo armé yo, solo, desde el celular. Si querés ver cómo, entrá al grupo. Quedan veinte lugares gratis."}
+  {"id": "doc1-cta", "texto": "Esto lo armé yo, solo, desde el celular. Si querés ver cómo, entrá al grupo. Quedan veinte lugares gratis."},
+  {"id": "err1-todo", "texto": "27 registros se perdieron. No los videos -- el registro de qué ya subí. Esto es lo que pasó: cada entrega escribía el registro desde una foto vieja en memoria, y la que perdía la carrera de git se pisaba con la otra. Veintiséis entraron a la primera. Uno necesitó un segundo intento. Verificado con diff real: idéntico entre la rama y main. Esto es lo que no se ve en el video final."}
 ]
