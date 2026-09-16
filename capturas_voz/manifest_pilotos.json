@@ -10,5 +10,12 @@
   {"id": "p3-hook", "texto": "Tres herramientas. Cero empleados. Mismo resultado."},
   {"id": "p3-herramientas", "texto": "Una escribe. Otra diseña. Otra organiza. Las tres juntas reemplazan a un equipo entero."},
   {"id": "p3-comparacion", "texto": "Un equipo tradicional cuesta miles de dólares por mes. Estas tres herramientas, apenas unos dólares."},
-  {"id": "p3-cta", "texto": "No necesitás un equipo. Necesitás las herramientas correctas."}
+  {"id": "p3-cta", "texto": "No necesitás un equipo. Necesitás las herramientas correctas."},
+  {"id": "doc1-hook", "texto": "Le pedí a mi sistema que armara un mes de contenido. Esto es lo que me tiró."},
+  {"id": "doc1-prompt", "texto": "Esto es lo que le pedí."},
+  {"id": "doc1-diagrama", "texto": "Y esto fue lo que armó, solo, sin que yo tocara nada más."},
+  {"id": "doc1-resultado", "texto": "Veintiún videos, terminados de punta a punta: guion, voz clonada y edición, listos para subir. Cuarenta y dos carruseles, cada uno con su copy, sus hashtags y el horario sugerido. Nada de esto lo edité escena por escena, lo armó el sistema solo, mientras yo hacía otra cosa."},
+  {"id": "doc1-carruseles", "texto": "Y los carruseles van por el mismo camino: armados, con su texto y su diseño, listos para subir sin que yo toque una imagen."},
+  {"id": "doc1-metricas", "texto": "Una semana después, esto es lo que pasó."},
+  {"id": "doc1-cta", "texto": "Esto lo armé yo, solo, desde el celular. Si querés ver cómo, entrá al grupo. Quedan veinte lugares gratis."}
 ]
