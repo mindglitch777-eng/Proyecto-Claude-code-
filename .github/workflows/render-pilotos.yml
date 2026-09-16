@@ -31,7 +31,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        video: [piloto-1, piloto-2, piloto-3]
+        video: [piloto-1, piloto-2, piloto-3, piloto-documental-1]
     steps:
       - uses: actions/checkout@v4
 

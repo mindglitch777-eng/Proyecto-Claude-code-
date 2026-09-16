@@ -40,6 +40,7 @@ import guionV4 from './fabrica_bridge/guion-v4.json';
 import piloto1 from './fabrica_bridge/piloto-1.json';
 import piloto2 from './fabrica_bridge/piloto-2.json';
 import piloto3 from './fabrica_bridge/piloto-3.json';
+import pilotoDocumental1 from './fabrica_bridge/piloto-documental-1.json';
 import lote21v01 from './fabrica_bridge/lote21-v01.json';
 import lote21v02 from './fabrica_bridge/lote21-v02.json';
 import lote21v03 from './fabrica_bridge/lote21-v03.json';
@@ -353,6 +354,7 @@ export const Root: React.FC = () => {
       <Composition id="piloto-1" component={FabricaVideo} durationInFrames={Math.round((piloto1 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: piloto1 as ArbolFabrica}} />
       <Composition id="piloto-2" component={FabricaVideo} durationInFrames={Math.round((piloto2 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: piloto2 as ArbolFabrica}} />
       <Composition id="piloto-3" component={FabricaVideo} durationInFrames={Math.round((piloto3 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: piloto3 as ArbolFabrica}} />
+      <Composition id="piloto-documental-1" component={FabricaVideo} durationInFrames={Math.round((pilotoDocumental1 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: pilotoDocumental1 as ArbolFabrica}} />
       <Composition id="lote21-v01" component={FabricaVideo} durationInFrames={Math.round((lote21v01 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v01 as ArbolFabrica}} />
       <Composition id="lote21-v02" component={FabricaVideo} durationInFrames={Math.round((lote21v02 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v02 as ArbolFabrica}} />
       <Composition id="lote21-v03" component={FabricaVideo} durationInFrames={Math.round((lote21v03 as ArbolFabrica).duracionTotalSeg * FPS)} fps={FPS} width={ANCHO} height={ALTO} defaultProps={{arbol: lote21v03 as ArbolFabrica}} />
