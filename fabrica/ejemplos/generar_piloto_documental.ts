@@ -2,36 +2,44 @@
  * PILOTO DOCUMENTAL 1 -- "Le pedí un mes de contenido a mi sistema".
  * Primer video de un formato nuevo, en paralelo a Taller de Activos:
  * mostrar el proceso real de la fábrica (pedido -> resultado real, con
- * métricas reales) en vez de opinar sobre gurús. Guion armado a partir
- * de la charla con el operador (storyboard: texto cinético -> línea
- * que se dibuja hacia el pedido real -> resultado real -> métricas
- * reales -> CTA al grupo de WhatsApp, 20 cupos gratis).
+ * métricas reales) en vez de opinar sobre gurús.
  *
- * CORRECCIÓN (tras feedback real del operador): la v1 de este guion
- * partía el gancho, el pedido y la línea en 3 escenas separadas (punch
- * + chat + diagrama), con un corte/transición entre cada una -- eso
- * rompía justo lo que se pidió ("una sola línea que se dibuja, sin
- * cortes"), y el "diagrama" resultó ser iconos de clipart genéricos
- * (un globo de diálogo, una carita de robot) sin ninguna relación
- * visual con el pedido real. Se reemplazan esas 3 escenas por UNA sola
- * pieza nueva (`revelacion`, ver agresivo/Revelacion.tsx): texto de
- * entrada -> línea única que se dibuja con el paso del tiempo -> el
- * pedido real montado ENCIMA de esa misma línea, borroso -> enfocado
- * -> la línea sigue hasta el resultado. Sin cortes en el medio.
+ * CORRECCIÓN 1 (feedback real del operador): 3 escenas separadas
+ * (punch+chat+diagrama) con cortes entre sí -> reemplazadas por UNA
+ * pieza continua (`revelacion`).
  *
- * Componentes, todos reales y validados de registro.json:
- *   - revelacion: pieza única y continua (ver arriba) -- gancho, pedido
- *     real y anuncio del resultado en el mismo trazo, sin cortes.
- *   - rafaga: los 6 videos reales del lote21 (v01,v03,v05,v06,v08,v09)
- *     y, en una segunda rafaga corta, 2 carruseles reales del lote42 --
- *     uno atrás del otro, nunca simultáneos (pedido explícito del
- *     operador). La duración de cada clip sale sola de dividir la
- *     duración real de la narración de esa escena entre la cantidad de
- *     clips -- por eso las dos líneas de voz de estas escenas son más
- *     largas que las demás, para no caer en corte rápido tipo "ensalada".
- *   - remate: métricas reales (captura de TikTok Studio, 7 días,
- *     1.8K vistas) como clip de fondo, y cierre con el CTA real al
- *     grupo de WhatsApp (20 cupos gratis, sin promesa de por vida).
+ * CORRECCIÓN 2 (2do feedback real, 7.5/10 -- "no cumple la idea
+ * original tampoco"): la v2 seguía sin ser lo pedido en varios puntos
+ * concretos:
+ *   - La línea era RECTA. Pedido explícito: "tiene que hacer curvas,
+ *     como un mapa del tesoro que se va desviando, si no, no se sabe
+ *     hacia dónde va".
+ *   - El "pedido real" era mi propio cuadrito de chat genérico --
+ *     "no genera confianza". Pedido: que se vea como una captura real
+ *     de la interfaz de Claude.
+ *   - Los resultados (lo más importante) quedaban en segundo plano:
+ *     un clip atrás de otro (`rafaga`). Pedido: pantalla dividida en 6,
+ *     con 6 videos reales EN SIMULTÁNEO, mismo tratamiento para los
+ *     carruseles, texto arriba sincronizado con la voz.
+ *   - Las métricas sin peso visual real. Pedido: texto kinético
+ *     palabra por palabra (tipografías alternadas), la palabra
+ *     "resultados" en verde y otra tipografía, lluvia de billetes,
+ *     métricas de fondo.
+ *
+ * Se resuelve con DOS piezas nuevas (ninguna reusa el catálogo básico
+ * -- pedido explícito del operador de crear los formatos que hagan
+ * falta):
+ *   - `revelacion` (agresivo/Revelacion.tsx): gancho -> camino curvo
+ *     real (bezier, se dibuja con el tiempo) -> tarjeta con la estética
+ *     real de Claude (zoom + foco progresivo sobre el prompt real).
+ *   - `resultados-vivos` (agresivo/ResultadosVivos.tsx): el camino
+ *     sigue curveando -> grilla de 6 videos reales simultáneos con
+ *     caption -> crossfade a grilla de 6 carruseles reales -> el
+ *     camino sigue -> texto kinético + lluvia de billetes + métricas
+ *     reales de fondo.
+ *   - `remate`: cierre con el CTA real al grupo de WhatsApp (20 cupos
+ *     gratis, sin promesa de por vida) -- esta pieza no tuvo objeciones,
+ *     se mantiene igual.
  *
  * Requiere: voz real ya generada en capturas_voz/audio_pilotos/doc1-*.wav
  * (ver capturas_voz/manifest_pilotos.json + generar-voz-pilotos.yml) y
@@ -49,65 +57,58 @@ const escenas: EscenaGuion[] = [
   {
     id: 'doc1-revelacion',
     textoVoz: 'Le pedí a mi sistema que armara un mes de contenido. Esto es lo que me tiró. '
-      + 'Esto es lo que le pedí. Y esto fue lo que armó, solo, sin que yo tocara nada más.',
+      + 'Esto es lo que le pedí.',
     componenteId: 'revelacion',
     props: {
       lineaHook: 'Le pedí a mi sistema que armara un mes de contenido.',
       lineaTiro: 'Esto es lo que me tiró.',
-      logoTexto: 'Claude',
-      etiquetaPedido: 'esto es lo que le pedí a',
       prompt: 'Armame 21 videos completos: guion, voz y edición, listos para publicar.',
-      etiquetaResultado: 'Y esto fue lo que armó, solo',
       t: {
         hook: 0,
         tiro: 1.5,
-        logo: 2.3,
-        lineaEmpieza: 3.0,
-        pedidoLlega: 4.2,
-        promptBorroso: 4.4,
-        promptEnfoca: 5.7,
-        lineaLlegaResultado: 8.2,
-        resultadoAparece: 8.5,
+        lineaEmpieza: 2.4,
+        pedidoLlega: 3.6,
+        promptBorroso: 3.8,
+        promptEnfoca: 5.0,
+        lineaSigue: 5.8,
       },
     },
     intensidad: 8,
     esPrimera: true,
   },
   {
-    id: 'doc1-resultado',
-    textoVoz: 'Veintiún videos, terminados de punta a punta: guion, voz clonada y edición, listos para subir. '
-      + 'Cuarenta y dos carruseles, cada uno con su copy, sus hashtags y el horario sugerido. '
-      + 'Nada de esto lo edité escena por escena, lo armó el sistema solo, mientras yo hacía otra cosa.',
-    componenteId: 'rafaga',
+    id: 'doc1-resultados-vivos',
+    textoVoz: 'En una hora y media armé cuarenta y una piezas de contenido: veintiún videos y los carruseles, '
+      + 'todos listos para subir. Y estos fueron los resultados. En cinco días, esto es lo que pasó.',
+    componenteId: 'resultados-vivos',
     props: {
-      clips: ['doc-v01.mp4', 'doc-v03.mp4', 'doc-v05.mp4', 'doc-v06.mp4', 'doc-v08.mp4', 'doc-v09.mp4'],
-      sello: 'Resultado real -- sin editar',
-    },
-    intensidad: 7,
-  },
-  {
-    id: 'doc1-carruseles',
-    textoVoz: 'Y los carruseles van por el mismo camino: armados, con su texto y su diseño, listos para subir sin que yo toque una imagen.',
-    componenteId: 'rafaga',
-    props: {
-      clips: ['doc-carrusel-04.mp4', 'doc-carrusel-11.mp4'],
-      sello: 'Carruseles -- mismo sistema',
-    },
-    intensidad: 6,
-  },
-  {
-    id: 'doc1-metricas',
-    textoVoz: 'Una semana después, esto es lo que pasó.',
-    componenteId: 'remate',
-    props: {
-      d: {
-        lineas: ['Una semana después...'],
-        grande: '1.8K vistas',
-        pie: 'recién estamos arrancando',
+      textoGrid: 'En 1:30 armé 41 piezas de contenido',
+      clipsVideos: ['doc-v01.mp4', 'doc-v03.mp4', 'doc-v05.mp4', 'doc-v06.mp4', 'doc-v08.mp4', 'doc-v09.mp4'],
+      clipsCarruseles: [
+        'doc-carrusel-01.mp4',
+        'doc-carrusel-04.mp4',
+        'doc-carrusel-11.mp4',
+        'doc-carrusel-15.mp4',
+        'doc-carrusel-22.mp4',
+        'doc-carrusel-36.mp4',
+      ],
+      fraseAntes: 'Y estos fueron los ',
+      fraseResaltada: 'resultados',
+      fraseDespues: ' en 5 días.',
+      clipMetricas: 'doc-metricas.mp4',
+      t: {
+        lineaSube: 0,
+        gridVideosDesde: 0.6,
+        gridVideosHasta: 5.2,
+        gridCarrusDesde: 5.2,
+        gridCarrusHasta: 8.4,
+        lineaBaja: 8.4,
+        textoDesde: 9.3,
+        dineroDesde: 9.5,
+        metricasDesde: 11.0,
       },
-      clip: 'doc-metricas.mp4',
     },
-    intensidad: 7,
+    intensidad: 8,
   },
   {
     id: 'doc1-cta',

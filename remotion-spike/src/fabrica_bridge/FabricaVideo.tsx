@@ -8,6 +8,7 @@ import {Contador, Recibo, Duelo, Ranking, Crecimiento} from '../escenas/plata';
 import {CifraSeCae, RelojQueCorre, Embudo, Encuesta, TresVerdades} from '../escenas/mas';
 import {Diagrama} from '../dibujo/Diagrama';
 import {Revelacion} from '../agresivo/Revelacion';
+import {ResultadosVivos} from '../agresivo/ResultadosVivos';
 import {LogosHerramientas} from '../escenas/herramientas';
 import {Punch} from '../agresivo/Punch';
 import {Rafaga} from '../agresivo/Rafaga';
@@ -56,6 +57,7 @@ const IMPLEMENTACIONES: Record<string, React.FC<any>> = {
   'tres-verdades': TresVerdades,
   diagrama: Diagrama,
   revelacion: Revelacion,
+  'resultados-vivos': ResultadosVivos,
   'logos-herramientas': LogosHerramientas,
   punch: Punch,
   rafaga: Rafaga,

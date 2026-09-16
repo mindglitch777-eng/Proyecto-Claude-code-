@@ -359,7 +359,7 @@
     "archivo": "agresivo/Revelacion.tsx",
     "exportacion": "Revelacion",
     "categoria": "diagrama",
-    "funcion": "Pieza UNICA y continua (no se corta en escenas separadas): texto de entrada con la ultima linea en rojo -> logo suave -> UNA linea que se dibuja con el paso del tiempo -> un pedido/prompt real montado ENCIMA de esa linea, arranca borroso y se enfoca -> la misma linea sigue hasta una etiqueta de resultado. Pensada para documentar un pedido real -> resultado real sin cortes entre esos momentos.",
+    "funcion": "Pieza UNICA y continua (1 de 2 del documental): texto de entrada (tipografias mezcladas, la linea de impacto en rojo y grande) -> un camino CURVO (no recto) que se dibuja con el paso del tiempo, tipo mapa del tesoro -> una tarjeta que replica la interfaz real de Claude (logo, fondo claro, burbuja) con el prompt real, zoom + foco progresivo -> el camino sigue curveando hacia abajo (empalma con resultados-vivos).",
     "intensidad": 0.55,
     "ritmo": "dinamico",
     "capacidadTexto": "media",
@@ -377,16 +377,48 @@
     ],
     "soportaAudioSincronizado": true,
     "props": {
-      "lineaHook": "string -- primera linea del texto de entrada",
-      "lineaTiro": "string -- segunda linea, mas grande, en color acento (rojo)",
-      "logoTexto": "string, opcional (default 'Claude') -- wordmark que aparece suave, dos veces (entrada y junto al pedido)",
-      "etiquetaPedido": "string -- texto que acompaña al prompt real (ej. 'esto es lo que le pedi a')",
-      "prompt": "string -- el pedido/prompt real, arranca borroso y se enfoca sobre la linea",
-      "etiquetaResultado": "string -- texto que aparece donde la linea termina (ej. 'y estos fueron los resultados')",
-      "t": "{hook,tiro,logo,lineaEmpieza,pedidoLlega,promptBorroso,promptEnfoca,lineaLlegaResultado,resultadoAparece}: number (seg) -- anclas explicitas de toda la secuencia, un solo trazo de principio a fin"
+      "lineaHook": "string -- primera linea (tipografia serif italica)",
+      "lineaTiro": "string -- segunda linea, grande, en color acento (rojo)",
+      "prompt": "string -- el pedido real, mostrado en una tarjeta con la estetica real de Claude (no un mockup generico), arranca borroso y se enfoca",
+      "t": "{hook,tiro,lineaEmpieza,pedidoLlega,promptBorroso,promptEnfoca,lineaSigue}: number (seg) -- anclas explicitas"
     },
     "estado": "validado",
-    "notas": "Creada porque 'diagrama' (iconos de clipart + flechas cortas) y 'chat' (cuadro de mensaje aislado) no alcanzaban para el pedido explicito del operador de una sola linea continua sin cortes entre el gancho, el prompt real y el resultado -- ver fabrica/ESTADO.md, bloque del piloto documental 1."
+    "notas": "Reescrita tras 2do feedback real del operador: la v1 (linea recta + cuadrito de chat generico) no cumplia la idea. v2: camino curvo real (bezier, pathLength=1) + tarjeta con estetica real de Claude + zoom. Pareja con resultados-vivos.tsx (misma escena logica, partida en 2 componentes por peso de render: 6 videos simultaneos + metricas)."
+  },
+  {
+    "id": "resultados-vivos",
+    "archivo": "agresivo/ResultadosVivos.tsx",
+    "exportacion": "ResultadosVivos",
+    "categoria": "montaje",
+    "funcion": "Pieza UNICA y continua (2 de 2 del documental, sigue a 'revelacion'): el camino curvo sigue subiendo -> grilla de 6 videos reales EN SIMULTANEO (no uno atras del otro) con un texto/voz encima -> crossfade a una grilla de 6 carruseles reales, mismo tratamiento -> el camino sigue curveando hacia abajo -> texto kinetico palabra por palabra (tipografia alternada), la palabra 'resultados' en verde y en otra tipografia -> lluvia de billetes -> captura de metricas reales de fondo.",
+    "intensidad": 0.75,
+    "ritmo": "dinamico",
+    "capacidadTexto": "media",
+    "requiereAssets": {
+      "tipo": "video",
+      "obligatorio": true
+    },
+    "duracionMinMaxSeg": [
+      8,
+      22
+    ],
+    "compatibleCon": [
+      "montaje",
+      "cifra"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "textoGrid": "string -- texto/caption sobre la grilla de 6 videos, sincronizado con la voz",
+      "clipsVideos": "string[6] -- nombres de archivo de video (staticFile('video/...')), se muestran los 6 EN SIMULTANEO",
+      "clipsCarruseles": "string[6] -- idem, para el segundo grupo (carruseles reales convertidos a clip)",
+      "fraseAntes": "string -- texto antes de la palabra resaltada (ej 'Y estos fueron los ')",
+      "fraseResaltada": "string -- la palabra en verde y otra tipografia (ej 'resultados')",
+      "fraseDespues": "string -- texto despues (ej ' en 5 dias.')",
+      "clipMetricas": "string -- clip de fondo con la captura real de metricas",
+      "t": "{lineaSube,gridVideosDesde,gridVideosHasta,gridCarrusDesde,gridCarrusHasta,lineaBaja,textoDesde,dineroDesde,metricasDesde}: number (seg)"
+    },
+    "estado": "validado",
+    "notas": "Creada porque el operador pidio explicitamente pantalla dividida en 6 con reproduccion SIMULTANEA (no secuencial como la v2 con 'rafaga'), mas peso visual real para resultados+metricas, y una lluvia de dinero -- nada de esto existia en el catalogo. Ver fabrica/ESTADO.md, bloque de la 2da correccion del piloto documental."
   },
   {
     "id": "logos-herramientas",
