@@ -1,0 +1,23 @@
+{
+  "url": "https://vt.tiktok.com/ZSqg2prAD/",
+  "fecha_utc": "2026-09-17T01:03:07.275653+00:00",
+  "metodo": "fetcher_simple",
+  "exito": true,
+  "item": {
+    "id": "7683047598973832466",
+    "desc": "La IA acaba de abrir otra operación y va ganando… #codex #chatgpt #claude #inteligenciaartificial #ai ",
+    "duracion_seg": 71,
+    "play_addr": "https://v16-webapp-prime.us.tiktok.com/video/tos/alisg/tos-alisg-pve-0037c001/ogJPGeePII4oIyqt2gVALCafQOj1AZVE0D5CQE/?a=1988&bti=ODszNWYuMDE6&&bt=137&ft=aEeq8qT0mIoPD124mK-I3wUMkCAbMeF~O5&mime_type=video_mp4&rc=NzY0aWc7NTVnNzZpNjk1OEBpM3AzbXk5cjx0ZDMzODczNEAuXi5jNWFeXmAxMTUuM2IzYSNlaTZhMmRzZmNhLS1kMTFzcw%3D%3D&expire=1789779859&l=2026091701030778BE3EE7752BA12BDDBB&ply_type=2&policy=2&signature=2df2958545ccf568112ecb87a0d7784c&tk=tt_chain_token&btag=e00090000",
+    "download_addr": "",
+    "cover": "https://p16-common-sign.tiktokcdn-us.com/tos-alisg-p-0037/oAq1VDQeJGGVAQAPQ7cIC2afEoLxjPtIl262ez~tplv-tiktokx-dmt-logom:tos-alisg-i-0068/oY2R3nEELAudqfUxEysaqlgIDfANFBAj4CAq6Q.image?dr=9634&x-expires=1789779600&x-signature=7WjnSxlzZ0vhDvE0a53JZJw9tto%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast8",
+    "stats": {
+      "diggCount": 8129,
+      "shareCount": 515,
+      "commentCount": 102,
+      "playCount": 118400,
+      "collectCount": "2018"
+    },
+    "autor": "kodense"
+  },
+  "error": null
+}
