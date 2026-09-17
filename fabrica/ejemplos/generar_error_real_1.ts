@@ -1,8 +1,8 @@
 /**
- * "EL ERROR REAL" #1 -- "así fue como casi pierdo 27 videos".
- * Primer video de una sub-serie nueva, en paralelo al documental
- * principal: contar bugs reales de la fábrica encontrados y arreglados,
- * con evidencia real (nunca inventada).
+ * "EL ERROR REAL" #1 -- 3ra vuelta: "se rompió en vivo, y se
+ * autogestionó sola". Primer video de una sub-serie nueva, en paralelo
+ * al documental principal: contar bugs reales de la fábrica
+ * encontrados y arreglados, con evidencia real (nunca inventada).
  *
  * Caso real usado (ver fabrica/ESTADO.md, bloque "Zernio abandonado del
  * todo... + fix real de carrera de git", 2026-09-15): al disparar 32
@@ -16,20 +16,25 @@
  * (carrusel-11) necesitó un segundo intento. Verificado a mano que los
  * archivos quedaron idénticos entre la rama y main.
  *
- * Dos rondas reales de corrección del operador tras ver la v1:
- *   1. "Nadie va a mirar los logs y entender que hubo un problema" --
- *      se sacó toda la jerga de programador (rutas de archivo, "log",
- *      "registro") y se cambió por lenguaje de todos los días. El
- *      número real sigue siendo el gancho dramático, pero ahora se dice
- *      en criollo: no se perdió ningún video, se perdió el rastro de
- *      cuáles ya estaban subidos.
- *   2. "El hook tiene que ser más potente, tipo 'así fue como casi
- *      pierdo 27 videos', que ocupe toda la pantalla" -- frase exacta
- *      pedida por el operador, ahora el hook literal del video.
+ * Historial de correcciones reales del operador:
+ *   1. (v1->v2) "Nadie va a mirar los logs y entender que hubo un
+ *      problema" -- se sacó la jerga de programador.
+ *   2. (v2->v3, ESTA vuelta) Tras debatir el ángulo con el operador
+ *      (ver "Test de ángulo comercial" en CLAUDE.md, regla agregada
+ *      por esta misma corrección): "a quién le va a interesar que casi
+ *      se me pierden 27 videos, a nadie" -- el drama personal no tenía
+ *      apuesta real para el espectador. Se reencuadra el MISMO caso
+ *      real como prueba de fiabilidad/autocorrección ("¿puedo confiar
+ *      en que esto no me rompa todo?"), con hook directo y agresivo
+ *      ("SE ROMPIÓ EN VIVO.", pedido textual) y la evidencia reemplazada
+ *      por una grilla visual (sin texto técnico) en vez de una tarjeta
+ *      de log. Frase pedida textual: "armé un sistema que se
+ *      autogestiona solo... y recuperé todos". CTA real agregado:
+ *      comunidad exclusiva, 20 cupos gratis.
  *
- * Componente: `bug-real` (agresivo/BugReal.tsx) -- ninguno del catálogo
- * básico servía para esta estructura (gancho en 3 escalones + prueba
- * breve + count-up real + verificación).
+ * Componente: `auto-arreglo` (agresivo/AutoArreglo.tsx), reemplaza a
+ * `bug-real` para este video -- ver notas de reemplazo en
+ * fabrica/componentes/registro.json.
  */
 import path from 'node:path';
 import {writeFileSync} from 'node:fs';
@@ -41,44 +46,40 @@ const ID_VIDEO = 'error-real-1';
 const escenas: EscenaGuion[] = [
   {
     id: 'err1-todo',
-    textoVoz: 'Así fue como casi pierdo 27 videos. '
-      + 'No, no se borró nada -- pero por un rato no supe cuáles ya estaban subidos. '
-      + 'Subí 32 videos casi al mismo tiempo, y 27 quedaron sin registrarse como subidos, '
-      + 'porque el sistema guardaba una lista vieja mientras yo seguía subiendo. '
-      + 'Veintiséis se recuperaron a la primera. Uno necesitó un segundo intento. '
-      + 'Lo comprobé a mano, línea por línea: quedó todo igual. '
-      + 'Esto es lo que no se ve en el video final.',
-    componenteId: 'bug-real',
+    textoVoz: 'Mi fábrica de contenido se rompió en vivo. '
+      + 'Subí 32 videos casi al mismo tiempo, y en segundos, mi sistema estaba a punto '
+      + 'de perder el rastro de 27. '
+      + 'Así que armé un sistema que se autogestiona solo. Y recuperé todos. '
+      + 'Veintiséis se arreglaron a la primera. Uno necesitó un segundo intento. '
+      + 'Lo comprobé a mano: quedó todo igual. '
+      + 'Así se cuida sola mi fábrica. '
+      + 'Entrá a la comunidad exclusiva. Quedan veinte lugares gratis.',
+    componenteId: 'auto-arreglo',
     props: {
-      hookIntro: 'Así fue como',
-      hookMedio: 'casi pierdo',
-      hookImpacto: '27 videos.',
-      aclaracion: 'No se borró nada. Pero por un rato no supe qué estaba listo.',
-      pruebaTitulo: 'lo que pasó',
-      pruebaLineas: [
-        'subí 32 videos casi al mismo tiempo',
-        '27 quedaron sin registrarse como subidos',
-        'el sistema guardaba una lista vieja mientras yo seguía subiendo',
-      ],
+      hookIntro: 'Mi fábrica de contenido',
+      hookImpacto: 'SE ROMPIÓ EN VIVO.',
+      clipsGrid: ['doc-v01.mp4', 'doc-v03.mp4', 'doc-v05.mp4', 'doc-v06.mp4', 'doc-v08.mp4', 'doc-v09.mp4'],
       resultadoNumero: 27,
-      resultadoDetalle: '26 se recuperaron a la primera. 1 necesitó un segundo intento.',
-      verificacion: 'Lo comprobé a mano, línea por línea: quedó todo igual.',
-      cierre: 'Esto es lo que no se ve en el video final.',
-      // Anclajes ajustados a la duracion real del audio (21.89s),
-      // alineados a las pausas reales detectadas con ffmpeg
-      // silencedetect sobre err1-todo.wav (no estimados a ojo).
+      resultadoDetalle: '26 se arreglaron a la primera. 1 necesitó un segundo intento.',
+      verificacion: 'Lo comprobé a mano: quedó todo igual.',
+      cierre: 'Así se cuida sola mi fábrica.',
+      cta: 'Entrá a la comunidad exclusiva. Quedan 20 lugares gratis.',
+      // Anclajes estimados sobre el texto nuevo (pace ~0.4s/palabra) --
+      // se rescalan a la duracion real del audio con ffmpeg
+      // silencedetect antes de renderizar, mismo metodo que la vuelta
+      // anterior.
       t: {
         hookIntro: 0,
-        hookMedio: 1.0,
         hookImpacto: 1.6,
-        hookAclaracion: 2.6,
-        pruebaAparece: 6.4,
-        lineaSigue: 10.9,
-        resultadoCountDesde: 11.1,
+        gridAparece: 3.2,
+        autoarregloDesde: 11.3,
+        lineaSigue: 13.2,
+        resultadoCountDesde: 15.9,
         resultadoCountDuracion: 1.3,
-        resultadoDetalle: 14.1,
-        verificacion: 16.0,
-        cierre: 20.1,
+        resultadoDetalle: 17.3,
+        verificacion: 19.5,
+        cierre: 22.3,
+        cta: 24.7,
       },
     },
     intensidad: 8,

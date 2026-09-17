@@ -455,7 +455,43 @@
       "t": "{hookNumero,hookAclaracion,pruebaAparece,lineaSigue,resultadoCountDesde,resultadoCountDuracion,resultadoDetalle,verificacion,cierre}: number (seg)"
     },
     "estado": "validado",
-    "notas": "Creada para la sub-serie 'El error real' (prompts traidos por el operador desde otra charla). Pedido explicito: el dato real es el gancho visual, el log es prueba secundaria -- 'nadie va a mirar los logs y entender que hubo un problema'. Primer caso real usado: la carrera de git de 2026-09-15 (27 entradas perdidas en state/uploads.json/carruseles.json, ver fabrica/ESTADO.md)."
+    "notas": "Creada para la sub-serie 'El error real' (prompts traidos por el operador desde otra charla). Pedido explicito: el dato real es el gancho visual, el log es prueba secundaria -- 'nadie va a mirar los logs y entender que hubo un problema'. Primer caso real usado: la carrera de git de 2026-09-15 (27 entradas perdidas en state/uploads.json/carruseles.json, ver fabrica/ESTADO.md). REEMPLAZADA (2026-09-17) por 'auto-arreglo', no borrada: el operador identifico que el angulo (drama interno, 'casi pierdo 27 videos') no tenia apuesta real para el espectador, mas alla de la ejecucion -- ver 'Test de angulo comercial' en CLAUDE.md. No se borra el componente por si se reusa la estructura de count-up/verificacion para otro caso."
+  },
+  {
+    "id": "auto-arreglo",
+    "archivo": "agresivo/AutoArreglo.tsx",
+    "exportacion": "AutoArreglo",
+    "categoria": "cifra",
+    "funcion": "Segunda vuelta de 'El error real' #1, mismo caso real que 'bug-real' pero angulo y visual reescritos tras el test de angulo comercial: hook de pantalla completa en 2 escalones (chico -> gigante rojo, ej 'Mi fabrica de contenido' / 'SE ROMPIO EN VIVO.'), sin aclaracion que le baje el tono. La evidencia deja de ser una tarjeta de texto -- ahora es una grilla real de 6 miniaturas (mismo Grilla6 que resultados-vivos) que se ponen en rojo con un icono de alerta y se autoreparan a verde con un check, uno por uno, sin una sola palabra tecnica en pantalla. Camino curvo (mismo mecanismo que Revelacion.tsx) conecta hook -> grilla -> resultado. Cierra con count-up real, detalle, verificacion (verde) y CTA a la comunidad.",
+    "intensidad": 0.75,
+    "ritmo": "dinamico",
+    "capacidadTexto": "corta",
+    "requiereAssets": {
+      "tipo": "video",
+      "obligatorio": true
+    },
+    "duracionMinMaxSeg": [
+      8,
+      20
+    ],
+    "compatibleCon": [
+      "cifra",
+      "diagrama"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "hookIntro": "string -- linea chica de contexto (ej 'Mi fabrica de contenido')",
+      "hookImpacto": "string -- linea gigante roja, el golpe (ej 'SE ROMPIO EN VIVO.')",
+      "clipsGrid": "string[] -- 6 nombres de archivo reales en public/video/, mismos assets que resultados-vivos",
+      "resultadoNumero": "number -- el count-up real (ej 27 recuperados)",
+      "resultadoDetalle": "string -- precision del resultado (ej '26 a la primera, 1 con un segundo intento')",
+      "verificacion": "string -- como se confirmo (ej 'Lo comprobe a mano: quedo todo igual')",
+      "cierre": "string -- linea de cierre (ej 'Asi se cuida sola mi fabrica')",
+      "cta": "string -- CTA real a la comunidad (ej 'Entra a la comunidad exclusiva. Quedan 20 lugares gratis')",
+      "t": "{hookIntro,hookImpacto,gridAparece,autoarregloDesde,lineaSigue,resultadoCountDesde,resultadoCountDuracion,resultadoDetalle,verificacion,cierre,cta}: number (seg)"
+    },
+    "estado": "validado",
+    "notas": "Reemplaza a 'bug-real' para el video 'error-real-1'. Angulo pedido textual del operador: 'armé un sistema que se autogestiona solo... y recuperé todos' -- reencuadra el mismo caso real de riesgo de perdida de registro como prueba de fiabilidad/autocorreccion, no como drama personal. Ver 'Test de angulo comercial' en CLAUDE.md (regla permanente agregada por esta correccion)."
   },
   {
     "id": "logos-herramientas",
