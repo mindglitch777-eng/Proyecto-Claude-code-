@@ -1,0 +1,23 @@
+{
+  "url": "https://vt.tiktok.com/ZSqgjroVt/",
+  "fecha_utc": "2026-09-17T01:02:56.704837+00:00",
+  "metodo": "fetcher_simple",
+  "exito": true,
+  "item": {
+    "id": "7678542802212375826",
+    "desc": "Así puedes usar IA para crear videos en After Effects #chatgpt #codex #ia #claude ",
+    "duracion_seg": 70,
+    "play_addr": "https://v16-webapp-prime.us.tiktok.com/video/tos/alisg/tos-alisg-pve-0037c001/os2jUI9EDsxn6BqzgEfiA5Ok0FUv3qBEyfLRAP/?a=1988&bti=ODszNWYuMDE6&&bt=107&ft=aEeq8qT0mIoPD12_mK-I3wUEIiAbMeF~O5&mime_type=video_mp4&rc=MzQ0NGQ7ZDNlN2U0N2dpNUBpam1tZXk5cnl0ZDMzODczNEAyYDFhYF4tNjYxLmNiXi4uYSMyNnFeMmRjZzRhLS1kMTFzcw%3D%3D&expire=1789779847&l=20260917010257FE5B4C30E5243F28BAEC&ply_type=2&policy=2&signature=31dbd5e9e2f7c8acd3a8e532a227e717&tk=tt_chain_token&btag=e00090000",
+    "download_addr": "",
+    "cover": "https://p19-common-sign.tiktokcdn-us.com/tos-alisg-p-0037/o0AfV1iNMgIAIfOQAkXAoejJiE8xVADQQmAEIH~tplv-tiktokx-dmt-logom:tos-alisg-i-0068/o8EAPq6EwC6ARgRfyKIACFEBoqDkpjAPbfTDgU.image?dr=9634&x-expires=1789779600&x-signature=rpHQUr0BzuDGp7dUlb9r9IpWM6I%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast8",
+    "stats": {
+      "diggCount": 4471,
+      "shareCount": 270,
+      "commentCount": 59,
+      "playCount": 52100,
+      "collectCount": "2250"
+    },
+    "autor": "kodense"
+  },
+  "error": null
+}
