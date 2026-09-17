@@ -64,22 +64,21 @@ const escenas: EscenaGuion[] = [
       verificacion: 'Lo comprobé a mano: quedó todo igual.',
       cierre: 'Así se cuida sola mi fábrica.',
       cta: 'Entrá a la comunidad exclusiva. Quedan 20 lugares gratis.',
-      // Anclajes estimados sobre el texto nuevo (pace ~0.4s/palabra) --
-      // se rescalan a la duracion real del audio con ffmpeg
-      // silencedetect antes de renderizar, mismo metodo que la vuelta
-      // anterior.
+      // Anclajes ajustados a la duracion real del audio (23.94s),
+      // alineados a las pausas reales detectadas con ffmpeg
+      // silencedetect sobre err1-todo.wav (no estimados a ojo).
       t: {
         hookIntro: 0,
-        hookImpacto: 1.6,
-        gridAparece: 3.2,
-        autoarregloDesde: 11.3,
-        lineaSigue: 13.2,
-        resultadoCountDesde: 15.9,
+        hookImpacto: 1.38,
+        gridAparece: 2.9,
+        autoarregloDesde: 9.34,
+        lineaSigue: 12.9,
+        resultadoCountDesde: 13.2,
         resultadoCountDuracion: 1.3,
-        resultadoDetalle: 17.3,
-        verificacion: 19.5,
-        cierre: 22.3,
-        cta: 24.7,
+        resultadoDetalle: 15.1,
+        verificacion: 16.98,
+        cierre: 19.23,
+        cta: 21.0,
       },
     },
     intensidad: 8,

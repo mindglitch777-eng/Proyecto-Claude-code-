@@ -1,5 +1,48 @@
 # Estado vivo del proyecto
 
+## Bloque: "El error real" #1 -- 3ra vuelta, reescritura de ángulo tras debate real (2026-09-17)
+
+**Contexto real**: aunque la 2da corrección (hook a pantalla completa, lenguaje llano) fue aprobada
+en ejecución, el operador identificó el problema de fondo: *"a quién le va a interesar que casi se
+me pierden 27 videos, a nadie, absolutamente a nadie"* -- el ángulo (drama interno) no tenía
+ninguna apuesta real para el espectador, más allá de qué tan bien estuviera hecho. Se debatió el
+ángulo ANTES de tocar código (varias rondas de ida y vuelta sobre el hook y el concepto visual), y
+se agregó una regla permanente nueva a `CLAUDE.md`: **"Test de ángulo comercial"** (5 preguntas que
+todo guion nuevo tiene que pasar antes de escribirse, apoyadas en `fabrica/hooks/catalogo.ts` y
+`fabrica/research/retencion.md`, que ya existían de rondas anteriores pero no se estaban usando
+como filtro de decisión).
+
+**Ángulo nuevo, mismo caso real** (la carrera de git de 2026-09-15, 27 en riesgo, 26+1
+recuperadas, verificado a mano): en vez de "casi pierdo 27 videos" (drama personal), se reencuadra
+como prueba de fiabilidad/autocorrección -- apela a la duda real de cualquiera que evalúe
+automatizar algo ("¿puedo confiar en que esto no me rompa todo?"). Hook pedido textual del
+operador: **"SE ROMPIÓ EN VIVO."** (agresivo, directo, sin aclaración que le baje el tono). Frase
+de resolución pedida textual: **"armé un sistema que se autogestiona solo... y recuperé todos"**.
+CTA real agregado (no existía en la versión anterior): "Entrá a la comunidad exclusiva. Quedan 20
+lugares gratis."
+
+**Componente nuevo**: `remotion-spike/src/agresivo/AutoArreglo.tsx` (id `auto-arreglo`, reemplaza a
+`bug-real` para este video -- `bug-real` queda documentado en el registro pero sin usar, no se
+borra el código). La tarjeta de log/evidencia de la versión anterior se reemplaza por una **grilla
+real de 6 miniaturas** (mismo patrón `Grilla6` de `ResultadosVivos.tsx`) que se ponen en rojo con
+un ícono de alerta y se autoreparan a verde con un check, uno por uno -- sin una sola palabra
+técnica en pantalla.
+
+**Bug real encontrado y arreglado en el camino** (no solo documentado, corregido ahí mismo, por la
+Postura resolutiva): los clips reales disponibles (`doc-v01/03/05/06/08/09.mp4`) no son b-roll
+neutro -- son videos promocionales completos con su propio texto/branding grande ("TALLER DE
+ACTIVOS", cifras, hooks propios). Usados sin tratamiento, competían visualmente con los íconos de
+alerta/check y arruinaban el "sin texto técnico en pantalla" que era el punto del rediseño
+(verificado con render local + inspección de frames ANTES de entregar). Arreglado aplicando
+`blur(9px) brightness(0.45)` + tinte de color a cada clip dentro de la grilla, dejando el video real
+como textura de movimiento en vez de contenido legible, y agrandando/centrando los íconos como foco
+visual claro de cada celda.
+
+**Voz real regenerada** (`err1-todo.wav`, 23.94s) con el texto nuevo; anclajes de `t: {...}`
+alineados a las pausas reales del audio (`ffmpeg silencedetect`), no estimados a ojo. Render local
+verificado frame por frame (headless shell de Playwright) antes de sobreescribir
+`videos/pilotos/error-real-1.mp4`.
+
 ## Bloque: "El error real" #1 -- 2da corrección real, hook a pantalla completa (2026-09-16)
 
 **Pedido explícito del operador tras ver la v1** (con risas, no enojo -- "nadie va a mirar eso"):

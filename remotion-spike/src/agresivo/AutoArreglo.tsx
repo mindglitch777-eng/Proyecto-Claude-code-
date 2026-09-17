@@ -27,7 +27,12 @@ function caminoCurvo(x: number, y0: number, y1: number, amplitud: number): strin
 }
 
 const IconoAlerta: React.FC<{opacidad: number}> = ({opacidad}) => (
-  <svg width="34" height="34" viewBox="0 0 24 24" style={{position: 'absolute', top: 8, right: 8, opacity: opacidad}}>
+  <svg
+    width="64"
+    height="64"
+    viewBox="0 0 24 24"
+    style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', opacity: opacidad, filter: 'drop-shadow(0 4px 14px rgba(0,0,0,0.6))'}}
+  >
     <circle cx="12" cy="12" r="11" fill="#E53E2E" />
     <rect x="10.6" y="5.5" width="2.8" height="8.5" rx="1.4" fill="#0A0A0C" />
     <circle cx="12" cy="17" r="1.7" fill="#0A0A0C" />
@@ -35,7 +40,12 @@ const IconoAlerta: React.FC<{opacidad: number}> = ({opacidad}) => (
 );
 
 const IconoCheck: React.FC<{opacidad: number}> = ({opacidad}) => (
-  <svg width="34" height="34" viewBox="0 0 24 24" style={{position: 'absolute', top: 8, right: 8, opacity: opacidad}}>
+  <svg
+    width="64"
+    height="64"
+    viewBox="0 0 24 24"
+    style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', opacity: opacidad, filter: 'drop-shadow(0 4px 14px rgba(0,0,0,0.6))'}}
+  >
     <circle cx="12" cy="12" r="11" fill="#3DDC6E" />
     <path d="M7 12.5 L10.3 15.8 L17 8.5" stroke="#0A0A0C" strokeWidth={2.4} fill="none" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
@@ -78,9 +88,17 @@ const GrillaAutoarreglo: React.FC<{clips: string[]; seg: number; gridAparece: nu
       });
       return (
         <div key={c + i} style={{overflow: 'hidden', position: 'relative'}}>
-          <OffthreadVideo src={staticFile(`video/${c}`)} muted loop style={{width: '100%', height: '100%', objectFit: 'cover'}} />
-          <div style={{position: 'absolute', inset: 0, background: '#E53E2E', opacity: opRoja, mixBlendMode: 'multiply'}} />
-          <div style={{position: 'absolute', inset: 0, background: '#3DDC6E', opacity: opVerde, mixBlendMode: 'multiply'}} />
+          {/* Blur + oscurecido a proposito: los clips reales tienen su propio
+              texto/branding (son videos promocionales, no b-roll neutro) --
+              sin esto compite con el icono y rompe el "sin texto tecnico". */}
+          <OffthreadVideo
+            src={staticFile(`video/${c}`)}
+            muted
+            loop
+            style={{width: '100%', height: '100%', objectFit: 'cover', filter: 'blur(9px) brightness(0.45) saturate(1.15)', transform: 'scale(1.12)'}}
+          />
+          <div style={{position: 'absolute', inset: 0, background: '#E53E2E', opacity: opRoja * 0.55}} />
+          <div style={{position: 'absolute', inset: 0, background: '#3DDC6E', opacity: opVerde * 0.5}} />
           <IconoAlerta opacidad={opIconoRojo} />
           <IconoCheck opacidad={opIconoVerde} />
         </div>
