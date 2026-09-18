@@ -358,7 +358,7 @@
     "id": "carrusel-42",
     "fecha": "2026-09-15T11:38:17.663Z",
     "ok": true,
-    "estado": "pendiente",
+    "estado": "vencido",
     "tema": "El sistema en 5 pasos",
     "scheduledFor": "",
     "link": "https://github.com/mindglitch777-eng/Proyecto-Claude-code-/actions/runs/34964184253",
