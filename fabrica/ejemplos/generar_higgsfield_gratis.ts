@@ -67,22 +67,27 @@ const escenas: EscenaGuion[] = [
       resultadoDetalle: 'millones vale hoy Higgsfield',
       verificacion: 'Confirmado: ronda Serie B liderada por DST Global.',
       cierre: 'Esto no es el plan gratis de siempre -eso tiene marca de agua y pocos créditos-. Es la ventana de lanzamiento, y no dura para siempre.',
-      // Anclajes provisorios (ritmo estimado ~2.4 palabras/seg,
-      // igual que en las piezas anteriores) -- se recalculan con
-      // ffmpeg silencedetect sobre el audio real antes de renderizar
-      // la version final.
+      // Anclajes reales, derivados de silencedetect sobre el audio real
+      // noti1-todo.wav (20.42s) -- ffmpeg no disponible en este
+      // contenedor, asi que se detectaron los huecos de silencio
+      // (>=0.15s, umbral -30dB) con un analisis RMS por ventana en
+      // python directamente sobre las muestras del wav (mismo criterio
+      // que silencedetect). Huecos reales detectados: (3.38,3.94)
+      // (4.64,4.9) (7.56,7.74) (9.84,10.32) (12.26,12.56 -- pausa
+      // interna de la oracion 5) (14.44,14.94) (18.12,18.4), mapeados
+      // a mano a la estructura de oraciones del texto.
       t: {
-        hookIntro: 0,
-        hookMedio: 1.9,
-        hookImpacto: 2.7,
-        aclaracion: 4.0,
-        hechosAparece: 5.7,
-        lineaSigue: 12.5,
-        resultadoCountDesde: 9.6,
-        resultadoCountDuracion: 1.2,
-        resultadoDetalle: 13.0,
-        verificacion: 16.5,
-        cierre: 19.0,
+        hookIntro: 0.3,
+        hookMedio: 2.7,
+        hookImpacto: 2.95,
+        aclaracion: 3.94,
+        hechosAparece: 4.9,
+        lineaSigue: 10.32,
+        resultadoCountDesde: 7.9,
+        resultadoCountDuracion: 1.3,
+        resultadoDetalle: 9.4,
+        verificacion: 11.2,
+        cierre: 14.94,
       },
     },
     intensidad: 7,

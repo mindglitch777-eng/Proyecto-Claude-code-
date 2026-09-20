@@ -1,5 +1,48 @@
 # Estado vivo del proyecto
 
+## Bloque: "Higgsfield gratis" -- primera pieza del Pilar A, noticias reales de IA (2026-09-20)
+
+**Contexto real**: tras el debate de reposicionamiento (alejarse del lenguaje "gurú de IA que te
+hace rico" hacia una educación honesta inspirada en @kodense, ver bloques de debate más abajo en
+este mismo archivo), el operador reportó un hallazgo real: Higgsfield AI (generador de video
+hiperrealista) estaba ofreciendo acceso gratis, y sospechaba que tenía que ver con el lanzamiento
+de su API. Se investigó a fondo antes de escribir una sola línea de guion (WebSearch, con fuentes
+reales, no asumidas): Higgsfield cerró una ronda Serie B de 400 millones de USD liderada por DST
+Global, quedando valuada en más de 5.400 millones de USD, y lanzó su acceso público el 16/09/2026
+con una promo de crédito gratis por tiempo limitado para atraer usuarios nuevos. El operador
+confirmó explícitamente ("a ver intentalo") construir el video con estos hechos.
+
+**Ángulo** (pasa el Test de ángulo comercial de CLAUDE.md): FOMO real y propio del espectador (una
+ventana de lanzamiento que se cierra, no un drama interno de la fábrica), patrones documentados de
+`fabrica/hooks/catalogo.ts` (cifra-inmediata + expectativa-violada + loop-abierto). Deliberadamente
+**sin CTA a la comunidad exclusiva** -- la estructura de privilegios todavía no está definida ni
+lanzada (ver debate de calendario/privilegios más abajo), así que el cierre es autocontenido.
+Decisión de honestidad no negociable: el conteo real (count-up) usa una cifra objetiva y verificable
+(la valuación, 5.400 millones) en vez de una cuenta regresiva de días -- no había forma de confirmar
+la hora exacta de cierre de la promo de 7 días, y una cuenta regresiva imprecisa hubiera sido una
+promesa que no se puede sostener. El cierre aclara explícitamente que el free tier permanente de
+Higgsfield (marca de agua, pocos créditos/día) es DISTINTO de esta promo de lanzamiento -- nunca se
+dice "gratis para siempre".
+
+**Componente nuevo**: `remotion-spike/src/agresivo/NoticiaIA.tsx` (id `noticia-ia`). Reutiliza el
+lenguaje visual de `bug-real`/`auto-arreglo` (línea curva continua, hook de pantalla completa en 3
+escalones) pero sin asset de video -- no hay footage propio de Higgsfield. La evidencia es una
+tarjeta de **hechos en lenguaje llano** (con flechas, no bullets de log/terminal, que `bug-real` ya
+probó que no se entienden). Primer componente de la fábrica sin dependencia de `requiereAssets`
+obligatorio.
+
+**Pipeline real usado** (mismo método validado en "auto-arreglo"): guion en
+`fabrica/ejemplos/generar_higgsfield_gratis.ts` -> voz real generada con `generar-voz-pilotos.yml`
+(Qwen3-TTS) -> **bug de entorno encontrado y arreglado en el camino**: este contenedor no tenía
+`ffmpeg` instalado, así que primero se detectaron los huecos de silencio reales con un análisis RMS
+por ventana escrito en Python puro (mismo criterio que `silencedetect`, umbral -30dB, mínimo 0.15s),
+y luego se instaló `ffmpeg` de verdad (`apt-get update` primero, el mirror tenía índices
+desactualizados) para confirmar esos anclajes contra `silencedetect` real -- coincidieron con
+precisión de centésimas de segundo. Render local con el mismo workaround de Playwright
+(`--browser-executable=.../headless_shell`), verificado frame por frame (8 capturas a lo largo de
+los 21.23s) antes de entregar: hook, tarjeta de hechos, count-up hasta 5.400 exacto, línea de
+verificación en verde, y cierre honesto, todos legibles y sin superposición.
+
 ## Bloque: "El error real" #1 -- 3ra vuelta, reescritura de ángulo tras debate real (2026-09-17)
 
 **Contexto real**: aunque la 2da corrección (hook a pantalla completa, lenguaje llano) fue aprobada
