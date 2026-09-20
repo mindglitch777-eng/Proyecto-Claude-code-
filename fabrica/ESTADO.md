@@ -1,5 +1,62 @@
 # Estado vivo del proyecto
 
+## Bloque: "Higgsfield gratis" v2 -- sonido, color, legibilidad y utilidad real (2026-09-20, mismo día)
+
+**Contexto real**: tras entregar la v1, feedback directo y duro del operador: *"tiene que tener un
+desarrollo más interesante... es súper aburrida la entrada sin sonido y sin colores fuertes... las
+letras apenas a veces se leen y no pasa nada interesante, no cuenta una historia o una utilidad que
+se le puede dar"*. Se reescribió de fondo en vez de parchear, atacando cada punto con
+infraestructura REAL que ya existía en el repo sin usar (Postura resolutiva -- buscar antes de
+inventar):
+
+1. **Sonido**: la v1 no tenía nada más que la voz. Se conectó `fabrica/musica/biblioteca.json`
+   (CC0, $0, ya construido en R7-22 pero nunca usado en una pieza de una sola unidad) -- elegido a
+   mano `tension-alarmante` (126 BPM, mood tenso/urgente, match directo con una noticia de IA con
+   ventana de tiempo limitada) en `arbol.musicaFondo`, y SFX reales de `assets/sfx/`
+   (riser/whoosh/campana/tick, sintetizados, sin licencia) en los golpes clave: riser+whoosh en el
+   golpe del hook, campana en el aterrizaje del count-up, tick en cada paso de utilidad. Se cargó
+   la skill real `beat-sync-editing` para sincronizar esos golpes a la grilla de beat
+   (`framesPorBeat=(60/126)*fps`) en vez de a ojo -- ver anclajes exactos en
+   `fabrica/ejemplos/generar_higgsfield_gratis.ts`.
+2. **Color**: barra de alerta roja fija arriba (señal de género desde el frame 0), flash de
+   pantalla completa (rojo en el golpe del hook, verde en el aterrizaje del count-up) y fondo con
+   pulso radial tempado al beat, en vez de negro plano estático.
+3. **Legibilidad**: verificación y cierre pasan de texto itálico flotando sobre negro a tarjetas
+   sólidas de alto contraste.
+4. **Historia/utilidad**: bloque nuevo "Así lo probás hoy" -- 3 pasos concretos (entrás a
+   Higgsfield, creás tu cuenta, usás el crédito gratis antes de que se acabe) antes del cierre. El
+   espectador se lleva algo para HACER, no solo un dato para saber. Requirió reescribir el guion de
+   voz y regenerar el TTS real (Qwen3-TTS, no reciclado).
+
+**Bugs reales encontrados y arreglados en el camino** (Postura resolutiva -- se arreglan ahí mismo):
+- `ffmpeg` no estaba instalado en este contenedor (se detectó al intentar `silencedetect`) --
+  arreglado con `apt-get update` (el mirror tenía índices desactualizados, primer intento con
+  `--no-install-recommends` sin `update` falló con 404) + `apt-get install ffmpeg`.
+- Bug de React/Remotion real: `interpolate()` con `inputRange` de 2 puntos y `outputRange` de 3
+  (`escalaImpacto`) -- Remotion tira error real en render, no falla en silencio. Arreglado agregando
+  el punto intermedio faltante.
+- **z-index real mal puesto**: el SVG de la línea curva tenía `zIndex: 5` (copiado de
+  `AutoArreglo.tsx`), lo que la dibujaba ENCIMA del texto de las tarjetas de utilidad/cierre en vez
+  de detrás -- exactamente el tipo de problema de legibilidad que motivó esta reescritura. Se sacó
+  el `zIndex` (el orden natural del DOM ya la deja detrás) y se subió la tarjeta de cierre a un
+  fondo sólido opaco (`#1A1113`, antes `rgba(...,0.12)` casi transparente) para que ocluya la línea
+  del todo. **Mismo patrón (`zIndex: 5` en el SVG) existe en `AutoArreglo.tsx` (el video
+  "error-real-1" ya entregado) -- queda anotado como sospecha real de un problema visual similar en
+  ese video, no verificado todavía, no se tocó ese archivo en este bloque (fuera de alcance de esta
+  corrección puntual).**
+- **Falsa alarma real, descartada con evidencia**: durante la verificación visual aparecía un
+  "fantasma" tenue del texto "ALERTA IA" duplicado cerca del borde inferior de varios frames
+  extraídos. Se investigó a fondo (aislando el componente a una versión mínima de una sola tarjeta,
+  probando `remotion still` directo sin pasar por ffmpeg) antes de asumir que era un bug real --
+  inspección de píxeles con PIL confirmó que el archivo PNG real tiene fondo totalmente plano en esa
+  zona (sin texto real ahí). Era un artefacto del visor de imágenes usado para inspeccionar los
+  frames, no del video. Se documenta para no repetir la misma investigación si vuelve a aparecer.
+
+**Resultado**: renderizado local (Playwright headless-shell) verificado frame por frame (más de 15
+capturas a lo largo de los 25.3s) antes de entregar -- barra de alerta, flash rojo/verde en los dos
+golpes, tarjeta de hechos, count-up exacto a 5.400, tarjeta de utilidad con 3 pasos apareciendo uno
+por uno, cierre honesto en tarjeta sólida totalmente legible.
+
 ## Bloque: "Higgsfield gratis" -- primera pieza del Pilar A, noticias reales de IA (2026-09-20)
 
 **Contexto real**: tras el debate de reposicionamiento (alejarse del lenguaje "gurú de IA que te

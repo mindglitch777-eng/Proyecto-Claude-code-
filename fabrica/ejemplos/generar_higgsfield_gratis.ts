@@ -89,24 +89,34 @@ const escenas: EscenaGuion[] = [
       utilidadTitulo: 'Así lo probás hoy',
       utilidadPasos: ['Entrás a Higgsfield', 'Creás tu cuenta', 'Usás el crédito gratis antes de que se acabe'],
       cierre: 'Ojo: esto no es el plan gratis de siempre -tiene marca de agua y pocos créditos-. Es la ventana de lanzamiento, y se cierra pronto.',
-      // PLACEHOLDER -- se recalculan con silencedetect real sobre el
-      // audio nuevo (noti1-todo.wav v2) antes de la version final.
+      // Anclajes reales: silencedetect real sobre noti1-todo.wav v2
+      // (24.32s, umbral -30dB, min 0.12s) mapeado a mano a la
+      // estructura de 8 oraciones del texto nuevo, y despues los
+      // golpes puntuales (impacto del hook, aterrizaje del count-up,
+      // pasos de utilidad) ajustados al frame ON-BEAT mas cercano de
+      // la musica real (tension-alarmante, 126 BPM -> 0.4762s/beat),
+      // criterio de la skill beat-sync-editing: la voz manda el
+      // timing base, el golpe puntual se ajusta a la grilla (tolerancia
+      // de unos pocos frames, igual que un offset de J-cut/L-cut).
+      // Huecos reales detectados (ffmpeg silencedetect): (3.42,3.55)
+      // (4.22,4.46) (7.18,7.39) (9.52,9.76) (13.75,14.02) (14.98,15.22)
+      // (16.01,16.15) (18.51,18.78) (19.00,19.33) (22.41,22.65).
       t: {
-        hookIntro: 0.3,
-        hookMedio: 2.7,
-        hookImpacto: 2.95,
-        aclaracion: 3.94,
-        hechosAparece: 4.9,
-        lineaSigue: 8.5,
-        resultadoCountDesde: 7.9,
-        resultadoCountDuracion: 1.3,
-        resultadoDetalle: 9.4,
-        verificacion: 11.2,
-        utilidadAparece: 14.9,
-        utilidadPaso1: 15.1,
-        utilidadPaso2: 16.5,
-        utilidadPaso3: 17.6,
-        cierre: 20.5,
+        hookIntro: 0.05,
+        hookMedio: 2.69,
+        hookImpacto: 2.857, // snap: beat 6 (2.857s), real voz ~2.99s
+        aclaracion: 3.55,
+        hechosAparece: 4.46,
+        lineaSigue: 7.39,
+        resultadoCountDesde: 8.095, // snap: beat 17
+        resultadoCountDuracion: 1.429, // aterriza en beat 20 (9.524s), rampa de 3 beats exactos
+        resultadoDetalle: 9.6,
+        verificacion: 10.476, // snap: beat 22
+        utilidadAparece: 14.286, // snap: beat 30
+        utilidadPaso1: 15.238, // snap: beat 32 ("entrás a Higgsfield")
+        utilidadPaso2: 16.190, // snap: beat 34 ("creás tu cuenta")
+        utilidadPaso3: 16.667, // snap: beat 35 ("usás el crédito gratis...")
+        cierre: 19.33, // fase de resolve, sin golpe -- se sostiene hasta el final
       },
     },
     intensidad: 8,

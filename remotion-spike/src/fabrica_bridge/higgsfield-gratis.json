@@ -5,9 +5,10 @@
     {
       "unidadId": "noti1-todo",
       "desdeSeg": 0,
-      "duracionSeg": 20.666009,
+      "duracionSeg": 24.57,
       "componenteId": "noticia-ia",
       "props": {
+        "alertaEtiqueta": "ALERTA IA",
         "hookIntro": "Una IA que genera videos hiperrealistas",
         "hookMedio": "SE VOLVIÓ",
         "hookImpacto": "GRATIS.",
@@ -22,26 +23,36 @@
         "resultadoPrefijo": "U$S ",
         "resultadoDetalle": "millones vale hoy Higgsfield",
         "verificacion": "Confirmado: ronda Serie B liderada por DST Global.",
-        "cierre": "Esto no es el plan gratis de siempre -eso tiene marca de agua y pocos créditos-. Es la ventana de lanzamiento, y no dura para siempre.",
+        "utilidadTitulo": "Así lo probás hoy",
+        "utilidadPasos": [
+          "Entrás a Higgsfield",
+          "Creás tu cuenta",
+          "Usás el crédito gratis antes de que se acabe"
+        ],
+        "cierre": "Ojo: esto no es el plan gratis de siempre -tiene marca de agua y pocos créditos-. Es la ventana de lanzamiento, y se cierra pronto.",
         "t": {
-          "hookIntro": 0.3,
-          "hookMedio": 2.7,
-          "hookImpacto": 2.95,
-          "aclaracion": 3.94,
-          "hechosAparece": 4.9,
-          "lineaSigue": 10.32,
-          "resultadoCountDesde": 7.9,
-          "resultadoCountDuracion": 1.3,
-          "resultadoDetalle": 9.4,
-          "verificacion": 11.2,
-          "cierre": 14.94
+          "hookIntro": 0.05,
+          "hookMedio": 2.69,
+          "hookImpacto": 2.857,
+          "aclaracion": 3.55,
+          "hechosAparece": 4.46,
+          "lineaSigue": 7.39,
+          "resultadoCountDesde": 8.095,
+          "resultadoCountDuracion": 1.429,
+          "resultadoDetalle": 9.6,
+          "verificacion": 10.476,
+          "utilidadAparece": 14.286,
+          "utilidadPaso1": 15.238,
+          "utilidadPaso2": 16.19,
+          "utilidadPaso3": 16.667,
+          "cierre": 19.33
         }
       },
       "audios": [
         {
           "archivo": "fabrica_higgsfield_gratis/noti1-todo.wav",
           "desdeSegRelativo": 0,
-          "duracionSeg": 20.416009
+          "duracionSeg": 24.32
         }
       ],
       "golpe": "negro",
@@ -97,14 +108,14 @@
       ]
     }
   ],
-  "duracionTotalSeg": 21.166009,
+  "duracionTotalSeg": 25.07,
   "analisisRetencion": {
     "mapa": [
       {
         "unidadId": "noti1-todo",
         "fase": "hook",
         "energia": "muy_alta",
-        "duracionSeg": 20.666009,
+        "duracionSeg": 24.57,
         "esClimax": false
       }
     ],
@@ -133,5 +144,9 @@
         "dependeDe": "noti1-todo"
       }
     ]
+  },
+  "musicaFondo": {
+    "archivo": "musica/tension-alarmante.mp3",
+    "volumen": 0.16
   }
 }

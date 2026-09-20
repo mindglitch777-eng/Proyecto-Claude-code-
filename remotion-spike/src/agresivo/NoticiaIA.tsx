@@ -103,7 +103,7 @@ export const NoticiaIA: React.FC<{
   const opMedio = ent(t.hookMedio, 0.28);
   const escalaMedio = interpolate(seg, [t.hookMedio, t.hookMedio + 0.28], [0.85, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const opImpacto = ent(t.hookImpacto, 0.3);
-  const escalaImpacto = interpolate(seg, [t.hookImpacto, t.hookImpacto + 0.3], [0.7, 1.06, 1], {
+  const escalaImpacto = interpolate(seg, [t.hookImpacto, t.hookImpacto + 0.15, t.hookImpacto + 0.3], [0.7, 1.06, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -228,7 +228,12 @@ export const NoticiaIA: React.FC<{
         </Sequence>
       ))}
 
-      <svg width="100%" height="100%" viewBox={`0 0 ${ANCHO} ${ALTO}`} style={{position: 'absolute', inset: 0, zIndex: 5}}>
+      {/* Sin z-index explicito a proposito: tiene que quedar DETRAS de
+          las tarjetas de hechos/utilidad/cierre (orden natural del DOM,
+          pintadas despues) -- con z-index:5 la linea se dibujaba ENCIMA
+          del texto en las fases de utilidad/cierre, exactamente el tipo
+          de problema de legibilidad que el operador señalo. */}
+      <svg width="100%" height="100%" viewBox={`0 0 ${ANCHO} ${ALTO}`} style={{position: 'absolute', inset: 0}}>
         <path d={camino1} fill="none" stroke={PALETA.acento} strokeWidth={5} strokeLinecap="round" pathLength={1} strokeDasharray={1} strokeDashoffset={1 - progreso1} />
         <path d={camino2} fill="none" stroke={PALETA.acento} strokeWidth={5} strokeLinecap="round" pathLength={1} strokeDasharray={1} strokeDashoffset={1 - progreso2} />
       </svg>
@@ -393,7 +398,7 @@ export const NoticiaIA: React.FC<{
       <div style={{position: 'absolute', inset: 0, opacity: opCierreGrupo, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 9%'}}>
         <div
           style={{
-            background: 'rgba(229,62,46,0.12)',
+            background: '#1A1113',
             border: `2px solid ${ROJO_ALARMA}`,
             borderRadius: 20,
             padding: '30px 28px',
