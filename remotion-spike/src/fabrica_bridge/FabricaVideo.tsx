@@ -11,6 +11,7 @@ import {Revelacion} from '../agresivo/Revelacion';
 import {ResultadosVivos} from '../agresivo/ResultadosVivos';
 import {BugReal} from '../agresivo/BugReal';
 import {AutoArreglo} from '../agresivo/AutoArreglo';
+import {NoticiaIA} from '../agresivo/NoticiaIA';
 import {LogosHerramientas} from '../escenas/herramientas';
 import {Punch} from '../agresivo/Punch';
 import {Rafaga} from '../agresivo/Rafaga';
@@ -62,6 +63,7 @@ const IMPLEMENTACIONES: Record<string, React.FC<any>> = {
   'resultados-vivos': ResultadosVivos,
   'bug-real': BugReal,
   'auto-arreglo': AutoArreglo,
+  'noticia-ia': NoticiaIA,
   'logos-herramientas': LogosHerramientas,
   punch: Punch,
   rafaga: Rafaga,

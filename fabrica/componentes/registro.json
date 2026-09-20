@@ -494,6 +494,45 @@
     "notas": "Reemplaza a 'bug-real' para el video 'error-real-1'. Angulo pedido textual del operador: 'armé un sistema que se autogestiona solo... y recuperé todos' -- reencuadra el mismo caso real de riesgo de perdida de registro como prueba de fiabilidad/autocorreccion, no como drama personal. Ver 'Test de angulo comercial' en CLAUDE.md (regla permanente agregada por esta correccion)."
   },
   {
+    "id": "noticia-ia",
+    "archivo": "agresivo/NoticiaIA.tsx",
+    "exportacion": "NoticiaIA",
+    "categoria": "cifra",
+    "funcion": "Primera pieza del Pilar A (tips/noticias reales de IA en tiempo real, ver debate de reposicionamiento en fabrica/ESTADO.md 2026-09-20). Mismo lenguaje visual que bug-real/auto-arreglo (linea curva continua, hook de pantalla completa en 3 escalones), pero sin asset de video -- la evidencia es una tarjeta de hechos en lenguaje llano (sin estetica de log/terminal, que bug-real probo que no se entiende). Cierra con count-up de una cifra real y verificable (no una cuenta regresiva de dias, para no arriesgar una precision horaria que no se puede confirmar), detalle, verificacion y un cierre honesto que aclara que el free tier permanente NO es lo mismo que la promo de lanzamiento. Sin CTA a la comunidad (todavia sin definir/lanzar) -- cierre autocontenido.",
+    "intensidad": 0.7,
+    "ritmo": "dinamico",
+    "capacidadTexto": "media",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      8,
+      22
+    ],
+    "compatibleCon": [
+      "cifra",
+      "diagrama"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "hookIntro": "string -- linea chica de contexto (ej 'Una IA que genera videos hiperrealistas')",
+      "hookMedio": "string -- linea mediana de tension (ej 'SE VOLVIO')",
+      "hookImpacto": "string -- linea gigante roja, el golpe (ej 'GRATIS.')",
+      "aclaracion": "string -- abre un loop chico que se resuelve en la tarjeta de hechos (ej 'Investigué por qué.')",
+      "hechosTitulo": "string -- label de la tarjeta de hechos (ej 'LO QUE PASO DE VERDAD')",
+      "hechosLineas": "string[] -- 3-5 hechos reales y verificados, en lenguaje llano, uno por linea",
+      "resultadoNumero": "number -- cifra real y verificable para el count-up (ej 5400, millones de dolares de valuacion)",
+      "resultadoPrefijo": "string opcional -- prefijo pegado al numero (ej '$' o 'U$S ')",
+      "resultadoDetalle": "string -- que es ese numero (ej 'millones de dolares vale hoy la empresa')",
+      "verificacion": "string -- como se confirmo (ej 'Confirmado: ronda Serie B liderada por DST Global')",
+      "cierre": "string -- cierre honesto autocontenido, aclara diferencia entre free tier permanente y promo de lanzamiento",
+      "t": "{hookIntro,hookMedio,hookImpacto,aclaracion,hechosAparece,lineaSigue,resultadoCountDesde,resultadoCountDuracion,resultadoDetalle,verificacion,cierre}: number (seg)"
+    },
+    "estado": "validado",
+    "notas": "Primer uso: 'higgsfield-gratis' (Higgsfield AI, generador de video hiperrealista con IA -- ronda Serie B de 400M USD, valuacion 5.400M USD, lanzamiento de API el 16/09/2026 con promo de credito gratis por tiempo limitado). Hechos verificados via WebSearch con fuentes reales antes de escribir el guion -- ver fabrica/ESTADO.md. Patrones de fabrica/hooks/catalogo.ts usados: cifra-inmediata + expectativa-violada + loop-abierto."
+  },
+  {
     "id": "logos-herramientas",
     "archivo": "escenas/herramientas.tsx",
     "exportacion": "LogosHerramientas",
