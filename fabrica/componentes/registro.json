@@ -498,17 +498,17 @@
     "archivo": "agresivo/NoticiaIA.tsx",
     "exportacion": "NoticiaIA",
     "categoria": "cifra",
-    "funcion": "Primera pieza del Pilar A (tips/noticias reales de IA en tiempo real, ver debate de reposicionamiento en fabrica/ESTADO.md 2026-09-20). Mismo lenguaje visual que bug-real/auto-arreglo (linea curva continua, hook de pantalla completa en 3 escalones), pero sin asset de video -- la evidencia es una tarjeta de hechos en lenguaje llano (sin estetica de log/terminal, que bug-real probo que no se entiende). Cierra con count-up de una cifra real y verificable (no una cuenta regresiva de dias, para no arriesgar una precision horaria que no se puede confirmar), detalle, verificacion y un cierre honesto que aclara que el free tier permanente NO es lo mismo que la promo de lanzamiento. Sin CTA a la comunidad (todavia sin definir/lanzar) -- cierre autocontenido.",
-    "intensidad": 0.7,
-    "ritmo": "dinamico",
+    "funcion": "Primera pieza del Pilar A (tips/noticias reales de IA en tiempo real, ver debate de reposicionamiento en fabrica/ESTADO.md 2026-09-20). v2 (mismo dia): reescrita de fondo tras feedback real del operador sobre la v1 ('aburrida, sin sonido, sin colores fuertes, letras que apenas se leen, sin historia ni utilidad'). Mismo esqueleto de linea curva + hook de pantalla completa en 3 escalones, pero ahora con musica de fondo real (fabrica/musica/biblioteca.json, CC0) + SFX reales (assets/sfx/: riser/whoosh en el golpe del hook, campana en el aterrizaje del count-up, tick por paso de utilidad) sincronizados a la grilla de beat de la musica (skill beat-sync-editing); barra de alerta superior + flash de pantalla + fondo con pulso radial tempado al BPM en vez de negro plano; verificacion/cierre en tarjetas solidas de alto contraste en vez de texto italico flotando; y un bloque nuevo de UTILIDAD real (3 pasos concretos para aprovechar la promo) antes del cierre, para que la pieza deje algo para HACER, no solo para saber. Sigue sin asset de video (evidencia en tarjeta de hechos en lenguaje llano) y sin CTA a la comunidad (todavia sin definir/lanzar).",
+    "intensidad": 0.8,
+    "ritmo": "muy_dinamico",
     "capacidadTexto": "media",
     "requiereAssets": {
       "tipo": "ninguno",
       "obligatorio": false
     },
     "duracionMinMaxSeg": [
-      8,
-      22
+      10,
+      25
     ],
     "compatibleCon": [
       "cifra",
@@ -516,21 +516,24 @@
     ],
     "soportaAudioSincronizado": true,
     "props": {
+      "alertaEtiqueta": "string -- label corto de la barra de alerta superior (ej 'ALERTA IA')",
       "hookIntro": "string -- linea chica de contexto (ej 'Una IA que genera videos hiperrealistas')",
       "hookMedio": "string -- linea mediana de tension (ej 'SE VOLVIO')",
-      "hookImpacto": "string -- linea gigante roja, el golpe (ej 'GRATIS.')",
+      "hookImpacto": "string -- linea gigante roja, el golpe (ej 'GRATIS.'), sincronizada a flash+shake+whoosh",
       "aclaracion": "string -- abre un loop chico que se resuelve en la tarjeta de hechos (ej 'Investigué por qué.')",
       "hechosTitulo": "string -- label de la tarjeta de hechos (ej 'LO QUE PASO DE VERDAD')",
       "hechosLineas": "string[] -- 3-5 hechos reales y verificados, en lenguaje llano, uno por linea",
-      "resultadoNumero": "number -- cifra real y verificable para el count-up (ej 5400, millones de dolares de valuacion)",
+      "resultadoNumero": "number -- cifra real y verificable para el count-up (ej 5400, millones de dolares de valuacion), sincronizada a un golpe verde (campana) en su aterrizaje",
       "resultadoPrefijo": "string opcional -- prefijo pegado al numero (ej '$' o 'U$S ')",
       "resultadoDetalle": "string -- que es ese numero (ej 'millones de dolares vale hoy la empresa')",
       "verificacion": "string -- como se confirmo (ej 'Confirmado: ronda Serie B liderada por DST Global')",
+      "utilidadTitulo": "string -- titulo del bloque de utilidad real (ej 'Asi lo probas hoy')",
+      "utilidadPasos": "string[] -- exactamente 3 pasos concretos y honestos (nunca afirmar haber probado la herramienta si no se hizo)",
       "cierre": "string -- cierre honesto autocontenido, aclara diferencia entre free tier permanente y promo de lanzamiento",
-      "t": "{hookIntro,hookMedio,hookImpacto,aclaracion,hechosAparece,lineaSigue,resultadoCountDesde,resultadoCountDuracion,resultadoDetalle,verificacion,cierre}: number (seg)"
+      "t": "{hookIntro,hookMedio,hookImpacto,aclaracion,hechosAparece,lineaSigue,resultadoCountDesde,resultadoCountDuracion,resultadoDetalle,verificacion,utilidadAparece,utilidadPaso1,utilidadPaso2,utilidadPaso3,cierre}: number (seg)"
     },
     "estado": "validado",
-    "notas": "Primer uso: 'higgsfield-gratis' (Higgsfield AI, generador de video hiperrealista con IA -- ronda Serie B de 400M USD, valuacion 5.400M USD, lanzamiento de API el 16/09/2026 con promo de credito gratis por tiempo limitado). Hechos verificados via WebSearch con fuentes reales antes de escribir el guion -- ver fabrica/ESTADO.md. Patrones de fabrica/hooks/catalogo.ts usados: cifra-inmediata + expectativa-violada + loop-abierto."
+    "notas": "Primer uso: 'higgsfield-gratis' (Higgsfield AI, generador de video hiperrealista con IA -- ronda Serie B de 400M USD, valuacion 5.400M USD, lanzamiento de API el 16/09/2026 con promo de credito gratis por tiempo limitado). Hechos verificados via WebSearch con fuentes reales antes de escribir el guion -- ver fabrica/ESTADO.md. Patrones de fabrica/hooks/catalogo.ts usados: cifra-inmediata + expectativa-violada + loop-abierto. musicaFondo asignada a mano ('tension-alarmante', 126 BPM, mood tenso/urgente) en vez de via resolver_musica.py porque es una pieza de una sola unidad (no pasa por DirectorAudio multi-unidad)."
   },
   {
     "id": "logos-herramientas",

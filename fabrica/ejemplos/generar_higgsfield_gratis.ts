@@ -26,15 +26,33 @@
  *      el cierre aclara que el free tier permanente (marca de agua,
  *      pocos créditos/día) es distinto de esta promo de lanzamiento.
  *
+ * v2 (2026-09-20, mismo día): reescritura de fondo tras feedback
+ * directo del operador sobre la v1 ("súper aburrida... sin sonido y
+ * sin colores fuertes... las letras apenas se leen... no cuenta una
+ * historia o una utilidad"). Cambios reales, no cosméticos:
+ *   - Se agrega un bloque nuevo de UTILIDAD real (3 pasos concretos
+ *     para aprovechar la promo) -- la pieza deja de ser solo "noticia
+ *     que sabés" y pasa a ser "algo que podés hacer hoy". Nueva frase
+ *     de voz real, TTS regenerado (no reciclado).
+ *   - musicaFondo real (fabrica/musica/biblioteca.json, CC0, $0):
+ *     'tension-alarmante' (126 BPM, mood tenso/urgente) -- elegida a
+ *     mano por mood/BPM en vez de correr resolver_musica.py, porque
+ *     esta pieza es un solo bloque (no pasa por DirectorAudio con
+ *     multiples unidades) y el mood "noticia urgente con ventana de
+ *     tiempo limitada" ya es un match directo y verificable con el
+ *     catalogo real.
+ *   - SFX reales (assets/sfx/, ya sintetizados, sin licencia) en los
+ *     golpes clave del componente v2 -- ver NoticiaIA.tsx.
+ *
  * Deliberadamente SIN CTA a la comunidad exclusiva: la estructura de
  * privilegios/precio todavía no está definida ni lanzada (ver
  * fabrica/ESTADO.md, discusión en curso) -- el cierre es autocontenido,
- * resuelve la curiosidad abierta en el hook.
+ * resuelve la curiosidad abierta en el hook + da una utilidad real.
  *
- * Componente: `noticia-ia` (agresivo/NoticiaIA.tsx) -- primer uso.
+ * Componente: `noticia-ia` v2 (agresivo/NoticiaIA.tsx).
  */
 import path from 'node:path';
-import {writeFileSync} from 'node:fs';
+import {copyFileSync, existsSync, mkdirSync, writeFileSync} from 'node:fs';
 import {renderizarPorGuion, type EscenaGuion} from '../composicion/renderizador_por_guion';
 
 const RAIZ = path.join(__dirname, '..', '..');
@@ -47,11 +65,13 @@ const escenas: EscenaGuion[] = [
       + 'Investigué por qué. '
       + 'Higgsfield acaba de recibir cuatrocientos millones de dólares de inversión. '
       + 'Hoy la empresa vale más de cinco mil cuatrocientos millones. '
-      + 'El dieciséis de septiembre abrió el acceso al público, y regaló crédito gratis para atraer usuarios nuevos. '
-      + 'Esto no es el plan gratis de siempre, que tiene marca de agua y pocos créditos por día. '
-      + 'Es la ventana de lanzamiento, y no dura para siempre.',
+      + 'El dieciséis de septiembre abrió el acceso al público, con crédito gratis para atraer usuarios nuevos. '
+      + 'Así lo podés probar ahora: entrás a Higgsfield, creás tu cuenta, y usás el crédito gratis antes de que se acabe. '
+      + 'Ojo: esto no es el plan gratis de siempre, que tiene marca de agua y pocos créditos por día. '
+      + 'Es la ventana de lanzamiento, y se cierra pronto.',
     componenteId: 'noticia-ia',
     props: {
+      alertaEtiqueta: 'ALERTA IA',
       hookIntro: 'Una IA que genera videos hiperrealistas',
       hookMedio: 'SE VOLVIÓ',
       hookImpacto: 'GRATIS.',
@@ -66,31 +86,30 @@ const escenas: EscenaGuion[] = [
       resultadoPrefijo: 'U$S ',
       resultadoDetalle: 'millones vale hoy Higgsfield',
       verificacion: 'Confirmado: ronda Serie B liderada por DST Global.',
-      cierre: 'Esto no es el plan gratis de siempre -eso tiene marca de agua y pocos créditos-. Es la ventana de lanzamiento, y no dura para siempre.',
-      // Anclajes reales, derivados de silencedetect sobre el audio real
-      // noti1-todo.wav (20.42s) -- ffmpeg no disponible en este
-      // contenedor, asi que se detectaron los huecos de silencio
-      // (>=0.15s, umbral -30dB) con un analisis RMS por ventana en
-      // python directamente sobre las muestras del wav (mismo criterio
-      // que silencedetect). Huecos reales detectados: (3.38,3.94)
-      // (4.64,4.9) (7.56,7.74) (9.84,10.32) (12.26,12.56 -- pausa
-      // interna de la oracion 5) (14.44,14.94) (18.12,18.4), mapeados
-      // a mano a la estructura de oraciones del texto.
+      utilidadTitulo: 'Así lo probás hoy',
+      utilidadPasos: ['Entrás a Higgsfield', 'Creás tu cuenta', 'Usás el crédito gratis antes de que se acabe'],
+      cierre: 'Ojo: esto no es el plan gratis de siempre -tiene marca de agua y pocos créditos-. Es la ventana de lanzamiento, y se cierra pronto.',
+      // PLACEHOLDER -- se recalculan con silencedetect real sobre el
+      // audio nuevo (noti1-todo.wav v2) antes de la version final.
       t: {
         hookIntro: 0.3,
         hookMedio: 2.7,
         hookImpacto: 2.95,
         aclaracion: 3.94,
         hechosAparece: 4.9,
-        lineaSigue: 10.32,
+        lineaSigue: 8.5,
         resultadoCountDesde: 7.9,
         resultadoCountDuracion: 1.3,
         resultadoDetalle: 9.4,
         verificacion: 11.2,
-        cierre: 14.94,
+        utilidadAparece: 14.9,
+        utilidadPaso1: 15.1,
+        utilidadPaso2: 16.5,
+        utilidadPaso3: 17.6,
+        cierre: 20.5,
       },
     },
-    intensidad: 7,
+    intensidad: 8,
     esPrimera: true,
     esCierre: true,
   },
@@ -101,6 +120,19 @@ function main() {
     audioOrigenDir: 'capturas_voz/audio_pilotos',
     carpetaPublica: 'fabrica_higgsfield_gratis',
   }, RAIZ);
+
+  // musicaFondo real: 'tension-alarmante' (126 BPM, mood tenso/urgente,
+  // CC0 -- fabrica/musica/biblioteca.json), copiada a public/musica/
+  // como ya hace generar_demo_07.ts para el resto de la fabrica.
+  const origenMusica = path.join(RAIZ, 'fabrica/musica/biblioteca/tension-alarmante.mp3');
+  const dirPublicoMusica = path.join(RAIZ, 'remotion-spike/public/musica');
+  const destinoMusica = path.join(dirPublicoMusica, 'tension-alarmante.mp3');
+  mkdirSync(dirPublicoMusica, {recursive: true});
+  if (!existsSync(destinoMusica)) copyFileSync(origenMusica, destinoMusica);
+  (resultado.arbol as typeof resultado.arbol & {musicaFondo?: {archivo: string; volumen: number}}).musicaFondo = {
+    archivo: 'musica/tension-alarmante.mp3',
+    volumen: 0.16,
+  };
 
   const destino = path.join(RAIZ, 'remotion-spike/src/fabrica_bridge', `${ID_VIDEO}.json`);
   writeFileSync(destino, JSON.stringify(resultado.arbol, null, 2));
