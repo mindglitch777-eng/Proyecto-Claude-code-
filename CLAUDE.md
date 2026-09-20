@@ -89,10 +89,21 @@ negocio fijos:
   sondear, no ajustarle la frecuencia.
 
 ## Prioridad actual: La Nueva Fábrica Audiovisual (`fabrica/`)
-"El Corte" (producto de Hotmart de la Fase 1 original, publicado el
-20/08) queda **archivado por decisión explícita del operador (03/09):
-no se vuelve a tocar ni a mencionar como próximo paso.** No borrar su
-código sin que el operador lo pida aparte -- solo se dejó de priorizar.
+"El Corte" (producto de Hotmart de la Fase 1 original, publicado el 20/08) fue
+**eliminado del repositorio por decisión explícita del operador (20/09/2026,
+tras quedar archivado sin uso real desde el 03/09): no se vuelve a construir,
+mencionar como próximo paso, ni recuperar.** Se borraron sus ~25 scripts
+Python, ~22 documentos de marca/nicho/estrategia, `netlify.toml` y las
+carpetas `producto/`, `marca/`, `contenido/`, `guiones/`, `muestras_voz/`,
+`demos/`, `capturas/`, `herramientas/` y `archivado/` (el orchestrator
+original de Fase 1 vivía ahí). Los scripts que El Corte originó pero que la
+fábrica reutiliza de verdad (`buscar_foto.py`, `descargar_foto_persona.py`,
+`descargar_logo_empresa.py`, `descargar_metraje.py`,
+`generar_voz_documental_qwen.py`, `voz_piper.py`) NO se tocaron -- siguen
+siendo infraestructura compartida real, no reliquias. El sitio de Netlify
+(el-corte-v7.html) puede seguir desplegado externamente; borrar el repo no
+lo da de baja solo -- eso es una decisión y una acción aparte si el operador
+la pide.
 
 La prioridad actual es seguir desarrollando `fabrica/` (motor de
 generación de video con Remotion + directores de Voz/Visual/Audio/
@@ -110,15 +121,16 @@ Edición/Retención + memoria/laboratorio de experimentos) -- ver
 
 ## Estado del proyecto
 El estado vivo real vive en `fabrica/ESTADO.md` (ver "Cómo debe
-comportarse" más abajo). `state/state.json` + `orchestrator.py` fueron
-el sistema de la Fase 1 original (El Corte) y quedaron congelados sin
-uso real desde que el trabajo se mudó a `fabrica/`.
+comportarse" más abajo). El `orchestrator.py` de la Fase 1 original (El
+Corte) fue eliminado el 20/09/2026 (ver "Prioridad actual" más arriba).
+`state/` sigue existiendo pero hoy solo contiene `uploads.json` /
+`carruseles.json` / los archivos de Zernio, usados por el panel Torre de
+Control (`fabrica/subida/`) -- infraestructura real de `fabrica/`, no un
+resto de Fase 1.
 
 ## Cómo debe comportarse Claude Code en este proyecto
 1. Al iniciar sesión: leer `fabrica/ESTADO.md` primero (estado vivo real
-   del proyecto). `orchestrator.py status`/`state/state.json` quedaron
-   obsoletos desde que el trabajo real se mudó a `fabrica/` (Ronda 2+)
-   -- no reflejan el estado real, no confiar en ellos.
+   del proyecto) -- es la única fuente de verdad del estado del proyecto.
 2. Proponer un solo siguiente paso concreto, no un rediseño completo.
 3. Antes de cualquier integración con API externa (Hotmart, YouTube, etc.),
    confirmar con el operador qué cuenta/credenciales usar.
