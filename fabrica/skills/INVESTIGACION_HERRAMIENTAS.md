@@ -655,6 +655,129 @@ el link directo o una captura del post completo, se investiga en la próxima ron
 Ver limitación honesta arriba -- el scraper de meta tags no lee slides de carrusel más allá de la
 tapa. Pendiente si el operador quiere que se investigue con otro método (ej. un scraper que sí lea
 todas las imágenes, o el operador comenta la palabra clave del post para recibir la lista real).
+**Actualización 2026-09-21: resuelto.** El operador mandó capturas de pantalla reales de los dos
+carruseles completos (missdani.ai "9 herramientas de Google" + valenviggiano.mkt) -- 10 herramientas
+de Google distintas identificadas y diagnosticadas una por una en el ítem 18 de abajo.
+
+## 18. Diagnóstico completo de las 10 herramientas de Google (de capturas reales del operador) + HyperFrames probado + auditoría de lo propio sin usar — 2026-09-21
+
+### Google Stitch — **DESCARTAR**
+Agente de diseño de UI: describís una pantalla, genera la interfaz + código. Resuelve un problema
+que no tenemos (diseñar apps/dashboards) -- la fábrica no construye interfaces de usuario, genera
+video.
+
+### Google AI Studio — **Ya en uso indirecto, sin acción nueva**
+El hub gratis de Gemini (imágenes, audio, video, texto, apps full-stack) -- es la MISMA API de
+Gemini/Nano Banana ya diagnosticada y aprobada esta sesión para generación de imágenes ($0, 500/día
+sin tarjeta). No es una herramienta nueva, es la puerta de entrada a la que ya dijimos que sí.
+
+### NotebookLM — **PROBAR (uso indirecto real: investigación, no producción)**
+Convierte documentos/links en un asistente que solo responde desde esas fuentes, y puede convertir
+todo a un podcast en audio. Gratis, confirmado. **Dónde podría servir de verdad:** no para hacer
+videos, sino para organizar la investigación de la fábrica misma -- cargar toda la
+`fabrica/research/` + `fabrica/hooks/catalogo.ts` + este mismo documento y tener un asistente que
+responda "qué ya investigamos sobre X" sin que el operador tenga que buscar archivo por archivo.
+Uso secundario, no bloquea nada.
+
+### Google Flow — **PROBAR (candidato real más fuerte de los 10)**
+Herramienta de cine construida sobre Veo: escribís una escena, genera clips CON SONIDO, después
+estirás/ajustás las tomas. Confirmado en la captura misma: **150 créditos gratis por día** para
+generar video, MÁS generación de imágenes con Nano Banana que **no consume créditos**. Esto es
+distinto de lo que se investigó antes (Veo por API, sin tier gratis, $0.03+/segundo) -- Flow es la
+interfaz de consumidor con cuota diaria real gratis. **Con qué se complementa:** clips reales
+generados con IA como B-roll dentro de nuestras piezas Remotion, en vez de solo motion graphics --
+exactamente el "impacto visual" que se venía pidiendo, y sin gastar un peso mientras la cuota
+diaria alcance.
+
+### Lyria (ahora dentro de ProducerAI) — **DESCARTAR por ahora**
+Modelo de música de Google, describís un clima/género y compone pistas instrumentales. **Por qué
+no todavía:** ya tenemos `fabrica/musica/biblioteca.json` (9 tracks reales CC0, recién conectado
+esta sesión a Higgsfield gratis v2) -- funciona, es $0 sin límite de cuota diaria, y no hay
+necesidad concreta hoy de música generada a medida. Se reconsidera si algún día la biblioteca curada
+se queda corta.
+
+### Google Opal — **DESCARTAR**
+Arma mini-apps encadenando prompts sin código, para compartir como link. Resuelve construir
+herramientas interactivas (como el Validador de Activos que ya existe en `fabrica/docs/
+CURRICULUM_PRODUCTO_PAGO.md`) -- no genera video, no es el cuello de botella actual.
+
+### Pomelli — **DESCARTAR (no aplica todavía)**
+Escanea un sitio web y aprende cómo se ve/suena una marca, genera piezas de marketing e ideas de
+campaña desde un prompt. Gratis confirmado (experimento de Google Labs, sin tier pago anunciado).
+**Por qué no todavía:** necesita un sitio web real de la marca para escanear -- la comunidad
+exclusiva todavía no tiene una página propia. Candidato real para cuando exista.
+
+### ProducerAI — **DESCARTAR**
+Socio de creación musical (letras, melodía, arreglos) usando Gemini+Lyria3+Veo+Nano Banana. Mismo
+diagnóstico que Lyria: ya tenemos música real resuelta con la biblioteca CC0.
+
+### MixBoard — **DESCARTAR**
+Moodboard/concept board con IA para explorar y refinar ideas visuales con imágenes y texto. Gratis
+(Google Labs). Útil para diseño de marca/campaña -- no para producir un video real, que es el
+cuello de botella actual.
+
+### Google Antigravity — **DESCARTAR (redundante, no complementa)**
+"El competidor de Claude Code" según el post -- agente de desarrollo con base de datos, auth,
+multiplayer, APIs externas, integración Firebase. Confirmado: tier Individual gratis permanente
+(con límites semanales de uso). **Por qué no:** haría el mismo trabajo que ya hace Claude Code para
+este proyecto entero -- cambiar de agente de codificación a mitad de un proyecto que funciona no
+tiene ninguna limitación real que lo justifique (mismo principio que descartó Twick/n8n/Manus).
+
+**Resumen Google: de 10 herramientas, 1 candidato fuerte (Flow, B-roll real gratis), 1 uso
+secundario (NotebookLM, para organizar investigación), 8 descartadas** por no resolver un problema
+real que tengamos o por ya estar cubiertas.
+
+### HyperFrames — probado de verdad (no solo el README)
+Se leyó el repo completo (`heygen-com/hyperframes`, Apache-2.0, sin fees por render ni umbral de uso
+comercial, confirmado). Trae 21 skills reales instalables con
+`npx skills add heygen-com/hyperframes`. Dos saltan como candidatas reales, porque tapan huecos
+que SÍ tenemos documentados como propios:
+- **`/music-to-video`** -- video "beat-synced" generado a partir de una pista de audio. Esta sesión
+  se hizo ese cálculo A MANO (framesPorBeat, silencedetect, mapeo manual a la estructura de
+  oraciones) para "Higgsfield gratis" v2 -- si esta skill lo hace de forma confiable, ahorra ese
+  trabajo manual en cada pieza nueva.
+- **`/hyperframes-audio`** -- mezcla de audio real, "carving" de voz en off, cadenas de efectos,
+  automatización. Hueco documentado real: `fabrica/musica/README.md` dice explícitamente "sin
+  ducking dinámico todavía" (la música de fondo no baja de volumen cuando habla la voz, todo a
+  volumen fijo 0.12-0.16) -- esto es justo lo que un mezclador de audio real resolvería.
+- **Requisitos confirmados:** Node.js 22+, FFmpeg (ya instalado este sesión), Git LFS opcional.
+  Nada bloqueado por infraestructura, a diferencia de Wan2.2/n8n.
+- **No se recomienda como reemplazo de Remotion/fabrica** -- mismo principio que descartó Twick en
+  Ronda 6 (reescribir la arquitectura entera sin una limitación real que lo justifique). El propio
+  repo trae `/remotion-to-hyperframes` (migración desde Remotion) -- confirma que se posiciona como
+  reemplazo total, no como complemento, lo cual es justo lo que NO queremos hacer.
+- **Recomendación real:** PROBAR únicamente `/music-to-video` y `/hyperframes-audio` en aislamiento
+  (una pieza de prueba chica, fuera del pipeline real), comparar el resultado contra lo que ya
+  logramos a mano -- si de verdad ahorra tiempo/mejora el mezclado, se adopta ESA técnica puntual
+  (traducida a nuestro propio motor si hace falta), no el framework entero.
+
+### Auditoría real: lo nuestro que ya está instalado, confirmado funcionando, y sin usar en un video real reciente
+Se revisó `remotion-spike/package.json` + uso real en el código (no solo lo que dice
+`INVESTIGACION_HERRAMIENTAS.md` de rondas viejas) -- **hallazgo concreto, no repetido de la ronda
+6/7:**
+- **`subtitulos-grandes`** (`effects/SubtitulosGrandes.tsx`, subtítulos palabra por palabra estilo
+  TikTok, usa whisper.cpp + `@remotion/captions` real) -- registrado en
+  `fabrica/componentes/registro.json`, usado **UNA sola vez**, en `generar_guion_v4.ts` (un
+  experimento viejo) -- **nunca en auto-arreglo, noticia-ia, ni ningún video de los últimos 3
+  bloques de trabajo.** Esto es un hueco real: subtítulos grandes y sincronizados palabra por
+  palabra son una de las técnicas de retención más documentadas del formato TikTok, y la tenemos
+  construida y sin usar.
+- **`@remotion/effects`** (60 efectos cinematográficos, WebGL2 confirmado funcionando headless) y
+  **`@remotion/three`** (3D real confirmado) -- SÍ están conectados a `FabricaVideo.tsx`, pero solo
+  se disparan cuando `estrategiaEdicion.estilos` incluye `'cinematico'` o
+  `estrategiaEdicion.intencion === 'revelar'` -- campos que solo calcula el pipeline VIEJO de
+  Directores (`armarComposicion`). Las piezas nuevas (auto-arreglo, noticia-ia) se generan con
+  `renderizarPorGuion()`, un camino más simple que nunca llega a activar esa condición. **Por eso
+  nunca aparecieron en un video reciente** -- no es que no sirvan, es que el camino de render que
+  se usa ahora no pasa por ahí.
+- **`@remotion/rough-notation`** -- sí integrado en 2 componentes (`escenas/plata.tsx`,
+  `dibujo/enfasis.tsx`), pero ninguno de los dos se usó en un video de los últimos bloques.
+
+**Conclusión de la auditoría:** el problema no es falta de herramientas -- es que las piezas nuevas
+más agresivas (auto-arreglo, noticia-ia) se construyeron a mano por fuera del pipeline que sabe
+usar estas cosas. Próximo paso real y concreto: la próxima pieza usa `subtitulos-grandes` (hueco
+más grande y más barato de cerrar) y evalúa si vale la pena portar el gatillo de
+`@remotion/effects`/`@remotion/three` al camino nuevo de `renderizarPorGuion()`.
 
 ---
 
