@@ -1040,5 +1040,41 @@
     },
     "estado": "sin_validar",
     "notas": "R7-34: pedido explicito del operador para reemplazar GlitchShatter en un hook ('se ve bastante mal'). A diferencia de TikTokCaptions.tsx (que muestra la pagina/frase entera resaltando la palabra activa, pensado para subtitulos de pie de pantalla), este recorta en bloques de pocas palabras y las va revelando una a una -- pensado para dominar la pantalla, no acompañar. Requiere Caption[] real: sin una transcripcion medida (ver remotion-spike/src/subtitulos/README.md sobre el bloqueo de descarga del modelo en este sandbox y el camino via GitHub Actions), no hay con que llenar el prop -- no se debe rellenar con timestamps estimados a mano."
+  },
+  {
+    "id": "top3-gratis",
+    "archivo": "agresivo/Top3Gratis.tsx",
+    "exportacion": "Top3Gratis",
+    "categoria": "ranking",
+    "funcion": "Angulo de ranking honesto: 'probe N herramientas gratis, M son humo, estas 3 sirven de verdad' -- pedido explicito del operador (2026-09-21) tras feedback de que las piezas de noticia suelta (noticia-ia) no generaban curiosidad/agresividad/FOMO reales. Hook de golpe (resultado primero + expectativa violada), montaje rapido de descarte con gsap real (@remotion/effects/gsap, primera vez en produccion -- antes solo probado aislado en pruebas-r7/PruebaGsap.tsx) para el tachado de los descartados, y 3 tarjetas ganadoras con pop elastico + logo real de marca (Regla de logos reales, CLAUDE.md 2026-09-21 -- descargar_logo_empresa.py/Wikidata P154, nunca un icono generico; si la marca no tiene ficha confiable el logo queda undefined y la tarjeta cae a texto solo, nunca un logo inventado).",
+    "intensidad": 0.85,
+    "ritmo": "muy_dinamico",
+    "capacidadTexto": "media",
+    "requiereAssets": {
+      "tipo": "ninguno",
+      "obligatorio": false
+    },
+    "duracionMinMaxSeg": [
+      15,
+      30
+    ],
+    "compatibleCon": [
+      "cifra",
+      "ranking"
+    ],
+    "soportaAudioSincronizado": true,
+    "props": {
+      "hookIntro": "string -- linea chica de contexto (ej 'Nueve de cada doce herramientas de IA gratis')",
+      "hookImpacto": "string -- linea gigante roja, el golpe (ej 'TE ESTAN MINTIENDO.'), sincronizada a flash+whoosh",
+      "aclaracion": "string -- abre un loop chico (ej 'Las probe todas.')",
+      "rechazados": "{nombre: string; logo?: string}[] -- hasta 9, orden = orden real de descarte, logo = ruta bajo public/ si descargar_logos_lote.py encontro un logo confiable, si no queda undefined",
+      "transicion": "string -- resuelve el loop a medias antes de nombrar los 3 (ej 'SOLO 3 SIRVEN DE VERDAD')",
+      "ganadores": "[Ganador,Ganador,Ganador] con Ganador={nombre,dato,detalle,logo?} -- dato es la cifra/beneficio concreto, detalle una linea de contexto honesta",
+      "cierre": "string -- cierre honesto (nunca prometer que hace rico)",
+      "cta": "string -- CTA real a la comunidad, en pregunta directa, no orden (pedido explicito del operador 2026-09-21)",
+      "t": "{hookIntro,hookImpacto,aclaracion,rechazadosDesde,rechazadosDuracion,transicion,ganador1,ganador2,ganador3,cierre,cta}: number (seg)"
+    },
+    "estado": "sin_validar",
+    "notas": "Primer uso: 'top3-gratis' (Google Flow, Hugging Face Spaces+ZeroGPU, NotebookLM como ganadores; Stitch/GLM/n8n/Manus/Lyria/Opal/Pomelli/ProducerAI/MixBoard como descartados -- veredictos reales de fabrica/skills/INVESTIGACION_HERRAMIENTAS.md, cifras verificadas por WebSearch). Guion revisado en vivo con el operador: gancho reescrito para pegar antes (resultado primero), menos tecnicismos (GPU/codigo abierto reformulados en lenguaje llano), CTA de orden a pregunta."
   }
 ]
