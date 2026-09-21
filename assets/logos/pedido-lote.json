@@ -1,0 +1,14 @@
+[
+  {"nombre": "Google Flow", "slug": "google-flow", "pista": "video inteligencia artificial"},
+  {"nombre": "Hugging Face", "slug": "hugging-face", "pista": "inteligencia artificial"},
+  {"nombre": "NotebookLM", "slug": "notebooklm", "pista": "Google inteligencia artificial"},
+  {"nombre": "Google Stitch", "slug": "stitch-google", "pista": "diseño interfaz inteligencia artificial"},
+  {"nombre": "Zhipu AI", "slug": "glm-zhipu", "pista": "modelo de lenguaje chino"},
+  {"nombre": "n8n", "slug": "n8n", "pista": "automatización workflows"},
+  {"nombre": "Manus", "slug": "manus-ai", "pista": "agente inteligencia artificial"},
+  {"nombre": "Google Lyria", "slug": "lyria-google", "pista": "música inteligencia artificial"},
+  {"nombre": "Google Opal", "slug": "opal-google", "pista": "aplicaciones inteligencia artificial"},
+  {"nombre": "Google Pomelli", "slug": "pomelli-google", "pista": "marketing inteligencia artificial"},
+  {"nombre": "Producer AI", "slug": "producer-ai", "pista": "música inteligencia artificial"},
+  {"nombre": "Google MixBoard", "slug": "mixboard-google", "pista": "inteligencia artificial"}
+]

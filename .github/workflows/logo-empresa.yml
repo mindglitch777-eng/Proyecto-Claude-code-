@@ -1,0 +1,68 @@
+name: logo-empresa
+
+# Baja logos reales de marcas/herramientas publicas (Wikidata / Wikimedia
+# Commons -- ver descargar_logo_empresa.py) para los videos de la fabrica
+# -- Regla de logos reales (CLAUDE.md, 2026-09-21): cada vez que un video
+# nombra una marca, se busca y se muestra su logo real, nunca un icono
+# generico. Si no hay un resultado confiable, la marca queda sin logo
+# (mejor sin logo que con el logo equivocado) en vez de arriesgar el
+# logo equivocado.
+#
+# Corre en un runner y no en la sesion de Claude Code porque ese entorno
+# tiene bloqueado el acceso general a internet (Wikidata/Commons dan
+# EGRESS_BLOCKED, mismo motivo que foto-persona.yml).
+#
+# Dos modos, mismo patron que foto-persona.yml:
+#   - Lote: escribir assets/logos/pedido-lote.json (una lista entera de
+#     marcas) y empujar -- baja todas las que falten en una sola corrida.
+#   - Suelto: un pedido puntual por formulario de workflow_dispatch.
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      nombre:
+        description: "Nombre real de la marca (dejar vacio si se usa pedido-lote.json)"
+        required: false
+      slug:
+        description: "Carpeta destino en assets/logos/<slug>/"
+        required: false
+      pista:
+        description: "Palabra para desambiguar en Wikidata (ej. 'inteligencia artificial')"
+        required: false
+  push:
+    paths:
+      - "assets/logos/pedido-lote.json"
+
+jobs:
+  bajar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Lote (pedido-lote.json)
+        if: hashFiles('assets/logos/pedido-lote.json') != '' && !(github.event_name == 'workflow_dispatch' && inputs.nombre != '')
+        run: python3 descargar_logos_lote.py
+
+      - name: Pedido suelto (formulario)
+        if: github.event_name == 'workflow_dispatch' && inputs.nombre != ''
+        run: python3 descargar_logo_empresa.py "${{ inputs.nombre }}" "${{ inputs.slug }}" "${{ inputs.pista }}"
+
+      - name: Commitear
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain assets/logos/)" ]; then
+            git add assets/logos/
+            git commit -m "Logos reales: actualizacion automatica"
+            git pull --rebase origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          else
+            echo "Sin logo nuevo."
+          fi
