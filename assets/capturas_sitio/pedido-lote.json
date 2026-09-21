@@ -1,5 +1,20 @@
 [
-  {"url": "https://labs.google/fx/tools/flow", "slug": "google-flow", "ancho": 1280, "alto": 800},
-  {"url": "https://huggingface.co", "slug": "hugging-face", "ancho": 1280, "alto": 800},
-  {"url": "https://notebooklm.google.com", "slug": "notebooklm", "ancho": 1280, "alto": 800}
+  {
+    "url": "https://labs.google/fx/tools/flow",
+    "slug": "google-flow",
+    "ancho": 1280,
+    "alto": 800
+  },
+  {
+    "url": "https://huggingface.co",
+    "slug": "hugging-face",
+    "ancho": 1280,
+    "alto": 800
+  },
+  {
+    "url": "https://labs.google/notebooklm",
+    "slug": "notebooklm",
+    "ancho": 1280,
+    "alto": 800
+  }
 ]
