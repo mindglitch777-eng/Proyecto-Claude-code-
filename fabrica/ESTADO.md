@@ -1,6 +1,60 @@
 # Estado vivo del proyecto
 
-## Bloque: "Top 3 gratis" -- angulo de ranking honesto, gsap real, logos reales (2026-09-21)
+## Bloque: "Top 3 gratis" v2 -- humo real, vidrieras de captura real, gancho "te estafa" (2026-09-21, mismo dia)
+
+**Contexto real**: tras entregar la v1 (angulo de ranking, ver bloque de abajo), feedback directo y
+duro del operador: *"muy pequeño... no tiene ninguna palabra interesante o llamativa... usaste los
+mismos componentes que veniamos usando en vez de crear algo nuevo... no me tenés cansado haciendo
+cosas que no te pedí... que sea la última vez que te mandas hacer algo sin avisarme"*. Dos cosas
+reales pasaron ahi: (1) la ejecucion no estaba a la altura (chico, poco agresivo, reciclado), (2) el
+operador establecio una regla de proceso nueva: explicar el plan ANTES de renderizar, no despues.
+Se aplico desde ese momento: cada cambio de guion/visual se mostro en el chat y se pidio confirmacion
+antes de tocar Remotion.
+
+**Referencia visual real**: el operador señalo directamente el formato de sus capturas de Instagram
+de referencia (carousels de @axel_jutoran/@valenviggiano.mkt) -- icono real + nombre gigante negro +
+parrafo corto + captura REAL de la pantalla de la herramienta, fondo claro. Se replico ese lenguaje
+visual para las 3 ganadoras (antes eran tarjetas chicas apiladas con un dato de texto).
+
+**Cambios reales sobre la v1**:
+1. Gancho reescrito: "LA INTELIGENCIA ARTIFICIAL TE ESTAFA. Y te explico por qué." (antes "9 de cada
+   12... te estan mintiendo") -- mas directo, palabra "estafa" pedida explicitamente.
+2. Montaje de descarte con **humo real**: filtro SVG `feTurbulence` animado frame a frame (nunca
+   Math.random()/Date.now(), deterministico para el render) + `mixBlendMode: screen` -- tecnica nueva
+   en la fabrica, no hay stock de humo con licencia libre para usar. Cada herramienta descartada
+   lleva un **sello rojo "NO SIRVE"** (antes una linea tachada fina, muy poco visible).
+3. Las 3 ganadoras pasan a ser **"vidrieras" de pantalla completa** (fondo blanco, no el negro/rojo
+   del resto): icono real de la app + nombre en negro gigante (64px) + dato destacado en verde +
+   **captura REAL de la pantalla de la herramienta** (Playwright real, objectFit cover, "acapara" la
+   mayor parte de la pantalla) -- cada vidriera reemplaza a la anterior, pantalla completa, no 3
+   tarjetas chicas apiladas.
+4. Texto mas grande en todo el video (hookImpacto 108->128px, chips 15->19px, transicion 72->80px,
+   cierre/cta 23-24->28px, etc).
+
+**Infraestructura nueva real: capturas de pantalla reales**. `capturar_sitio_real.py` +
+`capturar_sitios_lote.py` (Playwright real, Chromium headless, sin login -- misma politica que
+`scraper.py`) + workflow `capturar-sitio.yml` (mismo patron que `foto-persona.yml`): captura la
+pantalla real de cada herramienta Y su icono real (apple-touch-icon o favicon). Resultado real de la
+primera corrida:
+- **Google Flow** (labs.google/fx/tools/flow): captura OK, pero el icono declarado en la pagina es
+  una mancha negra deforme, no un logo -- descartado a proposito (mejor sin icono que con uno roto),
+  la vidriera cae al respaldo honesto (inicial "G" en un circulo).
+- **Hugging Face** (huggingface.co): captura + icono real OK (el emoji oficial de la marca).
+- **NotebookLM**: `notebooklm.google.com` redirige directo a un login de Google (captura inutil, solo
+  el formulario de sign-in) -- se cambio a `labs.google/notebooklm` (pagina publica de marketing de
+  la misma herramienta, sin login) y salio perfecta (captura + icono real).
+
+**Guion revisado en vivo con el operador antes de generar la voz definitiva** (igual que la v1):
+gancho mas fuerte, sin tecnicismos, CTA en pregunta -- estos 3 puntos ya se habian aplicado en la v1
+y se mantuvieron.
+
+**Resultado**: voz real (Qwen3-TTS, 27.26s) con anclajes reales de `ffmpeg silencedetect` (15 huecos
+reales, varios identificados como pausas de coma intra-oracion contra limites de oracion reales via
+conteo de caracteres/duracion esperada -- mismo criterio que la v1). Render local verificado frame
+por frame (2 rondas: la primera encontro el icono roto de Google Flow, la segunda lo confirmo
+arreglado) antes de entregar. Duracion final: 28.01s.
+
+## Bloque: "Top 3 gratis" v1 -- angulo de ranking honesto, gsap real, logos reales (2026-09-21)
 
 **Contexto real**: tras noticia-ia/higgsfield-gratis, feedback directo y duro del operador: *"no estamos
 creando ningun guion que verdaderamente genere lo que necesitamos ni la curiosidad ni la agresividad

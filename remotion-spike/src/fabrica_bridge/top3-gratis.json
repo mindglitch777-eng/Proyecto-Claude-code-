@@ -3,21 +3,21 @@
   "fps": 30,
   "escenas": [
     {
-      "unidadId": "top3-todo",
+      "unidadId": "top3-estafa-todo",
       "desdeSeg": 0,
-      "duracionSeg": 26.041995,
+      "duracionSeg": 27.514014,
       "componenteId": "top3-gratis",
       "props": {
-        "hookIntro": "Nueve de cada doce herramientas de inteligencia artificial gratis",
-        "hookImpacto": "TE ESTÁN MINTIENDO.",
-        "aclaracion": "Las probé todas.",
+        "hookLinea1": "LA INTELIGENCIA ARTIFICIAL",
+        "hookImpacto": "TE ESTAFA.",
+        "aclaracion": "Y te explico por qué.",
+        "introRechazo": "Probé doce herramientas que todos recomiendan gratis.",
         "rechazados": [
           {
             "nombre": "Google Stitch"
           },
           {
-            "nombre": "GLM (Zhipu AI)",
-            "logo": "logos/glm-zhipu/logo.png"
+            "nombre": "GLM (Zhipu AI)"
           },
           {
             "nombre": "n8n"
@@ -46,48 +46,51 @@
           {
             "nombre": "Google Flow",
             "dato": "50 videos gratis por día",
-            "detalle": "Imágenes con Nano Banana: gratis, sin límite."
+            "detalle": "Imágenes con Nano Banana: gratis, sin límite.",
+            "captura": "capturas_sitio/google-flow/captura.png"
           },
           {
             "nombre": "Hugging Face",
             "dato": "Te presta una compu carísima",
             "detalle": "Gratis, directo desde tu navegador.",
-            "logo": "logos/hugging-face/logo.png"
+            "icono": "capturas_sitio/hugging-face/icono.ico",
+            "captura": "capturas_sitio/hugging-face/captura.png"
           },
           {
             "nombre": "NotebookLM",
             "dato": "Organiza y te lee tu info",
             "detalle": "Gratis para siempre.",
-            "logo": "logos/notebooklm/logo.png"
+            "icono": "capturas_sitio/notebooklm/icono.png",
+            "captura": "capturas_sitio/notebooklm/captura.png"
           }
         ],
         "cierre": "Nada de esto te hace rico de un día para el otro. Pero es real, y lo podés probar hoy.",
         "cta": "¿Querés ser parte de una comunidad sobre inteligencia artificial? Los primeros veinte lugares son gratis.",
         "t": {
-          "hookIntro": 0.05,
-          "hookImpacto": 2.65,
-          "aclaracion": 3.71,
-          "rechazadosDesde": 2.85,
-          "rechazadosDuracion": 2.6,
-          "transicion": 4.612,
-          "ganador1": 5.859,
-          "ganador2": 9.927,
-          "ganador3": 14.624,
-          "cierre": 18.554,
-          "cta": 21.9
+          "hookLinea1": 0.05,
+          "hookImpacto": 1.35,
+          "aclaracion": 1.997,
+          "introRechazo": 3.069,
+          "rechazadosDesde": 5.304,
+          "transicion": 6.352,
+          "ganador1": 7.736,
+          "ganador2": 11.743,
+          "ganador3": 15.076,
+          "cierre": 19.355,
+          "cta": 23.581
         }
       },
       "audios": [
         {
-          "archivo": "fabrica_top3_gratis/top3-todo.wav",
+          "archivo": "fabrica_top3_gratis/top3-estafa-todo.wav",
           "desdeSegRelativo": 0,
-          "duracionSeg": 25.791995
+          "duracionSeg": 27.264014
         }
       ],
       "golpe": "negro",
       "volumenSfx": 0.5,
       "estrategiaEdicion": {
-        "unidadId": "top3-todo",
+        "unidadId": "top3-estafa-todo",
         "intencion": "enganchar",
         "energia": "muy_alta",
         "densidadVisual": "densa",
@@ -118,7 +121,7 @@
             "enSegRelativo": 0,
             "tipo": "entra_elemento_principal",
             "descripcion": "entra el mensaje central de la unidad",
-            "razon": "elemento principal de la unidad \"top3-todo\""
+            "razon": "elemento principal de la unidad \"top3-estafa-todo\""
           },
           {
             "enSegRelativo": 0,
@@ -130,21 +133,21 @@
         "relacionConAnterior": "abre el video -- no hay escena anterior con la cual relacionarse",
         "respiracion": false,
         "patronRetencionId": "contexto-parcial",
-        "razonGeneral": "unidad \"top3-todo\" (1/1, categoria=ranking): intencion=enganchar (energia=muy_alta, densidad=densa), estilos=[agresivo+documental], patron_retencion=contexto-parcial"
+        "razonGeneral": "unidad \"top3-estafa-todo\" (1/1, categoria=ranking): intencion=enganchar (energia=muy_alta, densidad=densa), estilos=[agresivo+documental], patron_retencion=contexto-parcial"
       },
       "patronesRetencion": [
         "contexto-parcial"
       ]
     }
   ],
-  "duracionTotalSeg": 26.541995,
+  "duracionTotalSeg": 28.014014,
   "analisisRetencion": {
     "mapa": [
       {
-        "unidadId": "top3-todo",
+        "unidadId": "top3-estafa-todo",
         "fase": "hook",
         "energia": "muy_alta",
-        "duracionSeg": 26.041995,
+        "duracionSeg": 27.514014,
         "esClimax": false
       }
     ],
@@ -170,7 +173,7 @@
           }
         ],
         "esHipotesisUObservado": "evidencia_real",
-        "dependeDe": "top3-todo"
+        "dependeDe": "top3-estafa-todo"
       }
     ]
   },

@@ -72,7 +72,11 @@ const ganadores: [Vidriera, Vidriera, Vidriera] = [
     nombre: 'Google Flow',
     dato: '50 videos gratis por día',
     detalle: 'Imágenes con Nano Banana: gratis, sin límite.',
-    icono: assetPublico('google-flow', 'icono'),
+    // El apple-touch-icon real de labs.google/fx/tools/flow bajo una
+    // mancha negra deforme, no un logo reconocible -- se descarta a
+    // proposito (mejor sin icono que con uno roto, Regla de logos
+    // reales) y cae al respaldo honesto (inicial de la marca).
+    icono: undefined,
     captura: assetPublico('google-flow', 'captura'),
   },
   {
@@ -113,22 +117,33 @@ const escenas: EscenaGuion[] = [
       ganadores,
       cierre: 'Nada de esto te hace rico de un día para el otro. Pero es real, y lo podés probar hoy.',
       cta: '¿Querés ser parte de una comunidad sobre inteligencia artificial? Los primeros veinte lugares son gratis.',
-      // PLACEHOLDER -- se reemplaza por anclajes reales de ffmpeg
-      // silencedetect sobre top3-estafa-todo.wav en cuanto la voz real
-      // este lista (mismo criterio de todo el resto de la fabrica:
-      // nunca se deja un timestamp inventado en el guion final).
+      // Anclajes reales: silencedetect real sobre top3-estafa-todo.wav
+      // (27.26s, umbral -30dB, min 0.12s) -- 15 huecos reales detectados,
+      // mapeados a mano contra las 12 oraciones del texto (conteo de
+      // caracteres + limites reales de silencio, criterio de la skill
+      // beat-sync-editing: la voz manda, nunca se inventa un timestamp).
+      // Gaps reales: (1.832,1.997) (2.808,3.069) (5.063,5.304)
+      // (6.146,6.352) (7.489,7.736) (9.700,9.871 -- coma dentro de la
+      // frase de Google Flow) (11.549,11.743) (12.212,12.468 -- coma
+      // dentro de la frase de Hugging Face) (14.913,15.076)
+      // (16.113,16.289 -- coma dentro de la frase de NotebookLM)
+      // (19.188,19.355) (20.072,20.221 -- pausa sin coma, ruido de TTS)
+      // (21.890,22.071) (23.385,23.581) (25.577,25.724). hookImpacto
+      // dentro de la primera oracion (sin hueco real detectable ahi)
+      // se estima por proporcion de caracteres ("La inteligencia
+      // artificial" / "te estafa.").
       t: {
         hookLinea1: 0.05,
-        hookImpacto: 2,
-        aclaracion: 3,
-        introRechazo: 4,
-        rechazadosDesde: 5.5,
-        transicion: 8,
-        ganador1: 9,
-        ganador2: 13,
-        ganador3: 17,
-        cierre: 21,
-        cta: 24,
+        hookImpacto: 1.35,
+        aclaracion: 1.997,
+        introRechazo: 3.069,
+        rechazadosDesde: 5.304,
+        transicion: 6.352,
+        ganador1: 7.736,
+        ganador2: 11.743,
+        ganador3: 15.076,
+        cierre: 19.355,
+        cta: 23.581,
       },
     },
     intensidad: 9,
