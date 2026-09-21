@@ -55,7 +55,10 @@ const Chip: React.FC<{r: Rechazado}> = ({r}) => (
     }}
   >
     {r.logo ? (
-      <Img src={staticFile(r.logo)} style={{width: 48, height: 48, objectFit: 'contain', opacity: 0.75}} />
+      // Los logos reales bajados via Wikidata son wordmarks anchos (ej.
+      // 1280x110px) -- una caja cuadrada los aplasta a casi nada. Se
+      // fija la ALTURA y se deja el ancho libre (con tope), no al reves.
+      <Img src={staticFile(r.logo)} style={{height: 28, maxWidth: 100, objectFit: 'contain', opacity: 0.8}} />
     ) : (
       <div style={{width: 48, height: 48, borderRadius: 10, background: '#2A2A2E'}} />
     )}
@@ -159,7 +162,7 @@ const TarjetaGanador: React.FC<{g: Ganador; numero: number}> = ({g, numero}) => 
           <div style={{fontFamily: GROTESCA, fontWeight: 800, fontSize: 16, color: '#0A0A0C'}}>{numero}</div>
         </div>
         {g.logo ? (
-          <Img src={staticFile(g.logo)} style={{width: 52, height: 52, objectFit: 'contain', flexShrink: 0}} />
+          <Img src={staticFile(g.logo)} style={{height: 38, maxWidth: 130, objectFit: 'contain', flexShrink: 0}} />
         ) : null}
         <div style={{display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0}}>
           <div style={{fontFamily: GROTESCA, fontWeight: 800, fontSize: 26, color: PALETA.texto}}>{g.nombre}</div>
@@ -288,7 +291,11 @@ export const Top3Gratis: React.FC<{
             fontWeight: 800,
             fontSize: 108,
             lineHeight: 0.98,
-            color: ROJO_ALARMA,
+            // Blanco, no ROJO_ALARMA: el flash de golpe pinta la pantalla
+            // entera de ese mismo rojo en este instante exacto -- texto
+            // rojo sobre flash rojo queda invisible (mismo tipo de bug de
+            // legibilidad ya corregido antes en noticia-ia).
+            color: PALETA.texto,
             opacity: opImpacto,
             marginTop: 16,
             letterSpacing: '-0.02em',
@@ -316,7 +323,9 @@ export const Top3Gratis: React.FC<{
             fontWeight: 800,
             fontSize: 72,
             lineHeight: 1.05,
-            color: VERDE_OK,
+            // Blanco, mismo motivo que hookImpacto: el flash verde de
+            // este instante pintaria texto verde invisible sobre fondo verde.
+            color: PALETA.texto,
             textAlign: 'center',
             textTransform: 'uppercase',
             transform: `scale(${escalaTransicion})`,

@@ -1,5 +1,68 @@
 # Estado vivo del proyecto
 
+## Bloque: "Top 3 gratis" -- angulo de ranking honesto, gsap real, logos reales (2026-09-21)
+
+**Contexto real**: tras noticia-ia/higgsfield-gratis, feedback directo y duro del operador: *"no estamos
+creando ningun guion que verdaderamente genere lo que necesitamos ni la curiosidad ni la agresividad
+ni el fomo... queremos un contenido mucho mas agresivo"* -- pedido explicito de dejar de diagnosticar
+herramientas sin usarlas y de no limitarse a lo que ya existe si el guion pide algo nuevo.
+
+**Angulo nuevo** (pasa el Test de angulo comercial de CLAUDE.md): ranking honesto -- "probe 12
+herramientas de IA gratis, 9 son mentira, estas 3 sirven de verdad". Resultado-primero +
+expectativa-violada + loop-abierto (catalogo.ts). Los 9 descartes (Stitch, GLM, n8n, Manus, Lyria,
+Opal, Pomelli, Producer AI, MixBoard) y los 3 ganadores (Google Flow, Hugging Face, NotebookLM) son
+veredictos reales de `fabrica/skills/INVESTIGACION_HERRAMIENTAS.md` (items 17/18), cifras
+re-verificadas por WebSearch esta misma sesion (50 creditos/dia de Flow + Nano Banana ilimitado,
+minutos de GPU gratis de Hugging Face Spaces+ZeroGPU, NotebookLM gratis).
+
+**Guion revisado EN VIVO con el operador antes de generar la voz definitiva** (mostrado en chat con
+shot list completo, no se renderizo nada hasta su OK): gancho reescrito para pegar primero ("9 de
+cada 12... te estan mintiendo" en vez de enumerar), menos tecnicismos (GPU/codigo abierto -> "el
+poder de una computadora carisima"), CTA de orden ("Entra a la comunidad exclusiva") a pregunta
+directa ("¿Queres ser parte de una comunidad sobre inteligencia artificial? Los primeros 20 lugares
+son gratis").
+
+**2 reglas permanentes nuevas agregadas a CLAUDE.md**: (1) Regla de logos reales -- toda marca
+nombrada en cualquier video de aca en adelante se busca y se muestra con su logo real
+(`descargar_logo_empresa.py`/Wikidata P154), nunca un icono generico; mejor sin logo que con el
+equivocado. (2) queda documentado el bug real de `muestras_voz/` (ver mas abajo).
+
+**Infraestructura nueva real**: `descargar_logos_lote.py` + `.github/workflows/logo-empresa.yml`
+(mismo patron que `descargar_fotos_lote.py`/`foto-persona.yml`, aplicado a marcas). Primera corrida
+real sobre las 12 marcas de este video: 3 encontradas con logo oficial confirmado en Wikidata
+(Hugging Face, NotebookLM, Zhipu AI/GLM), 9 sin ficha todavia (la mayoria productos de Google Labs
+demasiado nuevos) -- quedan con texto solo, ver `assets/logos/RESUMEN.md`.
+
+**Componente nuevo**: `remotion-spike/src/agresivo/Top3Gratis.tsx` (id `top3-gratis`). Primer uso en
+produccion de `@remotion/gsap` real (antes solo probado aislado en `pruebas-r7/PruebaGsap.tsx`): pop
+elastico (`back.out`/`elastic.out`) en el montaje de descarte de las 9 herramientas (tachado real,
+gsap stagger) y en las 3 tarjetas ganadoras.
+
+**2 bugs reales encontrados en el primer render y corregidos antes de entregar** (Postura
+resolutiva -- se arreglan ahi mismo, no se documentan solo): (1) texto gigante del hook
+("TE ESTAN MINTIENDO.") en ROJO_ALARMA sobre el flash de pantalla completa, TAMBIEN rojo -- texto
+invisible, mismo tipo de bug de legibilidad ya corregido antes en noticia-ia. Mismo problema con
+"SOLO 3 SIRVEN DE VERDAD" en verde sobre flash verde. Arreglado: ambos textos pasan a
+`PALETA.texto` (blanco), el flash de color solo pinta el fondo. (2) los logos reales bajados de
+Wikidata son wordmarks anchos (ej. NotebookLM 1280x110px, ratio ~11.6:1) -- una caja cuadrada de
+48-52px los aplastaba a casi nada. Arreglado: la caja fija la ALTURA (28px en la grilla de
+descarte, 38px en las tarjetas ganadoras) y deja el ancho libre con un tope, nunca al reves.
+
+**Bug real de infraestructura encontrado el mismo dia, ANTES de esto** (ver "Prioridad actual" en
+CLAUDE.md para el detalle completo): la limpieza de El Corte se llevo puesta
+`muestras_voz/referencias-candidatas/librivox-11.mp3`, la muestra de voz real que clona TODA la voz
+de la fabrica (19 workflows `generar-voz-*.yml` la usan como `--ref-audio`). Se detecto porque
+`generar-voz-pilotos.yml` fallo en produccion al generar la voz de esta pieza ("No such file or
+directory"). Restaurado solo ese archivo puntual desde el historial de git.
+
+**Resultado**: voz real (Qwen3-TTS, 25.79s) con anclajes reales de `ffmpeg silencedetect` (9 huecos
+reales, 2 de ellos identificados como pausas de coma intra-oracion en vez de limites de oracion,
+diferenciados por conteo de caracteres/duracion esperada -- las ultimas 2 oraciones del cierre/CTA
+no cruzaron el umbral de silencio, estimadas por proporcion). Musica de fondo `impacto-furia` (112.3
+BPM, mood intenso/dramatico/accion) -- variedad real respecto a `tension-alarmante`, ya usada 2
+veces. Render local verificado frame por frame (2 rondas: primera encontro los 2 bugs de
+legibilidad/logos de arriba, segunda los confirmo arreglados) antes de entregar.
+
 ## Bloque: "Higgsfield gratis" v2 -- sonido, color, legibilidad y utilidad real (2026-09-20, mismo día)
 
 **Contexto real**: tras entregar la v1, feedback directo y duro del operador: *"tiene que tener un
