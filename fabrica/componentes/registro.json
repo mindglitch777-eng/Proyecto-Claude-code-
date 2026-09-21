@@ -1046,7 +1046,7 @@
     "archivo": "agresivo/Top3Gratis.tsx",
     "exportacion": "Top3Gratis",
     "categoria": "ranking",
-    "funcion": "Angulo de ranking honesto: 'probe N herramientas gratis, M son humo, estas 3 sirven de verdad' -- pedido explicito del operador (2026-09-21) tras feedback de que las piezas de noticia suelta (noticia-ia) no generaban curiosidad/agresividad/FOMO reales. Hook de golpe (resultado primero + expectativa violada), montaje rapido de descarte con gsap real (@remotion/effects/gsap, primera vez en produccion -- antes solo probado aislado en pruebas-r7/PruebaGsap.tsx) para el tachado de los descartados, y 3 tarjetas ganadoras con pop elastico + logo real de marca (Regla de logos reales, CLAUDE.md 2026-09-21 -- descargar_logo_empresa.py/Wikidata P154, nunca un icono generico; si la marca no tiene ficha confiable el logo queda undefined y la tarjeta cae a texto solo, nunca un logo inventado).",
+    "funcion": "v2 (2026-09-21, mismo dia): reescritura de fondo tras feedback real del operador sobre la v1 ('muy pequeño, sin palabra interesante, usaste los mismos componentes que veniamos usando'). Gancho mas agresivo ('LA INTELIGENCIA ARTIFICIAL TE ESTAFA.'), montaje de descarte con humo real (filtro SVG feTurbulence animado por frame, tecnica nueva, sin stock con licencia libre) + sello rojo 'NO SIRVE' por herramienta descartada, y las 3 ganadoras dejan de ser tarjetas chicas para ser 'vidrieras' de pantalla completa (fondo claro, icono real de la app + nombre gigante + CAPTURA REAL de la pantalla de la herramienta via Playwright/capturar_sitio_real.py, sin login) -- siguiendo el formato de las capturas de Instagram de referencia que mando el operador. Texto mas grande en todo el video.",
     "intensidad": 0.85,
     "ritmo": "muy_dinamico",
     "capacidadTexto": "media",
@@ -1064,17 +1064,18 @@
     ],
     "soportaAudioSincronizado": true,
     "props": {
-      "hookIntro": "string -- linea chica de contexto (ej 'Nueve de cada doce herramientas de IA gratis')",
-      "hookImpacto": "string -- linea gigante roja, el golpe (ej 'TE ESTAN MINTIENDO.'), sincronizada a flash+whoosh",
-      "aclaracion": "string -- abre un loop chico (ej 'Las probe todas.')",
-      "rechazados": "{nombre: string; logo?: string}[] -- hasta 9, orden = orden real de descarte, logo = ruta bajo public/ si descargar_logos_lote.py encontro un logo confiable, si no queda undefined",
+      "hookLinea1": "string -- linea chica de contexto (ej 'LA INTELIGENCIA ARTIFICIAL')",
+      "hookImpacto": "string -- linea gigante, el golpe (ej 'TE ESTAFA.'), sincronizada a flash+whoosh",
+      "aclaracion": "string -- abre un loop chico (ej 'Y te explico por qué.')",
+      "introRechazo": "string -- linea que antecede al montaje de descarte",
+      "rechazados": "{nombre: string}[] -- hasta 9, cada uno se muestra con un sello rojo 'NO SIRVE' + humo real de fondo",
       "transicion": "string -- resuelve el loop a medias antes de nombrar los 3 (ej 'SOLO 3 SIRVEN DE VERDAD')",
-      "ganadores": "[Ganador,Ganador,Ganador] con Ganador={nombre,dato,detalle,logo?} -- dato es la cifra/beneficio concreto, detalle una linea de contexto honesta",
+      "ganadores": "[Vidriera,Vidriera,Vidriera] con Vidriera={nombre,dato,detalle,icono?,captura?} -- icono/captura son rutas reales bajo public/ (capturar_sitio_real.py), si faltan cae a un placeholder honesto, nunca una imagen inventada. Cada vidriera ocupa la pantalla completa y reemplaza a la anterior.",
       "cierre": "string -- cierre honesto (nunca prometer que hace rico)",
-      "cta": "string -- CTA real a la comunidad, en pregunta directa, no orden (pedido explicito del operador 2026-09-21)",
-      "t": "{hookIntro,hookImpacto,aclaracion,rechazadosDesde,rechazadosDuracion,transicion,ganador1,ganador2,ganador3,cierre,cta}: number (seg)"
+      "cta": "string -- CTA real a la comunidad, en pregunta directa, no orden",
+      "t": "{hookLinea1,hookImpacto,aclaracion,introRechazo,rechazadosDesde,transicion,ganador1,ganador2,ganador3,cierre,cta}: number (seg)"
     },
     "estado": "sin_validar",
-    "notas": "Primer uso: 'top3-gratis' (Google Flow, Hugging Face Spaces+ZeroGPU, NotebookLM como ganadores; Stitch/GLM/n8n/Manus/Lyria/Opal/Pomelli/ProducerAI/MixBoard como descartados -- veredictos reales de fabrica/skills/INVESTIGACION_HERRAMIENTAS.md, cifras verificadas por WebSearch). Guion revisado en vivo con el operador: gancho reescrito para pegar antes (resultado primero), menos tecnicismos (GPU/codigo abierto reformulados en lenguaje llano), CTA de orden a pregunta."
+    "notas": "v2 primer uso: 'top3-gratis' regenerado con guion 'te estafa'. Capturas reales: Google Flow (labs.google/fx/tools/flow), Hugging Face (huggingface.co) -- ambas OK. NotebookLM: notebooklm.google.com redirige a login de Google (inutil), se cambio a labs.google/notebooklm (pagina publica). Descartados reales de fabrica/skills/INVESTIGACION_HERRAMIENTAS.md (items 17/18)."
   }
 ]
