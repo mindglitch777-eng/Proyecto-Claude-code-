@@ -1,0 +1,68 @@
+name: capturar-sitio
+
+# Captura real (screenshot + icono real de la app) de sitios publicos --
+# para el componente "vidriera" de la fabrica (2026-09-21): mostrar de
+# verdad como se ve/usa una herramienta, no solo un dato en una tarjeta
+# de texto. Playwright real (Chromium headless), sin login (misma
+# politica que scraper.py: nunca usar una cuenta real).
+#
+# Corre en un runner y no en la sesion de Claude Code porque ese
+# entorno tiene bloqueado el acceso general a internet.
+#
+# Dos modos, mismo patron que foto-persona.yml/logo-empresa.yml:
+#   - Lote: assets/capturas_sitio/pedido-lote.json (lista completa).
+#   - Suelto: un pedido puntual por formulario.
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "URL publica a capturar (dejar vacio si se usa pedido-lote.json)"
+        required: false
+      slug:
+        description: "Carpeta destino en assets/capturas_sitio/<slug>/"
+        required: false
+  push:
+    paths:
+      - "assets/capturas_sitio/pedido-lote.json"
+
+jobs:
+  capturar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar Playwright + Chromium
+        run: |
+          pip install --quiet playwright
+          playwright install --with-deps chromium
+
+      - name: Lote (pedido-lote.json)
+        if: hashFiles('assets/capturas_sitio/pedido-lote.json') != '' && !(github.event_name == 'workflow_dispatch' && inputs.url != '')
+        run: python3 capturar_sitios_lote.py
+
+      - name: Pedido suelto (formulario)
+        if: github.event_name == 'workflow_dispatch' && inputs.url != ''
+        run: python3 capturar_sitio_real.py "${{ inputs.url }}" "${{ inputs.slug }}"
+
+      - name: Commitear
+        if: always()
+        run: |
+          git config user.name  "productor-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain assets/capturas_sitio/)" ]; then
+            git add assets/capturas_sitio/
+            git commit -m "Capturas reales: actualizacion automatica"
+            git pull --rebase origin "$GITHUB_REF_NAME" || git rebase --abort || true
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          else
+            echo "Sin captura nueva."
+          fi
