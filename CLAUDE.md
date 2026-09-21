@@ -56,6 +56,17 @@ Igual que con la evidencia de retención (`fabrica/research/retencion.md`), esto
 cualitativo para decidir QUÉ se construye, nunca un "score de viralidad" numérico inventado -- la
 única forma real de confirmar que un ángulo funciona es publicarlo y medirlo.
 
+## Regla de logos reales (regla permanente, agregada 2026-09-21)
+Cada vez que un video nombra una marca o herramienta (TikTok, Google Flow, Hugging Face, la que
+sea), se busca y se muestra su **logo real** -- nunca un ícono genérico ni texto solo por defecto.
+Esto vale para todos los videos de acá en adelante, no solo el que lo motivó. La herramienta ya
+existe: `descargar_logo_empresa.py` (Wikidata P154 + Wikimedia Commons, mismo criterio de confianza
+que `buscar_foto.py` -- **mejor sin logo que con el logo equivocado**: si no encuentra una fuente
+confiable, no baja nada, nunca inventa ni adivina). Se corre desde un runner de GitHub Actions (este
+sandbox tiene bloqueado el acceso a Wikidata/Commons). Si una marca es demasiado nueva/nicho y
+todavía no tiene ficha en Wikidata, esa marca puntual queda con texto solo -- eso es una limitación
+real de la fuente, no una excusa para saltear la búsqueda en el resto.
+
 ## Arquitectura de publicación (2026-09-14, reemplaza toda automatización previa)
 TikTok y YouTube se publican SIEMPRE a mano por el operador, vía las apps nativas de
 cada plataforma (TikTok Studio, YouTube Studio) -- programación propia de cada app
@@ -104,6 +115,14 @@ siendo infraestructura compartida real, no reliquias. El sitio de Netlify
 (el-corte-v7.html) puede seguir desplegado externamente; borrar el repo no
 lo da de baja solo -- eso es una decisión y una acción aparte si el operador
 la pide.
+
+**Bug real encontrado el 21/09/2026 por este borrado**: `muestras_voz/referencias-candidatas/librivox-11.mp3`
+(la muestra de voz real que clona TODA la voz de la fábrica, usada como `--ref-audio` por los 19
+workflows `generar-voz-*.yml`) se fue con el resto de la carpeta sin que nadie notara que seguía en
+uso real. Se restauró SOLO ese archivo puntual desde el historial de git (`clones/`,
+`comparacion_customvoice/`, `prueba_normalizacion/` siguen borrados -- eran salidas de experimentos
+de El Corte, ningún workflow los necesita como input). Lección real: antes de borrar una carpeta
+completa "porque es de El Corte", grepear su ruta contra `.github/workflows/*.yml` primero.
 
 La prioridad actual es seguir desarrollando `fabrica/` (motor de
 generación de video con Remotion + directores de Voz/Visual/Audio/
