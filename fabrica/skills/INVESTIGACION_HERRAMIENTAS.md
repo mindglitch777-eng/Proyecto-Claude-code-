@@ -582,6 +582,80 @@ entorno / qué reemplazaría o mejoraría / riesgos / recomendación.
   -- ver la decisión formal en `fabrica/decisions/DECISIONES.md`
   ("Estrategia de investigación mejorada tras bloqueos de red").
 
+## 17. Herramientas mencionadas en 16 publicaciones de Instagram enviadas por el operador (2026-09-21)
+
+- **Contexto:** el operador pasó 16 URLs de Instagram para que se investigue CADA herramienta que
+  mencionan y se de un diagnóstico USAR/PROBAR/DESCARTAR de cada una -- no un análisis de qué hace
+  viral al post (ese fue un malentendido real de esta sesión, corregido por el operador). Los posts
+  se scrapearon vía `scrapear-post.yml` (meta tags públicos, sin login, ver ítem 16) -- 16/16
+  éxito, guardados en `fabrica/research/scraped/`.
+- **Limitación honesta:** el scraper solo lee la tapa del posteo (og:title/og:description) -- en
+  posts tipo carrusel (ej. "9 herramientas de Google" de missdani.ai, "5 plugins de Claude Code" de
+  bencorde) la lista real de items vive en las imágenes siguientes del carrusel, que esto NO
+  captura. No se inventaron esos nombres -- quedan como pendiente si el operador quiere que se
+  investigue con otro método.
+
+### GLM 5.2 / GLM 5.3-FlashX (Zhipu AI / Z.ai, China) — **DESCARTAR**
+Confirmado: open-weight, licencia MIT, 1M tokens de contexto, autohosteable gratis (pero pesado,
+necesita GPU real) o vía API pagada ($1.40/$4.40 por millón de tokens) o gratis limitado (chat web
+z.ai, Cloudflare Workers AI, 3M tokens/día vía ZCode para elegibles). **Por qué no:** es un modelo
+de texto/razonamiento -- ese rol ya lo cubre Claude (el motor de todo este proyecto). No resuelve
+ningún problema real que tengamos hoy.
+
+### n8n — **DESCARTAR (bloqueado por infraestructura, mismo motivo que Wan 2.2 self-hosteado)**
+Confirmado: automatización de workflows, gratis como Community Edition -- pero para que sirva en
+producción necesita un servidor Docker **siempre encendido** (mínimo real 4GB RAM/2vCPU, no los
+2GB que dice la doc oficial). Nosotros ya tenemos GitHub Actions como automatización real, gratis,
+sin servidor propio -- exactamente lo que "no hay infraestructura propia" (CLAUDE.md) prohíbe
+contradecir. n8n solo tendría sentido con un VPS pago corriendo 24/7, un gasto recurrente real que
+nadie pidió.
+
+### Manus (Monica/Butterfly Effect, China) — **DESCARTAR (redundante)**
+Confirmado: agente autónomo de propósito general (navega la web, escribe código, arma reportes),
+con tier gratis real (300 créditos/día, modelo "Lite"). **Por qué no:** hace lo mismo que yo
+(Claude Code) ya hago para este proyecto con WebSearch/WebFetch/Bash -- sumar un segundo agente
+para la misma función no resuelve nada, solo agrega una cuenta más que mantener.
+
+### Anthropic Managed Agents — **DESCARTAR por ahora (real, pero es gasto de infraestructura sin necesidad concreta)**
+Confirmado con la fuente oficial: sin cuota fija, se cobra por tokens (mismos precios que la API de
+Claude) + $0.08 por hora de sesión activa de runtime -- infraestructura real para tener un agente
+autónomo corriendo en producción (persistente, con sandbox, recuperación de errores). Sin tier
+gratis. **Por qué no todavía:** hoy no tenemos un caso de uso que necesite un agente corriendo
+solo, de forma persistente -- todo lo que hacemos ya corre bien con GitHub Actions disparado por
+cron/push, gratis. Si algún día se necesita un agente verdaderamente autónomo 24/7 (ej. respondiendo
+al Buzón en tiempo real), esto es la opción real a reconsiderar, con presupuesto aprobado primero.
+
+### HyperFrames (HeyGen, Apache-2.0) — **PROBAR (el único candidato real de esta tanda)**
+Verificado independiente (no solo lo que decía el post): repo real
+[heygen-com/hyperframes](https://github.com/heygen-com/hyperframes), Apache-2.0, "video as code" --
+HTML con atributos `data-*` de timing → MP4 determinístico, mismo mecanismo de fondo que Remotion
+(Chrome headless + FFmpeg). Construido explícitamente para ser manejado por Claude Code (trae 21
+skills que un agente carga a demanda). **No reemplaza a Remotion/fabrica** (mismo criterio que
+descartó "Twick" en la Ronda 6 -- reescribir la fábrica entera sin una limitación real que lo
+justifique) -- pero probar sus 21 skills sueltas (instalar el repo, ver qué skills trae, leer su
+código) es de bajo riesgo y podría sumar algo puntual (ej. su skill de subtítulos/karaoke) que hoy
+no tenemos terminado.
+
+### DeepSeek, Kimi, StepFun, Xiaomi MiMo — **DESCARTAR (redundantes, mismo rol que GLM)**
+Los 4 son modelos de lenguaje/razonamiento chinos mencionados en los posts de "IAs chinas" -- mismo
+diagnóstico que GLM: el rol de motor de texto/razonamiento ya lo cubre Claude.
+
+### Qwen Studio, Dreamina — **Ya cubiertos por investigación previa, sin acción nueva**
+Qwen Studio es la plataforma de Alibaba que expone Qwen-Image (ya evaluado esta sesión, ítem
+separado: gratis/autohosteable MIT, o centavos por imagen vía API). Dreamina es de ByteDance, misma
+familia que Seedream (ya evaluado: cerrado, ~$0.035 por imagen vía BytePlus). No agregan nada nuevo
+a lo ya diagnosticado.
+
+### "Local Voice" y "One HUD" (mencionados sin contexto suficiente en el post de miss.ia1) — **NO INVESTIGADO, nombre insuficiente**
+Son nombres genéricos (hay múltiples productos con nombres similares) sin más contexto en el
+caption -- investigar a ciegas arriesgaría reportar la herramienta equivocada. Si el operador tiene
+el link directo o una captura del post completo, se investiga en la próxima ronda.
+
+### Los 9 "herramientas de Google" y los "5 plugins de Claude Code" mencionados en carruseles — **NO CAPTURADO, limitación del scraper**
+Ver limitación honesta arriba -- el scraper de meta tags no lee slides de carrusel más allá de la
+tapa. Pendiente si el operador quiere que se investigue con otro método (ej. un scraper que sí lea
+todas las imágenes, o el operador comenta la palabra clave del post para recibir la lista real).
+
 ---
 
 ## Resumen de recomendaciones
