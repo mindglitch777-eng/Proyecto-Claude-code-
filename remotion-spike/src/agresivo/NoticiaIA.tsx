@@ -1,5 +1,7 @@
 import React from 'react';
-import {AbsoluteFill, Audio, Sequence, interpolate, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, Sequence, Solid, interpolate, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {glow} from '@remotion/effects/glow';
+import {chromaticAberration} from '@remotion/effects/chromatic-aberration';
 import {PALETA, GROTESCA, SERIF, ANCHO, ALTO} from '../identidad';
 
 // v2 (2026-09-20) -- reescritura completa tras feedback directo del
@@ -184,8 +186,29 @@ export const NoticiaIA: React.FC<{
         }}
       />
       {/* Flashes de golpe -- hook y aterrizaje de la cifra */}
-      <AbsoluteFill style={{backgroundColor: ROJO_ALARMA, opacity: flashImpacto}} />
-      <AbsoluteFill style={{backgroundColor: '#3DDC6E', opacity: flashAterrizaje}} />
+      {/* Flashes con @remotion/effects real (glow + aberracion cromatica
+          via WebGL2, confirmado funcionando headless en Ronda 6 --
+          pruebas-r6/PruebaEfectos.tsx) en vez de un opacity plano CSS.
+          Mismo lenguaje de golpe, ahora con impacto cinematografico real,
+          no solo un tinte de color. */}
+      {flashImpacto > 0.01 && (
+        <Solid
+          width={ANCHO}
+          height={ALTO}
+          color={ROJO_ALARMA}
+          style={{opacity: flashImpacto}}
+          effects={[glow({intensity: flashImpacto}), chromaticAberration({amount: flashImpacto * 14, angle: 0})]}
+        />
+      )}
+      {flashAterrizaje > 0.01 && (
+        <Solid
+          width={ANCHO}
+          height={ALTO}
+          color="#3DDC6E"
+          style={{opacity: flashAterrizaje}}
+          effects={[glow({intensity: flashAterrizaje * 0.7}), chromaticAberration({amount: flashAterrizaje * 8, angle: 90})]}
+        />
+      )}
 
       {/* Barra de alerta -- senal de genero inmediata, color fuerte
           desde el frame 0 (antes el arranque era negro liso). */}
